@@ -21,6 +21,16 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () =>
         import(/* webpackChunkName: "about" */ "./views/About.vue")
+    },
+    {
+      path: "/nwi",
+      name: "national whitewater inventory",
+      component: () => import("./views/nwi/RiverIndex.vue")
+    },
+    {
+      path: "/nwi/river-detail",
+      name: "river-detail",
+      component: () => import("./views/nwi/RiverDetail.vue")
     }
   ]
 });
