@@ -4,6 +4,9 @@
 ```
 npm install
 ```
+## Test DB Start - [Json Server](https://github.com/typicode/json-server)
+
+`cd` to project dir and run `json-server --watch db.json`
 
 ### Compiles and hot-reloads for development
 ```
