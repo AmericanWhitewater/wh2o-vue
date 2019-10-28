@@ -1,17 +1,8 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === "production" ? "/static/" : "/",
   css: {
     loaderOptions: {
       sass: {
-        data: `
-              
-        @import '@/app/assets/scss/abstracts/_variables.scss';
-        @import '@/app/assets/scss/abstracts/_mixins.scss';
-        @import '@/app/assets/scss/theme/_light.scss';
-        @import '@/app/assets/scss/vendor/_carbon-components-helpers.scss';
-        @import '@/app/assets/scss/helpers/_media-queries.scss';
-
-        `
+        data: '\n              \n        @import \'@/app/assets/scss/abstracts/_variables.scss\';\n        @import \'@/app/assets/scss/abstracts/_mixins.scss\';\n        @import \'@/app/assets/scss/theme/_light.scss\';\n        @import \'@/app/assets/scss/vendor/_carbon-components-helpers.scss\';\n        @import \'@/app/assets/scss/helpers/_media-queries.scss\';\n\n        '
       }
     }
   },
@@ -23,5 +14,6 @@ module.exports = {
       .use("file-loader")
       .loader("file-loader")
       .end();
-  }
+  },
+  assetsDir: '/static/'
 };
