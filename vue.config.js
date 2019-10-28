@@ -6,6 +6,7 @@ module.exports = {
       }
     }
   },
+
   chainWebpack: config => {
     // GraphQL Loader
     config.module
@@ -14,6 +15,5 @@ module.exports = {
       .use("file-loader")
       .loader("file-loader")
       .end();
-  },
-  assetsDir: '/static/'
+  }
 };
