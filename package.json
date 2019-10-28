@@ -16,7 +16,7 @@
   "dependencies": {
     "@carbon/grid": "^10.6.0",
     "@carbon/icons-vue": "^10.6.1",
-    "@carbon/vue": "^2.15.0",
+    "@carbon/vue": "^2.16.0",
     "axios": "^0.18.1",
     "chart.js": "^2.9.1",
     "core-js": "^2.6.10",
@@ -34,7 +34,7 @@
     "@vue/cli-plugin-babel": "^3.7.0",
     "@vue/cli-plugin-eslint": "^3.7.0",
     "@vue/cli-plugin-pwa": "^4.0.5",
-    "@vue/cli-service": "^3.7.0",
+    "@vue/cli-service": "^4.0.5",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.2.3",
