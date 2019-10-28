@@ -57,14 +57,18 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-* {
-  font-size: 14px;
-}
 .beta-box {
   max-width: 100%;
   overflow-x: scroll;
 }
 td {
   vertical-align: middle;
+  background-color:transparent;
+}
+tr {
+  @include ease;
+  &:hover , &:focus {
+    background-color:$ui-02;
+  }
 }
 </style>

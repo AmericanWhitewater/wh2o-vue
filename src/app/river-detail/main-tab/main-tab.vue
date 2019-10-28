@@ -8,7 +8,7 @@
         <div class="bx--col-sm-4 bx--col-md-6 bx--col-lg-8 mb-md">
           <div class="outside">
             <div class="inside map">
-              <cv-skeleton-text :heading="true"></cv-skeleton-text>
+              <loading-block text=" "/>
             </div>
           </div>
         </div>
@@ -27,6 +27,9 @@
 </template>
 <script>
 import {
+  LoadingBlock
+} from '@/app/global/components'
+import {
   SideBar,
   BetaBox,
   RapidsSection,
@@ -38,7 +41,8 @@ export default {
     SideBar,
     RapidsSection,
     BetaBox,
-    RiverDescription
+    RiverDescription,
+    LoadingBlock
   }
 };
 </script>
