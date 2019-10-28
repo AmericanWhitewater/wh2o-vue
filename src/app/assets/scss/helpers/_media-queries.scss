@@ -1,0 +1,55 @@
+
+// Reference: https://getbootstrap.com/docs/4.1/layout/grid/
+// 
+// 
+// USAGE
+// 
+// input,
+// select {
+//   @include MQ("XS") {
+//     margin-bottom: 1rem;
+//   }
+//   @include MQ("MD") {
+//     margin-bottom: 1rem;
+//   }
+// }
+
+$XS: 576px;
+$SM: 576px;
+$MD: 768px;
+$LG: 992px;
+$XL: 1200px;
+$XXL: 1600px;
+
+@mixin MQ($canvas) {
+  @if $canvas == XS {
+    @media only screen and (max-width: $XS) {
+      @content;
+    }
+  } @else
+  if $canvas == SM {
+    @media only screen and (min-width: $SM) {
+      @content;
+    }
+  } @else
+  if $canvas == MD {
+    @media only screen and (min-width: $MD) {
+      @content;
+    }
+  } @else
+  if $canvas == LG {
+    @media only screen and (min-width: $LG) {
+      @content;
+    }
+  } @else
+  if $canvas == XL {
+    @media only screen and (min-width: $XL) {
+      @content;
+    }
+  } @else
+  if $canvas == XXL {
+    @media only screen and (min-width: $XXL) {
+      @content;
+    }
+  }
+}

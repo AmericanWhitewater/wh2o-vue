@@ -1,0 +1,110 @@
+// $edited: true !default;
+// $brand-01: #537653 !default !default;
+// $brand-02: #6d8f6d !default !default;
+// $brand-03: #53789A !default !default;
+// $inverse-01: #ffffff !default !default;
+// $inverse-02: #272d33 !default !default;
+// $ui-01: #ffffff !default !default;
+// $ui-02: #f4f7fb !default !default;
+// $ui-03: #dfe3e6 !default !default;
+// $ui-04: #8897a2 !default !default;
+// $ui-05: #5a6872 !default !default;
+// $text-01: #152934 !default !default;
+// $text-02: #5a6872 !default !default;
+// $text-03: #cdd1d4 !default !default;
+// $field-01: #f4f7fb !default !default;
+// $field-02: #ffffff !default !default;
+// $support-01: #D83D2D !default !default;
+// $support-02: #5aa700 !default !default;
+// $support-03: #efc100 !default !default;
+// $support-04: #5aaafa !default !default;
+// // NOTE: "can't remember what the carbon prescribe darken percentage is !default; 5% looks good... -drew"
+// $hover-primary: darken($brand-01 !default; 5%) !default !default;
+// $active-primary: darken($brand-01 !default; 5%) !default !default;
+// $hover-secondary: $brand-01 !default !default;
+// $active-secondary: $brand-01 !default !default;
+
+$hue-01: 5%;
+$hue-02: 10%;
+$hue-03: 15%;
+
+$brand-01: #537653 !default;
+$brand-02: #6d8f6d !default;
+$brand-03: #53789a !default;
+
+$ui-01: #ffffff !default;
+$ui-02: #f4f7fb !default;
+$ui-03: #dfe3e6 !default;
+$ui-04: #8897a2 !default;
+$ui-05: #5a6872 !default;
+
+$interactive-01: $brand-01 !default;
+$interactive-02: $brand-02 !default;
+$interactive-03: $brand-01 !default;
+$interactive-04: $brand-01 !default;
+$ui-background: #ffffff !default;
+
+$text-01: #152934 !default;
+$text-02: #5a6872 !default;
+$text-03: #cdd1d4 !default;
+$text-04: #ffffff !default;
+
+$icon-01: $brand-02 !default;
+$icon-02: #565656 !default;
+$icon-03: #ffffff !default;
+
+$link-01: $text-01 !default;
+
+$field-01: #f4f7fb !default;
+$field-02: #ffffff !default;
+
+$inverse-01: #ffffff !default;
+$inverse-02: #3d3d3d !default;
+
+$support-01: #da1e28 !default;
+$support-02: #24a148 !default;
+$support-03: #fdd13a !default;
+$support-04: #054ada !default;
+
+$inverse-support-01: #fb4b53 !default;
+$inverse-support-02: #3dbb61 !default;
+$inverse-support-03: #fdd13a !default;
+$inverse-support-04: #408bfc !default;
+
+$overlay-01: $ui-03;
+
+$focus: $brand-01 !default;
+
+$hover-primary: darken($brand-01, $hue-01) !default;
+$active-primary: darken($brand-01, $hue-01) !default;
+$hover-primary-text: $text-02 !default;
+
+$hover-secondary: #4c4c4c !default;
+$active-secondary: #6f6f6f !default;
+
+$hover-tertiary: $ui-05 !default;
+$active-tertiary: $ui-05 !default;
+
+$hover-ui: #e5e5e5 !default;
+$active-ui: #bebebe !default;
+$selected-ui: #dcdcdc !default;
+$hover-selected-ui: #cacaca !default;
+
+$hover-danger: #ba1b23 !default;
+$active-danger: #750e13 !default;
+
+$hover-row: #e5e5e5 !default;
+
+$visited-link: #8a3ffc !default;
+
+$disabled-01: #f3f3f3 !default;
+$disabled-02: #bebebe !default;
+$disabled-03: #8c8c8c !default;
+
+$highlight: #c9deff !default;
+
+$skeleton-01: #e5e5e5 !default;
+$skeleton-02: #bebebe !default;
+
+$active-01: #bebebe !default;
+$hover-field: #e5e5e5 !default;

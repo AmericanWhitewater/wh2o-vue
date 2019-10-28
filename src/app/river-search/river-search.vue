@@ -1,0 +1,207 @@
+<template>
+  <div class>
+    <page-header title="River Search" class="mb-sm" />
+    <div class="bx--grid">
+      <div class="bx--row mb-md">
+        <div class="bx--col-auto mr-xs search-col">
+          <label class="bx--label">Search</label>
+          <cv-search
+            @change="fetchRivers"
+            :placeholder="'e.g. Arkansas River'"
+            small
+            v-model="riverSearchHttpConfig.river"
+          ></cv-search>
+        </div>
+        <div class="bx--col-auto mr-xs">
+          <cv-dropdown
+            v-model="riverSearchHttpConfig.state"
+            label="State"
+            @change="fetchRivers"
+          >
+            <cv-dropdown-item
+              v-for="(s, index) in UsStatesList"
+              :key="index"
+              :value="s.value"
+              >{{ s.text }}</cv-dropdown-item
+            >
+          </cv-dropdown>
+        </div>
+        <div class="bx--col-auto mr-xs">
+          <cv-dropdown
+            v-model="riverSearchHttpConfig.level"
+            label="Level"
+            @change="fetchRivers"
+          >
+            <cv-dropdown-item
+              v-for="(l, index) in levelsList"
+              :key="index"
+              :value="l.value"
+              >{{ l.text }}</cv-dropdown-item
+            >
+          </cv-dropdown>
+        </div>
+        <div class="bx--col-auto mr-xs">
+          <cv-dropdown
+            v-model="riverSearchHttpConfig.state"
+            label="International Reaches"
+            @change="fetchRivers"
+          >
+            <cv-dropdown-item
+              v-for="(i, index) in InternationalReaches"
+              :key="index"
+              :value="i.value"
+              >{{ i.text }}</cv-dropdown-item
+            >
+          </cv-dropdown>
+        </div>
+      </div>
+      <div class="bx--row mb-xl">
+        <div class="bx--col">
+          <table class="bx--data-table mb-md">
+            <thead>
+              <tr>
+                <th>
+                  <strong>Name</strong>
+                  <br />Section
+                </th>
+                <th>Class/Grade</th>
+                <th>Flow Range</th>
+                <th>
+                  <strong>Flow</strong>
+                  <br />Updated
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <template v-if="!loading && data">
+                <tr v-for="(r, index) in data.slice(0, 25)" :key="index">
+                  <td @click="viewRiver(r.id)" class="river-name-section">
+                    <strong>{{ r.name }}</strong>
+                    <br />
+                    {{ r.section }}
+                  </td>
+                  <td>{{ r.class }}</td>
+                  <td>
+                    <!-- <template
+                      v-if="r.gauge_min && r.gauge._max"
+                    >{{ r.gauge_min }} - {{ r.gauge_max }}</template>
+                    <template v-else>Data Unavailable</template>-->
+                    {{ Math.floor(r.gauge_min) }} -
+                    {{ Math.floor(r.gauge_max) }}
+                  </td>
+                  <td>{{ r.last_gauge_updated }}</td>
+                </tr>
+                <template v-if="showAll">
+                  <tr v-for="(r, index) in data.slice(25, 750)" :key="index">
+                    <td @click="viewRiver(r.id)" class="river-name-section">
+                      <strong>{{ r.name }}</strong>
+                      <br />
+                      {{ r.section }}
+                    </td>
+                    <td>{{ r.class }}</td>
+                    <td>
+                      <!-- <template
+                      v-if="r.gauge_min && r.gauge._max"
+                    >{{ r.gauge_min }} - {{ r.gauge_max }}</template>
+                      <template v-else>Data Unavailable</template>-->
+                      {{ Math.floor(r.gauge_min) }} -
+                      {{ Math.floor(r.gauge_max) }}
+                    </td>
+                    <td>{{ r.last_gauge_updated }}</td>
+                  </tr>
+                </template>
+              </template>
+              <template v-else-if="loading">
+                <tr>
+                  <td colspan="4">
+                    <cv-inline-loading
+                      small
+                      state="loading"
+                    ></cv-inline-loading>
+                  </td>
+                </tr>
+              </template>
+              <template v-else-if="!data">
+                <tr>
+                  <td colspan="4">
+                    No Results matched your criteria. Please try again.
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+          <template v-if="data && !showAll && data.length > 25">
+            <cv-button kind="primary" @click="showAll = !showAll"
+              >Show All</cv-button
+            >
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import { PageHeader } from "../global/components";
+import { riverSearchActions } from "./shared/state";
+import {
+  InternationalReaches,
+  LevelsList,
+  UsStatesList,
+  UsStatesRegions
+} from "./shared/mixins";
+export default {
+  name: "RiverSearch",
+  mixins: [InternationalReaches, LevelsList, UsStatesList, UsStatesRegions],
+  components: {
+    PageHeader
+  },
+  data: () => {
+    return {
+      riverSearchHttpConfig: {
+        river: null,
+        state: null,
+        level: null,
+        include: null,
+        atLeast: null,
+        atMost: null
+      },
+      showAll: false
+    };
+  },
+  computed: {
+    storePath() {
+      return this.$store.state.riverSearchState.riverSearchData;
+    },
+    loading() {
+      return this.storePath.loading;
+    },
+    data() {
+      return this.storePath.data;
+    }
+  },
+  methods: {
+    fetchRivers() {
+      this.$store.dispatch(
+        riverSearchActions.FETCH_RIVER_SEARCH_DATA,
+        this.riverSearchHttpConfig
+      );
+    },
+    viewRiver(id) {
+      this.$router.push(`/river-detail/${id}/main`);
+    }
+  }
+};
+</script>
+<style lang="scss">
+.river-name-section {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+.search-col {
+  input {
+    height: 40px !important;
+  }
+}
+</style>

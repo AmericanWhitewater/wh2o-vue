@@ -1,0 +1,119 @@
+// mimic bootstrap spacing classes
+
+$spacing-sizes: (
+  "3xs": 0.125,
+  "2xs": 0.25,
+  "xs": 0.5,
+  "sm": 0.75,
+  "md": 1,
+  "lg": 1.5,
+  "xl": 2,
+  "2xl": 2.5,
+  "3xl": 3
+);
+
+$layout-sizes: (
+  "2xs": 1,
+  "xs": 1.5,
+  "sm": 2,
+  "md": 3,
+  "lg": 4,
+  "xl": 6,
+  "2xl": 10
+);
+
+@each $size, $space in $spacing-sizes {
+  .mt-spacing-#{$size} {
+    margin-top: #{$space}rem;
+  }
+}
+
+@each $size, $space in $spacing-sizes {
+  .mb-spacing-#{$size} {
+    margin-bottom: #{$space}rem;
+  }
+}
+
+@each $size, $space in $spacing-sizes {
+  .mr-spacing-#{$size} {
+    margin-right: #{$space}rem;
+  }
+}
+
+@each $size, $space in $spacing-sizes {
+  .ml-spacing-#{$size} {
+    margin-left: #{$space}rem;
+  }
+}
+
+@each $size, $space in $spacing-sizes {
+  .pt-spacing-#{$size} {
+    padding-top: #{$space}rem;
+  }
+}
+
+@each $size, $space in $spacing-sizes {
+  .pb-spacing-#{$size} {
+    padding-bottom: #{$space}rem;
+  }
+}
+
+@each $size, $space in $spacing-sizes {
+  .pr-spacing-#{$size} {
+    padding-right: #{$space}rem;
+  }
+}
+
+@each $size, $space in $spacing-sizes {
+  .pl-spacing-#{$size} {
+    padding-left: #{$space}rem;
+  }
+}
+
+@each $size, $space in $layout-sizes {
+  .mt-#{$size} {
+    margin-top: #{$space}rem;
+  }
+}
+
+@each $size, $space in $layout-sizes {
+  .mb-#{$size} {
+    margin-bottom: #{$space}rem;
+  }
+}
+
+@each $size, $space in $layout-sizes {
+  .mr-#{$size} {
+    margin-right: #{$space}rem;
+  }
+}
+
+@each $size, $space in $layout-sizes {
+  .ml-#{$size} {
+    margin-left: #{$space}rem;
+  }
+}
+
+@each $size, $space in $layout-sizes {
+  .pt-#{$size} {
+    padding-top: #{$space}rem;
+  }
+}
+
+@each $size, $space in $layout-sizes {
+  .pb-#{$size} {
+    padding-bottom: #{$space}rem;
+  }
+}
+
+@each $size, $space in $layout-sizes {
+  .pr-#{$size} {
+    padding-right: #{$space}rem;
+  }
+}
+
+@each $size, $space in $layout-sizes {
+  .pl-#{$size} {
+    padding-left: #{$space}rem;
+  }
+}
