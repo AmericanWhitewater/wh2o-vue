@@ -82,7 +82,7 @@ const actions = {
     });
 
     if (result) {
-      context.commit(DATA_SUCCESS, result);
+      context.commit(DATA_SUCCESS, result.data.reach);
     }
 
     return result;

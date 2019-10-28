@@ -127,8 +127,7 @@ export default {
       return parseInt(this.$route.params.id);
     },
     media() {
-      return this.$store.state.riverDetailState.galleryData.data.data.reach
-        .photos.data;
+      return this.$store.state.riverDetailState.galleryData.data;
     },
     selectedMedia() {
       return this.media[this.selectedMediaIndex];

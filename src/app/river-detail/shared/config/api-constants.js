@@ -9,13 +9,7 @@ export const apiConstants = {
     metrics: "metrics"
   },
   weather:
-    "https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/70cc8053ba7adef4965fd2b173bea0a0/",
-  // gallery: {
-  //   base: "/content/Photo/do-search/?rivername=",
-  //   // temporary
-  //   params:
-  //     "&rapidname=&title=&author=&subject=&state=any&max=12&orderby=id&sort=desc&incphotos=on&incvideos=on&ext=&dosearch=Photo+Search/.json"
-  // },
+    `https://api.darksky.net/forecast/${process.env.DARK_SKY_ACCESS_TOKEN}/`,
   gallery: null,
   accidents: null,
   credits: null,
