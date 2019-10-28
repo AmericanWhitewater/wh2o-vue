@@ -57,7 +57,6 @@
                         kind="tertiary"
                         small
                         v-text="'Download Video'"
-                        @click="downloadVideo(selectedMedia.file.uri.big)"
                       />
                     </div>
                     </cv-tile>
@@ -146,10 +145,8 @@ export default {
       switch (ext) {
         case "mp4":
           return true;
-          break;
         case "mov":
           return true;
-          break;
         default:
           return false;
       }
@@ -177,9 +174,6 @@ export default {
       } else {
         this.selectedMediaIndex = 0;
       }
-    },
-    downloadVideo(id) {
-      console.log(`https://prerelease.americanwhitewater.org${id}`)
     }
   },
   created() {
