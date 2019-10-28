@@ -115,8 +115,7 @@ export default {
       return this.$store.state.riverDetailState.rapidsData.loading;
     },
     rapids() {
-      return this.$store.state.riverDetailState.rapidsData.data.data.reach
-        .rapids;
+      return this.$store.state.riverDetailState.rapidsData.data;
     }
   }
 };

@@ -89,8 +89,7 @@ export default {
       return this.$route.params.id;
     },
     river() {
-      return this.storePath.riverDetailData.data.CContainerViewJSON_view
-        .CRiverMainGadgetJSON_main;
+      return this.storePath.riverDetailData.data;
     },
     gaugeSummary() {
       return this.river.guagesummary;

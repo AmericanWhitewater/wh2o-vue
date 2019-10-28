@@ -85,8 +85,7 @@ export default {
   },
   computed: {
     river() {
-      return this.$store.state.riverDetailState.riverDetailData.data
-        .CContainerViewJSON_view.CRiverMainGadgetJSON_main.info;
+      return this.$store.state.riverDetailState.riverDetailData.data;
     },
     plat() {
       return this.river.plat;

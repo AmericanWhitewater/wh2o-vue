@@ -25,7 +25,7 @@ export default {
   components: { "content-editor": ContentEditor },
   computed: {
     river() {
-      return this.$store.state.riverDetailState.riverDetailData.data.data.reach;
+      return this.$store.state.riverDetailState.riverDetailData.data;
     },
     editMode() {
       return this.$store.state.riverDetailState.riverDetailData.mode;

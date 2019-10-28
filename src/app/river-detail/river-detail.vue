@@ -96,12 +96,7 @@ export default {
       return this.$route.params.id;
     },
     river() {
-      if (this.$store.state.riverDetailState.riverDetailData.data) {
-        return this.$store.state.riverDetailState.riverDetailData.data.data
-          .reach;
-      } else {
-        return false;
-      }
+       return this.$store.state.riverDetailState.riverDetailData.data;
     },
     loading() {
       return this.$store.state.riverDetailState.riverDetailData.loading;

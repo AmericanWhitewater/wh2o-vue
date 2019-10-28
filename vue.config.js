@@ -8,7 +8,6 @@ module.exports = {
   },
 
   chainWebpack: config => {
-    // GraphQL Loader
     config.module
       .rule("file")
       .test(/\.(png|mp4|jpe?g|gif)$/i)

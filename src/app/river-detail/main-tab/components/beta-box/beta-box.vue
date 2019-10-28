@@ -51,7 +51,7 @@ export default {
       return this.$store.state.riverDetailState.riverDetailData.loading;
     },
     river() {
-      return this.$store.state.riverDetailState.riverDetailData.data.data.reach;
+      return this.$store.state.riverDetailState.riverDetailData.data;
     }
   }
 };
