@@ -143,7 +143,7 @@ export default {
 header {
   .drawer {
     position: fixed;
-    min-height: calc(100vh - $mobile-nav-height);
+    min-height: calc(100vh - 50px);
     height: 100%;
     top: $mobile-nav-height;
     right: 0;

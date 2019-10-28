@@ -225,7 +225,7 @@ export default {
   }
   .bx--loading-overlay {
     top: $desktop-nav-height;
-    height: calc(100vh - $desktop-nav-height);
+    height: calc(100vh - 75px);
   }
 }
 .fade-enter-active {

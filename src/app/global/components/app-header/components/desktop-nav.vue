@@ -128,7 +128,7 @@ export default {
   .primary-nav-wrapper {
     .nav-main-content-area {
       justify-content: space-between;
-      height: $desktop-nav-height - 25px;
+      height: 50px;
       display: flex;
       align-items: center;
       .bx--btn--ghost {

@@ -1,0 +1,6 @@
+{
+    "name": "wh2o",
+    "description": "a vue spa for american whitewater",
+    "image": "heroku/nodejs",
+    "keywords": ["node", "vue" ]
+  }
