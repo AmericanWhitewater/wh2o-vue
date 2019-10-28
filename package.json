@@ -3,14 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "author": "Drew Althage & American Whitewater",
-  "homepage": "https://github.com/drewalth/wh2o-vue",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build:qa": "sh -ac '. .env.qa; vue-cli-service build'",
-    "build:staging": "sh -ac '. .env.staging; vue-cli-service build'",
+    "lint": "vue-cli-service lint",
     "build:production": "sh -ac '. .env.production; vue-cli-service build'",
-    "lint": "vue-cli-service lint"
+    "build:qa": "sh -ac '. .env.qa; vue-cli-service build'",
+    "build:staging": "sh -ac '. .env.staging; vue-cli-service build'"
   },
   "dependencies": {
     "@carbon/grid": "^10.6.0",
@@ -20,6 +19,7 @@
     "chart.js": "^2.9.1",
     "core-js": "^2.6.10",
     "moment": "^2.24.0",
+    "register-service-worker": "^1.6.2",
     "tiptap": "^1.26.4",
     "tiptap-extensions": "^1.28.4",
     "vue": "^2.6.10",
@@ -30,6 +30,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
     "@vue/cli-plugin-eslint": "^3.7.0",
+    "@vue/cli-plugin-pwa": "^4.0.5",
     "@vue/cli-service": "^3.7.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
@@ -63,5 +64,6 @@
   ],
   "engines": {
     "node": "10.x"
-  }
+  },
+  "homepage": "https://github.com/drewalth/wh2o-vue"
 }
