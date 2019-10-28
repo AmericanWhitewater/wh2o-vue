@@ -9,10 +9,7 @@ export const apiConstants = {
     metrics: "metrics"
   },
   weather:
-    `https://api.darksky.net/forecast/${process.env.DARK_SKY_ACCESS_TOKEN}/`,
-  gallery: null,
-  accidents: null,
-  credits: null,
+    `https://api.darksky.net/forecast/${process.env.VUE_APP_DARK_SKY_ACCESS_TOKEN}/`,
   map: {
     base: null
   },
