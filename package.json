@@ -1,12 +1,15 @@
 {
-  "name": "vuejs_boilerplate",
+  "name": "wh2o-vue",
   "version": "0.1.0",
   "private": true,
-  "author": "Arun Redhu",
-  "homepage": "https://github.com/arunredhu/vuejs_boilerplate",
+  "author": "Drew Althage & American Whitewater",
+  "homepage": "https://github.com/drewalth/wh2o-vue",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build:qa": "sh -ac '. .env.qa; vue-cli-service build'",
+    "build:staging": "sh -ac '. .env.staging; vue-cli-service build'",
+    "build:production": "sh -ac '. .env.production; vue-cli-service build'",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
