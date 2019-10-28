@@ -17,6 +17,8 @@ const fetchRiverDetailData = data => {
              description,
              edited,
              class,
+             plat,
+             plon,
              photo{
                file{
                  uri{
