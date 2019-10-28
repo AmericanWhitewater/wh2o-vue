@@ -1,7 +1,6 @@
-const { NODE_ENV = "" } = process.env;
+const { VUE_APP_API_BASE_URL, NODE_ENV = "" } = process.env;
 
 const environment = NODE_ENV.toLowerCase();
-const apiBaseUrl =
-  "https://cors-anywhere.herokuapp.com/https://prerelease.americanwhitewater.org/";
+const apiBaseUrl = VUE_APP_API_BASE_URL
 
 export { environment, apiBaseUrl };
