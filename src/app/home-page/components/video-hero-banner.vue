@@ -7,9 +7,9 @@
           autoplay
           loop
           preload="metadata"
-          poster="../../assets/images/dummy01Poster.png"
+          poster="../../assets/images/dummy02Poster.png"
         >
-          <source src="../../assets/video/dummy01.MP4" type="video/mp4" />
+          <source src="../../assets/video/dummy02.MP4" type="video/mp4" />
           Sorry, your browser doesn't support embedded videos.
         </video>
         <div class="inside">
@@ -118,7 +118,7 @@ export default {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      opacity: 0.1;
+      opacity: 0.35;
     }
   }
   .inside {
