@@ -13,7 +13,7 @@
             :title="alert.title"
             :sub-title="alert.subtitle"
             @close="doClose(index)"
-          ></cv-inline-notification>
+          />
         </template>
         <template v-else>
           <p>There are no new alerts</p>
@@ -56,6 +56,9 @@ export default {
       documents: []
     };
   },
+  mounted() {
+    this.isSticky();
+  },
   methods: {
     doClose(index) {
       alert(`Do something for alert: ${index}`);
@@ -68,9 +71,6 @@ export default {
         this.sticky = true;
       }
     }
-  },
-  mounted() {
-    this.isSticky();
   }
 };
 </script>

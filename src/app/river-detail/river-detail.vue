@@ -2,43 +2,38 @@
   <section class="bx--grid river-detail">
     <transition name="fade">
       <template v-if="loading">
-        <cv-loading active overlay small></cv-loading>
+        <cv-loading
+          active
+          overlay
+          small
+        />
       </template>
     </transition>
     <template v-if="!loading">
-      <div class="bx--row breadcrumb-container">
-        <div class="bx--col">
-          <div class="outside">
-            <div class="inside">
-              <cv-breadcrumb aria-label="breadcrumb" no-trailing-slash>
-                <cv-breadcrumb-item>
-                  <cv-link to="/nwi-map">NWI Map</cv-link>
-                </cv-breadcrumb-item>
-                <cv-breadcrumb-item>
-                  <cv-link href="#" aria-current="page">Reach Id: {{ this.$route.params.id }}</cv-link>
-                </cv-breadcrumb-item>
-              </cv-breadcrumb>
-              <cv-tag kind="blue" label="Banner needs editing" :disabled="false"></cv-tag>
-            </div>
-          </div>
-        </div>
-      </div>
       <template v-if="river">
-        <river-header :name="river.river" :section="river.section" />
+        <river-header
+          :name="river.river"
+          :section="river.section"
+        />
         <div class="tabs-wrapper">
           <cv-overflow-menu>
             <cv-overflow-menu-item>Link Resources</cv-overflow-menu-item>
             <cv-overflow-menu-item>Share Reach</cv-overflow-menu-item>
-            <cv-overflow-menu-item danger>Remove from Index</cv-overflow-menu-item>
+            <cv-overflow-menu-item danger>
+              Remove from Index
+            </cv-overflow-menu-item>
           </cv-overflow-menu>
-          <cv-tabs @tab-selected="switchTab($event)" aria-label="navigation tab label">
+          <cv-tabs
+            aria-label="navigation tab label"
+            @tab-selected="switchTab($event)"
+          >
             <cv-tab
-              no-default-to-first
-              :id="'tab-' + index + 1"
-              :label="tab"
               v-for="(tab, index) in tabs"
+              :id="'tab-' + index + 1"
               :key="tab"
-            ></cv-tab>
+              no-default-to-first
+              :label="tab"
+            />
           </cv-tabs>
         </div>
         <!-- <transition name="fade"> -->
@@ -91,6 +86,19 @@ export default {
       return this.$store.state.riverDetailState.riverDetailData.mode;
     }
   },
+  // beforeRouteEnter(to, from, next) {
+  //   next(vm => {
+  //     // save the previous route info for breadcrumbs
+  //     vm.prevRoute = from;
+  //   });
+  // },
+  created() {
+    this.$store.dispatch(actionsTypes.FETCH_RIVER_DETAIL_DATA, this.riverId);
+    // this.loadTab(this.$route.name);
+  },
+  mounted() {
+    this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId);
+  },
   methods: {
     switchTab(eventName) {
       // cv-tabs emits an event on click, use that to push to new router view
@@ -120,14 +128,14 @@ export default {
           this.$router.push(`/river-detail/${this.riverId}/credits`);
           break;
       }
+    },
+    checkDirectInit() {
+      // check to see if the user got here directly via saved book mark, and is missing tab subroute
+      // push them to main tab if true
+      if(!this.prevRoute && !this.$route.name) {
+        this.$router.push(`/river-detail/${this.riverId}/main`);
+      }
     }
-  },
-  created() {
-    this.$store.dispatch(actionsTypes.FETCH_RIVER_DETAIL_DATA, this.riverId);
-    // this.loadTab(this.$route.name);
-  },
-  mounted() {
-    this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId);
   },
   beforeRouteLeave(to, from, next) {
     if (this.editMode) {
@@ -164,13 +172,6 @@ export default {
     width: 6rem;
     &:focus {
       width: 6rem;
-    }
-  }
-  .breadcrumb-container {
-    padding: $spacing-sm 0;
-    .inside {
-      display: flex;
-      justify-content: space-between;
     }
   }
   .bx--loading-overlay {

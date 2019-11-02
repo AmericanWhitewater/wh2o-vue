@@ -8,7 +8,7 @@
         <div class="bx--col-sm-4 bx--col-md-6 bx--col-lg-8 mb-md">
           <div class="outside">
             <div class="inside map">
-              <loading-block text=" "/>
+              <loading-block text=" " />
             </div>
           </div>
         </div>

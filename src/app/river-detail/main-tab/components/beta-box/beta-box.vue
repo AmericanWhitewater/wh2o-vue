@@ -1,6 +1,9 @@
 <template>
   <div class="beta-box">
-    <table v-if="!loading" class="bx--data-table bx--data-table--zebra">
+    <table
+      v-if="!loading"
+      class="bx--data-table bx--data-table--zebra"
+    >
       <tr>
         <td>Difficulty</td>
         <td>{{ river.class }}</td>

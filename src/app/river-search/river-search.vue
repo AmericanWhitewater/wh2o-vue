@@ -1,16 +1,19 @@
 <template>
   <div class>
-    <page-header title="River Search" class="mb-sm" />
+    <page-header
+      title="River Search"
+      class="mb-sm"
+    />
     <div class="bx--grid">
       <div class="bx--row mb-md">
         <div class="bx--col-auto mr-xs search-col">
           <label class="bx--label">Search</label>
           <cv-search
-            @change="fetchRivers"
+            v-model="riverSearchHttpConfig.river"
             :placeholder="'e.g. Arkansas River'"
             small
-            v-model="riverSearchHttpConfig.river"
-          ></cv-search>
+            @change="fetchRivers"
+          />
         </div>
         <div class="bx--col-auto mr-xs">
           <cv-dropdown
@@ -22,8 +25,9 @@
               v-for="(s, index) in UsStatesList"
               :key="index"
               :value="s.value"
-              >{{ s.text }}</cv-dropdown-item
             >
+              {{ s.text }}
+            </cv-dropdown-item>
           </cv-dropdown>
         </div>
         <div class="bx--col-auto mr-xs">
@@ -36,8 +40,9 @@
               v-for="(l, index) in levelsList"
               :key="index"
               :value="l.value"
-              >{{ l.text }}</cv-dropdown-item
             >
+              {{ l.text }}
+            </cv-dropdown-item>
           </cv-dropdown>
         </div>
         <div class="bx--col-auto mr-xs">
@@ -50,8 +55,9 @@
               v-for="(i, index) in InternationalReaches"
               :key="index"
               :value="i.value"
-              >{{ i.text }}</cv-dropdown-item
             >
+              {{ i.text }}
+            </cv-dropdown-item>
           </cv-dropdown>
         </div>
       </div>
@@ -62,22 +68,28 @@
               <tr>
                 <th>
                   <strong>Name</strong>
-                  <br />Section
+                  <br>Section
                 </th>
                 <th>Class/Grade</th>
                 <th>Flow Range</th>
                 <th>
                   <strong>Flow</strong>
-                  <br />Updated
+                  <br>Updated
                 </th>
               </tr>
             </thead>
             <tbody>
               <template v-if="!loading && data">
-                <tr v-for="(r, index) in data.slice(0, 25)" :key="index">
-                  <td @click="viewRiver(r.id)" class="river-name-section">
+                <tr
+                  v-for="(r, index) in data.slice(0, 25)"
+                  :key="index"
+                >
+                  <td
+                    class="river-name-section"
+                    @click="viewRiver(r.id)"
+                  >
                     <strong>{{ r.name }}</strong>
-                    <br />
+                    <br>
                     {{ r.section }}
                   </td>
                   <td>{{ r.class }}</td>
@@ -92,10 +104,16 @@
                   <td>{{ r.last_gauge_updated }}</td>
                 </tr>
                 <template v-if="showAll">
-                  <tr v-for="(r, index) in data.slice(25, 750)" :key="index">
-                    <td @click="viewRiver(r.id)" class="river-name-section">
+                  <tr
+                    v-for="(r, index) in data.slice(25, 750)"
+                    :key="index"
+                  >
+                    <td
+                      class="river-name-section"
+                      @click="viewRiver(r.id)"
+                    >
                       <strong>{{ r.name }}</strong>
-                      <br />
+                      <br>
                       {{ r.section }}
                     </td>
                     <td>{{ r.class }}</td>
@@ -117,7 +135,7 @@
                     <cv-inline-loading
                       small
                       state="loading"
-                    ></cv-inline-loading>
+                    />
                   </td>
                 </tr>
               </template>
@@ -131,9 +149,12 @@
             </tbody>
           </table>
           <template v-if="data && !showAll && data.length > 25">
-            <cv-button kind="primary" @click="showAll = !showAll"
-              >Show All</cv-button
+            <cv-button
+              kind="primary"
+              @click="showAll = !showAll"
             >
+              Show All
+            </cv-button>
           </template>
         </div>
       </div>
@@ -151,10 +172,10 @@ import {
 } from "./shared/mixins";
 export default {
   name: "RiverSearch",
-  mixins: [InternationalReaches, LevelsList, UsStatesList, UsStatesRegions],
   components: {
     PageHeader
   },
+  mixins: [InternationalReaches, LevelsList, UsStatesList, UsStatesRegions],
   data: () => {
     return {
       riverSearchHttpConfig: {

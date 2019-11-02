@@ -1,7 +1,7 @@
 <template>
   <div class="credits-tab">
     <template v-if="loading">
-      <cv-inline-loading small></cv-inline-loading>
+      <cv-inline-loading small />
     </template>
     <template v-if="!loading && error">
       <error-block
@@ -10,7 +10,9 @@
       />
     </template>
     <template v-if="!loading && !error">
-      <div class>credits results!</div>
+      <div class>
+        credits results!
+      </div>
     </template>
   </div>
 </template>
@@ -19,13 +21,13 @@ import { creditsActions } from "../shared/state";
 import { ErrorBlock } from "../shared/components";
 export default {
   name: "CreditsTab",
+  components: {
+    ErrorBlock
+  },
   data: () => {
     return {
       creditsHttpConfig: "let there be error"
     };
-  },
-  components: {
-    ErrorBlock
   },
   computed: {
     loading() {
@@ -34,6 +36,9 @@ export default {
     error() {
       return this.$store.state.riverDetailState.creditsData.error;
     }
+  },
+  created() {
+    this.loadData();
   },
   methods: {
     loadData() {
@@ -44,9 +49,6 @@ export default {
         );
       }
     }
-  },
-  created() {
-    this.loadData();
   }
 };
 </script>

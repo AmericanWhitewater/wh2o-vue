@@ -25,7 +25,7 @@
                     }`
                   "
                   :alt="rapid.name"
-                />
+                >
               </div>
             </div>
           </div>
@@ -41,6 +41,9 @@
 import RapidIconBar from "./rapid-icon-bar";
 export default {
   name: "RapidsItem",
+  components: {
+    "rapid-icon-bar": RapidIconBar
+  },
   props: {
     rapid: {
       type: Object,
@@ -55,9 +58,6 @@ export default {
       type: String,
       default: "grid"
     }
-  },
-  components: {
-    "rapid-icon-bar": RapidIconBar
   },
   computed: {
     containerClasses() {

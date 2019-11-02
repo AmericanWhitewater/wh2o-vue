@@ -1,13 +1,18 @@
 <template>
   <div class="map-tab">
     <template v-if="loading">
-      <cv-inline-loading small></cv-inline-loading>
+      <cv-inline-loading small />
     </template>
     <template v-if="!loading && error">
-      <error-block title="Map data unavailable" text="please try again later" />
+      <error-block
+        title="Map data unavailable"
+        text="please try again later"
+      />
     </template>
     <template v-if="!loading && !error">
-      <div class>map results!</div>
+      <div class>
+        map results!
+      </div>
     </template>
   </div>
 </template>
@@ -16,6 +21,9 @@ import { mapActions } from "../shared/state";
 import { ErrorBlock } from "../shared/components";
 export default {
   name: "MapTab",
+  components: {
+    ErrorBlock
+  },
   data: () => {
     return {
       mapHttpConfig: {
@@ -23,9 +31,6 @@ export default {
         lon: null
       }
     };
-  },
-  components: {
-    ErrorBlock
   },
   computed: {
     loading() {
@@ -35,15 +40,15 @@ export default {
       return this.$store.state.riverDetailState.mapData.error;
     }
   },
+  created() {
+    this.loadData();
+  },
   methods: {
     loadData() {
       if (!this.data && !this.error) {
         this.$store.dispatch(mapActions.FETCH_MAP_DATA, this.mapHttpConfig);
       }
     }
-  },
-  created() {
-    this.loadData();
   }
 };
 </script>

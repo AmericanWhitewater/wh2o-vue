@@ -1,18 +1,23 @@
 <template>
   <div class="login">
     <cv-text-input
+      v-model="userName"
       class="mb-spacing-sm"
       label="Username or Email"
       type="text"
-      v-model="userName"
-    ></cv-text-input>
+    />
     <cv-text-input
+      v-model="passWord"
       class="mb-spacing-sm"
       label="Password"
       type="password"
-      v-model="passWord"
-    ></cv-text-input>
-    <cv-button kind="primary" small v-text="'Login'" @click="submitLogin" />
+    />
+    <cv-button
+      kind="primary"
+      small
+      @click="submitLogin"
+      v-text="'Login'"
+    />
   </div>
 </template>
 <script>

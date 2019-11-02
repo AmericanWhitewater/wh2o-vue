@@ -3,7 +3,9 @@
     <div class="bx--grid">
       <div class="bx--row">
         <div class="bx--col pt-lg">
-          <h2 class="mb-spacing-md">404</h2>
+          <h2 class="mb-spacing-md">
+            404
+          </h2>
           <p>Sorry, the page you are looking for is missing or doesn't exist.</p>
         </div>
       </div>

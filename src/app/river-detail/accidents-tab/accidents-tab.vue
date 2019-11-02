@@ -1,7 +1,7 @@
 <template>
   <div class="accidents-tab">
     <template v-if="loading">
-      <cv-inline-loading small></cv-inline-loading>
+      <cv-inline-loading small />
     </template>
     <template v-if="!loading && error">
       <error-block
@@ -10,7 +10,9 @@
       />
     </template>
     <template v-if="!loading && !error">
-      <div class>accidents results!</div>
+      <div class>
+        accidents results!
+      </div>
     </template>
   </div>
 </template>
@@ -40,6 +42,9 @@ export default {
         .accidents;
     }
   },
+  created() {
+    this.loadData();
+  },
   methods: {
     loadData() {
       if (!this.data && !this.error) {
@@ -49,9 +54,6 @@ export default {
         );
       }
     }
-  },
-  created() {
-    this.loadData();
   }
 };
 </script>

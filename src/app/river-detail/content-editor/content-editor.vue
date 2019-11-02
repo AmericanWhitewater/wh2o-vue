@@ -2,11 +2,17 @@
   <div class="content-editor">
     <div class="control-bar">
       <h1>{{ sectionTitle }}</h1>
-      <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
+      <editor-menu-bar
+        v-slot="{ commands, isActive }"
+        :editor="editor"
+      >
         <div class="menubar">
           <div class="toolbar">
             <span>
-              <button class="menubar__button" @click="commands.undo">
+              <button
+                class="menubar__button"
+                @click="commands.undo"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -23,7 +29,10 @@
                 </svg>
               </button>
 
-              <button class="menubar__button" @click="commands.redo">
+              <button
+                class="menubar__button"
+                @click="commands.redo"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -96,7 +105,12 @@
               >
                 <title>Underline</title>
                 <g fill="#5a6872">
-                  <rect data-color="color-2" y="14" width="16" height="2" />
+                  <rect
+                    data-color="color-2"
+                    y="14"
+                    width="16"
+                    height="2"
+                  />
                   <path
                     fill="#5a6872"
                     d="M15,0H9v1l1.44721,0.72361C10.786,1.893,11,2.23926,11,2.61803l0,4.26357 c0,1.45087-0.97782,2.7836-2.40207,3.06025C6.68269,10.31386,5,8.84987,5,7V2.61803C5,2.23926,5.214,1.893,5.55279,1.72361L7,1V0H1 v1l1.44721,0.72361C2.786,1.893,3,2.23926,3,2.61803L3,6.777c0,2.60979,1.90274,4.94497,4.50018,5.19855 C10.48047,12.2665,13,9.92173,13,7V2.61803c0-0.37877,0.214-0.72504,0.55279-0.89443L15,1V0z"
@@ -219,6 +233,10 @@ import {
 } from "tiptap-extensions";
 export default {
   name: "ContentEditor",
+  components: {
+    EditorContent,
+    EditorMenuBar
+  },
   props: {
     content: {
       type: String,
@@ -229,16 +247,19 @@ export default {
       default: null
     }
   },
-  components: {
-    EditorContent,
-    EditorMenuBar
-  },
   data() {
     return {
       // Create an `Editor` instance with some default content. The editor is
       // then passed to the `EditorContent` component as a `prop`
       editor: null
     };
+  },
+  beforeMount() {
+    this.newEditor();
+  },
+  beforeDestroy() {
+    // Always destroy your editor instance when it's no longer needed
+    this.editor.destroy();
   },
   methods: {
     newEditor() {
@@ -258,13 +279,6 @@ export default {
         ]
       });
     }
-  },
-  beforeMount() {
-    this.newEditor();
-  },
-  beforeDestroy() {
-    // Always destroy your editor instance when it's no longer needed
-    this.editor.destroy();
   }
 };
 </script>

@@ -7,8 +7,10 @@ we can make the editor a stand alone component and pass the editable content as 
 
 <template>
   <main class="bx--col-sm-4 bx--col-md-6 bx--col-lg-8">
-    <hr />
-    <h2 class="mb-spacing-md">River Description</h2>
+    <hr>
+    <h2 class="mb-spacing-md">
+      River Description
+    </h2>
     <!-- need to sanitize v-html? -->
     <template v-if="!editMode">
       <p v-html="river.description" />

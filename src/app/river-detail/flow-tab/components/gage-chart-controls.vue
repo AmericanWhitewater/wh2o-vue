@@ -1,43 +1,53 @@
 <template>
   <div class>
     <cv-dropdown
-      :label="gageLabel"
       v-model="selectedSettings.gage_name"
+      :label="gageLabel"
       :disabled="oneGauge"
-      @change="fetchReadings"
       class="mb-spacing-md"
+      @change="fetchReadings"
     >
       <cv-dropdown-item
         v-for="(g, index) in gauges"
         :key="index"
         :value="g.gauge_id.toString()"
-        >{{ g.gauge_name }}</cv-dropdown-item
       >
+        {{ g.gauge_name }}
+      </cv-dropdown-item>
     </cv-dropdown>
     <cv-dropdown
       v-model="gageHttpConfig.metric_id"
       label="Metric"
-      @change="fetchReadings"
       class="mb-spacing-md"
+      @change="fetchReadings"
     >
       <cv-dropdown-item
         v-for="(g, index) in metrics"
         :key="index"
         :value="g.id.toString()"
-        >{{ g.unit }}</cv-dropdown-item
       >
+        {{ g.unit }}
+      </cv-dropdown-item>
     </cv-dropdown>
     <cv-dropdown
-      label="Timespan"
       v-model="selectedSettings.timeScale"
-      @change="fetchReadings"
+      label="Timespan"
       :disabled="loading"
       class="mb-spacing-md"
+      @change="fetchReadings"
     >
-      <cv-dropdown-item value="day">Day</cv-dropdown-item>
-      <cv-dropdown-item value="week">Week</cv-dropdown-item>
-      <cv-dropdown-item value="month">Month</cv-dropdown-item>
-      <cv-dropdown-item value="year">Year</cv-dropdown-item>
+      <cv-dropdown-item value="day">
+        Day
+      </cv-dropdown-item>
+      <cv-dropdown-item value="week">
+        Week
+      </cv-dropdown-item>
+      <cv-dropdown-item value="month">
+        Month
+      </cv-dropdown-item>
+      <cv-dropdown-item value="year">
+        Year
+      </cv-dropdown-item>
     </cv-dropdown>
   </div>
 </template>
@@ -84,6 +94,19 @@ export default {
       const metrics = this.$store.state.riverDetailState.gageMetricsData.data;
       return metrics;
     }
+  },
+  created() {
+    if (this.gauges.length > 1) {
+      this.gageLabel = "Reach Gages";
+    } else {
+      this.gageLabel = "Reach Gage";
+    }
+    this.gageHttpConfig.gauge_id = this.gauges[0].gauge_id;
+    this.gageHttpConfig.metric_id = this.gauges[0].gauge_metric;
+    this.fetchMetrics();
+  },
+  beforeMount() {
+    this.fetchReadings();
   },
   methods: {
     setTimeScale() {
@@ -134,19 +157,6 @@ export default {
         this.gageHttpConfig
       );
     }
-  },
-  created() {
-    if (this.gauges.length > 1) {
-      this.gageLabel = "Reach Gages";
-    } else {
-      this.gageLabel = "Reach Gage";
-    }
-    this.gageHttpConfig.gauge_id = this.gauges[0].gauge_id;
-    this.gageHttpConfig.metric_id = this.gauges[0].gauge_metric;
-    this.fetchMetrics();
-  },
-  beforeMount() {
-    this.fetchReadings();
   }
 };
 </script>

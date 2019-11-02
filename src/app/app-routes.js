@@ -16,7 +16,10 @@ Vue.use(Router);
 const appRoutes = [
   {
     path: "/",
-    name: "Home",
+    name: "home",
+    meta: {
+      crumbLabel: 'Home'
+    },
     component: Home
   },
   {

@@ -6,20 +6,25 @@
           <div class="bx--col-lg-16 top-bar">
             <template v-if="!riverDetailEditMode">
               <!-- <router-link to="/users/login">Login</router-link> -->
-              <router-link to="/river-search" class="ml-2xs"
-                >
-                
-                <icon-search />
-                
-                Search</router-link
+              <router-link
+                to="/river-search"
+                class="ml-2xs"
               >
+                <icon-search />Search
+              </router-link>
             </template>
             <template v-else>
               <aw-logo />
-              <h4 class="productive-heading-02">Edit Mode</h4>
-              <cv-button kind="tertiary" small @click="toggleEditMode"
-                >Exit</cv-button
+              <h4 class="productive-heading-02">
+                Edit Mode
+              </h4>
+              <cv-button
+                kind="tertiary"
+                small
+                @click="toggleEditMode"
               >
+                Exit
+              </cv-button>
             </template>
           </div>
         </div>
@@ -29,7 +34,10 @@
       <div class="bx--grid">
         <div class="bx--row">
           <div class="bx--col-lg-16 nav-main-content-area">
-            <router-link v-show="!homePage" to="/">
+            <router-link
+              v-show="!homePage"
+              to="/"
+            >
               <aw-logo />
             </router-link>
             <nav>
@@ -38,10 +46,20 @@
                 :key="index"
                 :to="item.path"
               >
-                <cv-button kind="ghost" small>{{ item.title }}</cv-button>
+                <cv-button
+                  kind="ghost"
+                  small
+                >
+                  {{ item.title }}
+                </cv-button>
               </router-link>
               <router-link to="/users/login">
-                <cv-button kind="primary" small>Login</cv-button>
+                <cv-button
+                  kind="primary"
+                  small
+                >
+                  Login
+                </cv-button>
               </router-link>
             </nav>
           </div>
@@ -61,7 +79,7 @@ export default {
   name: "DesktopNav",
   components: {
     "aw-logo": AwLogo,
-    "icon-search":virtual_Search16
+    "icon-search": virtual_Search16
   },
   props: {
     navItems: {
@@ -81,7 +99,7 @@ export default {
       return this.$store.state.riverDetailState.riverDetailData.mode;
     },
     homePage() {
-      if (this.$route.name === "Home") {
+      if (this.$route.name === "home") {
         return true;
       } else {
         return false;
@@ -127,13 +145,14 @@ export default {
         color: #fff;
         text-decoration: none;
         font-size: 12px;
-        font-weight:600;
+        font-weight: 600;
         line-height: 2.5rem;
-        
+
         svg {
           margin-top: 1rem;
-          g ,path {
-            fill:#fff;
+          g,
+          path {
+            fill: #fff;
           }
         }
         &:hover {
@@ -151,14 +170,11 @@ export default {
       align-items: center;
       .bx--btn--ghost {
         color: $text-01;
-
       }
 
       .bx--btn {
-        margin-left:$spacing-xs;
+        margin-left: $spacing-xs;
       }
-
-
     }
   }
 

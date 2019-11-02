@@ -7,3 +7,4 @@ export { default as ErrorBoundary } from "./error-boundary/error-boundary.vue";
 export { default as SkeletonBlock } from "./skeleton-block/skeleton-block.vue";
 export { default as LoadingBlock } from "./loading-block/loading-block.vue";
 export { default as AppToaster } from "./app-toaster/app-toaster.vue";
+export { default as AppBreadcrumbs } from "./app-breadcrumbs/app-breadcrumbs.vue";

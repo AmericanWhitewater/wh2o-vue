@@ -8,7 +8,12 @@
     >
       <title v-text="status" />
       <g :class="status">
-        <circle cx="8" cy="8" r="8" :class="status" />
+        <circle
+          cx="8"
+          cy="8"
+          r="8"
+          :class="status"
+        />
       </g>
     </svg>
   </span>

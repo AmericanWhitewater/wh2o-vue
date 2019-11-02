@@ -2,42 +2,28 @@
   <div>
     <app-toaster />
     <app-header />
-    <div :class="[windowSize, 'main-content-area']">
-      <router-view />
-    </div>
+    <app-breadcrumbs />
+    <router-view class="app-main-content" />
   </div>
 </template>
 
 <script>
-// should just be able to import from global/components?
-import { AppToaster, AppHeader } from "./global/components";
-import CheckWindow from "./global/services/mixins/check-window";
+import { AppToaster, AppHeader, AppBreadcrumbs } from "./global/components";
 export default {
   name: "App",
-  mixins: [CheckWindow],
   components: {
     AppHeader,
-    AppToaster
-  },
-  computed: {
-    windowSize() {
-      if (this.windowWidth > this.breakpoints.lg) {
-        return "desktop";
-      } else {
-        return "mobile";
-      }
-    }
+    AppToaster,
+    AppBreadcrumbs
   }
 };
 </script>
-
 <style lang="scss">
-.main-content-area {
-  &.desktop {
-    padding-top: 75px;
-  }
-  &.mobile {
-    padding-top: 50px;
+.app-main-content {
+  // add 44px to account for breadcrumbs
+  padding-top: $mobile-nav-height + 44px;
+  @include MQ("LG") {
+    padding-top: $desktop-nav-height + 44px;
   }
 }
 </style>

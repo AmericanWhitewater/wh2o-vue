@@ -1,102 +1,119 @@
 <template>
-  <div class="bx--grid nwi-map">
-    <div class="bx--row">
-      <div
-        :class="[
-          mapFocused ? focusedArea : unfocusedArea + ' disabled',
-          'map-wrapper'
-        ]"
-      >
-        <div class="outside">
-          <div class="inside map">
-            <static-us-map @stateClicked="fetchRivers" />
-            <div class="expand-toggle" @click="toggleFocus">
-              <div v-text="expandToggleTxt" />
-            </div>
+  <div>
+    <div class="bx--grid nwi-map">
+      <div class="bx--row">
+        <div
+          :class="[
+            mapFocused ? focusedArea : unfocusedArea + ' disabled',
+            'map-wrapper'
+          ]"
+        >
+          <div class="outside">
+            <div class="inside map">
+              <static-us-map @stateClicked="fetchRivers" />
+              <div
+                class="expand-toggle"
+                @click="toggleFocus"
+              >
+                <div v-text="expandToggleTxt" />
+              </div>
 
-            <transition name="fade">
-              <template v-if="loadingResults">
-                <cv-loading active overlay small></cv-loading>
-              </template>
-            </transition>
+              <transition name="fade">
+                <template v-if="loadingResults">
+                  <cv-loading
+                    active
+                    overlay
+                    small
+                  />
+                </template>
+              </transition>
+            </div>
           </div>
         </div>
-      </div>
-      <div
-        :class="[mapFocused ? unfocusedArea : focusedArea, 'sidebar-wrapper']"
-      >
-        <div class="outside">
-          <div class="inside sidebar">
-            <template v-if="riverSearchHttpConfig.state">
-              <h1>{{ riverSearchHttpConfig.state.substring(2) }}</h1>
-            </template>
-            <template v-else>
-              <h1>Select a State</h1>
-              <hr />
-            </template>
-            <div class="bx--row">
-              <div class="bx--col mb-spacing-md">
-                <cv-dropdown
-                  v-model="riverSearchHttpConfig.level"
-                  label="Level"
-                  @change="fetchRivers(riverSearchHttpConfig.state)"
-                >
-                  <cv-dropdown-item
-                    v-for="(l, index) in levelsList"
-                    :key="index"
-                    :value="JSON.stringify(l.value)"
-                    >{{ l.text }}</cv-dropdown-item
+        <div
+          :class="[mapFocused ? unfocusedArea : focusedArea, 'sidebar-wrapper']"
+        >
+          <div class="outside">
+            <div class="inside sidebar">
+              <template v-if="riverSearchHttpConfig.state">
+                <h1>{{ riverSearchHttpConfig.state.substring(2) }}</h1>
+              </template>
+              <template v-else>
+                <h1>Select a State</h1>
+                <hr>
+              </template>
+              <div class="bx--row">
+                <div class="bx--col mb-spacing-md">
+                  <cv-dropdown
+                    v-model="riverSearchHttpConfig.level"
+                    label="Level"
+                    @change="fetchRivers(riverSearchHttpConfig.state)"
                   >
-                </cv-dropdown>
+                    <cv-dropdown-item
+                      v-for="(l, index) in levelsList"
+                      :key="index"
+                      :value="JSON.stringify(l.value)"
+                    >
+                      {{ l.text }}
+                    </cv-dropdown-item>
+                  </cv-dropdown>
+                </div>
               </div>
-            </div>
-            <div class="bx--data-table-container">
-              <table class="bx--data-table">
-                <thead>
-                  <tr>
-                    <th>
-                      <strong>River Name</strong>
-                      <br />Section
-                    </th>
-                    <th>Class</th>
-                    <th>Flow</th>
-                    <th>Updated</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <template v-if="!loadingResults">
-                    <tr v-for="(r, index) in searchResults" :key="index">
-                      <td :class="r.cond">
-                        <span @click="viewRiver(r.id)">
-                          <strong>{{ r.name }}</strong>
-                          <br />
-                          {{ r.section }}
-                        </span>
-                      </td>
-                      <td>{{ r.class }}</td>
-                      <td>
-                        <template v-if="parseInt(r.reading_formatted)">
-                          {{ r.reading_formatted }} [{{ r.reading_delta }}]
-                        </template>
-                        <template v-else
-                          >n/a</template
-                        >
-                      </td>
-                      <td>{{ r.updated }}</td>
-                    </tr>
-                  </template>
-                  <template v-else
-                    >Loading</template
-                  >
-                  <template v-if="!loadingResults && !searchResults">
+              <div class="bx--data-table-container">
+                <table class="bx--data-table">
+                  <thead>
                     <tr>
-                      <td colspan="4">
-                        Sorry, no results found. Please try again.
-                      </td>
+                      <th>
+                        <strong>River Name</strong>
+                        <br>Section
+                      </th>
+                      <th>Class</th>
+                      <th>Flow</th>
+                      <th>Updated</th>
                     </tr>
-                  </template>
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    <template v-if="!loadingResults">
+                      <tr
+                        v-for="(r, index) in searchResults"
+                        :key="index"
+                      >
+                        <td :class="r.cond">
+                          <span @click="viewRiver(r.id)">
+                            <strong>{{ r.name }}</strong>
+                            <br>
+                            {{ r.section }}
+                          </span>
+                        </td>
+                        <td>{{ r.class }}</td>
+                        <td>
+                          <template v-if="parseInt(r.reading_formatted)">
+                            {{ r.reading_formatted }} [{{ r.reading_delta }}]
+                          </template>
+                          <template
+                            v-else
+                          >
+                            n/a
+                          </template>
+                        </td>
+                        <td>{{ r.updated }}</td>
+                      </tr>
+                    </template>
+                    <template
+                      v-else
+                    >
+                      Loading
+                    </template>
+                    <template v-if="!loadingResults && !searchResults">
+                      <tr>
+                        <td colspan="4">
+                          Sorry, no results found. Please try again.
+                        </td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -178,7 +195,6 @@ $content-height: calc(100vh - 125px);
 }
 
 .nwi-map {
-  padding-top: 25px;
   .map {
     height: $content-height;
     background-color: $brand-03;

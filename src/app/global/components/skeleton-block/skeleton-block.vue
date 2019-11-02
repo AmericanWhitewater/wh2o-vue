@@ -3,7 +3,7 @@
     id="skeleton-block"
     class="bx--skeleton__text bx--skeleton__heading"
     :style="`height:${height}px`"
-  ></div>
+  />
 </template>
 <script>
 export default {

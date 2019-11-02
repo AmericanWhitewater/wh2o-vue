@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     homePage() {
-      if (this.$route.name === "Home") {
+      if (this.$route.name === "home") {
         return true;
       } else {
         return false;

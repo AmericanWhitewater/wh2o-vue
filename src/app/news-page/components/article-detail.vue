@@ -2,7 +2,11 @@
   <div class="article-detail">
     <transition name="fade">
       <template v-if="loading">
-        <cv-loading active small overlay></cv-loading>
+        <cv-loading
+          active
+          small
+          overlay
+        />
       </template>
     </transition>
     <template v-if="!loading">
@@ -11,21 +15,32 @@
           <div class="bx--col">
             <div class="outside">
               <div class="inside">
-                <cv-breadcrumb aria-label="breadcrumb" no-trailing-slash>
+                <cv-breadcrumb
+                  aria-label="breadcrumb"
+                  no-trailing-slash
+                >
                   <cv-breadcrumb-item>
-                    <cv-link to="/news">News</cv-link>
+                    <cv-link to="/news">
+                      News
+                    </cv-link>
                   </cv-breadcrumb-item>
                   <cv-breadcrumb-item>
-                    <cv-link href="#" aria-current="page"
-                      >Article Id: {{ this.$route.params.id }}</cv-link
+                    <cv-link
+                      href="#"
+                      aria-current="page"
                     >
+                      Article Id: {{ this.$route.params.id }}
+                    </cv-link>
                   </cv-breadcrumb-item>
                 </cv-breadcrumb>
               </div>
             </div>
           </div>
         </div>
-        <page-header :title="article.title" :subtitle="article.posted" />
+        <page-header
+          :title="article.title"
+          :subtitle="article.posted"
+        />
         <div class="spacer" />
         <div class="bx--row">
           <div class="bx--col-sm-4 bx--col-md-2 bx--col-lg-1">
@@ -46,11 +61,11 @@
             </div>
           </div>
           <div class="bx--col-md-2 bx--col-lg-8 pt-md  mb-lg">
-            <div v-html="article.contents"></div>
+            <div v-html="article.contents" />
           </div>
           <!-- <div class="bx--col-sm-4 bx--col-md-2 bx--col-lg-2"> -->
           <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-12">
-            <hr />
+            <hr>
             <h2>Related News</h2>
             <!-- need to split up store for related articles  -->
           </div>
@@ -86,13 +101,13 @@ export default {
       return this.$store.state.newsPageState.newsPageData.loading;
     }
   },
+  created() {
+    this.$store.dispatch(newsActions.GET_ARTICAL_DETAIL_DATA, this.articleId);
+  },
   methods: {
     shareArticle(platform) {
       alert(`share article on ${platform}`);
     }
-  },
-  created() {
-    this.$store.dispatch(newsActions.GET_ARTICAL_DETAIL_DATA, this.articleId);
   }
 };
 </script>

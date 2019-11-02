@@ -6,7 +6,7 @@
       title="Your membership is about to expire"
       sub-title="visit account settings to renew"
       @close="handleClose"
-    ></cv-toast-notification>
+    />
   </div>
 </template>
 <script>
@@ -45,15 +45,15 @@ export default {
       return null;
     }
   },
-  methods: {
-    handleClose() {
-      this.visible = false;
-    }
-  },
   mounted() {
     // this.visible = true;
     // turn off while testing other components
     this.visible = false;
+  },
+  methods: {
+    handleClose() {
+      this.visible = false;
+    }
   }
 };
 </script>

@@ -6,12 +6,22 @@
           <loading-block text="Loading media" />
         </template>
         <template v-if="!loading && error">
-          <error-block title="Gallery unavailable" text="please try again later" />
+          <error-block
+            title="Gallery unavailable"
+            text="please try again later"
+          />
         </template>
         <template v-if="!loading && !error">
-          <div v-for="(image, index) in media" :key="index" class="img-thumb">
+          <div
+            v-for="(image, index) in media"
+            :key="index"
+            class="img-thumb"
+          >
             <template v-if="isVideo(image.file.ext)">
-              <div class="thumb video" @click="openLightbox(index)">
+              <div
+                class="thumb video"
+                @click="openLightbox(index)"
+              >
                 <h6>Video</h6>
                 <p>{{ image.description.slice(0,50)+'...' }}</p>
               </div>
@@ -19,19 +29,27 @@
             <template v-else>
               <img
                 class="thumb"
-                @click="openLightbox(index)"
                 :src="
-                `https://prerelease.americanwhitewater.org${image.file.uri.thumb}`"
-              />
+                  `https://prerelease.americanwhitewater.org${image.file.uri.thumb}`"
+                @click="openLightbox(index)"
+              >
             </template>
           </div>
         </template>
       </div>
-      <div class="bx--col-sm-4 bx--col-md-4 bx--col-lg-4">sidebar w/ upload form</div>
+      <div class="bx--col-sm-4 bx--col-md-4 bx--col-lg-4">
+        sidebar w/ upload form
+      </div>
     </div>
     <template v-if="lightboxActive">
       <div class="lightbox">
-        <cv-button @click="closeLightbox" kind="primary" class="close-btn">Close</cv-button>
+        <cv-button
+          kind="primary"
+          class="close-btn"
+          @click="closeLightbox"
+        >
+          Close
+        </cv-button>
 
         <div class="grid-container">
           <div class="bx--grid">
@@ -49,45 +67,74 @@
                   <template v-if="selectedMedia.file.ext === 'wmv'">
                     <cv-tile>
                       <div class="warning wmv">
-                        <h1 class="mb-spacing-md">Unable to play video</h1>
+                        <h1 class="mb-spacing-md">
+                          Unable to play video
+                        </h1>
                         <p
                           class="mb-spacing-md"
-                        >This file type cannot play in the browser. Download to view locally on your machine.</p>
-                        <cv-button kind="tertiary" small v-text="'Download Video'" />
+                        >
+                          This file type cannot play in the browser. Download to view locally on your machine.
+                        </p>
+                        <cv-button
+                          kind="tertiary"
+                          small
+                          v-text="'Download Video'"
+                        />
                       </div>
                     </cv-tile>
                   </template>
                   <template v-else-if="isVideo(selectedMedia.file.ext)">
-                    <video width="320" height="240" controls>
+                    <video
+                      width="320"
+                      height="240"
+                      controls
+                    >
                       <source
                         :src="`https://prerelease.americanwhitewater.org${selectedMedia.file.uri.big}`"
                         :type="`video/${selectedMedia.file.ext}`"
-                      />Your browser does not support the video tag.
+                      >Your browser does not support the video tag.
                     </video>
                   </template>
                   <template v-else>
                     <img
                       :src="
-                      `https://prerelease.americanwhitewater.org${
-                        selectedMedia.file.uri.big
-                      }`
-                    "
+                        `https://prerelease.americanwhitewater.org${
+                          selectedMedia.file.uri.big
+                        }`
+                      "
                       alt="photo name"
-                    />
+                    >
                   </template>
                 </div>
               </div>
               <div class="bx--col-sm-4 bx--col-md-4 bx--col-lg-4 bx--no-gutter--left">
                 <div class="media-info">
-                  <h5 v-text="selectedMedia.post.title" class="mb-spacing-md" />
+                  <h5
+                    class="mb-spacing-md"
+                    v-text="selectedMedia.post.title"
+                  />
                   <p>
                     Level {{ selectedMedia.post.reading }} [
                     {{ selectedMedia.post.metric }} ]
                   </p>
                   <p v-html="selectedMedia.description" />
                   <p v-text="selectedMedia.post.detail" />
-                  <cv-button @click="prevMedia" kind="secondary" small class="prev-btn">Prev</cv-button>
-                  <cv-button @click="nextMedia" kind="secondary" small class="next-btn">Next</cv-button>
+                  <cv-button
+                    kind="secondary"
+                    small
+                    class="prev-btn"
+                    @click="prevMedia"
+                  >
+                    Prev
+                  </cv-button>
+                  <cv-button
+                    kind="secondary"
+                    small
+                    class="next-btn"
+                    @click="nextMedia"
+                  >
+                    Next
+                  </cv-button>
                 </div>
               </div>
             </div>
@@ -103,16 +150,16 @@ import { galleryActions } from "../shared/state";
 import { ErrorBlock } from "../shared/components";
 export default {
   name: "GalleryTab",
+  components: {
+    ErrorBlock,
+    LoadingBlock
+  },
   data: () => {
     return {
       galleryHttpConfig: "give me an error please",
       lightboxActive: false,
       selectedMediaIndex: null
     };
-  },
-  components: {
-    ErrorBlock,
-    LoadingBlock
   },
   computed: {
     loading() {
@@ -130,6 +177,9 @@ export default {
     selectedMedia() {
       return this.media[this.selectedMediaIndex];
     }
+  },
+  created() {
+    this.loadData();
   },
   methods: {
     loadData() {
@@ -172,9 +222,6 @@ export default {
         this.selectedMediaIndex = 0;
       }
     }
-  },
-  created() {
-    this.loadData();
   }
 };
 </script>

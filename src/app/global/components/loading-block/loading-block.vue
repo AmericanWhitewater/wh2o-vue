@@ -3,12 +3,16 @@
     id="loading-block"
     :style="`height:${height}px`"
   >
-   <cv-inline-loading small state="loading" :loadingText="text"></cv-inline-loading>
+    <cv-inline-loading
+      small
+      state="loading"
+      :loading-text="text"
+    />
   </div>
 </template>
 <script>
 export default {
-  name: "loading-block",
+  name: "LoadingBlock",
   props: {
     height: {
       type: String,

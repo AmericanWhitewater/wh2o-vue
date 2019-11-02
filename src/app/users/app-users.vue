@@ -6,14 +6,19 @@
           <cv-tile>
             <div class="tile-header mb-lg">
               <h3>
-                <router-link to="/users/login" v-text="'Login'" />
+                <router-link
+                  to="/users/login"
+                  v-text="'Login'"
+                />
               </h3>
               <span>
                 <!-- need to work on this guy... -->
-                Or</span
-              >
+                Or</span>
               <h3>
-                <router-link to="/users/register" v-text="'Register'" />
+                <router-link
+                  to="/users/register"
+                  v-text="'Register'"
+                />
               </h3>
             </div>
             <router-view />

@@ -4,6 +4,9 @@ const nwiMapRoutes = [
   {
     path: "/nwi-map",
     name: "nwi-map",
+    meta: {
+      crumbLabel: 'NWI Map'
+    },
     component: NwiMap
   }
 ];

@@ -9,6 +9,9 @@
 import error_outlined32 from "@carbon/icons-vue/es/error--outline/32";
 export default {
   name: "ErrorBlock",
+  components: {
+    "error-outlined": error_outlined32
+  },
   props: {
     title: {
       type: String,
@@ -20,9 +23,6 @@ export default {
       required: false,
       default: "Something went wrong"
     }
-  },
-  components: {
-    "error-outlined": error_outlined32
   }
 };
 </script>

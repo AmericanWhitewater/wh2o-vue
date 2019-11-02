@@ -1,9 +1,12 @@
 <template>
   <section class="mt-3">
-    <hr />
+    <hr>
     <h2>Readings</h2>
     <template v-if="!loading">
-      <cv-data-table :columns="columns" :auto-width="false">
+      <cv-data-table
+        :columns="columns"
+        :auto-width="false"
+      >
         <template slot="data">
           <cv-data-table-row
             v-for="(r, rowIndex) in data.slice(0, 10)"
@@ -12,7 +15,7 @@
           >
             <cv-data-table-cell>{{ r.reading }}</cv-data-table-cell>
             <cv-data-table-cell>{{ r.updated }}</cv-data-table-cell>
-            <template slot="expandedContent"></template>
+            <template slot="expandedContent" />
           </cv-data-table-row>
         </template>
       </cv-data-table>
@@ -38,7 +41,7 @@ export default {
       return this.$store.state.riverDetailState.gageReadingsData.loading;
     }
   },
-  methods: {},
-  created() {}
+  created() {},
+  methods: {}
 };
 </script>

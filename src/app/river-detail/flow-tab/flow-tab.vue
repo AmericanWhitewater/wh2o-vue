@@ -48,13 +48,13 @@ import { GageChartConfig } from "./utils/gage-chart-config";
 import { gageHttpConfig } from "../shared/mixins";
 export default {
   name: "FlowTab",
-  mixins: [GageChartConfig, gageHttpConfig],
   components: {
     GageReadings,
     GageChartControls,
     GageChart,
     SkeletonBlock
   },
+  mixins: [GageChartConfig, gageHttpConfig],
   data: () => {
     return {
       gageDetailView: false,
@@ -120,6 +120,11 @@ export default {
       this.formatChartData();
     }
   },
+  mounted() {
+    EventBus.$on("gage-detail-toggle", payload => {
+      this.gageDetailView = payload;
+    });
+  },
   methods: {
     formatChartData() {
       // reset
@@ -133,11 +138,6 @@ export default {
         this.mappedReadings
       );
     }
-  },
-  mounted() {
-    EventBus.$on("gage-detail-toggle", payload => {
-      this.gageDetailView = payload;
-    });
   }
 };
 </script>

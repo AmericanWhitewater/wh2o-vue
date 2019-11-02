@@ -8,10 +8,10 @@ import { CheckWindow } from "../global/mixins";
 import { VideoHeroBanner } from "./components";
 export default {
   name: "HomePage",
-  mixins: [CheckWindow],
   components: {
     VideoHeroBanner
-  }
+  },
+  mixins: [CheckWindow]
 };
 </script>
 <style lang="scss" scoped>

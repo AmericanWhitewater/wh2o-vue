@@ -1,26 +1,29 @@
 <template>
   <div class="register">
     <cv-text-input
+      v-model="newUser.userName"
       class="mb-spacing-sm"
       label="Email"
       type="text"
-      v-model="newUser.userName"
-    ></cv-text-input>
+    />
     <cv-text-input
+      v-model="newUser.passWord"
       class="mb-spacing-sm"
       label="Password"
       type="password"
-      v-model="newUser.passWord"
-    ></cv-text-input>
-    <p class="bx--type--caption mb-spacing-md" @click="viewTerms">
+    />
+    <p
+      class="bx--type--caption mb-spacing-md"
+      @click="viewTerms"
+    >
       Click to view terms &amp; conditions
     </p>
     <cv-checkbox
+      v-model="newUser.termsConfirmed"
       class="mb-spacing-md"
       label="I agree to the terms"
       value="terms"
-      v-model="newUser.termsConfirmed"
-    ></cv-checkbox>
+    />
     <cv-button
       kind="primary"
       small

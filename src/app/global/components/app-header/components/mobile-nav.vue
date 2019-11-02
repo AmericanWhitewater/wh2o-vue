@@ -17,8 +17,8 @@
           </template>
           <!-- </transition> -->
           <span
-            @click="drawerOpen = !drawerOpen"
             :class="[{ 'drawer-open': drawerOpen }, 'nav-trigger']"
+            @click="drawerOpen = !drawerOpen"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -46,21 +46,24 @@
       </div>
     </div>
     <transition name="slide">
-      <div v-if="drawerOpen" class="drawer pt-md">
+      <div
+        v-if="drawerOpen"
+        class="drawer pt-md"
+      >
         <!-- <cv-search small v-model="searchTerm" label="Search label"> </cv-search> -->
         <cv-button
-          kind="ghost"
           v-for="item in topBarItems"
           :key="item.title"
+          kind="ghost"
           @click.prevent="viewRoute(item.path)"
         >
           <!-- <router-link :to="item.path">{{ item.title }}</router-link> -->
           <a href="#0">{{ item.title }}</a>
         </cv-button>
         <cv-button
-          kind="ghost"
           v-for="item in navItems"
           :key="item.title"
+          kind="ghost"
           @click.prevent="viewRoute(item.path)"
         >
           <!-- <router-link :to="item.path">{{ item.title }}</router-link> -->
@@ -69,7 +72,11 @@
       </div>
     </transition>
     <transition name="fade">
-      <div v-if="drawerOpen" class="overlay" @click="drawerOpen = false" />
+      <div
+        v-if="drawerOpen"
+        class="overlay"
+        @click="drawerOpen = false"
+      />
     </transition>
   </header>
 </template>
@@ -78,24 +85,15 @@ import AwLogo from "./aw-logo";
 import { CheckWindow } from "../../../mixins";
 export default {
   name: "MobileNav",
+  components: {
+    "aw-logo": AwLogo
+  },
+  mixins: [CheckWindow],
   props: {
     navItems: {
       type: Array,
       default: () => {
         return null;
-      }
-    }
-  },
-  mixins: [CheckWindow],
-  components: {
-    "aw-logo": AwLogo
-  },
-  computed: {
-    homePage() {
-      if (this.$route.name === "Home") {
-        return true;
-      } else {
-        return false;
       }
     }
   },
@@ -114,6 +112,15 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    homePage() {
+      if (this.$route.name === "Home") {
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
   methods: {
     viewRoute(path) {

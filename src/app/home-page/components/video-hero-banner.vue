@@ -9,7 +9,10 @@
           preload="metadata"
           poster="../../assets/images/dummy02Poster.png"
         >
-          <source src="../../assets/video/dummy02.MP4" type="video/mp4" />
+          <source
+            src="../../assets/video/dummy02.MP4"
+            type="video/mp4"
+          >
           Sorry, your browser doesn't support embedded videos.
         </video>
         <div class="inside">
@@ -31,51 +34,77 @@
                       <div
                         class="bx--col-sm-12 bx--col-md-6 bx--col-lg-4 mb-spacing-md"
                       >
-                        <h3 class="mb-spacing-md">River Index</h3>
+                        <h3 class="mb-spacing-md">
+                          River Index
+                        </h3>
                         <p class="mb-spacing-md">
                           Explore the rivers of North America and get
                           comprehensive river beta with our interactive map.
                         </p>
                         <router-link to="/nwi-map">
-                          <cv-button kind="tertiary" small>View Map</cv-button>
+                          <cv-button
+                            kind="tertiary"
+                            small
+                          >
+                            View Map
+                          </cv-button>
                         </router-link>
                       </div>
                       <div
                         class="bx--col-sm-12 bx--col-md-6 bx--col-lg-4 mb-spacing-md"
                       >
-                        <h3 class="mb-spacing-md">News</h3>
+                        <h3 class="mb-spacing-md">
+                          News
+                        </h3>
                         <p class="mb-spacing-md">
                           Stay up to date with the latest legislative action
                           items, articles, and happenings from AW.
                         </p>
                         <router-link to="/news">
-                          <cv-button kind="tertiary" small>View Feed</cv-button>
+                          <cv-button
+                            kind="tertiary"
+                            small
+                          >
+                            View Feed
+                          </cv-button>
                         </router-link>
                       </div>
                       <div
                         class="bx--col-sm-12 bx--col-md-6 bx--col-lg-4 mb-spacing-md"
                       >
-                        <h3 class="mb-spacing-md">Safety</h3>
+                        <h3 class="mb-spacing-md">
+                          Safety
+                        </h3>
                         <p class="mb-spacing-md">
                           Get resources along with helpful tips and tricks to
                           help you and your crew stay safe on the water.
                         </p>
                         <!-- <router-link to="/nwi"> -->
-                        <cv-button kind="tertiary" small
-                          >View Resources</cv-button
+                        <cv-button
+                          kind="tertiary"
+                          small
                         >
+                          View Resources
+                        </cv-button>
                         <!-- </router-link> -->
                       </div>
                       <div
                         class="bx--col-sm-12 bx--col-md-6 bx--col-lg-4 mb-spacing-md"
                       >
-                        <h3 class="mb-spacing-md">Contribute</h3>
+                        <h3 class="mb-spacing-md">
+                          Contribute
+                        </h3>
                         <p class="mb-spacing-md">
                           See a river that doesn't have much info? Help keep us
                           up to date, register to start editing.
                         </p>
                         <router-link to="/users/register">
-                          <cv-button kind="tertiary" small>Register</cv-button>
+                          <cv-button
+                            kind="tertiary"
+                            small
+                          >
+                            Register
+                          </cv-button>
                         </router-link>
                       </div>
                     </div>
@@ -94,10 +123,10 @@ import AwLogo from "../../global/components/app-header/components/aw-logo.vue";
 import { CheckWindow } from "../../global/mixins";
 export default {
   name: "VideoHeroBanner",
-  mixins: [CheckWindow],
   components: {
     AwLogo
-  }
+  },
+  mixins: [CheckWindow]
 };
 </script>
 <style lang="scss" scoped>

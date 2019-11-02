@@ -5,18 +5,24 @@
     <div class="bx--row">
       <template v-if="!loading">
         <div
-          class="bx--col-sm-4 bx--col-md-6 bx--col-lg-4 mb-spacing-md"
           v-for="(article, index) in articleTiles"
           :key="index"
+          class="bx--col-sm-4 bx--col-md-6 bx--col-lg-4 mb-spacing-md"
         >
           <cv-tile class="news-tile">
-            <img :src="'/content/Photo/detail/photoid/' + article.uid" />
+            <img :src="'/content/Photo/detail/photoid/' + article.uid">
             <div class="content-area">
-              <h6 v-text="article.posted" class="mb-spacing-xs" />
-              <h4 v-text="article.title" class="mb-spacing-sm" />
+              <h6
+                class="mb-spacing-xs"
+                v-text="article.posted"
+              />
+              <h4
+                class="mb-spacing-sm"
+                v-text="article.title"
+              />
               <p
-                v-html="article.abstract.slice(0, 150) + '...'"
                 class="mb-spacing-md"
+                v-html="article.abstract.slice(0, 150) + '...'"
               />
               <cv-button
                 small
@@ -27,9 +33,11 @@
           </cv-tile>
         </div>
       </template>
-      <template v-else
-        >loading</template
+      <template
+        v-else
       >
+        loading
+      </template>
     </div>
   </div>
 </template>
@@ -55,6 +63,9 @@ export default {
       return this.articles.CArticleGadgetJSON_view_list.slice(0, 12);
     }
   },
+  created() {
+    this.getArticles();
+  },
   methods: {
     readArticle(id) {
       this.$router.push(`/article/${id}`);
@@ -65,9 +76,6 @@ export default {
       this.$store.dispatch(newsActions.GET_FRONT_PAGE_ARTICLES);
       // }
     }
-  },
-  created() {
-    this.getArticles();
   }
 };
 </script>

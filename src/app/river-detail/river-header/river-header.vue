@@ -12,42 +12,63 @@
                 <cv-toggle
                   small
                   value
-                  @change="toggleEditMode"
                   :checked="editMode"
+                  @change="toggleEditMode"
                 >
-                  <template slot="text-left"
-                    >&nbsp;</template
+                  <template
+                    slot="text-left"
                   >
-                  <template slot="text-right"
-                    >&nbsp;</template
+&nbsp;
+                  </template>
+                  <template
+                    slot="text-right"
                   >
+&nbsp;
+                  </template>
                 </cv-toggle>
               </div>
             </div>
           </div>
         </div>
         <div class="bx--col">
-          <div class="edit-icons" v-show="editMode">
-            <cv-button small>Drag Icon</cv-button>
-            <cv-button small>Upload Icon</cv-button>
+          <div
+            v-show="editMode"
+            class="edit-icons"
+          >
+            <cv-button small>
+              Drag Icon
+            </cv-button>
+            <cv-button small>
+              Upload Icon
+            </cv-button>
           </div>
         </div>
       </div>
     </div>
-    <cv-modal kind="danger" v-if="showConfirmation" :visible="showConfirmation">
+    <cv-modal
+      v-if="showConfirmation"
+      kind="danger"
+      :visible="showConfirmation"
+    >
       <!-- <template slot="label">label</template> -->
-      <template slot="title"
-        >Are you sure?</template
+      <template
+        slot="title"
       >
+        Are you sure?
+      </template>
       <template slot="content">
         <p>This action cannot be undone.</p>
       </template>
-      <template slot="secondary-button"
-        >Cancel</template
+      <template
+        slot="secondary-button"
       >
-      <template slot="primary-button"
-        >OK</template
+        Cancel
+      </template>
+      <template
+        slot="primary-button"
       >
+        OK
+      </template>
     </cv-modal>
   </section>
 </template>
