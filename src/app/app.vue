@@ -3,9 +3,7 @@
     <app-toaster />
     <app-header />
     <div :class="[windowSize, 'main-content-area']">
-      <transition name="fade">
-        <router-view />
-      </transition>
+      <router-view />
     </div>
   </div>
 </template>

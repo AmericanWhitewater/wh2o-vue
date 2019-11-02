@@ -15,16 +15,10 @@
                   <cv-link to="/nwi-map">NWI Map</cv-link>
                 </cv-breadcrumb-item>
                 <cv-breadcrumb-item>
-                  <cv-link href="#" aria-current="page"
-                    >Reach Id: {{ this.$route.params.id }}</cv-link
-                  >
+                  <cv-link href="#" aria-current="page">Reach Id: {{ this.$route.params.id }}</cv-link>
                 </cv-breadcrumb-item>
               </cv-breadcrumb>
-              <cv-tag
-                kind="blue"
-                label="Banner needs editing"
-                :disabled="false"
-              ></cv-tag>
+              <cv-tag kind="blue" label="Banner needs editing" :disabled="false"></cv-tag>
             </div>
           </div>
         </div>
@@ -33,20 +27,11 @@
         <river-header :name="river.river" :section="river.section" />
         <div class="tabs-wrapper">
           <cv-overflow-menu>
-            <cv-overflow-menu-item
-              >Link Resources</cv-overflow-menu-item
-            >
-            <cv-overflow-menu-item 
-              >Share Reach</cv-overflow-menu-item
-            >
-            <cv-overflow-menu-item danger
-              >Remove from Index</cv-overflow-menu-item
-            >
+            <cv-overflow-menu-item>Link Resources</cv-overflow-menu-item>
+            <cv-overflow-menu-item>Share Reach</cv-overflow-menu-item>
+            <cv-overflow-menu-item danger>Remove from Index</cv-overflow-menu-item>
           </cv-overflow-menu>
-          <cv-tabs
-            @tab-selected="switchTab($event)"
-            aria-label="navigation tab label"
-          >
+          <cv-tabs @tab-selected="switchTab($event)" aria-label="navigation tab label">
             <cv-tab
               no-default-to-first
               :id="'tab-' + index + 1"
@@ -79,6 +64,7 @@ export default {
   data: () => {
     return {
       selected: true,
+      prevRoute: null,
       tabs: [
         "Main",
         "Flow",
@@ -96,7 +82,7 @@ export default {
       return this.$route.params.id;
     },
     river() {
-       return this.$store.state.riverDetailState.riverDetailData.data;
+      return this.$store.state.riverDetailState.riverDetailData.data;
     },
     loading() {
       return this.$store.state.riverDetailState.riverDetailData.loading;
@@ -134,42 +120,11 @@ export default {
           this.$router.push(`/river-detail/${this.riverId}/credits`);
           break;
       }
-    },
-    loadTab(routeName) {
-      // doesnt work, cv-tabs emits event on mount which is defaulting to main-tab.
-      // checks the route name on load then pushes to the appropriate tab
-      switch (routeName) {
-        // need version to run when user visits river-detail/{id}/flow to push to flow, not main. for example.
-        case "main-tab":
-          this.$router.replace(`/river-detail/${this.riverId}/main`);
-          break;
-        case "flow-tab":
-          this.$router.replace(`/river-detail/${this.riverId}/flow`);
-          break;
-        case "weather-tab":
-          this.$router.replace(`/river-detail/${this.riverId}/weather`);
-          break;
-        case "map-tab":
-          this.$router.replace(`/river-detail/${this.riverId}/map`);
-          break;
-        case "gallery-tab":
-          this.$router.replace(`/river-detail/${this.riverId}/gallery`);
-          break;
-        case "news-tab":
-          this.$router.replace(`/river-detail/${this.riverId}/news`);
-          break;
-        case "accidents-tab":
-          this.$router.replace(`/river-detail/${this.riverId}/accidents`);
-          break;
-        case "credits-tab":
-          this.$router.replace(`/river-detail/${this.riverId}/credits`);
-          break;
-      }
     }
   },
   created() {
     this.$store.dispatch(actionsTypes.FETCH_RIVER_DETAIL_DATA, this.riverId);
-    this.loadTab(this.$route.name);
+    // this.loadTab(this.$route.name);
   },
   mounted() {
     this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId);

@@ -7,7 +7,11 @@
             <template v-if="!riverDetailEditMode">
               <!-- <router-link to="/users/login">Login</router-link> -->
               <router-link to="/river-search" class="ml-2xs"
-                >Search</router-link
+                >
+                
+                <icon-search />
+                
+                Search</router-link
               >
             </template>
             <template v-else>
@@ -47,12 +51,17 @@
   </div>
 </template>
 <script>
+// import virtual_LogoGoogle24 from "@carbon/icons-vue/es/logo--google/24";
+import virtual_Search16 from "@carbon/icons-vue/es/search/16";
+// import "@carbon/icons-vue/es/search/16.js"
+// node_modules/@carbon/icons-vue/es/search/16.js
 import AwLogo from "./aw-logo";
 import { actionsTypes } from "../../../../river-detail/shared/state";
 export default {
   name: "DesktopNav",
   components: {
-    "aw-logo": AwLogo
+    "aw-logo": AwLogo,
+    "icon-search":virtual_Search16
   },
   props: {
     navItems: {
@@ -117,7 +126,16 @@ export default {
       a {
         color: #fff;
         text-decoration: none;
-        font-size: 14px;
+        font-size: 12px;
+        font-weight:600;
+        line-height: 2.5rem;
+        
+        svg {
+          margin-top: 1rem;
+          g ,path {
+            fill:#fff;
+          }
+        }
         &:hover {
           text-decoration: underline;
         }
@@ -133,7 +151,14 @@ export default {
       align-items: center;
       .bx--btn--ghost {
         color: $text-01;
+
       }
+
+      .bx--btn {
+        margin-left:$spacing-xs;
+      }
+
+
     }
   }
 

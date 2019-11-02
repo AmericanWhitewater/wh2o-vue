@@ -1,8 +1,16 @@
 @mixin ease($ease: 0.3s) {
-    @if ($ease > 0.6s or $ease < 0.3s) {
-      @error 'Animations and easing should be between 0.3s and 0.6s';
-    } @else {
-      transition: all ease-in-out $ease;
-      transition-timing-function: cubic-bezier(0.5, 0, 0.1, 1);
-    }
+  @if ($ease > 0.6s or $ease < 0.3s) {
+    @error 'Animations and easing should be between 0.3s and 0.6s';
+  } @else {
+    transition: all ease-in-out $ease;
+    transition-timing-function: cubic-bezier(0.5, 0, 0.1, 1);
   }
+}
+
+@mixin full-page-height {
+
+  height: calc(100vh - 50px);
+  @include MQ("LG") {
+    height: calc(100vh - 75px);
+  }
+}

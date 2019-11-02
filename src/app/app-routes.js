@@ -7,7 +7,7 @@ import { nwiMapRoutes } from "./nwi-map";
 import { usersRoutes } from "./users";
 import { riverSearchRoutes } from "./river-search";
 
-// import { AppPageNotFound } from "./global/components";
+import { AppPageNotFound } from "./global/components";
 
 import Home from "./home-page/home-page.vue";
 
@@ -18,12 +18,12 @@ const appRoutes = [
     path: "/",
     name: "Home",
     component: Home
+  },
+  {
+    path: "*",
+    name: "page-not-found",
+    component: AppPageNotFound
   }
-  // {
-  //   path: "*",
-  //   name: "page-not-found",
-  //   component: AppPageNotFound
-  // }
 ];
 
 const routes = [

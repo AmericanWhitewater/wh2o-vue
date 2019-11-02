@@ -3,7 +3,7 @@
     <div class="bx--row">
       <div class="bx--col-sm-8 bx--col-md-8 bx--col-lg-12">
         <template v-if="loading">
-          <cv-inline-loading small state="loading"></cv-inline-loading>
+          <loading-block text="Loading media" />
         </template>
         <template v-if="!loading && error">
           <error-block title="Gallery unavailable" text="please try again later" />
@@ -47,18 +47,14 @@
                 alt="photo name"
                   />-->
                   <template v-if="selectedMedia.file.ext === 'wmv'">
-                    
-
                     <cv-tile>
-<div class="warning wmv">
-                      <h1 class="mb-spacing-md">Unable to play video</h1>
-                      <p class="mb-spacing-md">This file type cannot play in the browser. Download to view locally on your machine.</p>
-                      <cv-button
-                        kind="tertiary"
-                        small
-                        v-text="'Download Video'"
-                      />
-                    </div>
+                      <div class="warning wmv">
+                        <h1 class="mb-spacing-md">Unable to play video</h1>
+                        <p
+                          class="mb-spacing-md"
+                        >This file type cannot play in the browser. Download to view locally on your machine.</p>
+                        <cv-button kind="tertiary" small v-text="'Download Video'" />
+                      </div>
                     </cv-tile>
                   </template>
                   <template v-else-if="isVideo(selectedMedia.file.ext)">
@@ -89,7 +85,7 @@
                     {{ selectedMedia.post.metric }} ]
                   </p>
                   <p v-html="selectedMedia.description" />
-                  <p v-text="selectedMedia.post.detail"/>
+                  <p v-text="selectedMedia.post.detail" />
                   <cv-button @click="prevMedia" kind="secondary" small class="prev-btn">Prev</cv-button>
                   <cv-button @click="nextMedia" kind="secondary" small class="next-btn">Next</cv-button>
                 </div>
@@ -102,6 +98,7 @@
   </div>
 </template>
 <script>
+import { LoadingBlock } from "@/app/global/components";
 import { galleryActions } from "../shared/state";
 import { ErrorBlock } from "../shared/components";
 export default {
@@ -114,7 +111,8 @@ export default {
     };
   },
   components: {
-    ErrorBlock
+    ErrorBlock,
+    LoadingBlock
   },
   computed: {
     loading() {
@@ -259,6 +257,7 @@ export default {
             background-color: $ui-01;
             position: relative;
             padding: $spacing-md;
+            max-height: calc(100vh - 100px);
           }
         }
       }
