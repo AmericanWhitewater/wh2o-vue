@@ -7,7 +7,15 @@
             aria-label="breadcrumb"
             no-trailing-slash
           >
-            <template v-if="crumbs.length <= 3">
+            <cv-breadcrumb-item>
+              <cv-link
+                to="/"
+                aria-current="page"
+              >
+                Home
+              </cv-link>
+            </cv-breadcrumb-item>
+            <template v-if="crumbs.length <= 2">
               <cv-breadcrumb-item
                 v-for="(crumb, index) in crumbs"
                 :key="index"
@@ -17,7 +25,7 @@
                     :to="crumb.path"
                     aria-current="page"
                   >
-                    {{ crumb.label }}
+                    {{ getLabel(crumb.label) }}
                   </cv-link>
                 </template>
                 <template v-else>
@@ -25,27 +33,19 @@
                     href="#"
                     aria-current="page"
                   >
-                    {{ crumb.label }}
+                    {{ getLabel(crumb.label) }}
                   </cv-link>
                 </template>
               </cv-breadcrumb-item>
             </template>
             <template v-else>
               <cv-breadcrumb-item>
-                <cv-link
-                  :to="crumbs[0].path"
-                  aria-current="page"
-                >
-                  {{ crumbs[0].label }}
-                </cv-link>
-              </cv-breadcrumb-item>
-              <cv-breadcrumb-item>
                 <cv-dropdown
                   placeholder="..."
                   value="  "
                 >
                   <cv-dropdown-item
-                    v-for="(crumb, index) in crumbs.slice(1, crumbs.length-2).reverse()"
+                    v-for="(crumb, index) in crumbs.slice(0, crumbs.length-2).reverse()"
                     :key="index"
                     :value="index.toString()"
                   >
@@ -53,7 +53,7 @@
                       :to="crumb.path"
                       aria-current="page"
                     >
-                      {{ crumb.label }}
+                      {{ getLabel(crumb.label) }}
                     </cv-link>
                   </cv-dropdown-item>
                 </cv-dropdown>
@@ -63,7 +63,7 @@
                   :to="crumbs[crumbs.length-2].path"
                   aria-current="page"
                 >
-                  {{ crumbs[crumbs.length-2].label }}
+                  {{ getLabel(crumbs[crumbs.length-2].label) }}
                 </cv-link>
               </cv-breadcrumb-item>
               <cv-breadcrumb-item>
@@ -71,7 +71,7 @@
                   href="#"
                   aria-current="page"
                 >
-                  {{ crumbs[crumbs.length-1].label }}
+                  {{ getLabel(crumbs[crumbs.length-1].label) }}
                 </cv-link>
               </cv-breadcrumb-item>
             </template>
@@ -87,11 +87,10 @@
 </template>
 
 <script>
-
 /**
  * @description Breadcrumbs which show the session history.
  * @reference https://www.carbondesignsystem.com/components/breadcrumb/usage
- * 
+ *
  */
 
 export default {
@@ -117,18 +116,29 @@ export default {
   },
   methods: {
     setCrumbs() {
-      if (this.$route.name) {
+      if (
+        this.currentPage &&
+        this.prevRoute.label !== this.currentPage.meta.crumbLabel &&
+        this.$route.path !== "/"
+      ) {
         this.prevRoute.label = this.currentPage.meta.crumbLabel;
         this.prevRoute.path = this.currentPage.path;
         // strip out data. stays reactive otherwise.
         let data = Object.assign({}, this.prevRoute);
         this.crumbs.push(data);
+      }
+    },
+    getLabel(label) {
+      // crumb.label
+
+      if (label === "River Detail") {
+        let currentRiver =
+          this.$store.state.riverDetailState.riverDetailData.data.river +
+          " - " +
+          this.$store.state.riverDetailState.riverDetailData.data.section;
+        return currentRiver.slice(0, 20) + "...";
       } else {
-        // we could just set the first breadcrumb-item to home by default in the template
-        this.prevRoute.label = "Home";
-        this.prevRoute.path = "/";
-        let data = Object.assign({}, this.prevRoute);
-        this.crumbs.push(data);
+        return label;
       }
     }
   },
@@ -151,7 +161,6 @@ export default {
   top: $mobile-nav-height;
   z-index: 2;
   position: absolute;
-  width: 100%;
   display: flex;
   padding: $spacing-sm 0;
   justify-content: space-between;
