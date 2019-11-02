@@ -1,6 +1,7 @@
 const newsPageRoutes = [
   {
     path: "/news",
+    name: 'news',
     meta: {
       crumbLabel: 'News'
     },

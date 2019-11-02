@@ -1,8 +1,8 @@
 <template>
-  <div :class="[ { 'home' : $route.name === 'home' } ,'bx--grid']">
+  <div class="bx--grid">
     <div class="bx--row">
       <div class="bx--col-sm-12 bx--col-lg-16">
-        <div class="app-breadcrumbs">
+        <div :class="[{ 'home' : $route.name === 'home' },'app-breadcrumbs']">
           <cv-breadcrumb
             aria-label="breadcrumb"
             no-trailing-slash
@@ -87,6 +87,13 @@
 </template>
 
 <script>
+
+/**
+ * @description Breadcrumbs which show the session history.
+ * @reference https://www.carbondesignsystem.com/components/breadcrumb/usage
+ * 
+ */
+
 export default {
   name: "AppBreadcrumbs",
   data: () => {
@@ -99,18 +106,34 @@ export default {
     };
   },
   computed: {
-    currentPageLabel() {
-      return this.$route.meta.crumbLabel;
+    currentPage() {
+      return this.$route;
     }
   },
   watch: {
-    currentPageLabel() {
-      this.prevRoute.label = this.$route.meta.crumbLabel;
-      this.prevRoute.path = this.$route.path;
-      // strip out data. stays reactive otherwise.
-      let data = Object.assign({}, this.prevRoute);
-      this.crumbs.push(data);
+    currentPage() {
+      this.setCrumbs();
     }
+  },
+  methods: {
+    setCrumbs() {
+      if (this.$route.name) {
+        this.prevRoute.label = this.currentPage.meta.crumbLabel;
+        this.prevRoute.path = this.currentPage.path;
+        // strip out data. stays reactive otherwise.
+        let data = Object.assign({}, this.prevRoute);
+        this.crumbs.push(data);
+      } else {
+        // we could just set the first breadcrumb-item to home by default in the template
+        this.prevRoute.label = "Home";
+        this.prevRoute.path = "/";
+        let data = Object.assign({}, this.prevRoute);
+        this.crumbs.push(data);
+      }
+    }
+  },
+  created() {
+    this.setCrumbs();
   }
 };
 </script>
@@ -135,6 +158,9 @@ export default {
   @include MQ("LG") {
     top: $desktop-nav-height;
   }
+  &.home {
+    visibility: hidden;
+  }
   .bx--dropdown,
   .bx--dropdown-text {
     height: auto;
@@ -152,11 +178,4 @@ export default {
     display: none;
   }
 }
-
-.bx--grid {
-  &.home {
-    z-index: -1;
-  }
-}
-
 </style>
