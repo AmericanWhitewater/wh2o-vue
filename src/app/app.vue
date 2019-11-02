@@ -4,17 +4,19 @@
     <app-header />
     <app-breadcrumbs />
     <router-view class="app-main-content" />
+    <app-footer v-if="$route.name !== 'home'" />
   </div>
 </template>
 
 <script>
-import { AppToaster, AppHeader, AppBreadcrumbs } from "./global/components";
+import { AppToaster, AppHeader, AppBreadcrumbs, AppFooter } from "./global/components";
 export default {
   name: "App",
   components: {
+    AppBreadcrumbs,
+    AppFooter,
     AppHeader,
-    AppToaster,
-    AppBreadcrumbs
+    AppToaster
   }
 };
 </script>
