@@ -1,6 +1,6 @@
 <template>
   <div class="weather-tab">
-    <template v-if="!loading">
+    <template v-if="!loading && !error">
       <div class="bx--row mb-md">
         <div class="bx--col-lg-16 mb-spacing-lg">
           <h2>Currently</h2>
@@ -103,15 +103,29 @@
         </div>
       </div>
     </template>
-    <template v-else>
-      <cv-inline-loading :state="'loading'" />
+    <template v-if="loading">
+      <loading-block text="Loading weather..." />
+    </template>
+    <template v-if="loading && !error">
+      <loading-block text="Loading weather..." />
+    </template>
+    <template v-if="!loading && error">
+      <error-block
+        title="Weather unavailable"
+        text="please try again later"
+      />
     </template>
   </div>
 </template>
 <script>
 import { weatherActions } from "../shared/state";
+import {LoadingBlock, ErrorBlock} from "@/app/global/components"
 export default {
-  name: "",
+  name: "WeatherTab",
+  components: {
+    LoadingBlock,
+    ErrorBlock
+  },
   data: () => {
     return {
       fetchConfig: {
@@ -138,6 +152,9 @@ export default {
     },
     dailyReadings() {
       return this.weather.daily.data;
+    },
+     error() {
+      return this.$store.state.riverDetailState.weatherData.error;
     }
   },
   created() {

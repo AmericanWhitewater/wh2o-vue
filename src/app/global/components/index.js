@@ -12,3 +12,4 @@ export { default as AppBreadcrumbs } from "./app-breadcrumbs/app-breadcrumbs.vue
 export { default as AppFooter } from "./app-footer/app-footer.vue"
 export { default as ContentEditor } from "./content-editor/content-editor.vue"
 export { default as EditModeToggle } from "./edit-mode-toggle/edit-mode-toggle.vue"
+export {default as ErrorBlock} from "./error-block/error-block.vue"

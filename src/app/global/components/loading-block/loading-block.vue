@@ -27,13 +27,12 @@ export default {
 </script>
 <style lang="scss" scoped>
 #loading-block {
-  background-color:$ui-02;
-  display:flex;
-  
-  align-items:center;
+  background-color: $ui-02;
+  display: flex;
+
+  align-items: center;
   .bx--inline-loading {
-justify-content: center;
+    justify-content: center;
   }
-  
 }
 </style>

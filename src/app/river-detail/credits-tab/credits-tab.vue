@@ -1,11 +1,11 @@
 <template>
   <div class="credits-tab">
     <template v-if="loading">
-      <cv-inline-loading small />
+      <loading-block text="Loading Credits..." />
     </template>
     <template v-if="!loading && error">
       <error-block
-        title="Credits data unavailable"
+        title="Credits unavailable"
         text="please try again later"
       />
     </template>
@@ -18,11 +18,12 @@
 </template>
 <script>
 import { creditsActions } from "../shared/state";
-import { ErrorBlock } from "../shared/components";
+import {LoadingBlock, ErrorBlock} from "@/app/global/components"
 export default {
   name: "CreditsTab",
   components: {
-    ErrorBlock
+    ErrorBlock,
+    LoadingBlock
   },
   data: () => {
     return {

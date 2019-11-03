@@ -145,9 +145,8 @@
   </div>
 </template>
 <script>
-import { LoadingBlock } from "@/app/global/components";
 import { galleryActions } from "../shared/state";
-import { ErrorBlock } from "../shared/components";
+import {LoadingBlock, ErrorBlock} from "@/app/global/components"
 export default {
   name: "GalleryTab",
   components: {

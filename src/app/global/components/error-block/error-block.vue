@@ -1,5 +1,8 @@
 <template>
-  <div class="error-block">
+  <div
+    class="error-block"
+    :style="`height:${height}px`"
+  >
     <error-outlined />
     <h2>{{ title }}</h2>
     <p>{{ text }}</p>
@@ -22,6 +25,10 @@ export default {
       type: String,
       required: false,
       default: "Something went wrong"
+    },
+    height: {
+      type: String,
+      default: "350"
     }
   }
 };

@@ -1,11 +1,11 @@
 <template>
   <div class="map-tab">
     <template v-if="loading">
-      <cv-inline-loading small />
+      <loading-block text="Loading Map..." />
     </template>
     <template v-if="!loading && error">
       <error-block
-        title="Map data unavailable"
+        title="Map unavailable"
         text="please try again later"
       />
     </template>
@@ -18,11 +18,12 @@
 </template>
 <script>
 import { mapActions } from "../shared/state";
-import { ErrorBlock } from "../shared/components";
+import {LoadingBlock, ErrorBlock} from "@/app/global/components"
 export default {
   name: "MapTab",
   components: {
-    ErrorBlock
+    ErrorBlock,
+    LoadingBlock
   },
   data: () => {
     return {
