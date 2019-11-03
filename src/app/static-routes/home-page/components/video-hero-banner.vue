@@ -79,14 +79,14 @@
                           Get resources along with helpful tips and tricks to
                           help you and your crew stay safe on the water.
                         </p>
-                        <!-- <router-link to="/nwi"> -->
-                        <cv-button
-                          kind="tertiary"
-                          small
-                        >
-                          View Resources
-                        </cv-button>
-                        <!-- </router-link> -->
+                        <router-link to="/safety">
+                          <cv-button
+                            kind="tertiary"
+                            small
+                          >
+                            View Resources
+                          </cv-button>
+                        </router-link>
                       </div>
                       <div
                         class="bx--col-sm-12 bx--col-md-6 bx--col-lg-4 mb-spacing-md"

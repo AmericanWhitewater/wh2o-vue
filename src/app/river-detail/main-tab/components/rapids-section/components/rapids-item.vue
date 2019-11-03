@@ -8,7 +8,7 @@
       <div class="top-bar">
         <div class>
           <h4>{{ rapid.name }}</h4>
-          <span>Class: {{ rapid.difficulty }}</span>
+          <span class="mr-spacing-xs">Class: {{ rapid.difficulty }}</span>
           <span>Distance: {{ rapid.distance }}</span>
         </div>
         <rapid-icon-bar :data="rapid" />
@@ -25,6 +25,7 @@
                     }`
                   "
                   :alt="rapid.name"
+                  v-if="rapid.photo"
                 >
               </div>
             </div>

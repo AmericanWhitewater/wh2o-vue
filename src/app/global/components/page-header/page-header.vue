@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-import {EditModeToggle} from "../index"
+import EditModeToggle from "../edit-mode-toggle/edit-mode-toggle"
 export default {
   name: "PageHeader",
   props: {

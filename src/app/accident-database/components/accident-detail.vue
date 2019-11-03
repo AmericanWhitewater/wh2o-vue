@@ -1,21 +1,12 @@
 <template>
   <div class="accident-detail">
-    <transition name="fade">
-      <template v-if="loading">
-        <cv-loading
-          active
-          small
-          overlay
-        />
-      </template>
-    </transition>
-    <template v-if="!loading">
-      <div class="bx--grid">
-        <page-header
-          title="Accident Database"
-          :subtitle="`Report No. ${accidentId}`"
-          editable
-        />
+    <div class="bx--grid">
+      <page-header
+        title="Accident Database"
+        :subtitle="`Report No. ${accidentId}`"
+        editable
+      />
+      <template v-if="!loading">
         <div class="bx--row pt-lg pb-lg">
           <div class="bx--col">
             <h5 class="mb-spacing-2xs">
@@ -23,7 +14,10 @@
             </h5>
             <h3 v-text="accident.victimname" />
           </div>
-          <div class="bx--col">
+          <div
+            v-if="accident.age"
+            class="bx--col"
+          >
             <h5 class="mb-spacing-2xs">
               Age
             </h5>
@@ -115,12 +109,14 @@
               <h6
                 class="mb-spacing-sm"
                 v-if="accident.river"
-                v-html="`River - <span>${accident.river}</span>`"
+                v-html="`River - <span class='text-underline cursor-pointer'>${accident.river}</span>`"
+                @click="viewReach(accident.reach_id)"
               />
               <h6
-                class="mb-spacing-sm"
+                class="mb-spacing-sm "
                 v-if="accident.section"
-                v-html="`Section - <span>${accident.section}</span>`"
+                v-html="`Section - <span class='text-underline cursor-pointer'>${accident.section}</span>`"
+                @click="viewReach(accident.reach_id)"
               />
 
               <h6
@@ -171,8 +167,14 @@
             </cv-tile>
           </div>
         </div>
-      </div>
-    </template>
+      </template>
+      <template v-else>
+        <loading-block
+          text=" "
+          class="mt-lg"
+        />
+      </template>
+    </div>
   </div>
 </template>
 <script>
@@ -182,12 +184,13 @@
  * @todo clean up template. try merging data into one set for the <template v-ifs>
  *
  */
-import { PageHeader, ContentEditor } from "../../global/components";
+import { PageHeader, ContentEditor, LoadingBlock } from "../../global/components";
 export default {
   name: "ArticleDetail",
   components: {
     PageHeader,
-    ContentEditor
+    ContentEditor,
+    LoadingBlock
   },
   computed: {
     accidentId() {
@@ -209,7 +212,11 @@ export default {
       return this.$store.state.appGlobalState.appGlobalData.editMode;
     }
   },
-  methods: {}
+  methods: {
+    viewReach(id) {
+      this.$router.push(`/river-detail/${id}/main`)
+    }
+  }
 };
 </script>
 <style lang="scss">

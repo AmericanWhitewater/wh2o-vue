@@ -149,14 +149,6 @@ export default {
 </script>
 
 <style lang="scss">
-.main-content-area {
-  &.desktop {
-    padding-top: 75px;
-  }
-  &.mobile {
-    padding-top: 50px;
-  }
-}
 .app-breadcrumbs {
   top: $mobile-nav-height;
   z-index: 2;
