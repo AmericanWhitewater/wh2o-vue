@@ -1,10 +1,10 @@
 <template>
   <div :class="[{ home: homePage }, 'desktop-nav']">
-    <div :class="[{ editMode: riverDetailEditMode }, 'top-bar-wrapper']">
+    <div :class="[{ 'edit-mode': editMode }, 'top-bar-wrapper']">
       <div class="bx--grid">
         <div class="bx--row">
           <div class="bx--col-lg-16 top-bar">
-            <template v-if="!riverDetailEditMode">
+            <template v-if="!editMode">
               <!-- <router-link to="/users/login">Login</router-link> -->
               <router-link
                 to="/river-search"
@@ -21,7 +21,7 @@
               <cv-button
                 kind="tertiary"
                 small
-                @click="toggleEditMode"
+                @click="exitEditMode"
               >
                 Exit
               </cv-button>
@@ -69,12 +69,9 @@
   </div>
 </template>
 <script>
-// import virtual_LogoGoogle24 from "@carbon/icons-vue/es/logo--google/24";
 import virtual_Search16 from "@carbon/icons-vue/es/search/16";
-// import "@carbon/icons-vue/es/search/16.js"
-// node_modules/@carbon/icons-vue/es/search/16.js
 import AwLogo from "./aw-logo";
-import { actionsTypes } from "../../../../river-detail/shared/state";
+import { globalAppActions } from "@/app/global/state";
 export default {
   name: "DesktopNav",
   components: {
@@ -89,14 +86,9 @@ export default {
       }
     }
   },
-  data: () => {
-    return {
-      editMode: false
-    };
-  },
   computed: {
-    riverDetailEditMode() {
-      return this.$store.state.riverDetailState.riverDetailData.mode;
+     editMode() {
+      return this.$store.state.appGlobalState.appGlobalData.editMode;
     },
     homePage() {
       if (this.$route.name === "home") {
@@ -107,12 +99,8 @@ export default {
     }
   },
   methods: {
-    toggleEditMode() {
-      // this.editMode = !this.editMode;
-      this.$store.dispatch(
-        actionsTypes.SET_EDIT_MODE,
-        !this.riverDetailEditMode
-      );
+   exitEditMode() {
+      this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, false);
     }
   }
 };
@@ -122,7 +110,7 @@ export default {
   .top-bar-wrapper {
     background-color: $brand-03;
 
-    &.editMode {
+    &.edit-mode {
       @include layer("raised");
       background-color: $support-03;
       height: 75px;

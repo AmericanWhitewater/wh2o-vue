@@ -9,3 +9,5 @@ export { default as LoadingBlock } from "./loading-block/loading-block.vue";
 export { default as AppToaster } from "./app-toaster/app-toaster.vue";
 export { default as AppBreadcrumbs } from "./app-breadcrumbs/app-breadcrumbs.vue";
 export { default as AppFooter } from "./app-footer/app-footer.vue"
+export { default as ContentEditor } from "./content-editor/content-editor.vue"
+export { default as EditModeToggle } from "./edit-mode-toggle/edit-mode-toggle.vue"

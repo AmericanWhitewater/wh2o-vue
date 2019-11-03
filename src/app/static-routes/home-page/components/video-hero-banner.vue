@@ -7,10 +7,10 @@
           autoplay
           loop
           preload="metadata"
-          poster="../../assets/images/dummy02Poster.png"
+          poster="../../../assets/images/dummy02Poster.png"
         >
           <source
-            src="../../assets/video/dummy02.MP4"
+            src="../../../assets/video/dummy02.MP4"
             type="video/mp4"
           >
           Sorry, your browser doesn't support embedded videos.
@@ -119,8 +119,8 @@
   </section>
 </template>
 <script>
-import AwLogo from "../../global/components/app-header/components/aw-logo.vue";
-import { CheckWindow } from "../../global/mixins";
+import AwLogo from "@/app/global/components/app-header/components/aw-logo.vue";
+import { CheckWindow } from "@/app/global/mixins";
 export default {
   name: "VideoHeroBanner",
   components: {

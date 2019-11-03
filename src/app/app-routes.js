@@ -6,28 +6,10 @@ import { newsPageRoutes } from "./news-page";
 import { nwiMapRoutes } from "./nwi-map";
 import { usersRoutes } from "./users";
 import { riverSearchRoutes } from "./river-search";
-
-import { AppPageNotFound } from "./global/components";
-
-import Home from "./home-page/home-page.vue";
+import { accidentDatabaseRoutes} from "./accident-database"
+import staticRoutes from "./static-routes/static-routes"
 
 Vue.use(Router);
-
-const appRoutes = [
-  {
-    path: "/",
-    name: "home",
-    meta: {
-      crumbLabel: 'Home'
-    },
-    component: Home
-  },
-  {
-    path: "*",
-    name: "page-not-found",
-    component: AppPageNotFound
-  }
-];
 
 const routes = [
   ...riverDetailRoutes,
@@ -35,7 +17,8 @@ const routes = [
   ...newsPageRoutes,
   ...usersRoutes,
   ...riverSearchRoutes,
-  ...appRoutes
+  ...accidentDatabaseRoutes,
+  ...staticRoutes
 ];
 
 export default new Router({

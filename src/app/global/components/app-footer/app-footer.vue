@@ -3,9 +3,43 @@
     <div class="bx--grid">
       <div class="bx--row">
         <div class="bx--col">
-          <div class="inside">
-            <h6> block</h6>
-          </div>
+          <cv-list>
+            <cv-list-item
+              v-for="(k,index) in navItems.topbar"
+              :key="index"
+            >
+              <cv-link
+                :to="k.path"
+                v-text="k.title"
+              />
+            </cv-list-item>
+          </cv-list>
+        </div>
+        <div class="bx--col">
+          <cv-list>
+            <cv-list-item
+              v-for="(k,index) in navItems.primary"
+              :key="index"
+            >
+              <cv-link
+                :to="k.path"
+                v-text="k.title"
+              />
+            </cv-list-item>
+          </cv-list>
+        </div>
+        <div class="bx--col">
+          <cv-list>
+            <cv-list-item
+              v-for="(k,index) in navItems.footer"
+              :key="index"
+            >
+              <cv-link
+                :to="k.path"
+                v-text="k.title"
+              />
+            </cv-list-item>
+          </cv-list>
         </div>
       </div>
     </div>
@@ -13,22 +47,26 @@
 </template>
 
 <script>
+import { navItems } from "@/app/global/mixins";
 export default {
-  name: "app-footer"
+  name: "AppFooter",
+  mixins: [navItems]
 };
 </script>
 
 <style lang="scss">
 .app-footer {
-  height: 300px;
   position: relative;
   background-color: $brand-03;
-  .inside {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  padding: $layout-md 0;
+  .bx--list__item {
+    color: #fff;
+    .bx--link {
+      color: #fff;
+      &:visited {
+        color: #fff;
+      }
+    }
   }
 }
 </style>

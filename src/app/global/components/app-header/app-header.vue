@@ -30,6 +30,10 @@ export default {
         {
           title: "News",
           path: "/news"
+        },
+        {
+          title: "Safety",
+          path: "/safety"
         }
       ]
     };

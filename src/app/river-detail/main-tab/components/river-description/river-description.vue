@@ -21,16 +21,16 @@ we can make the editor a stand alone component and pass the editable content as 
   </main>
 </template>
 <script>
-import ContentEditor from "../../../content-editor/content-editor";
+import {ContentEditor} from "@/app/global/components";
 export default {
   name: "RiverDescription",
-  components: { "content-editor": ContentEditor },
+  components: { ContentEditor },
   computed: {
     river() {
       return this.$store.state.riverDetailState.riverDetailData.data;
     },
-    editMode() {
-      return this.$store.state.riverDetailState.riverDetailData.mode;
+     editMode() {
+      return this.$store.state.appGlobalState.appGlobalData.editMode;
     }
   }
 };

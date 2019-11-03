@@ -26,6 +26,7 @@
           <cv-tabs
             aria-label="navigation tab label"
             @tab-selected="switchTab($event)"
+            no-default-to-first
           >
             <cv-tab
               v-for="(tab, index) in tabs"
@@ -36,9 +37,7 @@
             />
           </cv-tabs>
         </div>
-        <!-- <transition name="fade"> -->
         <router-view />
-        <!-- </transition> -->
       </template>
     </template>
   </section>
@@ -86,64 +85,32 @@ export default {
       return this.$store.state.riverDetailState.riverDetailData.mode;
     }
   },
-  // beforeRouteEnter(to, from, next) {
-  //   next(vm => {
-  //     // save the previous route info for breadcrumbs
-  //     vm.prevRoute = from;
-  //   });
-  // },
   created() {
     this.$store.dispatch(actionsTypes.FETCH_RIVER_DETAIL_DATA, this.riverId);
-    // this.loadTab(this.$route.name);
   },
   mounted() {
     this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId);
   },
   methods: {
-    switchTab(eventName) {
-      // cv-tabs emits an event on click, use that to push to new router view
-      switch (eventName) {
-        case 0:
-          this.$router.push(`/river-detail/${this.riverId}/main`);
-          break;
-        case 1:
-          this.$router.push(`/river-detail/${this.riverId}/flow`);
-          break;
-        case 2:
-          this.$router.push(`/river-detail/${this.riverId}/weather`);
-          break;
-        case 3:
-          this.$router.push(`/river-detail/${this.riverId}/map`);
-          break;
-        case 4:
-          this.$router.push(`/river-detail/${this.riverId}/gallery`);
-          break;
-        case 5:
-          this.$router.push(`/river-detail/${this.riverId}/news`);
-          break;
-        case 6:
-          this.$router.push(`/river-detail/${this.riverId}/accidents`);
-          break;
-        case 7:
-          this.$router.push(`/river-detail/${this.riverId}/credits`);
-          break;
-      }
+    switchTab(index) {
+      /**
+       * cv-tabs emits indexof tab on click, use that to push to the correct tab
+       * use $router.replace to avoid making log into history
+       */
+      this.$router.replace(`/river-detail/${this.riverId}/${this.tabs[index].toLowerCase()}`)
     },
-    checkDirectInit() {
-      // check to see if the user got here directly via saved book mark, and is missing tab subroute
-      // push them to main tab if true
-      if(!this.prevRoute && !this.$route.name) {
-        this.$router.push(`/river-detail/${this.riverId}/main`);
-      }
+    async resetStores() {
+      await this.$store.dispatch(weatherActions.RESET_WEATHER_DATA);
+      await this.$store.dispatch(galleryActions.RESET_GALLERY_DATA);
     }
   },
   beforeRouteLeave(to, from, next) {
     if (this.editMode) {
+      // use as a check for unsaved changes
       alert("you're leaving in edit mode!!!!");
       this.$store.dispatch(actionsTypes.SET_EDIT_MODE, false);
     }
-    this.$store.dispatch(weatherActions.RESET_WEATHER_DATA);
-    this.$store.dispatch(galleryActions.RESET_GALLERY_DATA);
+    this.resetStores();
     next();
   }
 };
@@ -178,15 +145,5 @@ export default {
     top: $desktop-nav-height;
     height: calc(100vh - 75px);
   }
-}
-.fade-enter-active {
-  @include ease;
-}
-.fade-leave-active {
-  @include ease(0.4s);
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
 }
 </style>

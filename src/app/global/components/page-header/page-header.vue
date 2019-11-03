@@ -1,13 +1,16 @@
 <template>
-  <div class="bx--grid page-header">
-    <div class="bx--row">
-      <div class="bx--col">
-        <div class="outside">
-          <div class="inside">
-            <template v-if="subtitle">
-              <h4>{{ subtitle }}</h4>
-            </template>
-            <h1>{{ title }}</h1>
+  <div class="page-header">
+    <div class="bx--grid ">
+      <div class="bx--row">
+        <div class="bx--col">
+          <div class="outside">
+            <div class="inside">
+              <template v-if="subtitle">
+                <h4>{{ subtitle }}</h4>
+              </template>
+              <h1>{{ title }}</h1>
+              <edit-mode-toggle v-if="editable" />
+            </div>
           </div>
         </div>
       </div>
@@ -15,6 +18,7 @@
   </div>
 </template>
 <script>
+import {EditModeToggle} from "../index"
 export default {
   name: "PageHeader",
   props: {
@@ -24,8 +28,17 @@ export default {
     },
     subtitle: {
       type: String,
-      required: false
+      required: false,
+      default: null
+    },
+    editable: {
+      type: Boolean,
+      required: false,
+      default: false
     }
+  },
+  components: {
+    EditModeToggle
   },
   data: () => {
     return {
@@ -52,18 +65,22 @@ export default {
     justify-content: flex-end;
     padding-bottom: $spacing-lg;
   }
-  h1,
-  h4 {
-    color: #fff;
-  }
-  h4 {
-    margin-bottom: $spacing-sm;
-  }
-  h1 {
-    margin-bottom: $spacing-md;
-  }
+     h1,
+    h4 {
+      padding: 0.25rem 0.5rem 0.2rem 2rem;
+      background-color: #fff;
+      width: fit-content;
+    }
+    h1 {
+      margin-bottom: $spacing-sm;
+    }
   .bx--overflow-menu {
     background-color: $ui-02;
   }
+  .bx--grid {
+  padding-left: 0;
 }
+}
+
+
 </style>

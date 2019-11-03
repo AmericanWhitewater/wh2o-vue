@@ -1,28 +1,70 @@
 <template>
   <div class="accidents-tab">
-    <template v-if="loading">
-      <cv-inline-loading small />
-    </template>
-    <template v-if="!loading && error">
-      <error-block
-        title="Accident data unavailable"
-        text="please try again later"
-      />
-    </template>
-    <template v-if="!loading && !error">
-      <div class>
-        accidents results!
+    <div class="bx--grid">
+      <div class="bx--row">
+        <div class="bx--col">
+          <template v-if="loading">
+            <loading-block text="Loading accident data" />
+          </template>
+          <template v-if="!loading && error">
+            <error-block
+              title="Accident data unavailable"
+              text="please try again later"
+            />
+          </template>
+          <template v-if="!loading && !error">
+            <div class="bx--data-table-container">
+              <table class="bx--data-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Flow</th>
+                    <th>Result</th>
+                    <th>Factor</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="(a,index) in accidents"
+                    :key="index"
+                  >
+                    <td v-text="'{ date }'" />
+                    <td v-text="'{ flow }'" />
+                    <td v-text="'{ result }'" />
+                    <td v-text="'{ factor }'" />
+                    <td>
+                      <cv-button
+                        small
+                        kind="tertiary"
+                        @click="viewAccident(a.id)"
+                      >
+                        Full Report
+                      </cv-button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </template>
+        </div>
+        <div class="bx--col">
+          Submit form
+        </div>
       </div>
-    </template>
+    </div>
   </div>
 </template>
 <script>
 import { accidentsActions } from "../shared/state";
+import {accidentDetailActions} from "@/app/accident-database/shared/state"
 import { ErrorBlock } from "../shared/components";
+import { LoadingBlock } from "@/app/global/components";
 export default {
   name: "AccidentsTab",
   components: {
-    ErrorBlock
+    ErrorBlock,
+    LoadingBlock
   },
   computed: {
     loading() {
@@ -31,15 +73,11 @@ export default {
     error() {
       return this.$store.state.riverDetailState.accidentsData.error;
     },
-    data() {
-      return this.$store.state.riverDetailState.accidentsData.data;
-    },
     riverId() {
       return parseInt(this.$route.params.id);
     },
     accidents() {
-      return this.$store.state.riverDetailState.accidentsData.data.data.reach
-        .accidents;
+      return this.$store.state.riverDetailState.accidentsData.data;
     }
   },
   created() {
@@ -47,12 +85,16 @@ export default {
   },
   methods: {
     loadData() {
-      if (!this.data && !this.error) {
+      if (!this.accidents && !this.error) {
         this.$store.dispatch(
           accidentsActions.FETCH_ACCIDENTS_DATA,
           this.riverId
         );
       }
+    },
+    viewAccident(accidentId){
+      this.$store.dispatch(accidentDetailActions.GET_ACCIDENT_DETAIL_DATA, this.riverId)
+      this.$router.push(`/accident-database/${accidentId}`)
     }
   }
 };

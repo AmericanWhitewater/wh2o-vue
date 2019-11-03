@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import { CheckWindow } from "../global/mixins";
+import { CheckWindow } from "@/app/global/mixins";
 import { VideoHeroBanner } from "./components";
 export default {
   name: "HomePage",

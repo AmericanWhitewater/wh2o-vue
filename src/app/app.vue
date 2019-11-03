@@ -24,8 +24,10 @@ export default {
 .app-main-content {
   // add 44px to account for breadcrumbs
   padding-top: $mobile-nav-height + 44px;
+  margin-bottom: $layout-xl;
   @include MQ("LG") {
     padding-top: $desktop-nav-height + 44px;
+    margin-bottom: $layout-xl;
   }
 }
 </style>

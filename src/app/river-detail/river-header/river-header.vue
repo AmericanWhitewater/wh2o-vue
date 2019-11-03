@@ -7,26 +7,7 @@
             <div class="inside">
               <h4>{{ name }}</h4>
               <h1>{{ section }}</h1>
-              <div class="edit-toggle-wrapper">
-                <span>Edit mode</span>
-                <cv-toggle
-                  small
-                  value
-                  :checked="editMode"
-                  @change="toggleEditMode"
-                >
-                  <template
-                    slot="text-left"
-                  >
-&nbsp;
-                  </template>
-                  <template
-                    slot="text-right"
-                  >
-&nbsp;
-                  </template>
-                </cv-toggle>
-              </div>
+              <edit-mode-toggle />
             </div>
           </div>
         </div>
@@ -73,7 +54,7 @@
   </section>
 </template>
 <script>
-import { actionsTypes } from "../shared/state";
+import {EditModeToggle} from "@/app/global/components"
 export default {
   name: "RiverHeader",
   props: {
@@ -88,6 +69,9 @@ export default {
       default: null
     }
   },
+  components: {
+    EditModeToggle
+  },
   data: () => {
     return {
       showConfirmation: false
@@ -97,15 +81,11 @@ export default {
     reachId() {
       return this.$route.params.id;
     },
-    editMode() {
-      return this.$store.state.riverDetailState.riverDetailData.mode;
+     editMode() {
+      return this.$store.state.appGlobalState.appGlobalData.editMode;
     }
   },
-  methods: {
-    toggleEditMode() {
-      this.$store.dispatch(actionsTypes.SET_EDIT_MODE, !this.editMode);
-    }
-  }
+
 };
 </script>
 <style lang="scss" scoped>
@@ -140,14 +120,5 @@ section {
 .bx--grid {
   padding-left: 0;
 }
-.edit-toggle-wrapper {
-  margin-left: 2rem;
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  span {
-    font-size: 14px;
-    margin-right: 0.5rem;
-  }
-}
+
 </style>

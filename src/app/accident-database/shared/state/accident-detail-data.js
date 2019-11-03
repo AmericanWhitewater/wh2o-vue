@@ -1,20 +1,15 @@
-import { reflectKeys } from "../../../../global/services";
+import { reflectKeys } from "../../../global/services";
 
-import { fetchAccidentsData } from "../../services";
+import { getAccidentDetail } from "../services";
 
-/** Initial state */
 const initialState = {
   loading: false,
   data: null,
   error: null
 };
 
-/** Prefix for mutation types and actiontypes */
-const namespacedPrefix = "[ACCIDENTS]";
+const namespacedPrefix = "[ACCIDENT_DETAIL]";
 
-/**
- * Mutation types
- */
 const mutationTypes = reflectKeys(
   ["DATA_SUCCESS", "DATA_REQUEST", "DATA_ERROR", "DATA_RESET"],
   namespacedPrefix
@@ -22,9 +17,6 @@ const mutationTypes = reflectKeys(
 
 const { DATA_ERROR, DATA_REQUEST, DATA_RESET, DATA_SUCCESS } = mutationTypes;
 
-/**
- * mutations
- */
 const mutations = {
   [DATA_REQUEST](state) {
     Object.assign(state, { loading: true, error: null });
@@ -47,20 +39,16 @@ const mutations = {
   }
 };
 
-/** Actions types constants */
-export const accidentsActions = reflectKeys(
-  ["FETCH_ACCIDENTS_DATA"],
+export const accidentDetailActions = reflectKeys(
+  ["GET_ACCIDENT_DETAIL_DATA"],
   namespacedPrefix
 );
 
-/**
- * actions
- */
 const actions = {
-  async [accidentsActions.FETCH_ACCIDENTS_DATA](context, data) {
+  async [accidentDetailActions.GET_ACCIDENT_DETAIL_DATA](context, data) {
     context.commit(DATA_REQUEST);
 
-    const result = await fetchAccidentsData(data).catch(e => {
+    const result = await getAccidentDetail(data).catch(e => {
       context.commit(DATA_ERROR, e);
     });
 

@@ -11,7 +11,14 @@ const fetchAccidentsData = data => {
         reach(id:${data}){
           accidents(first:100, page:1){
             data {
-                description
+              id,
+                rellevel,
+                injuries{
+                  injury
+                  },
+                factors{
+                    factor
+                }
             }
         }
       }
