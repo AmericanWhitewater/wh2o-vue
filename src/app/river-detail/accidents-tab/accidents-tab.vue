@@ -58,8 +58,7 @@
 <script>
 import { accidentsActions } from "../shared/state";
 import {accidentDetailActions} from "@/app/accident-database/shared/state"
-import { ErrorBlock } from "../shared/components";
-import { LoadingBlock } from "@/app/global/components";
+import { LoadingBlock, ErrorBlock } from "@/app/global/components";
 export default {
   name: "AccidentsTab",
   components: {
