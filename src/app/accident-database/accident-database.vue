@@ -1,22 +1,23 @@
 <template>
   <div class="accident-database bx--grid">
     <page-header title="Accident Database" />
-    <div class="spacer" />
-    <div class="bx--row">
-      <template v-if="!loading">
-        results
-      </template>
-      <template
-        v-else
-      >
-        loading
-      </template>
+    <div class="bx--row pt-lg">
+      <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-6">
+        <p
+          class="mb-spacing-md"
+        >
+          To access an accident report, visit the Accidents Tab on a river detail page. Or, click the button below for a preselected report.
+        </p>
+        <cv-button @click="viewAccidentDetail">
+          Report Demo
+        </cv-button>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import { PageHeader } from "../global/components";
-import { accidentDatabaseActions } from "./shared/state";
+import { accidentDatabaseActions, accidentDetailActions } from "./shared/state";
 export default {
   name: "AccidentDatabase",
   components: {
@@ -24,23 +25,26 @@ export default {
   },
   computed: {
     loading() {
-      return this.$store.state.accidentDatabaseState.accidentDatabaseData.loading;
+      return this.$store.state.accidentDatabaseState.accidentDatabaseData
+        .loading;
     },
     accidents() {
       return this.$store.state.accidentDatabaseState.accidentDatabaseState.data;
     }
   },
   methods: {
-    viewAccidentDetail(id) {
-      this.$router.push(`/accident-database/accident/${id}`);
+    viewAccidentDetail() {
+      this.$store.dispatch(
+        accidentDetailActions.GET_ACCIDENT_DETAIL_DATA,
+        "3452"
+      );
+      this.$router.push(`/accident-database/3088`);
     },
     loadAccidents() {
       this.$store.dispatch(accidentDatabaseActions.GET_ACCIDENT_DATABASE_DATA);
     }
   },
-  created() {
-    this.loadAccidents();
-  },
+  created() {}
 };
 </script>
 <style lang="scss">

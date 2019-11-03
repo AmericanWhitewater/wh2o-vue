@@ -4,12 +4,18 @@
       <page-header title="Safety" />
       <div class="spacer" />
       <div class="bx--row pt-lg">
-        <div class="bx--col-sm-12 bx--col-md-8 bx--col-lg-10">
+        <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-6">
+          <h2 class="mb-spacing-md">
+            Lorem Headline
+          </h2>
           <p class="mb-spacing-md">
-            To access an accident report, visit the Accidents Tab on a river detail page. Or, click the button below for a preselected report.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
           </p>
-          <cv-button @click="viewAccidentDetail">
-            Report Demo
+          <cv-button
+            @click="$router.push('/accident-database')"
+            kind="tertiary"
+          >
+            See Full Accident DB
           </cv-button>
         </div>
       </div>
@@ -18,20 +24,11 @@
 </template>
 <script>
 import { PageHeader } from "@/app/global/components";
-import { accidentDetailActions } from "@/app/accident-database/shared/state";
+
 export default {
   name: "AccidentDatabase",
   components: {
     PageHeader
-  },
-  computed: {
-    
-  },
-  methods: {
-    viewAccidentDetail() {
-    this.$store.dispatch(accidentDetailActions.GET_ACCIDENT_DETAIL_DATA, '3452')
-      this.$router.push(`/accident-database/3088`)
-    }
   }
 };
 </script>
