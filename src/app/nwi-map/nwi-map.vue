@@ -17,16 +17,6 @@
               >
                 <div v-text="expandToggleTxt" />
               </div>
-
-              <transition name="fade">
-                <template v-if="loadingResults">
-                  <cv-loading
-                    active
-                    overlay
-                    small
-                  />
-                </template>
-              </transition>
             </div>
           </div>
         </div>
@@ -100,9 +90,13 @@
                       </tr>
                     </template>
                     <template
-                      v-else
+                      v-if="loadingResults"
                     >
-                      Loading
+                      <tr>
+                        <td colspan="4">
+                          <loading-block text=" " />
+                        </td>
+                      </tr>
                     </template>
                     <template v-if="!loadingResults && !searchResults">
                       <tr>
@@ -124,6 +118,7 @@
 <script>
 import { riverSearchHttpConfig } from "../global/mixins";
 import { StaticUsMap } from "./shared/components";
+import {LoadingBlock} from "@/app/global/components"
 import { riverSearchActions } from "../river-search/shared/state";
 import {
   InternationalReaches,
@@ -132,7 +127,8 @@ import {
 export default {
   name: "NwiMap",
   components: {
-    StaticUsMap
+    StaticUsMap,
+    LoadingBlock
   },
   mixins: [riverSearchHttpConfig, InternationalReaches, LevelsList],
   data: () => {
