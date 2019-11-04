@@ -12,6 +12,29 @@ if (process.env.NODE_ENV === 'production') {
     },
     registered () {
       console.log('Service worker has been registered.')
+
+      if('PushManager' in window) {
+        console.log('Push notifications supported')
+      }
+      
+      function getLocation() {
+        if(navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+          console.log("Geo Location not supported by browser");
+        }
+      }
+      //function that retrieves the position
+      function showPosition(position) {
+        var location = {
+          longitude: position.coords.longitude,
+          latitude: position.coords.latitude
+        }
+        console.log(location)
+      }
+      //request for location
+      getLocation();
+
     },
     cached () {
       console.log('Content has been cached for offline use.')
