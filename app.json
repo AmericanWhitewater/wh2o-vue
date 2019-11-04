@@ -1,6 +1,6 @@
 {
-    "name": "wh2o",
-    "description": "a vue spa for american whitewater",
+    "name": "wh2o-vue",
+    "description": "vue spa experiment for aw",
     "image": "heroku/nodejs",
-    "keywords": ["node", "vue" ]
+    "keywords": ["node", "vue", "pwa" ]
   }

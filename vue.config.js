@@ -6,6 +6,13 @@ module.exports = {
       }
     }
   },
+  pwa: {
+    name: 'American Whitewater',
+    themeColor :'#cdd1d4',
+    msTileColor: '#FFFFFF',
+    assetsVersion: Math.floor(Math.random() * 1000000000),
+    appleMobileWebAppCapable: 'yes'
+  },
 
   chainWebpack: config => {
     config.module

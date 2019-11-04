@@ -7,9 +7,6 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "build:production": "sh -ac '. .env.production; vue-cli-service build'",
-    "build:qa": "sh -ac '. .env.qa; vue-cli-service build'",
-    "build:staging": "sh -ac '. .env.staging; vue-cli-service build'",
     "postinstall": "if test \"$NODE_ENV\" = \"production\" ; then npm run build ; fi ",
     "start": "node server.js"
   },
