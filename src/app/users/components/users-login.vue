@@ -8,7 +8,7 @@
     />
     <cv-text-input
       v-model="passWord"
-      class="mb-spacing-sm"
+      class="mb-spacing-lg"
       label="Password"
       type="password"
     />

@@ -13,17 +13,19 @@
       type="password"
     />
     <p
-      class="bx--type--caption mb-spacing-md"
+      class="bx--type--caption mb-spacing-md text-underline cursor-pointer"
       @click="viewTerms"
     >
       Click to view terms &amp; conditions
     </p>
-    <cv-checkbox
-      v-model="newUser.termsConfirmed"
-      class="mb-spacing-md"
-      label="I agree to the terms"
-      value="terms"
-    />
+    <div class="mb-spacing-lg">
+      <cv-checkbox
+        v-model="newUser.termsConfirmed"
+      
+        label="I agree to the terms"
+        value="terms"
+      />
+    </div>
     <cv-button
       kind="primary"
       small

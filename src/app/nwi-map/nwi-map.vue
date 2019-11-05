@@ -20,9 +20,7 @@
             </div>
           </div>
         </div>
-        <div
-          :class="[mapFocused ? unfocusedArea : focusedArea, 'sidebar-wrapper']"
-        >
+        <div :class="[mapFocused ? unfocusedArea : focusedArea, 'sidebar-wrapper']">
           <div class="outside">
             <div class="inside sidebar">
               <template v-if="riverSearchHttpConfig.state">
@@ -77,21 +75,19 @@
                         </td>
                         <td>{{ r.class }}</td>
                         <td>
-                          <template v-if="parseInt(r.reading_formatted)">
+                          <template
+                            v-if="parseInt(r.reading_formatted)"
+                          >
                             {{ r.reading_formatted }} [{{ r.reading_delta }}]
                           </template>
-                          <template
-                            v-else
-                          >
+                          <template v-else>
                             n/a
                           </template>
                         </td>
                         <td>{{ r.updated }}</td>
                       </tr>
                     </template>
-                    <template
-                      v-if="loadingResults"
-                    >
+                    <template v-if="loadingResults">
                       <tr>
                         <td colspan="4">
                           <loading-block text=" " />
@@ -118,7 +114,8 @@
 <script>
 import { riverSearchHttpConfig } from "../global/mixins";
 import { StaticUsMap } from "./shared/components";
-import {LoadingBlock} from "@/app/global/components"
+import { LoadingBlock } from "@/app/global/components";
+import { nwiActions } from "./shared/state";
 import { riverSearchActions } from "../river-search/shared/state";
 import {
   InternationalReaches,
@@ -136,7 +133,12 @@ export default {
       expandToggleTxt: "Hide",
       mapFocused: true,
       focusedArea: "bx--col-sm-4 bx--col-md-6 bx--col-lg-12",
-      unfocusedArea: "bx--col-sm-4 bx--col-md-2 bx--col-lg-4"
+      unfocusedArea: "bx--col-sm-4 bx--col-md-2 bx--col-lg-4",
+      location: null,
+      coords: {
+        lat: null,
+        lon: null
+      }
     };
   },
   computed: {
@@ -154,6 +156,9 @@ export default {
       return this.$store.state.riverSearchState.riverSearchData.loading;
     }
   },
+  mounted() {
+    this.getUserLocation();
+  },
   methods: {
     viewRiver(id) {
       this.$router.push(`/river-detail/${id}/main`);
@@ -167,15 +172,22 @@ export default {
       }
     },
     fetchRivers(data) {
-      // console.log("config", this.riverSearchHttpConfig);
-      // console.log("data ", data);
-
       this.riverSearchHttpConfig.state = "st" + data;
       this.$store.dispatch(
         riverSearchActions.FETCH_RIVER_SEARCH_DATA,
         this.riverSearchHttpConfig
       );
       this.riverSearchHttpConfig.state = null;
+    },
+    showPosition(position) {
+      this.coords.lat = position.coords.latitude;
+      this.coords.lon = position.coords.longitude;
+      this.$store.dispatch(nwiActions.FETCH_USER_LOCATION, this.coords);
+    },
+    getUserLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(this.showPosition);
+      }
     }
   }
 };

@@ -25,8 +25,8 @@
           </cv-overflow-menu>
           <cv-tabs
             aria-label="navigation tab label"
-            @tab-selected="switchTab($event)"
             no-default-to-first
+            @tab-selected="switchTab($event)"
           >
             <cv-tab
               v-for="(tab, index) in tabs"

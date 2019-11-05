@@ -114,6 +114,9 @@ export default {
       this.setCrumbs();
     }
   },
+  created() {
+    this.setCrumbs();
+  },
   methods: {
     setCrumbs() {
       if (
@@ -141,9 +144,6 @@ export default {
         return label;
       }
     }
-  },
-  created() {
-    this.setCrumbs();
   }
 };
 </script>

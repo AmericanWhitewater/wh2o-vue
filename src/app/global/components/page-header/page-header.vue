@@ -21,6 +21,9 @@
 import EditModeToggle from "../edit-mode-toggle/edit-mode-toggle"
 export default {
   name: "PageHeader",
+  components: {
+    EditModeToggle
+  },
   props: {
     title: {
       type: String,
@@ -36,9 +39,6 @@ export default {
       required: false,
       default: false
     }
-  },
-  components: {
-    EditModeToggle
   },
   data: () => {
     return {

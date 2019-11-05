@@ -32,6 +32,7 @@ export default {
       return this.$store.state.accidentDatabaseState.accidentDatabaseState.data;
     }
   },
+  created() {},
   methods: {
     viewAccidentDetail() {
       this.$store.dispatch(
@@ -43,8 +44,7 @@ export default {
     loadAccidents() {
       this.$store.dispatch(accidentDatabaseActions.GET_ACCIDENT_DATABASE_DATA);
     }
-  },
-  created() {}
+  }
 };
 </script>
 <style lang="scss">

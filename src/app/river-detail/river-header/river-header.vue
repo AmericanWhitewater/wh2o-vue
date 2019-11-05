@@ -57,6 +57,9 @@
 import {EditModeToggle} from "@/app/global/components"
 export default {
   name: "RiverHeader",
+  components: {
+    EditModeToggle
+  },
   props: {
     name: {
       type: String,
@@ -68,9 +71,6 @@ export default {
       required: true,
       default: null
     }
-  },
-  components: {
-    EditModeToggle
   },
   data: () => {
     return {

@@ -7,6 +7,7 @@ import { usersState } from "./users";
 import { riverSearchState } from "./river-search";
 import { accidentDatabaseState } from "./accident-database"
 import { appGlobalState} from "@/app/global/state"
+import { nwiMapState } from "./nwi-map"
 
 Vue.use(Vuex);
 
@@ -15,11 +16,12 @@ export default new Vuex.Store({
   mutations: {},
   actions: {},
   modules: {
+    accidentDatabaseState,
     appGlobalState,
-    riverDetailState,
     newsPageState,
-    usersState,
+    nwiMapState,
+    riverDetailState,
     riverSearchState,
-    accidentDatabaseState
+    usersState
   }
 });

@@ -102,66 +102,66 @@
           <div class="bx--col-sm-12 bx--col-md-3 bx--col-lg-6">
             <cv-tile>
               <h6
-                class="mb-spacing-sm"
                 v-if="accident.status"
+                class="mb-spacing-sm"
                 v-html="`Status - <span>${accident.status}</span>`"
               />
               <h6
-                class="mb-spacing-sm"
                 v-if="accident.river"
-                v-html="`River - <span class='text-underline cursor-pointer'>${accident.river}</span>`"
+                class="mb-spacing-sm"
                 @click="viewReach(accident.reach_id)"
+                v-html="`River - <span class='text-underline cursor-pointer'>${accident.river}</span>`"
               />
               <h6
-                class="mb-spacing-sm "
                 v-if="accident.section"
-                v-html="`Section - <span class='text-underline cursor-pointer'>${accident.section}</span>`"
+                class="mb-spacing-sm "
                 @click="viewReach(accident.reach_id)"
+                v-html="`Section - <span class='text-underline cursor-pointer'>${accident.section}</span>`"
               />
 
               <h6
-                class="mb-spacing-sm"
                 v-if="accident.boattype"
+                class="mb-spacing-sm"
                 v-html="`Boat Type - <span>${accident.boattype}</span>`"
               />
               <h6
-                class="mb-spacing-sm"
                 v-if="accident.experience"
+                class="mb-spacing-sm"
                 v-html="`Experience - <span>${accident.experience}</span>`"
               />
               <h6
-                class="mb-spacing-sm"
                 v-if="accident.privcomm"
+                class="mb-spacing-sm"
                 v-html="`Trip type - <span>${accident.privcomm}</span>`"
               />
               <h6
-                class="mb-spacing-sm"
                 v-if="accident.difficulty"
+                class="mb-spacing-sm"
                 v-html="`Difficulty - <span>${accident.difficulty}</span>`"
               />
               <h6
-                class="mb-spacing-sm"
                 v-if="accident.location"
+                class="mb-spacing-sm"
                 v-html="`Location - <span>${accident.location}</span>`"
               />
               <h6
-                class="mb-spacing-sm"
                 v-if="accident.numvictims"
+                class="mb-spacing-sm"
                 v-html="`Num Victims - <span>${accident.numvictims}</span>`"
               />
               <h6
-                class="mb-spacing-sm"
                 v-if="accident.contactname"
+                class="mb-spacing-sm"
                 v-html="`Contact Name - <span>${accident.contactname}</span>`"
               />
               <h6
-                class="mb-spacing-sm"
                 v-if="accident.contactemail"
+                class="mb-spacing-sm"
                 v-html="`Contact Email - <span>${accident.contactemail}</span>`"
               />
               <h6
-                class="mb-spacing-sm"
                 v-if="accident.contactphone"
+                class="mb-spacing-sm"
                 v-html="`Contact Phone - <span>${accident.contactphone}</span>`"
               />
             </cv-tile>
