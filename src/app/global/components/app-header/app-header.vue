@@ -52,11 +52,11 @@ export default {
 
 <style lang="scss">
 .app-header {
-  background-color: $ui-01;
   @include layer("overlay");
+  background-color: $ui-01;
   position: fixed;
-  z-index: 3;
   width: 100vw;
+  z-index: 3;
   &.home {
     background-color: rgba($ui-01, 0.05);
     box-shadow: none;

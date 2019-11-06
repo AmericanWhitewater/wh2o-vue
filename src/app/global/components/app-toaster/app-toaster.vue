@@ -1,12 +1,36 @@
+<docs>
+
+this is a temp solution. as more toasts are added, then the page will get blocked.
+
+need to set width auto, and match bx--grid right positioning.
+
+</docs>
+
 <template>
-  <div :class="[{ hidden: !visible }, 'app-toaster']">
-    <cv-toast-notification
-      v-if="visible"
-      :kind="toastKind"
-      title="Your membership is about to expire"
-      sub-title="visit account settings to renew"
-      @close="handleClose"
-    />
+  <div class="app-toaster">
+    <div class="bx--grid">
+      <div class="bx--row">
+        <div class="bx--col">
+          <transition-group
+            name="list"
+            tag="ul"
+          >
+            <li
+              v-for="(t, index) in toasts"
+              :key="index"
+            >
+              <cv-toast-notification
+                :kind="t.kind"
+                :title="t.title"
+                :sub-title="t.subtitle"
+                :low-contrast="t.lowContrast"
+                @close="handleClose(index)"
+              />
+            </li>
+          </transition-group>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -14,47 +38,36 @@ export default {
   name: "AppToaster",
   data: () => {
     return {
-      visible: true,
-      toastKind: "warning"
+      newUpdate: {
+        title: "App Update Available",
+        subtitle: "please refresh",
+        kind: "info",
+        lowContrast: true
+      },
+      toasts: []
     };
   },
   computed: {
-    user() {
-      //   use this to gather info about the user
-      return null;
-    },
-    warning() {
-      // if the user membership is 1 month from expiration
-      // this.toastKind = 'warning'
-      //
-      // for membership warnings, consider storing a cookie, or making a note that the user has dismissed notification.
-      // we might not want to show everything they start a new session.
-      return null;
-    },
-    error() {
-      // if the user membership is 7 days from expiration
-      // or if there is an urgent legistlative action
-      // if both are true, then urgent legislative content wins.
-      // be wary of showing multiple toasts.
-      // this.toastKind = 'error'
-      return null;
-    },
-    info() {
-      // if there is an general announcement
-      // this.toastKind = 'info'
-      return null;
+    updateAvailable() {
+      return this.$store.state.appGlobalState.appGlobalData.updateAvailable;
     }
   },
-  mounted() {
-    // this.visible = true;
-    // turn off while testing other components
-    this.visible = false;
+  watch: {
+    updateAvailable() {
+      this.toasts.push(this.newUpdate);
+    }
   },
   methods: {
-    handleClose() {
-      this.visible = false;
+    handleClose(index) {
+      if (index === 0) {
+        this.toasts.shift();
+      }
+      if (index === 1) {
+        this.toasts.pop();
+      }
     }
-  }
+  },
+  mounted() {}
 };
 </script>
 <style lang="scss" scoped>
@@ -63,16 +76,30 @@ export default {
 }
 .app-toaster {
   position: fixed;
-  z-index: 9999;
-  right: 0;
   top: 50px;
-  padding-right: 2rem;
+  width: 100vw;
+  z-index: 9999;
 
   @include MQ("LG") {
     top: 75px;
   }
   &.hidden {
     display: none;
+    visibility: hidden;
   }
+
+  .bx--col {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.list-enter-active,
+.list-leave-active {
+  @include ease(0.4s);
+}
+.list-enter,
+.list-leave-to {
+  transform: translateX(150%);
 }
 </style>
