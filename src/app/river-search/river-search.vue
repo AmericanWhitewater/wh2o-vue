@@ -1,9 +1,6 @@
 <template>
   <div class="bx--grid">
-    <page-header
-      title="River Search"
-      class="mb-sm"
-    />
+    <page-header title="River Search" class="mb-sm" />
     <div class="bx--row mb-md pl-spacing-md">
       <div class="bx--col-auto mr-xs search-col">
         <label class="bx--label">Search</label>
@@ -67,28 +64,22 @@
             <tr>
               <th>
                 <strong>Name</strong>
-                <br>Section
+                <br />Section
               </th>
               <th>Class/Grade</th>
               <th>Flow Range</th>
               <th>
                 <strong>Flow</strong>
-                <br>Updated
+                <br />Updated
               </th>
             </tr>
           </thead>
           <tbody>
             <template v-if="!loading && data">
-              <tr
-                v-for="(r, index) in data.slice(0, 25)"
-                :key="index"
-              >
-                <td
-                  class="river-name-section"
-                  @click="viewRiver(r.id)"
-                >
+              <tr v-for="(r, index) in data.slice(0, 25)" :key="index">
+                <td class="river-name-section" @click="viewRiver(r.id)">
                   <strong>{{ r.name }}</strong>
-                  <br>
+                  <br />
                   {{ r.section }}
                 </td>
                 <td>{{ r.class }}</td>
@@ -103,16 +94,10 @@
                 <td>{{ r.last_gauge_updated }}</td>
               </tr>
               <template v-if="showAll">
-                <tr
-                  v-for="(r, index) in data.slice(25, 750)"
-                  :key="index"
-                >
-                  <td
-                    class="river-name-section"
-                    @click="viewRiver(r.id)"
-                  >
+                <tr v-for="(r, index) in data.slice(25, 750)" :key="index">
+                  <td class="river-name-section" @click="viewRiver(r.id)">
                     <strong>{{ r.name }}</strong>
-                    <br>
+                    <br />
                     {{ r.section }}
                   </td>
                   <td>{{ r.class }}</td>
@@ -131,10 +116,7 @@
             <template v-else-if="loading">
               <tr>
                 <td colspan="4">
-                  <cv-inline-loading
-                    small
-                    state="loading"
-                  />
+                  <cv-inline-loading small state="loading" />
                 </td>
               </tr>
             </template>
@@ -148,10 +130,7 @@
           </tbody>
         </table>
         <template v-if="data && !showAll && data.length > 25">
-          <cv-button
-            kind="primary"
-            @click="showAll = !showAll"
-          >
+          <cv-button kind="primary" @click="showAll = !showAll">
             Show All
           </cv-button>
         </template>
@@ -168,25 +147,24 @@ import {
   UsStatesList,
   UsStatesRegions
 } from "./shared/mixins";
+
 export default {
   name: "RiverSearch",
   components: {
     PageHeader
   },
   mixins: [InternationalReaches, LevelsList, UsStatesList, UsStatesRegions],
-  data: () => {
-    return {
-      riverSearchHttpConfig: {
-        river: null,
-        state: null,
-        level: null,
-        include: null,
-        atLeast: null,
-        atMost: null
-      },
-      showAll: false
-    };
-  },
+  data: () => ({
+    riverSearchHttpConfig: {
+      river: null,
+      state: null,
+      level: null,
+      include: null,
+      atLeast: null,
+      atMost: null
+    },
+    showAll: false
+  }),
   computed: {
     storePath() {
       return this.$store.state.riverSearchState.riverSearchData;

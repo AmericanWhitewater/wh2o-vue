@@ -13,6 +13,7 @@
 import DesktopNav from "./components/desktop-nav";
 import MobileNav from "./components/mobile-nav";
 import checkWindow from "../../services/mixins/check-window";
+
 export default {
   name: "AppHeader",
   components: {
@@ -20,31 +21,28 @@ export default {
     "mobile-nav": MobileNav
   },
   mixins: [checkWindow],
-  data: () => {
-    return {
-      navItems: [
-        {
-          title: "River Info",
-          path: "/nwi-map"
-        },
-        {
-          title: "News",
-          path: "/news"
-        },
-        {
-          title: "Safety",
-          path: "/safety"
-        }
-      ]
-    };
-  },
+  data: () => ({
+    navItems: [
+      {
+        title: "River Info",
+        path: "/nwi-map"
+      },
+      {
+        title: "News",
+        path: "/news"
+      },
+      {
+        title: "Safety",
+        path: "/safety"
+      }
+    ]
+  }),
   computed: {
     homePage() {
       if (this.$route.name === "home") {
         return true;
-      } else {
-        return false;
       }
+      return false;
     }
   }
 };

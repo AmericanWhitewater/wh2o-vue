@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="error-block"
-    :style="`height:${height}px`"
-  >
+  <div class="error-block" :style="`height:${height}px`">
     <error-outlined />
     <h2>{{ title }}</h2>
     <p>{{ text }}</p>
@@ -10,6 +7,7 @@
 </template>
 <script>
 import error_outlined32 from "@carbon/icons-vue/es/error--outline/32";
+
 export default {
   name: "ErrorBlock",
   components: {

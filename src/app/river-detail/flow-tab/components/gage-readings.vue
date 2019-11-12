@@ -1,12 +1,9 @@
 <template>
   <section class="mt-3">
-    <hr>
+    <hr />
     <h2>Readings</h2>
     <template v-if="!loading">
-      <cv-data-table
-        :columns="columns"
-        :auto-width="false"
-      >
+      <cv-data-table :columns="columns" :auto-width="false">
         <template slot="data">
           <cv-data-table-row
             v-for="(r, rowIndex) in data.slice(0, 10)"
@@ -28,11 +25,9 @@
 <script>
 export default {
   name: "GageReadings",
-  data: () => {
-    return {
-      columns: ["Reading", "Updated"]
-    };
-  },
+  data: () => ({
+    columns: ["Reading", "Updated"]
+  }),
   computed: {
     data() {
       return this.$store.state.riverDetailState.gageReadingsData.data;

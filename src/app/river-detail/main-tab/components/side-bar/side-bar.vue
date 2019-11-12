@@ -34,28 +34,26 @@
 <script>
 export default {
   name: "SideBar",
-  data: () => {
-    return {
-      sticky: false,
-      alerts: [
-        {
-          title: "uh oh",
-          kind: "warning",
-          subtitle:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        },
-        {
-          title: "uh oh",
-          kind: "error",
-          subtitle:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-        }
-      ],
-      articles: [],
-      projects: [],
-      documents: []
-    };
-  },
+  data: () => ({
+    sticky: false,
+    alerts: [
+      {
+        title: "uh oh",
+        kind: "warning",
+        subtitle:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      },
+      {
+        title: "uh oh",
+        kind: "error",
+        subtitle:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      }
+    ],
+    articles: [],
+    projects: [],
+    documents: []
+  }),
   mounted() {
     this.isSticky();
   },

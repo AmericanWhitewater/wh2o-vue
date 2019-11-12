@@ -2,19 +2,12 @@
   <section class="bx--grid river-detail">
     <transition name="fade">
       <template v-if="loading">
-        <cv-loading
-          active
-          overlay
-          small
-        />
+        <cv-loading active overlay small />
       </template>
     </transition>
     <template v-if="!loading">
       <template v-if="river">
-        <river-header
-          :name="river.river"
-          :section="river.section"
-        />
+        <river-header :name="river.river" :section="river.section" />
         <div class="tabs-wrapper">
           <cv-overflow-menu>
             <cv-overflow-menu-item>Link Resources</cv-overflow-menu-item>
@@ -50,27 +43,26 @@ import {
   rapidsActions,
   galleryActions
 } from "./shared/state";
+
 export default {
   name: "RiverDetail",
   components: {
     "river-header": RiverHeader
   },
-  data: () => {
-    return {
-      selected: true,
-      prevRoute: null,
-      tabs: [
-        "Main",
-        "Flow",
-        "Weather",
-        "Map",
-        "Gallery",
-        "News",
-        "Accidents",
-        "Credits"
-      ]
-    };
-  },
+  data: () => ({
+    selected: true,
+    prevRoute: null,
+    tabs: [
+      "Main",
+      "Flow",
+      "Weather",
+      "Map",
+      "Gallery",
+      "News",
+      "Accidents",
+      "Credits"
+    ]
+  }),
   computed: {
     riverId() {
       return this.$route.params.id;
@@ -97,7 +89,9 @@ export default {
        * cv-tabs emits indexof tab on click, use that to push to the correct tab
        * use $router.replace to avoid making log into history
        */
-      this.$router.replace(`/river-detail/${this.riverId}/${this.tabs[index].toLowerCase()}`)
+      this.$router.replace(
+        `/river-detail/${this.riverId}/${this.tabs[index].toLowerCase()}`
+      );
     },
     async resetStores() {
       await this.$store.dispatch(weatherActions.RESET_WEATHER_DATA);

@@ -12,27 +12,23 @@
           />
         </template>
         <template v-if="!loading && !error">
-          <div
-            v-for="(image, index) in media"
-            :key="index"
-            class="img-thumb"
-          >
+          <div v-for="(image, index) in media" :key="index" class="img-thumb">
             <template v-if="isVideo(image.file.ext)">
-              <div
-                class="thumb video"
-                @click="openLightbox(index)"
-              >
+              <div class="thumb video" @click="openLightbox(index)">
                 <h6>Video</h6>
-                <p>{{ image.description.slice(0,50)+'...' }}</p>
+                <p>{{ image.description.slice(0, 50) + "..." }}</p>
               </div>
             </template>
             <template v-else>
               <img
                 class="thumb"
                 :src="
-                  `https://prerelease.americanwhitewater.org${image.file.uri.thumb}`"
+                  `https://prerelease.americanwhitewater.org${
+                    image.file.uri.thumb
+                  }`
+                "
                 @click="openLightbox(index)"
-              >
+              />
             </template>
           </div>
         </template>
@@ -43,18 +39,16 @@
     </div>
     <template v-if="lightboxActive">
       <div class="lightbox">
-        <cv-button
-          kind="primary"
-          class="close-btn"
-          @click="closeLightbox"
-        >
+        <cv-button kind="primary" class="close-btn" @click="closeLightbox">
           Close
         </cv-button>
 
         <div class="grid-container">
           <div class="bx--grid">
             <div class="bx--row">
-              <div class="bx--col-sm-8 bx--col-md-8 bx--col-lg-12 bx--no-gutter--right">
+              <div
+                class="bx--col-sm-8 bx--col-md-8 bx--col-lg-12 bx--no-gutter--right"
+              >
                 <div class="media-container">
                   <!-- <img
                 :src="
@@ -70,10 +64,9 @@
                         <h1 class="mb-spacing-md">
                           Unable to play video
                         </h1>
-                        <p
-                          class="mb-spacing-md"
-                        >
-                          This file type cannot play in the browser. Download to view locally on your machine.
+                        <p class="mb-spacing-md">
+                          This file type cannot play in the browser. Download to
+                          view locally on your machine.
                         </p>
                         <cv-button
                           kind="tertiary"
@@ -84,15 +77,16 @@
                     </cv-tile>
                   </template>
                   <template v-else-if="isVideo(selectedMedia.file.ext)">
-                    <video
-                      width="320"
-                      height="240"
-                      controls
-                    >
+                    <video width="320" height="240" controls>
                       <source
-                        :src="`https://prerelease.americanwhitewater.org${selectedMedia.file.uri.big}`"
+                        :src="
+                          `https://prerelease.americanwhitewater.org${
+                            selectedMedia.file.uri.big
+                          }`
+                        "
                         :type="`video/${selectedMedia.file.ext}`"
-                      >Your browser does not support the video tag.
+                      />
+                      Your browser does not support the video tag.
                     </video>
                   </template>
                   <template v-else>
@@ -103,16 +97,15 @@
                         }`
                       "
                       alt="photo name"
-                    >
+                    />
                   </template>
                 </div>
               </div>
-              <div class="bx--col-sm-4 bx--col-md-4 bx--col-lg-4 bx--no-gutter--left">
+              <div
+                class="bx--col-sm-4 bx--col-md-4 bx--col-lg-4 bx--no-gutter--left"
+              >
                 <div class="media-info">
-                  <h5
-                    class="mb-spacing-md"
-                    v-text="selectedMedia.post.title"
-                  />
+                  <h5 class="mb-spacing-md" v-text="selectedMedia.post.title" />
                   <p>
                     Level {{ selectedMedia.post.reading }} [
                     {{ selectedMedia.post.metric }} ]
@@ -146,20 +139,19 @@
 </template>
 <script>
 import { galleryActions } from "../shared/state";
-import {LoadingBlock, ErrorBlock} from "@/app/global/components"
+import { LoadingBlock, ErrorBlock } from "@/app/global/components";
+
 export default {
   name: "GalleryTab",
   components: {
     ErrorBlock,
     LoadingBlock
   },
-  data: () => {
-    return {
-      galleryHttpConfig: "give me an error please",
-      lightboxActive: false,
-      selectedMediaIndex: null
-    };
-  },
+  data: () => ({
+    galleryHttpConfig: "give me an error please",
+    lightboxActive: false,
+    selectedMediaIndex: null
+  }),
   computed: {
     loading() {
       return this.$store.state.riverDetailState.galleryData.loading;

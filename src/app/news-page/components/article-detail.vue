@@ -2,11 +2,7 @@
   <div class="article-detail">
     <transition name="fade">
       <template v-if="loading">
-        <cv-loading
-          active
-          small
-          overlay
-        />
+        <cv-loading active small overlay />
       </template>
     </transition>
     <template v-if="!loading">
@@ -15,20 +11,14 @@
           <div class="bx--col">
             <div class="outside">
               <div class="inside">
-                <cv-breadcrumb
-                  aria-label="breadcrumb"
-                  no-trailing-slash
-                >
+                <cv-breadcrumb aria-label="breadcrumb" no-trailing-slash>
                   <cv-breadcrumb-item>
                     <cv-link to="/news">
                       News
                     </cv-link>
                   </cv-breadcrumb-item>
                   <cv-breadcrumb-item>
-                    <cv-link
-                      href="#"
-                      aria-current="page"
-                    >
+                    <cv-link href="#" aria-current="page">
                       Article Id: {{ this.$route.params.id }}
                     </cv-link>
                   </cv-breadcrumb-item>
@@ -37,10 +27,7 @@
             </div>
           </div>
         </div>
-        <page-header
-          :title="article.title"
-          :subtitle="article.posted"
-        />
+        <page-header :title="article.title" :subtitle="article.posted" />
         <div class="spacer" />
         <div class="bx--row">
           <div class="bx--col-sm-4 bx--col-md-2 bx--col-lg-1">
@@ -65,7 +52,7 @@
           </div>
           <!-- <div class="bx--col-sm-4 bx--col-md-2 bx--col-lg-2"> -->
           <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-12">
-            <hr>
+            <hr />
             <h2>Related News</h2>
             <!-- need to split up store for related articles  -->
           </div>
@@ -75,12 +62,13 @@
   </div>
 </template>
 <script>
-import { newsActions } from "../shared/state";
-import { PageHeader } from "../../global/components";
 import virtual_LogoFacebook24 from "@carbon/icons-vue/es/logo--facebook/24";
 import virtual_LogoLinkedIn24 from "@carbon/icons-vue/es/logo--linkedin/24";
 import virtual_LogoGoogle24 from "@carbon/icons-vue/es/logo--google/24";
 import virtual_Email24 from "@carbon/icons-vue/es/email/24";
+import { PageHeader } from "../../global/components";
+import { newsActions } from "../shared/state";
+
 export default {
   name: "ArticleDetail",
   components: {

@@ -17,13 +17,12 @@ const mutationTypes = reflectKeys(
 const { ERROR, LOADING, EDIT_MODE, RESET, NEW_UPDATE } = mutationTypes;
 
 const mutations = {
-
   [LOADING](state, payload) {
-    Object.assign(state, { loading: payload});
+    Object.assign(state, { loading: payload });
   },
 
   [NEW_UPDATE](state, payload) {
-    Object.assign(state, { updateAvailable: payload});
+    Object.assign(state, { updateAvailable: payload });
   },
 
   [ERROR](state, payload) {

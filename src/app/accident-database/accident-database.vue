@@ -3,10 +3,9 @@
     <page-header title="Accident Database" />
     <div class="bx--row pt-lg">
       <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-6">
-        <p
-          class="mb-spacing-md"
-        >
-          To access an accident report, visit the Accidents Tab on a river detail page. Or, click the button below for a preselected report.
+        <p class="mb-spacing-md">
+          To access an accident report, visit the Accidents Tab on a river
+          detail page. Or, click the button below for a preselected report.
         </p>
         <cv-button @click="viewAccidentDetail">
           Report Demo
@@ -18,6 +17,7 @@
 <script>
 import { PageHeader } from "../global/components";
 import { accidentDatabaseActions, accidentDetailActions } from "./shared/state";
+
 export default {
   name: "AccidentDatabase",
   components: {
@@ -39,7 +39,7 @@ export default {
         accidentDetailActions.GET_ACCIDENT_DETAIL_DATA,
         "3452"
       );
-      this.$router.push(`/accident-database/3088`);
+      this.$router.push("/accident-database/3088");
     },
     loadAccidents() {
       this.$store.dispatch(accidentDatabaseActions.GET_ACCIDENT_DATABASE_DATA);

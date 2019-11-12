@@ -1,9 +1,6 @@
 <template>
   <div class="beta-box">
-    <table
-      v-if="!loading"
-      class="bx--data-table bx--data-table--zebra"
-    >
+    <table v-if="!loading" class="bx--data-table bx--data-table--zebra">
       <tr>
         <td>Difficulty</td>
         <td>{{ river.class }}</td>
@@ -43,7 +40,7 @@
 export default {
   name: "BetaBox",
   filters: {
-    capitalize: function(value) {
+    capitalize(value) {
       if (!value) return "";
       value = value.toString();
       return value.charAt(0).toUpperCase() + value.slice(1);
@@ -66,12 +63,13 @@ export default {
 }
 td {
   vertical-align: middle;
-  background-color:transparent;
+  background-color: transparent;
 }
 tr {
   @include ease;
-  &:hover , &:focus {
-    background-color:$ui-02;
+  &:hover,
+  &:focus {
+    background-color: $ui-02;
   }
 }
 </style>

@@ -5,9 +5,9 @@ import { riverDetailState } from "./river-detail";
 import { newsPageState } from "./news-page";
 import { usersState } from "./users";
 import { riverSearchState } from "./river-search";
-import { accidentDatabaseState } from "./accident-database"
-import { appGlobalState} from "@/app/global/state"
-import { nwiMapState } from "./nwi-map"
+import { accidentDatabaseState } from "./accident-database";
+import { appGlobalState } from "@/app/global/state";
+import { nwiMapState } from "./nwi-map";
 
 Vue.use(Vuex);
 

@@ -52,22 +52,21 @@
   </div>
 </template>
 <script>
+import moment from "moment";
 import { metricsActions, readingsActions } from "../../shared/state";
 import { gageHttpConfig } from "../../shared/mixins";
-import moment from "moment";
+
 export default {
   name: "GageChartControls",
   mixins: [gageHttpConfig],
-  data: () => {
-    return {
-      gageLabel: "",
-      selectedSettings: {
-        label: "Reach Gages",
-        gage_name: "",
-        timeScale: "day"
-      }
-    };
-  },
+  data: () => ({
+    gageLabel: "",
+    selectedSettings: {
+      label: "Reach Gages",
+      gage_name: "",
+      timeScale: "day"
+    }
+  }),
   computed: {
     storePath() {
       return this.$store.state.riverDetailState;
@@ -85,9 +84,8 @@ export default {
     oneGauge() {
       if (this.gauges.length === 1) {
         return true;
-      } else {
-        return false;
       }
+      return false;
     },
     metrics() {
       // TODO: only show metrics that the reach has readings for

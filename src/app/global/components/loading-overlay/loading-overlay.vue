@@ -2,11 +2,7 @@
   <div class="loading-overlay">
     <transition name="fade">
       <template v-if="loading">
-        <cv-loading
-          active
-          small
-          overlay
-        />
+        <cv-loading active small overlay />
       </template>
     </transition>
   </div>
@@ -14,17 +10,16 @@
 
 <script>
 export default {
-  name:'LoadingOverlay',
+  name: "LoadingOverlay",
   computed: {
-      loading() {
-          return this.$store.state.globalAppState.globalAppData.loading
-      }
+    loading() {
+      return this.$store.state.globalAppState.globalAppData.loading;
+    }
   }
 };
 </script>
 
 <style lang="scss">
 .loading-overlay {
-
 }
 </style>

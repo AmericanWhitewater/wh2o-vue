@@ -1,9 +1,9 @@
 const newsPageRoutes = [
   {
     path: "/news",
-    name: 'news',
+    name: "news",
     meta: {
-      crumbLabel: 'News'
+      crumbLabel: "News"
     },
     component: () => import("./news-page.vue")
   },
@@ -11,7 +11,7 @@ const newsPageRoutes = [
     path: "/article/:id",
     name: "article-detail",
     meta: {
-      crumbLabel: 'Article Name'
+      crumbLabel: "Article Name"
     },
     component: () => import("./components/article-detail.vue")
   }

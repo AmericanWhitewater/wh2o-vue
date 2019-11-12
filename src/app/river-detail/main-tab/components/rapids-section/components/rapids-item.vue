@@ -26,7 +26,7 @@
                     }`
                   "
                   :alt="rapid.name"
-                >
+                />
               </div>
             </div>
           </div>
@@ -40,6 +40,7 @@
 </template>
 <script>
 import RapidIconBar from "./rapid-icon-bar";
+
 export default {
   name: "RapidsItem",
   components: {

@@ -8,7 +8,7 @@ import App from "./app/app.vue";
 import "./app/assets/scss/app.scss";
 import router from "./app/app-routes";
 import store from "./app/app-state";
-import './registerServiceWorker'
+import "./registerServiceWorker";
 
 Vue.use(CarbonComponents);
 

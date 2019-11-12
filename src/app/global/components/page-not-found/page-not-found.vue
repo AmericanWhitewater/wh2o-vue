@@ -6,7 +6,9 @@
           <h2 class="mb-spacing-md">
             404
           </h2>
-          <p>Sorry, the page you are looking for is missing or doesn't exist.</p>
+          <p>
+            Sorry, the page you are looking for is missing or doesn't exist.
+          </p>
         </div>
       </div>
     </div>
@@ -19,7 +21,7 @@ export default {
 };
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .page-not-found {
   @include full-page-height;
   display: flex;

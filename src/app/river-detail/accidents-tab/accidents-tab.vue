@@ -25,10 +25,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr
-                    v-for="(a,index) in accidents"
-                    :key="index"
-                  >
+                  <tr v-for="(a, index) in accidents" :key="index">
                     <td v-text="'{ date }'" />
                     <td v-text="'{ flow }'" />
                     <td v-text="'{ result }'" />
@@ -57,8 +54,9 @@
 </template>
 <script>
 import { accidentsActions } from "../shared/state";
-import {accidentDetailActions} from "@/app/accident-database/shared/state"
+import { accidentDetailActions } from "@/app/accident-database/shared/state";
 import { LoadingBlock, ErrorBlock } from "@/app/global/components";
+
 export default {
   name: "AccidentsTab",
   components: {
@@ -91,9 +89,12 @@ export default {
         );
       }
     },
-    viewAccident(accidentId){
-      this.$store.dispatch(accidentDetailActions.GET_ACCIDENT_DETAIL_DATA, this.riverId)
-      this.$router.push(`/accident-database/${accidentId}`)
+    viewAccident(accidentId) {
+      this.$store.dispatch(
+        accidentDetailActions.GET_ACCIDENT_DETAIL_DATA,
+        this.riverId
+      );
+      this.$router.push(`/accident-database/${accidentId}`);
     }
   }
 };

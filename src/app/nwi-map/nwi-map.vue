@@ -11,16 +11,15 @@
           <div class="outside">
             <div class="inside map">
               <static-us-map @stateClicked="fetchRivers" />
-              <div
-                class="expand-toggle"
-                @click="toggleFocus"
-              >
+              <div class="expand-toggle" @click="toggleFocus">
                 <div v-text="expandToggleTxt" />
               </div>
             </div>
           </div>
         </div>
-        <div :class="[mapFocused ? unfocusedArea : focusedArea, 'sidebar-wrapper']">
+        <div
+          :class="[mapFocused ? unfocusedArea : focusedArea, 'sidebar-wrapper']"
+        >
           <div class="outside">
             <div class="inside sidebar">
               <template v-if="riverSearchHttpConfig.state">
@@ -28,7 +27,7 @@
               </template>
               <template v-else>
                 <h1>Select a State</h1>
-                <hr>
+                <hr />
               </template>
               <div class="bx--row">
                 <div class="bx--col mb-spacing-md">
@@ -53,7 +52,7 @@
                     <tr>
                       <th>
                         <strong>River Name</strong>
-                        <br>Section
+                        <br />Section
                       </th>
                       <th>Class</th>
                       <th>Flow</th>
@@ -62,22 +61,17 @@
                   </thead>
                   <tbody>
                     <template v-if="!loadingResults">
-                      <tr
-                        v-for="(r, index) in searchResults"
-                        :key="index"
-                      >
+                      <tr v-for="(r, index) in searchResults" :key="index">
                         <td :class="r.cond">
                           <span @click="viewRiver(r.id)">
                             <strong>{{ r.name }}</strong>
-                            <br>
+                            <br />
                             {{ r.section }}
                           </span>
                         </td>
                         <td>{{ r.class }}</td>
                         <td>
-                          <template
-                            v-if="parseInt(r.reading_formatted)"
-                          >
+                          <template v-if="parseInt(r.reading_formatted)">
                             {{ r.reading_formatted }} [{{ r.reading_delta }}]
                           </template>
                           <template v-else>
@@ -121,6 +115,7 @@ import {
   InternationalReaches,
   LevelsList
 } from "../river-search/shared/mixins";
+
 export default {
   name: "NwiMap",
   components: {
@@ -128,19 +123,17 @@ export default {
     LoadingBlock
   },
   mixins: [riverSearchHttpConfig, InternationalReaches, LevelsList],
-  data: () => {
-    return {
-      expandToggleTxt: "Hide",
-      mapFocused: true,
-      focusedArea: "bx--col-sm-4 bx--col-md-6 bx--col-lg-12",
-      unfocusedArea: "bx--col-sm-4 bx--col-md-2 bx--col-lg-4",
-      location: null,
-      coords: {
-        lat: null,
-        lon: null
-      }
-    };
-  },
+  data: () => ({
+    expandToggleTxt: "Hide",
+    mapFocused: true,
+    focusedArea: "bx--col-sm-4 bx--col-md-6 bx--col-lg-12",
+    unfocusedArea: "bx--col-sm-4 bx--col-md-2 bx--col-lg-4",
+    location: null,
+    coords: {
+      lat: null,
+      lon: null
+    }
+  }),
   computed: {
     searchResults() {
       if (this.$store.state.riverSearchState.riverSearchData.data) {
@@ -148,9 +141,8 @@ export default {
           0,
           50
         );
-      } else {
-        return null;
       }
+      return null;
     },
     loadingResults() {
       return this.$store.state.riverSearchState.riverSearchData.loading;
@@ -172,7 +164,7 @@ export default {
       }
     },
     fetchRivers(data) {
-      this.riverSearchHttpConfig.state = "st" + data;
+      this.riverSearchHttpConfig.state = `st${data}`;
       this.$store.dispatch(
         riverSearchActions.FETCH_RIVER_SEARCH_DATA,
         this.riverSearchHttpConfig

@@ -4,40 +4,22 @@
       <div class="bx--row">
         <div class="bx--col">
           <cv-list>
-            <cv-list-item
-              v-for="(k,index) in navItems.topbar"
-              :key="index"
-            >
-              <cv-link
-                :to="k.path"
-                v-text="k.title"
-              />
+            <cv-list-item v-for="(k, index) in navItems.topbar" :key="index">
+              <cv-link :to="k.path" v-text="k.title" />
             </cv-list-item>
           </cv-list>
         </div>
         <div class="bx--col">
           <cv-list>
-            <cv-list-item
-              v-for="(k,index) in navItems.primary"
-              :key="index"
-            >
-              <cv-link
-                :to="k.path"
-                v-text="k.title"
-              />
+            <cv-list-item v-for="(k, index) in navItems.primary" :key="index">
+              <cv-link :to="k.path" v-text="k.title" />
             </cv-list-item>
           </cv-list>
         </div>
         <div class="bx--col">
           <cv-list>
-            <cv-list-item
-              v-for="(k,index) in navItems.footer"
-              :key="index"
-            >
-              <cv-link
-                :to="k.path"
-                v-text="k.title"
-              />
+            <cv-list-item v-for="(k, index) in navItems.footer" :key="index">
+              <cv-link :to="k.path" v-text="k.title" />
             </cv-list-item>
           </cv-list>
         </div>
@@ -48,6 +30,7 @@
 
 <script>
 import { navItems } from "@/app/global/mixins";
+
 export default {
   name: "AppFooter",
   mixins: [navItems]

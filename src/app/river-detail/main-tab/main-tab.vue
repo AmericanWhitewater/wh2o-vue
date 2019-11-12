@@ -26,15 +26,14 @@
   </div>
 </template>
 <script>
-import {
-  LoadingBlock
-} from '@/app/global/components'
+import { LoadingBlock } from "@/app/global/components";
 import {
   SideBar,
   BetaBox,
   RapidsSection,
   RiverDescription
 } from "./components";
+
 export default {
   name: "MainTab",
   components: {

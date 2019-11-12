@@ -7,7 +7,7 @@ we can make the editor a stand alone component and pass the editable content as 
 
 <template>
   <main class="bx--col-sm-4 bx--col-md-6 bx--col-lg-8">
-    <hr>
+    <hr />
     <h2 class="mb-spacing-md">
       River Description
     </h2>
@@ -21,7 +21,8 @@ we can make the editor a stand alone component and pass the editable content as 
   </main>
 </template>
 <script>
-import {ContentEditor} from "@/app/global/components";
+import { ContentEditor } from "@/app/global/components";
+
 export default {
   name: "RiverDescription",
   components: { ContentEditor },
@@ -29,7 +30,7 @@ export default {
     river() {
       return this.$store.state.riverDetailState.riverDetailData.data;
     },
-     editMode() {
+    editMode() {
       return this.$store.state.appGlobalState.appGlobalData.editMode;
     }
   }

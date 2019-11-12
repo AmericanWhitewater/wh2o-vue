@@ -6,12 +6,10 @@
 import Breakpoints from "../services/breakpoints/breakpoints";
 
 export const CheckWindow = {
-  data: () => {
-    return {
-      breakpoints: Breakpoints,
-      windowWidth: 0
-    };
-  },
+  data: () => ({
+    breakpoints: Breakpoints,
+    windowWidth: 0
+  }),
   methods: {
     updateStoredWindowWidth() {
       this.windowWidth = window.innerWidth;

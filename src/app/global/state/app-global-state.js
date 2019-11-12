@@ -1,10 +1,7 @@
-import {
+import { appGlobalData } from "./index";
+
+export default {
+  modules: {
     appGlobalData
-  } from "./index";
-  
-  export default {
-    modules: {
-        appGlobalData
-    }
-  };
-  
+  }
+};

@@ -11,21 +11,27 @@ need to set width auto, and match bx--grid right positioning.
     <div class="bx--grid">
       <div class="bx--row">
         <div class="bx--col">
-          <transition-group
-            name="list"
-            tag="ul"
-          >
-            <li
-              v-for="(t, index) in toasts"
-              :key="index"
-            >
-              <cv-toast-notification
-                :kind="t.kind"
-                :title="t.title"
-                :sub-title="t.subtitle"
-                :low-contrast="t.lowContrast"
-                @close="handleClose(index)"
-              />
+          <transition-group name="list" tag="ul">
+            <li v-for="(t, index) in toasts" :key="t.title">
+              <template v-if="t.action">
+                <cv-inline-notification
+                  ref="toast"
+                  :kind="t.kind"
+                  :title="t.title"
+                  :low-contrast="t.lowContrast"
+                  @close="handleClose(index)"
+                />
+              </template>
+              <template v-else>
+                <cv-toast-notification
+                  v-if="t.toast"
+                  :kind="t.kind"
+                  :title="t.title"
+                  :sub-title="t.subtitle"
+                  :low-contrast="t.lowContrast"
+                  @close="handleClose(index)"
+                />
+              </template>
             </li>
           </transition-group>
         </div>
@@ -34,19 +40,19 @@ need to set width auto, and match bx--grid right positioning.
   </div>
 </template>
 <script>
+/* eslint-disable no-console */
 export default {
   name: "AppToaster",
-  data: () => {
-    return {
-      newUpdate: {
-        title: "App Update Available",
-        subtitle: "please refresh",
-        kind: "info",
-        lowContrast: true
-      },
-      toasts: []
-    };
-  },
+  data: () => ({
+    newUpdate: {
+      title: "App Update Available",
+      actionLabel: "Install",
+      kind: "info",
+      lowContrast: false,
+      action: true
+    },
+    toasts: []
+  }),
   computed: {
     updateAvailable() {
       return this.$store.state.appGlobalState.appGlobalData.updateAvailable;
@@ -57,6 +63,9 @@ export default {
       this.toasts.push(this.newUpdate);
     }
   },
+  mounted() {
+    this.toasts.push(this.newUpdate);
+  },
   methods: {
     handleClose(index) {
       if (index === 0) {
@@ -65,9 +74,11 @@ export default {
       if (index === 1) {
         this.toasts.pop();
       }
+    },
+    handleUpdate() {
+      console.log("user initiated update");
     }
-  },
-  mounted() {}
+  }
 };
 </script>
 <style lang="scss" scoped>

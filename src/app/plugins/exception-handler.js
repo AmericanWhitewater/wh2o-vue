@@ -7,5 +7,11 @@ Vue.config.errorHandler = (err, vm, info) => {
 };
 
 window.onerror = function(message, source, lineno, colno, error) {
-  logger.logToServer({ message, source, lineno, colno, error });
+  logger.logToServer({
+    message,
+    source,
+    lineno,
+    colno,
+    error
+  });
 };

@@ -2,37 +2,22 @@
   <div class="bx--grid">
     <div class="bx--row">
       <div class="bx--col-sm-12 bx--col-lg-16">
-        <div :class="[{ 'home' : $route.name === 'home' },'app-breadcrumbs']">
-          <cv-breadcrumb
-            aria-label="breadcrumb"
-            no-trailing-slash
-          >
+        <div :class="[{ home: $route.name === 'home' }, 'app-breadcrumbs']">
+          <cv-breadcrumb aria-label="breadcrumb" no-trailing-slash>
             <cv-breadcrumb-item>
-              <cv-link
-                to="/"
-                aria-current="page"
-              >
+              <cv-link to="/" aria-current="page">
                 Home
               </cv-link>
             </cv-breadcrumb-item>
             <template v-if="crumbs.length <= 2">
-              <cv-breadcrumb-item
-                v-for="(crumb, index) in crumbs"
-                :key="index"
-              >
-                <template v-if="index+1 !== crumbs.length">
-                  <cv-link
-                    :to="crumb.path"
-                    aria-current="page"
-                  >
+              <cv-breadcrumb-item v-for="(crumb, index) in crumbs" :key="index">
+                <template v-if="index + 1 !== crumbs.length">
+                  <cv-link :to="crumb.path" aria-current="page">
                     {{ getLabel(crumb.label) }}
                   </cv-link>
                 </template>
                 <template v-else>
-                  <cv-link
-                    href="#"
-                    aria-current="page"
-                  >
+                  <cv-link href="#" aria-current="page">
                     {{ getLabel(crumb.label) }}
                   </cv-link>
                 </template>
@@ -40,19 +25,15 @@
             </template>
             <template v-else>
               <cv-breadcrumb-item>
-                <cv-dropdown
-                  placeholder="..."
-                  value="  "
-                >
+                <cv-dropdown placeholder="..." value="  ">
                   <cv-dropdown-item
-                    v-for="(crumb, index) in crumbs.slice(0, crumbs.length-2).reverse()"
+                    v-for="(crumb, index) in crumbs
+                      .slice(0, crumbs.length - 2)
+                      .reverse()"
                     :key="index"
                     :value="index.toString()"
                   >
-                    <cv-link
-                      :to="crumb.path"
-                      aria-current="page"
-                    >
+                    <cv-link :to="crumb.path" aria-current="page">
                       {{ getLabel(crumb.label) }}
                     </cv-link>
                   </cv-dropdown-item>
@@ -60,18 +41,15 @@
               </cv-breadcrumb-item>
               <cv-breadcrumb-item>
                 <cv-link
-                  :to="crumbs[crumbs.length-2].path"
+                  :to="crumbs[crumbs.length - 2].path"
                   aria-current="page"
                 >
-                  {{ getLabel(crumbs[crumbs.length-2].label) }}
+                  {{ getLabel(crumbs[crumbs.length - 2].label) }}
                 </cv-link>
               </cv-breadcrumb-item>
               <cv-breadcrumb-item>
-                <cv-link
-                  href="#"
-                  aria-current="page"
-                >
-                  {{ getLabel(crumbs[crumbs.length-1].label) }}
+                <cv-link href="#" aria-current="page">
+                  {{ getLabel(crumbs[crumbs.length - 1].label) }}
                 </cv-link>
               </cv-breadcrumb-item>
             </template>
@@ -95,15 +73,13 @@
 
 export default {
   name: "AppBreadcrumbs",
-  data: () => {
-    return {
-      prevRoute: {
-        path: null,
-        label: null
-      },
-      crumbs: []
-    };
-  },
+  data: () => ({
+    prevRoute: {
+      path: null,
+      label: null
+    },
+    crumbs: []
+  }),
   computed: {
     currentPage() {
       return this.$route;
@@ -127,7 +103,7 @@ export default {
         this.prevRoute.label = this.currentPage.meta.crumbLabel;
         this.prevRoute.path = this.currentPage.path;
         // strip out data. stays reactive otherwise.
-        let data = Object.assign({}, this.prevRoute);
+        const data = Object.assign({}, this.prevRoute);
         this.crumbs.push(data);
       }
     },
@@ -135,14 +111,12 @@ export default {
       // crumb.label
 
       if (label === "River Detail") {
-        let currentRiver =
-          this.$store.state.riverDetailState.riverDetailData.data.river +
-          " - " +
-          this.$store.state.riverDetailState.riverDetailData.data.section;
-        return currentRiver.slice(0, 20) + "...";
-      } else {
-        return label;
+        const currentRiver = `${
+          this.$store.state.riverDetailState.riverDetailData.data.river
+        } - ${this.$store.state.riverDetailState.riverDetailData.data.section}`;
+        return `${currentRiver.slice(0, 20)}...`;
       }
+      return label;
     }
   }
 };

@@ -1,13 +1,6 @@
 <template>
-  <div
-    id="loading-block"
-    :style="`height:${height}px`"
-  >
-    <cv-inline-loading
-      small
-      state="loading"
-      :loading-text="text"
-    />
+  <div id="loading-block" :style="`height:${height}px`">
+    <cv-inline-loading small state="loading" :loading-text="text" />
   </div>
 </template>
 <script>

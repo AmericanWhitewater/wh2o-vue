@@ -18,7 +18,8 @@
   </div>
 </template>
 <script>
-import EditModeToggle from "../edit-mode-toggle/edit-mode-toggle"
+import EditModeToggle from "../edit-mode-toggle/edit-mode-toggle";
+
 export default {
   name: "PageHeader",
   components: {
@@ -40,11 +41,9 @@ export default {
       default: false
     }
   },
-  data: () => {
-    return {
-      showConfirmation: false
-    };
-  }
+  data: () => ({
+    showConfirmation: false
+  })
 };
 </script>
 <style lang="scss">
@@ -65,27 +64,25 @@ export default {
     justify-content: flex-end;
     padding-bottom: $spacing-lg;
   }
-     h1,
-    h4 {
-      // padding: 0.25rem 0.5rem 0.2rem 2rem;
-     
-      background-color: #fff;
-      width: fit-content;
-    }
-    h1 {
-      margin-bottom: $spacing-sm;
-       padding: 11px 12px 11px 2rem;
-    }
-    h4 {
-       padding: 11px 12px 0 2rem;
-    }
+  h1,
+  h4 {
+    // padding: 0.25rem 0.5rem 0.2rem 2rem;
+
+    background-color: #fff;
+    width: fit-content;
+  }
+  h1 {
+    margin-bottom: $spacing-sm;
+    padding: 11px 12px 11px 2rem;
+  }
+  h4 {
+    padding: 11px 12px 0 2rem;
+  }
   .bx--overflow-menu {
     background-color: $ui-02;
   }
   .bx--grid {
-  padding-left: 0;
+    padding-left: 0;
+  }
 }
-}
-
-
 </style>

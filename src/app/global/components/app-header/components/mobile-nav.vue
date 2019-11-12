@@ -46,10 +46,7 @@
       </div>
     </div>
     <transition name="slide">
-      <div
-        v-if="drawerOpen"
-        class="drawer pt-md"
-      >
+      <div v-if="drawerOpen" class="drawer pt-md">
         <!-- <cv-search small v-model="searchTerm" label="Search label"> </cv-search> -->
         <cv-button
           v-for="item in topBarItems"
@@ -72,16 +69,12 @@
       </div>
     </transition>
     <transition name="fade">
-      <div
-        v-if="drawerOpen"
-        class="overlay"
-        @click="drawerOpen = false"
-      />
+      <div v-if="drawerOpen" class="overlay" @click="drawerOpen = false" />
     </transition>
   </header>
 </template>
 <script>
-import AwLogo from "./aw-logo";
+import AwLogo from "@/app/global/components/logo-library/aw-logo";
 import { CheckWindow } from "../../../mixins";
 export default {
   name: "MobileNav",

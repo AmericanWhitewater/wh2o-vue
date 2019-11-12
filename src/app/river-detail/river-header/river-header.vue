@@ -12,10 +12,7 @@
           </div>
         </div>
         <div class="bx--col">
-          <div
-            v-show="editMode"
-            class="edit-icons"
-          >
+          <div v-show="editMode" class="edit-icons">
             <cv-button small>
               Drag Icon
             </cv-button>
@@ -26,35 +23,26 @@
         </div>
       </div>
     </div>
-    <cv-modal
-      v-if="showConfirmation"
-      kind="danger"
-      :visible="showConfirmation"
-    >
+    <cv-modal v-if="showConfirmation" kind="danger" :visible="showConfirmation">
       <!-- <template slot="label">label</template> -->
-      <template
-        slot="title"
-      >
+      <template slot="title">
         Are you sure?
       </template>
       <template slot="content">
         <p>This action cannot be undone.</p>
       </template>
-      <template
-        slot="secondary-button"
-      >
+      <template slot="secondary-button">
         Cancel
       </template>
-      <template
-        slot="primary-button"
-      >
+      <template slot="primary-button">
         OK
       </template>
     </cv-modal>
   </section>
 </template>
 <script>
-import {EditModeToggle} from "@/app/global/components"
+import { EditModeToggle } from "@/app/global/components";
+
 export default {
   name: "RiverHeader",
   components: {
@@ -72,20 +60,17 @@ export default {
       default: null
     }
   },
-  data: () => {
-    return {
-      showConfirmation: false
-    };
-  },
+  data: () => ({
+    showConfirmation: false
+  }),
   computed: {
     reachId() {
       return this.$route.params.id;
     },
-     editMode() {
+    editMode() {
       return this.$store.state.appGlobalState.appGlobalData.editMode;
     }
-  },
-
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -106,22 +91,21 @@ section {
       justify-content: flex-end;
       padding-bottom: $spacing-lg;
     }
-      h1,
+    h1,
     h4 {
       background-color: #fff;
       width: fit-content;
     }
     h1 {
       margin-bottom: $spacing-sm;
-       padding: 11px 12px 11px 2rem;
+      padding: 11px 12px 11px 2rem;
     }
     h4 {
-       padding: 11px 12px 0 2rem;
+      padding: 11px 12px 0 2rem;
     }
   }
 }
 .bx--grid {
   padding-left: 0;
 }
-
 </style>

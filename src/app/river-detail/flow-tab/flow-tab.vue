@@ -46,6 +46,7 @@ import { SkeletonBlock } from "../../global/components";
 import { GageReadings, GageChartControls, GageChart } from "./components";
 import { GageChartConfig } from "./utils/gage-chart-config";
 import { gageHttpConfig } from "../shared/mixins";
+
 export default {
   name: "FlowTab",
   components: {
@@ -55,19 +56,17 @@ export default {
     SkeletonBlock
   },
   mixins: [GageChartConfig, gageHttpConfig],
-  data: () => {
-    return {
-      gageDetailView: false,
-      formattedData: {
-        datasets: [
-          {
-            data: []
-          }
-        ],
-        labels: []
-      }
-    };
-  },
+  data: () => ({
+    gageDetailView: false,
+    formattedData: {
+      datasets: [
+        {
+          data: []
+        }
+      ],
+      labels: []
+    }
+  }),
   computed: {
     storePath() {
       return this.$store.state.riverDetailState;
@@ -78,9 +77,8 @@ export default {
         this.storePath.gageReadingsData.loading
       ) {
         return true;
-      } else {
-        return false;
       }
+      return false;
     },
     readingsLoading() {
       return this.storePath.gageReadingsData.loading;

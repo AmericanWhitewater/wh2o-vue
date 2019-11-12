@@ -7,7 +7,7 @@ const usersRoutes = [
         path: "login",
         name: "login",
         meta: {
-          crumbLabel: 'Login'
+          crumbLabel: "Login"
         },
         component: () => import("./components/users-login.vue")
       },
@@ -15,7 +15,7 @@ const usersRoutes = [
         path: "register",
         name: "register",
         meta: {
-          crumbLabel: 'Login'
+          crumbLabel: "Login"
         },
         component: () => import("./components/users-register.vue")
       }

@@ -5,19 +5,14 @@
         <div class="bx--col-md-4 bx--offset-md-2 bx--col-lg-5 bx--offset-lg-5">
           <div class="tile-header mb-spacing-sm">
             <h2>
-              <router-link
-                to="/users/login"
-                v-text="'Login'"
-              />
+              <router-link to="/users/login" v-text="'Login'" />
             </h2>
             <span>
               <!-- need to work on this guy... -->
-              Or</span>
+              Or</span
+            >
             <h2>
-              <router-link
-                to="/users/register"
-                v-text="'Register'"
-              />
+              <router-link to="/users/register" v-text="'Register'" />
             </h2>
           </div>
         </div>

@@ -6,8 +6,8 @@ import { newsPageRoutes } from "./news-page";
 import { nwiMapRoutes } from "./nwi-map";
 import { usersRoutes } from "./users";
 import { riverSearchRoutes } from "./river-search";
-import { accidentDatabaseRoutes} from "./accident-database"
-import staticRoutes from "./static-routes/static-routes"
+import { accidentDatabaseRoutes } from "./accident-database";
+import staticRoutes from "./static-routes/static-routes";
 
 Vue.use(Router);
 

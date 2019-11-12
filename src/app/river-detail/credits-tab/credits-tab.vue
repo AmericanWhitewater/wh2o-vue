@@ -4,10 +4,7 @@
       <loading-block text="Loading Credits..." />
     </template>
     <template v-if="!loading && error">
-      <error-block
-        title="Credits unavailable"
-        text="please try again later"
-      />
+      <error-block title="Credits unavailable" text="please try again later" />
     </template>
     <template v-if="!loading && !error">
       <div class>
@@ -18,18 +15,17 @@
 </template>
 <script>
 import { creditsActions } from "../shared/state";
-import {LoadingBlock, ErrorBlock} from "@/app/global/components"
+import { LoadingBlock, ErrorBlock } from "@/app/global/components";
+
 export default {
   name: "CreditsTab",
   components: {
     ErrorBlock,
     LoadingBlock
   },
-  data: () => {
-    return {
-      creditsHttpConfig: "let there be error"
-    };
-  },
+  data: () => ({
+    creditsHttpConfig: "let there be error"
+  }),
   computed: {
     loading() {
       return this.$store.state.riverDetailState.creditsData.loading;

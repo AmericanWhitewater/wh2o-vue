@@ -8,12 +8,7 @@
     >
       <title v-text="status" />
       <g :class="status">
-        <circle
-          cx="8"
-          cy="8"
-          r="8"
-          :class="status"
-        />
+        <circle cx="8" cy="8" r="8" :class="status" />
       </g>
     </svg>
   </span>
@@ -40,11 +35,11 @@ export default {
     status() {
       if (this.reading >= this.min && this.reading <= this.max) {
         return "recommended";
-      } else if (this.reading < this.min) {
-        return "low";
-      } else {
-        return "high";
       }
+      if (this.reading < this.min) {
+        return "low";
+      }
+      return "high";
     }
   }
 };

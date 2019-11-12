@@ -17,9 +17,7 @@ const mutationTypes = reflectKeys(
 
 const { DATA_ERROR, DATA_REQUEST, DATA_RESET, DATA_SUCCESS } = mutationTypes;
 
-
 const mutations = {
-
   [DATA_REQUEST](state) {
     Object.assign(state, { loading: true, error: null });
   },
@@ -35,7 +33,6 @@ const mutations = {
       error: payload || true
     });
   },
-
 
   [DATA_RESET](state) {
     Object.assign(state, ...initialState);

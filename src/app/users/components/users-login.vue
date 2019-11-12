@@ -12,23 +12,16 @@
       label="Password"
       type="password"
     />
-    <cv-button
-      kind="primary"
-      small
-      @click="submitLogin"
-      v-text="'Login'"
-    />
+    <cv-button kind="primary" small @click="submitLogin" v-text="'Login'" />
   </div>
 </template>
 <script>
 export default {
   name: "UsersLogin",
-  data: () => {
-    return {
-      userName: "",
-      passWord: ""
-    };
-  },
+  data: () => ({
+    userName: "",
+    passWord: ""
+  }),
   methods: {
     submitLogin() {
       alert("login submitted!!!!!!!!!!!!!");

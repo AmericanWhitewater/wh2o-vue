@@ -6,10 +6,7 @@
           <div class="bx--col-lg-16 top-bar">
             <template v-if="!editMode">
               <!-- <router-link to="/users/login">Login</router-link> -->
-              <router-link
-                to="/river-search"
-                class="ml-2xs"
-              >
+              <router-link to="/river-search" class="ml-2xs">
                 <icon-search />Search
               </router-link>
             </template>
@@ -18,11 +15,7 @@
               <h4 class="productive-heading-02">
                 Edit Mode
               </h4>
-              <cv-button
-                kind="tertiary"
-                small
-                @click="exitEditMode"
-              >
+              <cv-button kind="tertiary" small @click="exitEditMode">
                 Exit
               </cv-button>
             </template>
@@ -34,10 +27,7 @@
       <div class="bx--grid">
         <div class="bx--row">
           <div class="bx--col-lg-16 nav-main-content-area">
-            <router-link
-              v-show="!homePage"
-              to="/"
-            >
+            <router-link v-show="!homePage" to="/">
               <aw-logo />
             </router-link>
             <nav>
@@ -46,18 +36,12 @@
                 :key="index"
                 :to="item.path"
               >
-                <cv-button
-                  kind="ghost"
-                  small
-                >
+                <cv-button kind="ghost" small>
                   {{ item.title }}
                 </cv-button>
               </router-link>
               <router-link to="/users/login">
-                <cv-button
-                  kind="primary"
-                  small
-                >
+                <cv-button kind="primary" small>
                   Login
                 </cv-button>
               </router-link>
@@ -70,8 +54,9 @@
 </template>
 <script>
 import virtual_Search16 from "@carbon/icons-vue/es/search/16";
-import AwLogo from "./aw-logo";
+import AwLogo from "@/app/global/components/logo-library/aw-logo";
 import { globalAppActions } from "@/app/global/state";
+
 export default {
   name: "DesktopNav",
   components: {
@@ -81,25 +66,22 @@ export default {
   props: {
     navItems: {
       type: Array,
-      default: () => {
-        return null;
-      }
+      default: () => null
     }
   },
   computed: {
-     editMode() {
+    editMode() {
       return this.$store.state.appGlobalState.appGlobalData.editMode;
     },
     homePage() {
       if (this.$route.name === "home") {
         return true;
-      } else {
-        return false;
       }
+      return false;
     }
   },
   methods: {
-   exitEditMode() {
+    exitEditMode() {
       this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, false);
     }
   }

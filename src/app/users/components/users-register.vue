@@ -21,7 +21,6 @@
     <div class="mb-spacing-lg">
       <cv-checkbox
         v-model="newUser.termsConfirmed"
-      
         label="I agree to the terms"
         value="terms"
       />
@@ -37,15 +36,13 @@
 <script>
 export default {
   name: "UsersRegister",
-  data: () => {
-    return {
-      newUser: {
-        userName: "",
-        passWord: "",
-        termsConfirmed: false
-      }
-    };
-  },
+  data: () => ({
+    newUser: {
+      userName: "",
+      passWord: "",
+      termsConfirmed: false
+    }
+  }),
   methods: {
     viewTerms() {
       alert("view terms clicked");

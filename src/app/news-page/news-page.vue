@@ -10,16 +10,10 @@
           class="bx--col-sm-4 bx--col-md-6 bx--col-lg-4 mb-spacing-md"
         >
           <cv-tile class="news-tile">
-            <img :src="'/content/Photo/detail/photoid/' + article.uid">
+            <img :src="'/content/Photo/detail/photoid/' + article.uid" />
             <div class="content-area">
-              <h6
-                class="mb-spacing-xs"
-                v-text="article.posted"
-              />
-              <h4
-                class="mb-spacing-sm"
-                v-text="article.title"
-              />
+              <h6 class="mb-spacing-xs" v-text="article.posted" />
+              <h4 class="mb-spacing-sm" v-text="article.title" />
               <p
                 class="mb-spacing-md"
                 v-html="article.abstract.slice(0, 150) + '...'"
@@ -33,9 +27,7 @@
           </cv-tile>
         </div>
       </template>
-      <template
-        v-else
-      >
+      <template v-else>
         loading
       </template>
     </div>
@@ -44,6 +36,7 @@
 <script>
 import { PageHeader } from "../global/components";
 import { newsActions } from "./shared/state";
+
 export default {
   name: "NewsPage",
   components: {

@@ -1,9 +1,9 @@
 const accidentDatabaseRoutes = [
   {
     path: "/accident-database",
-    name: 'accident-database',
+    name: "accident-database",
     meta: {
-      crumbLabel: 'Accident Database'
+      crumbLabel: "Accident Database"
     },
     component: () => import("./accident-database.vue")
   },
@@ -11,7 +11,7 @@ const accidentDatabaseRoutes = [
     path: "/accident-database/:accidentId",
     name: "accident-detail",
     meta: {
-      crumbLabel: 'Accident ID'
+      crumbLabel: "Accident ID"
     },
     component: () => import("./components/accident-detail.vue")
   }

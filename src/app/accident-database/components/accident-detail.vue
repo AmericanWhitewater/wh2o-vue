@@ -14,10 +14,7 @@
             </h5>
             <h3 v-text="accident.victimname" />
           </div>
-          <div
-            v-if="accident.age"
-            class="bx--col"
-          >
+          <div v-if="accident.age" class="bx--col">
             <h5 class="mb-spacing-2xs">
               Age
             </h5>
@@ -30,7 +27,7 @@
               </h5>
               <cv-list>
                 <cv-list-item
-                  v-for="(k,index) in accident.injuries"
+                  v-for="(k, index) in accident.injuries"
                   :key="index"
                   v-text="k.injury"
                 />
@@ -50,7 +47,7 @@
               </h5>
               <cv-list>
                 <cv-list-item
-                  v-for="(k,index) in accident.factors"
+                  v-for="(k, index) in accident.factors"
                   :key="index"
                   v-text="k.facotrs"
                 />
@@ -70,7 +67,7 @@
               </h5>
               <cv-list>
                 <cv-list-item
-                  v-for="(k,index) in accident.causes"
+                  v-for="(k, index) in accident.causes"
                   :key="index"
                   v-text="k.cause"
                 />
@@ -87,7 +84,7 @@
 
         <div class="bx--row">
           <div class="bx--col-sm-12 bx--col-md-8 bx--col-lg-10">
-            <hr>
+            <hr />
             <h2 class="mb-spacing-md">
               Description
             </h2>
@@ -110,13 +107,21 @@
                 v-if="accident.river"
                 class="mb-spacing-sm"
                 @click="viewReach(accident.reach_id)"
-                v-html="`River - <span class='text-underline cursor-pointer'>${accident.river}</span>`"
+                v-html="
+                  `River - <span class='text-underline cursor-pointer'>${
+                    accident.river
+                  }</span>`
+                "
               />
               <h6
                 v-if="accident.section"
                 class="mb-spacing-sm "
                 @click="viewReach(accident.reach_id)"
-                v-html="`Section - <span class='text-underline cursor-pointer'>${accident.section}</span>`"
+                v-html="
+                  `Section - <span class='text-underline cursor-pointer'>${
+                    accident.section
+                  }</span>`
+                "
               />
 
               <h6
@@ -169,10 +174,7 @@
         </div>
       </template>
       <template v-else>
-        <loading-block
-          text=" "
-          class="mt-lg"
-        />
+        <loading-block text=" " class="mt-lg" />
       </template>
     </div>
   </div>
@@ -184,7 +186,12 @@
  * @todo clean up template. try merging data into one set for the <template v-ifs>
  *
  */
-import { PageHeader, ContentEditor, LoadingBlock } from "../../global/components";
+import {
+  PageHeader,
+  ContentEditor,
+  LoadingBlock
+} from "../../global/components";
+
 export default {
   name: "ArticleDetail",
   components: {
@@ -197,13 +204,13 @@ export default {
       return this.$route.params.accidentId;
     },
     accident() {
-      let data = this.$store.state.accidentDatabaseState.accidentDetailData
-        .data;
+      const {
+        data
+      } = this.$store.state.accidentDatabaseState.accidentDetailData;
       if (data) {
         return data.find(a => a.id === this.accidentId);
-      } else {
-        return null;
       }
+      return null;
     },
     loading() {
       return this.$store.state.accidentDatabaseState.accidentDetailData.loading;
@@ -214,7 +221,7 @@ export default {
   },
   methods: {
     viewReach(id) {
-      this.$router.push(`/river-detail/${id}/main`)
+      this.$router.push(`/river-detail/${id}/main`);
     }
   }
 };

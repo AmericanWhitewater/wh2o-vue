@@ -3,13 +3,21 @@
     <app-toaster />
     <app-header />
     <app-breadcrumbs />
-    <router-view class="app-main-content" />
+    <transition name="fade" mode="out-in">
+      <router-view class="app-main-content" />
+    </transition>
     <app-footer v-if="$route.name !== 'home'" />
   </div>
 </template>
 
 <script>
-import { AppToaster, AppHeader, AppBreadcrumbs, AppFooter } from "./global/components";
+import {
+  AppToaster,
+  AppHeader,
+  AppBreadcrumbs,
+  AppFooter
+} from "./global/components";
+
 export default {
   name: "App",
   components: {

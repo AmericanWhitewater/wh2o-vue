@@ -4,10 +4,7 @@
       <loading-block text="Loading Map..." />
     </template>
     <template v-if="!loading && error">
-      <error-block
-        title="Map unavailable"
-        text="please try again later"
-      />
+      <error-block title="Map unavailable" text="please try again later" />
     </template>
     <template v-if="!loading && !error">
       <div class>
@@ -18,21 +15,20 @@
 </template>
 <script>
 import { mapActions } from "../shared/state";
-import {LoadingBlock, ErrorBlock} from "@/app/global/components"
+import { LoadingBlock, ErrorBlock } from "@/app/global/components";
+
 export default {
   name: "MapTab",
   components: {
     ErrorBlock,
     LoadingBlock
   },
-  data: () => {
-    return {
-      mapHttpConfig: {
-        lat: null,
-        lon: null
-      }
-    };
-  },
+  data: () => ({
+    mapHttpConfig: {
+      lat: null,
+      lon: null
+    }
+  }),
   computed: {
     loading() {
       return this.$store.state.riverDetailState.mapData.loading;

@@ -3,7 +3,7 @@ const riverSearchRoutes = [
     path: "/river-search",
     name: "river-search",
     meta: {
-      crumbLabel: 'Search'
+      crumbLabel: "Search"
     },
     component: () => import("./river-search.vue")
   }
