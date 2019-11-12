@@ -18,7 +18,9 @@ need to set width auto, and match bx--grid right positioning.
                   ref="toast"
                   :kind="t.kind"
                   :title="t.title"
-                  :low-contrast="t.lowContrast"
+                  :low-contrast="t.contrast"
+                  :action-label="t.label"
+                  @action="refreshApp"
                   @close="handleClose(index)"
                 />
               </template>
@@ -44,11 +46,14 @@ need to set width auto, and match bx--grid right positioning.
 export default {
   name: "AppToaster",
   data: () => ({
+    refreshing: false,
+    registration: null,
+    updateExists: false,
     newUpdate: {
       title: "App Update Available",
-      actionLabel: "Install",
+      label: "Install",
       kind: "info",
-      lowContrast: false,
+      contrast: true,
       action: true
     },
     toasts: []
@@ -63,8 +68,13 @@ export default {
       this.toasts.push(this.newUpdate);
     }
   },
-  mounted() {
-    this.toasts.push(this.newUpdate);
+  created() {
+    document.addEventListener("swUpdated", this.showRefreshUI, { once: true });
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (this.refreshing) return;
+      this.refreshing = true;
+      window.location.reload();
+    });
   },
   methods: {
     handleClose(index) {
@@ -76,7 +86,18 @@ export default {
       }
     },
     handleUpdate() {
-      console.log("user initiated update");
+      window.location.reload(true);
+    },
+    showRefreshUI(e) {
+      this.registration = e.detail;
+      this.updateExists = true;
+    },
+    refreshApp() {
+      this.updateExists = false;
+      if (!this.registration || !this.registration.waiting) {
+        return;
+      }
+      this.registration.waiting.postMessage("skipWaiting");
     }
   }
 };

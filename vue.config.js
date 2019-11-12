@@ -12,7 +12,12 @@ module.exports = {
     themeColor: "#cdd1d4",
     msTileColor: "#FFFFFF",
     assetsVersion: Math.floor(Math.random() * 1000000000),
-    appleMobileWebAppCapable: "yes"
+    appleMobileWebAppCapable: "yes",
+    workboxPluginMode: "InjectManifest",
+    workboxOptions: {
+      swSrc: "./src/sw.js",
+      swDest: "service-worker.js"
+    }
   },
 
   chainWebpack: config => {
