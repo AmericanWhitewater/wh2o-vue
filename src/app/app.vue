@@ -3,9 +3,9 @@
     <app-toaster />
     <app-header />
     <app-breadcrumbs />
-    <transition name="fade" mode="out-in">
-      <router-view class="app-main-content" />
-    </transition>
+    <!-- <transition name="fade" mode="out-in"> -->
+    <router-view class="app-main-content" />
+    <!-- </transition> -->
     <app-footer v-if="$route.name !== 'home'" />
   </div>
 </template>
@@ -20,6 +20,9 @@ import {
 
 export default {
   name: "App",
+  metaInfo: {
+    title: "American Whitewater"
+  },
   components: {
     AppBreadcrumbs,
     AppFooter,
@@ -33,6 +36,7 @@ export default {
   // add 44px to account for breadcrumbs
   padding-top: $mobile-nav-height + 44px;
   margin-bottom: $layout-xl;
+  min-height: 100vh;
   @include MQ("LG") {
     padding-top: $desktop-nav-height + 44px;
     margin-bottom: $layout-xl;

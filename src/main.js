@@ -1,18 +1,15 @@
-import Vue from "vue";
-import CarbonComponents from "@carbon/vue";
-
-import "./app/plugins";
-
-import App from "./app/app.vue";
-
+Vue.config.productionTip = false;
+Vue.use(CarbonComponents);
+Vue.use(VueMeta);
 import "./app/assets/scss/app.scss";
+import "./app/plugins";
+import "./registerServiceWorker";
+import App from "./app/app.vue";
+import CarbonComponents from "@carbon/vue";
+import Vue from "vue";
+import VueMeta from "vue-meta";
 import router from "./app/app-routes";
 import store from "./app/app-state";
-import "./registerServiceWorker";
-
-Vue.use(CarbonComponents);
-
-Vue.config.productionTip = false;
 
 new Vue({
   router,

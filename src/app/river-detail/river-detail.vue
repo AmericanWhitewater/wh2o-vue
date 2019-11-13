@@ -63,12 +63,21 @@ export default {
       "Credits"
     ]
   }),
+  metaInfo() {
+    return {
+      title: this.river.river,
+      titleTemplate: `%s | ${this.river.section}`
+    };
+  },
   computed: {
     riverId() {
       return this.$route.params.id;
     },
     river() {
-      return this.$store.state.riverDetailState.riverDetailData.data;
+      if (this.$store.state.riverDetailState.riverDetailData.data) {
+        return this.$store.state.riverDetailState.riverDetailData.data;
+      }
+      return false;
     },
     loading() {
       return this.$store.state.riverDetailState.riverDetailData.loading;
@@ -139,5 +148,12 @@ export default {
     top: $desktop-nav-height;
     height: calc(100vh - 75px);
   }
+}
+.bx--dropdown {
+  background-color: $ui-03 !important;
+}
+
+.river-detail .tabs-wrapper .bx--tabs {
+  border-bottom: 0;
 }
 </style>

@@ -85,4 +85,8 @@ export default {
     padding-left: 0;
   }
 }
+
+.bx--col-lg-10 .bx--no-gutter--left {
+  height: 100%;
+}
 </style>

@@ -153,4 +153,14 @@ export default {
     display: none;
   }
 }
+
+// TEMP !!!!!
+
+.bx--col-lg-10 {
+  height: 100% !important;
+}
+
+.bx--breadcrumb {
+  display: flex !important;
+}
 </style>
