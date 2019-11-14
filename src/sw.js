@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 /**
  * @description This code listens for the user's confirmation to update the app.
  *

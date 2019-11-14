@@ -11,7 +11,7 @@
             text="please try again later"
           />
         </template>
-        <template v-if="!loading && !error">
+        <template v-if="!loading && !error && media.length > 0">
           <div v-for="(image, index) in media" :key="index" class="img-thumb">
             <template v-if="isVideo(image.file.ext)">
               <div class="thumb video" @click="openLightbox(index)">
@@ -32,6 +32,9 @@
             </template>
           </div>
         </template>
+        <template v-if="!loading && !error && media.length === 0">
+          <error-block title="No media" text="if ya got it, upload it." />
+        </template>
       </div>
       <div class="bx--col-sm-4 bx--col-md-4 bx--col-lg-4">
         sidebar w/ upload form
@@ -47,7 +50,7 @@
           <div class="bx--grid">
             <div class="bx--row">
               <div
-                class="bx--col-sm-8 bx--col-md-8 bx--col-lg-12 bx--no-gutter--right"
+                class="bx--col-sm-8 bx--col-md-8 bx--col-lg-12"
               >
                 <div class="media-container">
                   <!-- <img
@@ -102,7 +105,7 @@
                 </div>
               </div>
               <div
-                class="bx--col-sm-4 bx--col-md-4 bx--col-lg-4 bx--no-gutter--left"
+                class="bx--col-sm-4 bx--col-md-4 bx--col-lg-4"
               >
                 <div class="media-info">
                   <h5 class="mb-spacing-md" v-text="selectedMedia.post.title" />
@@ -277,16 +280,16 @@ export default {
           .media-container {
             display: flex;
             // need to mess with this width value
-            width: 100%;
+            min-width: calc(75vw - 350px);
             height: 100%;
             justify-content: center;
             align-items: center;
             img {
               @include ease;
               height: auto;
-              width: 100%;
+              width: auto;
               max-width: 100%;
-              max-height: 100%;
+              max-height: 90vh;
             }
           }
           .media-info {
@@ -296,6 +299,7 @@ export default {
             position: relative;
             padding: $spacing-md;
             max-height: calc(100vh - 100px);
+            min-width: 350px;
           }
         }
       }
