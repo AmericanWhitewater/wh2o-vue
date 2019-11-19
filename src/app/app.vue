@@ -34,6 +34,7 @@ export default {
 <style lang="scss">
 .app-main-content {
   // add 44px to account for breadcrumbs
+  background-color: $ui-01;
   padding-top: $mobile-nav-height + 44px;
   margin-bottom: $layout-xl;
   min-height: 100vh;

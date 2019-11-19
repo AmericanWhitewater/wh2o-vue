@@ -1,7 +1,7 @@
-const usersRoutes = [
+const userRoutes = [
   {
-    path: "/users",
-    component: () => import("./app-users.vue"),
+    path: "/user",
+    component: () => import("./app-user.vue"),
     children: [
       {
         path: "login",
@@ -9,7 +9,7 @@ const usersRoutes = [
         meta: {
           crumbLabel: "Login"
         },
-        component: () => import("./components/users-login.vue")
+        component: () => import("./components/user-login.vue")
       },
       {
         path: "register",
@@ -17,10 +17,10 @@ const usersRoutes = [
         meta: {
           crumbLabel: "Login"
         },
-        component: () => import("./components/users-register.vue")
+        component: () => import("./components/user-register.vue")
       }
     ]
   }
 ];
 
-export default usersRoutes;
+export default userRoutes;

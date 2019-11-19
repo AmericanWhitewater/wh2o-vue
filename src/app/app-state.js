@@ -3,7 +3,7 @@ import Vuex from "vuex";
 
 import { riverDetailState } from "./river-detail";
 import { newsPageState } from "./news-page";
-import { usersState } from "./users";
+import { userState } from "./user";
 import { riverSearchState } from "./river-search";
 import { accidentDatabaseState } from "./accident-database";
 import { appGlobalState } from "@/app/global/state";
@@ -22,6 +22,6 @@ export default new Vuex.Store({
     nwiMapState,
     riverDetailState,
     riverSearchState,
-    usersState
+    userState
   }
 });

@@ -2,7 +2,10 @@
   <aside
     class="main-tab-sidebar bx--col-sm-4 bx--col-md-6 bx--col-lg-6 bx--offset-lg-1"
   >
-    <div :class="[{ sticky: sticky }, 'content-area bx--row']">
+    <div
+      ref="contentArea"
+      :class="[{ sticky: sticky }, 'content-area bx--row']"
+    >
       <div class="bx--col">
         <h4>Alerts</h4>
         <template v-if="alerts.length > 0">
@@ -62,8 +65,7 @@ export default {
       alert(`Do something for alert: ${index}`);
     },
     isSticky() {
-      const contentArea = document.querySelector(".content-area");
-      if (contentArea.clientHeight > 800) {
+      if (this.$refs.contentArea.clientHeight > 800) {
         this.sticky = false;
       } else {
         this.sticky = true;

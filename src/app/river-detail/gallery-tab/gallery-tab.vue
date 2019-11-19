@@ -49,9 +49,7 @@
         <div class="grid-container">
           <div class="bx--grid">
             <div class="bx--row">
-              <div
-                class="bx--col-sm-8 bx--col-md-8 bx--col-lg-12"
-              >
+              <div class="bx--col-sm-8 bx--col-md-8 bx--col-lg-12">
                 <div class="media-container">
                   <!-- <img
                 :src="
@@ -104,9 +102,7 @@
                   </template>
                 </div>
               </div>
-              <div
-                class="bx--col-sm-4 bx--col-md-4 bx--col-lg-4"
-              >
+              <div class="bx--col-sm-4 bx--col-md-4 bx--col-lg-4">
                 <div class="media-info">
                   <h5 class="mb-spacing-md" v-text="selectedMedia.post.title" />
                   <p>
@@ -143,7 +139,7 @@
 <script>
 import { galleryActions } from "../shared/state";
 import { LoadingBlock, ErrorBlock } from "@/app/global/components";
-
+import { mapState } from "vuex";
 export default {
   name: "GalleryTab",
   components: {
@@ -156,17 +152,13 @@ export default {
     selectedMediaIndex: null
   }),
   computed: {
-    loading() {
-      return this.$store.state.riverDetailState.galleryData.loading;
-    },
-    error() {
-      return this.$store.state.riverDetailState.galleryData.error;
-    },
+    ...mapState({
+      loading: state => state.riverDetailState.galleryData.loading,
+      error: state => state.riverDetailState.galleryData.error,
+      media: state => state.riverDetailState.galleryData.data
+    }),
     riverId() {
       return parseInt(this.$route.params.id);
-    },
-    media() {
-      return this.$store.state.riverDetailState.galleryData.data;
     },
     selectedMedia() {
       return this.media[this.selectedMediaIndex];

@@ -29,7 +29,7 @@
 </template>
 <script>
 export default {
-  name: "AppUsers"
+  name: "AppUser"
 };
 </script>
 <style lang="scss">

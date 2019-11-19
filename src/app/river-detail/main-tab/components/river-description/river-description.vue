@@ -22,17 +22,15 @@ we can make the editor a stand alone component and pass the editable content as 
 </template>
 <script>
 import { ContentEditor } from "@/app/global/components";
-
+import { mapState } from "vuex";
 export default {
   name: "RiverDescription",
   components: { ContentEditor },
   computed: {
-    river() {
-      return this.$store.state.riverDetailState.riverDetailData.data;
-    },
-    editMode() {
-      return this.$store.state.appGlobalState.appGlobalData.editMode;
-    }
+    ...mapState({
+      river: state => state.riverDetailState.riverDetailData.data,
+      editMode: state => state.appGlobalState.appGlobalData.editMode
+    })
   }
 };
 </script>

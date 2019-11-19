@@ -102,6 +102,7 @@
 </template>
 <script>
 import { RapidsItem } from "./components";
+import { mapState } from "vuex";
 
 export default {
   name: "RapidsSection",
@@ -112,12 +113,10 @@ export default {
     viewMode: "list"
   }),
   computed: {
-    loading() {
-      return this.$store.state.riverDetailState.rapidsData.loading;
-    },
-    rapids() {
-      return this.$store.state.riverDetailState.rapidsData.data;
-    }
+    ...mapState({
+      loading: state => state.riverDetailState.rapidsData.loading,
+      rapids: state => state.riverDetailState.rapidsData.data
+    })
   }
 };
 </script>

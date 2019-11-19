@@ -43,6 +43,7 @@ import {
   rapidsActions,
   galleryActions
 } from "./shared/state";
+import { mapState } from "vuex";
 
 export default {
   name: "RiverDetail",
@@ -73,18 +74,11 @@ export default {
     riverId() {
       return this.$route.params.id;
     },
-    river() {
-      if (this.$store.state.riverDetailState.riverDetailData.data) {
-        return this.$store.state.riverDetailState.riverDetailData.data;
-      }
-      return false;
-    },
-    loading() {
-      return this.$store.state.riverDetailState.riverDetailData.loading;
-    },
-    editMode() {
-      return this.$store.state.riverDetailState.riverDetailData.mode;
-    }
+    ...mapState({
+      river: state => state.riverDetailState.riverDetailData.data,
+      loading: state => state.riverDetailState.riverDetailData.loading,
+      editMode: state => state.riverDetailState.riverDetailData.mode
+    })
   },
   created() {
     this.$store.dispatch(actionsTypes.FETCH_RIVER_DETAIL_DATA, this.riverId);

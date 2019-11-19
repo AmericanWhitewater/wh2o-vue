@@ -40,7 +40,7 @@
                   {{ item.title }}
                 </cv-button>
               </router-link>
-              <router-link to="/users/login">
+              <router-link to="/user/login">
                 <cv-button kind="primary" small>
                   Login
                 </cv-button>

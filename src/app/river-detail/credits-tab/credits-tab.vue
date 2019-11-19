@@ -16,7 +16,7 @@
 <script>
 import { creditsActions } from "../shared/state";
 import { LoadingBlock, ErrorBlock } from "@/app/global/components";
-
+import { mapState } from "vuex";
 export default {
   name: "CreditsTab",
   components: {
@@ -27,12 +27,10 @@ export default {
     creditsHttpConfig: "let there be error"
   }),
   computed: {
-    loading() {
-      return this.$store.state.riverDetailState.creditsData.loading;
-    },
-    error() {
-      return this.$store.state.riverDetailState.creditsData.error;
-    }
+    ...mapState({
+      loading: state => state.riverDetailState.creditsData.loading,
+      error: state => state.riverDetailState.creditsData.error
+    })
   },
   created() {
     this.loadData();

@@ -16,7 +16,7 @@
 <script>
 import { mapActions } from "../shared/state";
 import { LoadingBlock, ErrorBlock } from "@/app/global/components";
-
+import { mapState } from "vuex";
 export default {
   name: "MapTab",
   components: {
@@ -30,12 +30,10 @@ export default {
     }
   }),
   computed: {
-    loading() {
-      return this.$store.state.riverDetailState.mapData.loading;
-    },
-    error() {
-      return this.$store.state.riverDetailState.mapData.error;
-    }
+    ...mapState({
+      loading: state => state.riverDetailState.mapData.loading,
+      error: state => state.riverDetailState.mapData.error
+    })
   },
   created() {
     this.loadData();

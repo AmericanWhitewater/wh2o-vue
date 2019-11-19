@@ -1,8 +1,8 @@
 <template>
   <section class="bleed river-header bg-topo">
     <div class="bx--grid">
-      <div class="bx--row bx--no-gutter--left">
-        <div class="bx--col-lg-10 bx--no-gutter--left">
+      <div class="bx--row">
+        <div class="bx--col-lg-10">
           <div class="outside">
             <div class="inside">
               <h4>{{ name }}</h4>

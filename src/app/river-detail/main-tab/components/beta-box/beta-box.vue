@@ -37,6 +37,7 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
   name: "BetaBox",
   filters: {
@@ -47,12 +48,10 @@ export default {
     }
   },
   computed: {
-    loading() {
-      return this.$store.state.riverDetailState.riverDetailData.loading;
-    },
-    river() {
-      return this.$store.state.riverDetailState.riverDetailData.data;
-    }
+    ...mapState({
+      loading: state => state.riverDetailState.riverDetailData.loading,
+      river: state => state.riverDetailState.riverDetailData.data
+    })
   }
 };
 </script>

@@ -147,7 +147,7 @@ import {
   UsStatesList,
   UsStatesRegions
 } from "./shared/mixins";
-
+import { mapState } from "vuex";
 export default {
   name: "RiverSearch",
   components: {
@@ -166,15 +166,10 @@ export default {
     showAll: false
   }),
   computed: {
-    storePath() {
-      return this.$store.state.riverSearchState.riverSearchData;
-    },
-    loading() {
-      return this.storePath.loading;
-    },
-    data() {
-      return this.storePath.data;
-    }
+    ...mapState({
+      loading: state => state.riverSearchState.riverSearchData.loading,
+      data: state => state.riverSearchState.riverSearchData.data
+    })
   },
   methods: {
     fetchRivers() {

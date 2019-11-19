@@ -56,7 +56,7 @@
 import { accidentsActions } from "../shared/state";
 import { accidentDetailActions } from "@/app/accident-database/shared/state";
 import { LoadingBlock, ErrorBlock } from "@/app/global/components";
-
+import { mapState } from "vuex";
 export default {
   name: "AccidentsTab",
   components: {
@@ -64,17 +64,13 @@ export default {
     LoadingBlock
   },
   computed: {
-    loading() {
-      return this.$store.state.riverDetailState.accidentsData.loading;
-    },
-    error() {
-      return this.$store.state.riverDetailState.accidentsData.error;
-    },
+    ...mapState({
+      loading: state => state.riverDetailState.accidentsData.loading,
+      error: state => state.riverDetailState.accidentsData.error,
+      accidents: state => state.riverDetailState.accidentsData.data
+    }),
     riverId() {
       return parseInt(this.$route.params.id);
-    },
-    accidents() {
-      return this.$store.state.riverDetailState.accidentsData.data;
     }
   },
   created() {

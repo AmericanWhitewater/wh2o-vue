@@ -1,17 +1,7 @@
-// $feature-flags: (
-//   grid-columns-16: true,
-// );
 
-// body {
-//   &.light {
-    // may be an @include for a var mixin?
-//     @import "../theme/light";
-//   }
-//   &.dark {
-//     @import "../theme/dark";
-//   }
-// }
 @import "../theme/light";
+// @import "../theme/dark";
+// @import "../theme/color-themes";
 @import "~carbon-components/scss/globals/scss/layer";
 @import "~carbon-components/scss/globals/scss/spacing";
 @import "~carbon-components/scss/globals/scss/typography";

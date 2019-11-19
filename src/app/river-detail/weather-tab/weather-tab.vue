@@ -82,7 +82,7 @@
 <script>
 import { weatherActions } from "../shared/state";
 import { LoadingBlock, ErrorBlock } from "@/app/global/components";
-
+import { mapState } from "vuex";
 export default {
   name: "WeatherTab",
   components: {
@@ -96,26 +96,20 @@ export default {
     }
   }),
   computed: {
-    river() {
-      return this.$store.state.riverDetailState.riverDetailData.data;
-    },
+    ...mapState({
+      river: state => state.riverDetailState.riverDetailData.data,
+      loading: state => state.riverDetailState.weatherData.loading,
+      weather: state => state.riverDetailState.weatherData.data,
+      error: state => state.riverDetailState.weatherData.error
+    }),
     plat() {
       return this.river.plat;
     },
     plon() {
       return this.river.plon;
     },
-    loading() {
-      return this.$store.state.riverDetailState.weatherData.loading;
-    },
-    weather() {
-      return this.$store.state.riverDetailState.weatherData.data;
-    },
     dailyReadings() {
       return this.weather.daily.data;
-    },
-    error() {
-      return this.$store.state.riverDetailState.weatherData.error;
     }
   },
   created() {
