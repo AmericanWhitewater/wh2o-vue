@@ -1,6 +1,6 @@
 import { reflectKeys } from "../../../global/services";
 
-import { userLogin, userRegister, userForgot } from "../services";
+// import { userLogin, userRegister, userForgot } from "../services";
 
 const initialState = {
   loading: false,
