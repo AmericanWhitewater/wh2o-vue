@@ -35,7 +35,7 @@
 </template>
 <script>
 export default {
-  name: "UsersRegister",
+  name: "UserRegister",
   data: () => ({
     newUser: {
       userName: "",

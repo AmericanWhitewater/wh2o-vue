@@ -13,7 +13,7 @@
   "dependencies": {
     "@carbon/grid": "^10.6.0",
     "@carbon/icons-vue": "^10.6.1",
-    "@carbon/vue": "^2.18.0",
+    "@carbon/vue": "^2.19.0",
     "axios": "^0.19.0",
     "chart.js": "^2.9.2",
     "core-js": "^3.4.0",

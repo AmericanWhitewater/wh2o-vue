@@ -19,3 +19,4 @@ export {
   default as EditModeToggle
 } from "./edit-mode-toggle/edit-mode-toggle.vue";
 export { default as ErrorBlock } from "./error-block/error-block.vue";
+export { default as ArticleCard } from "./article-card/article-card.vue";

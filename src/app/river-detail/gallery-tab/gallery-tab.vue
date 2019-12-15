@@ -37,7 +37,7 @@
         </template>
       </div>
       <div class="bx--col-sm-4 bx--col-md-4 bx--col-lg-4">
-        sidebar w/ upload form
+        <gallery-upload-form />
       </div>
     </div>
     <template v-if="lightboxActive">
@@ -140,11 +140,13 @@
 import { galleryActions } from "../shared/state";
 import { LoadingBlock, ErrorBlock } from "@/app/global/components";
 import { mapState } from "vuex";
+import { galleryUploadForm } from "./components";
 export default {
   name: "GalleryTab",
   components: {
     ErrorBlock,
-    LoadingBlock
+    LoadingBlock,
+    galleryUploadForm
   },
   data: () => ({
     galleryHttpConfig: "give me an error please",

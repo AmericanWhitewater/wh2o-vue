@@ -1,14 +1,16 @@
 <template>
-  <div class="user-dashboard"></div>
+  <div class="user-forgot">
+    forgot
+  </div>
 </template>
 
 <script>
 export default {
-  name: "UserDashboard"
+  name: "UserForgot"
 };
 </script>
 
 <style lang="scss">
-.user-dashboard {
+.user-forgot {
 }
 </style>

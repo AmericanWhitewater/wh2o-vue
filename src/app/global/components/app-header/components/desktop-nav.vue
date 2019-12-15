@@ -6,6 +6,9 @@
           <div class="bx--col-lg-16 top-bar">
             <template v-if="!editMode">
               <!-- <router-link to="/users/login">Login</router-link> -->
+              <router-link v-if="user" to="/user/account/1" class="ml-2xs">
+                <icon-search />My Account
+              </router-link>
               <router-link to="/river-search" class="ml-2xs">
                 <icon-search />Search
               </router-link>
@@ -40,11 +43,20 @@
                   {{ item.title }}
                 </cv-button>
               </router-link>
-              <router-link to="/user/login">
-                <cv-button kind="primary" small>
-                  Login
-                </cv-button>
-              </router-link>
+              <template v-if="!user">
+                <router-link to="/user/access/login">
+                  <cv-button kind="primary" small>
+                    Login
+                  </cv-button>
+                </router-link>
+              </template>
+              <template v-else>
+                <router-link to="/donate">
+                  <cv-button kind="tertiary" small>
+                    Donate
+                  </cv-button>
+                </router-link>
+              </template>
             </nav>
           </div>
         </div>
@@ -56,6 +68,7 @@
 import virtual_Search16 from "@carbon/icons-vue/es/search/16";
 import AwLogo from "@/app/global/components/logo-library/aw-logo";
 import { globalAppActions } from "@/app/global/state";
+import { mapState } from "vuex";
 
 export default {
   name: "DesktopNav",
@@ -70,9 +83,10 @@ export default {
     }
   },
   computed: {
-    editMode() {
-      return this.$store.state.appGlobalState.appGlobalData.editMode;
-    },
+    ...mapState({
+      editMode: state => state.appGlobalState.appGlobalData.editMode,
+      user: state => state.userState.userData.data
+    }),
     homePage() {
       if (this.$route.name === "home") {
         return true;

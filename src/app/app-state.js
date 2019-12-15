@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import { riverDetailState } from "./river-detail";
+import { safetyPageState } from "./safety-page";
 import { newsPageState } from "./news-page";
 import { userState } from "./user";
 import { riverSearchState } from "./river-search";
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     nwiMapState,
     riverDetailState,
     riverSearchState,
-    userState
+    userState,
+    safetyPageState
   }
 });

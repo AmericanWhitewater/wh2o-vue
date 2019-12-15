@@ -22,6 +22,7 @@ export default {
 #loading-block {
   background-color: $ui-02;
   display: flex;
+  width: 100%;
 
   align-items: center;
   .bx--inline-loading {

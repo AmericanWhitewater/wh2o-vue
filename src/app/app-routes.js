@@ -7,6 +7,7 @@ import { nwiMapRoutes } from "./nwi-map";
 import { userRoutes } from "./user";
 import { riverSearchRoutes } from "./river-search";
 import { accidentDatabaseRoutes } from "./accident-database";
+import { safetyPageRoutes } from "./safety-page";
 import staticRoutes from "./static-routes/static-routes";
 
 Vue.use(Router);
@@ -18,6 +19,7 @@ const routes = [
   ...userRoutes,
   ...riverSearchRoutes,
   ...accidentDatabaseRoutes,
+  ...safetyPageRoutes,
   ...staticRoutes
 ];
 

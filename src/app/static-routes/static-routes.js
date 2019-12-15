@@ -12,14 +12,6 @@ const staticRoutes = [
     component: Home
   },
   {
-    path: "/safety",
-    name: "safety",
-    meta: {
-      crumbLabel: "Safety"
-    },
-    component: () => import("./safety-page/safety-page.vue")
-  },
-  {
     path: "*",
     name: "page-not-found",
     component: AppPageNotFound

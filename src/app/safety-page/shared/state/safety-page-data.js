@@ -1,14 +1,15 @@
 import { reflectKeys } from "../../../global/services";
 
-import { userRegister, userForgot } from "../services";
+import { fetchLandingArticles } from "../services";
 
 const initialState = {
   loading: false,
   data: null,
-  error: null
+  error: null,
+  mode: null
 };
 
-const namespacedPrefix = "[USER]";
+const namespacedPrefix = "[SAFETY_PAGE]";
 
 const mutationTypes = reflectKeys(
   ["DATA_SUCCESS", "DATA_REQUEST", "DATA_ERROR", "DATA_RESET"],
@@ -39,36 +40,23 @@ const mutations = {
   }
 };
 
-export const userActions = reflectKeys(
-  ["USER_LOGIN", "USER_REGISTER", "USER_FORGOT"],
+export const safetyPageActions = reflectKeys(
+  ["FETCH_LANDING_ARTICLES"],
   namespacedPrefix
 );
 
 const actions = {
-  async [userActions.USER_LOGIN](context, data) {
+  async [safetyPageActions.FETCH_LANDING_ARTICLES](context) {
     context.commit(DATA_REQUEST);
-    // temp. needs to follow defined pattern
-    context.commit(DATA_SUCCESS, data);
-    return data;
-  },
-  async [userActions.USER_REGISTER](context, data) {
-    context.commit(DATA_REQUEST);
-    const result = await userRegister(data).catch(e => {
+
+    const result = await fetchLandingArticles().catch(e => {
       context.commit(DATA_ERROR, e);
     });
+
     if (result) {
-      context.commit(DATA_SUCCESS, result);
+      context.commit(DATA_SUCCESS, result.data);
     }
-    return result;
-  },
-  async [userActions.USER_FORGOT](context, data) {
-    context.commit(DATA_REQUEST);
-    const result = await userForgot(data).catch(e => {
-      context.commit(DATA_ERROR, e);
-    });
-    if (result) {
-      context.commit(DATA_SUCCESS, result);
-    }
+
     return result;
   }
 };

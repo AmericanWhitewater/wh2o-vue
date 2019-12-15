@@ -2,10 +2,10 @@ import { httpClient } from "../../../global/services";
 
 import { apiConstants } from "../config";
 
-const userLogin = data => {
-  const url = `${apiConstants.graphql}`;
+const userForgot = data => {
+  const url = apiConstants.forgot + "URL";
 
   return httpClient.post(url, data).then(res => res.data);
 };
 
-export { userLogin };
+export { userForgot };

@@ -16,15 +16,20 @@
   </div>
 </template>
 <script>
+import { userActions } from "../../shared/state";
 export default {
-  name: "UsersLogin",
+  name: "UserLogin",
   data: () => ({
     userName: "",
     passWord: ""
   }),
   methods: {
     submitLogin() {
-      alert("login submitted!!!!!!!!!!!!!");
+      this.$store.dispatch(userActions.USER_LOGIN, {
+        username: this.userName,
+        password: this.passWord
+      });
+      this.$router.replace("/user/account/1");
     }
   }
 };
