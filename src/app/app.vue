@@ -28,6 +28,10 @@ export default {
     AppFooter,
     AppHeader,
     AppToaster
+  },
+  created() {
+    const { checkIfDeployed } = require("../plugins/console-greeting");
+    checkIfDeployed();
   }
 };
 </script>

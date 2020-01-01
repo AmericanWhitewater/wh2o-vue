@@ -1,3 +1,4 @@
+Vue.config.devtools = true;
 Vue.config.productionTip = false;
 Vue.use(CarbonComponents);
 Vue.use(VueMeta);
