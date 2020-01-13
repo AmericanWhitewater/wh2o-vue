@@ -42,6 +42,7 @@ export default {
   position: relative;
   background-color: $brand-03;
   padding: $layout-md 0;
+  margin-top: $layout-xl;
   .bx--list__item {
     color: #fff;
     .bx--link {
