@@ -4,6 +4,9 @@
   </div>
 </template>
 <script>
+/**
+ * @displayName Loading Block
+ */
 export default {
   name: "LoadingBlock",
   props: {
@@ -30,3 +33,10 @@ export default {
   }
 }
 </style>
+<docs>
+
+```js
+<loading-block />
+```
+
+</docs>

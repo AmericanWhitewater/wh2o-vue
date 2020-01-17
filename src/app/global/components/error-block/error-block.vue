@@ -16,7 +16,8 @@ export default {
   props: {
     title: {
       type: String,
-      required: false
+      required: false,
+      default: "error"
     },
     text: {
       type: String,
@@ -41,3 +42,10 @@ export default {
   flex-flow: column nowrap;
 }
 </style>
+<docs>
+
+```js
+<error-block />
+```
+
+</docs>

@@ -30,7 +30,9 @@
 
 <script>
 import { navItems } from "@/app/global/mixins";
-
+/**
+ * @displayName App Footer
+ */
 export default {
   name: "AppFooter",
   mixins: [navItems]
@@ -39,6 +41,7 @@ export default {
 
 <style lang="scss">
 .app-footer {
+  margin-top: $layout-xl;
   position: relative;
   background-color: $brand-03;
   padding: $layout-md 0;
@@ -53,3 +56,10 @@ export default {
   }
 }
 </style>
+<docs>
+
+```js
+<app-footer />
+```
+
+</docs>

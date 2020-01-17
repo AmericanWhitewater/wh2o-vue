@@ -68,6 +68,7 @@
 /**
  * @description Breadcrumbs which show the session history.
  * @reference https://www.carbondesignsystem.com/components/breadcrumb/usage
+ * @displayName App Breadcrumbs
  *
  */
 
@@ -164,3 +165,10 @@ export default {
   display: flex !important;
 }
 </style>
+<docs>
+
+```js
+<app-breadcrumbs />
+```
+
+</docs>

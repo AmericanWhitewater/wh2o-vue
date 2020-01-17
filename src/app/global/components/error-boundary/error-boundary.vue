@@ -31,3 +31,10 @@ export default {
 </script>
 
 <style lang="scss" scoped></style>
+<docs>
+
+```js
+<ErrorBoundary />
+```
+
+</docs>

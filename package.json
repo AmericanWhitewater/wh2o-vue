@@ -8,7 +8,9 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --fix",
     "postinstall": "if test \"$NODE_ENV\" = \"production\" ; then npm run build ; fi ",
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "styleguide": "vue-cli-service styleguidist",
+    "styleguide:build": "vue-cli-service styleguidist:build"
   },
   "dependencies": {
     "@carbon/grid": "^10.8.1",
@@ -41,6 +43,7 @@
     "eslint-plugin-vue": "^6.0.0",
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.0",
+    "vue-cli-plugin-styleguidist": "^4.5.1",
     "vue-template-compiler": "^2.5.21"
   },
   "postcss": {

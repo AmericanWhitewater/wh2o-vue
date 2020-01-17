@@ -2,6 +2,9 @@
   <div class="" />
 </template>
 <script>
+/**
+ * @todo dynamic icon set.
+ */
 export default {
   name: ""
 };
