@@ -26,12 +26,11 @@ need to set width auto, and match bx--grid right positioning.
               </template>
               <template v-else>
                 <cv-toast-notification
-                  v-if="t.toast"
                   :kind="t.kind"
                   :title="t.title"
                   :sub-title="t.subtitle"
-                  :low-contrast="t.lowContrast"
-                  @close="handleClose(index)"
+                  :low-contrast="t.contrast"
+                  @close="handleClose(index, t.title)"
                 />
               </template>
             </li>
@@ -42,7 +41,7 @@ need to set width auto, and match bx--grid right positioning.
   </div>
 </template>
 <script>
-/* eslint-disable no-console */
+import { appLocalStorage } from "@/app/global/services";
 export default {
   name: "AppToaster",
   data: () => ({
@@ -55,6 +54,13 @@ export default {
       kind: "info",
       contrast: true,
       action: true
+    },
+    vueDevTools: {
+      title: "Vue Dev Tools Available",
+      subtitle: "Get a peek under the hood.",
+      kind: "info",
+      contrast: false,
+      action: false
     },
     toasts: []
   }),
@@ -76,13 +82,19 @@ export default {
       window.location.reload();
     });
   },
+  mounted() {
+    this.showDevToolsToast();
+  },
   methods: {
-    handleClose(index) {
+    handleClose(index, title) {
       if (index === 0) {
         this.toasts.shift();
       }
       if (index === 1) {
         this.toasts.pop();
+      }
+      if (title === this.vueDevTools.title) {
+        appLocalStorage.setItem("Vue_Toast_Dismissed", true);
       }
     },
     handleUpdate() {
@@ -98,6 +110,11 @@ export default {
         return;
       }
       this.registration.waiting.postMessage("skipWaiting");
+    },
+    showDevToolsToast() {
+      if (!appLocalStorage.getItem("Vue_Toast_Dismissed")) {
+        this.toasts.push(this.vueDevTools);
+      }
     }
   }
 };
