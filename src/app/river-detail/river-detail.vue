@@ -7,7 +7,11 @@
     </transition>
     <template v-if="!loading">
       <template v-if="river">
-        <river-header :name="river.river" :section="river.section" />
+        <river-header
+          :name="river.river"
+          :section="river.section"
+          :background-image="bgImage"
+        />
         <div class="tabs-wrapper">
           <cv-overflow-menu>
             <cv-overflow-menu-item>Link Resources</cv-overflow-menu-item>
@@ -66,7 +70,7 @@ export default {
   }),
   metaInfo() {
     return {
-      title: this.river.river,
+      title: this.riverTitle,
       titleTemplate: `%s | ${this.river.section}`
     };
   },
@@ -77,14 +81,29 @@ export default {
     ...mapState({
       river: state => state.riverDetailState.riverDetailData.data,
       loading: state => state.riverDetailState.riverDetailData.loading,
-      editMode: state => state.riverDetailState.riverDetailData.mode
-    })
+      editMode: state => state.riverDetailState.riverDetailData.mode,
+      media: state => state.riverDetailState.galleryData.data
+    }),
+    riverTitle() {
+      if (this.river) {
+        return this.river.river;
+      }
+      return null;
+    },
+    bgImage() {
+      if (this.media) {
+        const img = this.media[Math.floor(Math.random() * this.media.length)];
+        return `https://prerelease.americanwhitewater.org${img.file.uri.thumb}`;
+      }
+      return null;
+    }
   },
   created() {
     this.$store.dispatch(actionsTypes.FETCH_RIVER_DETAIL_DATA, this.riverId);
   },
   mounted() {
     this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId);
+    // this.$store.dispatch(galleryActions.FETCH_GALLERY_DATA, this.riverId);
   },
   methods: {
     switchTab(index) {

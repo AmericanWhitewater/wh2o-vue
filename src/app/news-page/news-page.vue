@@ -36,25 +36,29 @@
 <script>
 import { PageHeader } from "../global/components";
 import { newsActions } from "./shared/state";
-
+import { mapState } from "vuex";
 export default {
   name: "NewsPage",
   components: {
     PageHeader
   },
+  metaInfo() {
+    return {
+      title: "News - American Whitewater"
+    };
+  },
   computed: {
-    loading() {
-      return this.$store.state.newsPageState.newsPageData.loading;
-    },
-    articles() {
-      return this.$store.state.newsPageState.newsPageData.data.articles;
-    },
+    ...mapState({
+      loading: state => state.newsPageState.newsPageData.loading,
+      articles: state => state.newsPageState.newsPageData.data
+      // articles: state => state.newsPageState.newsPageData.data.articles
+    }),
     latest() {
       return this.articles.CArticleGadgetJSON_view;
-    },
-    articleTiles() {
-      return this.articles.CArticleGadgetJSON_view_list.slice(0, 12);
     }
+    // articleTiles() {
+    //   return this.articles.articles.CArticleGadgetJSON_view_list.slice(0, 12);
+    // }
   },
   created() {
     this.getArticles();

@@ -1,7 +1,7 @@
 <template>
   <div>
     <app-toaster />
-    <app-header />
+    <app-navigation />
     <app-breadcrumbs />
     <!-- <transition name="fade" mode="out-in"> -->
     <router-view class="app-main-content" />
@@ -13,7 +13,7 @@
 <script>
 import {
   AppToaster,
-  AppHeader,
+  AppNavigation,
   AppBreadcrumbs,
   AppFooter
 } from "./global/components";
@@ -26,7 +26,7 @@ export default {
   components: {
     AppBreadcrumbs,
     AppFooter,
-    AppHeader,
+    AppNavigation,
     AppToaster
   },
   created() {

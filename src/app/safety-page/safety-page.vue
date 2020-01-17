@@ -176,6 +176,11 @@ export default {
     LoadingBlock,
     ArticleCard
   },
+  metaInfo() {
+    return {
+      title: "Safety - American Whitewater"
+    };
+  },
   computed: {
     ...mapState({
       articles: state => state.safetyPageState.safetyPageData.data,

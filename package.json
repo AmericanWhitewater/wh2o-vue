@@ -11,7 +11,7 @@
     "start": "node server/server.js"
   },
   "dependencies": {
-    "@carbon/grid": "^10.6.0",
+    "@carbon/grid": "^10.8.1",
     "@carbon/icons-vue": "^10.6.1",
     "@carbon/vue": "^2.19.0",
     "axios": "^0.19.0",

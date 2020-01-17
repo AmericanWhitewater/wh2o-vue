@@ -23,6 +23,11 @@ export default {
     userName: "",
     passWord: ""
   }),
+  metaInfo() {
+    return {
+      title: "Login - American Whitewater"
+    };
+  },
   methods: {
     submitLogin() {
       this.$store.dispatch(userActions.USER_LOGIN, {

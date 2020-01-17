@@ -1,6 +1,6 @@
 <template>
-  <div class="page-header">
-    <div class="bx--grid ">
+  <div class="page-header" :style="`background-image: url(${headerBg.url})`">
+    <div class="bx--grid">
       <div class="bx--row">
         <div class="bx--col">
           <div class="outside">
@@ -19,16 +19,19 @@
 </template>
 <script>
 import EditModeToggle from "../edit-mode-toggle/edit-mode-toggle";
-
+import { defaultBannerImage } from "../../mixins";
 export default {
   name: "PageHeader",
+
   components: {
     EditModeToggle
   },
+  mixins: [defaultBannerImage],
   props: {
     title: {
       type: String,
-      required: true
+      required: true,
+      default: "Page Title"
     },
     subtitle: {
       type: String,
@@ -51,6 +54,10 @@ export default {
   background-color: $ui-04;
   width: 100%;
   height: 50vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+
   .bx--grid,
   .bx--row,
   .bx--col,
