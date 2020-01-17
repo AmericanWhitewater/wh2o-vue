@@ -15,7 +15,7 @@ import MobileNav from "./components/mobile-nav";
 import checkWindow from "../../services/mixins/check-window";
 
 export default {
-  name: "AppHeader",
+  name: "AppNavigation",
   components: {
     "desktop-nav": DesktopNav,
     "mobile-nav": MobileNav

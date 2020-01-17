@@ -123,6 +123,11 @@ export default {
     LoadingBlock
   },
   mixins: [riverSearchHttpConfig, InternationalReaches, LevelsList],
+  metaInfo() {
+    return {
+      title: "National Whitewater Inventory - American Whitewater"
+    };
+  },
   data: () => ({
     expandToggleTxt: "Hide",
     mapFocused: true,

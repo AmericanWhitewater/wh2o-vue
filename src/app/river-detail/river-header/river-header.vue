@@ -1,5 +1,8 @@
 <template>
-  <section class="bleed river-header bg-topo">
+  <section
+    :class="[{ 'bg-topo': !headerBg.url }, 'bleed river-header']"
+    :style="`background-image: url(${headerBg.url})`"
+  >
     <div class="bx--grid">
       <div class="bx--row">
         <div class="bx--col-lg-10">
@@ -42,12 +45,13 @@
 </template>
 <script>
 import { EditModeToggle } from "@/app/global/components";
-
+import { defaultBannerImage } from "@/app/global/mixins";
 export default {
   name: "RiverHeader",
   components: {
     EditModeToggle
   },
+  mixins: [defaultBannerImage],
   props: {
     name: {
       type: String,
@@ -78,6 +82,8 @@ section {
   &.river-header {
     width: 100%;
     height: 50vh;
+    background-size: cover;
+    background-position: center center;
     .bx--grid,
     .bx--row,
     .bx--col,

@@ -1,4 +1,4 @@
-export { default as AppHeader } from "./app-header/app-header.vue";
+export { default as AppNavigation } from "./app-navigation/app-navigation.vue";
 export { default as PageHeader } from "./page-header/page-header.vue";
 export {
   default as AppPageNotFound

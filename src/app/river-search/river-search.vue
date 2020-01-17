@@ -120,10 +120,17 @@
                 </td>
               </tr>
             </template>
-            <template v-else-if="!data">
+            <template v-else-if="!data && !firstTimePageLoad">
               <tr>
                 <td colspan="4">
                   No Results matched your criteria. Please try again.
+                </td>
+              </tr>
+            </template>
+            <template v-else>
+              <tr>
+                <td colspan="4">
+                  Looking for local rivers? Try searching by your home state.
                 </td>
               </tr>
             </template>
@@ -154,7 +161,14 @@ export default {
     PageHeader
   },
   mixins: [InternationalReaches, LevelsList, UsStatesList, UsStatesRegions],
+  metaInfo() {
+    return {
+      title: "River Search - American Whitewater"
+    };
+  },
   data: () => ({
+    // show cta rather than 'no results' on initial page load
+    firstTimePageLoad: true,
     riverSearchHttpConfig: {
       river: null,
       state: null,
@@ -173,6 +187,7 @@ export default {
   },
   methods: {
     fetchRivers() {
+      this.firstTimePageLoad = false;
       this.$store.dispatch(
         riverSearchActions.FETCH_RIVER_SEARCH_DATA,
         this.riverSearchHttpConfig
