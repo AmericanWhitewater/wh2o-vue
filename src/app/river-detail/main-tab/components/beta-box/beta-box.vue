@@ -3,41 +3,42 @@
     <table v-if="!loading" class="bx--data-table bx--data-table--zebra">
       <tr>
         <td>Difficulty</td>
-        <td>{{ river.class }}</td>
+        <td v-text="river.class" />
       </tr>
       <tr>
         <td>Length</td>
-        <td>{{ river.length }}</td>
+        <td v-text="river.length" />
       </tr>
       <tr>
         <td>Avg Gradient</td>
-        <td>{{ river.avggradient }}</td>
+        <td v-text="river.avggradient" />
       </tr>
       <tr>
         <td>Max Gradient</td>
-        <td>{{ river.maxgradient }}</td>
+        <td v-text="river.maxgradient" />
       </tr>
       <tr>
         <td>Gage</td>
-        <td>gage name</td>
+        <td>n/a</td>
       </tr>
       <tr>
         <td>Flow Range</td>
-        <td>min - max</td>
+        <td>n/a</td>
       </tr>
       <tr>
         <td>Flow Rate as of</td>
-        <td>flow rate</td>
+        <td>n/a</td>
       </tr>
       <tr>
         <td>Reach Info Last Updated</td>
-        <td>{{ river.edited }}</td>
+        <td v-text="formatDate(river.edited)" />
       </tr>
     </table>
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
+import Moment from "moment";
 export default {
   name: "BetaBox",
   filters: {
@@ -52,6 +53,11 @@ export default {
       loading: state => state.riverDetailState.riverDetailData.loading,
       river: state => state.riverDetailState.riverDetailData.data
     })
+  },
+  methods: {
+    formatDate(input) {
+      return Moment(input, "MMM Do YY").format("ll");
+    }
   }
 };
 </script>
