@@ -47,12 +47,16 @@
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.0",
     "vue-cli-plugin-styleguidist": "^4.5.1",
-    "vue-template-compiler": "^2.5.21"
+    "vue-template-compiler": "^2.5.21",
+    "yorkie": "^2.0.0"
   },
   "postcss": {
     "plugins": {
       "autoprefixer": {}
     }
+  },
+  "gitHooks": {
+    "pre-commit": "npm run lint"
   },
   "browserslist": [
     "> 1%",
