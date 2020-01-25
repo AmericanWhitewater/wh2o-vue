@@ -68,7 +68,7 @@ import virtual_LogoGoogle24 from "@carbon/icons-vue/es/logo--google/24";
 import virtual_Email24 from "@carbon/icons-vue/es/email/24";
 import { PageHeader } from "../../global/components";
 import { newsActions } from "../shared/state";
-import {mapState,mapActions} from 'vuex';
+import { mapState, mapActions } from "vuex";
 export default {
   name: "article-detail",
   components: {
