@@ -1,8 +1,10 @@
 module.exports = {
   root: true,
+
   env: {
     node: true
   },
+
   rules: {
     "no-console": 0,
     "vue/attributes-order": 1,
@@ -15,12 +17,27 @@ module.exports = {
     "vue/require-direct-export": 1,
     camelcase: "off"
   },
+
   parserOptions: {
     parser: "babel-eslint"
   },
+
   globals: {
     app: true,
     path: true
   },
-  extends: ["plugin:vue/strongly-recommended", "@vue/prettier"]
+
+  extends: ["plugin:vue/strongly-recommended", "@vue/prettier"],
+
+  overrides: [
+    {
+      files: [
+        "**/__tests__/*.{j,t}s?(x)",
+        "**/tests/unit/**/*.spec.{j,t}s?(x)"
+      ],
+      env: {
+        jest: true
+      }
+    }
+  ]
 };
