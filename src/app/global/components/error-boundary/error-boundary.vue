@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: "ErrorBoundary",
+  name: "error-boundary",
   props: {
     stopPropagation: Boolean
   },
@@ -31,3 +31,10 @@ export default {
 </script>
 
 <style lang="scss" scoped></style>
+<docs>
+
+```js
+<ErrorBoundary />
+```
+
+</docs>

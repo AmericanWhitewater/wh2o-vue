@@ -80,11 +80,12 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import { weatherActions } from "../shared/state";
 import { LoadingBlock, ErrorBlock } from "@/app/global/components";
-import { mapState } from "vuex";
+
 export default {
-  name: "WeatherTab",
+  name: "weather-tab",
   components: {
     LoadingBlock,
     ErrorBlock

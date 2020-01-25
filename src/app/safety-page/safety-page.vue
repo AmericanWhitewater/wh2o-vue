@@ -6,7 +6,9 @@
       <div class="bx--row pt-lg mb-spacing-md">
         <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-6">
           <hr />
-          <h2 class="mb-spacing-md">Related News</h2>
+          <h2 class="mb-spacing-md">
+            Related News
+          </h2>
           <p class="mb-spacing-md">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -42,7 +44,9 @@
         </div>
         <div class="bx--col-sm-12 bx--col-md-6 bx--col-lg-8 safety-resources">
           <hr />
-          <h2 class="mb-spacing-md">Safety Resources</h2>
+          <h2 class="mb-spacing-md">
+            Safety Resources
+          </h2>
           <p class="mb-spacing-lg">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
@@ -159,6 +163,7 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import {
   PageHeader,
   ErrorBlock,
@@ -166,10 +171,9 @@ import {
   ArticleCard
 } from "@/app/global/components";
 import { safetyPageActions } from "./shared/state";
-import { mapState } from "vuex";
 
 export default {
-  name: "SafetyPage",
+  name: "safety-page",
   components: {
     PageHeader,
     ErrorBlock,

@@ -40,6 +40,7 @@
   </section>
 </template>
 <script>
+import { mapState } from "vuex";
 import RiverHeader from "./river-header/river-header";
 import {
   actionsTypes,
@@ -47,10 +48,9 @@ import {
   rapidsActions,
   galleryActions
 } from "./shared/state";
-import { mapState } from "vuex";
 
 export default {
-  name: "RiverDetail",
+  name: "river-detail",
   components: {
     "river-header": RiverHeader
   },

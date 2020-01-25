@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "ArticleCard",
+  name: "article-card",
   props: {
     thumbnailId: {
       type: String,

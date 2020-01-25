@@ -108,9 +108,7 @@
                 class="mb-spacing-sm"
                 @click="viewReach(accident.reach_id)"
                 v-html="
-                  `River - <span class='text-underline cursor-pointer'>${
-                    accident.river
-                  }</span>`
+                  `River - <span class='text-underline cursor-pointer'>${accident.river}</span>`
                 "
               />
               <h6
@@ -118,9 +116,7 @@
                 class="mb-spacing-sm "
                 @click="viewReach(accident.reach_id)"
                 v-html="
-                  `Section - <span class='text-underline cursor-pointer'>${
-                    accident.section
-                  }</span>`
+                  `Section - <span class='text-underline cursor-pointer'>${accident.section}</span>`
                 "
               />
 
@@ -193,7 +189,7 @@ import {
 } from "../../global/components";
 
 export default {
-  name: "ArticleDetail",
+  name: "article-detail",
   components: {
     PageHeader,
     ContentEditor,

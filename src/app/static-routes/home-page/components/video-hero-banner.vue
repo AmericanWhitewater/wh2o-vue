@@ -108,7 +108,7 @@ import AwLogo from "@/app/global/components/logo-library/aw-logo.vue";
 import { CheckWindow } from "@/app/global/mixins";
 
 export default {
-  name: "VideoHeroBanner",
+  name: "video-hero-banner",
   components: {
     AwLogo
   },

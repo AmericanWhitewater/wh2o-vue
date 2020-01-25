@@ -8,7 +8,7 @@ import { CheckWindow } from "@/app/global/mixins";
 import { VideoHeroBanner } from "./components";
 
 export default {
-  name: "HomePage",
+  name: "home-page",
   components: {
     VideoHeroBanner
   },

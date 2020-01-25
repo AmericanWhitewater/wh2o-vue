@@ -76,8 +76,9 @@
 <script>
 import AwLogo from "@/app/global/components/logo-library/aw-logo";
 import { CheckWindow } from "../../../mixins";
+
 export default {
-  name: "MobileNav",
+  name: "mobile-nav",
   components: {
     "aw-logo": AwLogo
   },
@@ -85,34 +86,29 @@ export default {
   props: {
     navItems: {
       type: Array,
-      default: () => {
-        return null;
-      }
+      default: () => null
     }
   },
-  data: () => {
-    return {
-      drawerOpen: false,
-      searchTerm: "",
-      topBarItems: [
-        {
-          path: "/users/login",
-          title: "Login"
-        },
-        {
-          path: "/river-search",
-          title: "River Search"
-        }
-      ]
-    };
-  },
+  data: () => ({
+    drawerOpen: false,
+    searchTerm: "",
+    topBarItems: [
+      {
+        path: "/users/login",
+        title: "Login"
+      },
+      {
+        path: "/river-search",
+        title: "River Search"
+      }
+    ]
+  }),
   computed: {
     homePage() {
       if (this.$route.name === "Home") {
         return true;
-      } else {
-        return false;
       }
+      return false;
     }
   },
   methods: {

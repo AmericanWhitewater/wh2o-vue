@@ -42,10 +42,11 @@
 
 <script>
 import { mapState } from "vuex";
+
 export default {
-  name: "UserAccount",
+  name: "user-account",
   filters: {
-    capitalize: function(value) {
+    capitalize(value) {
       if (!value) return "";
       value = value.toString();
       return value.charAt(0).toUpperCase() + value.slice(1);
@@ -84,9 +85,8 @@ export default {
     activeSection(view) {
       if (this.$route.name === view) {
         return "secondary";
-      } else {
-        return "ghost";
       }
+      return "ghost";
     }
   }
 };

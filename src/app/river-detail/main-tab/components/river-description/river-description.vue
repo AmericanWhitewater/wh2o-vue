@@ -1,10 +1,3 @@
-<docs>
-
-we can make the editor a stand alone component and pass the editable content as a prop
-
-
-</docs>
-
 <template>
   <main class="bx--col-sm-4 bx--col-md-6 bx--col-lg-8">
     <hr />
@@ -21,10 +14,11 @@ we can make the editor a stand alone component and pass the editable content as 
   </main>
 </template>
 <script>
-import { ContentEditor } from "@/app/global/components";
 import { mapState } from "vuex";
+import { ContentEditor } from "@/app/global/components";
+
 export default {
-  name: "RiverDescription",
+  name: "river-description",
   components: { ContentEditor },
   computed: {
     ...mapState({
@@ -35,3 +29,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped></style>
+<docs>
+
+we can make the editor a stand alone component and pass the editable content as a prop
+
+
+</docs>

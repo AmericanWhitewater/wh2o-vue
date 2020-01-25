@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: "UserAlerts"
+  name: "user-alerts"
 };
 </script>
 

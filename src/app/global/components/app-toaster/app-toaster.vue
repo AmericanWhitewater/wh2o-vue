@@ -1,11 +1,3 @@
-<docs>
-
-this is a temp solution. as more toasts are added, then the page will get blocked.
-
-need to set width auto, and match bx--grid right positioning.
-
-</docs>
-
 <template>
   <div class="app-toaster">
     <div class="bx--grid">
@@ -42,8 +34,11 @@ need to set width auto, and match bx--grid right positioning.
 </template>
 <script>
 import { appLocalStorage } from "@/app/global/services";
+/**
+ * @displayName App Toaster
+ */
 export default {
-  name: "AppToaster",
+  name: "app-toaster",
   data: () => ({
     refreshing: false,
     registration: null,
@@ -152,3 +147,17 @@ export default {
   transform: translateX(150%);
 }
 </style>
+<docs>
+
+this is a temp solution. as more toasts are added, then the page will get blocked.
+
+need to set width auto, and match bx--grid right positioning.
+
+
+```js
+
+<app-toaster />
+```
+
+
+</docs>

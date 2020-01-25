@@ -1,8 +1,3 @@
-<docs>
-  width="958.69"
-      height="592.78998"
-</docs>
-
 <template>
   <div class="static-us-map">
     <svg
@@ -1326,7 +1321,7 @@
 </template>
 <script>
 export default {
-  name: "StaticUsMap",
+  name: "static-us-map",
   props: {
     activeState: {
       type: String,

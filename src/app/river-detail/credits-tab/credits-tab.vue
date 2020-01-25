@@ -14,11 +14,12 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import { creditsActions } from "../shared/state";
 import { LoadingBlock, ErrorBlock } from "@/app/global/components";
-import { mapState } from "vuex";
+
 export default {
-  name: "CreditsTab",
+  name: "credits-tab",
   components: {
     ErrorBlock,
     LoadingBlock

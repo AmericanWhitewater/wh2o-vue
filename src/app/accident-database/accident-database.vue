@@ -19,7 +19,7 @@ import { PageHeader } from "../global/components";
 import { accidentDatabaseActions, accidentDetailActions } from "./shared/state";
 
 export default {
-  name: "AccidentDatabase",
+  name: "accident-database",
   components: {
     PageHeader
   },

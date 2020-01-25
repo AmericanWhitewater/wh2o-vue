@@ -48,7 +48,7 @@ import { GageChartConfig } from "./utils/gage-chart-config";
 import { gageHttpConfig } from "../shared/mixins";
 
 export default {
-  name: "FlowTab",
+  name: "flow-tab",
   components: {
     GageReadings,
     GageChartControls,

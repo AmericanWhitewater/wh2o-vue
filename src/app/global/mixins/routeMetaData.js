@@ -2,7 +2,7 @@ const routeMetaData = {
   metaInfo() {
     return {
       title: this.pageTitle,
-      titleTemplate: `%s | American Whitewater`
+      titleTemplate: "%s | American Whitewater"
     };
   },
   computed: {

@@ -1,7 +1,3 @@
-<docs>
-  need to make these svgs global components
-</docs>
-
 <template>
   <ul class>
     <template v-if="hazard">
@@ -135,7 +131,7 @@
 </template>
 <script>
 export default {
-  name: "RapidIconBar",
+  name: "rapid-icon-bar",
   props: {
     data: {
       type: Object,
@@ -172,3 +168,6 @@ ul {
   }
 }
 </style>
+<docs>
+  need to make these svgs global components
+</docs>

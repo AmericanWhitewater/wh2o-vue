@@ -36,7 +36,7 @@
 </template>
 <script>
 export default {
-  name: "SideBar",
+  name: "side-bar",
   data: () => ({
     sticky: false,
     alerts: [

@@ -13,9 +13,11 @@
 import DesktopNav from "./components/desktop-nav";
 import MobileNav from "./components/mobile-nav";
 import checkWindow from "../../services/mixins/check-window";
-
+/**
+ * @displayName App Navigation
+ */
 export default {
-  name: "AppNavigation",
+  name: "app-navigation",
   components: {
     "desktop-nav": DesktopNav,
     "mobile-nav": MobileNav
@@ -61,3 +63,10 @@ export default {
   }
 }
 </style>
+<docs>
+
+```js
+<app-navigation />
+```
+
+</docs>

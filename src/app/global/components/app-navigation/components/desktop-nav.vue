@@ -66,12 +66,12 @@
 </template>
 <script>
 import virtual_Search16 from "@carbon/icons-vue/es/search/16";
+import { mapState } from "vuex";
 import AwLogo from "@/app/global/components/logo-library/aw-logo";
 import { globalAppActions } from "@/app/global/state";
-import { mapState } from "vuex";
 
 export default {
-  name: "DesktopNav",
+  name: "desktop-nav",
   components: {
     "aw-logo": AwLogo,
     "icon-search": virtual_Search16

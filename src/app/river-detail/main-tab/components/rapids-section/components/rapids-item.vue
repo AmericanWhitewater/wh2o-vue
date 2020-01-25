@@ -21,9 +21,7 @@
                 <img
                   v-if="rapid.photo"
                   :src="
-                    `https://prerelease.americanwhitewater.org${
-                      rapid.photo.file.uri.thumb
-                    }`
+                    `https://prerelease.americanwhitewater.org${rapid.photo.file.uri.thumb}`
                   "
                   :alt="rapid.name"
                 />
@@ -42,7 +40,7 @@
 import RapidIconBar from "./rapid-icon-bar";
 
 export default {
-  name: "RapidsItem",
+  name: "rapids-item",
   components: {
     "rapid-icon-bar": RapidIconBar
   },

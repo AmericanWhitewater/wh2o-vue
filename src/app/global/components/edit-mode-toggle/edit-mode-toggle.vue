@@ -16,7 +16,7 @@
 import { globalAppActions } from "@/app/global/state";
 
 export default {
-  name: "EditModeToggle",
+  name: "edit-mode-toggle",
   computed: {
     editMode() {
       return this.$store.state.appGlobalState.appGlobalData.editMode;

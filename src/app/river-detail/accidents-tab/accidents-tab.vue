@@ -53,12 +53,13 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import { accidentsActions } from "../shared/state";
 import { accidentDetailActions } from "@/app/accident-database/shared/state";
 import { LoadingBlock, ErrorBlock } from "@/app/global/components";
-import { mapState } from "vuex";
+
 export default {
-  name: "AccidentsTab",
+  name: "accidents-tab",
   components: {
     ErrorBlock,
     LoadingBlock

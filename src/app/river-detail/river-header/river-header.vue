@@ -44,10 +44,12 @@
   </section>
 </template>
 <script>
+import { mapState } from "vuex";
 import { EditModeToggle } from "@/app/global/components";
 import { defaultBannerImage } from "@/app/global/mixins";
+
 export default {
-  name: "RiverHeader",
+  name: "river-header",
   components: {
     EditModeToggle
   },
@@ -68,11 +70,11 @@ export default {
     showConfirmation: false
   }),
   computed: {
+    ...mapState({
+      editMode: state => state.appGlobalState.appGlobalData.editMode
+    }),
     reachId() {
       return this.$route.params.id;
-    },
-    editMode() {
-      return this.$store.state.appGlobalState.appGlobalData.editMode;
     }
   }
 };

@@ -24,7 +24,7 @@
 </template>
 <script>
 export default {
-  name: "GageReadings",
+  name: "gage-readings",
   data: () => ({
     columns: ["Reading", "Updated"]
   }),

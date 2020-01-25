@@ -130,7 +130,7 @@
             <template v-else>
               <tr>
                 <td colspan="4">
-                  Looking for local rivers? Try searching by your home state.
+                  Try searching your home state.
                 </td>
               </tr>
             </template>
@@ -146,6 +146,7 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import { PageHeader } from "../global/components";
 import { riverSearchActions } from "./shared/state";
 import {
@@ -154,9 +155,9 @@ import {
   UsStatesList,
   UsStatesRegions
 } from "./shared/mixins";
-import { mapState } from "vuex";
+
 export default {
-  name: "RiverSearch",
+  name: "river-search",
   components: {
     PageHeader
   },
