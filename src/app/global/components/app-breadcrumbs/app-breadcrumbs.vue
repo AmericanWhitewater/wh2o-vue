@@ -65,6 +65,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 /**
  * @description Breadcrumbs which show the session history.
  * @reference https://www.carbondesignsystem.com/components/breadcrumb/usage
@@ -82,6 +84,10 @@ export default {
     crumbs: []
   }),
   computed: {
+    ...mapState({
+      riverName: state => state.riverDetailState.riverDetailData.data.river,
+      riverSection: state => state.riverDetailState.riverDetailData.data.section
+    }),
     currentPage() {
       return this.$route;
     }
@@ -112,7 +118,7 @@ export default {
       // crumb.label
 
       if (label === "River Detail") {
-        const currentRiver = `${this.$store.state.riverDetailState.riverDetailData.data.river} - ${this.$store.state.riverDetailState.riverDetailData.data.section}`;
+        const currentRiver = `${this.riverName} - ${this.riverSection}`;
         return `${currentRiver.slice(0, 20)}...`;
       }
       return label;

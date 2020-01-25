@@ -33,6 +33,7 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import { appLocalStorage } from "@/app/global/services";
 /**
  * @displayName App Toaster
@@ -60,9 +61,10 @@ export default {
     toasts: []
   }),
   computed: {
-    updateAvailable() {
-      return this.$store.state.appGlobalState.appGlobalData.updateAvailable;
-    }
+    ...mapState({
+      updateAvailable: state =>
+        state.appGlobalState.appGlobalData.updateAvailable
+    })
   },
   watch: {
     updateAvailable() {
