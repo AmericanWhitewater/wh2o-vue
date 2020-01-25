@@ -23,9 +23,7 @@
               <img
                 class="thumb"
                 :src="
-                  `https://prerelease.americanwhitewater.org${
-                    image.file.uri.thumb
-                  }`
+                  `https://prerelease.americanwhitewater.org${image.file.uri.thumb}`
                 "
                 @click="openLightbox(index)"
               />
@@ -81,9 +79,7 @@
                     <video width="320" height="240" controls>
                       <source
                         :src="
-                          `https://prerelease.americanwhitewater.org${
-                            selectedMedia.file.uri.big
-                          }`
+                          `https://prerelease.americanwhitewater.org${selectedMedia.file.uri.big}`
                         "
                         :type="`video/${selectedMedia.file.ext}`"
                       />
@@ -93,9 +89,7 @@
                   <template v-else>
                     <img
                       :src="
-                        `https://prerelease.americanwhitewater.org${
-                          selectedMedia.file.uri.big
-                        }`
+                        `https://prerelease.americanwhitewater.org${selectedMedia.file.uri.big}`
                       "
                       alt="photo name"
                     />
@@ -137,10 +131,11 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import { galleryActions } from "../shared/state";
 import { LoadingBlock, ErrorBlock } from "@/app/global/components";
-import { mapState } from "vuex";
 import { galleryUploadForm } from "./components";
+
 export default {
   name: "GalleryTab",
   components: {

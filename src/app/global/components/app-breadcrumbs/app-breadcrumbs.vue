@@ -112,9 +112,7 @@ export default {
       // crumb.label
 
       if (label === "River Detail") {
-        const currentRiver = `${
-          this.$store.state.riverDetailState.riverDetailData.data.river
-        } - ${this.$store.state.riverDetailState.riverDetailData.data.section}`;
+        const currentRiver = `${this.$store.state.riverDetailState.riverDetailData.data.river} - ${this.$store.state.riverDetailState.riverDetailData.data.section}`;
         return `${currentRiver.slice(0, 20)}...`;
       }
       return label;

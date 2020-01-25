@@ -34,9 +34,10 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import { PageHeader } from "../global/components";
 import { newsActions } from "./shared/state";
-import { mapState } from "vuex";
+
 export default {
   name: "NewsPage",
   components: {

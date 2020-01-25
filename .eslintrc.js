@@ -2,11 +2,12 @@ module.exports = {
   root: true,
 
   env: {
-    node: true
+    node: true,
+    jest: true
   },
 
   rules: {
-    "no-console": 0,
+    "no-console": 2,
     "vue/attributes-order": 1,
     "vue/no-confusing-v-for-v-if": "error",
     "vue/order-in-components": "error",
@@ -27,17 +28,5 @@ module.exports = {
     path: true
   },
 
-  extends: ["plugin:vue/strongly-recommended", "@vue/prettier"],
-
-  overrides: [
-    {
-      files: [
-        "**/__tests__/*.{j,t}s?(x)",
-        "**/tests/unit/**/*.spec.{j,t}s?(x)"
-      ],
-      env: {
-        jest: true
-      }
-    }
-  ]
+  extends: ["plugin:vue/strongly-recommended", "@vue/prettier"]
 };

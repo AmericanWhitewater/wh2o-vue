@@ -101,8 +101,8 @@
   </section>
 </template>
 <script>
-import { RapidsItem } from "./components";
 import { mapState } from "vuex";
+import { RapidsItem } from "./components";
 
 export default {
   name: "RapidsSection",

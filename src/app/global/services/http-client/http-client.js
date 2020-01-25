@@ -24,11 +24,9 @@ const authInterceptor = config => {
   return config;
 };
 
-const loggerInterceptor = config => {
+const loggerInterceptor = config =>
   /** Add logging here */
-  return config;
-};
-
+  config;
 /** Adding the request interceptors */
 httpClient.interceptors.request.use(headers);
 httpClient.interceptors.request.use(authInterceptor);

@@ -21,8 +21,9 @@ we can make the editor a stand alone component and pass the editable content as 
   </main>
 </template>
 <script>
-import { ContentEditor } from "@/app/global/components";
 import { mapState } from "vuex";
+import { ContentEditor } from "@/app/global/components";
+
 export default {
   name: "RiverDescription",
   components: { ContentEditor },

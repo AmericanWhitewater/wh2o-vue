@@ -21,9 +21,7 @@
                 <img
                   v-if="rapid.photo"
                   :src="
-                    `https://prerelease.americanwhitewater.org${
-                      rapid.photo.file.uri.thumb
-                    }`
+                    `https://prerelease.americanwhitewater.org${rapid.photo.file.uri.thumb}`
                   "
                   :alt="rapid.name"
                 />

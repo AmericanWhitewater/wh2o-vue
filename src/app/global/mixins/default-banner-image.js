@@ -9,11 +9,13 @@ const defaultBannerImage = {
   data: () => ({
     images: [
       {
-        url: `https://prerelease.americanwhitewater.org/photos/archive/medium/885497.jpg`,
+        url:
+          "https://prerelease.americanwhitewater.org/photos/archive/medium/885497.jpg",
         title: "image-01"
       },
       {
-        url: `https://prerelease.americanwhitewater.org/photos/archive/medium/879537.jpg`,
+        url:
+          "https://prerelease.americanwhitewater.org/photos/archive/medium/879537.jpg",
         title: "image-02"
       },
       {
@@ -43,11 +45,9 @@ const defaultBannerImage = {
     headerBg() {
       if (!this.backgroundImage) {
         const img = this.images[Math.floor(Math.random() * this.images.length)];
-        console.log(img);
         return img;
-      } else {
-        return this.backgroundImage;
       }
+      return this.backgroundImage;
     }
   }
 };

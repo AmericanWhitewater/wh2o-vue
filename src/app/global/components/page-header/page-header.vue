@@ -20,6 +20,7 @@
 <script>
 import EditModeToggle from "../edit-mode-toggle/edit-mode-toggle";
 import { defaultBannerImage } from "../../mixins";
+
 export default {
   name: "PageHeader",
 

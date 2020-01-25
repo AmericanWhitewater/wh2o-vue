@@ -146,6 +146,7 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import { PageHeader } from "../global/components";
 import { riverSearchActions } from "./shared/state";
 import {
@@ -154,7 +155,7 @@ import {
   UsStatesList,
   UsStatesRegions
 } from "./shared/mixins";
-import { mapState } from "vuex";
+
 export default {
   name: "RiverSearch",
   components: {

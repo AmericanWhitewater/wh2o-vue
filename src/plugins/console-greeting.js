@@ -1,6 +1,8 @@
+/* eslint-disable no-console */
+
 module.exports = {
-  checkIfDeployed: function() {
-    const deployed = process.env.VUE_APP_HEROKU === "true" ? true : false;
+  checkIfDeployed() {
+    const deployed = process.env.VUE_APP_HEROKU === "true";
     const port = process.env.PORT || 3030;
     console.log(
       "\x1b[33m%s\x1b[0m",
@@ -19,7 +21,7 @@ module.exports = {
     }
     console.log(
       "\x1b[33m%s\x1b[0m",
-      `-----------------------------------------`
+      "-----------------------------------------"
     );
   }
 };

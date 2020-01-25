@@ -217,6 +217,7 @@ import {
   Underline,
   History
 } from "tiptap-extensions";
+
 export default {
   name: "ContentEditor",
   components: {

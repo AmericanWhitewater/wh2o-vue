@@ -39,6 +39,7 @@
 <script>
 import { mapState } from "vuex";
 import Moment from "moment";
+
 export default {
   name: "BetaBox",
   filters: {

@@ -22,7 +22,9 @@
     />
     <div class="bx--row">
       <div class="bx--col">
-        <h6 class="mb-2xs">Login as:</h6>
+        <h6 class="mb-2xs">
+          Login as:
+        </h6>
       </div>
     </div>
     <div class="bx--row ">

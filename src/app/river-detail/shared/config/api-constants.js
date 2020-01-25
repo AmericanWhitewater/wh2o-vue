@@ -8,9 +8,7 @@ export const apiConstants = {
     source: "/source",
     metrics: "metrics"
   },
-  weather: `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${
-    process.env.VUE_APP_DARK_SKY_ACCESS_TOKEN
-  }/`,
+  weather: `https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/${process.env.VUE_APP_DARK_SKY_ACCESS_TOKEN}/`,
   map: {
     base: null
   },
