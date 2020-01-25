@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "UserGages"
+  name: "user-gages"
 };
 </script>
 

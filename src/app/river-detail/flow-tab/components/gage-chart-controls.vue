@@ -57,7 +57,7 @@ import { metricsActions, readingsActions } from "../../shared/state";
 import { gageHttpConfig } from "../../shared/mixins";
 
 export default {
-  name: "GageChartControls",
+  name: "gage-chart-controls",
   mixins: [gageHttpConfig],
   data: () => ({
     gageLabel: "",

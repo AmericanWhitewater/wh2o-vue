@@ -78,7 +78,7 @@ import AwLogo from "@/app/global/components/logo-library/aw-logo";
 import { CheckWindow } from "../../../mixins";
 
 export default {
-  name: "MobileNav",
+  name: "mobile-nav",
   components: {
     "aw-logo": AwLogo
   },

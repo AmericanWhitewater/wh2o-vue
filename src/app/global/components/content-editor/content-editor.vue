@@ -219,7 +219,7 @@ import {
 } from "tiptap-extensions";
 
 export default {
-  name: "ContentEditor",
+  name: "content-editor",
   components: {
     EditorContent,
     EditorMenuBar

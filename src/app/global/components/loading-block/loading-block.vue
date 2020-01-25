@@ -8,7 +8,7 @@
  * @displayName Loading Block
  */
 export default {
-  name: "LoadingBlock",
+  name: "loading-block",
   props: {
     height: {
       type: String,

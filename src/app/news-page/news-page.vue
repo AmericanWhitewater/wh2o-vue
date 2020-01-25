@@ -39,7 +39,7 @@ import { PageHeader } from "../global/components";
 import { newsActions } from "./shared/state";
 
 export default {
-  name: "NewsPage",
+  name: "news-page",
   components: {
     PageHeader
   },

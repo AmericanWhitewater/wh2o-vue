@@ -53,7 +53,7 @@ import { userActions } from "../../shared/state";
  * @displayName User Login
  */
 export default {
-  name: "UserLogin",
+  name: "user-login",
   data: () => ({
     userName: "",
     passWord: ""

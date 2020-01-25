@@ -157,7 +157,7 @@ import {
 } from "./shared/mixins";
 
 export default {
-  name: "RiverSearch",
+  name: "river-search",
   components: {
     PageHeader
   },

@@ -117,7 +117,7 @@ import {
 } from "../river-search/shared/mixins";
 
 export default {
-  name: "NwiMap",
+  name: "nwi-map",
   components: {
     StaticUsMap,
     LoadingBlock

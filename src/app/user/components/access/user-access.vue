@@ -29,7 +29,7 @@
 </template>
 <script>
 export default {
-  name: "UserAccess"
+  name: "user-access"
 };
 </script>
 <style lang="scss">

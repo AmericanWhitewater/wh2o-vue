@@ -19,7 +19,7 @@ import { mapActions } from "../shared/state";
 import { LoadingBlock, ErrorBlock } from "@/app/global/components";
 
 export default {
-  name: "MapTab",
+  name: "map-tab",
   components: {
     ErrorBlock,
     LoadingBlock

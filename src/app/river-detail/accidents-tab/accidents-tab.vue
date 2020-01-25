@@ -59,7 +59,7 @@ import { accidentDetailActions } from "@/app/accident-database/shared/state";
 import { LoadingBlock, ErrorBlock } from "@/app/global/components";
 
 export default {
-  name: "AccidentsTab",
+  name: "accidents-tab",
   components: {
     ErrorBlock,
     LoadingBlock

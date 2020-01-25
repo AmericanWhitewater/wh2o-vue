@@ -68,9 +68,9 @@ import virtual_LogoGoogle24 from "@carbon/icons-vue/es/logo--google/24";
 import virtual_Email24 from "@carbon/icons-vue/es/email/24";
 import { PageHeader } from "../../global/components";
 import { newsActions } from "../shared/state";
-
+import {mapState,mapActions} from 'vuex';
 export default {
-  name: "ArticleDetail",
+  name: "article-detail",
   components: {
     PageHeader,
     "facebook-logo": virtual_LogoFacebook24,
@@ -79,14 +79,12 @@ export default {
     "email-icon": virtual_Email24
   },
   computed: {
+    ...mapState({
+      article: state => state.newsPageState.newsPageData.data,
+      loading: state => state.newsPageState.newsPageData.loading
+    }),
     articleId() {
       return this.$route.params.id;
-    },
-    article() {
-      return this.$store.state.newsPageState.newsPageData.data;
-    },
-    loading() {
-      return this.$store.state.newsPageState.newsPageData.loading;
     }
   },
   created() {

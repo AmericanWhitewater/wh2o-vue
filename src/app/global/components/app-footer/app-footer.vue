@@ -34,7 +34,7 @@ import { navItems } from "@/app/global/mixins";
  * @displayName App Footer
  */
 export default {
-  name: "AppFooter",
+  name: "app-footer",
   mixins: [navItems]
 };
 </script>

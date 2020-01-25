@@ -73,7 +73,7 @@
  */
 
 export default {
-  name: "AppBreadcrumbs",
+  name: "app-breadcrumbs",
   data: () => ({
     prevRoute: {
       path: null,

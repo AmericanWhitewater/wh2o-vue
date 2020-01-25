@@ -10,7 +10,7 @@
 import { EventBus } from "../../../global/services/event-bus/event-bus";
 
 export default {
-  name: "GageDetail",
+  name: "gage-detail",
   props: {
     gage: {
       type: Object,

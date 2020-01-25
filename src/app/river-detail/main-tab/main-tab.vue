@@ -35,7 +35,7 @@ import {
 } from "./components";
 
 export default {
-  name: "MainTab",
+  name: "main-tab",
   components: {
     SideBar,
     RapidsSection,

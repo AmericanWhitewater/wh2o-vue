@@ -105,7 +105,7 @@ import { mapState } from "vuex";
 import { RapidsItem } from "./components";
 
 export default {
-  name: "RapidsSection",
+  name: "rapids-section",
   components: {
     RapidsItem
   },

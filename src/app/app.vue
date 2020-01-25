@@ -19,7 +19,7 @@ import {
 } from "./global/components";
 
 export default {
-  name: "App",
+  name: "app",
   metaInfo: {
     title: "American Whitewater"
   },

@@ -189,7 +189,7 @@ import {
 } from "../../global/components";
 
 export default {
-  name: "ArticleDetail",
+  name: "article-detail",
   components: {
     PageHeader,
     ContentEditor,

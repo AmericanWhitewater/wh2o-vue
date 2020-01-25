@@ -38,7 +38,7 @@ import { appLocalStorage } from "@/app/global/services";
  * @displayName App Toaster
  */
 export default {
-  name: "AppToaster",
+  name: "app-toaster",
   data: () => ({
     refreshing: false,
     registration: null,

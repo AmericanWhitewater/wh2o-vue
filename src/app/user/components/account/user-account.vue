@@ -44,7 +44,7 @@
 import { mapState } from "vuex";
 
 export default {
-  name: "UserAccount",
+  name: "user-account",
   filters: {
     capitalize(value) {
       if (!value) return "";

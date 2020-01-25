@@ -40,7 +40,7 @@
 import RapidIconBar from "./rapid-icon-bar";
 
 export default {
-  name: "RapidsItem",
+  name: "rapids-item",
   components: {
     "rapid-icon-bar": RapidIconBar
   },

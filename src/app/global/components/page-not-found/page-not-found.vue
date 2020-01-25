@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  name: "AppPageNotFound"
+  name: "app-page-not-found"
 };
 </script>
 

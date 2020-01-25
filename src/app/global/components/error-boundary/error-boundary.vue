@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: "ErrorBoundary",
+  name: "error-boundary",
   props: {
     stopPropagation: Boolean
   },

@@ -50,7 +50,7 @@ import {
 } from "./shared/state";
 
 export default {
-  name: "RiverDetail",
+  name: "river-detail",
   components: {
     "river-header": RiverHeader
   },

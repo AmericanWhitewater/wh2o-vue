@@ -137,7 +137,7 @@ import { LoadingBlock, ErrorBlock } from "@/app/global/components";
 import { galleryUploadForm } from "./components";
 
 export default {
-  name: "GalleryTab",
+  name: "gallery-tab",
   components: {
     ErrorBlock,
     LoadingBlock,

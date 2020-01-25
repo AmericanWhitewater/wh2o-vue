@@ -41,7 +41,7 @@ import { mapState } from "vuex";
 import Moment from "moment";
 
 export default {
-  name: "BetaBox",
+  name: "beta-box",
   filters: {
     capitalize(value) {
       if (!value) return "";

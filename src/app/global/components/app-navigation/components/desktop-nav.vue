@@ -71,7 +71,7 @@ import AwLogo from "@/app/global/components/logo-library/aw-logo";
 import { globalAppActions } from "@/app/global/state";
 
 export default {
-  name: "DesktopNav",
+  name: "desktop-nav",
   components: {
     "aw-logo": AwLogo,
     "icon-search": virtual_Search16
