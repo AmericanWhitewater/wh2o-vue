@@ -68,12 +68,6 @@ export default {
       "Credits"
     ]
   }),
-  metaInfo() {
-    return {
-      title: this.riverTitle,
-      titleTemplate: `%s | ${this.river.section}`
-    };
-  },
   computed: {
     riverId() {
       return this.$route.params.id;
