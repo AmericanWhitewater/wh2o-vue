@@ -41,14 +41,14 @@
   </div>
 </template>
 <script>
-import { EventBus } from "../../global/services/event-bus/event-bus";
-import { SkeletonBlock } from "../../global/components";
-import { GageReadings, GageChartControls, GageChart } from "./components";
-import { GageChartConfig } from "./utils/gage-chart-config";
-import { gageHttpConfig } from "../shared/mixins";
+import { EventBus } from '../../global/services/event-bus/event-bus'
+import { SkeletonBlock } from '../../global/components'
+import { GageReadings, GageChartControls, GageChart } from './components'
+import { GageChartConfig } from './utils/gage-chart-config'
+import { gageHttpConfig } from '../shared/mixins'
 
 export default {
-  name: "flow-tab",
+  name: 'FlowTab',
   components: {
     GageReadings,
     GageChartControls,
@@ -68,76 +68,76 @@ export default {
     }
   }),
   computed: {
-    storePath() {
-      return this.$store.state.riverDetailState;
+    storePath () {
+      return this.$store.state.riverDetailState
     },
-    initialLoading() {
+    initialLoading () {
       if (
         this.storePath.gageMetricsData.loading &&
         this.storePath.gageReadingsData.loading
       ) {
-        return true;
+        return true
       }
-      return false;
+      return false
     },
-    readingsLoading() {
-      return this.storePath.gageReadingsData.loading;
+    readingsLoading () {
+      return this.storePath.gageReadingsData.loading
     },
-    routeId() {
-      return this.$route.params.id;
+    routeId () {
+      return this.$route.params.id
     },
-    river() {
-      return this.storePath.riverDetailData.data;
+    river () {
+      return this.storePath.riverDetailData.data
     },
-    gaugeSummary() {
-      return this.river.guagesummary;
+    gaugeSummary () {
+      return this.river.guagesummary
     },
-    readingsData() {
-      return this.storePath.gageReadingsData.data;
+    readingsData () {
+      return this.storePath.gageReadingsData.data
     },
-    mappedReadings() {
+    mappedReadings () {
       // NOTE: strip out just the gage reading
-      let mappedReadings;
+      let mappedReadings
       if (this.readingsData) {
-        mappedReadings = this.readingsData.map(a => a.reading);
+        mappedReadings = this.readingsData.map(a => a.reading)
       }
-      return mappedReadings;
+      return mappedReadings
     },
-    xAxisLabels() {
+    xAxisLabels () {
       // pull out the time the gauge was updated
-      let gageUpdateTime;
+      let gageUpdateTime
       if (this.readingsData) {
-        gageUpdateTime = this.readingsData.map(a => a.updated);
+        gageUpdateTime = this.readingsData.map(a => a.updated)
       }
-      return gageUpdateTime;
+      return gageUpdateTime
     }
   },
   watch: {
-    readingsData() {
+    readingsData () {
       // if the readings change, reformat data for chart
-      this.formatChartData();
+      this.formatChartData()
     }
   },
-  mounted() {
-    EventBus.$on("gage-detail-toggle", payload => {
-      this.gageDetailView = payload;
-    });
+  mounted () {
+    EventBus.$on('gage-detail-toggle', payload => {
+      this.gageDetailView = payload
+    })
   },
   methods: {
-    formatChartData() {
+    formatChartData () {
       // reset
-      this.formattedData.labels = [];
-      this.formattedData.datasets[0].data = [];
+      this.formattedData.labels = []
+      this.formattedData.datasets[0].data = []
       // add new values
       this.formattedData.labels = this.formattedData.labels.concat(
         this.xAxisLabels
-      );
+      )
       this.formattedData.datasets[0].data = this.formattedData.datasets[0].data.concat(
         this.mappedReadings
-      );
+      )
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .flow-tab {

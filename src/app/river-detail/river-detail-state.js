@@ -9,7 +9,7 @@ import {
   rapidsData,
   riverDetailData,
   weatherData
-} from "./shared/state";
+} from './shared/state'
 
 export default {
   modules: {
@@ -24,4 +24,4 @@ export default {
     riverDetailData,
     weatherData
   }
-};
+}

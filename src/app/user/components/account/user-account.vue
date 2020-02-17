@@ -13,7 +13,10 @@
                   class="bx--col-xs-12 bx--col-sm-4 bx--col-md-4 bx--col-lg-4"
                 >
                   <ul>
-                    <li v-for="(item, index) in tabs" :key="index">
+                    <li
+                      v-for="(item, index) in tabs"
+                      :key="index"
+                    >
                       <cv-button
                         :kind="activeSection(item.label)"
                         small
@@ -41,30 +44,30 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 export default {
-  name: "user-account",
+  name: 'UserAccount',
   filters: {
-    capitalize(value) {
-      if (!value) return "";
-      value = value.toString();
-      return value.charAt(0).toUpperCase() + value.slice(1);
+    capitalize (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.charAt(0).toUpperCase() + value.slice(1)
     }
   },
   data: () => ({
     tabs: [
       {
-        label: "alerts"
+        label: 'alerts'
       },
       {
-        label: "gages"
+        label: 'gages'
       },
       {
-        label: "profile"
+        label: 'profile'
       },
       {
-        label: "settings"
+        label: 'settings'
       }
     ]
   }),
@@ -75,21 +78,21 @@ export default {
       error: state => state.userState.userData.error
     })
   },
-  created() {
+  created () {
     // this is temp, we want to check if there any alerts for the user, if no, push to gages.
     if (!this.alerts) {
-      this.$router.replace("/user/account/1/gages");
+      this.$router.replace('/user/account/1/gages')
     }
   },
   methods: {
-    activeSection(view) {
+    activeSection (view) {
       if (this.$route.name === view) {
-        return "secondary";
+        return 'secondary'
       }
-      return "ghost";
+      return 'ghost'
     }
   }
-};
+}
 </script>
 
 <style lang="scss">

@@ -17,8 +17,8 @@
 
 <script>
 export default {
-  name: "app-page-not-found"
-};
+  name: 'AppPageNotFound'
+}
 </script>
 
 <style lang="scss">

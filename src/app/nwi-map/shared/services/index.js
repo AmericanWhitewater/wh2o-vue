@@ -1,1 +1,1 @@
-export * from "./nwi-map/nwi-map";
+export * from './nwi-map/nwi-map'

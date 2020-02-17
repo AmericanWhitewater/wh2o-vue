@@ -1,9 +1,9 @@
-import { httpClient } from "../../../../global/services";
+import { httpClient } from '../../../../global/services'
 
-import { apiConstants } from "../../config";
+import { apiConstants } from '../../config'
 
 const fetchGalleryData = data => {
-  const url = `${apiConstants.graphql}`;
+  const url = `${apiConstants.graphql}`
   return httpClient
     .post(url, {
       query: `
@@ -32,7 +32,7 @@ const fetchGalleryData = data => {
     
     `
     })
-    .then(res => res.data);
-};
+    .then(res => res.data)
+}
 
-export { fetchGalleryData };
+export { fetchGalleryData }

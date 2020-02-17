@@ -3,36 +3,36 @@ export const navItems = {
     navItems: {
       primary: [
         {
-          title: "River Info",
-          path: "/nwi-map"
+          title: 'River Info',
+          path: '/nwi-map'
         },
         {
-          title: "News",
-          path: "/news"
+          title: 'News',
+          path: '/news'
         },
         {
-          title: "Safety",
-          path: "/safety"
+          title: 'Safety',
+          path: '/safety'
         }
       ],
       topbar: [
         {
-          title: "Search",
-          icon: "search",
-          path: "/river-search"
+          title: 'Search',
+          icon: 'search',
+          path: '/river-search'
         },
         {
-          title: "My Account",
-          icon: "user",
-          path: "/my-account"
+          title: 'My Account',
+          icon: 'user',
+          path: '/my-account'
         }
       ],
       footer: [
         {
-          title: "Accident Database",
-          path: "/accident-database"
+          title: 'Accident Database',
+          path: '/accident-database'
         }
       ]
     }
   })
-};
+}

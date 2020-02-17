@@ -8,8 +8,8 @@
 
 <script>
 export default {
-  name: "user-alerts"
-};
+  name: 'UserAlerts'
+}
 </script>
 
 <style lang="scss">

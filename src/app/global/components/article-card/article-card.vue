@@ -1,18 +1,31 @@
 <template>
   <cv-tile class="article-card">
-    <img :src="'/content/Photo/detail/photoid/' + thumbnailId" />
+    <img :src="'/content/Photo/detail/photoid/' + thumbnailId">
     <div class="content-area">
-      <h6 class="mb-spacing-xs" v-text="datePosted" />
-      <h4 class="mb-spacing-sm" v-text="title" />
-      <p class="mb-spacing-md" v-html="abstract.slice(0, 150) + '...'" />
-      <cv-button small @click="readArticle(articleId)" v-text="'Read More'" />
+      <h6
+        class="mb-spacing-xs"
+        v-text="datePosted"
+      />
+      <h4
+        class="mb-spacing-sm"
+        v-text="title"
+      />
+      <p
+        class="mb-spacing-md"
+        v-html="abstract.slice(0, 150) + '...'"
+      />
+      <cv-button
+        small
+        @click="readArticle(articleId)"
+        v-text="'Read More'"
+      />
     </div>
   </cv-tile>
 </template>
 
 <script>
 export default {
-  name: "article-card",
+  name: 'ArticleCard',
   props: {
     thumbnailId: {
       type: String,
@@ -36,12 +49,12 @@ export default {
     }
   },
   methods: {
-    readArticle(id) {
+    readArticle (id) {
       //   this.$router.push(`/article/${id}`);
-      alert(`push to article: ${id}`);
+      alert(`push to article: ${id}`)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

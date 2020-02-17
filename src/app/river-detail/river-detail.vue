@@ -2,7 +2,11 @@
   <section class="bx--grid river-detail">
     <transition name="fade">
       <template v-if="loading">
-        <cv-loading active overlay small />
+        <cv-loading
+          active
+          overlay
+          small
+        />
       </template>
     </transition>
     <template v-if="!loading">
@@ -40,37 +44,37 @@
   </section>
 </template>
 <script>
-import { mapState } from "vuex";
-import RiverHeader from "./river-header/river-header";
+import { mapState } from 'vuex'
+import RiverHeader from './river-header/river-header'
 import {
   actionsTypes,
   weatherActions,
   rapidsActions,
   galleryActions
-} from "./shared/state";
+} from './shared/state'
 
 export default {
-  name: "river-detail",
+  name: 'RiverDetail',
   components: {
-    "river-header": RiverHeader
+    'river-header': RiverHeader
   },
   data: () => ({
     selected: true,
     prevRoute: null,
     tabs: [
-      "Main",
-      "Flow",
-      "Weather",
-      "Map",
-      "Gallery",
-      "News",
-      "Accidents",
-      "Credits"
+      'Main',
+      'Flow',
+      'Weather',
+      'Map',
+      'Gallery',
+      'News',
+      'Accidents',
+      'Credits'
     ]
   }),
   computed: {
-    riverId() {
-      return this.$route.params.id;
+    riverId () {
+      return this.$route.params.id
     },
     ...mapState({
       river: state => state.riverDetailState.riverDetailData.data,
@@ -78,52 +82,52 @@ export default {
       editMode: state => state.riverDetailState.riverDetailData.mode,
       media: state => state.riverDetailState.galleryData.data
     }),
-    riverTitle() {
+    riverTitle () {
       if (this.river) {
-        return this.river.river;
+        return this.river.river
       }
-      return null;
+      return null
     },
-    bgImage() {
+    bgImage () {
       if (this.media) {
-        const img = this.media[Math.floor(Math.random() * this.media.length)];
-        return `https://prerelease.americanwhitewater.org${img.file.uri.thumb}`;
+        const img = this.media[Math.floor(Math.random() * this.media.length)]
+        return `https://prerelease.americanwhitewater.org${img.file.uri.thumb}`
       }
-      return null;
+      return null
     }
   },
-  created() {
-    this.$store.dispatch(actionsTypes.FETCH_RIVER_DETAIL_DATA, this.riverId);
+  created () {
+    this.$store.dispatch(actionsTypes.FETCH_RIVER_DETAIL_DATA, this.riverId)
   },
-  mounted() {
-    this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId);
+  mounted () {
+    this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId)
     // this.$store.dispatch(galleryActions.FETCH_GALLERY_DATA, this.riverId);
   },
   methods: {
-    switchTab(index) {
+    switchTab (index) {
       /**
        * cv-tabs emits indexof tab on click, use that to push to the correct tab
        * use $router.replace to avoid making log into history
        */
       this.$router.replace(
         `/river-detail/${this.riverId}/${this.tabs[index].toLowerCase()}`
-      );
+      )
     },
-    async resetStores() {
-      await this.$store.dispatch(weatherActions.RESET_WEATHER_DATA);
-      await this.$store.dispatch(galleryActions.RESET_GALLERY_DATA);
+    async resetStores () {
+      await this.$store.dispatch(weatherActions.RESET_WEATHER_DATA)
+      await this.$store.dispatch(galleryActions.RESET_GALLERY_DATA)
     }
   },
-  beforeRouteLeave(to, from, next) {
+  beforeRouteLeave (to, from, next) {
     if (this.editMode) {
       // use as a check for unsaved changes
-      alert("you're leaving in edit mode!!!!");
-      this.$store.dispatch(actionsTypes.SET_EDIT_MODE, false);
+      alert("you're leaving in edit mode!!!!")
+      this.$store.dispatch(actionsTypes.SET_EDIT_MODE, false)
     }
-    this.resetStores();
-    next();
+    this.resetStores()
+    next()
   }
-};
+}
 </script>
 
 <style lang="scss">

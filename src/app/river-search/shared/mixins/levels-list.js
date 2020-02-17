@@ -2,33 +2,33 @@ export const LevelsList = {
   data: () => ({
     levelsList: [
       {
-        text: "Select Level",
+        text: 'Select Level',
         value: null
       },
       {
-        text: "Any Level",
-        value: "any"
+        text: 'Any Level',
+        value: 'any'
       },
       {
-        text: "Running (Between min and max)",
-        value: "run"
+        text: 'Running (Between min and max)',
+        value: 'run'
       },
       {
-        text: "Above Minimum",
-        value: "min"
+        text: 'Above Minimum',
+        value: 'min'
       },
       {
-        text: "Above Maximum",
-        value: "max"
+        text: 'Above Maximum',
+        value: 'max'
       },
       {
-        text: "Low (Below Min)",
-        value: "low"
+        text: 'Low (Below Min)',
+        value: 'low'
       },
       {
-        text: "High (Above Max)",
-        value: "hig"
+        text: 'High (Above Max)',
+        value: 'hig'
       }
     ]
   })
-};
+}

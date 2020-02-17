@@ -7,11 +7,11 @@ module.exports = {
   },
 
   rules: {
-    "vue/use-v-on-exact": 1,
-    "vue/v-on-style": 2,
+    'vue/use-v-on-exact': 1,
+    'vue/v-on-style': 2,
     'no-console': 2,
     'no-debugger': 2,
-    'radix': 1,
+    radix: 1,
     'vue/attributes-order': 2,
     'vue/eqeqeq': 2,
     'vue/html-self-closing': 1,
@@ -72,8 +72,8 @@ module.exports = {
         ]
       }
     ],
-    "vue/component-tags-order": [2, {
-      "order": ["template", "script", "style"]
+    'vue/component-tags-order': [2, {
+      order: ['template', 'script', 'style']
     }]
   },
 
@@ -95,9 +95,9 @@ module.exports = {
     setCookie: true
   },
 
-  'extends': [
+  extends: [
     'plugin:vue/strongly-recommended',
     '@vue/standard',
     'plugin:vue/essential'
   ]
-};
+}

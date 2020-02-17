@@ -1,82 +1,82 @@
 const riverDetailRoutes = [
   {
-    path: "/river-detail/:id",
-    component: () => import("./river-detail.vue"),
+    path: '/river-detail/:id',
+    component: () => import('./river-detail.vue'),
     children: [
       {
-        path: "main",
-        name: "main-tab",
+        path: 'main',
+        name: 'main-tab',
         meta: {
-          crumbLabel: "River Detail"
+          crumbLabel: 'River Detail'
         },
-        component: () => import("./main-tab/main-tab.vue")
+        component: () => import('./main-tab/main-tab.vue')
       },
       {
-        path: "flow",
-        name: "flow-tab",
+        path: 'flow',
+        name: 'flow-tab',
         meta: {
-          crumbLabel: "River Detail"
+          crumbLabel: 'River Detail'
         },
-        component: () => import("./flow-tab/flow-tab.vue"),
+        component: () => import('./flow-tab/flow-tab.vue'),
         children: [
           {
-            path: "gage-detail/:gageID",
-            name: "gage-detail",
+            path: 'gage-detail/:gageID',
+            name: 'gage-detail',
             props: { default: true, gageDetail: true },
-            component: () => import("./flow-tab/components/gage-detail.vue")
+            component: () => import('./flow-tab/components/gage-detail.vue')
           }
         ]
       },
       {
-        path: "map",
-        name: "map-tab",
+        path: 'map',
+        name: 'map-tab',
         meta: {
-          crumbLabel: "River Detail"
+          crumbLabel: 'River Detail'
         },
-        component: () => import("./map-tab/map-tab.vue")
+        component: () => import('./map-tab/map-tab.vue')
       },
       {
-        path: "gallery",
-        name: "gallery-tab",
+        path: 'gallery',
+        name: 'gallery-tab',
         meta: {
-          crumbLabel: "River Detail"
+          crumbLabel: 'River Detail'
         },
-        component: () => import("./gallery-tab/gallery-tab.vue")
+        component: () => import('./gallery-tab/gallery-tab.vue')
       },
       {
-        path: "accidents",
-        name: "accidents-tab",
+        path: 'accidents',
+        name: 'accidents-tab',
         meta: {
-          crumbLabel: "River Detail"
+          crumbLabel: 'River Detail'
         },
-        component: () => import("./accidents-tab/accidents-tab.vue")
+        component: () => import('./accidents-tab/accidents-tab.vue')
       },
       {
-        path: "credits",
-        name: "credits-tab",
+        path: 'credits',
+        name: 'credits-tab',
         meta: {
-          crumbLabel: "River Detail"
+          crumbLabel: 'River Detail'
         },
-        component: () => import("./credits-tab/credits-tab.vue")
+        component: () => import('./credits-tab/credits-tab.vue')
       },
       {
-        path: "weather",
-        name: "weather-tab",
+        path: 'weather',
+        name: 'weather-tab',
         meta: {
-          crumbLabel: "River Detail"
+          crumbLabel: 'River Detail'
         },
-        component: () => import("./weather-tab/weather-tab.vue")
+        component: () => import('./weather-tab/weather-tab.vue')
       },
       {
-        path: "news",
-        name: "news-tab",
+        path: 'news',
+        name: 'news-tab',
         meta: {
-          crumbLabel: "River Detail"
+          crumbLabel: 'River Detail'
         },
-        component: () => import("./news-tab/news-tab.vue")
+        component: () => import('./news-tab/news-tab.vue')
       }
     ]
   }
-];
+]
 
-export default riverDetailRoutes;
+export default riverDetailRoutes

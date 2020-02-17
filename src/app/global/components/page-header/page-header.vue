@@ -1,5 +1,8 @@
 <template>
-  <div class="page-header" :style="`background-image: url(${headerBg.url})`">
+  <div
+    class="page-header"
+    :style="`background-image: url(${headerBg.url})`"
+  >
     <div class="bx--grid">
       <div class="bx--row">
         <div class="bx--col">
@@ -18,11 +21,11 @@
   </div>
 </template>
 <script>
-import EditModeToggle from "../edit-mode-toggle/edit-mode-toggle";
-import { defaultBannerImage } from "../../mixins";
+import EditModeToggle from '../edit-mode-toggle/edit-mode-toggle'
+import { defaultBannerImage } from '../../mixins'
 
 export default {
-  name: "page-header",
+  name: 'PageHeader',
 
   components: {
     EditModeToggle
@@ -32,7 +35,7 @@ export default {
     title: {
       type: String,
       required: true,
-      default: "Page Title"
+      default: 'Page Title'
     },
     subtitle: {
       type: String,
@@ -48,7 +51,7 @@ export default {
   data: () => ({
     showConfirmation: false
   })
-};
+}
 </script>
 <style lang="scss">
 .page-header {

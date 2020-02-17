@@ -1,4 +1,4 @@
-import { moduleData, submoduleOneData, submoduleTwoData } from "./shared/state";
+import { moduleData, submoduleOneData, submoduleTwoData } from './shared/state'
 
 export default {
   modules: {
@@ -6,4 +6,4 @@ export default {
     submoduleOneData,
     submoduleTwoData
   }
-};
+}

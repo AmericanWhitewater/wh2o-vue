@@ -11,7 +11,10 @@
           <div class="outside">
             <div class="inside map">
               <static-us-map @stateClicked="fetchRivers" />
-              <div class="expand-toggle" @click="toggleFocus">
+              <div
+                class="expand-toggle"
+                @click="toggleFocus"
+              >
                 <div v-text="expandToggleTxt" />
               </div>
             </div>
@@ -27,7 +30,7 @@
               </template>
               <template v-else>
                 <h1>Select a State</h1>
-                <hr />
+                <hr>
               </template>
               <div class="bx--row">
                 <div class="bx--col mb-spacing-md">
@@ -52,7 +55,7 @@
                     <tr>
                       <th>
                         <strong>River Name</strong>
-                        <br />Section
+                        <br>Section
                       </th>
                       <th>Class</th>
                       <th>Flow</th>
@@ -61,11 +64,14 @@
                   </thead>
                   <tbody>
                     <template v-if="!loadingResults">
-                      <tr v-for="(r, index) in searchResults" :key="index">
+                      <tr
+                        v-for="(r, index) in searchResults"
+                        :key="index"
+                      >
                         <td :class="r.cond">
                           <span @click="viewRiver(r.id)">
                             <strong>{{ r.name }}</strong>
-                            <br />
+                            <br>
                             {{ r.section }}
                           </span>
                         </td>
@@ -106,33 +112,33 @@
   </div>
 </template>
 <script>
-import { riverSearchHttpConfig } from "../global/mixins";
-import { StaticUsMap } from "./shared/components";
-import { LoadingBlock } from "@/app/global/components";
-import { nwiActions } from "./shared/state";
-import { riverSearchActions } from "../river-search/shared/state";
+import { riverSearchHttpConfig } from '../global/mixins'
+import { StaticUsMap } from './shared/components'
+import { LoadingBlock } from '@/app/global/components'
+import { nwiActions } from './shared/state'
+import { riverSearchActions } from '../river-search/shared/state'
 import {
   InternationalReaches,
   LevelsList
-} from "../river-search/shared/mixins";
+} from '../river-search/shared/mixins'
 
 export default {
-  name: "nwi-map",
+  name: 'NwiMap',
   components: {
     StaticUsMap,
     LoadingBlock
   },
   mixins: [riverSearchHttpConfig, InternationalReaches, LevelsList],
-  metaInfo() {
+  metaInfo () {
     return {
-      title: "National Whitewater Inventory - American Whitewater"
-    };
+      title: 'National Whitewater Inventory - American Whitewater'
+    }
   },
   data: () => ({
-    expandToggleTxt: "Hide",
+    expandToggleTxt: 'Hide',
     mapFocused: true,
-    focusedArea: "bx--col-sm-4 bx--col-md-6 bx--col-lg-12",
-    unfocusedArea: "bx--col-sm-4 bx--col-md-2 bx--col-lg-4",
+    focusedArea: 'bx--col-sm-4 bx--col-md-6 bx--col-lg-12',
+    unfocusedArea: 'bx--col-sm-4 bx--col-md-2 bx--col-lg-4',
     location: null,
     coords: {
       lat: null,
@@ -140,54 +146,54 @@ export default {
     }
   }),
   computed: {
-    searchResults() {
+    searchResults () {
       if (this.$store.state.riverSearchState.riverSearchData.data) {
         return this.$store.state.riverSearchState.riverSearchData.data.slice(
           0,
           50
-        );
+        )
       }
-      return null;
+      return null
     },
-    loadingResults() {
-      return this.$store.state.riverSearchState.riverSearchData.loading;
+    loadingResults () {
+      return this.$store.state.riverSearchState.riverSearchData.loading
     }
   },
-  mounted() {
-    this.getUserLocation();
+  mounted () {
+    this.getUserLocation()
   },
   methods: {
-    viewRiver(id) {
-      this.$router.push(`/river-detail/${id}/main`);
+    viewRiver (id) {
+      this.$router.push(`/river-detail/${id}/main`)
     },
-    toggleFocus() {
-      this.mapFocused = !this.mapFocused;
+    toggleFocus () {
+      this.mapFocused = !this.mapFocused
       if (this.mapFocused) {
-        this.expandToggleTxt = "Hide";
+        this.expandToggleTxt = 'Hide'
       } else {
-        this.expandToggleTxt = "Show";
+        this.expandToggleTxt = 'Show'
       }
     },
-    fetchRivers(data) {
-      this.riverSearchHttpConfig.state = `st${data}`;
+    fetchRivers (data) {
+      this.riverSearchHttpConfig.state = `st${data}`
       this.$store.dispatch(
         riverSearchActions.FETCH_RIVER_SEARCH_DATA,
         this.riverSearchHttpConfig
-      );
-      this.riverSearchHttpConfig.state = null;
+      )
+      this.riverSearchHttpConfig.state = null
     },
-    showPosition(position) {
-      this.coords.lat = position.coords.latitude;
-      this.coords.lon = position.coords.longitude;
-      this.$store.dispatch(nwiActions.FETCH_USER_LOCATION, this.coords);
+    showPosition (position) {
+      this.coords.lat = position.coords.latitude
+      this.coords.lon = position.coords.longitude
+      this.$store.dispatch(nwiActions.FETCH_USER_LOCATION, this.coords)
     },
-    getUserLocation() {
+    getUserLocation () {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(this.showPosition);
+        navigator.geolocation.getCurrentPosition(this.showPosition)
       }
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 $content-height: calc(100vh - 125px);

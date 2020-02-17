@@ -4,16 +4,16 @@
   </div>
 </template>
 <script>
-import { CheckWindow } from "@/app/global/mixins";
-import { VideoHeroBanner } from "./components";
+import { CheckWindow } from '@/app/global/mixins'
+import { VideoHeroBanner } from './components'
 
 export default {
-  name: "home-page",
+  name: 'HomePage',
   components: {
     VideoHeroBanner
   },
   mixins: [CheckWindow]
-};
+}
 </script>
 <style lang="scss" scoped>
 .wrapper {

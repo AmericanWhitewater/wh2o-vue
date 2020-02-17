@@ -3,8 +3,14 @@
     <div class="bx--grid">
       <div class="bx--row">
         <div class="bx--col">
-          <transition-group name="list" tag="ul">
-            <li v-for="(t, index) in toasts" :key="t.title">
+          <transition-group
+            name="list"
+            tag="ul"
+          >
+            <li
+              v-for="(t, index) in toasts"
+              :key="t.title"
+            >
               <template v-if="t.action">
                 <cv-inline-notification
                   ref="toast"
@@ -33,86 +39,86 @@
   </div>
 </template>
 <script>
-import { appLocalStorage } from "@/app/global/services";
+import { appLocalStorage } from '@/app/global/services'
 /**
  * @displayName App Toaster
  */
 export default {
-  name: "app-toaster",
+  name: 'AppToaster',
   data: () => ({
     refreshing: false,
     registration: null,
     updateExists: false,
     newUpdate: {
-      title: "App Update Available",
-      label: "Install",
-      kind: "info",
+      title: 'App Update Available',
+      label: 'Install',
+      kind: 'info',
       contrast: true,
       action: true
     },
     vueDevTools: {
-      title: "Vue Dev Tools Available",
-      subtitle: "Get a peek under the hood.",
-      kind: "info",
+      title: 'Vue Dev Tools Available',
+      subtitle: 'Get a peek under the hood.',
+      kind: 'info',
       contrast: false,
       action: false
     },
     toasts: []
   }),
   computed: {
-    updateAvailable() {
-      return this.$store.state.appGlobalState.appGlobalData.updateAvailable;
+    updateAvailable () {
+      return this.$store.state.appGlobalState.appGlobalData.updateAvailable
     }
   },
   watch: {
-    updateAvailable() {
-      this.toasts.push(this.newUpdate);
+    updateAvailable () {
+      this.toasts.push(this.newUpdate)
     }
   },
-  created() {
-    document.addEventListener("swUpdated", this.showRefreshUI, { once: true });
-    navigator.serviceWorker.addEventListener("controllerchange", () => {
-      if (this.refreshing) return;
-      this.refreshing = true;
-      window.location.reload();
-    });
+  created () {
+    document.addEventListener('swUpdated', this.showRefreshUI, { once: true })
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (this.refreshing) return
+      this.refreshing = true
+      window.location.reload()
+    })
   },
-  mounted() {
-    this.showDevToolsToast();
+  mounted () {
+    this.showDevToolsToast()
   },
   methods: {
-    handleClose(index, title) {
+    handleClose (index, title) {
       if (index === 0) {
-        this.toasts.shift();
+        this.toasts.shift()
       }
       if (index === 1) {
-        this.toasts.pop();
+        this.toasts.pop()
       }
       if (title === this.vueDevTools.title) {
-        appLocalStorage.setItem("Vue_Toast_Dismissed", true);
+        appLocalStorage.setItem('Vue_Toast_Dismissed', true)
       }
     },
-    handleUpdate() {
-      window.location.reload(true);
+    handleUpdate () {
+      window.location.reload(true)
     },
-    showRefreshUI(e) {
-      this.registration = e.detail;
-      this.updateExists = true;
+    showRefreshUI (e) {
+      this.registration = e.detail
+      this.updateExists = true
     },
-    refreshApp() {
-      this.updateExists = false;
+    refreshApp () {
+      this.updateExists = false
       if (!this.registration || !this.registration.waiting) {
-        return;
+        return
       }
-      this.registration.waiting.postMessage("skipWaiting");
+      this.registration.waiting.postMessage('skipWaiting')
     },
-    showDevToolsToast() {
-      if (!appLocalStorage.getItem("Vue_Toast_Dismissed")) {
-        this.toasts.push(this.vueDevTools);
+    showDevToolsToast () {
+      if (!appLocalStorage.getItem('Vue_Toast_Dismissed')) {
+        this.toasts.push(this.vueDevTools)
       }
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .bx--toast-notification {
@@ -153,11 +159,9 @@ this is a temp solution. as more toasts are added, then the page will get blocke
 
 need to set width auto, and match bx--grid right positioning.
 
-
 ```js
 
 <app-toaster />
 ```
-
 
 </docs>

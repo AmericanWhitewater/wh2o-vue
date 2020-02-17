@@ -6,7 +6,7 @@
  * @todo dynamic icon set.
  */
 export default {
-  name: ""
-};
+  name: ''
+}
 </script>
 <style lang="scss" scoped></style>

@@ -15,37 +15,37 @@
   </div>
 </template>
 <script>
-import { PageHeader } from "../global/components";
-import { accidentDatabaseActions, accidentDetailActions } from "./shared/state";
+import { PageHeader } from '../global/components'
+import { accidentDatabaseActions, accidentDetailActions } from './shared/state'
 
 export default {
-  name: "accident-database",
+  name: 'AccidentDatabase',
   components: {
     PageHeader
   },
   computed: {
-    loading() {
+    loading () {
       return this.$store.state.accidentDatabaseState.accidentDatabaseData
-        .loading;
+        .loading
     },
-    accidents() {
-      return this.$store.state.accidentDatabaseState.accidentDatabaseState.data;
+    accidents () {
+      return this.$store.state.accidentDatabaseState.accidentDatabaseState.data
     }
   },
-  created() {},
+  created () {},
   methods: {
-    viewAccidentDetail() {
+    viewAccidentDetail () {
       this.$store.dispatch(
         accidentDetailActions.GET_ACCIDENT_DETAIL_DATA,
-        "3452"
-      );
-      this.$router.push("/accident-database/3088");
+        '3452'
+      )
+      this.$router.push('/accident-database/3088')
     },
-    loadAccidents() {
-      this.$store.dispatch(accidentDatabaseActions.GET_ACCIDENT_DATABASE_DATA);
+    loadAccidents () {
+      this.$store.dispatch(accidentDatabaseActions.GET_ACCIDENT_DATABASE_DATA)
     }
   }
-};
+}
 </script>
 <style lang="scss">
 .accident-database {

@@ -35,23 +35,23 @@
 </template>
 <script>
 export default {
-  name: "user-register",
+  name: 'UserRegister',
   data: () => ({
     newUser: {
-      userName: "",
-      passWord: "",
+      userName: '',
+      passWord: '',
       termsConfirmed: false
     }
   }),
   methods: {
-    viewTerms() {
-      alert("view terms clicked");
+    viewTerms () {
+      alert('view terms clicked')
     },
-    submitRegistration() {
-      alert("submitted");
+    submitRegistration () {
+      alert('submitted')
     }
   }
-};
+}
 </script>
 <style lang="scss">
 .register {

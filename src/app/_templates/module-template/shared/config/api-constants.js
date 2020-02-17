@@ -1,4 +1,4 @@
 export const apiConstants = {
-  moduleEndpoint: "/module",
-  submoduleOneEndpoint: "/submodule-one"
-};
+  moduleEndpoint: '/module',
+  submoduleOneEndpoint: '/submodule-one'
+}

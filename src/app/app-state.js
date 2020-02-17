@@ -1,16 +1,16 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue'
+import Vuex from 'vuex'
 
-import { riverDetailState } from "./river-detail";
-import { safetyPageState } from "./safety-page";
-import { newsPageState } from "./news-page";
-import { userState } from "./user";
-import { riverSearchState } from "./river-search";
-import { accidentDatabaseState } from "./accident-database";
-import { appGlobalState } from "@/app/global/state";
-import { nwiMapState } from "./nwi-map";
+import { riverDetailState } from './river-detail'
+import { safetyPageState } from './safety-page'
+import { newsPageState } from './news-page'
+import { userState } from './user'
+import { riverSearchState } from './river-search'
+import { accidentDatabaseState } from './accident-database'
+import { appGlobalState } from '@/app/global/state'
+import { nwiMapState } from './nwi-map'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {},
@@ -26,4 +26,4 @@ export default new Vuex.Store({
     userState,
     safetyPageState
   }
-});
+})

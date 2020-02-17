@@ -10,10 +10,16 @@
           class="bx--col-sm-4 bx--col-md-6 bx--col-lg-4 mb-spacing-md"
         >
           <cv-tile class="news-tile">
-            <img :src="'/content/Photo/detail/photoid/' + article.uid" />
+            <img :src="'/content/Photo/detail/photoid/' + article.uid">
             <div class="content-area">
-              <h6 class="mb-spacing-xs" v-text="article.posted" />
-              <h4 class="mb-spacing-sm" v-text="article.title" />
+              <h6
+                class="mb-spacing-xs"
+                v-text="article.posted"
+              />
+              <h4
+                class="mb-spacing-sm"
+                v-text="article.title"
+              />
               <p
                 class="mb-spacing-md"
                 v-html="article.abstract.slice(0, 150) + '...'"
@@ -34,19 +40,19 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import { PageHeader } from "../global/components";
-import { newsActions } from "./shared/state";
+import { mapState } from 'vuex'
+import { PageHeader } from '../global/components'
+import { newsActions } from './shared/state'
 
 export default {
-  name: "news-page",
+  name: 'NewsPage',
   components: {
     PageHeader
   },
-  metaInfo() {
+  metaInfo () {
     return {
-      title: "News - American Whitewater"
-    };
+      title: 'News - American Whitewater'
+    }
   },
   computed: {
     ...mapState({
@@ -54,28 +60,28 @@ export default {
       articles: state => state.newsPageState.newsPageData.data
       // articles: state => state.newsPageState.newsPageData.data.articles
     }),
-    latest() {
-      return this.articles.CArticleGadgetJSON_view;
+    latest () {
+      return this.articles.CArticleGadgetJSON_view
     }
     // articleTiles() {
     //   return this.articles.articles.CArticleGadgetJSON_view_list.slice(0, 12);
     // }
   },
-  created() {
-    this.getArticles();
+  created () {
+    this.getArticles()
   },
   methods: {
-    readArticle(id) {
-      this.$router.push(`/article/${id}`);
+    readArticle (id) {
+      this.$router.push(`/article/${id}`)
     },
-    getArticles() {
+    getArticles () {
       // uncomment once store is split up
       // if (!this.$store.state.newsPageState.newsPageData.data) {
-      this.$store.dispatch(newsActions.GET_FRONT_PAGE_ARTICLES);
+      this.$store.dispatch(newsActions.GET_FRONT_PAGE_ARTICLES)
       // }
     }
   }
-};
+}
 </script>
 <style lang="scss">
 .news-page {

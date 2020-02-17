@@ -8,4 +8,4 @@ export const gageHttpConfig = {
       resolution: null
     }
   })
-};
+}

@@ -1,21 +1,21 @@
-import { AppPageNotFound } from "@/app/global/components";
+import { AppPageNotFound } from '@/app/global/components'
 
-import Home from "./home-page/home-page.vue";
+import Home from './home-page/home-page.vue'
 
 const staticRoutes = [
   {
-    path: "/",
-    name: "home",
+    path: '/',
+    name: 'home',
     meta: {
-      crumbLabel: "Home"
+      crumbLabel: 'Home'
     },
     component: Home
   },
   {
-    path: "*",
-    name: "page-not-found",
+    path: '*',
+    name: 'page-not-found',
     component: AppPageNotFound
   }
-];
+]
 
-export default staticRoutes;
+export default staticRoutes

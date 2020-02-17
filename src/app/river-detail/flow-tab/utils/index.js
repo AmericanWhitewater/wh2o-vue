@@ -1,1 +1,1 @@
-export * from "./gage-chart-config";
+export * from './gage-chart-config'

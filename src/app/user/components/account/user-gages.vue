@@ -6,8 +6,8 @@
 
 <script>
 export default {
-  name: "user-gages"
-};
+  name: 'UserGages'
+}
 </script>
 
 <style lang="scss">

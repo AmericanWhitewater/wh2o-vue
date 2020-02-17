@@ -6,43 +6,43 @@
  * Default, this is just using the LocalStorage
  */
 export class AppStorage {
-  constructor(storage) {
-    this.storage = storage || window.localStorage;
+  constructor (storage) {
+    this.storage = storage || window.localStorage
 
     /** Is storage is supported or not */
     if (!this.isSupported()) {
-      throw new Error("Storage is not supported by browser!");
+      throw new Error('Storage is not supported by browser!')
     }
   }
 
-  setItem(key, value) {
-    this.storage.setItem(key, JSON.stringify(value));
+  setItem (key, value) {
+    this.storage.setItem(key, JSON.stringify(value))
   }
 
-  getItem(key) {
-    return JSON.parse(this.storage.getItem(key));
+  getItem (key) {
+    return JSON.parse(this.storage.getItem(key))
   }
 
-  removeItem(key) {
-    this.storage.removeItem(key);
+  removeItem (key) {
+    this.storage.removeItem(key)
   }
 
-  clear() {
-    this.storage.clear();
+  clear () {
+    this.storage.clear()
   }
 
   /**
    * @description Check for storage support
    * @returns {boolean} supported
    * */
-  isSupported() {
-    let supported = true;
+  isSupported () {
+    let supported = true
 
     if (!this.storage) {
-      supported = false;
+      supported = false
     }
 
-    return supported;
+    return supported
   }
 }
 
@@ -50,7 +50,7 @@ export class AppStorage {
  * Creating the instance of storage. Default will be localStorage
  * but if you want to create instance for session storage then pass window.sessionStorage as parameter
  */
-const appLocalStorage = new AppStorage();
-const appSessionStorage = new AppStorage(window.sessionStorage);
+const appLocalStorage = new AppStorage()
+const appSessionStorage = new AppStorage(window.sessionStorage)
 
-export { appLocalStorage, appSessionStorage };
+export { appLocalStorage, appSessionStorage }

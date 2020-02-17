@@ -1,6 +1,6 @@
 <template>
   <section class="rapids-section">
-    <hr />
+    <hr>
     <h2 class="mb-spacing-md">
       Rapids
     </h2>
@@ -34,8 +34,20 @@
               fill-rule="nonzero"
               d="M6 2V1h10v1z"
             />
-            <circle id="Oval-12" fill="#232323" cx="1.5" cy="1.5" r="1.5" />
-            <circle id="Oval-12" fill="#232323" cx="1.5" cy="8.5" r="1.5" />
+            <circle
+              id="Oval-12"
+              fill="#232323"
+              cx="1.5"
+              cy="1.5"
+              r="1.5"
+            />
+            <circle
+              id="Oval-12"
+              fill="#232323"
+              cx="1.5"
+              cy="8.5"
+              r="1.5"
+            />
           </g>
         </g>
       </svg>
@@ -101,16 +113,16 @@
   </section>
 </template>
 <script>
-import { mapState } from "vuex";
-import { RapidsItem } from "./components";
+import { mapState } from 'vuex'
+import { RapidsItem } from './components'
 
 export default {
-  name: "rapids-section",
+  name: 'RapidsSection',
   components: {
     RapidsItem
   },
   data: () => ({
-    viewMode: "list"
+    viewMode: 'list'
   }),
   computed: {
     ...mapState({
@@ -118,7 +130,7 @@ export default {
       rapids: state => state.riverDetailState.rapidsData.data
     })
   }
-};
+}
 </script>
 <style lang="scss">
 .rapids-section {

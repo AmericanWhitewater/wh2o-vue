@@ -4,22 +4,40 @@
       <div class="bx--row">
         <div class="bx--col">
           <cv-list>
-            <cv-list-item v-for="(k, index) in navItems.topbar" :key="index">
-              <cv-link :to="k.path" v-text="k.title" />
+            <cv-list-item
+              v-for="(k, index) in navItems.topbar"
+              :key="index"
+            >
+              <cv-link
+                :to="k.path"
+                v-text="k.title"
+              />
             </cv-list-item>
           </cv-list>
         </div>
         <div class="bx--col">
           <cv-list>
-            <cv-list-item v-for="(k, index) in navItems.primary" :key="index">
-              <cv-link :to="k.path" v-text="k.title" />
+            <cv-list-item
+              v-for="(k, index) in navItems.primary"
+              :key="index"
+            >
+              <cv-link
+                :to="k.path"
+                v-text="k.title"
+              />
             </cv-list-item>
           </cv-list>
         </div>
         <div class="bx--col">
           <cv-list>
-            <cv-list-item v-for="(k, index) in navItems.footer" :key="index">
-              <cv-link :to="k.path" v-text="k.title" />
+            <cv-list-item
+              v-for="(k, index) in navItems.footer"
+              :key="index"
+            >
+              <cv-link
+                :to="k.path"
+                v-text="k.title"
+              />
             </cv-list-item>
           </cv-list>
         </div>
@@ -29,14 +47,14 @@
 </template>
 
 <script>
-import { navItems } from "@/app/global/mixins";
+import { navItems } from '@/app/global/mixins'
 /**
  * @displayName App Footer
  */
 export default {
-  name: "app-footer",
+  name: 'AppFooter',
   mixins: [navItems]
-};
+}
 </script>
 
 <style lang="scss">

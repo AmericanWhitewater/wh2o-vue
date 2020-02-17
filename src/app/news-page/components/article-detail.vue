@@ -2,7 +2,11 @@
   <div class="article-detail">
     <transition name="fade">
       <template v-if="loading">
-        <cv-loading active small overlay />
+        <cv-loading
+          active
+          small
+          overlay
+        />
       </template>
     </transition>
     <template v-if="!loading">
@@ -11,14 +15,20 @@
           <div class="bx--col">
             <div class="outside">
               <div class="inside">
-                <cv-breadcrumb aria-label="breadcrumb" no-trailing-slash>
+                <cv-breadcrumb
+                  aria-label="breadcrumb"
+                  no-trailing-slash
+                >
                   <cv-breadcrumb-item>
                     <cv-link to="/news">
                       News
                     </cv-link>
                   </cv-breadcrumb-item>
                   <cv-breadcrumb-item>
-                    <cv-link href="#" aria-current="page">
+                    <cv-link
+                      href="#"
+                      aria-current="page"
+                    >
                       Article Id: {{ this.$route.params.id }}
                     </cv-link>
                   </cv-breadcrumb-item>
@@ -27,7 +37,10 @@
             </div>
           </div>
         </div>
-        <page-header :title="article.title" :subtitle="article.posted" />
+        <page-header
+          :title="article.title"
+          :subtitle="article.posted"
+        />
         <div class="spacer" />
         <div class="bx--row">
           <div class="bx--col-sm-4 bx--col-md-2 bx--col-lg-1">
@@ -52,7 +65,7 @@
           </div>
           <!-- <div class="bx--col-sm-4 bx--col-md-2 bx--col-lg-2"> -->
           <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-12">
-            <hr />
+            <hr>
             <h2>Related News</h2>
             <!-- need to split up store for related articles  -->
           </div>
@@ -62,40 +75,40 @@
   </div>
 </template>
 <script>
-import virtual_LogoFacebook24 from "@carbon/icons-vue/es/logo--facebook/24";
-import virtual_LogoLinkedIn24 from "@carbon/icons-vue/es/logo--linkedin/24";
-import virtual_LogoGoogle24 from "@carbon/icons-vue/es/logo--google/24";
-import virtual_Email24 from "@carbon/icons-vue/es/email/24";
-import { PageHeader } from "../../global/components";
-import { newsActions } from "../shared/state";
-import { mapState, mapActions } from "vuex";
+import virtual_LogoFacebook24 from '@carbon/icons-vue/es/logo--facebook/24'
+import virtual_LogoLinkedIn24 from '@carbon/icons-vue/es/logo--linkedin/24'
+import virtual_LogoGoogle24 from '@carbon/icons-vue/es/logo--google/24'
+import virtual_Email24 from '@carbon/icons-vue/es/email/24'
+import { PageHeader } from '../../global/components'
+import { newsActions } from '../shared/state'
+import { mapState } from 'vuex'
 export default {
-  name: "article-detail",
+  name: 'ArticleDetail',
   components: {
     PageHeader,
-    "facebook-logo": virtual_LogoFacebook24,
-    "linkedin-logo": virtual_LogoLinkedIn24,
-    "google-logo": virtual_LogoGoogle24,
-    "email-icon": virtual_Email24
+    'facebook-logo': virtual_LogoFacebook24,
+    'linkedin-logo': virtual_LogoLinkedIn24,
+    'google-logo': virtual_LogoGoogle24,
+    'email-icon': virtual_Email24
   },
   computed: {
     ...mapState({
       article: state => state.newsPageState.newsPageData.data,
       loading: state => state.newsPageState.newsPageData.loading
     }),
-    articleId() {
-      return this.$route.params.id;
+    articleId () {
+      return this.$route.params.id
     }
   },
-  created() {
-    this.$store.dispatch(newsActions.GET_ARTICAL_DETAIL_DATA, this.articleId);
+  created () {
+    this.$store.dispatch(newsActions.GET_ARTICAL_DETAIL_DATA, this.articleId)
   },
   methods: {
-    shareArticle(platform) {
-      alert(`share article on ${platform}`);
+    shareArticle (platform) {
+      alert(`share article on ${platform}`)
     }
   }
-};
+}
 </script>
 <style lang="scss">
 .article-detail {

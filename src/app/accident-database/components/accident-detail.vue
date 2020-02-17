@@ -14,7 +14,10 @@
             </h5>
             <h3 v-text="accident.victimname" />
           </div>
-          <div v-if="accident.age" class="bx--col">
+          <div
+            v-if="accident.age"
+            class="bx--col"
+          >
             <h5 class="mb-spacing-2xs">
               Age
             </h5>
@@ -84,7 +87,7 @@
 
         <div class="bx--row">
           <div class="bx--col-sm-12 bx--col-md-8 bx--col-lg-10">
-            <hr />
+            <hr>
             <h2 class="mb-spacing-md">
               Description
             </h2>
@@ -170,7 +173,10 @@
         </div>
       </template>
       <template v-else>
-        <loading-block text=" " class="mt-lg" />
+        <loading-block
+          text=" "
+          class="mt-lg"
+        />
       </template>
     </div>
   </div>
@@ -186,41 +192,41 @@ import {
   PageHeader,
   ContentEditor,
   LoadingBlock
-} from "../../global/components";
+} from '../../global/components'
 
 export default {
-  name: "article-detail",
+  name: 'ArticleDetail',
   components: {
     PageHeader,
     ContentEditor,
     LoadingBlock
   },
   computed: {
-    accidentId() {
-      return this.$route.params.accidentId;
+    accidentId () {
+      return this.$route.params.accidentId
     },
-    accident() {
+    accident () {
       const {
         data
-      } = this.$store.state.accidentDatabaseState.accidentDetailData;
+      } = this.$store.state.accidentDatabaseState.accidentDetailData
       if (data) {
-        return data.find(a => a.id === this.accidentId);
+        return data.find(a => a.id === this.accidentId)
       }
-      return null;
+      return null
     },
-    loading() {
-      return this.$store.state.accidentDatabaseState.accidentDetailData.loading;
+    loading () {
+      return this.$store.state.accidentDatabaseState.accidentDetailData.loading
     },
-    editMode() {
-      return this.$store.state.appGlobalState.appGlobalData.editMode;
+    editMode () {
+      return this.$store.state.appGlobalState.appGlobalData.editMode
     }
   },
   methods: {
-    viewReach(id) {
-      this.$router.push(`/river-detail/${id}/main`);
+    viewReach (id) {
+      this.$router.push(`/river-detail/${id}/main`)
     }
   }
-};
+}
 </script>
 <style lang="scss">
 .accident-detail {

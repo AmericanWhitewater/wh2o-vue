@@ -3,21 +3,36 @@
     <div class="bx--row">
       <div class="bx--col-sm-12 bx--col-lg-16">
         <div :class="[{ home: $route.name === 'home' }, 'app-breadcrumbs']">
-          <cv-breadcrumb aria-label="breadcrumb" no-trailing-slash>
+          <cv-breadcrumb
+            aria-label="breadcrumb"
+            no-trailing-slash
+          >
             <cv-breadcrumb-item>
-              <cv-link to="/" aria-current="page">
+              <cv-link
+                to="/"
+                aria-current="page"
+              >
                 Home
               </cv-link>
             </cv-breadcrumb-item>
             <template v-if="crumbs.length <= 2">
-              <cv-breadcrumb-item v-for="(crumb, index) in crumbs" :key="index">
+              <cv-breadcrumb-item
+                v-for="(crumb, index) in crumbs"
+                :key="index"
+              >
                 <template v-if="index + 1 !== crumbs.length">
-                  <cv-link :to="crumb.path" aria-current="page">
+                  <cv-link
+                    :to="crumb.path"
+                    aria-current="page"
+                  >
                     {{ getLabel(crumb.label) }}
                   </cv-link>
                 </template>
                 <template v-else>
-                  <cv-link href="#" aria-current="page">
+                  <cv-link
+                    href="#"
+                    aria-current="page"
+                  >
                     {{ getLabel(crumb.label) }}
                   </cv-link>
                 </template>
@@ -25,7 +40,10 @@
             </template>
             <template v-else>
               <cv-breadcrumb-item>
-                <cv-dropdown placeholder="..." value="  ">
+                <cv-dropdown
+                  placeholder="..."
+                  value="  "
+                >
                   <cv-dropdown-item
                     v-for="(crumb, index) in crumbs
                       .slice(0, crumbs.length - 2)
@@ -33,7 +51,10 @@
                     :key="index"
                     :value="index.toString()"
                   >
-                    <cv-link :to="crumb.path" aria-current="page">
+                    <cv-link
+                      :to="crumb.path"
+                      aria-current="page"
+                    >
                       {{ getLabel(crumb.label) }}
                     </cv-link>
                   </cv-dropdown-item>
@@ -48,7 +69,10 @@
                 </cv-link>
               </cv-breadcrumb-item>
               <cv-breadcrumb-item>
-                <cv-link href="#" aria-current="page">
+                <cv-link
+                  href="#"
+                  aria-current="page"
+                >
                   {{ getLabel(crumbs[crumbs.length - 1].label) }}
                 </cv-link>
               </cv-breadcrumb-item>
@@ -73,7 +97,7 @@
  */
 
 export default {
-  name: "app-breadcrumbs",
+  name: 'AppBreadcrumbs',
   data: () => ({
     prevRoute: {
       path: null,
@@ -82,43 +106,43 @@ export default {
     crumbs: []
   }),
   computed: {
-    currentPage() {
-      return this.$route;
+    currentPage () {
+      return this.$route
     }
   },
   watch: {
-    currentPage() {
-      this.setCrumbs();
+    currentPage () {
+      this.setCrumbs()
     }
   },
-  created() {
-    this.setCrumbs();
+  created () {
+    this.setCrumbs()
   },
   methods: {
-    setCrumbs() {
+    setCrumbs () {
       if (
         this.currentPage &&
         this.prevRoute.label !== this.currentPage.meta.crumbLabel &&
-        this.$route.path !== "/"
+        this.$route.path !== '/'
       ) {
-        this.prevRoute.label = this.currentPage.meta.crumbLabel;
-        this.prevRoute.path = this.currentPage.path;
+        this.prevRoute.label = this.currentPage.meta.crumbLabel
+        this.prevRoute.path = this.currentPage.path
         // strip out data. stays reactive otherwise.
-        const data = Object.assign({}, this.prevRoute);
-        this.crumbs.push(data);
+        const data = Object.assign({}, this.prevRoute)
+        this.crumbs.push(data)
       }
     },
-    getLabel(label) {
+    getLabel (label) {
       // crumb.label
 
-      if (label === "River Detail") {
-        const currentRiver = `${this.$store.state.riverDetailState.riverDetailData.data.river} - ${this.$store.state.riverDetailState.riverDetailData.data.section}`;
-        return `${currentRiver.slice(0, 20)}...`;
+      if (label === 'River Detail') {
+        const currentRiver = `${this.$store.state.riverDetailState.riverDetailData.data.river} - ${this.$store.state.riverDetailState.riverDetailData.data.section}`
+        return `${currentRiver.slice(0, 20)}...`
       }
-      return label;
+      return label
     }
   }
-};
+}
 </script>
 
 <style lang="scss">

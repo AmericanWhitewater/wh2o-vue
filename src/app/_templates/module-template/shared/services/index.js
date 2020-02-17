@@ -1,2 +1,2 @@
-export * from "./module";
-export * from "./submodule-one";
+export * from './module'
+export * from './submodule-one'

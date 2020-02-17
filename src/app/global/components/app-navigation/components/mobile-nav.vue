@@ -46,7 +46,10 @@
       </div>
     </div>
     <transition name="slide">
-      <div v-if="drawerOpen" class="drawer pt-md">
+      <div
+        v-if="drawerOpen"
+        class="drawer pt-md"
+      >
         <!-- <cv-search small v-model="searchTerm" label="Search label"> </cv-search> -->
         <cv-button
           v-for="item in topBarItems"
@@ -69,18 +72,22 @@
       </div>
     </transition>
     <transition name="fade">
-      <div v-if="drawerOpen" class="overlay" @click="drawerOpen = false" />
+      <div
+        v-if="drawerOpen"
+        class="overlay"
+        @click="drawerOpen = false"
+      />
     </transition>
   </header>
 </template>
 <script>
-import AwLogo from "@/app/global/components/logo-library/aw-logo";
-import { CheckWindow } from "../../../mixins";
+import AwLogo from '@/app/global/components/logo-library/aw-logo'
+import { CheckWindow } from '../../../mixins'
 
 export default {
-  name: "mobile-nav",
+  name: 'MobileNav',
   components: {
-    "aw-logo": AwLogo
+    'aw-logo': AwLogo
   },
   mixins: [CheckWindow],
   props: {
@@ -91,39 +98,39 @@ export default {
   },
   data: () => ({
     drawerOpen: false,
-    searchTerm: "",
+    searchTerm: '',
     topBarItems: [
       {
-        path: "/users/login",
-        title: "Login"
+        path: '/users/login',
+        title: 'Login'
       },
       {
-        path: "/river-search",
-        title: "River Search"
+        path: '/river-search',
+        title: 'River Search'
       }
     ]
   }),
   computed: {
-    homePage() {
-      if (this.$route.name === "Home") {
-        return true;
+    homePage () {
+      if (this.$route.name === 'Home') {
+        return true
       }
-      return false;
+      return false
     }
   },
   methods: {
-    viewRoute(path) {
-      this.drawerOpen = false;
-      this.$router.push(path);
+    viewRoute (path) {
+      this.drawerOpen = false
+      this.$router.push(path)
     },
-    resetRouter() {
+    resetRouter () {
       if (this.drawerOpen) {
-        this.drawerOpen = false;
+        this.drawerOpen = false
       }
-      this.$router.push("/");
+      this.$router.push('/')
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .mobile-nav {

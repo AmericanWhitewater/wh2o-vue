@@ -24,7 +24,7 @@
                     `https://prerelease.americanwhitewater.org${rapid.photo.file.uri.thumb}`
                   "
                   :alt="rapid.name"
-                />
+                >
               </div>
             </div>
           </div>
@@ -37,12 +37,12 @@
   </div>
 </template>
 <script>
-import RapidIconBar from "./rapid-icon-bar";
+import RapidIconBar from './rapid-icon-bar'
 
 export default {
-  name: "rapids-item",
+  name: 'RapidsItem',
   components: {
-    "rapid-icon-bar": RapidIconBar
+    'rapid-icon-bar': RapidIconBar
   },
   props: {
     rapid: {
@@ -51,26 +51,25 @@ export default {
     },
     expanded: {
       type: Boolean,
-      required: false,
-      default: false
+      required: false
     },
     mode: {
       type: String,
-      default: "grid"
+      default: 'grid'
     }
   },
   computed: {
-    containerClasses() {
-      let classes;
-      if (this.mode === "list") {
-        classes = "bx--col-sm-12 bx--col-md-12 bx--col-lg-16";
+    containerClasses () {
+      let classes
+      if (this.mode === 'list') {
+        classes = 'bx--col-sm-12 bx--col-md-12 bx--col-lg-16'
       } else {
-        classes = "bx--col-sm-12 bx--col-md-6 bx--col-lg-4";
+        classes = 'bx--col-sm-12 bx--col-md-6 bx--col-lg-4'
       }
-      return classes;
+      return classes
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .rapid-item {

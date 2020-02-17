@@ -1,14 +1,14 @@
-import Vuex from "vuex";
-import { shallowMount, createLocalVue, RouterLinkStub } from "@vue/test-utils";
-import Contact from "@/js/components/main/auth/contact.vue";
+import Vuex from 'vuex'
+import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
+import Contact from '@/js/components/main/auth/contact.vue'
 
-const localVue = createLocalVue();
+const localVue = createLocalVue()
 
-localVue.use(Vuex);
+localVue.use(Vuex)
 
-const successMessage = "this is a success message";
-const contactText = "this is some contact message";
-const globalLanguage = "en";
+const successMessage = 'this is a success message'
+const contactText = 'this is some contact message'
+const globalLanguage = 'en'
 
 const store = new Vuex.Store({
   state: {
@@ -26,7 +26,7 @@ const store = new Vuex.Store({
       }
     }
   }
-});
+})
 
 const wrapper = shallowMount(Contact, {
   store,
@@ -34,23 +34,23 @@ const wrapper = shallowMount(Contact, {
   stubs: {
     RouterLink: RouterLinkStub
   }
-});
+})
 
-describe("Contact.vue", () => {
+describe('Contact.vue', () => {
   it("Renders 'auth_contact_text'", () => {
-    expect(wrapper.find("p").text()).toBe(contactText);
-  });
+    expect(wrapper.find('p').text()).toBe(contactText)
+  })
 
-  it("Links to Login page.", () => {
-    expect(wrapper.find("#login").props().to).toBe("/login");
-  });
+  it('Links to Login page.', () => {
+    expect(wrapper.find('#login').props().to).toBe('/login')
+  })
 
-  it("Links to Request Access page.", () => {
-    expect(wrapper.find("#request-access").props().to).toBe("/request-access");
-  });
+  it('Links to Request Access page.', () => {
+    expect(wrapper.find('#request-access').props().to).toBe('/request-access')
+  })
 
-  it("Shows success message.", () => {
-    wrapper.setData({ success: true });
-    expect(wrapper.find(".success-text").text()).toBe(successMessage);
-  });
-});
+  it('Shows success message.', () => {
+    wrapper.setData({ success: true })
+    expect(wrapper.find('.success-text').text()).toBe(successMessage)
+  })
+})

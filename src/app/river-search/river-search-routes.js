@@ -1,12 +1,12 @@
 const riverSearchRoutes = [
   {
-    path: "/river-search",
-    name: "river-search",
+    path: '/river-search',
+    name: 'river-search',
     meta: {
-      crumbLabel: "Search"
+      crumbLabel: 'Search'
     },
-    component: () => import("./river-search.vue")
+    component: () => import('./river-search.vue')
   }
-];
+]
 
-export default riverSearchRoutes;
+export default riverSearchRoutes

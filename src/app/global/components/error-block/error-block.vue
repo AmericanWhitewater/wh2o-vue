@@ -1,35 +1,38 @@
 <template>
-  <div class="error-block" :style="`height:${height}px`">
+  <div
+    class="error-block"
+    :style="`height:${height}px`"
+  >
     <error-outlined />
     <h2>{{ title }}</h2>
     <p>{{ text }}</p>
   </div>
 </template>
 <script>
-import error_outlined32 from "@carbon/icons-vue/es/error--outline/32";
+import error_outlined32 from '@carbon/icons-vue/es/error--outline/32'
 
 export default {
-  name: "error-block",
+  name: 'ErrorBlock',
   components: {
-    "error-outlined": error_outlined32
+    'error-outlined': error_outlined32
   },
   props: {
     title: {
       type: String,
       required: false,
-      default: "error"
+      default: 'error'
     },
     text: {
       type: String,
       required: false,
-      default: "Something went wrong"
+      default: 'Something went wrong'
     },
     height: {
       type: String,
-      default: "350"
+      default: '350'
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .error-block {

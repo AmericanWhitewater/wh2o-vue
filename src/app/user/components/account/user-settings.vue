@@ -6,8 +6,8 @@
 
 <script>
 export default {
-  name: "user-settings"
-};
+  name: 'UserSettings'
+}
 </script>
 
 <style lang="scss">

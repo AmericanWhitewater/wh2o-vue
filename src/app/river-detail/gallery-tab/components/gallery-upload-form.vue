@@ -10,11 +10,11 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { ErrorBlock } from "@/app/global/components";
+import { mapState } from 'vuex'
+import { ErrorBlock } from '@/app/global/components'
 
 export default {
-  name: "gallery-upload-form",
+  name: 'GalleryUploadForm',
   components: {
     ErrorBlock
   },
@@ -23,7 +23,7 @@ export default {
       user: state => state.userState.userData.data
     })
   }
-};
+}
 </script>
 
 <style lang="scss">

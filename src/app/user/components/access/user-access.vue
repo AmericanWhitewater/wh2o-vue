@@ -5,14 +5,19 @@
         <div class="bx--col-md-4 bx--offset-md-2 bx--col-lg-5 bx--offset-lg-5">
           <div class="tile-header mb-spacing-sm">
             <h2>
-              <router-link to="/user/access/login" v-text="'Login'" />
+              <router-link
+                to="/user/access/login"
+                v-text="'Login'"
+              />
             </h2>
             <span>
               <!-- need to work on this guy... -->
-              Or</span
-            >
+              Or</span>
             <h2>
-              <router-link to="/user/access/register" v-text="'Register'" />
+              <router-link
+                to="/user/access/register"
+                v-text="'Register'"
+              />
             </h2>
           </div>
         </div>
@@ -29,8 +34,8 @@
 </template>
 <script>
 export default {
-  name: "user-access"
-};
+  name: 'UserAccess'
+}
 </script>
 <style lang="scss">
 // Not sure why style scoping isnt working properly.

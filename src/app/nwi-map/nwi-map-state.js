@@ -1,7 +1,7 @@
-import { nwiMapData } from "./shared/state";
+import { nwiMapData } from './shared/state'
 
 export default {
   modules: {
     nwiMapData
   }
-};
+}

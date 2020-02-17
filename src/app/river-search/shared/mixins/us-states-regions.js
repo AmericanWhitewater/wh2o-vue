@@ -2,37 +2,37 @@ export const UsStatesRegions = {
   data: () => ({
     UsStatesRegions: [
       {
-        text: "Select Region",
+        text: 'Select Region',
         value: null
       },
       {
-        text: "Lower Pacific",
-        value: "rgLP"
+        text: 'Lower Pacific',
+        value: 'rgLP'
       },
       {
-        text: "Mid Atlantic",
-        value: "rgMC"
+        text: 'Mid Atlantic',
+        value: 'rgMC'
       },
       {
-        text: "Mid West",
-        value: "rgMW"
+        text: 'Mid West',
+        value: 'rgMW'
       },
       {
-        text: "North East",
-        value: "rgNT"
+        text: 'North East',
+        value: 'rgNT'
       },
       {
-        text: "North West",
-        value: "rgNW"
+        text: 'North West',
+        value: 'rgNW'
       },
       {
-        text: "South East",
-        value: "rgSE"
+        text: 'South East',
+        value: 'rgSE'
       },
       {
-        text: "West",
-        value: "rgWT"
+        text: 'West',
+        value: 'rgWT'
       }
     ]
   })
-};
+}

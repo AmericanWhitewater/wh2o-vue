@@ -1,20 +1,20 @@
 <template>
   <div class="submodule-one pt-4">
     <h4>{{ $route.name }}</h4>
-    <hr />
+    <hr>
     <div>Name: {{ $route.name }}</div>
     <div>Path: {{ $route.path }}</div>
     <div>Full Path: {{ $route.fullPath }}</div>
   </div>
 </template>
 <script>
-import { submoduleOneActions } from "../shared/state";
+import { submoduleOneActions } from '../shared/state'
 export default {
-  name: "submodule-one",
-  created() {
-    this.$store.dispatch(submoduleOneActions.FETCH_SUBMODULE_ONE_DATA);
+  name: 'SubmoduleOne',
+  created () {
+    this.$store.dispatch(submoduleOneActions.FETCH_SUBMODULE_ONE_DATA)
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .submodule-one {

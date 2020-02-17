@@ -5,7 +5,7 @@
       <div class="spacer" />
       <div class="bx--row pt-lg mb-spacing-md">
         <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-6">
-          <hr />
+          <hr>
           <h2 class="mb-spacing-md">
             Related News
           </h2>
@@ -43,7 +43,7 @@
           <loading-block />
         </div>
         <div class="bx--col-sm-12 bx--col-md-6 bx--col-lg-8 safety-resources">
-          <hr />
+          <hr>
           <h2 class="mb-spacing-md">
             Safety Resources
           </h2>
@@ -163,27 +163,27 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 import {
   PageHeader,
   ErrorBlock,
   LoadingBlock,
   ArticleCard
-} from "@/app/global/components";
-import { safetyPageActions } from "./shared/state";
+} from '@/app/global/components'
+import { safetyPageActions } from './shared/state'
 
 export default {
-  name: "safety-page",
+  name: 'SafetyPage',
   components: {
     PageHeader,
     ErrorBlock,
     LoadingBlock,
     ArticleCard
   },
-  metaInfo() {
+  metaInfo () {
     return {
-      title: "Safety - American Whitewater"
-    };
+      title: 'Safety - American Whitewater'
+    }
   },
   computed: {
     ...mapState({
@@ -192,12 +192,12 @@ export default {
       error: state => state.safetyPageState.safetyPageData.error
     })
   },
-  created() {
+  created () {
     if (!this.error && !this.articles) {
-      this.$store.dispatch(safetyPageActions.FETCH_LANDING_ARTICLES);
+      this.$store.dispatch(safetyPageActions.FETCH_LANDING_ARTICLES)
     }
   }
-};
+}
 </script>
 <style lang="scss">
 .safety-resources {
