@@ -30,15 +30,15 @@
 </template>
 
 <script>
-import { NwiRiversTable, NwiMap } from "./components";
-import { riverIndexActions } from "@/app/views/river-index/shared/state";
+import { NwiRiversTable, NwiMap } from './components'
+import { riverIndexActions } from '@/app/views/river-index/shared/state'
 
 /**
  * @todo beforeDestroy store bbox / zoom level
  */
 
 export default {
-  name: "national-map-app",
+  name: 'NationalMapApp',
   components: {
     NwiMap,
     NwiRiversTable
@@ -50,7 +50,7 @@ export default {
     },
     tileserver: {
       type: String,
-      default: "http://localhost/tiles/{z}/{x}/{y}.mvt"
+      default: 'http://localhost/tiles/{z}/{x}/{y}.mvt'
     },
     showSidebar: {
       type: Boolean,
@@ -73,7 +73,7 @@ export default {
       required: false
     }
   },
-  data() {
+  data () {
     return {
       river: null,
       highlightedFeature: null,
@@ -82,64 +82,64 @@ export default {
       searchResults: false,
       loading: false,
       tileservers: [this.tileserver],
-      sourceLayers: ["reach-segments", "reach-segment-labels", "projects"]
-    };
+      sourceLayers: ['reach-segments', 'reach-segment-labels', 'projects']
+    }
   },
   computed: {
-    showingSearchResults() {
+    showingSearchResults () {
       // if bool, it's false, otherwise true
-      return typeof this.searchResults !== "boolean";
+      return typeof this.searchResults !== 'boolean'
     }
   },
   methods: {
-    updateSearchResults(newVal) {
-      this.searchResults = newVal;
+    updateSearchResults (newVal) {
+      this.searchResults = newVal
     },
-    changeHighlightedFeature(feature) {
-      this.highlightedFeature = feature;
+    changeHighlightedFeature (feature) {
+      this.highlightedFeature = feature
     },
-    async changeReachesInViewport(newReaches) {
+    async changeReachesInViewport (newReaches) {
       //  only use store if we're in the vue spa
-      if (this.$route.name === "river-index") {
-        await this.$store.dispatch(riverIndexActions.LOAD_REACHES, newReaches);
+      if (this.$route.name === 'river-index') {
+        await this.$store.dispatch(riverIndexActions.LOAD_REACHES, newReaches)
       }
 
-      this.reachesInViewport = newReaches;
+      this.reachesInViewport = newReaches
     },
-    centerFeature(feature) {
-      this.featureToCenter = feature;
+    centerFeature (feature) {
+      this.featureToCenter = feature
     },
-    clickFeature(feature) {
+    clickFeature (feature) {
       if (
-        ["reach-segments", "reach-segment-labels"].indexOf(
+        ['reach-segments', 'reach-segment-labels'].indexOf(
           feature.sourceLayer
         ) !== -1
       ) {
-        if (this.$route.name === "river-index") {
-          this.$router.push(`/river-detail/${feature.properties.id}`);
+        if (this.$route.name === 'river-index') {
+          this.$router.push(`/river-detail/${feature.properties.id}`)
         } else {
-          window.location.href = this.reachDetailUrl(feature.properties.id);
+          window.location.href = this.reachDetailUrl(feature.properties.id)
         }
-      } else if (feature.sourceLayer === "projects") {
-        if (this.$route.name === "river-index") {
-          this.$router.push(`/project-detail/${feature.properties.id}`);
+      } else if (feature.sourceLayer === 'projects') {
+        if (this.$route.name === 'river-index') {
+          this.$router.push(`/project-detail/${feature.properties.id}`)
         } else {
           // projects have weird URLs -- if shortname is present, that's used in the URL, otherwise ID
           // thought they might be interchangeable but I tested it and they are not
           window.location.href = this.projectDetailUrl(
             feature.properties.shortname || feature.properties.id
-          );
+          )
         }
       }
     },
-    reachDetailUrl(reachId) {
-      return `/content/River/detail/id/${reachId}/`;
+    reachDetailUrl (reachId) {
+      return `/content/River/detail/id/${reachId}/`
     },
-    projectDetailUrl(projectId) {
-      return `/content/Project/view/id/${projectId}/`;
+    projectDetailUrl (projectId) {
+      return `/content/Project/view/id/${projectId}/`
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

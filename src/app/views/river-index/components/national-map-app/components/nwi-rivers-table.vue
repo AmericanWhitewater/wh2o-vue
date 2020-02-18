@@ -1,6 +1,12 @@
 <template>
-  <cv-tile id="nwi-rivers-table" kind="standard">
-    <div v-if="noReaches" class="no-reaches-notice">
+  <cv-tile
+    id="nwi-rivers-table"
+    kind="standard"
+  >
+    <div
+      v-if="noReaches"
+      class="no-reaches-notice"
+    >
       <h3 v-if="showingSearchResults">
         No rivers in the viewport match your search query.
       </h3>
@@ -26,7 +32,10 @@
           @mouseover.native="debouncedHighlight(reach)"
         >
           <cv-data-table-cell>
-            <a :href="reachDetailUrl(reach.properties.id)" class="reach-link">
+            <a
+              :href="reachDetailUrl(reach.properties.id)"
+              class="reach-link"
+            >
               <h3 class="bx--type-zeta">{{ reach.properties.river }}</h3>
               <span class="section bx--type-caption">{{
                 reach.properties.section
@@ -52,13 +61,13 @@
 </template>
 
 <script>
-import debounce from "lodash.debounce";
-import ZoomIn16 from "@carbon/icons-vue/lib/zoom--in/16";
-import scrollIntoView from "scroll-into-view-if-needed";
-import { Breakpoints } from "@/app/global/services";
+import debounce from 'lodash.debounce'
+import ZoomIn16 from '@carbon/icons-vue/lib/zoom--in/16'
+import scrollIntoView from 'scroll-into-view-if-needed'
+import { Breakpoints } from '@/app/global/services'
 
 export default {
-  name: "nwi-rivers-table",
+  name: 'NwiRiversTable',
   components: {
     ZoomIn16
   },
@@ -82,81 +91,81 @@ export default {
     mq: Breakpoints
   }),
   computed: {
-    noReaches() {
-      return this.reaches.length === 0;
+    noReaches () {
+      return this.reaches.length === 0
     },
-    columns() {
-      return ["Reach", "Difficulty", "Flow", "Zoom"];
+    columns () {
+      return ['Reach', 'Difficulty', 'Flow', 'Zoom']
     },
-    rowSize() {
+    rowSize () {
       if (this.windowWidth < this.mq.lg) {
-        return "compact";
+        return 'compact'
       }
-      return "standard";
+      return 'standard'
     }
   },
   watch: {
-    highlightedFeature(feature) {
+    highlightedFeature (feature) {
       if (feature) {
-        const reachId = feature.properties.reach_id || feature.properties.id;
+        const reachId = feature.properties.reach_id || feature.properties.id
         if (
           this.$refs[`reach-${reachId}`] &&
           this.$refs[`reach-${reachId}`].length > 0
         ) {
           scrollIntoView(this.$refs[`reach-${reachId}`][0].$el, {
-            scrollMode: "if-needed",
-            block: "nearest",
-            inline: "nearest",
-            behavior: "smooth"
-          });
+            scrollMode: 'if-needed',
+            block: 'nearest',
+            inline: 'nearest',
+            behavior: 'smooth'
+          })
         }
       }
     }
   },
-  created() {
-    this.debouncedHighlight = debounce(this.highlightFeature, 200);
+  created () {
+    this.debouncedHighlight = debounce(this.highlightFeature, 200)
   },
-  mounted() {
-    this.windowWidth = window.innerWidth;
+  mounted () {
+    this.windowWidth = window.innerWidth
     this.$nextTick(() => {
-      window.addEventListener("resize", () => {
-        this.windowWidth = window.innerWidth;
-      });
-    });
+      window.addEventListener('resize', () => {
+        this.windowWidth = window.innerWidth
+      })
+    })
   },
   methods: {
-    highlightedClass(reachId) {
+    highlightedClass (reachId) {
       if (
         this.highlightedFeature &&
         reachId === this.highlightedFeature.properties.id
       ) {
-        return "active";
+        return 'active'
       }
-      return "";
+      return ''
     },
-    reachDetailUrl(reachId) {
-      return `/content/River/detail/id/${reachId}/`;
+    reachDetailUrl (reachId) {
+      return `/content/River/detail/id/${reachId}/`
     },
-    highlightFeature(reach) {
-      this.$emit("highlightFeature", reach);
+    highlightFeature (reach) {
+      this.$emit('highlightFeature', reach)
     },
-    centerReach(reach) {
-      this.$emit("centerReach", reach);
+    centerReach (reach) {
+      this.$emit('centerReach', reach)
     },
-    friendlyCurrentFlow(flow) {
+    friendlyCurrentFlow (flow) {
       switch (flow) {
-        case "low":
-          return "low";
-        case "med":
-          return "running";
-        case "high":
-          return "high";
+        case 'low':
+          return 'low'
+        case 'med':
+          return 'running'
+        case 'high':
+          return 'high'
         default:
-          return "unknown";
+          return 'unknown'
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss">

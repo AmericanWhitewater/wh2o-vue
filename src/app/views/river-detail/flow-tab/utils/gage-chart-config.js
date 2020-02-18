@@ -9,13 +9,13 @@ export const GageChartConfig = {
         line: {
           tension: 0, // disables bezier curves
           borderWidth: 2,
-          color: "#152935"
+          color: '#152935'
         },
         point: {
           radius: 1,
           hitRadius: 16,
-          borderColor: "rgba(0,0,0,0)",
-          hoverBackgroundColor: "#152935"
+          borderColor: 'rgba(0,0,0,0)',
+          hoverBackgroundColor: '#152935'
         }
       },
       layout: {
@@ -27,19 +27,19 @@ export const GageChartConfig = {
       },
       responsiveAnimationDuration: 0, // animation duration after a resize
       tooltips: {
-        backgroundColor: "#ffffff",
-        bodyFontColor: "#152934",
+        backgroundColor: '#ffffff',
+        bodyFontColor: '#152934',
         bodyFontFamily: "'IBM Plex Sans' , sans-serif",
         bodyFontSize: 22,
         bodyLineHeight: 25,
         bodyFontStyle: 400,
-        borderColor: "#DFE3E6",
+        borderColor: '#DFE3E6',
         borderWidth: 1,
         caretSize: 8,
         cornerRadius: 0,
         displayColors: false,
         enabled: true,
-        titleFontColor: "#152934",
+        titleFontColor: '#152934',
         titleFontFamily: "'IBM Plex Sans' , sans-serif",
         titleFontSize: 12,
         titleLineHeight: 15,
@@ -51,32 +51,32 @@ export const GageChartConfig = {
       scales: {
         xAxes: [
           {
-            type: "time",
+            type: 'time',
             display: true,
-            distribution: "series",
+            distribution: 'series',
             time: {
               // unit: this.timeScale,
               displayFormats: {
-                day: "h:mm a",
-                week: "ll",
-                month: "ll",
-                year: "MMM YYYY"
+                day: 'h:mm a',
+                week: 'll',
+                month: 'll',
+                year: 'MMM YYYY'
               },
               min: 0
             },
             gridLines: {
-              color: "rgba(90, 104, 114, 0.2)",
+              color: 'rgba(90, 104, 114, 0.2)',
               borderDash: [4, 4]
             },
             scaleLabel: {
               display: true,
-              labelString: "Timespan",
+              labelString: 'Timespan',
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
               fontSize: 14
             },
-            bounds: "data",
+            bounds: 'data',
             ticks: {
-              source: "data",
+              source: 'data',
               beginAtZero: false,
               autoSkip: false,
               maxRotation: 45,
@@ -91,13 +91,13 @@ export const GageChartConfig = {
           {
             scaleLabel: {
               display: true,
-              labelString: "Reading",
-              bounds: "data",
+              labelString: 'Reading',
+              bounds: 'data',
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
               fontSize: 14
             },
             gridLines: {
-              color: "rgba(90, 104, 114, 0.2)",
+              color: 'rgba(90, 104, 114, 0.2)',
               borderDash: [4, 4]
             },
             ticks: {
@@ -129,4 +129,4 @@ export const GageChartConfig = {
   //     return yMax
   //   }
   // }
-};
+}

@@ -36,43 +36,43 @@
 </template>
 <script>
 export default {
-  name: "side-bar",
+  name: 'SideBar',
   data: () => ({
     sticky: false,
     alerts: [
       {
-        title: "uh oh",
-        kind: "warning",
+        title: 'uh oh',
+        kind: 'warning',
         subtitle:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
       },
       {
-        title: "uh oh",
-        kind: "error",
+        title: 'uh oh',
+        kind: 'error',
         subtitle:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
       }
     ],
     articles: [],
     projects: [],
     documents: []
   }),
-  mounted() {
-    this.isSticky();
+  mounted () {
+    this.isSticky()
   },
   methods: {
-    doClose(index) {
-      alert(`Do something for alert: ${index}`);
+    doClose (index) {
+      alert(`Do something for alert: ${index}`)
     },
-    isSticky() {
+    isSticky () {
       if (this.$refs.contentArea.clientHeight > 800) {
-        this.sticky = false;
+        this.sticky = false
       } else {
-        this.sticky = true;
+        this.sticky = true
       }
     }
   }
-};
+}
 </script>
 <style lang="scss">
 .main-tab-sidebar {

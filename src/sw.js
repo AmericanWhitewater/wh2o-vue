@@ -5,20 +5,20 @@
  *
  */
 
-self.addEventListener("message", e => {
+self.addEventListener('message', e => {
   if (!e.data) {
-    return;
+    return
   }
 
   switch (e.data) {
-    case "skipWaiting":
-      self.skipWaiting();
-      break;
+    case 'skipWaiting':
+      self.skipWaiting()
+      break
     default:
-      break;
+      break
   }
-});
+})
 
-workbox.core.clientsClaim();
-self.__precacheManifest = [].concat(self.__precacheManifest || []);
-workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
+workbox.core.clientsClaim()
+self.__precacheManifest = [].concat(self.__precacheManifest || [])
+workbox.precaching.precacheAndRoute(self.__precacheManifest, {})

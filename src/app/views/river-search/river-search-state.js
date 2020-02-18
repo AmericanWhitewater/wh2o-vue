@@ -1,7 +1,7 @@
-import { riverSearchData } from "./shared/state";
+import { riverSearchData } from './shared/state'
 
 export default {
   modules: {
     riverSearchData
   }
-};
+}

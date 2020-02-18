@@ -15,7 +15,10 @@
           </div>
         </div>
         <div class="bx--col">
-          <div v-show="editMode" class="edit-icons">
+          <div
+            v-show="editMode"
+            class="edit-icons"
+          >
             <cv-button small>
               Drag Icon
             </cv-button>
@@ -26,7 +29,11 @@
         </div>
       </div>
     </div>
-    <cv-modal v-if="showConfirmation" kind="danger" :visible="showConfirmation">
+    <cv-modal
+      v-if="showConfirmation"
+      kind="danger"
+      :visible="showConfirmation"
+    >
       <!-- <template slot="label">label</template> -->
       <template slot="title">
         Are you sure?
@@ -44,12 +51,12 @@
   </section>
 </template>
 <script>
-import { mapState } from "vuex";
-import { EditModeToggle } from "@/app/global/components";
-import { defaultBannerImage } from "@/app/global/mixins";
+import { mapState } from 'vuex'
+import { EditModeToggle } from '@/app/global/components'
+import { defaultBannerImage } from '@/app/global/mixins'
 
 export default {
-  name: "river-header",
+  name: 'RiverHeader',
   components: {
     EditModeToggle
   },
@@ -73,11 +80,11 @@ export default {
     ...mapState({
       editMode: state => state.appGlobalState.appGlobalData.editMode
     }),
-    reachId() {
-      return this.$route.params.id;
+    reachId () {
+      return this.$route.params.id
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 section {

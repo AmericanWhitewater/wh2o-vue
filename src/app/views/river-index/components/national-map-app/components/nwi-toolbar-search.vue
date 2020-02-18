@@ -18,26 +18,26 @@
 // Carbon Vue doesn't allow you to set a number of properties on the inner element that I
 // need to set and I don't like the open/close behavior of the search form, changing here
 export default {
-  name: "nwi-toolbar-search",
+  name: 'NwiToolbarSearch',
   inheritAttrs: false,
   props: {
     value: String,
     placeholder: String
   },
-  mounted() {
+  mounted () {
     // we are monkey patching the cv-search component's `checkFocus` method here to
     // modify the open/close behavior of the search box.
     // desired behavior: search box never hides if it is populated
-    const { searchBox } = this.$refs;
+    const { searchBox } = this.$refs
     searchBox.checkFocus = ev => {
       if (
         !searchBox.$el.contains(ev.relatedTarget) &&
         (!searchBox.internalValue || searchBox.internalValue.length === 0)
       ) {
-        searchBox.toolbarActive = false;
+        searchBox.toolbarActive = false
       }
-    };
+    }
     // TODO: behavior is still a little finicky, keep tweaking
   }
-};
+}
 </script>

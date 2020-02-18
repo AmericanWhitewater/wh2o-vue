@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="bx--grid river-index">
-      <div id="fullscreen-target" class="bx--row">
+      <div
+        id="fullscreen-target"
+        class="bx--row"
+      >
         <div
           :class="[
             mapFocused ? focusedArea : unfocusedArea + ' disabled',
@@ -25,7 +28,10 @@
                 v-show="mapStyle === 'graphic'"
                 @stateClicked="fetchRivers"
               />
-              <div class="expand-toggle" @click="toggleFocus">
+              <div
+                class="expand-toggle"
+                @click="toggleFocus"
+              >
                 <component
                   :is="mapFocused ? 'icon-maximize' : 'icon-minimize'"
                 />
@@ -45,12 +51,14 @@
             <div class="inside sidebar">
               <template v-if="fullscreen">
                 <aw-logo variant="sm" />
-                <h3 class="mt-sm">River Index</h3>
-                <hr />
+                <h3 class="mt-sm">
+                  River Index
+                </h3>
+                <hr>
               </template>
               <template v-else>
                 <h1>River Index</h1>
-                <hr />
+                <hr>
               </template>
               <div class="bx--row">
                 <div class="bx--col mb-spacing-md">
@@ -62,7 +70,10 @@
                   />
                 </div>
                 <div class="bx--col mb-spacing-md">
-                  <cv-dropdown v-model="mapStyle" @change="setMapStyle">
+                  <cv-dropdown
+                    v-model="mapStyle"
+                    @change="setMapStyle"
+                  >
                     <cv-dropdown-item :value="null">
                       Map Style
                     </cv-dropdown-item>
@@ -92,7 +103,7 @@
                     <tr>
                       <th>
                         <strong>River Name</strong>
-                        <br />Section
+                        <br>Section
                       </th>
                       <th>Class</th>
                       <th>Flow</th>
@@ -101,7 +112,10 @@
                   </thead>
                   <tbody>
                     <template v-if="!searchLoading">
-                      <tr v-for="(r, index) in searchResults" :key="index">
+                      <tr
+                        v-for="(r, index) in searchResults"
+                        :key="index"
+                      >
                         <td
                           :class="
                             checkFlowStatus(
@@ -113,7 +127,7 @@
                         >
                           <span @click="viewRiver(r.id)">
                             <strong>{{ r.name }}</strong>
-                            <br />
+                            <br>
                             {{ r.section }}
                           </span>
                         </td>
@@ -154,52 +168,52 @@
   </div>
 </template>
 <script>
-import virtual_Maximize16 from "@carbon/icons-vue/es/maximize/16";
-import virtual_Minimize16 from "@carbon/icons-vue/es/minimize/16";
-import { LiveMap } from "./shared/components";
-import { riverSearchHttpConfig } from "@/app/global/mixins";
-import { StaticUsMap } from "./shared/components";
-import { LoadingBlock, AwLogo } from "@/app/global/components";
-import { riverIndexActions } from "./shared/state";
-import { riverSearchActions } from "../river-search/shared/state";
+import virtual_Maximize16 from '@carbon/icons-vue/es/maximize/16'
+import virtual_Minimize16 from '@carbon/icons-vue/es/minimize/16'
+import { StaticUsMap } from './shared/components'
+import { riverSearchHttpConfig } from '@/app/global/mixins'
+
+import { LoadingBlock, AwLogo } from '@/app/global/components'
+import { riverIndexActions } from './shared/state'
+import { riverSearchActions } from '../river-search/shared/state'
 import {
   mapboxAccessToken,
   nwiTileServer
-} from "@/app/environment/environment";
+} from '@/app/environment/environment'
 import {
   InternationalReaches,
   LevelsList
-} from "../river-search/shared/mixins";
-import NationalMapAppVue from "./components/national-map-app/national-map-app.vue";
-import { mapState } from "vuex";
-import screenfull from "screenfull";
+} from '../river-search/shared/mixins'
+import NationalMapAppVue from './components/national-map-app/national-map-app.vue'
+import { mapState } from 'vuex'
+import screenfull from 'screenfull'
 export default {
-  name: "river-index",
+  name: 'RiverIndex',
   components: {
     NationalMapAppVue,
     StaticUsMap,
     LoadingBlock,
     AwLogo,
-    "icon-maximize": virtual_Maximize16,
-    "icon-minimize": virtual_Minimize16
+    'icon-maximize': virtual_Maximize16,
+    'icon-minimize': virtual_Minimize16
   },
   mixins: [riverSearchHttpConfig, InternationalReaches, LevelsList],
-  metaInfo() {
+  metaInfo () {
     return {
-      title: "National Whitewater Inventory - American Whitewater"
-    };
+      title: 'National Whitewater Inventory - American Whitewater'
+    }
   },
   data: () => ({
     tileserver: nwiTileServer,
     mapStyle: null,
     fullscreen: false,
-    fullscreenIcon: "AddFilled16",
+    fullscreenIcon: 'AddFilled16',
     riverSearch: null,
     token: mapboxAccessToken,
-    expandToggleTxt: "Hide",
+    expandToggleTxt: 'Hide',
     mapFocused: true,
-    focusedArea: "bx--col-sm-4 bx--col-md-6 bx--col-lg-12",
-    unfocusedArea: "bx--col-sm-4 bx--col-md-2 bx--col-lg-4",
+    focusedArea: 'bx--col-sm-4 bx--col-md-6 bx--col-lg-12',
+    unfocusedArea: 'bx--col-sm-4 bx--col-md-2 bx--col-lg-4',
     location: null,
     coords: {
       lat: null,
@@ -214,16 +228,16 @@ export default {
     /**
      * @temp return dummy values for styling
      */
-    mockFlowData() {
+    mockFlowData () {
       return {
         current: Math.floor(Math.random() * 50 + 1),
         min: Math.floor(Math.random() * 10 + 1),
         max: Math.floor(Math.random() * 100 + 1)
-      };
+      }
     }
   },
-  mounted() {
-    this.getUserLocation();
+  mounted () {
+    this.getUserLocation()
   },
   methods: {
     /**
@@ -232,62 +246,62 @@ export default {
      * @param {number} min gage_min reach flow level
      * @param {number} max gage_max reach flow level
      */
-    checkFlowStatus(current, min, max) {
+    checkFlowStatus (current, min, max) {
       if (current) {
         if (current < min) {
-          return "low";
+          return 'low'
         } else if (current > max) {
-          return "hi";
+          return 'hi'
         } else {
-          return "med";
+          return 'med'
         }
       }
-      return "unknown";
+      return 'unknown'
     },
-    viewRiver(id) {
-      this.$router.push(`/river-detail/${id}/main`);
+    viewRiver (id) {
+      this.$router.push(`/river-detail/${id}/main`)
     },
-    toggleFocus() {
-      this.mapFocused = !this.mapFocused;
+    toggleFocus () {
+      this.mapFocused = !this.mapFocused
       if (this.mapFocused) {
-        this.expandToggleTxt = "Hide";
+        this.expandToggleTxt = 'Hide'
       } else {
-        this.expandToggleTxt = "Show";
+        this.expandToggleTxt = 'Show'
       }
     },
-    fetchRivers(data) {
-      this.riverSearchHttpConfig.state = `st${data}`;
+    fetchRivers (data) {
+      this.riverSearchHttpConfig.state = `st${data}`
       this.$store.dispatch(
         riverSearchActions.FETCH_RIVER_SEARCH_DATA,
         this.riverSearchHttpConfig
-      );
-      this.riverSearchHttpConfig.state = null;
+      )
+      this.riverSearchHttpConfig.state = null
     },
-    showPosition(position) {
-      this.coords.lat = position.coords.latitude;
-      this.coords.lon = position.coords.longitude;
-      this.$store.dispatch(riverIndexActions.FETCH_USER_LOCATION, this.coords);
+    showPosition (position) {
+      this.coords.lat = position.coords.latitude
+      this.coords.lon = position.coords.longitude
+      this.$store.dispatch(riverIndexActions.FETCH_USER_LOCATION, this.coords)
     },
-    getUserLocation() {
+    getUserLocation () {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(this.showPosition);
+        navigator.geolocation.getCurrentPosition(this.showPosition)
       }
     },
-    setMapStyle() {
-      this.$store.dispatch(riverIndexActions.SET_MAP_STYLE, this.mapStyle);
+    setMapStyle () {
+      this.$store.dispatch(riverIndexActions.SET_MAP_STYLE, this.mapStyle)
     },
-    toggleFullscreen() {
+    toggleFullscreen () {
       if (this.fullscreen) {
-        this.fullscreen = false;
-        this.fullscreenIcon = "Maximize16";
+        this.fullscreen = false
+        this.fullscreenIcon = 'Maximize16'
       } else {
-        this.fullscreen = true;
-        this.fullscreenIcon = "Minimize16";
+        this.fullscreen = true
+        this.fullscreenIcon = 'Minimize16'
       }
-      screenfull.toggle(document.getElementById("fullscreen-target"));
+      screenfull.toggle(document.getElementById('fullscreen-target'))
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 $content-height: calc(100vh - 125px);

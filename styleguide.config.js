@@ -1,10 +1,10 @@
 module.exports = {
   // set your styleguidist configuration here
-  title: "wh2o components",
+  title: 'wh2o components',
   sections: [
     {
-      name: "Global",
-      components: "src/app/global/components/**/*.vue"
+      name: 'Global',
+      components: 'src/app/global/components/**/*.vue'
     }
   ],
   // components: 'src/components/**/[A-Z]*.vue',
@@ -18,5 +18,5 @@ module.exports = {
   // webpackConfig: {
   //   // custom config goes here
   // },
-  exampleMode: "expand"
-};
+  exampleMode: 'expand'
+}

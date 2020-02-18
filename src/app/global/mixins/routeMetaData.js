@@ -1,14 +1,14 @@
 const routeMetaData = {
-  metaInfo() {
+  metaInfo () {
     return {
       title: this.pageTitle,
-      titleTemplate: "%s | American Whitewater"
-    };
+      titleTemplate: '%s | American Whitewater'
+    }
   },
   computed: {
-    pageTitle() {
-      return "drew test";
+    pageTitle () {
+      return 'drew test'
     }
   }
-};
-export default routeMetaData;
+}
+export default routeMetaData

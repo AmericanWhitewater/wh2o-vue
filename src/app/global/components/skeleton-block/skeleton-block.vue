@@ -7,14 +7,14 @@
 </template>
 <script>
 export default {
-  name: "skeleton-block",
+  name: 'SkeletonBlock',
   props: {
     height: {
       type: String,
-      default: "350"
+      default: '350'
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 #skeleton-block {

@@ -25,7 +25,10 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(a, index) in accidents" :key="index">
+                  <tr
+                    v-for="(a, index) in accidents"
+                    :key="index"
+                  >
                     <td v-text="'{ date }'" />
                     <td v-text="'{ flow }'" />
                     <td v-text="'{ result }'" />
@@ -53,13 +56,13 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import { accidentsActions } from "../shared/state";
-import { accidentDetailActions } from "@/app/views/accident-database/shared/state";
-import { LoadingBlock, ErrorBlock } from "@/app/global/components";
+import { mapState } from 'vuex'
+import { accidentsActions } from '../shared/state'
+import { accidentDetailActions } from '@/app/views/accident-database/shared/state'
+import { LoadingBlock, ErrorBlock } from '@/app/global/components'
 
 export default {
-  name: "accidents-tab",
+  name: 'AccidentsTab',
   components: {
     ErrorBlock,
     LoadingBlock
@@ -70,31 +73,31 @@ export default {
       error: state => state.riverDetailState.accidentsData.error,
       accidents: state => state.riverDetailState.accidentsData.data
     }),
-    riverId() {
-      return parseInt(this.$route.params.id);
+    riverId () {
+      return parseInt(this.$route.params.id)
     }
   },
-  created() {
-    this.loadData();
+  created () {
+    this.loadData()
   },
   methods: {
-    loadData() {
+    loadData () {
       if (!this.accidents && !this.error) {
         this.$store.dispatch(
           accidentsActions.FETCH_ACCIDENTS_DATA,
           this.riverId
-        );
+        )
       }
     },
-    viewAccident(accidentId) {
+    viewAccident (accidentId) {
       this.$store.dispatch(
         accidentDetailActions.GET_ACCIDENT_DETAIL_DATA,
         this.riverId
-      );
-      this.$router.push(`/accident-database/${accidentId}`);
+      )
+      this.$router.push(`/accident-database/${accidentId}`)
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .accidents-tab {

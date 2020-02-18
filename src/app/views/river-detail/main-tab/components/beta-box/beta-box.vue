@@ -1,6 +1,9 @@
 <template>
   <div class="beta-box">
-    <table v-if="!loading" class="bx--data-table bx--data-table--zebra">
+    <table
+      v-if="!loading"
+      class="bx--data-table bx--data-table--zebra"
+    >
       <tr>
         <td>Difficulty</td>
         <td v-text="river.class" />
@@ -37,16 +40,16 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import Moment from "moment";
+import { mapState } from 'vuex'
+import Moment from 'moment'
 
 export default {
-  name: "beta-box",
+  name: 'BetaBox',
   filters: {
-    capitalize(value) {
-      if (!value) return "";
-      value = value.toString();
-      return value.charAt(0).toUpperCase() + value.slice(1);
+    capitalize (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.charAt(0).toUpperCase() + value.slice(1)
     }
   },
   computed: {
@@ -56,11 +59,11 @@ export default {
     })
   },
   methods: {
-    formatDate(input) {
-      return Moment(input, "MMM Do YY").format("ll");
+    formatDate (input) {
+      return Moment(input, 'MMM Do YY').format('ll')
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .beta-box {

@@ -1,6 +1,6 @@
 <template>
   <main class="bx--col-sm-4 bx--col-md-6 bx--col-lg-8">
-    <hr />
+    <hr>
     <h2 class="mb-spacing-md">
       River Description
     </h2>
@@ -14,11 +14,11 @@
   </main>
 </template>
 <script>
-import { mapState } from "vuex";
-import { ContentEditor } from "@/app/global/components";
+import { mapState } from 'vuex'
+import { ContentEditor } from '@/app/global/components'
 
 export default {
-  name: "river-description",
+  name: 'RiverDescription',
   components: { ContentEditor },
   computed: {
     ...mapState({
@@ -26,12 +26,11 @@ export default {
       editMode: state => state.appGlobalState.appGlobalData.editMode
     })
   }
-};
+}
 </script>
 <style lang="scss" scoped></style>
 <docs>
 
 we can make the editor a stand alone component and pass the editable content as a prop
-
 
 </docs>

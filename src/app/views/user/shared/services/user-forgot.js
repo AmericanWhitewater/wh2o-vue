@@ -1,11 +1,11 @@
-import { httpClient } from "@/app/global/services";
+import { httpClient } from '@/app/global/services'
 
-import { apiConstants } from "../config";
+import { apiConstants } from '../config'
 
 const userForgot = data => {
-  const url = `${apiConstants.forgot}URL`;
+  const url = `${apiConstants.forgot}URL`
 
-  return httpClient.post(url, data).then(res => res.data);
-};
+  return httpClient.post(url, data).then(res => res.data)
+}
 
-export { userForgot };
+export { userForgot }

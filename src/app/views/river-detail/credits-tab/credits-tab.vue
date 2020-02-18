@@ -4,7 +4,10 @@
       <loading-block text="Loading Credits..." />
     </template>
     <template v-if="!loading && error">
-      <error-block title="Credits unavailable" text="please try again later" />
+      <error-block
+        title="Credits unavailable"
+        text="please try again later"
+      />
     </template>
     <template v-if="!loading && !error">
       <div class>
@@ -14,18 +17,18 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import { creditsActions } from "../shared/state";
-import { LoadingBlock, ErrorBlock } from "@/app/global/components";
+import { mapState } from 'vuex'
+import { creditsActions } from '../shared/state'
+import { LoadingBlock, ErrorBlock } from '@/app/global/components'
 
 export default {
-  name: "credits-tab",
+  name: 'CreditsTab',
   components: {
     ErrorBlock,
     LoadingBlock
   },
   data: () => ({
-    creditsHttpConfig: "let there be error"
+    creditsHttpConfig: 'let there be error'
   }),
   computed: {
     ...mapState({
@@ -33,20 +36,20 @@ export default {
       error: state => state.riverDetailState.creditsData.error
     })
   },
-  created() {
-    this.loadData();
+  created () {
+    this.loadData()
   },
   methods: {
-    loadData() {
+    loadData () {
       if (!this.data && !this.error) {
         this.$store.dispatch(
           creditsActions.FETCH_CREDITS_DATA,
           this.creditsHttpConfig
-        );
+        )
       }
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .credits-tab {

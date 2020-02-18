@@ -6,8 +6,8 @@
 
 <script>
 export default {
-  name: "user-forgot"
-};
+  name: 'UserForgot'
+}
 </script>
 
 <style lang="scss">

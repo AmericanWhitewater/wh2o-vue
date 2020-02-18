@@ -26,16 +26,16 @@
   </div>
 </template>
 <script>
-import { LoadingBlock } from "@/app/global/components";
+import { LoadingBlock } from '@/app/global/components'
 import {
   SideBar,
   BetaBox,
   RapidsSection,
   RiverDescription
-} from "./components";
+} from './components'
 
 export default {
-  name: "main-tab",
+  name: 'MainTab',
   components: {
     SideBar,
     RapidsSection,
@@ -43,7 +43,7 @@ export default {
     RiverDescription,
     LoadingBlock
   }
-};
+}
 </script>
 <style lang="scss">
 .main-tab {

@@ -10,45 +10,45 @@ const defaultBannerImage = {
     images: [
       {
         url:
-          "https://prerelease.americanwhitewater.org/photos/archive/medium/885497.jpg",
-        title: "image-01"
+          'https://prerelease.americanwhitewater.org/photos/archive/medium/885497.jpg',
+        title: 'image-01'
       },
       {
         url:
-          "https://prerelease.americanwhitewater.org/photos/archive/medium/879537.jpg",
-        title: "image-02"
+          'https://prerelease.americanwhitewater.org/photos/archive/medium/879537.jpg',
+        title: 'image-02'
       },
       {
         url:
-          "https://prerelease.americanwhitewater.org/photos/archive/medium/8670.jpg"
+          'https://prerelease.americanwhitewater.org/photos/archive/medium/8670.jpg'
       },
       {
         url:
-          "https://prerelease.americanwhitewater.org/photos/archive/medium/39950.jpg"
+          'https://prerelease.americanwhitewater.org/photos/archive/medium/39950.jpg'
       },
       {
         url:
-          "https://prerelease.americanwhitewater.org/photos/archive/medium/884685.jpg"
+          'https://prerelease.americanwhitewater.org/photos/archive/medium/884685.jpg'
       },
       {
         url:
-          "https://prerelease.americanwhitewater.org/photos/archive/medium/882780.jpg"
+          'https://prerelease.americanwhitewater.org/photos/archive/medium/882780.jpg'
       }
     ],
     headerSyle: {
-      backgroundRepeat: "no-repeat",
-      backgroundSize: "cover",
-      backgroundPosition: "center center"
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center center'
     }
   }),
   computed: {
-    headerBg() {
+    headerBg () {
       if (!this.backgroundImage) {
-        const img = this.images[Math.floor(Math.random() * this.images.length)];
-        return img;
+        const img = this.images[Math.floor(Math.random() * this.images.length)]
+        return img
       }
-      return this.backgroundImage;
+      return this.backgroundImage
     }
   }
-};
-export default defaultBannerImage;
+}
+export default defaultBannerImage

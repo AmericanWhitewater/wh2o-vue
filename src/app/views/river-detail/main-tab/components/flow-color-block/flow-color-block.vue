@@ -8,14 +8,19 @@
     >
       <title v-text="status" />
       <g :class="status">
-        <circle cx="8" cy="8" r="8" :class="status" />
+        <circle
+          cx="8"
+          cy="8"
+          r="8"
+          :class="status"
+        />
       </g>
     </svg>
   </span>
 </template>
 <script>
 export default {
-  name: "flow-color-block",
+  name: 'FlowColorBlock',
   mixins: [],
   props: {
     reading: {
@@ -32,17 +37,17 @@ export default {
     }
   },
   computed: {
-    status() {
+    status () {
       if (this.reading >= this.min && this.reading <= this.max) {
-        return "recommended";
+        return 'recommended'
       }
       if (this.reading < this.min) {
-        return "low";
+        return 'low'
       }
-      return "high";
+      return 'high'
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 span {

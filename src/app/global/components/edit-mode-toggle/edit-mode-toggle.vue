@@ -1,7 +1,12 @@
 <template>
   <div class="edit-mode-toggle">
     <span>Edit mode</span>
-    <cv-toggle small value :checked="editMode" @change="toggleEditMode">
+    <cv-toggle
+      small
+      value
+      :checked="editMode"
+      @change="toggleEditMode"
+    >
       <template slot="text-left">
         &nbsp;
       </template>
@@ -13,21 +18,21 @@
 </template>
 
 <script>
-import { globalAppActions } from "@/app/global/state";
+import { globalAppActions } from '@/app/global/state'
 
 export default {
-  name: "edit-mode-toggle",
+  name: 'EditModeToggle',
   computed: {
-    editMode() {
-      return this.$store.state.appGlobalState.appGlobalData.editMode;
+    editMode () {
+      return this.$store.state.appGlobalState.appGlobalData.editMode
     }
   },
   methods: {
-    toggleEditMode() {
-      this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, !this.editMode);
+    toggleEditMode () {
+      this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, !this.editMode)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

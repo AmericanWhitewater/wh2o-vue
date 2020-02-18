@@ -1,5 +1,5 @@
 /* eslint no-console: ["off"] */
-import { environment } from "../../../environment/environment";
+import { environment } from '../../../environment/environment'
 
 /**
  * @description Logger class
@@ -14,9 +14,9 @@ class AppLogger {
   /**
    * @constructor AppLogger
    */
-  constructor() {
+  constructor () {
     /** Initializing the configuration of logger */
-    this.initLogger();
+    this.initLogger()
   }
 
   /**
@@ -25,37 +25,37 @@ class AppLogger {
    * except logToServer, which will be responsible for logging the important
    *  stuff on server
    */
-  initLogger() {
+  initLogger () {
     /** Checking the environment */
-    if (environment !== "production") {
-      this.log = console.log.bind(console);
+    if (environment !== 'production') {
+      this.log = console.log.bind(console)
 
-      this.debug = console.debug.bind(console);
+      this.debug = console.debug.bind(console)
 
-      this.info = console.info.bind(console);
+      this.info = console.info.bind(console)
 
-      this.warn = console.warn.bind(console);
+      this.warn = console.warn.bind(console)
 
-      this.error = console.error.bind(console);
+      this.error = console.error.bind(console)
 
-      this.logToServer = this.error;
+      this.logToServer = this.error
     } else {
       /** In case of production replace the functions definition */
       // this.log = this.debug = this.info = this.warn = this.error = () => {};
 
       this.logToServer = err => {
         /** temp added to print in the console during production */
-        console.error(err); //
+        console.error(err) //
         /**
          * TODO: API integration for logging to server or any custom logic
          * in case of Production environment
          * */
-      };
+      }
     }
   }
 }
 
 /** Creating the instance of logger */
-const logger = new AppLogger();
+const logger = new AppLogger()
 
-export { logger };
+export { logger }

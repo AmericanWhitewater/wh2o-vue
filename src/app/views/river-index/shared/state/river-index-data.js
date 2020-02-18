@@ -1,4 +1,4 @@
-import { reflectKeys } from "@/app/global/services";
+import { reflectKeys } from '@/app/global/services'
 
 // import { getUserLocation } from "../services";
 
@@ -7,23 +7,23 @@ const initialState = {
   data: null,
   error: null,
   userLocation: null,
-  mapStyle: "topo",
+  mapStyle: 'topo',
   fullscreen: null
-};
+}
 
-const namespacedPrefix = "[RIVER_INDEX]";
+const namespacedPrefix = '[RIVER_INDEX]'
 
 const mutationTypes = reflectKeys(
   [
-    "DATA_SUCCESS",
-    "DATA_REQUEST",
-    "DATA_ERROR",
-    "DATA_RESET",
-    "USER_LOCATION",
-    "MAP_STYLE"
+    'DATA_SUCCESS',
+    'DATA_REQUEST',
+    'DATA_ERROR',
+    'DATA_RESET',
+    'USER_LOCATION',
+    'MAP_STYLE'
   ],
   namespacedPrefix
-);
+)
 
 const {
   DATA_ERROR,
@@ -32,57 +32,57 @@ const {
   DATA_SUCCESS,
   USER_LOCATION,
   MAP_STYLE
-} = mutationTypes;
+} = mutationTypes
 
 const mutations = {
-  [DATA_REQUEST](state) {
-    Object.assign(state, { loading: true, error: null });
+  [DATA_REQUEST] (state) {
+    Object.assign(state, { loading: true, error: null })
   },
 
-  [DATA_SUCCESS](state, payload) {
-    Object.assign(state, { loading: false, data: payload });
+  [DATA_SUCCESS] (state, payload) {
+    Object.assign(state, { loading: false, data: payload })
   },
 
-  [USER_LOCATION](state, payload) {
-    Object.assign(state, { loading: false, userLocation: payload });
+  [USER_LOCATION] (state, payload) {
+    Object.assign(state, { loading: false, userLocation: payload })
   },
 
-  [MAP_STYLE](state, payload) {
-    Object.assign(state, { loading: false, mapStyle: payload });
+  [MAP_STYLE] (state, payload) {
+    Object.assign(state, { loading: false, mapStyle: payload })
   },
 
-  [DATA_ERROR](state, payload) {
+  [DATA_ERROR] (state, payload) {
     Object.assign(state, {
       loading: false,
       data: null,
       error: payload || true
-    });
+    })
   },
 
-  [DATA_RESET](state) {
-    Object.assign(state, ...initialState);
+  [DATA_RESET] (state) {
+    Object.assign(state, ...initialState)
   }
-};
+}
 
 export const riverIndexActions = reflectKeys(
-  ["FETCH_USER_LOCATION", "LOAD_REACHES", "SET_MAP_STYLE"],
+  ['FETCH_USER_LOCATION', 'LOAD_REACHES', 'SET_MAP_STYLE'],
   namespacedPrefix
-);
+)
 
 const actions = {
-  async [riverIndexActions.FETCH_USER_LOCATION](context, data) {
-    context.commit(USER_LOCATION, data);
+  async [riverIndexActions.FETCH_USER_LOCATION] (context, data) {
+    context.commit(USER_LOCATION, data)
   },
-  async [riverIndexActions.LOAD_REACHES](context, data) {
-    context.commit(DATA_SUCCESS, data);
+  async [riverIndexActions.LOAD_REACHES] (context, data) {
+    context.commit(DATA_SUCCESS, data)
   },
-  async [riverIndexActions.SET_MAP_STYLE](context, data) {
-    context.commit(MAP_STYLE, data);
+  async [riverIndexActions.SET_MAP_STYLE] (context, data) {
+    context.commit(MAP_STYLE, data)
   }
-};
+}
 
 export default {
   mutations,
   actions,
   state: initialState
-};
+}

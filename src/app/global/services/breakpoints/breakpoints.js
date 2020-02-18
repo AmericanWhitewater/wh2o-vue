@@ -4,5 +4,5 @@ const breakpoints = {
   lg: 992,
   xl: 1200,
   max: 1600
-};
-export default breakpoints;
+}
+export default breakpoints

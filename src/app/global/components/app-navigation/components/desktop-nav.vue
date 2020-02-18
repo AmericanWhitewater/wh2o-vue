@@ -6,10 +6,17 @@
           <div class="bx--col-lg-16 top-bar">
             <template v-if="!editMode">
               <!-- <router-link to="/users/login">Login</router-link> -->
-              <router-link v-if="user" to="/user/account/1" class="ml-2xs">
+              <router-link
+                v-if="user"
+                to="/user/account/1"
+                class="ml-2xs"
+              >
                 <icon-search />My Account
               </router-link>
-              <router-link to="/river-search" class="ml-2xs">
+              <router-link
+                to="/river-search"
+                class="ml-2xs"
+              >
                 <icon-search />Search
               </router-link>
             </template>
@@ -18,7 +25,11 @@
               <h4 class="productive-heading-02">
                 Edit Mode
               </h4>
-              <cv-button kind="tertiary" small @click="exitEditMode">
+              <cv-button
+                kind="tertiary"
+                small
+                @click="exitEditMode"
+              >
                 Exit
               </cv-button>
             </template>
@@ -30,7 +41,10 @@
       <div class="bx--grid">
         <div class="bx--row">
           <div class="bx--col-lg-16 nav-main-content-area">
-            <router-link v-show="!homePage" to="/">
+            <router-link
+              v-show="!homePage"
+              to="/"
+            >
               <aw-logo />
             </router-link>
             <nav>
@@ -39,20 +53,29 @@
                 :key="index"
                 :to="item.path"
               >
-                <cv-button kind="ghost" small>
+                <cv-button
+                  kind="ghost"
+                  small
+                >
                   {{ item.title }}
                 </cv-button>
               </router-link>
               <template v-if="!user">
                 <router-link to="/user/access/login">
-                  <cv-button kind="primary" small>
+                  <cv-button
+                    kind="primary"
+                    small
+                  >
                     Login
                   </cv-button>
                 </router-link>
               </template>
               <template v-else>
                 <router-link to="/donate">
-                  <cv-button kind="tertiary" small>
+                  <cv-button
+                    kind="tertiary"
+                    small
+                  >
                     Donate
                   </cv-button>
                 </router-link>
@@ -65,16 +88,16 @@
   </div>
 </template>
 <script>
-import virtual_Search16 from "@carbon/icons-vue/es/search/16";
-import { mapState } from "vuex";
-import AwLogo from "@/app/global/components/logo-library/aw-logo";
-import { globalAppActions } from "@/app/global/state";
+import virtual_Search16 from '@carbon/icons-vue/es/search/16'
+import { mapState } from 'vuex'
+import AwLogo from '@/app/global/components/logo-library/aw-logo'
+import { globalAppActions } from '@/app/global/state'
 
 export default {
-  name: "desktop-nav",
+  name: 'DesktopNav',
   components: {
-    "aw-logo": AwLogo,
-    "icon-search": virtual_Search16
+    'aw-logo': AwLogo,
+    'icon-search': virtual_Search16
   },
   props: {
     navItems: {
@@ -87,19 +110,19 @@ export default {
       editMode: state => state.appGlobalState.appGlobalData.editMode,
       user: state => state.userState.userData.data
     }),
-    homePage() {
-      if (this.$route.name === "home") {
-        return true;
+    homePage () {
+      if (this.$route.name === 'home') {
+        return true
       }
-      return false;
+      return false
     }
   },
   methods: {
-    exitEditMode() {
-      this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, false);
+    exitEditMode () {
+      this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, false)
     }
   }
-};
+}
 </script>
 <style lang="scss">
 .desktop-nav {

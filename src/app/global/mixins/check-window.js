@@ -3,7 +3,7 @@
  *
  */
 
-import Breakpoints from "../services/breakpoints/breakpoints";
+import Breakpoints from '../services/breakpoints/breakpoints'
 
 export const CheckWindow = {
   data: () => ({
@@ -11,18 +11,18 @@ export const CheckWindow = {
     windowWidth: 0
   }),
   methods: {
-    updateStoredWindowWidth() {
-      this.windowWidth = window.innerWidth;
+    updateStoredWindowWidth () {
+      this.windowWidth = window.innerWidth
     }
   },
-  mounted() {
-    this.windowWidth = window.innerWidth;
+  mounted () {
+    this.windowWidth = window.innerWidth
 
     this.$nextTick(() => {
-      window.addEventListener("resize", this.updateStoredWindowWidth);
-    });
+      window.addEventListener('resize', this.updateStoredWindowWidth)
+    })
   },
-  beforeDestroy() {
-    window.removeEventListener("resize", this.updateStoredWindowWidth);
+  beforeDestroy () {
+    window.removeEventListener('resize', this.updateStoredWindowWidth)
   }
-};
+}

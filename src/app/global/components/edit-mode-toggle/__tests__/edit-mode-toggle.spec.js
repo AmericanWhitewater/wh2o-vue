@@ -1,3 +1,3 @@
-describe("edit-mode-toggle.vue", () => {
-  test.todo("Sends vuex dispatch on click");
-});
+describe('edit-mode-toggle.vue', () => {
+  test.todo('Sends vuex dispatch on click')
+})

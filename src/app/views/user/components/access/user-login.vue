@@ -48,31 +48,31 @@
   </div>
 </template>
 <script>
-import { userActions } from "../../shared/state";
+import { userActions } from '../../shared/state'
 /**
  * @displayName User Login
  */
 export default {
-  name: "user-login",
+  name: 'UserLogin',
   data: () => ({
-    userName: "",
-    passWord: ""
+    userName: '',
+    passWord: ''
   }),
-  metaInfo() {
+  metaInfo () {
     return {
-      title: "Login - American Whitewater"
-    };
+      title: 'Login - American Whitewater'
+    }
   },
   methods: {
-    submitLogin(admin) {
+    submitLogin (admin) {
       this.$store.dispatch(userActions.USER_LOGIN, {
         username: this.userName,
         password: this.passWord,
-        admin: admin === "admin" ? "admin" : null
-      });
-      this.$router.replace("/user/account/1");
+        admin: admin === 'admin' ? 'admin' : null
+      })
+      this.$router.replace('/user/account/1')
     }
   }
-};
+}
 </script>
 <style lang="scss"></style>

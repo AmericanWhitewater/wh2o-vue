@@ -1,1 +1,1 @@
-export { default as AwLogo } from "./aw-logo.vue";
+export { default as AwLogo } from './aw-logo.vue'

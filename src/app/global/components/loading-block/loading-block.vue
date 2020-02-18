@@ -1,6 +1,13 @@
 <template>
-  <div id="loading-block" :style="`height:${height}px`">
-    <cv-inline-loading small state="loading" :loading-text="text" />
+  <div
+    id="loading-block"
+    :style="`height:${height}px`"
+  >
+    <cv-inline-loading
+      small
+      state="loading"
+      :loading-text="text"
+    />
   </div>
 </template>
 <script>
@@ -8,18 +15,18 @@
  * @displayName Loading Block
  */
 export default {
-  name: "loading-block",
+  name: 'LoadingBlock',
   props: {
     height: {
       type: String,
-      default: "350"
+      default: '350'
     },
     text: {
       type: String,
-      default: "Loading Data..."
+      default: 'Loading Data...'
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 #loading-block {

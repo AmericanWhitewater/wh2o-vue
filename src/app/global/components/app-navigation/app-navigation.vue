@@ -10,44 +10,44 @@
 </template>
 
 <script>
-import DesktopNav from "./components/desktop-nav";
-import MobileNav from "./components/mobile-nav";
-import checkWindow from "../../services/mixins/check-window";
+import DesktopNav from './components/desktop-nav'
+import MobileNav from './components/mobile-nav'
+import checkWindow from '../../services/mixins/check-window'
 /**
  * @displayName App Navigation
  */
 export default {
-  name: "app-navigation",
+  name: 'AppNavigation',
   components: {
-    "desktop-nav": DesktopNav,
-    "mobile-nav": MobileNav
+    'desktop-nav': DesktopNav,
+    'mobile-nav': MobileNav
   },
   mixins: [checkWindow],
   data: () => ({
     navItems: [
       {
-        title: "River Index",
-        path: "/river-index"
+        title: 'River Index',
+        path: '/river-index'
       },
       {
-        title: "News",
-        path: "/news"
+        title: 'News',
+        path: '/news'
       },
       {
-        title: "Safety",
-        path: "/safety"
+        title: 'Safety',
+        path: '/safety'
       }
     ]
   }),
   computed: {
-    homePage() {
-      if (this.$route.name === "home") {
-        return true;
+    homePage () {
+      if (this.$route.name === 'home') {
+        return true
       }
-      return false;
+      return false
     }
   }
-};
+}
 </script>
 
 <style lang="scss">

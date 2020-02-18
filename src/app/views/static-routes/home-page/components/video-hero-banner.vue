@@ -9,7 +9,10 @@
           preload="metadata"
           poster="@/app/assets/images/dummy02Poster.png"
         >
-          <source src="@/app/assets/video/dummy02.MP4" type="video/mp4" />
+          <source
+            src="@/app/assets/video/dummy02.MP4"
+            type="video/mp4"
+          >
           Sorry, your browser doesn't support embedded videos.
         </video>
         <div class="inside">
@@ -39,7 +42,10 @@
                           comprehensive river beta with our interactive map.
                         </p>
                         <router-link to="/nwi-map">
-                          <cv-button kind="tertiary" small>
+                          <cv-button
+                            kind="tertiary"
+                            small
+                          >
                             View Map
                           </cv-button>
                         </router-link>
@@ -55,7 +61,10 @@
                           items, articles, and happenings from AW.
                         </p>
                         <router-link to="/news">
-                          <cv-button kind="tertiary" small>
+                          <cv-button
+                            kind="tertiary"
+                            small
+                          >
                             View Feed
                           </cv-button>
                         </router-link>
@@ -71,7 +80,10 @@
                           help you and your crew stay safe on the water.
                         </p>
                         <router-link to="/safety">
-                          <cv-button kind="tertiary" small>
+                          <cv-button
+                            kind="tertiary"
+                            small
+                          >
                             View Resources
                           </cv-button>
                         </router-link>
@@ -87,7 +99,10 @@
                           up to date, register to start editing.
                         </p>
                         <router-link to="/users/register">
-                          <cv-button kind="tertiary" small>
+                          <cv-button
+                            kind="tertiary"
+                            small
+                          >
                             Register
                           </cv-button>
                         </router-link>
@@ -104,16 +119,16 @@
   </section>
 </template>
 <script>
-import AwLogo from "@/app/global/components/logo-library/aw-logo.vue";
-import { CheckWindow } from "@/app/global/mixins";
+import AwLogo from '@/app/global/components/logo-library/aw-logo.vue'
+import { CheckWindow } from '@/app/global/mixins'
 
 export default {
-  name: "video-hero-banner",
+  name: 'VideoHeroBanner',
   components: {
     AwLogo
   },
   mixins: [CheckWindow]
-};
+}
 </script>
 <style lang="scss" scoped>
 .video-hero-banner {

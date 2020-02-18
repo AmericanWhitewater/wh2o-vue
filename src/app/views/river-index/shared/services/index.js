@@ -1,1 +1,1 @@
-export * from "./river-index/river-index";
+export * from './river-index/river-index'

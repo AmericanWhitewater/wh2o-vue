@@ -9,4 +9,4 @@ export const riverSearchHttpConfig = {
       atMost: null
     }
   })
-};
+}

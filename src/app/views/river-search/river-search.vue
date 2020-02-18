@@ -1,6 +1,9 @@
 <template>
   <div class="bx--grid">
-    <page-header title="River Search" class="mb-sm" />
+    <page-header
+      title="River Search"
+      class="mb-sm"
+    />
     <div class="bx--row mb-md pl-spacing-md">
       <div class="bx--col-auto mr-xs search-col">
         <label class="bx--label">Search</label>
@@ -64,22 +67,28 @@
             <tr>
               <th>
                 <strong>Name</strong>
-                <br />Section
+                <br>Section
               </th>
               <th>Class/Grade</th>
               <th>Flow Range</th>
               <th>
                 <strong>Flow</strong>
-                <br />Updated
+                <br>Updated
               </th>
             </tr>
           </thead>
           <tbody>
             <template v-if="!loading && data">
-              <tr v-for="(r, index) in data.slice(0, 25)" :key="index">
-                <td class="river-name-section" @click="viewRiver(r.id)">
+              <tr
+                v-for="(r, index) in data.slice(0, 25)"
+                :key="index"
+              >
+                <td
+                  class="river-name-section"
+                  @click="viewRiver(r.id)"
+                >
                   <strong>{{ r.name }}</strong>
-                  <br />
+                  <br>
                   {{ r.section }}
                 </td>
                 <td>{{ r.class }}</td>
@@ -94,10 +103,16 @@
                 <td>{{ r.last_gauge_updated }}</td>
               </tr>
               <template v-if="showAll">
-                <tr v-for="(r, index) in data.slice(25, 750)" :key="index">
-                  <td class="river-name-section" @click="viewRiver(r.id)">
+                <tr
+                  v-for="(r, index) in data.slice(25, 750)"
+                  :key="index"
+                >
+                  <td
+                    class="river-name-section"
+                    @click="viewRiver(r.id)"
+                  >
                     <strong>{{ r.name }}</strong>
-                    <br />
+                    <br>
                     {{ r.section }}
                   </td>
                   <td>{{ r.class }}</td>
@@ -116,7 +131,10 @@
             <template v-else-if="loading">
               <tr>
                 <td colspan="4">
-                  <cv-inline-loading small state="loading" />
+                  <cv-inline-loading
+                    small
+                    state="loading"
+                  />
                 </td>
               </tr>
             </template>
@@ -137,7 +155,10 @@
           </tbody>
         </table>
         <template v-if="data && !showAll && data.length > 25">
-          <cv-button kind="primary" @click="showAll = !showAll">
+          <cv-button
+            kind="primary"
+            @click="showAll = !showAll"
+          >
             Show All
           </cv-button>
         </template>
@@ -146,26 +167,26 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import { PageHeader } from "@/app/global/components";
-import { riverSearchActions } from "./shared/state";
+import { mapState } from 'vuex'
+import { PageHeader } from '@/app/global/components'
+import { riverSearchActions } from './shared/state'
 import {
   InternationalReaches,
   LevelsList,
   UsStatesList,
   UsStatesRegions
-} from "./shared/mixins";
+} from './shared/mixins'
 
 export default {
-  name: "river-search",
+  name: 'RiverSearch',
   components: {
     PageHeader
   },
   mixins: [InternationalReaches, LevelsList, UsStatesList, UsStatesRegions],
-  metaInfo() {
+  metaInfo () {
     return {
-      title: "River Search - American Whitewater"
-    };
+      title: 'River Search - American Whitewater'
+    }
   },
   data: () => ({
     // show cta rather than 'no results' on initial page load
@@ -187,18 +208,18 @@ export default {
     })
   },
   methods: {
-    fetchRivers() {
-      this.firstTimePageLoad = false;
+    fetchRivers () {
+      this.firstTimePageLoad = false
       this.$store.dispatch(
         riverSearchActions.FETCH_RIVER_SEARCH_DATA,
         this.riverSearchHttpConfig
-      );
+      )
     },
-    viewRiver(id) {
-      this.$router.push(`/river-detail/${id}/main`);
+    viewRiver (id) {
+      this.$router.push(`/river-detail/${id}/main`)
     }
   }
-};
+}
 </script>
 <style lang="scss">
 .river-name-section {

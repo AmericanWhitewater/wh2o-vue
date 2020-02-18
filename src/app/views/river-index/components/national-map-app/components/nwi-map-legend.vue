@@ -15,10 +15,10 @@
 </template>
 
 <script>
-import MapStyles from "./nwi-map-styles";
+import MapStyles from './nwi-map-styles'
 
 export default {
-  name: "nwi-map-legend",
+  name: 'NwiMapLegend',
   props: {
     colorBy: {
       type: String,
@@ -26,20 +26,20 @@ export default {
     }
   },
   computed: {
-    colorScheme() {
-      return MapStyles.colorSchemes[this.colorBy];
+    colorScheme () {
+      return MapStyles.colorSchemes[this.colorBy]
     },
     // this feels sort of silly but alternative is to write some kind of titlecase-ish
     // method that is way more complex than this. If we add more color schemes it's something
     // to consider.
-    colorByTitle() {
-      if (this.colorBy === "currentFlow") {
-        return "Current Flow";
+    colorByTitle () {
+      if (this.colorBy === 'currentFlow') {
+        return 'Current Flow'
       }
-      return "Difficulty";
+      return 'Difficulty'
     }
   }
-};
+}
 </script>
 
 <style scoped lang="scss">

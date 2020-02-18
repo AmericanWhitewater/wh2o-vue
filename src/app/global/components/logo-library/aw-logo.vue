@@ -120,20 +120,20 @@
 </template>
 <script>
 export default {
-  name: "aw-logo",
+  name: 'AwLogo',
   props: {
     title: {
       type: String,
       required: false,
-      default: "American Whitewater"
+      default: 'American Whitewater'
     },
     variant: {
       type: String,
       required: false,
-      default: "sm"
+      default: 'sm'
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 $base-height: 20px;

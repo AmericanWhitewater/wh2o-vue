@@ -1,1 +1,1 @@
-export * from "./landing-articles/landing-articles";
+export * from './landing-articles/landing-articles'

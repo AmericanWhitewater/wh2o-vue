@@ -1,9 +1,9 @@
-import { httpClient } from "@/app/global/services";
+import { httpClient } from '@/app/global/services'
 
-import { apiConstants } from "../../config";
+import { apiConstants } from '../../config'
 
 const getAccidentDatabase = data => {
-  const url = `${apiConstants.graphql}`;
+  const url = `${apiConstants.graphql}`
   return httpClient
     .post(url, {
       query: `
@@ -44,6 +44,6 @@ const getAccidentDatabase = data => {
     
     `
     })
-    .then(res => res.data);
-};
-export { getAccidentDatabase };
+    .then(res => res.data)
+}
+export { getAccidentDatabase }

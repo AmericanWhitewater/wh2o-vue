@@ -1,6 +1,12 @@
 <template>
   <div>
-    <slot v-if="err" name="error" :err="err" :vm="vm" :info="info">
+    <slot
+      v-if="err"
+      name="error"
+      :err="err"
+      :vm="vm"
+      :info="info"
+    >
       Something went wrong
     </slot>
     <slot v-else />
@@ -9,25 +15,25 @@
 
 <script>
 export default {
-  name: "error-boundary",
+  name: 'ErrorBoundary',
   props: {
     stopPropagation: Boolean
   },
-  data() {
+  data () {
     return {
       err: false,
       vm: null,
       info: null
-    };
+    }
   },
-  errorCaptured(err, vm, info) {
-    this.err = err;
-    this.vm = vm;
-    this.info = info;
+  errorCaptured (err, vm, info) {
+    this.err = err
+    this.vm = vm
+    this.info = info
 
-    return !this.stopPropagation;
+    return !this.stopPropagation
   }
-};
+}
 </script>
 
 <style lang="scss" scoped></style>

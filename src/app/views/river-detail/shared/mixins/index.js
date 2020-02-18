@@ -1,1 +1,1 @@
-export * from "./gage-http-config.js";
+export * from './gage-http-config.js'

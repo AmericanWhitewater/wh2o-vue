@@ -16,12 +16,12 @@ import {
   AppNavigation,
   AppBreadcrumbs,
   AppFooter
-} from "./global/components";
+} from './global/components'
 
 export default {
-  name: "app",
+  name: 'App',
   metaInfo: {
-    title: "American Whitewater"
+    title: 'American Whitewater'
   },
   components: {
     AppBreadcrumbs,
@@ -29,7 +29,7 @@ export default {
     AppNavigation,
     AppToaster
   }
-};
+}
 </script>
 <style lang="scss">
 .app-main-content {

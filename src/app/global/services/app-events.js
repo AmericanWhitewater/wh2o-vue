@@ -1,4 +1,4 @@
-import Emitter from "emitter-js";
+import Emitter from 'emitter-js'
 
 export class Events {
   /**
@@ -6,8 +6,8 @@ export class Events {
    * @param {string} event name of the event
    * @param {function} func event handler.
    */
-  static subscribe(event, func) {
-    return Events.topic.on(event, func);
+  static subscribe (event, func) {
+    return Events.topic.on(event, func)
   }
 
   /**
@@ -16,9 +16,9 @@ export class Events {
    * @param {object} data data to send.
    *
    * */
-  static publish(event, data) {
-    return Events.topic.emit(event, data);
+  static publish (event, data) {
+    return Events.topic.emit(event, data)
   }
 }
 
-Events.topic = new Emitter();
+Events.topic = new Emitter()

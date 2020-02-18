@@ -12,9 +12,16 @@
           />
         </template>
         <template v-if="!loading && !error && media.length > 0">
-          <div v-for="(image, index) in media" :key="index" class="img-thumb">
+          <div
+            v-for="(image, index) in media"
+            :key="index"
+            class="img-thumb"
+          >
             <template v-if="isVideo(image.file.ext)">
-              <div class="thumb video" @click="openLightbox(index)">
+              <div
+                class="thumb video"
+                @click="openLightbox(index)"
+              >
                 <h6>Video</h6>
                 <p>{{ image.description.slice(0, 50) + "..." }}</p>
               </div>
@@ -26,12 +33,15 @@
                   `https://prerelease.americanwhitewater.org${image.file.uri.thumb}`
                 "
                 @click="openLightbox(index)"
-              />
+              >
             </template>
           </div>
         </template>
         <template v-if="!loading && !error && media.length === 0">
-          <error-block title="No media" text="if ya got it, upload it." />
+          <error-block
+            title="No media"
+            text="if ya got it, upload it."
+          />
         </template>
       </div>
       <div class="bx--col-sm-4 bx--col-md-4 bx--col-lg-4">
@@ -40,7 +50,11 @@
     </div>
     <template v-if="lightboxActive">
       <div class="lightbox">
-        <cv-button kind="primary" class="close-btn" @click="closeLightbox">
+        <cv-button
+          kind="primary"
+          class="close-btn"
+          @click="closeLightbox"
+        >
           Close
         </cv-button>
 
@@ -76,13 +90,17 @@
                     </cv-tile>
                   </template>
                   <template v-else-if="isVideo(selectedMedia.file.ext)">
-                    <video width="320" height="240" controls>
+                    <video
+                      width="320"
+                      height="240"
+                      controls
+                    >
                       <source
                         :src="
                           `https://prerelease.americanwhitewater.org${selectedMedia.file.uri.big}`
                         "
                         :type="`video/${selectedMedia.file.ext}`"
-                      />
+                      >
                       Your browser does not support the video tag.
                     </video>
                   </template>
@@ -92,13 +110,16 @@
                         `https://prerelease.americanwhitewater.org${selectedMedia.file.uri.big}`
                       "
                       alt="photo name"
-                    />
+                    >
                   </template>
                 </div>
               </div>
               <div class="bx--col-sm-4 bx--col-md-4 bx--col-lg-4">
                 <div class="media-info">
-                  <h5 class="mb-spacing-md" v-text="selectedMedia.post.title" />
+                  <h5
+                    class="mb-spacing-md"
+                    v-text="selectedMedia.post.title"
+                  />
                   <p>
                     Level {{ selectedMedia.post.reading }} [
                     {{ selectedMedia.post.metric }} ]
@@ -131,20 +152,20 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
-import { galleryActions } from "../shared/state";
-import { LoadingBlock, ErrorBlock } from "@/app/global/components";
-import { galleryUploadForm } from "./components";
+import { mapState } from 'vuex'
+import { galleryActions } from '../shared/state'
+import { LoadingBlock, ErrorBlock } from '@/app/global/components'
+import { galleryUploadForm } from './components'
 
 export default {
-  name: "gallery-tab",
+  name: 'GalleryTab',
   components: {
     ErrorBlock,
     LoadingBlock,
     galleryUploadForm
   },
   data: () => ({
-    galleryHttpConfig: "give me an error please",
+    galleryHttpConfig: 'give me an error please',
     lightboxActive: false,
     selectedMediaIndex: null
   }),
@@ -154,59 +175,59 @@ export default {
       error: state => state.riverDetailState.galleryData.error,
       media: state => state.riverDetailState.galleryData.data
     }),
-    riverId() {
-      return parseInt(this.$route.params.id);
+    riverId () {
+      return parseInt(this.$route.params.id)
     },
-    selectedMedia() {
-      return this.media[this.selectedMediaIndex];
+    selectedMedia () {
+      return this.media[this.selectedMediaIndex]
     }
   },
-  created() {
-    this.loadData();
+  created () {
+    this.loadData()
   },
   methods: {
-    loadData() {
+    loadData () {
       if (!this.$store.state.riverDetailState.galleryData.data && !this.error) {
-        this.$store.dispatch(galleryActions.FETCH_GALLERY_DATA, this.riverId);
+        this.$store.dispatch(galleryActions.FETCH_GALLERY_DATA, this.riverId)
       }
     },
-    isVideo(ext) {
+    isVideo (ext) {
       // dont accept wmv? can't play in browser.
       switch (ext) {
-        case "mp4":
-          return true;
-        case "mov":
-          return true;
+        case 'mp4':
+          return true
+        case 'mov':
+          return true
         default:
-          return false;
+          return false
       }
     },
-    openLightbox(index) {
-      this.selectedMediaIndex = index;
-      this.lightboxActive = true;
+    openLightbox (index) {
+      this.selectedMediaIndex = index
+      this.lightboxActive = true
     },
-    closeLightbox() {
-      this.lightboxActive = false;
-      this.selectedMediaIndex = null;
+    closeLightbox () {
+      this.lightboxActive = false
+      this.selectedMediaIndex = null
     },
-    prevMedia() {
+    prevMedia () {
       // if first image selected, cycle to last image
       if (this.selectedMediaIndex === 0) {
-        this.selectedMediaIndex = this.media.length - 1;
+        this.selectedMediaIndex = this.media.length - 1
       } else {
-        this.selectedMediaIndex--;
+        this.selectedMediaIndex--
       }
     },
-    nextMedia() {
+    nextMedia () {
       // if last image selected, cycle to first image
       if (this.selectedMediaIndex !== this.media.length - 1) {
-        this.selectedMediaIndex++;
+        this.selectedMediaIndex++
       } else {
-        this.selectedMediaIndex = 0;
+        this.selectedMediaIndex = 0
       }
     }
   }
-};
+}
 </script>
 <style lang="scss" scoped>
 .gallery-tab {

@@ -1,1 +1,2 @@
-export * from "./exception-handler";
+/* eslint-disable import/export */
+export * from './exception-handler'
