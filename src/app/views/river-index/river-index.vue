@@ -162,7 +162,10 @@ import { StaticUsMap } from "./shared/components";
 import { LoadingBlock, AwLogo } from "@/app/global/components";
 import { riverIndexActions } from "./shared/state";
 import { riverSearchActions } from "../river-search/shared/state";
-import { mapboxAccessToken, nwiTileServer } from "@/app/environment/environment";
+import {
+  mapboxAccessToken,
+  nwiTileServer
+} from "@/app/environment/environment";
 import {
   InternationalReaches,
   LevelsList

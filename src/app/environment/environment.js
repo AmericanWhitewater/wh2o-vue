@@ -22,5 +22,10 @@ const appBaseUrl = VUE_APP_BASE_URL;
 const mapboxAccessToken = VUE_APP_MAPBOX_ACCESS_TOKEN;
 const nwiTileServer = VUE_APP_NWI_TILE_SERVER;
 
-
-export { environment, apiBaseUrl, appBaseUrl, mapboxAccessToken, nwiTileServer };
+export {
+  environment,
+  apiBaseUrl,
+  appBaseUrl,
+  mapboxAccessToken,
+  nwiTileServer
+};
