@@ -19,6 +19,7 @@
                 :show-legend="false"
                 :show-rivers-table="false"
                 :mapbox-access-token="token"
+                :tileserver="tileserver"
               />
               <static-us-map
                 v-show="mapStyle === 'graphic'"
@@ -161,7 +162,7 @@ import { StaticUsMap } from "./shared/components";
 import { LoadingBlock, AwLogo } from "@/app/global/components";
 import { riverIndexActions } from "./shared/state";
 import { riverSearchActions } from "../river-search/shared/state";
-import { mapboxAccessToken } from "@/app/environment/environment";
+import { mapboxAccessToken, nwiTileServer } from "@/app/environment/environment";
 import {
   InternationalReaches,
   LevelsList
@@ -186,6 +187,7 @@ export default {
     };
   },
   data: () => ({
+    tileserver: nwiTileServer,
     mapStyle: null,
     fullscreen: false,
     fullscreenIcon: "AddFilled16",

@@ -9,6 +9,7 @@
  */
 
 const {
+  VUE_APP_NWI_TILE_SERVER,
   VUE_APP_MAPBOX_ACCESS_TOKEN,
   VUE_APP_BASE_URL,
   VUE_APP_API_BASE_URL,
@@ -19,5 +20,7 @@ const environment = NODE_ENV.toLowerCase();
 const apiBaseUrl = VUE_APP_API_BASE_URL;
 const appBaseUrl = VUE_APP_BASE_URL;
 const mapboxAccessToken = VUE_APP_MAPBOX_ACCESS_TOKEN;
+const nwiTileServer = VUE_APP_NWI_TILE_SERVER;
 
-export { environment, apiBaseUrl, appBaseUrl, mapboxAccessToken };
+
+export { environment, apiBaseUrl, appBaseUrl, mapboxAccessToken, nwiTileServer };
