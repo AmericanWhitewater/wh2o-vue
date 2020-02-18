@@ -1,26 +1,26 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-import { riverDetailRoutes } from "./river-detail";
-import { newsPageRoutes } from "./news-page";
-import { nwiMapRoutes } from "./nwi-map";
-import { userRoutes } from "./user";
-import { riverSearchRoutes } from "./river-search";
-import { accidentDatabaseRoutes } from "./accident-database";
-import { safetyPageRoutes } from "./safety-page";
-import staticRoutes from "./static-routes/static-routes";
+import { riverDetailRoutes } from "./views/river-detail";
+import { newsPageRoutes } from "./views/news-page";
+import { userRoutes } from "./views/user";
+import { riverSearchRoutes } from "./views/river-search";
+import { accidentDatabaseRoutes } from "./views/accident-database";
+import { safetyPageRoutes } from "./views/safety-page";
+import { riverIndexRoutes } from "./views/river-index";
+import staticRoutes from "./views/static-routes/static-routes";
 
 Vue.use(Router);
 
 const routes = [
   ...riverDetailRoutes,
-  ...nwiMapRoutes,
   ...newsPageRoutes,
   ...userRoutes,
   ...riverSearchRoutes,
   ...accidentDatabaseRoutes,
   ...safetyPageRoutes,
-  ...staticRoutes
+  ...staticRoutes,
+  ...riverIndexRoutes
 ];
 
 export default new Router({

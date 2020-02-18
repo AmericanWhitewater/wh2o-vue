@@ -4,3 +4,5 @@ export * from "./app-storage/app-storage";
 export * from "./key-reflactor/key-reflactor";
 
 export * from "./mixins/check-window";
+
+export * from "./app-events";

@@ -1,6 +1,6 @@
 import Vue from "vue";
 
-import { logger } from "../global/services/app-logger/app-logger";
+import { logger } from "@/app/global/services/app-logger/app-logger";
 
 Vue.config.errorHandler = (err, vm, info) => {
   logger.logToServer({ err, vm, info });

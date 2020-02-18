@@ -26,8 +26,8 @@ export default {
   data: () => ({
     navItems: [
       {
-        title: "River Info",
-        path: "/nwi-map"
+        title: "River Index",
+        path: "/river-index"
       },
       {
         title: "News",
