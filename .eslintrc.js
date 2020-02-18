@@ -81,20 +81,6 @@ module.exports = {
     parser: 'babel-eslint'
   },
 
-  globals: {
-    _: true,
-    $: true,
-    apiURL: true,
-    axios: true,
-    getCookie: true,
-    global: true,
-    jQuery: true,
-    moment: true,
-    process: true,
-    require: true,
-    setCookie: true
-  },
-
   extends: [
     'plugin:vue/strongly-recommended',
     '@vue/standard',
