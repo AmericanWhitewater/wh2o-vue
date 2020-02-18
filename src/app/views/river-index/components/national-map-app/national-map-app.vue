@@ -50,7 +50,7 @@ export default {
     },
     tileserver: {
       type: String,
-      default: 'http://localhost/tiles/{z}/{x}/{y}.mvt'
+      default: 'http://localhost:8080/tiles/{z}/{x}/{y}.mvt'
     },
     showSidebar: {
       type: Boolean,
