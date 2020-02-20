@@ -109,11 +109,22 @@ export default {
   }),
   computed: {
     ...mapState({
-      riverName: state => state.riverDetailState.riverDetailData.data.river,
-      riverSection: state => state.riverDetailState.riverDetailData.data.section
+      river: state => state.riverDetailState.riverDetailData.data
     }),
     currentPage () {
       return this.$route
+    },
+    riverName () {
+      if (this.river) {
+        return this.river.river
+      }
+      return null
+    },
+    riverSection () {
+      if (this.river) {
+        return this.river.section
+      }
+      return null
     }
   },
   watch: {

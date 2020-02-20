@@ -11,7 +11,8 @@
                 to="/user/account/1"
                 class="ml-2xs"
               >
-                <icon-search />My Account
+                <UserAvatar16 />
+                My Account
               </router-link>
               <router-link
                 to="/river-search"

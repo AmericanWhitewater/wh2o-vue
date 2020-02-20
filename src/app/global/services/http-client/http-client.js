@@ -8,29 +8,28 @@ const config = {
 
 const httpClient = axios.create(config)
 
-const authToken = '123456789'
+// const authToken = '123456789'
 
-const headers = config => {
-  const data = {
-    origin: 'same-site'
-  }
-  config.headers = data
+// const headers = config => {
+//   const data = {
+//     origin: 'same-site'
+//   }
+//   config.headers = data
 
-  return config
-}
+//   return config
+// }
 
-const authInterceptor = config => {
-  config.headers.Authorization = authToken
-  return config
-}
+// const authInterceptor = config => {
+//   config.headers.Authorization = authToken
+//   return config
+// }
 
-const loggerInterceptor = config =>
-  /** Add logging here */
-  config
+// const loggerInterceptor = config =>
+//   /** Add logging here */
+//   config
 /** Adding the request interceptors */
-httpClient.interceptors.request.use(headers)
-httpClient.interceptors.request.use(authInterceptor)
-httpClient.interceptors.request.use(loggerInterceptor)
+// httpClient.interceptors.request.use(headers)
+// httpClient.interceptors.request.use(authInterceptor)
 
 /** Adding the response interceptors */
 httpClient.interceptors.response.use(

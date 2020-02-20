@@ -11,13 +11,6 @@ const fetchRapidsData = data => {
           reach(id:${data}) {
             rapids {
                 name,
-                photo {
-                  file {
-                    uri {
-                      thumb
-                    }
-                  }
-                },
                 isputin,
                 istakeout,
                 isaccess,

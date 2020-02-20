@@ -3,7 +3,7 @@ export const LevelsList = {
     levelsList: [
       {
         text: 'Select Level',
-        value: null
+        value: ''
       },
       {
         text: 'Any Level',

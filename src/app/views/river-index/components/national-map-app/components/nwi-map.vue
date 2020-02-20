@@ -160,6 +160,7 @@ export default {
     // parses out the layers we're adding to the map from NwiMapStyles / sourceLayers prop
     mapLayers () {
       const { sourceLayers } = NwiMapStyles
+
       return Object.keys(sourceLayers)
         .map(source => Object.keys(sourceLayers[source]))
         .flat()
@@ -240,7 +241,7 @@ export default {
     }
 
     this.map.addControl(
-      new mapboxgl.NavigationControl({ showCompass: false }),
+      new mapboxgl.NavigationControl({ showCompass: true }),
       'bottom-left'
     )
     this.map.on('styledata', this.loadAWMapData)
@@ -256,7 +257,9 @@ export default {
     // ensures that when map is rendered in a tab, it sizes properly when the tab is opened
     topic.subscribe('tab-changed', () => {
       // TODO: only call this if the tab was the map tab?
-      this.map.resize()
+      if (this.$route.name === 'map-tab') {
+        this.map.resize()
+      }
       // if map was initialized with bounds, re-fit because it needs to be called when map is visible
       if (this.startingBounds) {
         this.map.fitBounds(this.startingBounds, fitBoundsOptions)
@@ -424,6 +427,8 @@ export default {
           minzoom: 4,
           maxzoom: 14
         })
+        /* eslint-disable no-console */
+        console.log('are we getting here?')
         const { sourceLayers } = NwiMapStyles
         // iterating through the sourceLayers specified by prop this.sourceLayers
         this.sourceLayers.forEach(sourceLayer => {
@@ -449,6 +454,8 @@ export default {
               layout: sourceLayers[sourceLayer][mapLayer].layout,
               ...zoomAttributes
             })
+            /* eslint-disable no-console */
+            console.log('are we getting here?')
           })
         })
         // hide 'active-reach-segment-casing' layer

@@ -31,6 +31,7 @@
 
 <script>
 import { NwiRiversTable, NwiMap } from './components'
+import 'mapbox-gl/dist/mapbox-gl.css'
 import { riverIndexActions } from '@/app/views/river-index/shared/state'
 
 /**
@@ -100,9 +101,9 @@ export default {
     },
     async changeReachesInViewport (newReaches) {
       //  only use store if we're in the vue spa
-      if (this.$route.name === 'river-index') {
-        await this.$store.dispatch(riverIndexActions.LOAD_REACHES, newReaches)
-      }
+      // if (this.$route.name === 'river-index') {
+      //   await this.$store.dispatch(riverIndexActions.LOAD_REACHES, newReaches)
+      // }
 
       this.reachesInViewport = newReaches
     },

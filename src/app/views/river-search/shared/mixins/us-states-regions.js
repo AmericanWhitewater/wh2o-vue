@@ -3,7 +3,7 @@ export const UsStatesRegions = {
     UsStatesRegions: [
       {
         text: 'Select Region',
-        value: null
+        value: ''
       },
       {
         text: 'Lower Pacific',

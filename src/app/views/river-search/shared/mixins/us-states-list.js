@@ -3,7 +3,7 @@ export const UsStatesList = {
     UsStatesList: [
       {
         text: 'Select State',
-        value: null
+        value: ''
       },
       {
         text: 'Alabama',
@@ -148,6 +148,10 @@ export const UsStatesList = {
       {
         text: 'Oklahoma',
         value: 'stOK'
+      },
+      {
+        text: 'Oregon',
+        value: 'stOR'
       },
       {
         text: 'Pennsylvania',

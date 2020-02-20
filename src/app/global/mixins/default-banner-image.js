@@ -10,29 +10,29 @@ const defaultBannerImage = {
     images: [
       {
         url:
-          'https://prerelease.americanwhitewater.org/photos/archive/medium/885497.jpg',
+          'https://beta.americanwhitewater.org/photos/archive/medium/885497.jpg',
         title: 'image-01'
       },
       {
         url:
-          'https://prerelease.americanwhitewater.org/photos/archive/medium/879537.jpg',
+          'https://beta.americanwhitewater.org/photos/archive/medium/879537.jpg',
         title: 'image-02'
       },
       {
         url:
-          'https://prerelease.americanwhitewater.org/photos/archive/medium/8670.jpg'
+          'https://beta.americanwhitewater.org/photos/archive/medium/8670.jpg'
       },
       {
         url:
-          'https://prerelease.americanwhitewater.org/photos/archive/medium/39950.jpg'
+          'https://beta.americanwhitewater.org/photos/archive/medium/39950.jpg'
       },
       {
         url:
-          'https://prerelease.americanwhitewater.org/photos/archive/medium/884685.jpg'
+          'https://beta.americanwhitewater.org/photos/archive/medium/884685.jpg'
       },
       {
         url:
-          'https://prerelease.americanwhitewater.org/photos/archive/medium/882780.jpg'
+          'https://beta.americanwhitewater.org/photos/archive/medium/882780.jpg'
       }
     ],
     headerSyle: {

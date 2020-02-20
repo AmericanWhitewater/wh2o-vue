@@ -8,17 +8,16 @@
       <div class="bx--col-auto mr-xs search-col">
         <label class="bx--label">Search</label>
         <cv-search
-          v-model="riverSearchHttpConfig.river"
+          v-model="searchParams.river"
           :placeholder="'e.g. Arkansas River'"
           small
-          @change="fetchRivers"
+          @keydown.enter="fetchRivers"
         />
       </div>
       <div class="bx--col-auto mr-xs">
         <cv-dropdown
-          v-model="riverSearchHttpConfig.state"
+          v-model="searchParams.state"
           label="State"
-          @change="fetchRivers"
         >
           <cv-dropdown-item
             v-for="(s, index) in UsStatesList"
@@ -31,9 +30,8 @@
       </div>
       <div class="bx--col-auto mr-xs">
         <cv-dropdown
-          v-model="riverSearchHttpConfig.level"
+          v-model="searchParams.level"
           label="Level"
-          @change="fetchRivers"
         >
           <cv-dropdown-item
             v-for="(l, index) in levelsList"
@@ -46,7 +44,7 @@
       </div>
       <div class="bx--col-auto mr-xs">
         <cv-dropdown
-          v-model="riverSearchHttpConfig.state"
+          v-model="searchParams.state"
           label="International Reaches"
           @change="fetchRivers"
         >
@@ -191,13 +189,13 @@ export default {
   data: () => ({
     // show cta rather than 'no results' on initial page load
     firstTimePageLoad: true,
-    riverSearchHttpConfig: {
-      river: null,
-      state: null,
-      level: null,
-      include: null,
-      atLeast: null,
-      atMost: null
+    searchParams: {
+      river: '',
+      state: '',
+      level: '',
+      include: '',
+      atLeast: '',
+      atMost: ''
     },
     showAll: false
   }),
@@ -207,12 +205,20 @@ export default {
       data: state => state.riverSearchState.riverSearchData.data
     })
   },
+  watch: {
+    /**
+     * @note place fetchRivers in a watcher. cv-dropdown emits twice resulting in duplicate api calls
+     */
+    searchParams () {
+      this.fetchRivers()
+    }
+  },
   methods: {
-    fetchRivers () {
+    fetchRivers (input) {
       this.firstTimePageLoad = false
       this.$store.dispatch(
         riverSearchActions.FETCH_RIVER_SEARCH_DATA,
-        this.riverSearchHttpConfig
+        this.searchParams
       )
     },
     viewRiver (id) {

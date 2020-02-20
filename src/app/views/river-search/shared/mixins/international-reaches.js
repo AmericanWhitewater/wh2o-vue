@@ -3,8 +3,8 @@ export const InternationalReaches = {
     InternationalReaches: [
       {
         text: 'Select State/Province',
-        value: null,
-        country: null
+        value: '',
+        country: ''
       },
       {
         text: 'Alberta',

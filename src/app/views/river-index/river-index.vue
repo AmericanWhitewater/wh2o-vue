@@ -19,7 +19,7 @@
                 :show-search="false"
                 :show-controls="false"
                 :show-sidebar="false"
-                :show-legend="false"
+                :show-legend="true"
                 :show-rivers-table="false"
                 :mapbox-access-token="token"
                 :tileserver="tileserver"
@@ -49,52 +49,96 @@
         >
           <div class="outside">
             <div class="inside sidebar">
-              <template v-if="fullscreen">
-                <aw-logo variant="sm" />
-                <h3 class="mt-sm">
-                  River Index
-                </h3>
-                <hr>
-              </template>
-              <template v-else>
-                <h1>River Index</h1>
-                <hr>
-              </template>
               <div class="bx--row">
-                <div class="bx--col mb-spacing-md">
-                  <cv-search
-                    v-model="riverSearch"
-                    label="Search"
-                    size="small"
-                    class="mt-2xs"
-                  />
+                <div class="bx--col">
+                  <template v-if="fullscreen">
+                    <aw-logo variant="sm" />
+                    <h3 class="mt-sm">
+                      River Index
+                    </h3>
+                    <hr>
+                  </template>
+                  <template v-else>
+                    <h1>River Index</h1>
+                    <hr>
+                  </template>
                 </div>
-                <div class="bx--col mb-spacing-md">
-                  <cv-dropdown
-                    v-model="mapStyle"
-                    @change="setMapStyle"
-                  >
-                    <cv-dropdown-item :value="null">
-                      Map Style
-                    </cv-dropdown-item>
-                    <cv-dropdown-item value="topo">
-                      Topographic
-                    </cv-dropdown-item>
-                    <cv-dropdown-item value="satellite">
-                      Satellite
-                    </cv-dropdown-item>
-                    <cv-dropdown-item value="graphic">
-                      Graphic
-                    </cv-dropdown-item>
-                  </cv-dropdown>
-                </div>
-                <div class="bx--col mb-spacing-md">
-                  <cv-button
-                    kind="tertiary"
-                    size="small"
-                    @click="toggleFullscreen"
-                    v-text="'Fullscreen'"
-                  />
+              </div>
+              <div class="bx--row">
+                <div class="bx--col">
+                  <cv-toolbar>
+                    <cv-toolbar-search
+                      v-model="riverSearchHttpConfig.river"
+                      @keydown.enter="fetchRivers"
+                    />
+
+                    <cv-overflow-menu class="bx--toolbar-action">
+                      <template slot="trigger">
+                        <Filter16 class="bx--overflow-menu__icon bx--toolbar-filter-icon" />
+                      </template>
+                      <cv-toolbar-title title="Show Features" />
+                      <cv-toolbar-option>
+                        <cv-checkbox
+                          v-model="visibleFeatures.rapids"
+                          :value="true"
+                          label="Rapids"
+                        />
+                      </cv-toolbar-option>
+                      <cv-toolbar-option>
+                        <cv-checkbox
+                          v-model="visibleFeatures.projects"
+                          :value="true"
+                          label="Projects"
+                        />
+                      </cv-toolbar-option>
+                      <cv-toolbar-option>
+                        <cv-checkbox
+                          v-model="visibleFeatures.bookmarks"
+                          :value="true"
+                          label="Saved Points"
+                        />
+                      </cv-toolbar-option>
+                    </cv-overflow-menu>
+
+                    <cv-overflow-menu class="bx--toolbar-action">
+                      <cv-overflow-menu-item primary-focus>
+                        Refresh table
+                      </cv-overflow-menu-item>
+                      <cv-toolbar-divider />
+                      <cv-toolbar-title title="Map Style" />
+                      <cv-toolbar-option>
+                        <cv-radio-button
+                          v-model="mapStyle"
+                          name="row-height"
+                          label="Topographic"
+                          value="topo"
+                        />
+                      </cv-toolbar-option>
+                      <cv-toolbar-option>
+                        <cv-radio-button
+                          v-model="mapStyle"
+                          name="row-height"
+                          label="Satellite"
+                          value="satellite"
+                        />
+                      </cv-toolbar-option>
+                      <cv-toolbar-option>
+                        <cv-radio-button
+                          v-model="mapStyle"
+                          name="row-height"
+                          label="Graphic"
+                          value="graphic"
+                        />
+                      </cv-toolbar-option>
+                    </cv-overflow-menu>
+                    <cv-button
+                      kind="tertiary"
+                      size="small"
+                      small
+                      @click="toggleFullscreen"
+                      v-text="'Fullscreen'"
+                    />
+                  </cv-toolbar>
                 </div>
               </div>
               <div class="bx--data-table-container">
@@ -133,14 +177,20 @@
                         </td>
                         <td>{{ r.class }}</td>
                         <td>
-                          <cv-definition-tooltip
-                            alignment="center"
-                            direction="top"
-                            definition="this is the flow range"
-                            :term="`${mockFlowData.current} [cfs]`"
-                          />
+                          <template v-if="r.cond">
+                            <cv-definition-tooltip
+
+                              alignment="center"
+                              direction="top"
+                              :definition="formatCondition(r.cond)"
+                              :term="`${mockFlowData.current} [cfs]`"
+                            />
+                          </template>
+                          <template v-else>
+                            n/a
+                          </template>
                         </td>
-                        <td>{{ r.updated }}</td>
+                        <td>{{ formatDate(r.updated) }}</td>
                       </tr>
                     </template>
                     <template v-if="searchLoading">
@@ -187,6 +237,7 @@ import {
 import NationalMapAppVue from './components/national-map-app/national-map-app.vue'
 import { mapState } from 'vuex'
 import screenfull from 'screenfull'
+import Moment from 'moment'
 export default {
   name: 'RiverIndex',
   components: {
@@ -205,7 +256,7 @@ export default {
   },
   data: () => ({
     tileserver: nwiTileServer,
-    mapStyle: null,
+    mapStyle: 'topo',
     fullscreen: false,
     fullscreenIcon: 'AddFilled16',
     riverSearch: null,
@@ -218,6 +269,15 @@ export default {
     coords: {
       lat: null,
       lon: null
+    },
+    fullscreenButtonConfig: {
+      name: 'FitToScreen16',
+      functional: true
+    },
+    visibleFeatures: {
+      rapids: true,
+      pins: true,
+      projects: true
     }
   }),
   computed: {
@@ -236,10 +296,42 @@ export default {
       }
     }
   },
+  watch: {
+    mapStyle () {
+      this.setMapStyle()
+    }
+  },
   mounted () {
     this.getUserLocation()
   },
   methods: {
+    /**
+     * @public
+     * @description capitalize the current flow range for tooltip
+     * @param {string} cond river flow condition. low, recommended, upper recommended, above recommended, etc.
+     * @todo for empty values (n/a) we want to deemphasize. lower opacity or make light gray.
+     *
+     */
+    formatCondition (cond) {
+      if (cond) {
+        return cond.charAt(0).toUpperCase() + cond.substring(1)
+      }
+      return 'n/a'
+    },
+    /**
+     * @public
+     * @description format the date to make human friendly
+     * @param {string} date date reach flow rate was last updated
+     * @todo for empty values (n/a) we want to deemphasize. lower opacity or make light gray.
+     *
+     */
+    formatDate (date) {
+      if (date) {
+        return Moment(date, 'MMMM Do YYYY').format('LLL')
+      }
+
+      return 'n/a'
+    },
     /**
      * @public
      * @param {number} current most recent gage reading
@@ -258,6 +350,12 @@ export default {
       }
       return 'unknown'
     },
+    /**
+     * @public
+     * @description push to river detail route. use $router.push to create log in browser history
+     * @param {string} id river id used to load repective data
+     *
+     */
     viewRiver (id) {
       this.$router.push(`/river-detail/${id}/main`)
     },
@@ -269,24 +367,36 @@ export default {
         this.expandToggleTxt = 'Show'
       }
     },
-    fetchRivers (data) {
-      this.riverSearchHttpConfig.state = `st${data}`
+    fetchRivers () {
       this.$store.dispatch(
         riverSearchActions.FETCH_RIVER_SEARCH_DATA,
         this.riverSearchHttpConfig
       )
-      this.riverSearchHttpConfig.state = null
     },
+    /**
+     * @description helper func used to retrieve users location and put data in vuex store.
+     * @todo privacy ux considerations
+     */
     showPosition (position) {
       this.coords.lat = position.coords.latitude
       this.coords.lon = position.coords.longitude
       this.$store.dispatch(riverIndexActions.FETCH_USER_LOCATION, this.coords)
     },
+    /**
+     * @description fetches users location
+     */
     getUserLocation () {
+      /**
+       * if browser supports geolocation, cool, run it.
+       */
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(this.showPosition)
       }
     },
+    /**
+     * @description sets map style
+     * @values topo, satellite, graphic
+     */
     setMapStyle () {
       this.$store.dispatch(riverIndexActions.SET_MAP_STYLE, this.mapStyle)
     },
