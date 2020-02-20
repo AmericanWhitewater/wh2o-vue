@@ -139,25 +139,25 @@ export default {
       z-index: 999;
 
       .top-bar {
-        justify-content: space-between;
-        height: 75px;
         align-items: center;
+        height: 75px;
+        justify-content: space-between;
       }
     }
     .top-bar {
-      display: flex;
-      justify-content: flex-end;
-      height: 25px;
       align-items: center;
+      display: flex;
+      height: 25px;
+      justify-content: flex-end;
       a {
+        align-items:center;
         color: #fff;
-        text-decoration: none;
+        display:inline-flex;
         font-size: 12px;
         font-weight: 600;
-        line-height: 2.5rem;
-
+        text-decoration: none;
         svg {
-          margin-top: 1rem;
+          margin-right:0.25rem;
           g,
           path {
             fill: #fff;
@@ -172,10 +172,10 @@ export default {
 
   .primary-nav-wrapper {
     .nav-main-content-area {
-      justify-content: space-between;
-      height: 50px;
-      display: flex;
       align-items: center;
+      display: flex;
+      height: 50px;
+      justify-content: space-between;
       .bx--btn--ghost {
         color: $text-01;
       }

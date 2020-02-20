@@ -2,7 +2,7 @@
   <div class="accidents-tab">
     <div class="bx--grid">
       <div class="bx--row">
-        <div class="bx--col">
+        <div class="bx--col-sm-12 bx--col-md-8 bx--col-lg-10">
           <template v-if="loading">
             <loading-block text="Loading accident data" />
           </template>
@@ -48,7 +48,7 @@
             </div>
           </template>
         </div>
-        <div class="bx--col">
+        <div class="bx--col-sm-12 bx--col-md-6 bx--col-lg-5 bx--offset-lg-1">
           Submit form
         </div>
       </div>
