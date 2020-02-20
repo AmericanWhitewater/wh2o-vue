@@ -427,8 +427,6 @@ export default {
           minzoom: 4,
           maxzoom: 14
         })
-        /* eslint-disable no-console */
-        console.log('are we getting here?')
         const { sourceLayers } = NwiMapStyles
         // iterating through the sourceLayers specified by prop this.sourceLayers
         this.sourceLayers.forEach(sourceLayer => {
@@ -454,8 +452,6 @@ export default {
               layout: sourceLayers[sourceLayer][mapLayer].layout,
               ...zoomAttributes
             })
-            /* eslint-disable no-console */
-            console.log('are we getting here?')
           })
         })
         // hide 'active-reach-segment-casing' layer
