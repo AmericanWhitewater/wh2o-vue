@@ -1,4 +1,11 @@
 module.exports = {
+  lintOnSave: false,
+  devServer: {
+    overlay: {
+      error: false,
+      warning: false
+    }
+  },
   css: {
     loaderOptions: {
       sass: {
