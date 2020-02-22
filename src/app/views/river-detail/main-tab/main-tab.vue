@@ -1,51 +1,35 @@
 <template>
   <div class="main-tab">
-    <layout name="layout-fifty-fifty">
+    <layout
+      name="layout-fifty-fifty"
+      class="mb-lg"
+    >
       <template #left>
         <beta-box />
       </template>
       <template #right>
-        <loading-block text=" " />
+        <loading-block :hide-text="true" />
       </template>
     </layout>
-    <layout name="layout-two-thirds">
+    <layout
+      name="layout-two-thirds"
+      class="mb-lg"
+    >
       <template #main>
         <river-description />
       </template>
-
       <template #sidebar>
         <side-bar />
       </template>
     </layout>
-    <layout name="layout-full-width">
+    <layout
+      name="layout-full-width"
+      class="mb-lg"
+    >
       <template #main>
         <rapids-section />
       </template>
     </layout>
-
-    <!-- <div class="bx--col">
-      <div class="bx--row">
-        <div class="bx--col-sm-4 bx--col-md-6 bx--col-lg-8 mb-md">
-          <beta-box />
-        </div>
-        <div class="bx--col-sm-4 bx--col-md-6 bx--col-lg-8 mb-md">
-          <div class="outside">
-            <div class="inside map">
-              <loading-block text=" " />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="bx--row">
-        <river-description />
-        <side-bar />
-      </div>
-      <div class="bx--row">
-        <div class="bx--col">
-          <rapids-section />
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
 <script>

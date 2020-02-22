@@ -6,7 +6,7 @@
     <cv-inline-loading
       small
       state="loading"
-      :loading-text="text"
+      :loading-text="hideText ? '' : text"
     />
   </div>
 </template>
@@ -24,6 +24,10 @@ export default {
     text: {
       type: String,
       default: 'Loading Data...'
+    },
+    hideText: {
+      type: Boolean,
+      required: false
     }
   }
 }
