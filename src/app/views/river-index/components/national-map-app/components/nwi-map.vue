@@ -527,6 +527,8 @@ export default {
 
 <style lang="scss" scoped>
 #nwi-map-container {
+  min-height: 500px;
+  min-width: 100%;
   height: 100%;
   width: 100%;
   position: relative;

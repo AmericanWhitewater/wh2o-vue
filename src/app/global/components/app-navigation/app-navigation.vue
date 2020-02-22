@@ -13,6 +13,7 @@
 import DesktopNav from './components/desktop-nav'
 import MobileNav from './components/mobile-nav'
 import checkWindow from '../../services/mixins/check-window'
+import { navItems } from '@/app/global/mixins'
 /**
  * @displayName App Navigation
  */
@@ -22,23 +23,7 @@ export default {
     'desktop-nav': DesktopNav,
     'mobile-nav': MobileNav
   },
-  mixins: [checkWindow],
-  data: () => ({
-    navItems: [
-      {
-        title: 'River Index',
-        path: '/river-index'
-      },
-      {
-        title: 'News',
-        path: '/news'
-      },
-      {
-        title: 'Safety',
-        path: '/safety'
-      }
-    ]
-  }),
+  mixins: [checkWindow, navItems],
   computed: {
     homePage () {
       if (this.$route.name === 'home') {

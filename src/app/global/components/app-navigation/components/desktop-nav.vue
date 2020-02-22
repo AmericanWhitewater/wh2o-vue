@@ -48,40 +48,69 @@
             >
               <aw-logo />
             </router-link>
-            <nav>
-              <router-link
-                v-for="(item, index) in navItems"
-                :key="index"
-                :to="item.path"
-              >
-                <cv-button
-                  kind="ghost"
-                  small
-                >
-                  {{ item.title }}
-                </cv-button>
-              </router-link>
+            <cv-header-nav>
+              <template v-for="(navItem, index) in navItems">
+                <template v-if="!navItem.children">
+                  <cv-header-menu-item
+                    :key="navItem.label + '-' + index"
+                    :style="`color:#292929`"
+                    :to="navItem.path"
+                  >
+                    {{ navItem.label }}
+                  </cv-header-menu-item>
+                </template>
+                <template v-else>
+                  <cv-header-menu
+                    :key="navItem.label + '-' + index"
+                    :aria-label="navItem.label"
+                    :title="navItem.label"
+                  >
+                    <template v-for="(child, i) in navItem.children">
+                      <cv-header-menu-item
+                        v-if="!child.legacy"
+                        :key="child.label + '-' + i"
+                        :to="child.path"
+                      >
+                        {{ child.label }}
+                      </cv-header-menu-item>
+                      <cv-header-menu-item
+                        v-else
+                        :key="child.label + '-' + i"
+                        :href="child.path"
+                      >
+                        {{ child.label }}
+                      </cv-header-menu-item>
+                    </template>
+                  </cv-header-menu>
+                </template>
+              </template>
               <template v-if="!user">
-                <router-link to="/user/access/login">
+                <router-link
+                  to="/user/access/login"
+                  class="header--btn"
+                >
                   <cv-button
                     kind="primary"
-                    small
+                    size="small"
                   >
                     Login
                   </cv-button>
                 </router-link>
               </template>
               <template v-else>
-                <router-link to="/donate">
+                <a
+                  to="/donate"
+                  class="header--btn"
+                >
                   <cv-button
                     kind="tertiary"
-                    small
+                    size="small"
                   >
                     Donate
                   </cv-button>
-                </router-link>
+                </a>
               </template>
-            </nav>
+            </cv-header-nav>
           </div>
         </div>
       </div>
@@ -127,6 +156,53 @@ export default {
 </script>
 <style lang="scss">
 .desktop-nav {
+
+  .bx--header__menu-title[role='menuitem'][aria-expanded='true'] {
+    background-color:#fff !important;
+  }
+
+  .bx--header__menu-title[role='menuitem'][aria-expanded='true'] + .bx--header__menu {
+    @include layer('temporary-nav')
+  }
+
+  a.bx--header__menu-item[role='menuitem']:hover > svg {
+    fill:$ui-04;
+  }
+
+  .bx--header__nav::before {
+    background-color: #fff;
+  }
+
+  .bx--header__menu {
+    background-color: $ui-01 !important;
+    &:hover {
+      background-color: $ui-01 !important;
+    }
+  }
+  a.bx--header__menu-item {
+    color: $text-01 !important;
+    &:hover {
+      background-color: $ui-02 !important;
+    }
+  }
+
+  header,
+  .cv-header-nav,
+  .bx--header {
+    display: flex;
+    border-bottom: none;
+    position: relative;
+    justify-content: space-between;
+    flex-flow: row nowrap;
+    align-items: center;
+    background-color: #fff !important;
+
+    .header--btn {
+      max-height: 2rem;
+      align-self: center;
+    }
+  }
+
   .top-bar-wrapper {
     background-color: $brand-03;
 

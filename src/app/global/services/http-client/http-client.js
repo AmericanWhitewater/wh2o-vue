@@ -12,8 +12,11 @@ const httpClient = axios.create(config)
 
 // const headers = config => {
 //   const data = {
-//     origin: 'same-site'
+//     common: {
+//       'X-Requested-With': 'XMLHttpRequest'
+//     }
 //   }
+
 //   config.headers = data
 
 //   return config
