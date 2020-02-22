@@ -1,58 +1,57 @@
 <template>
   <div class="accidents-tab">
-    <div class="bx--grid">
-      <div class="bx--row">
-        <div class="bx--col-sm-12 bx--col-md-8 bx--col-lg-10">
-          <template v-if="loading">
-            <loading-block text="Loading accident data" />
-          </template>
-          <template v-if="!loading && error">
-            <error-block
-              title="Accident data unavailable"
-              text="please try again later"
-            />
-          </template>
-          <template v-if="!loading && !error">
-            <div class="bx--data-table-container">
-              <table class="bx--data-table">
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Flow</th>
-                    <th>Result</th>
-                    <th>Factor</th>
-                    <th>&nbsp;</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="(a, index) in accidents"
-                    :key="index"
+    <layout :name="!loading && !error ? 'layout-two-thirds' : 'layout-full-width'">
+      <template #main>
+        <loading-block
+          v-if="loading"
+          text="Loading accident data"
+        />
+        <error-block
+          v-if="!loading && error"
+          title="Accident data unavailable"
+          text="please try again later"
+        />
+        <div
+          v-if="!loading && !error"
+          class="bx--data-table-container"
+        >
+          <table class="bx--data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Flow</th>
+                <th>Result</th>
+                <th>Factor</th>
+                <th>&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(a, index) in accidents"
+                :key="index"
+              >
+                <td v-text="'{ date }'" />
+                <td v-text="'{ flow }'" />
+                <td v-text="'{ result }'" />
+                <td v-text="'{ factor }'" />
+                <td>
+                  <cv-button
+                    small
+                    kind="tertiary"
+                    @click="viewAccident(a.id)"
                   >
-                    <td v-text="'{ date }'" />
-                    <td v-text="'{ flow }'" />
-                    <td v-text="'{ result }'" />
-                    <td v-text="'{ factor }'" />
-                    <td>
-                      <cv-button
-                        small
-                        kind="tertiary"
-                        @click="viewAccident(a.id)"
-                      >
-                        Full Report
-                      </cv-button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </template>
+                    Full Report
+                  </cv-button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="bx--col-sm-12 bx--col-md-6 bx--col-lg-5 bx--offset-lg-1">
-          Submit form
-        </div>
-      </div>
-    </div>
+      </template>
+      <template #sidebar>
+        accidents sidebar
+      </template>
+    </layout>
   </div>
 </template>
 <script>
@@ -60,12 +59,14 @@ import { mapState } from 'vuex'
 import { accidentsActions } from '../shared/state'
 import { accidentDetailActions } from '@/app/views/accident-database/shared/state'
 import { LoadingBlock, ErrorBlock } from '@/app/global/components'
+import { Layout } from '@/app/global/layout'
 
 export default {
   name: 'AccidentsTab',
   components: {
     ErrorBlock,
-    LoadingBlock
+    LoadingBlock,
+    Layout
   },
   computed: {
     ...mapState({

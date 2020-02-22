@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="main-tab-sidebar bx--col-sm-4 bx--col-md-6 bx--col-lg-6 bx--offset-lg-1"
+    class="main-tab-sidebar"
   >
     <div
       ref="contentArea"

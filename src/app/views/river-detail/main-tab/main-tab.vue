@@ -1,6 +1,29 @@
 <template>
-  <div class="main-tab bx--row">
-    <div class="bx--col">
+  <div class="main-tab">
+    <layout name="layout-fifty-fifty">
+      <template #left>
+        <beta-box />
+      </template>
+      <template #right>
+        <loading-block text=" " />
+      </template>
+    </layout>
+    <layout name="layout-two-thirds">
+      <template #main>
+        <river-description />
+      </template>
+
+      <template #sidebar>
+        <side-bar />
+      </template>
+    </layout>
+    <layout name="layout-full-width">
+      <template #main>
+        <rapids-section />
+      </template>
+    </layout>
+
+    <!-- <div class="bx--col">
       <div class="bx--row">
         <div class="bx--col-sm-4 bx--col-md-6 bx--col-lg-8 mb-md">
           <beta-box />
@@ -22,11 +45,12 @@
           <rapids-section />
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
 import { LoadingBlock } from '@/app/global/components'
+import { Layout } from '@/app/global/layout'
 import {
   SideBar,
   BetaBox,
@@ -41,7 +65,8 @@ export default {
     RapidsSection,
     BetaBox,
     RiverDescription,
-    LoadingBlock
+    LoadingBlock,
+    Layout
   }
 }
 </script>

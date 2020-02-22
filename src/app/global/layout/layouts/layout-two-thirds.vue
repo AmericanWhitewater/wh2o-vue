@@ -1,10 +1,10 @@
 <template>
   <div class="bx--grid">
     <div class="bx--row">
-      <div class="bx--col-sm-4 bx--col-md-6 bx--col-lg-10 main">
+      <div class="bx--col-sm-4 bx--col-md-6 bx--col-lg-10">
         <slot name="main" />
       </div>
-      <div class="bx--col-sm-4 bx--col-md-6 bx--col-lg-5 bx--offset-lg-1 sidebar">
+      <div class="bx--col-sm-4 bx--col-md-6 bx--col-lg-5 bx--offset-lg-1">
         <slot name="sidebar" />
       </div>
     </div>
