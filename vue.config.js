@@ -11,8 +11,6 @@ module.exports = {
    */
   lintOnSave: false,
   devServer: {
-    proxy: process.env.VUE_APP_API_BASE_URL || 'http://localhost:8080',
-    port: process.env.VUE_APP_LEGACY_DEV ? 8081 : 8080,
     /**
    * disables linting overlay which disrupts workflow.
    * linting reserved for pre-commit git hook.

@@ -18,7 +18,11 @@ const fetchRiverDetailData = data => {
              edited,
              class,
              plat,
-             plon
+             plon,
+             geom,
+             photo {
+               url
+             }
         }
     }
     

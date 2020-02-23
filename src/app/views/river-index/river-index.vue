@@ -80,21 +80,21 @@
                       <cv-toolbar-option>
                         <cv-checkbox
                           v-model="visibleFeatures.rapids"
-                          :value="true"
+                          value="rapids"
                           label="Rapids"
                         />
                       </cv-toolbar-option>
                       <cv-toolbar-option>
                         <cv-checkbox
                           v-model="visibleFeatures.projects"
-                          :value="true"
+                          value="projects"
                           label="Projects"
                         />
                       </cv-toolbar-option>
                       <cv-toolbar-option>
                         <cv-checkbox
                           v-model="visibleFeatures.bookmarks"
-                          :value="true"
+                          value="bookmarks"
                           label="Saved Points"
                         />
                       </cv-toolbar-option>

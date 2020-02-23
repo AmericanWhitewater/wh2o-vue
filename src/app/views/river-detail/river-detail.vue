@@ -20,7 +20,7 @@
           <cv-overflow-menu>
             <cv-overflow-menu-item>Link Resources</cv-overflow-menu-item>
             <cv-overflow-menu-item>Share Reach</cv-overflow-menu-item>
-            <cv-overflow-menu-item danger>
+            <cv-overflow-menu-item @click="reachDeleteModalVisible = true">
               Remove from Index
             </cv-overflow-menu-item>
           </cv-overflow-menu>
@@ -40,6 +40,41 @@
         </div>
         <router-view />
       </template>
+      <cv-modal
+        :visible="reachDeleteModalVisible"
+        kind="danger"
+        :primary-button-disabled="deleteReachPrimaryButtonDisabled"
+        auto-hide-off
+        @modal-hidden="reachDeleteConfirmInput = null"
+        @primary-click="deleteReach"
+        @secondary-click="reachDeleteModalVisible = false"
+        @modal-hide-request="reachDeleteModalVisible = false"
+      >
+        <template
+          slot="label"
+        >
+          Delete {{ river.river + ' ' + river.section }}
+        </template>
+        <template slot="title">
+          Confirm Delete
+        </template>
+        <template slot="content">
+          <p class="mb-sm">
+            Deleting {{ river.river + river.section }} will permanently remove the reach from the river index. This cannot be undone.
+          </p>
+          <cv-text-input
+            v-model="reachDeleteConfirmInput"
+            theme="light"
+            label="Type reach name and section to confirm"
+          />
+        </template>
+        <template slot="secondary-button">
+          Cancel
+        </template>
+        <template slot="primary-button">
+          Delete
+        </template>
+      </cv-modal>
     </template>
   </section>
 </template>
@@ -59,6 +94,8 @@ export default {
     'river-header': RiverHeader
   },
   data: () => ({
+    reachDeleteModalVisible: false,
+    reachDeleteConfirmInput: null,
     selected: true,
     prevRoute: null,
     tabs: [
@@ -73,15 +110,16 @@ export default {
     ]
   }),
   computed: {
-    riverId () {
-      return this.$route.params.id
-    },
     ...mapState({
       river: state => state.riverDetailState.riverDetailData.data,
       loading: state => state.riverDetailState.riverDetailData.loading,
       editMode: state => state.riverDetailState.riverDetailData.mode,
       media: state => state.riverDetailState.galleryData.data
     }),
+    riverId () {
+      return this.$route.params.id
+    },
+
     riverTitle () {
       if (this.river) {
         return this.river.river
@@ -94,6 +132,14 @@ export default {
         return `https://prerelease.americanwhitewater.org${img.file.uri.thumb}`
       }
       return null
+    },
+    deleteReachPrimaryButtonDisabled () {
+      if (this.river) {
+        if (this.confirmDeleteInput === this.river.river + ' ' + this.river.section) {
+          return false
+        }
+      }
+      return true
     }
   },
   created () {
@@ -101,9 +147,15 @@ export default {
   },
   mounted () {
     this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId)
-    // this.$store.dispatch(galleryActions.FETCH_GALLERY_DATA, this.riverId);
+  },
+  beforeDestroy () {
+    this.resetStores()
   },
   methods: {
+    deleteReach () {
+      /* eslint-disable-next-line no-console */
+      console.log('perform this action')
+    },
     switchTab (index) {
       /**
        * cv-tabs emits indexof tab on click, use that to push to the correct tab
@@ -124,7 +176,6 @@ export default {
       alert("you're leaving in edit mode!!!!")
       this.$store.dispatch(actionsTypes.SET_EDIT_MODE, false)
     }
-    this.resetStores()
     next()
   }
 }
