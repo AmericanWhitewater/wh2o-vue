@@ -6,9 +6,9 @@ const navItems = {
         path: null,
         children: [
           {
-            legacy: true,
+            legacy: false,
             label: 'About AW',
-            path: '/content/Wiki/aw:about/?'
+            path: '/about'
           },
           {
             label: 'News',
@@ -19,24 +19,24 @@ const navItems = {
             path: '/safety'
           },
           {
-            legacy: true,
+            legacy: false,
             label: 'Professional Staff',
-            path: '/content/News/view/?showarchive=1&type=frontpagenews'
+            path: '/staff'
           },
           {
-            legacy: true,
+            legacy: false,
             label: 'Outdoor Alliance',
-            path: '/content/News/view/?showarchive=1&type=frontpagenews'
+            path: '/outdoor-alliance'
           },
           {
-            legacy: true,
+            legacy: false,
             label: 'Stewardship',
-            path: '/content/News/view/?showarchive=1&type=frontpagenews'
+            path: '/stewardship'
           },
           {
-            legacy: true,
+            legacy: false,
             label: 'Contact Us',
-            path: '/content/News/view/?showarchive=1&type=frontpagenews'
+            path: '/contact'
           }
         ]
       },
@@ -45,31 +45,31 @@ const navItems = {
         path: null,
         children: [
           {
-            legacy: true,
+            legacy: false,
             label: 'Join or Renew',
-            path: '/content/Wiki/aw:about/?'
+            path: '/membership/join-renew'
           },
-          { legacy: true, label: 'Gift Membership', path: '/news' },
-          { legacy: true, label: 'Become a Volunteer', path: '/safety' },
+          { legacy: false, label: 'Gift Membership', path: '/membership/gift' },
+          { legacy: false, label: 'Become a Volunteer', path: '/volunteer' },
           {
-            legacy: true,
+            legacy: false,
             label: 'Advertising Information',
-            path: '/content/News/view/?showarchive=1&type=frontpagenews'
+            path: '/advertising'
           },
           {
-            legacy: true,
+            legacy: false,
             label: 'Donate',
-            path: '/content/News/view/?showarchive=1&type=frontpagenews'
+            path: '/donate'
           },
           {
-            legacy: true,
+            legacy: false,
             label: 'Giving',
-            path: '/content/News/view/?showarchive=1&type=frontpagenews'
+            path: '/giving'
           },
           {
-            legacy: true,
+            legacy: false,
             label: 'AW Store',
-            path: '/content/News/view/?showarchive=1&type=frontpagenews'
+            path: '/store'
           }
         ]
       },
@@ -83,24 +83,24 @@ const navItems = {
         path: null,
         children: [
           {
-            legacy: true,
+            legacy: false,
             label: 'Photo/Video',
-            path: '/content/Wiki/aw:about/?'
+            path: '/library'
           },
-          { legacy: true, label: 'AW Journal', path: '/news' },
-          {
-            label: 'Login',
-            path: '/user/access/login'
-          }
+          { legacy: false, label: 'AW Journal', path: '/journal' }
         ]
       },
       {
         label: 'Community',
         path: null,
         children: [
-          { legacy: true, label: 'Clubs', path: '/content/Wiki/aw:about/?' },
-          { legacy: true, label: 'Events', path: '/news' },
-          { legacy: true, label: 'Industry Partners', path: '/safety' }
+          { legacy: false, label: 'Clubs', path: '/community/clubs' },
+          { legacy: false, label: 'Events', path: '/community/events' },
+          {
+            legacy: false,
+            label: 'Industry Partners',
+            path: '/community/partners'
+          }
         ]
       }
     ]
