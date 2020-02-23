@@ -62,12 +62,12 @@
         </cv-button>
         <cv-button
           v-for="item in navItems"
-          :key="item.title"
+          :key="item.label"
           kind="ghost"
           @click.prevent="viewRoute(item.path)"
         >
           <!-- <router-link :to="item.path">{{ item.title }}</router-link> -->
-          <a href="#0">{{ item.title }}</a>
+          <a href="#0">{{ item.label }}</a>
         </cv-button>
       </div>
     </transition>
@@ -184,8 +184,7 @@ svg {
 }
 .slide-enter-active,
 .slide-leave-active {
-  transition: all 0.4s ease;
-  // @include ease;
+  @include ease;
 }
 .slide-enter,
 .slide-leave-to {
@@ -194,7 +193,7 @@ svg {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: all 0.4s ease;
+  @include ease;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;

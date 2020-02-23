@@ -19,7 +19,7 @@
                 :show-search="false"
                 :show-controls="false"
                 :show-sidebar="false"
-                :show-legend="true"
+                :show-legend="false"
                 :show-rivers-table="false"
                 :mapbox-access-token="token"
                 :tileserver="tileserver"
@@ -157,25 +157,19 @@
                   <tbody>
                     <template v-if="!searchLoading">
                       <tr
-                        v-for="(r, index) in searchResults"
+                        v-for="(r, index) in reachesInViewport"
                         :key="index"
                       >
                         <td
-                          :class="
-                            checkFlowStatus(
-                              mockFlowData.current,
-                              mockFlowData.min,
-                              mockFlowData.max
-                            )
-                          "
+                          :class="r.properties.condition"
                         >
-                          <span @click="viewRiver(r.id)">
-                            <strong>{{ r.name }}</strong>
+                          <span @click="viewRiver(r.properties.id)">
+                            <strong>{{ r.properties.river }}</strong>
                             <br>
-                            {{ r.section }}
+                            {{ r.properties.section }}
                           </span>
                         </td>
-                        <td>{{ r.class }}</td>
+                        <td>{{ r.properties.class }}</td>
                         <td>
                           <template v-if="r.cond">
                             <cv-definition-tooltip
@@ -200,7 +194,7 @@
                         </td>
                       </tr>
                     </template>
-                    <template v-if="!searchLoading && !searchResults">
+                    <template v-if="!searchLoading && !reachesInViewport">
                       <tr>
                         <td colspan="4">
                           Sorry, no results found. Please try again.
@@ -283,7 +277,8 @@ export default {
   computed: {
     ...mapState({
       searchResults: state => state.riverSearchState.riverSearchData.data,
-      searchLoading: state => state.riverSearchState.riverSearchData.loading
+      searchLoading: state => state.riverSearchState.riverSearchData.loading,
+      reachesInViewport: state => state.riverIndexState.riverIndexData.data
     }),
     /**
      * @temp return dummy values for styling
@@ -410,6 +405,10 @@ export default {
       }
       screenfull.toggle(document.getElementById('fullscreen-target'))
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    this.$store.dispatch(riverIndexActions.SET_MAP_POSITION, 'testing')
+    next()
   }
 }
 </script>
@@ -425,17 +424,25 @@ $content-height: calc(100vh - 125px);
 
 .river-index {
   .map {
-    height: $content-height;
+    height: calc(100vh - 175px);
     background-color: $brand-03;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     position: relative;
+
+    @include MQ(MD) {
+      height: $content-height;
+    }
+
     &.fullscreen {
-      height: 100vh;
+      @include MQ(MD) {
+        height: 100vh;
+      }
     }
     .expand-toggle {
+      display: none;
       transform: rotate(90deg);
       font-size: 14px;
       font-weight: bolder;
@@ -449,6 +456,9 @@ $content-height: calc(100vh - 125px);
       right: 0;
       top: 1rem;
       background-color: #fff;
+      @include MQ(MD) {
+        display: block;
+      }
     }
   }
   .sidebar-wrapper {
@@ -517,8 +527,8 @@ $content-height: calc(100vh - 125px);
         &.hi {
           @include flow-border($flow-high);
         }
-        &.unknown {
-          @include flow-border($flow-high);
+        &.unk {
+          @include flow-border($ui-03);
         }
       }
     }

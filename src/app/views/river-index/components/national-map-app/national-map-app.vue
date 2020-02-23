@@ -32,6 +32,7 @@
 <script>
 import { NwiRiversTable, NwiMap } from './components'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import { riverIndexActions } from '../../shared/state'
 
 /**
  * @todo beforeDestroy store bbox / zoom level
@@ -98,11 +99,11 @@ export default {
     changeHighlightedFeature (feature) {
       this.highlightedFeature = feature
     },
-    changeReachesInViewport (newReaches) {
+    async changeReachesInViewport (newReaches) {
       //  only use store if we're in the vue spa
-      // if (this.$route.name === 'river-index') {
-      //   await this.$store.dispatch(riverIndexActions.LOAD_REACHES, newReaches)
-      // }
+      if (this.$route.name === 'river-index') {
+        await this.$store.dispatch(riverIndexActions.LOAD_REACHES, newReaches)
+      }
 
       this.reachesInViewport = newReaches
     },
@@ -116,7 +117,7 @@ export default {
         ) !== -1
       ) {
         if (this.$route.name === 'river-index') {
-          this.$router.push(`/river-detail/${feature.properties.id}`)
+          this.$router.push(`/river-detail/${feature.properties.id}/main`)
         } else {
           window.location.href = this.reachDetailUrl(feature.properties.id)
         }

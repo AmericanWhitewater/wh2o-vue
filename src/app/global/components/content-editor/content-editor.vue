@@ -1,7 +1,13 @@
 <template>
   <div class="content-editor">
-    <div class="control-bar">
-      <h1>{{ sectionTitle }}</h1>
+    <h1
+      v-if="sectionTitle"
+      v-text="sectionTitle"
+    />
+    <div
+      v-if="showControlBar"
+      class="control-bar"
+    >
       <editor-menu-bar
         v-slot="{ commands, isActive }"
         :editor="editor"
@@ -217,7 +223,10 @@
   </div>
 </template>
 <script>
-// Import the basic building blocks
+/**
+ * @todo need to wire content editor v-model
+ * look at b3 :model.sync
+ */
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
 import {
   Blockquote,
@@ -239,6 +248,10 @@ export default {
     EditorMenuBar
   },
   props: {
+    showControlBar: {
+      type: Boolean,
+      required: false
+    },
     content: {
       type: String,
       default: null
@@ -283,7 +296,13 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+.content-editor {
+.ProseMirror {
+  min-height:250px;
+  background-color: $ui-02;
+  padding:1rem;
+}
 .toolbar {
   @include layer("raised");
   border: 1px solid $ui-03;
@@ -318,5 +337,6 @@ export default {
       vertical-align: middle;
     }
   }
+}
 }
 </style>

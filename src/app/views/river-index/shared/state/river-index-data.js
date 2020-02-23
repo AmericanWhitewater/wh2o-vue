@@ -8,7 +8,8 @@ const initialState = {
   error: null,
   userLocation: null,
   mapStyle: 'topo',
-  fullscreen: null
+  fullscreen: null,
+  mapPosition: null
 }
 
 const namespacedPrefix = '[RIVER_INDEX]'
@@ -20,7 +21,8 @@ const mutationTypes = reflectKeys(
     'DATA_ERROR',
     'DATA_RESET',
     'USER_LOCATION',
-    'MAP_STYLE'
+    'MAP_STYLE',
+    'MAP_POSITION'
   ],
   namespacedPrefix
 )
@@ -31,7 +33,8 @@ const {
   DATA_RESET,
   DATA_SUCCESS,
   USER_LOCATION,
-  MAP_STYLE
+  MAP_STYLE,
+  MAP_POSITION
 } = mutationTypes
 
 const mutations = {
@@ -51,6 +54,10 @@ const mutations = {
     Object.assign(state, { loading: false, mapStyle: payload })
   },
 
+  [MAP_POSITION] (state, payload) {
+    Object.assign(state, { loading: false, mapPosition: payload })
+  },
+
   [DATA_ERROR] (state, payload) {
     Object.assign(state, {
       loading: false,
@@ -65,7 +72,7 @@ const mutations = {
 }
 
 export const riverIndexActions = reflectKeys(
-  ['FETCH_USER_LOCATION', 'LOAD_REACHES', 'SET_MAP_STYLE'],
+  ['FETCH_USER_LOCATION', 'LOAD_REACHES', 'SET_MAP_STYLE', 'SET_MAP_POSITION'],
   namespacedPrefix
 )
 
@@ -78,6 +85,9 @@ const actions = {
   },
   async [riverIndexActions.SET_MAP_STYLE] (context, data) {
     context.commit(MAP_STYLE, data)
+  },
+  async [riverIndexActions.SET_MAP_POSITION] (context, data) {
+    context.commit(MAP_POSITION, data)
   }
 }
 

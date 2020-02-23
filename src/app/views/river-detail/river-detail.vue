@@ -50,17 +50,16 @@
         @secondary-click="reachDeleteModalVisible = false"
         @modal-hide-request="reachDeleteModalVisible = false"
       >
-        <template
-          slot="label"
-        >
-          Delete {{ river.river + ' ' + river.section }}
+        <template slot="label">
+          Delete {{ river.river + " " + river.section }}
         </template>
         <template slot="title">
           Confirm Delete
         </template>
         <template slot="content">
           <p class="mb-sm">
-            Deleting {{ river.river + river.section }} will permanently remove the reach from the river index. This cannot be undone.
+            Deleting {{ river.river + river.section }} will permanently remove
+            the reach from the river index. This cannot be undone.
           </p>
           <cv-text-input
             v-model="reachDeleteConfirmInput"
@@ -133,9 +132,17 @@ export default {
       }
       return null
     },
+
     deleteReachPrimaryButtonDisabled () {
-      if (this.river) {
-        if (this.confirmDeleteInput === this.river.river + ' ' + this.river.section) {
+      if (this.river && this.confirmDeleteInput) {
+        const river = this.river.river + this.river.section
+
+        const testInput01 = this.confirmDeleteInput
+          .replace(/\s+/g, '')
+          .toLowerCase()
+
+        const testInput02 = river.replace(/\s+/g, '-').toLowerCase()
+        if (testInput01 === testInput02) {
           return false
         }
       }

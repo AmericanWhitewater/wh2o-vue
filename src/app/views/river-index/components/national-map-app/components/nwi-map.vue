@@ -220,7 +220,9 @@ export default {
     mapboxgl.accessToken = this.mapboxAccessToken
     const mapProps = {
       container: 'nwi-map',
-      style: this.baseMapUrl
+      style: this.baseMapUrl,
+      // hash: true
+      trackUserLocation: true
     }
     if (this.startingBounds) {
       mapProps.bounds = this.startingBounds
@@ -525,14 +527,14 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #nwi-map-container {
   min-height: 500px;
   min-width: 100%;
   height: 100%;
   width: 100%;
   position: relative;
-}
+
 #nwi-map {
   height: 100%;
   width: 100%;
@@ -567,5 +569,11 @@ export default {
   -ms-flex-align: center;
   align-items: center;
   z-index: 8000;
+}
+
+// I think we have to show the logo for legal reasons, hiding it for demo purposes
+  a.mapboxgl-ctrl-logo , .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+    display: none !important;
+  }
 }
 </style>

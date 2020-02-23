@@ -7,7 +7,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint --fix --format",
+    "lint": "vue-cli-service lint --fix",
     "postinstall": "if test \"$NODE_ENV\" = \"production\" ; then npm run build ; fi ",
     "start": "node server/server.js",
     "styleguide": "vue-cli-service styleguidist",
@@ -38,6 +38,7 @@
     "vue-chartjs": "^3.5.0",
     "vue-meta": "^2.3.2",
     "vue-router": "^3.1.5",
+    "vue-sanitize": "^0.2.0",
     "vuex": "^3.1.2"
   },
   "devDependencies": {

@@ -2,3 +2,4 @@
 export * from './exception-handler'
 export * from './sentry'
 export * from './carbon-icons'
+export * from './vue-sanitize'
