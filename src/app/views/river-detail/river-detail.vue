@@ -43,6 +43,7 @@
       <cv-modal
         :visible="reachDeleteModalVisible"
         kind="danger"
+        size="small"
         :primary-button-disabled="deleteReachPrimaryButtonDisabled"
         auto-hide-off
         @modal-hidden="reachDeleteConfirmInput = null"
@@ -50,9 +51,6 @@
         @secondary-click="reachDeleteModalVisible = false"
         @modal-hide-request="reachDeleteModalVisible = false"
       >
-        <template slot="label">
-          Delete {{ river.river + " " + river.section }}
-        </template>
         <template slot="title">
           Confirm Delete
         </template>
@@ -61,6 +59,9 @@
             Deleting {{ river.river + river.section }} will permanently remove
             the reach from the river index. This cannot be undone.
           </p>
+          <div class="confirm-delete-warning-text mb-sm">
+            <h4>{{ river.river + ' ' + river.section }}</h4>
+          </div>
           <cv-text-input
             v-model="reachDeleteConfirmInput"
             theme="light"
@@ -82,9 +83,7 @@ import { mapState } from 'vuex'
 import RiverHeader from './river-header/river-header'
 import {
   actionsTypes,
-  weatherActions,
-  rapidsActions,
-  galleryActions
+  rapidsActions
 } from './shared/state'
 
 export default {
@@ -132,19 +131,25 @@ export default {
       }
       return null
     },
+    deleteConfirmInput01 () {
+      if (this.river) {
+        const input = this.river.river + ' ' + this.river.section
+        return input.replace(/\s+/g, '-').toLowerCase()
+      }
+
+      return null
+    },
+    deleteConfirmInput02 () {
+      if (this.reachDeleteConfirmInput) {
+        return this.reachDeleteConfirmInput.replace(/\s+/g, '-').toLowerCase()
+      }
+
+      return null
+    },
 
     deleteReachPrimaryButtonDisabled () {
-      if (this.river && this.confirmDeleteInput) {
-        const river = this.river.river + this.river.section
-
-        const testInput01 = this.confirmDeleteInput
-          .replace(/\s+/g, '')
-          .toLowerCase()
-
-        const testInput02 = river.replace(/\s+/g, '-').toLowerCase()
-        if (testInput01 === testInput02) {
-          return false
-        }
+      if (this.deleteConfirmInput01 === this.deleteConfirmInput02) {
+        return false
       }
       return true
     }
@@ -171,10 +176,6 @@ export default {
       this.$router.replace(
         `/river-detail/${this.riverId}/${this.tabs[index].toLowerCase()}`
       )
-    },
-    async resetStores () {
-      await this.$store.dispatch(weatherActions.RESET_WEATHER_DATA)
-      await this.$store.dispatch(galleryActions.RESET_GALLERY_DATA)
     }
   },
   beforeRouteLeave (to, from, next) {
@@ -205,6 +206,15 @@ export default {
       text-align: center;
       border-bottom: 3px solid $ui-03;
       width: auto;
+
+      .bx--tabs__nav, .bx--tabs-trigger {
+
+        width:50%;
+           @include MQ(MD) {
+        width: auto;
+      }
+      }
+
     }
   }
   a.bx--tabs__nav-link {
@@ -224,5 +234,13 @@ export default {
 
 .river-detail .tabs-wrapper .bx--tabs {
   border-bottom: 0;
+}
+
+.confirm-delete-warning-text {
+  background-color: rgba($danger, 0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height:3rem;
 }
 </style>

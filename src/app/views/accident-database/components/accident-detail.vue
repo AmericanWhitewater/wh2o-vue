@@ -96,7 +96,10 @@
               <p v-html="accident.description" />
             </template>
             <template v-else>
-              <content-editor :content="accident.description" />
+              <content-editor
+                show-control-bar
+                :content="accident.description"
+              />
             </template>
           </div>
           <div class="bx--col-sm-12 bx--col-md-3 bx--col-lg-6">

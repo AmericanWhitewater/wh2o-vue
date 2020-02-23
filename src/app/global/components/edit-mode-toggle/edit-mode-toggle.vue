@@ -1,5 +1,8 @@
 <template>
-  <div class="edit-mode-toggle">
+  <div
+    class="edit-mode-toggle"
+    @click.exact="toggleEditMode"
+  >
     <span>Edit mode</span>
     <cv-toggle
       small
@@ -41,6 +44,9 @@ export default {
   display: flex;
   align-items: center;
   width: fit-content;
+  background-color: $ui-01;
+  padding: 0 0.5rem;
+  cursor: pointer;
   span {
     font-size: 14px;
     margin-right: 0.5rem;

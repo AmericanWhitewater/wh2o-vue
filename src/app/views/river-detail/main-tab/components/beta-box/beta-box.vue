@@ -48,7 +48,6 @@
     <cv-modal
       :visible="editModalVisible"
       size="small"
-      kind="info"
       :primary-button-disabled="false"
       auto-hide-off
       @primary-click="editModalVisible = false"
@@ -76,7 +75,7 @@
           </cv-dropdown-item>
         </cv-dropdown>
         <cv-text-input
-          v-model="reachDeleteConfirmInput"
+          v-model="formData.val03"
           theme="light"
           label="Another field"
           class="mb-spacing-md"
@@ -87,13 +86,13 @@
           label="Length"
         />
         <cv-text-input
-          v-model="reachDeleteConfirmInput"
+          v-model="formData.val01"
           theme="light"
           label="Another field"
           class="mb-spacing-md"
         />
         <cv-text-input
-          v-model="reachDeleteConfirmInput"
+          v-model="formData.val02"
           theme="light"
           label="Another field"
           class="mb-spacing-md"
@@ -103,7 +102,7 @@
         Cancel
       </template>
       <template slot="primary-button">
-        Delete
+        Save
       </template>
     </cv-modal>
   </div>
