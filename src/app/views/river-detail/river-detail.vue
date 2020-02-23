@@ -160,9 +160,6 @@ export default {
   mounted () {
     this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId)
   },
-  beforeDestroy () {
-    this.resetStores()
-  },
   methods: {
     deleteReach () {
       /* eslint-disable-next-line no-console */
