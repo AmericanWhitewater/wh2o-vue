@@ -70,7 +70,7 @@ export default {
         password: this.passWord,
         admin: admin === 'admin' ? 'admin' : null
       })
-      this.$router.replace('/user/account/1')
+      this.$router.go(-1)
     }
   }
 }

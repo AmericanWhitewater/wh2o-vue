@@ -101,7 +101,7 @@ export default {
     searchTerm: '',
     topBarItems: [
       {
-        path: '/users/login',
+        path: '/user/access/login',
         title: 'Login'
       },
       {
