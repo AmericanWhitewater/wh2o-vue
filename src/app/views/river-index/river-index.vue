@@ -413,7 +413,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-$content-height: calc(100vh - 125px);
+
 // todo: move to global scss
 @mixin flow-border($color) {
   border-left: 0.5rem solid $color;

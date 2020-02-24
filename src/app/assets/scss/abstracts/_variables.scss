@@ -8,3 +8,7 @@ $flow-medium: #59E78D;
 $bw-flow-high:#AEB8B8;
 $bw-flow-low:#DFE9E9;
 $bw-flow-medium:#C8D2D2;
+
+// height of content area - subtract height of nav.
+// @todo this needs to be a mixin for diff nav heights.
+$content-height: calc(100vh - 125px);

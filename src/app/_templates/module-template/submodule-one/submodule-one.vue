@@ -18,6 +18,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .submodule-one {
+ background-color: $ui-03;
+ padding: $layout-lg;
 }
 </style>
 <docs>

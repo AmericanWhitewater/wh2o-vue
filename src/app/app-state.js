@@ -8,6 +8,7 @@ import { userState } from './views/user'
 import { riverSearchState } from './views/river-search'
 import { riverIndexState } from './views/river-index'
 import { accidentDatabaseState } from './views/accident-database'
+import { moduleState } from './_templates/module-template'
 import { appGlobalState } from '@/app/global/state'
 
 Vue.use(Vuex)
@@ -24,6 +25,7 @@ export default new Vuex.Store({
     riverSearchState,
     userState,
     safetyPageState,
-    riverIndexState
+    riverIndexState,
+    moduleState
   }
 })

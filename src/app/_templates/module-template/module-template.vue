@@ -1,42 +1,43 @@
 <template>
   <div class="module-template">
-    <sidebar-layout>
+    <layout
+      name="layout-two-thirds"
+      :options="layoutConfig"
+    >
       <template v-slot:sidebar>
-        <div class="sidebar">
-          <cv-button
-            v-if="$route.name !== 'module'"
-            squared
-            variant="outline-secondary"
-            class="mb-2"
-            size="sm"
-            to="/module"
-          >
-            <b-icon
-              icon="arrow-left"
-              scale="1.75"
-            />
-          </cv-button>
-          <h4>{{ $route.name }}</h4>
-          <hr>
-          <div>Path: {{ $route.path }}</div>
-          <div>Full Path: {{ $route.fullPath }}</div>
-          <template v-if="$route.name === 'module'">
+        <cv-tile>
+          <div class="sidebar">
+            <cv-button
+              v-if="$route.name !== 'module'"
+              squared
+              class="mb-sm"
+              size="small"
+              @click="$router.push('/module')"
+            >
+              back
+            </cv-button>
+            <h1>{{ $route.name }}</h1>
             <hr>
-            <cv-button
-              class="mb-3"
-              variant="outline-dark"
-              to="/module/submodule-one"
-            >
-              submodule one
-            </cv-button>
-            <cv-button
-              variant="outline-dark"
-              to="/module/submodule-two"
-            >
-              submodule two
-            </cv-button>
-          </template>
-        </div>
+            <div>Path: {{ $route.path }}</div>
+            <div>Full Path: {{ $route.fullPath }}</div>
+            <template v-if="$route.name === 'module'">
+              <hr>
+              <cv-button
+                size="small"
+                class="mb-md"
+                @click="$router.push('/module/submodule-one')"
+              >
+                submodule one
+              </cv-button>
+              <cv-button
+                size="small"
+                @click="$router.push('/module/submodule-two')"
+              >
+                submodule two
+              </cv-button>
+            </template>
+          </div>
+        </cv-tile>
       </template>
       <template v-slot:main>
         <transition
@@ -46,18 +47,31 @@
           <router-view />
         </transition>
       </template>
-    </sidebar-layout>
+    </layout>
   </div>
 </template>
 <script>
+
+/**
+ * @description use this as a starting point for new views.
+ *
+ */
+
 import { mapState } from 'vuex'
-import { SidebarLayout } from '@/app/layouts'
+import { Layout } from '@/app/global/layout'
 import { moduleActions } from './shared/state'
 export default {
   name: 'ModuleTemplate',
   components: {
-    SidebarLayout
+    Layout
   },
+  data: () => ({
+    layoutConfig: {
+      sidebar: {
+        left: true
+      }
+    }
+  }),
   computed: {
     ...mapState({
       loading: state => state.moduleState.moduledata.loading,
@@ -73,6 +87,7 @@ export default {
 <style lang="scss" scoped>
 .module-template {
   .sidebar {
+    min-height: $content-height;
     ul {
       li {
         padding: 0.25rem 0.5rem;

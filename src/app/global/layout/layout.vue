@@ -1,5 +1,8 @@
 <template>
-  <component :is="name">
+  <component
+    :is="name"
+    :options="options"
+  >
     <slot
       v-for="(_, name) in $slots"
       :slot="name"
@@ -24,6 +27,13 @@ export default {
     name: {
       type: String,
       required: true
+    },
+    /**
+     * set layout specific options like side bar on the left side or no advertisements.
+     */
+    options: {
+      type: Object,
+      required: false
     }
   }
 }

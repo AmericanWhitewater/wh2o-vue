@@ -5,8 +5,7 @@ import store from './app/app-state'
 import { globalAppActions } from './app/global/state'
 
 if (
-  process.env.NODE_ENV === 'production' &&
-  process.env.VUE_APP_HEROKU === 'true'
+  process.env.NODE_ENV !== 'development'
 ) {
   register(`${process.env.BASE_URL}service-worker.js`, {
     ready () {
