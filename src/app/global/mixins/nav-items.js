@@ -7,7 +7,7 @@ const navItems = {
         children: [
           {
             legacy: false,
-            label: 'About AW',
+            label: 'About',
             path: '/about'
           },
           {
@@ -35,13 +35,13 @@ const navItems = {
           },
           {
             legacy: false,
-            label: 'Contact Us',
+            label: 'Contact',
             path: '/contact'
           }
         ]
       },
       {
-        label: 'Support AW',
+        label: 'Support',
         path: null,
         children: [
           {
@@ -68,7 +68,7 @@ const navItems = {
           },
           {
             legacy: false,
-            label: 'AW Store',
+            label: 'Store',
             path: '/store'
           }
         ]
@@ -87,7 +87,7 @@ const navItems = {
             label: 'Photo/Video',
             path: '/library'
           },
-          { legacy: false, label: 'AW Journal', path: '/journal' }
+          { legacy: false, label: 'Journal', path: '/journal' }
         ]
       },
       {

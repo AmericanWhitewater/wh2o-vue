@@ -28,7 +28,12 @@ export default {
   props: {
     options: {
       type: Object,
-      required: false
+      required: false,
+      default: () => ({
+        sidebar: {
+          left: false
+        }
+      })
     }
   }
 }

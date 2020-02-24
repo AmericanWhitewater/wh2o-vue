@@ -75,7 +75,7 @@ export default {
       accidents: state => state.riverDetailState.accidentsData.data
     }),
     riverId () {
-      return parseInt(this.$route.params.id)
+      return parseInt(this.$route.params.id, 10)
     }
   },
   created () {

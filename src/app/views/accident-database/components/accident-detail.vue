@@ -196,7 +196,7 @@ import {
   ContentEditor,
   LoadingBlock
 } from '@/app/global/components'
-
+import { accidentDetailActions } from '../shared/state'
 export default {
   name: 'ArticleDetail',
   components: {
@@ -223,6 +223,12 @@ export default {
     editMode () {
       return this.$store.state.appGlobalState.appGlobalData.editMode
     }
+  },
+  created () {
+    this.$store.dispatch(
+      accidentDetailActions.GET_ACCIDENT_DETAIL_DATA,
+      '3452'
+    )
   },
   methods: {
     viewReach (id) {

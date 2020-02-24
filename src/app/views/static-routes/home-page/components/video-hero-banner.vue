@@ -41,7 +41,7 @@
                           Explore the rivers of North America and get
                           comprehensive river beta with our interactive map.
                         </p>
-                        <router-link to="/nwi-map">
+                        <router-link to="/river-index">
                           <cv-button
                             kind="tertiary"
                             small
@@ -98,7 +98,7 @@
                           See a river that doesn't have much info? Help keep us
                           up to date, register to start editing.
                         </p>
-                        <router-link to="/users/register">
+                        <router-link to="/user/access/register">
                           <cv-button
                             kind="tertiary"
                             small

@@ -44,8 +44,7 @@ export default {
     },
     editable: {
       type: Boolean,
-      required: false,
-      default: false
+      required: false
     }
   },
   data: () => ({

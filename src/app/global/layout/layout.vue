@@ -4,9 +4,9 @@
     :options="options"
   >
     <slot
-      v-for="(_, name) in $slots"
-      :slot="name"
-      :name="name"
+      v-for="(_, item) in $slots"
+      :slot="item"
+      :name="item"
     />
   </component>
 </template>

@@ -1,27 +1,43 @@
 <template>
-  <div class="accident-database bx--grid">
-    <page-header title="Accident Database" />
-    <div class="bx--row pt-lg">
-      <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-6">
-        <p class="mb-spacing-md">
-          To access an accident report, visit the Accidents Tab on a river
-          detail page. Or, click the button below for a preselected report.
-        </p>
-        <cv-button @click="viewAccidentDetail">
-          Report Demo
-        </cv-button>
+  <div class="accident-database">
+    <template v-if="$route.name === 'accident-database'">
+      <div class="bx--grid">
+        <page-header title="Accident Database" />
       </div>
-    </div>
+      <layout name="layout-full-width">
+        <template #main>
+          <div class="bx--row pt-lg">
+            <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-6">
+              <p class="mb-spacing-md">
+                To access an accident report, visit the Accidents Tab on a river
+                detail page. Or, click the button below for a preselected report.
+              </p>
+              <cv-button
+                class="mr-sm"
+                @click="$router.push('/accident-database/accident-detail/3088')"
+              >
+                Report Demo
+              </cv-button>
+              <cv-button @click="$router.push('/accident-database/new-report')">
+                New Report
+              </cv-button>
+            </div>
+          </div>
+        </template>
+      </layout>
+    </template>
+    <router-view />
   </div>
 </template>
 <script>
 import { PageHeader } from '@/app/global/components'
-import { accidentDatabaseActions, accidentDetailActions } from './shared/state'
-
+import { accidentDatabaseActions } from './shared/state'
+import { Layout } from '@/app/global/layout'
 export default {
   name: 'AccidentDatabase',
   components: {
-    PageHeader
+    PageHeader,
+    Layout
   },
   computed: {
     loading () {
@@ -34,13 +50,6 @@ export default {
   },
   created () {},
   methods: {
-    viewAccidentDetail () {
-      this.$store.dispatch(
-        accidentDetailActions.GET_ACCIDENT_DETAIL_DATA,
-        '3452'
-      )
-      this.$router.push('/accident-database/3088')
-    },
     loadAccidents () {
       this.$store.dispatch(accidentDatabaseActions.GET_ACCIDENT_DATABASE_DATA)
     }

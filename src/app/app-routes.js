@@ -24,6 +24,34 @@ const routes = [
   ...riverIndexRoutes,
   ...moduleRoutes
 ]
+/**
+ *
+ * @param {string} toName accepts the to.name
+ */
+const checkRoute = (toName) => {
+  switch (toName) {
+    case 'credits-tab':
+      return false
+
+    case 'main-tab':
+      return false
+
+    case 'flow-tab':
+      return false
+
+    case 'weather-tab':
+      return false
+
+    case 'gallery-tab':
+      return false
+
+    case 'accidents-tab':
+      return false
+
+    default:
+      return true
+  }
+}
 
 export default new Router({
   routes,
@@ -39,7 +67,7 @@ export default new Router({
     if (savedPosition) {
       return savedPosition
     } else {
-      return { x: 0, y: 0 }
+      if (to.name && checkRoute(to.name)) { return { x: 0, y: 0 } }
     }
   }
 })

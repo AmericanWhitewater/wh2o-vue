@@ -176,7 +176,7 @@ export default {
       media: state => state.riverDetailState.galleryData.data
     }),
     riverId () {
-      return parseInt(this.$route.params.id)
+      return parseInt(this.$route.params.id, 10)
     },
     selectedMedia () {
       return this.media[this.selectedMediaIndex]
