@@ -1,5 +1,6 @@
 import './app/assets/scss/app.scss'
 import './app/plugins'
+import './app/filters'
 import './registerServiceWorker'
 import CarbonComponents from '@carbon/vue'
 
