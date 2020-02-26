@@ -39,6 +39,41 @@
           </cv-tabs>
         </div>
         <router-view />
+        <layout name="layout-two-thirds">
+          <template #main>
+            <resource-card-group>
+              <template #cardOne>
+                <ResourceCard
+                  title="Contact Us"
+                  to="/"
+                  icon="Email32"
+                />
+              </template>
+              <template #cardTwo>
+                <ResourceCard
+                  title="Account Settings"
+                  to="/"
+                  icon="Settings32"
+                />
+              </template>
+              <template #cardThree>
+                <ResourceCard
+                  title="Flow Data"
+                  to="/"
+                  icon="ChartLine32"
+                />
+              </template>
+              <template #cardFour>
+                <ResourceCard
+                  subtitle="new"
+                  title="Save Content for Offline"
+                  to="/"
+                  icon="WifiOff32"
+                />
+              </template>
+            </resource-card-group>
+          </template>
+        </layout>
       </template>
       <cv-modal
         :visible="reachDeleteModalVisible"
@@ -85,11 +120,16 @@ import {
   actionsTypes,
   rapidsActions
 } from './shared/state'
+import { ResourceCardGroup, ResourceCard } from '@/app/global/components'
+import { Layout } from '@/app/global/layout'
 
 export default {
   name: 'RiverDetail',
   components: {
-    'river-header': RiverHeader
+    'river-header': RiverHeader,
+    ResourceCardGroup,
+    ResourceCard,
+    Layout
   },
   data: () => ({
     reachDeleteModalVisible: false,

@@ -1,5 +1,5 @@
 <template>
-  <div class="submodule-one pt-4">
+  <div class="community-clubs pt-4">
     <FeatureCard
       to="/"
       class="mb-md"
@@ -56,8 +56,9 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.submodule-one {
+.community-clubs {
  background-color: $ui-03;
+ padding: $layout-md;
 }
 
 // Set spacing to the right of the group

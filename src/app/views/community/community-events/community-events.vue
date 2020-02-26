@@ -1,5 +1,5 @@
 <template>
-  <div class="submodule-one pt-4">
+  <div class="community-events pt-4">
     <FeatureCard
       to="/"
       class="mb-md"
@@ -56,7 +56,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.submodule-one {
+.community-events {
  background-color: $ui-03;
  padding: $layout-md;
 }

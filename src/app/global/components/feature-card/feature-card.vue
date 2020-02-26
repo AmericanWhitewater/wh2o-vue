@@ -15,7 +15,7 @@
       </div>
       <div class="bx--feature-card__row bx--row">
         <div
-          class="bx--col bx--col-md-4 bx--col-lg-4 bx--offset-md-4 bx--offset-lg-8 bx--feature-card__column"
+          class="bx--col bx--col-md-4 bx--col-lg-6 bx--offset-md-4 bx--offset-lg-10 bx--feature-card__column"
         >
           <ResourceCard
             title="This is a featured title"
