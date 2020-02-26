@@ -78,18 +78,18 @@ export default {
       error: state => state.userState.userData.error
     })
   },
-  created () {
-    // this is temp, we want to check if there any alerts for the user, if no, push to gages.
-    if (!this.alerts) {
-      this.$router.replace('/user/account/1/gages')
-    }
-  },
   methods: {
     activeSection (view) {
       if (this.$route.name === view) {
         return 'secondary'
       }
       return 'ghost'
+    }
+  },
+  created () {
+    // this is temp, we want to check if there any alerts for the user, if no, push to gages.
+    if (!this.alerts) {
+      this.$router.replace('/user/account/1/gages')
     }
   }
 }

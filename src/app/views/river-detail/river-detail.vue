@@ -125,10 +125,10 @@ export default {
       return null
     },
     bgImage () {
-      if (this.media) {
-        const img = this.media[Math.floor(Math.random() * this.media.length)]
-        return `https://prerelease.americanwhitewater.org${img.file.uri.thumb}`
-      }
+      // if (this.media) {
+      //   const img = this.media[Math.floor(Math.random() * this.media.length)]
+      //   return `https://prerelease.americanwhitewater.org${img.url}`
+      // }
       return null
     },
     deleteConfirmInput01 () {
@@ -154,12 +154,6 @@ export default {
       return true
     }
   },
-  created () {
-    this.$store.dispatch(actionsTypes.FETCH_RIVER_DETAIL_DATA, this.riverId)
-  },
-  mounted () {
-    this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId)
-  },
   methods: {
     deleteReach () {
       /* eslint-disable-next-line no-console */
@@ -173,12 +167,31 @@ export default {
       this.$router.replace(
         `/river-detail/${this.riverId}/${this.tabs[index].toLowerCase()}`
       )
+    },
+    /**
+     * @temp
+     */
+    resetStores () {
+      this.$store.dispatch(actionsTypes.INITIAL_STATE)
+      this.$store.dispatch(rapidsActions.INITIAL_STATE)
     }
+  },
+  created () {
+    this.$store.dispatch(actionsTypes.FETCH_RIVER_DETAIL_DATA, this.riverId)
+  },
+  mounted () {
+    this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId)
   },
   beforeRouteLeave (to, from, next) {
     if (this.editMode) {
       // use as a check for unsaved changes
-      alert("you're leaving in edit mode!!!!")
+      confirm("you're leaving in edit mode!!!!").then(val => {
+        if (val) {
+          next()
+        } else {
+          next(false)
+        }
+      })
       this.$store.dispatch(actionsTypes.SET_EDIT_MODE, false)
     }
     next()

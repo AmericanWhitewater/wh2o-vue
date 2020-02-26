@@ -111,16 +111,6 @@ export default {
       this.debouncedTriggerSearch(newVal, oldVal)
     }
   },
-  created () {
-    this.debouncedTriggerSearch = debounce(this.triggerSearch, 500)
-  },
-  mounted () {
-    if (screenfull.isEnabled) {
-      screenfull.on('change', () => {
-        this.fullscreen = screenfull.isFullscreen
-      })
-    }
-  },
   methods: {
     async search (query) {
       if (!query) {
@@ -153,6 +143,16 @@ export default {
         // only trigger if we're clearing an old search
         this.searchResults = false
       }
+    }
+  },
+  created () {
+    this.debouncedTriggerSearch = debounce(this.triggerSearch, 500)
+  },
+  mounted () {
+    if (screenfull.isEnabled) {
+      screenfull.on('change', () => {
+        this.fullscreen = screenfull.isFullscreen
+      })
     }
   }
 }

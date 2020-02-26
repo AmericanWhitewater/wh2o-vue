@@ -159,6 +159,8 @@
                       <tr
                         v-for="(r, index) in reachesInViewport"
                         :key="index"
+                        :ref="`reach-${r.properties.id}`"
+                        @mouseover="debouncedHighlight(reach)"
                       >
                         <td
                           :class="r.properties.condition"
@@ -216,7 +218,7 @@ import virtual_Maximize16 from '@carbon/icons-vue/es/maximize/16'
 import virtual_Minimize16 from '@carbon/icons-vue/es/minimize/16'
 import { StaticUsMap } from './shared/components'
 import { riverSearchHttpConfig } from '@/app/global/mixins'
-
+import scrollIntoView from 'scroll-into-view-if-needed'
 import { LoadingBlock, AwLogo } from '@/app/global/components'
 import { riverIndexActions } from './shared/state'
 import { riverSearchActions } from '../river-search/shared/state'
@@ -232,6 +234,7 @@ import NationalMapAppVue from './components/national-map-app/national-map-app.vu
 import { mapState } from 'vuex'
 import screenfull from 'screenfull'
 import Moment from 'moment'
+import debounce from 'lodash.debounce'
 export default {
   name: 'RiverIndex',
   components: {
@@ -278,7 +281,8 @@ export default {
     ...mapState({
       searchResults: state => state.riverSearchState.riverSearchData.data,
       searchLoading: state => state.riverSearchState.riverSearchData.loading,
-      reachesInViewport: state => state.riverIndexState.riverIndexData.data
+      reachesInViewport: state => state.riverIndexState.riverIndexData.data,
+      highlightedFeature: state => state.riverIndexState.riverIndexData.highlightedFeature
     }),
     /**
      * @temp return dummy values for styling
@@ -292,14 +296,31 @@ export default {
     }
   },
   watch: {
+    highlightedFeature (feature) {
+      if (feature) {
+        const reachId = feature.properties.reach_id || feature.properties.id
+        if (
+          this.$refs[`reach-${reachId}`] &&
+          this.$refs[`reach-${reachId}`].length > 0
+        ) {
+          scrollIntoView(this.$refs[`reach-${reachId}`][0].$el, {
+            scrollMode: 'if-needed',
+            block: 'nearest',
+            inline: 'nearest',
+            behavior: 'smooth'
+          })
+        }
+      }
+    },
     mapStyle () {
       this.setMapStyle()
     }
   },
-  mounted () {
-    this.getUserLocation()
-  },
   methods: {
+    hightlightFeature (reach) {
+      this.$store.dispatch(riverIndexActions.HIGHLIGHT_FEATURE, reach)
+      this.$emit('highlightFeature', reach)
+    },
     /**
      * @public
      * @description capitalize the current flow range for tooltip
@@ -405,6 +426,13 @@ export default {
       }
       screenfull.toggle(document.getElementById('fullscreen-target'))
     }
+
+  },
+  mounted () {
+    this.getUserLocation()
+  },
+  created () {
+    this.debouncedHighlight = debounce(this.highlightFeature, 200)
   },
   beforeRouteLeave (to, from, next) {
     this.$store.dispatch(riverIndexActions.SET_MAP_POSITION, 'testing')
@@ -493,6 +521,7 @@ export default {
 .bx--data-table-container {
   overflow-x: scroll;
   height: $content-height;
+  max-height: 685px;
 }
 .bx--data-table {
   min-width: 700px;

@@ -1,45 +1,24 @@
 <template>
-  <div class="app-footer">
+  <div :class="[{'hidden':hideFooter},'app-footer']">
     <div class="bx--grid">
       <div class="bx--row">
         <div class="bx--col">
           <cv-list>
             <cv-list-item
-              v-for="(k, index) in navItems.topbar"
+              v-for="(k, index) in navItems"
               :key="index"
             >
               <cv-link
                 :to="k.path"
-                v-text="k.title"
+                v-text="k.label"
               />
             </cv-list-item>
           </cv-list>
         </div>
+        <div class="bx--col" />
+        <div class="bx--col" />
         <div class="bx--col">
-          <cv-list>
-            <cv-list-item
-              v-for="(k, index) in navItems.primary"
-              :key="index"
-            >
-              <cv-link
-                :to="k.path"
-                v-text="k.title"
-              />
-            </cv-list-item>
-          </cv-list>
-        </div>
-        <div class="bx--col">
-          <cv-list>
-            <cv-list-item
-              v-for="(k, index) in navItems.footer"
-              :key="index"
-            >
-              <cv-link
-                :to="k.path"
-                v-text="k.title"
-              />
-            </cv-list-item>
-          </cv-list>
+          <cv-text-input placeholder="Subscribe to Newsletter" />
         </div>
       </div>
     </div>
@@ -53,7 +32,19 @@ import { navItems } from '@/app/global/mixins'
  */
 export default {
   name: 'AppFooter',
-  mixins: [navItems]
+  mixins: [navItems],
+  computed: {
+    hideFooter () {
+      switch (this.$route.name) {
+        case 'river-index':
+          return true
+        case 'home':
+          return true
+        default:
+          return false
+      }
+    }
+  }
 }
 </script>
 
@@ -64,6 +55,9 @@ export default {
   background-color: $brand-03;
   padding: $layout-md 0;
   margin-top: $layout-xl;
+  &.hidden {
+    display:none;
+  }
   .bx--list__item {
     color: #fff;
     .bx--link {

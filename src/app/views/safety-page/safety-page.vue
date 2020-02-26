@@ -91,7 +91,9 @@
                 </svg>
               </div>
               <div class>
-                <h6>For new paddlers</h6>
+                <h6 @click="$router.push('/new-paddlers')">
+                  For new paddlers
+                </h6>
                 <p>
                   dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                   tempor incididunt ut labore et dolore magna
@@ -115,7 +117,9 @@
                 </svg>
               </div>
               <div class>
-                <h6>Rescue and Risk Management</h6>
+                <h6 @click="$router.push('/safety-resources')">
+                  Rescue and Risk Management
+                </h6>
                 <p>
                   dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                   tempor incididunt ut labore et dolore magna

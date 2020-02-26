@@ -224,16 +224,16 @@ export default {
       return this.$store.state.appGlobalState.appGlobalData.editMode
     }
   },
+  methods: {
+    viewReach (id) {
+      this.$router.push(`/river-detail/${id}/main`)
+    }
+  },
   created () {
     this.$store.dispatch(
       accidentDetailActions.GET_ACCIDENT_DETAIL_DATA,
       '3452'
     )
-  },
-  methods: {
-    viewReach (id) {
-      this.$router.push(`/river-detail/${id}/main`)
-    }
   }
 }
 </script>

@@ -53,7 +53,11 @@ export default {
             '*': ['style']
           }
         })
-        return content
+
+        const legacyUrl = 'http://www.americanwhitewater.org/rivers/id/'
+        const updatedUrl = '/#/river-detail/'
+
+        return this.$replaceText(content, legacyUrl, updatedUrl)
       }
       return null
     }

@@ -57,9 +57,6 @@ export default {
     projects: [],
     documents: []
   }),
-  mounted () {
-    this.isSticky()
-  },
   methods: {
     doClose (index) {
       alert(`Do something for alert: ${index}`)
@@ -71,6 +68,9 @@ export default {
         this.sticky = true
       }
     }
+  },
+  mounted () {
+    this.isSticky()
   }
 }
 </script>

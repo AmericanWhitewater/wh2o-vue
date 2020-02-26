@@ -78,9 +78,6 @@ export default {
       return parseInt(this.$route.params.id, 10)
     }
   },
-  created () {
-    this.loadData()
-  },
   methods: {
     loadData () {
       if (!this.accidents && !this.error) {
@@ -97,6 +94,9 @@ export default {
       )
       this.$router.push(`/accident-database/${accidentId}`)
     }
+  },
+  created () {
+    this.loadData()
   }
 }
 </script>

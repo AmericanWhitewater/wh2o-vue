@@ -49,7 +49,7 @@ const mutations = {
 
 /** Actions types constants */
 export const rapidsActions = reflectKeys(
-  ['FETCH_RAPIDS_DATA'],
+  ['FETCH_RAPIDS_DATA', 'INITIAL_STATE'],
   namespacedPrefix
 )
 
@@ -68,6 +68,9 @@ const actions = {
     }
 
     return result
+  },
+  async [rapidsActions.INITIAL_STATE] (context, data) {
+    context.commit(DATA_RESET)
   }
 }
 

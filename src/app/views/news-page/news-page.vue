@@ -5,7 +5,7 @@
     <div class="bx--row">
       <template v-if="!loading">
         <div
-          v-for="(article, index) in articleTiles"
+          v-for="(article, index) in articles"
           :key="index"
           class="bx--col-sm-4 bx--col-md-6 bx--col-lg-4 mb-spacing-md"
         >
@@ -14,18 +14,19 @@
             <div class="content-area">
               <h6
                 class="mb-spacing-xs"
-                v-text="article.posted"
+                v-text="cleanCopy(article.posted)"
               />
               <h4
                 class="mb-spacing-sm"
-                v-text="article.title"
+                v-text="cleanCopy(article.title)"
               />
               <p
                 class="mb-spacing-md"
-                v-html="article.abstract.slice(0, 150) + '...'"
+                v-html="cleanCopy(article.abstract.slice(0, 150) + '...')"
               />
               <cv-button
-                small
+                size="small"
+                kind="tertiary"
                 @click="readArticle(article.articleid)"
                 v-text="'Read More'"
               />
@@ -34,20 +35,21 @@
         </div>
       </template>
       <template v-else>
-        loading
+        <loading-block text="Loading articles..." />
       </template>
     </div>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
-import { PageHeader } from '@/app/global/components'
+import { PageHeader, LoadingBlock } from '@/app/global/components'
 import { newsActions } from './shared/state'
 
 export default {
   name: 'NewsPage',
   components: {
-    PageHeader
+    PageHeader,
+    LoadingBlock
   },
   metaInfo () {
     return {
@@ -67,19 +69,29 @@ export default {
     //   return this.articles.articles.CArticleGadgetJSON_view_list.slice(0, 12);
     // }
   },
-  created () {
-    this.getArticles()
-  },
   methods: {
     readArticle (id) {
       this.$router.push(`/article/${id}`)
     },
     getArticles () {
       // uncomment once store is split up
-      // if (!this.$store.state.newsPageState.newsPageData.data) {
-      this.$store.dispatch(newsActions.GET_FRONT_PAGE_ARTICLES)
-      // }
+      if (!this.articles) {
+        this.$store.dispatch(newsActions.GET_FRONT_PAGE_ARTICLES)
+      }
+    },
+    cleanCopy (copy) {
+      return this.$sanitize(copy, {
+        disallowedTags: [
+          'strong', 'em', 'b', 'bold'
+        ],
+        disallowedAttributes: {
+          '*': ['style', 'class']
+        }
+      })
     }
+  },
+  created () {
+    this.getArticles()
   }
 }
 </script>

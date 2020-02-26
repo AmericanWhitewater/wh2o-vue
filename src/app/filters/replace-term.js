@@ -1,20 +1,17 @@
 import Vue from 'vue'
 
 /**
- *
  * @param {string} data input string where you want to replace text
  * @param {string} term the term you want to change
  * @param {string} newTerm the term replacement
- * @usage
- *
- *
+ * @todo this needs to be reorganized, as it is not a custom filter
  */
 
-Vue.filter('replaceText', (data, term, newTerm) => {
+Vue.prototype.$replaceText = function (data, term, newTerm) {
   if (data && term) {
-    return data.replace(new RegExp(term, 'gi'), match => {
+    return data.replace(new RegExp(term, 'gi'), () => {
       return `${newTerm}`
     })
   }
   return data
-})
+}

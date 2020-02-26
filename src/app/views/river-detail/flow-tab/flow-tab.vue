@@ -118,11 +118,6 @@ export default {
       this.formatChartData()
     }
   },
-  mounted () {
-    EventBus.$on('gage-detail-toggle', payload => {
-      this.gageDetailView = payload
-    })
-  },
   methods: {
     formatChartData () {
       // reset
@@ -136,6 +131,11 @@ export default {
         this.mappedReadings
       )
     }
+  },
+  mounted () {
+    EventBus.$on('gage-detail-toggle', payload => {
+      this.gageDetailView = payload
+    })
   }
 }
 </script>

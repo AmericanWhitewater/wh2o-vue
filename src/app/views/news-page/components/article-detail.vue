@@ -11,32 +11,6 @@
     </transition>
     <template v-if="!loading">
       <div class="bx--grid">
-        <div class="bx--row breadcrumb-container">
-          <div class="bx--col">
-            <div class="outside">
-              <div class="inside">
-                <cv-breadcrumb
-                  aria-label="breadcrumb"
-                  no-trailing-slash
-                >
-                  <cv-breadcrumb-item>
-                    <cv-link to="/news">
-                      News
-                    </cv-link>
-                  </cv-breadcrumb-item>
-                  <cv-breadcrumb-item>
-                    <cv-link
-                      href="#"
-                      aria-current="page"
-                    >
-                      Article Id: {{ this.$route.params.id }}
-                    </cv-link>
-                  </cv-breadcrumb-item>
-                </cv-breadcrumb>
-              </div>
-            </div>
-          </div>
-        </div>
         <page-header
           :title="article.title"
           :subtitle="article.posted"
@@ -100,13 +74,13 @@ export default {
       return this.$route.params.id
     }
   },
-  created () {
-    this.$store.dispatch(newsActions.GET_ARTICAL_DETAIL_DATA, this.articleId)
-  },
   methods: {
     shareArticle (platform) {
       alert(`share article on ${platform}`)
     }
+  },
+  created () {
+    this.$store.dispatch(newsActions.GET_ARTICAL_DETAIL_DATA, this.articleId)
   }
 }
 </script>

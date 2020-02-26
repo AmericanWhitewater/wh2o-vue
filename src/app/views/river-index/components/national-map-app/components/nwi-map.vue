@@ -35,6 +35,7 @@ import NwiMapLegend from './nwi-map-legend.vue'
 import NwiMapControls from './nwi-map-controls.vue'
 import { Events as topic } from '@/app/global/services'
 import { mapState } from 'vuex'
+import { riverIndexActions } from '../../../shared/state'
 
 const fitBoundsOptions = {
   padding: 80
@@ -216,77 +217,6 @@ export default {
       }
     }
   },
-  mounted () {
-    mapboxgl.accessToken = this.mapboxAccessToken
-    const mapProps = {
-      container: 'nwi-map',
-      style: this.baseMapUrl,
-      // hash: true
-      trackUserLocation: true
-    }
-    if (this.startingBounds) {
-      mapProps.bounds = this.startingBounds
-      mapProps.fitBoundsOptions = fitBoundsOptions
-    } else {
-      mapProps.center = this.center
-      mapProps.zoom = this.startingZoom
-    }
-    this.map = new mapboxgl.Map(mapProps)
-
-    if (this.centerOnUserLocation && 'geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(position => {
-        this.map.flyTo({
-          center: [position.coords.longitude, position.coords.latitude],
-          zoom: 9
-        })
-      })
-    }
-
-    this.map.addControl(
-      new mapboxgl.NavigationControl({ showCompass: true }),
-      'bottom-left'
-    )
-    this.map.on('styledata', this.loadAWMapData)
-    this.map.on('styledata', this.modifyMapboxBaseStyle)
-
-    // unfortunately this has to hook onto 'data' because we can't queue it directly after search
-    // results are called because of the poorly designed and async nature of map filtering and
-    // queryRenderedFeatures...which means it gets called a lot more than it needs to, hence the
-    // debouncing and slightly clunky UX
-    this.map.on('moveend', this.debouncedUpdateReachesInViewport)
-    this.map.on('data', this.debouncedUpdateReachesInViewport)
-
-    // ensures that when map is rendered in a tab, it sizes properly when the tab is opened
-    topic.subscribe('tab-changed', () => {
-      // TODO: only call this if the tab was the map tab?
-      if (this.$route.name === 'map-tab') {
-        this.map.resize()
-      }
-      // if map was initialized with bounds, re-fit because it needs to be called when map is visible
-      if (this.startingBounds) {
-        this.map.fitBounds(this.startingBounds, fitBoundsOptions)
-      }
-    })
-  },
-  created () {
-    this.map = null
-    this.debouncedEmitHighlight = debounce(this.emitHighlight, 200, {
-      leading: false,
-      trailing: true
-    })
-    this.debouncedClickFeature = debounce(this.clickFeature, 200, {
-      leading: true,
-      trailing: false
-    })
-    this.debouncedUpdateReachesInViewport = debounce(
-      this.updateReachesInViewport,
-      200,
-      {
-        leading: true,
-        trailing: true
-      }
-    )
-  },
   methods: {
     // can be used to make tweaks to the mapbox base styles after loading
     modifyMapboxBaseStyle () {
@@ -345,6 +275,7 @@ export default {
       this.debouncedEmitHighlight(null)
     },
     emitHighlight (reach) {
+      this.$store.dispatch(riverIndexActions.HIGHLIGHT_FEATURE, reach)
       this.$emit('highlightFeature', reach)
     },
     updateMapColorScheme (newScheme) {
@@ -523,6 +454,77 @@ export default {
         return newPaint
       }
     }
+  },
+  mounted () {
+    mapboxgl.accessToken = this.mapboxAccessToken
+    const mapProps = {
+      container: 'nwi-map',
+      style: this.baseMapUrl,
+      // hash: true
+      trackUserLocation: true
+    }
+    if (this.startingBounds) {
+      mapProps.bounds = this.startingBounds
+      mapProps.fitBoundsOptions = fitBoundsOptions
+    } else {
+      mapProps.center = this.center
+      mapProps.zoom = this.startingZoom
+    }
+    this.map = new mapboxgl.Map(mapProps)
+
+    if (this.centerOnUserLocation && 'geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(position => {
+        this.map.flyTo({
+          center: [position.coords.longitude, position.coords.latitude],
+          zoom: 9
+        })
+      })
+    }
+
+    this.map.addControl(
+      new mapboxgl.NavigationControl({ showCompass: true }),
+      'bottom-left'
+    )
+    this.map.on('styledata', this.loadAWMapData)
+    this.map.on('styledata', this.modifyMapboxBaseStyle)
+
+    // unfortunately this has to hook onto 'data' because we can't queue it directly after search
+    // results are called because of the poorly designed and async nature of map filtering and
+    // queryRenderedFeatures...which means it gets called a lot more than it needs to, hence the
+    // debouncing and slightly clunky UX
+    this.map.on('moveend', this.debouncedUpdateReachesInViewport)
+    this.map.on('data', this.debouncedUpdateReachesInViewport)
+
+    // ensures that when map is rendered in a tab, it sizes properly when the tab is opened
+    topic.subscribe('tab-changed', () => {
+      // TODO: only call this if the tab was the map tab?
+      if (this.$route.name === 'map-tab') {
+        this.map.resize()
+      }
+      // if map was initialized with bounds, re-fit because it needs to be called when map is visible
+      if (this.startingBounds) {
+        this.map.fitBounds(this.startingBounds, fitBoundsOptions)
+      }
+    })
+  },
+  created () {
+    this.map = null
+    this.debouncedEmitHighlight = debounce(this.emitHighlight, 200, {
+      leading: false,
+      trailing: true
+    })
+    this.debouncedClickFeature = debounce(this.clickFeature, 200, {
+      leading: true,
+      trailing: false
+    })
+    this.debouncedUpdateReachesInViewport = debounce(
+      this.updateReachesInViewport,
+      200,
+      {
+        leading: true,
+        trailing: true
+      }
+    )
   }
 }
 </script>

@@ -36,9 +36,6 @@ export default {
       error: state => state.riverDetailState.creditsData.error
     })
   },
-  created () {
-    this.loadData()
-  },
   methods: {
     loadData () {
       if (!this.data && !this.error) {
@@ -48,6 +45,9 @@ export default {
         )
       }
     }
+  },
+  created () {
+    this.loadData()
   }
 }
 </script>

@@ -83,7 +83,7 @@ const actions = {
     })
 
     if (result) {
-      context.commit(DATA_SUCCESS, result)
+      context.commit(DATA_SUCCESS, result.articles.CArticleGadgetJSON_view_list)
     }
     return result
   }

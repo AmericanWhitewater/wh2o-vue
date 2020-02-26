@@ -151,11 +151,6 @@ export default {
       return this.weather.daily.data
     }
   },
-  created () {
-    this.fetchConfig.lat = this.river.plat
-    this.fetchConfig.lon = this.river.plon
-    this.loadWeather()
-  },
   methods: {
     loadWeather () {
       if (!this.weather) {
@@ -166,6 +161,11 @@ export default {
         )
       }
     }
+  },
+  created () {
+    this.fetchConfig.lat = this.river.plat
+    this.fetchConfig.lon = this.river.plon
+    this.loadWeather()
   }
 }
 </script>

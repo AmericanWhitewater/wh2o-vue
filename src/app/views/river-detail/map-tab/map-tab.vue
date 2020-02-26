@@ -74,12 +74,6 @@ export default {
       return parseInt(this.$route.params.id, 10)
     }
   },
-  created () {
-    this.token = mapboxAccessToken
-    this.tileservers = nwiTileServer
-
-    this.loadData()
-  },
   methods: {
     loadData () {
       if (!this.data && !this.error) {
@@ -89,6 +83,12 @@ export default {
     clickFeature (feature) {
       this.detailFeature = feature
     }
+  },
+  created () {
+    this.token = mapboxAccessToken
+    this.tileservers = nwiTileServer
+
+    this.loadData()
   }
 }
 </script>

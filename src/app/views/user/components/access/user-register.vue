@@ -14,7 +14,7 @@
     />
     <p
       class="bx--type--caption mb-spacing-md text-underline cursor-pointer"
-      @click="viewTerms"
+      @click="termsVisible = true"
     >
       Click to view terms &amp; conditions
     </p>
@@ -31,12 +31,284 @@
       @click="submitRegistration"
       v-text="'Register'"
     />
+    <cv-modal
+      :visible="termsVisible"
+      @modal-hidden="termsVisible = false"
+    >
+      <template slot="label">
+        Effective 01-01-2020
+      </template>
+      <template slot="title">
+        Terms of Use
+      </template>
+      <template slot="content">
+        <h2>Privacy</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <h2>Lorem ipsum</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <h2>Privacy</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <h2>Lorem ipsum</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <h2>Privacy</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <h2>Lorem ipsum</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <h2>Privacy</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <h2>Lorem ipsum</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <h2>Privacy</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <h2>Lorem ipsum</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id accumsan augue. Phasellus consequat augue
+          vitae
+          tellus tincidunt posuere. Curabitur justo urna, consectetur vel elit iaculis, ultrices condimentum risus. Nulla
+          facilisi.
+          Etiam venenatis molestie tellus. Quisque consectetur non risus eu rutrum.
+        </p>
+      </template>
+      <template slot="primary-button">
+        Close
+      </template>
+    </cv-modal>
   </div>
 </template>
 <script>
 export default {
   name: 'UserRegister',
   data: () => ({
+    termsVisible: false,
     newUser: {
       userName: '',
       passWord: '',
@@ -55,9 +327,8 @@ export default {
 </script>
 <style lang="scss">
 .register {
-  p {
-    font-size: 0.75rem;
-    letter-spacing: 0.32px;
+  h2, p {
+  margin-bottom:1.25rem;
   }
 }
 </style>

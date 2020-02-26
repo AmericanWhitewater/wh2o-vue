@@ -39,7 +39,7 @@ export default {
       return this.$store.state.riverDetailState.gageReadingsData.loading
     }
   },
-  created () {},
-  methods: {}
+  methods: {},
+  created () {}
 }
 </script>

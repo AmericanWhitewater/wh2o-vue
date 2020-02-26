@@ -122,17 +122,6 @@ export default {
       }
     }
   },
-  created () {
-    this.debouncedHighlight = debounce(this.highlightFeature, 200)
-  },
-  mounted () {
-    this.windowWidth = window.innerWidth
-    this.$nextTick(() => {
-      window.addEventListener('resize', () => {
-        this.windowWidth = window.innerWidth
-      })
-    })
-  },
   methods: {
     highlightedClass (reachId) {
       if (
@@ -164,6 +153,17 @@ export default {
           return 'unknown'
       }
     }
+  },
+  created () {
+    this.debouncedHighlight = debounce(this.highlightFeature, 200)
+  },
+  mounted () {
+    this.windowWidth = window.innerWidth
+    this.$nextTick(() => {
+      window.addEventListener('resize', () => {
+        this.windowWidth = window.innerWidth
+      })
+    })
   }
 }
 </script>

@@ -93,19 +93,6 @@ export default {
       return metrics
     }
   },
-  created () {
-    if (this.gauges.length > 1) {
-      this.gageLabel = 'Reach Gages'
-    } else {
-      this.gageLabel = 'Reach Gage'
-    }
-    this.gageHttpConfig.gauge_id = this.gauges[0].gauge_id
-    this.gageHttpConfig.metric_id = this.gauges[0].gauge_metric
-    this.fetchMetrics()
-  },
-  beforeMount () {
-    this.fetchReadings()
-  },
   methods: {
     setTimeScale () {
       let start
@@ -155,6 +142,19 @@ export default {
         this.gageHttpConfig
       )
     }
+  },
+  created () {
+    if (this.gauges.length > 1) {
+      this.gageLabel = 'Reach Gages'
+    } else {
+      this.gageLabel = 'Reach Gage'
+    }
+    this.gageHttpConfig.gauge_id = this.gauges[0].gauge_id
+    this.gageHttpConfig.metric_id = this.gauges[0].gauge_metric
+    this.fetchMetrics()
+  },
+  beforeMount () {
+    this.fetchReadings()
   }
 }
 </script>

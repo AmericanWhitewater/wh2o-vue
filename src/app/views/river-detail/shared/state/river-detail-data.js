@@ -65,7 +65,7 @@ const mutations = {
 
 /** Actions types constants */
 export const actionsTypes = reflectKeys(
-  ['FETCH_RIVER_DETAIL_DATA', 'SET_EDIT_MODE'],
+  ['FETCH_RIVER_DETAIL_DATA', 'SET_EDIT_MODE', 'INITIAL_STATE'],
   namespacedPrefix
 )
 
@@ -92,6 +92,9 @@ const actions = {
     // eventually edit mode will need validation.
     // "confirm discard unsaved changes"
     context.commit(MODE_SET, data)
+  },
+  async [actionsTypes.INITIAL_STATE] (context, data) {
+    context.commit(DATA_RESET)
   }
 }
 

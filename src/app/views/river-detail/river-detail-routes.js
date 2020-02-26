@@ -6,6 +6,7 @@ const riverDetailRoutes = [
   },
   {
     path: '/river-detail/:id',
+    name: 'river-detail',
     component: () => import('./river-detail.vue'),
     children: [
       {

@@ -3,10 +3,8 @@
     <app-toaster />
     <app-navigation />
     <app-breadcrumbs />
-    <!-- <transition name="fade" mode="out-in"> -->
     <router-view class="app-main-content" />
-    <!-- </transition> -->
-    <app-footer v-if="$route.name !== 'home'" />
+    <app-footer />
   </div>
 </template>
 
@@ -36,7 +34,7 @@ export default {
   // add 44px to account for breadcrumbs
   background-color: $ui-01;
   padding-top: $mobile-nav-height + 44px;
-  min-height: 100vh;
+  min-height: calc(100vh - 125px);
   @include MQ("LG") {
     padding-top: $desktop-nav-height + 44px;
   }

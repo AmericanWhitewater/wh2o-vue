@@ -39,15 +39,15 @@ export default {
       error: state => state.riverDetailState.mapData.error
     })
   },
-  created () {
-    this.loadData()
-  },
   methods: {
     loadData () {
       if (!this.data && !this.error) {
         this.$store.dispatch(mapActions.FETCH_MAP_DATA, this.mapHttpConfig)
       }
     }
+  },
+  created () {
+    this.loadData()
   }
 }
 </script>

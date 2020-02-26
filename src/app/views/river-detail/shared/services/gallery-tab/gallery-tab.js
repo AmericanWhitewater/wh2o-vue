@@ -13,16 +13,9 @@ const fetchGalleryData = data => {
                   data {
                       caption,
                       description,
-                      file {
-                        ext,
-                          uri {
-                              thumb,
-                              big
-                          }
-                      },
+                      url,
                       post {
                         reading,
-                        metric,
                         detail
                     }
                   }

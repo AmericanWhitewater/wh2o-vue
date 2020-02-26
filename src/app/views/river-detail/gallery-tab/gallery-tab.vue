@@ -17,7 +17,7 @@
             :key="index"
             class="img-thumb"
           >
-            <template v-if="isVideo(image.file.ext)">
+            <!-- <template v-if="isVideo(image.file.ext)">
               <div
                 class="thumb video"
                 @click="openLightbox(index)"
@@ -25,12 +25,12 @@
                 <h6>Video</h6>
                 <p>{{ image.description.slice(0, 50) + "..." }}</p>
               </div>
-            </template>
-            <template v-else>
+            </template> -->
+            <template>
               <img
                 class="thumb"
                 :src="
-                  `https://prerelease.americanwhitewater.org${image.file.uri.thumb}`
+                  `https://prerelease.americanwhitewater.org${image.url}`
                 "
                 @click="openLightbox(index)"
               >
@@ -71,7 +71,7 @@
                     "
                 alt="photo name"
                   />-->
-                  <template v-if="selectedMedia.file.ext === 'wmv'">
+                  <!-- <template v-if="selectedMedia.file.ext === 'wmv'">
                     <cv-tile>
                       <div class="warning wmv">
                         <h1 class="mb-spacing-md">
@@ -88,8 +88,8 @@
                         />
                       </div>
                     </cv-tile>
-                  </template>
-                  <template v-else-if="isVideo(selectedMedia.file.ext)">
+                  </template> -->
+                  <!-- <template v-else-if="isVideo(selectedMedia.file.ext)">
                     <video
                       width="320"
                       height="240"
@@ -103,11 +103,11 @@
                       >
                       Your browser does not support the video tag.
                     </video>
-                  </template>
-                  <template v-else>
+                  </template> -->
+                  <template>
                     <img
                       :src="
-                        `https://prerelease.americanwhitewater.org${selectedMedia.file.uri.big}`
+                        `https://prerelease.americanwhitewater.org${selectedMedia.url}`
                       "
                       alt="photo name"
                     >
@@ -120,10 +120,10 @@
                     class="mb-spacing-md"
                     v-text="selectedMedia.post.title"
                   />
-                  <p>
+                  <!-- <p>
                     Level {{ selectedMedia.post.reading }} [
                     {{ selectedMedia.post.metric }} ]
-                  </p>
+                  </p> -->
                   <p v-html="selectedMedia.description" />
                   <p v-text="selectedMedia.post.detail" />
                   <cv-button
@@ -182,9 +182,6 @@ export default {
       return this.media[this.selectedMediaIndex]
     }
   },
-  created () {
-    this.loadData()
-  },
   methods: {
     loadData () {
       if (!this.$store.state.riverDetailState.galleryData.data && !this.error) {
@@ -226,6 +223,9 @@ export default {
         this.selectedMediaIndex = 0
       }
     }
+  },
+  created () {
+    this.loadData()
   }
 }
 </script>

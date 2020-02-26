@@ -95,11 +95,11 @@ const navItems = {
         path: null,
         children: [
           { legacy: false, label: 'Clubs', path: '/community/clubs' },
-          { legacy: false, label: 'Events', path: '/community/events' },
+          { legacy: false, label: 'Events', path: '/community/community-events' },
           {
             legacy: false,
             label: 'Industry Partners',
-            path: '/community/partners'
+            path: '/community/community-partners'
           }
         ]
       }

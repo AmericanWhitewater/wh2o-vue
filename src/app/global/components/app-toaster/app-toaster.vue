@@ -77,17 +77,6 @@ export default {
       this.toasts.push(this.newUpdate)
     }
   },
-  created () {
-    document.addEventListener('swUpdated', this.showRefreshUI, { once: true })
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (this.refreshing) return
-      this.refreshing = true
-      window.location.reload()
-    })
-  },
-  mounted () {
-    this.showDevToolsToast()
-  },
   methods: {
     handleClose (index, title) {
       if (index === 0) {
@@ -119,6 +108,17 @@ export default {
         this.toasts.push(this.vueDevTools)
       }
     }
+  },
+  created () {
+    document.addEventListener('swUpdated', this.showRefreshUI, { once: true })
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (this.refreshing) return
+      this.refreshing = true
+      window.location.reload()
+    })
+  },
+  mounted () {
+    this.showDevToolsToast()
   }
 }
 </script>

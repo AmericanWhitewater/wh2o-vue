@@ -268,13 +268,6 @@ export default {
       editor: null
     }
   },
-  beforeMount () {
-    this.newEditor()
-  },
-  beforeDestroy () {
-    // Always destroy your editor instance when it's no longer needed
-    this.editor.destroy()
-  },
   methods: {
     newEditor () {
       this.editor = new Editor({
@@ -293,6 +286,13 @@ export default {
         ]
       })
     }
+  },
+  beforeMount () {
+    this.newEditor()
+  },
+  beforeDestroy () {
+    // Always destroy your editor instance when it's no longer needed
+    this.editor.destroy()
   }
 }
 </script>
