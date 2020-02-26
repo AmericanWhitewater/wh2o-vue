@@ -50,7 +50,7 @@
           <div class="outside">
             <div class="inside sidebar">
               <div class="bx--row">
-                <div class="bx--col">
+                <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-14">
                   <template v-if="fullscreen">
                     <aw-logo variant="sm" />
                     <h3 class="mt-sm">

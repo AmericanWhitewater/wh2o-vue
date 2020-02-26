@@ -2,7 +2,10 @@
   <div class="bx--resource-card">
     <div class="bx--aspect-ratio bx--aspect-ratio--2x1">
       <div class="bx--aspect-ratio--object">
-        <router-link :to="to">
+        <router-link
+          :to="to"
+          class="bx--feature-card__link"
+        >
           <cv-tile href="/river-index">
             <h5
               v-if="subtitle"
@@ -30,13 +33,6 @@
 </template>
 
 <script>
-
-// const aspectRatioClassNames = classnames([`${prefix}--aspect-ratio`], {
-//     [`${prefix}--aspect-ratio--2x1`]: aspectRatio === '2:1',
-//     [`${prefix}--aspect-ratio--1x1`]: aspectRatio === '1:1',
-//     [`${prefix}--aspect-ratio--16x9`]: aspectRatio === '16:9',
-//     [`${prefix}--aspect-ratio--4x3`]: aspectRatio === '4:3',
-//   });
 
 export default {
   name: 'ResourceCard',

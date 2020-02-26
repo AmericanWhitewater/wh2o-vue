@@ -7,14 +7,19 @@ const communityRoutes = [
     component: Community,
     children: [
       {
-        path: 'community-events',
+        path: 'events',
         name: 'community-events',
         component: () => import('./community-events/community-events.vue')
       },
       {
-        path: 'community-partners',
+        path: 'partners',
         name: 'community-partners',
         component: () => import('./community-partners/community-partners.vue')
+      },
+      {
+        path: 'clubs',
+        name: 'community-clubs',
+        component: () => import('./community-clubs/community-clubs.vue')
       }
     ]
   }

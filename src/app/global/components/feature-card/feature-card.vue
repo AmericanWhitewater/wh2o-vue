@@ -29,40 +29,6 @@
 </template>
 
 <script>
-// <Row>
-//           <Column noGutterMdLeft>
-//             <div
-//               className={`bx--feature-card__img bx--aspect-ratio--1x1`}
-//             >
-//               <div
-//                 className={`bx--aspect-ratio--object bx--feature-background`}
-//               >
-//                 {children}
-//               </div>
-//             </div>
-//           </Column>
-//         </Row>
-//         <Row className={`bx--feature-card__row`}>
-//           <Column
-//             colMd={4}
-//             colLg={4}
-//             offsetLg={8}
-//             offsetMd={4}
-//             noGutterMdLeft
-//             className={`bx--feature-card__column`}
-//           >
-//             <ResourceCard
-//               title={title}
-//               subTitle={subTitle}
-//               aspectRatio="2:1"
-//               actionIcon={actionIcon}
-//               color={color}
-//               disabled={disabled}
-//               {...resourceCardProps}
-//             />
-//           </Column>
-//         </Row>
-
 import ResourceCard from '../resource-card/resource-card'
 
 export default {

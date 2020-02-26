@@ -14,6 +14,7 @@ import Email32 from '@carbon/icons-vue/es/email/32.js'
 import Settings32 from '@carbon/icons-vue/es/settings/32.js'
 import ChartLine32 from '@carbon/icons-vue/es/chart--line/32.js'
 import WifiOff32 from '@carbon/icons-vue/es/wifi--off/32.js'
+import Help32 from '@carbon/icons-vue/es/help/32.js'
 
 Vue.use(CarbonIconsVue, {
   components: {
@@ -29,6 +30,7 @@ Vue.use(CarbonIconsVue, {
     Email32,
     Settings32,
     ChartLine32,
-    WifiOff32
+    WifiOff32,
+    Help32
   }
 })
