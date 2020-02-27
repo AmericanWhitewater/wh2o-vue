@@ -34,6 +34,7 @@
   </div>
 </template>
 <script>
+
 import { LoadingBlock } from '@/app/global/components'
 import { Layout } from '@/app/global/layout'
 import {

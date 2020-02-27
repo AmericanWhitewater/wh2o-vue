@@ -49,21 +49,18 @@
         >
           <div class="outside">
             <div class="inside sidebar">
-              <div class="bx--row">
-                <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-14">
-                  <template v-if="fullscreen">
-                    <aw-logo variant="sm" />
-                    <h3 class="mt-sm">
-                      River Index
-                    </h3>
-                    <hr>
-                  </template>
-                  <template v-else>
-                    <h1>River Index</h1>
-                    <hr>
-                  </template>
-                </div>
-              </div>
+              <template v-if="fullscreen">
+                <aw-logo variant="sm" />
+                <h3 class="mt-sm">
+                  River Index
+                </h3>
+                <hr>
+              </template>
+              <template v-else>
+                <h1>River Index</h1>
+                <hr>
+              </template>
+
               <div class="bx--row">
                 <div class="bx--col">
                   <cv-toolbar>

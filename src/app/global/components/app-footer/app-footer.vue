@@ -2,47 +2,76 @@
   <div :class="[{'hidden':hideFooter},'app-footer']">
     <div class="bx--grid">
       <div class="bx--row">
-        <div class="bx--col">
-          <cv-list>
-            <cv-list-item
-              v-for="(k, index) in navItems"
-              :key="index"
-            >
-              <cv-link
-                :to="k.path"
-                v-text="k.label"
+        <div class="bx--col-sm-12 bx--col-md-8 bx--col-lg-8">
+          <resource-card-group>
+            <template #cardOne>
+              <ResourceCard
+                title="River Map"
+                to="/river-index"
+                icon="ChartLine32"
+                color="light"
               />
-            </cv-list-item>
-          </cv-list>
+            </template>
+            <template #cardTwo>
+              <ResourceCard
+                v-if="loggedIn"
+                title="Inbox"
+                to="/community/events"
+                icon="Email32"
+                color="light"
+              />
+            </template>
+            <template #cardThree>
+              <ResourceCard
+                title="Account Settings"
+                to="/user/access/login"
+                icon="Settings32"
+                color="light"
+              />
+            </template>
+            <template #cardFour>
+              <ResourceCard
+                v-if="loggedIn"
+                subtitle="new"
+                title="Saved Rivers"
+                to="/user/account/1/gages"
+                icon="WifiOff32"
+                color="light"
+              />
+            </template>
+          </resource-card-group>
         </div>
-        <div class="bx--col" />
-        <div class="bx--col" />
-        <div class="bx--col">
+        <!-- <div class="bx--col-sm-12 bx--col-md-2 bx--col-lg-3">
           <cv-text-input placeholder="Subscribe to Newsletter" />
         </div>
+        <div class="bx--col">
+
+        </div> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import ResourceCardGroup from '../resource-card-group/resource-card-group'
+import ResourceCard from '../resource-card/resource-card'
 import { navItems } from '@/app/global/mixins'
 /**
  * @displayName App Footer
  */
 export default {
   name: 'AppFooter',
+  components: {
+    ResourceCardGroup,
+    ResourceCard
+  },
   mixins: [navItems],
+  data: () => ({
+    loggedIn: true
+  }),
   computed: {
     hideFooter () {
-      switch (this.$route.name) {
-        case 'river-index':
-          return true
-        case 'home':
-          return true
-        default:
-          return false
-      }
+      return this.$route.name === 'home'
     }
   }
 }
@@ -50,11 +79,9 @@ export default {
 
 <style lang="scss">
 .app-footer {
-  margin-top: $layout-xl;
   position: relative;
-  background-color: $brand-03;
+  background-color: $ui-03;
   padding: $layout-md 0;
-  margin-top: $layout-xl;
   &.hidden {
     display:none;
   }

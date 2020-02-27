@@ -3,7 +3,7 @@
     <page-header title="News" />
     <div class="spacer" />
     <div class="bx--row">
-      <template v-if="!loading">
+      <template v-if="!loading && articles.length">
         <div
           v-for="(article, index) in articles"
           :key="index"
@@ -73,12 +73,6 @@ export default {
     readArticle (id) {
       this.$router.push(`/article/${id}`)
     },
-    getArticles () {
-      // uncomment once store is split up
-      if (!this.articles) {
-        this.$store.dispatch(newsActions.GET_FRONT_PAGE_ARTICLES)
-      }
-    },
     cleanCopy (copy) {
       return this.$sanitize(copy, {
         disallowedTags: [
@@ -91,7 +85,9 @@ export default {
     }
   },
   created () {
-    this.getArticles()
+    if (!this.articles) {
+      this.$store.dispatch(newsActions.GET_FRONT_PAGE_ARTICLES)
+    }
   }
 }
 </script>

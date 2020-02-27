@@ -14,6 +14,9 @@ const staticRoutes = [
   {
     path: '*',
     name: 'page-not-found',
+    meta: {
+      crumbLabel: '404'
+    },
     component: AppPageNotFound
   }
 ]

@@ -49,7 +49,10 @@
         </div>
       </template>
       <template #sidebar>
-        accidents sidebar
+        <h3 class="mb-spacing-md">
+          Submit Accident Report
+        </h3>
+        <p>If someone gets hurt on a river, or you read about a whitewater-related injury, please report it to American Whitewater. Don't worry about multiple submissions from other witnesses, as our safety editors will turn multiple witness reports into a single unified accident report.</p>
       </template>
     </layout>
   </div>

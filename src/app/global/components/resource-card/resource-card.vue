@@ -6,7 +6,10 @@
           :to="to"
           class="bx--feature-card__link"
         >
-          <cv-tile href="/river-index">
+          <cv-tile
+            href="/river-index"
+            :class="color"
+          >
             <h5
               v-if="subtitle"
               class="bx--resource-card__subtitle"
@@ -59,6 +62,13 @@ export default {
     hideIcon: {
       type: Boolean,
       required: false
+    },
+    /**
+    * @values light, dark
+    */
+    color: {
+      type: String,
+      required: false
     }
   }
 }
@@ -67,12 +77,20 @@ export default {
 <style lang="scss">
 
 .bx--resource-card  .bx--tile {
-  background: $ui-background;
+  background: $ui-02;
   height: 100%;
   padding: $spacing-05 25% $spacing-05 $spacing-05;
   position: relative;
   transition: background $duration--fast-01;
   text-decoration: none;
+
+  &.light {
+    background: $ui-01;
+  }
+  &.dark {
+       background: $ui-05;
+  }
+
 }
 
 .bx--resource-card .bx--tile:hover {
