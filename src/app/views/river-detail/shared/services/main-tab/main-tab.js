@@ -9,20 +9,58 @@ const fetchRiverDetailData = data => {
       query: `
       query {
         reach(id:${data}){
-             river,
-             section,
-             length,
+             agency,
+             altname,
              avggradient,
-             maxgradient,
-             description,
-             edited,
              class,
-             plat,
-             plon,
+             county,
+             custom_destination,
+             description,
+             direction_default,
+             edited,
+             edited,
+             gaugeinfo,
              geom,
+             huc,
+             image_override,
+             is_final,
+             length,
+             maxgradient,
+             permitid,
+             permitinfo,
+             permiturl,
              photo {
                url
-             }
+             },
+             photoid,
+             plat,
+             ploc,
+             plon,
+              readingsummary {
+               adjusted_reach_class,
+               gauge_estimated,
+               gauge_id
+               gauge_important,
+               gauge_max,
+               gauge_min,
+               gauge_perfect,
+               obs_id,
+               range_comment,
+             },
+             revision,
+             revision_comment,
+             river,
+             section,
+             shuttledetails,
+             skid,
+             status,
+             thumboverride,
+             tlat,
+             tloc,
+             tlon,
+             trrn,
+             was_final,
+             zipcode
         }
     }
     

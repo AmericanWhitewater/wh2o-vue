@@ -2,19 +2,14 @@ import { reflectKeys } from '@/app/global/services'
 
 import { fetchMapData } from '../../services'
 
-/** Initial state */
 const initialState = {
   loading: false,
   data: null,
   error: null
 }
 
-/** Prefix for mutation types and actiontypes */
 const namespacedPrefix = '[MAP]'
 
-/**
- * Mutation types
- */
 const mutationTypes = reflectKeys(
   ['DATA_SUCCESS', 'DATA_REQUEST', 'DATA_ERROR', 'DATA_RESET'],
   namespacedPrefix
@@ -22,9 +17,6 @@ const mutationTypes = reflectKeys(
 
 const { DATA_ERROR, DATA_REQUEST, DATA_RESET, DATA_SUCCESS } = mutationTypes
 
-/**
- *  mutations
- */
 const mutations = {
   [DATA_REQUEST] (state) {
     Object.assign(state, { loading: true, error: null })
@@ -47,14 +39,10 @@ const mutations = {
   }
 }
 
-/** Actions types constants */
 export const mapActions = reflectKeys(['FETCH_MAP_DATA'], namespacedPrefix)
 
-/**
- * actions
- */
 const actions = {
-  /** fetch map data */
+
   async [mapActions.FETCH_MAP_DATA] (context, data) {
     context.commit(DATA_REQUEST)
 
@@ -63,7 +51,11 @@ const actions = {
     })
 
     if (result) {
-      context.commit(DATA_SUCCESS, result)
+      if (result.errors) {
+        context.commit(DATA_ERROR, result.errors[0].message)
+      } else {
+        context.commit(DATA_SUCCESS, result.data.reach)
+      }
     }
 
     return result

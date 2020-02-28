@@ -1,15 +1,16 @@
 <template>
   <section class="bx--grid river-detail">
-    <transition name="fade">
-      <template v-if="loading">
-        <cv-loading
-          active
-          overlay
-          small
-        />
-      </template>
-    </transition>
-    <template v-if="!loading">
+    <error-block
+      v-if="error && !loading"
+      title="River Detail Unavailable"
+      text="Sorry for the inconvenience, our team has been notified."
+    />
+    <loading-block
+      v-if="loading && !error"
+      text="Loading River..."
+      overlay
+    />
+    <template v-if="!loading && !error">
       <template v-if="river">
         <river-header
           :name="river.river"
@@ -79,17 +80,25 @@
   </section>
 </template>
 <script>
+/**
+ * @todo each river detail component should be responsible for handling
+ * loading state. Then we can use skeleton text/elements
+ *
+ */
 import { mapState } from 'vuex'
 import RiverHeader from './river-header/river-header'
 import {
   actionsTypes,
   rapidsActions
 } from './shared/state'
+import { ErrorBlock, LoadingBlock } from '@/app/global/components'
 
 export default {
   name: 'RiverDetail',
   components: {
-    'river-header': RiverHeader
+    'river-header': RiverHeader,
+    ErrorBlock,
+    LoadingBlock
   },
   data: () => ({
     reachDeleteModalVisible: false,
@@ -111,6 +120,7 @@ export default {
     ...mapState({
       river: state => state.riverDetailState.riverDetailData.data,
       loading: state => state.riverDetailState.riverDetailData.loading,
+      error: state => state.riverDetailState.riverDetailData.error,
       editMode: state => state.riverDetailState.riverDetailData.mode,
       media: state => state.riverDetailState.galleryData.data
     }),
@@ -232,10 +242,6 @@ export default {
     &:focus {
       width: 6rem;
     }
-  }
-  .bx--loading-overlay {
-    top: $desktop-nav-height;
-    height: calc(100vh - 75px);
   }
 }
 

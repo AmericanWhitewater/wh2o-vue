@@ -2,8 +2,13 @@ import { httpClient } from '@/app/global/services'
 import { apiConstants } from '../../config'
 
 const fetchGaugeReadings = data => {
-  const url = '/api/gauge/36667/flows/2?from=1570336187&to=1570422587&resolution=1'
+  /**
+   * @todo need gage id
+   */
+
+  // const url = '/api/gauge/36667/flows/2?from=1570336187&to=1570422587&resolution=1'
   // const url = `/api/gauge/${data.gauge_id}/flows/${data.metric_id}?from=${data.timeStart}&to=${data.timeEnd}&resolution=${data.resolution}`
+  const url = `/api/gauge/36667/flows/${data.metric_id}?from=${data.timeStart}&to=${data.timeEnd}&resolution=${data.resolution}`
 
   return httpClient.get(url).then(res => res.data)
 }

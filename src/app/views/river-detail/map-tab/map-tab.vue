@@ -57,7 +57,7 @@ export default {
     mapControls: ['baseMap', 'color', 'fullscreen'],
     mockBBox: ['-106.297217', '38.776635', '-105.967627', '38.907397'],
     sourceLayers: ['reach-segments', 'rapids', 'access'],
-    tileservers: null,
+    tileservers: [],
     token: null,
     mapHttpConfig: {
       lat: null,
@@ -68,10 +68,20 @@ export default {
     ...mapState({
       loading: state => state.riverDetailState.mapData.loading,
       error: state => state.riverDetailState.mapData.error,
-      data: state => state.riverDetailState.mapData.data
+      data: state => state.riverDetailState.mapData.data,
+      riverLoading: state => state.riverDetailState.riverDetailData.loading,
+      riverError: state => state.riverDetailState.mapData.error,
+      riverData: state => state.riverDetailState.mapData.data
     }),
     reachId () {
       return parseInt(this.$route.params.id, 10)
+    }
+  },
+  watch: {
+    riverData () {
+      this.mapHttpConfig.lat = this.riverData.plat
+      this.mapHttpConfig.lon = this.riverData.plon
+      this.loadData()
     }
   },
   methods: {
@@ -86,9 +96,7 @@ export default {
   },
   created () {
     this.token = mapboxAccessToken
-    this.tileservers = nwiTileServer
-
-    this.loadData()
+    this.tileservers.push(nwiTileServer)
   }
 }
 </script>
