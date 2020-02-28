@@ -51,19 +51,18 @@ export const GageChartConfig = {
       scales: {
         xAxes: [
           {
-            type: 'time',
+            // type: 'time',
             display: true,
             distribution: 'series',
-            time: {
-              // unit: this.timeScale,
-              displayFormats: {
-                day: 'h:mm a',
-                week: 'll',
-                month: 'll',
-                year: 'MMM YYYY'
-              },
-              min: 0
-            },
+            // time: {
+            //   unit: 'h:mm a',
+            //   displayFormats: {
+            //     day: 'h:mm a',
+            //     week: 'll',
+            //     month: 'll',
+            //     year: 'MMM YYYY'
+            //   }
+            // },
             gridLines: {
               color: 'rgba(90, 104, 114, 0.2)',
               borderDash: [4, 4]
@@ -83,7 +82,8 @@ export const GageChartConfig = {
               minRotation: 45,
               // labelOffset: 20,
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
-              fontSize: 13
+              fontSize: 13,
+              min: 7
             }
           }
         ],

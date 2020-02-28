@@ -1,144 +1,105 @@
 <template>
   <div class="flow-tab">
-    <template v-if="!gageDetailView">
-      <div class="bx--row mb-md">
-        <div class="bx--col-sm-4 bx--col-md-6 bx--col-lg-8">
-          <h2
-            class="mb-spacing-sm"
-            @click="alert('router push to gage detail')"
-          >
-            Active Gage
-          </h2>
-        </div>
-      </div>
-      <div class="bx--row mb-md">
-        <div class="bx--col-sm-4 bx--col-md-6 bx--col-lg-10">
-          <template v-if="!readingsLoading">
-            <gage-chart
-              :chart-data="formattedData"
-              :options="chartConfig"
-              :height="chartHeight"
-            />
-          </template>
-          <template v-else>
-            <skeleton-block height="400" />
-          </template>
-        </div>
-        <div class="bx--col-sm-4 bx--col-md-6 bx--col-lg-2 bx--offset-lg-1">
-          <gage-chart-controls />
-        </div>
-      </div>
-      <div class="bx--row mb-md">
-        <div class="bx--col-sm-4 bx--col-md-6 bx--col-lg-8">
-          <gage-readings />
-        </div>
-      </div>
-    </template>
-    <template v-else>
-      <!-- gage detail router tbd -->
-      <router-view />
-    </template>
+    <layout
+      name="layout-two-thirds"
+      class="mb-lg"
+    >
+      <template #main>
+        <template v-if="loading">
+          <loading-block />
+        </template>
+        <template v-if="!loading && error">
+          <error-block />
+        </template>
+        <template v-if="!loading && chartData">
+          <gage-chart
+            :chart-data="chartData"
+            :height="chartHeight"
+            :options="chartConfig"
+          />
+        </template>
+      </template>
+      <template #sidebar>
+        <GageChartControls @timescaleChange="setTimescale" />
+      </template>
+    </layout>
+    <layout name="layout-two-thirds">
+      <template #main>
+        <GageReadings />
+      </template>
+    </layout>
   </div>
 </template>
-<script>
-import { EventBus } from '@/app/global/services/event-bus/event-bus'
-import { SkeletonBlock } from '@/app/global/components'
-import { GageReadings, GageChartControls, GageChart } from './components'
-import { GageChartConfig } from './utils/gage-chart-config'
-import { gageHttpConfig } from '../shared/mixins'
 
+<script>
+import moment from 'moment'
+import { GageChart, GageReadings, GageChartControls } from './components'
+import { GageChartConfig } from './utils/gage-chart-config'
+import { Layout } from '@/app/global/layout'
+import { mapState } from 'vuex'
+import { readingsActions } from '../shared/state'
+import { LoadingBlock, ErrorBlock } from '@/app/global/components'
 export default {
   name: 'FlowTab',
   components: {
-    GageReadings,
-    GageChartControls,
+    ErrorBlock,
     GageChart,
-    SkeletonBlock
+    GageChartControls,
+    GageReadings,
+    Layout,
+    LoadingBlock
   },
-  mixins: [GageChartConfig, gageHttpConfig],
+  mixins: [GageChartConfig],
   data: () => ({
-    gageDetailView: false,
-    formattedData: {
-      datasets: [
-        {
-          data: []
-        }
-      ],
-      labels: []
-    }
+    selectedTimespan: 'h:mm a'
   }),
+
   computed: {
-    storePath () {
-      return this.$store.state.riverDetailState
-    },
-    initialLoading () {
-      if (
-        this.storePath.gageMetricsData.loading &&
-        this.storePath.gageReadingsData.loading
-      ) {
-        return true
+    ...mapState({
+      readings: state => state.riverDetailState.gageReadingsData.data,
+      loading: state => state.riverDetailState.gageReadingsData.loading,
+      error: state => state.riverDetailState.gageReadingsData.error
+    }),
+    chartData () {
+      const data = this.readings
+      if (data) {
+        const formattedData = {
+          labels: [],
+          datasets: [{
+            label: 'label',
+            data: []
+          }]
+        }
+        for (let i = 0; i < data.length; i++) {
+          formattedData.datasets[0].data.push(data[i].reading)
+          formattedData.labels.push(moment(data[i].updated).format(this.selectedTimespan))
+        }
+        return formattedData
       }
-      return false
-    },
-    readingsLoading () {
-      return this.storePath.gageReadingsData.loading
-    },
-    routeId () {
-      return this.$route.params.id
-    },
-    river () {
-      return this.storePath.riverDetailData.data
-    },
-    gaugeSummary () {
-      return this.river.guagesummary
-    },
-    readingsData () {
-      return this.storePath.gageReadingsData.data
-    },
-    mappedReadings () {
-      // NOTE: strip out just the gage reading
-      let mappedReadings
-      if (this.readingsData) {
-        mappedReadings = this.readingsData.map(a => a.reading)
-      }
-      return mappedReadings
-    },
-    xAxisLabels () {
-      // pull out the time the gauge was updated
-      let gageUpdateTime
-      if (this.readingsData) {
-        gageUpdateTime = this.readingsData.map(a => a.updated)
-      }
-      return gageUpdateTime
+      return null
     }
   },
   watch: {
-    readingsData () {
-      // if the readings change, reformat data for chart
-      this.formatChartData()
+    selectedTimespan () {
+      this.fetchReadings()
     }
   },
   methods: {
-    formatChartData () {
-      // reset
-      this.formattedData.labels = []
-      this.formattedData.datasets[0].data = []
-      // add new values
-      this.formattedData.labels = this.formattedData.labels.concat(
-        this.xAxisLabels
-      )
-      this.formattedData.datasets[0].data = this.formattedData.datasets[0].data.concat(
-        this.mappedReadings
-      )
+    fetchReadings () {
+      this.$store.dispatch(readingsActions.FETCH_GAGE_READINGS_DATA)
+    },
+    setTimescale (value) {
+      this.selectedTimespan = value
+      this.chartConfig.scales.xAxes[0].time.unit = value
     }
   },
-  mounted () {
-    EventBus.$on('gage-detail-toggle', payload => {
-      this.gageDetailView = payload
-    })
+  created () {
+
+    // this.fetchReadings()
   }
 }
 </script>
+
 <style lang="scss" scoped>
 .flow-tab {
   padding-top: $spacing-xl;

@@ -201,6 +201,7 @@ export default {
 
 <style lang="scss">
 .river-detail {
+  margin-bottom: $layout-xl;
   .tabs-wrapper {
     background-color: $ui-03;
     display: flex;
@@ -236,9 +237,6 @@ export default {
     top: $desktop-nav-height;
     height: calc(100vh - 75px);
   }
-}
-.bx--dropdown {
-  background-color: $ui-03 !important;
 }
 
 .river-detail .tabs-wrapper .bx--tabs {
