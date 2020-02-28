@@ -15,6 +15,7 @@
           <gage-chart
             :chart-data="chartData"
             :height="chartHeight"
+            :options="chartConfig"
           />
         </template>
       </template>

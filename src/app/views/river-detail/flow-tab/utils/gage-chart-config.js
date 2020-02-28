@@ -51,18 +51,18 @@ export const GageChartConfig = {
       scales: {
         xAxes: [
           {
-            type: 'time',
+            // type: 'time',
             display: true,
             distribution: 'series',
-            time: {
-              unit: 'h:mm a',
-              displayFormats: {
-                day: 'h:mm a',
-                week: 'll',
-                month: 'll',
-                year: 'MMM YYYY'
-              }
-            },
+            // time: {
+            //   unit: 'h:mm a',
+            //   displayFormats: {
+            //     day: 'h:mm a',
+            //     week: 'll',
+            //     month: 'll',
+            //     year: 'MMM YYYY'
+            //   }
+            // },
             gridLines: {
               color: 'rgba(90, 104, 114, 0.2)',
               borderDash: [4, 4]
