@@ -20,7 +20,7 @@
         </template>
       </template>
       <template #sidebar>
-        <GageChartControls />
+        <GageChartControls @timescaleChange="setTimescale" />
       </template>
     </layout>
     <layout name="layout-two-thirds">
@@ -36,7 +36,6 @@ import moment from 'moment'
 import { GageChart, GageReadings, GageChartControls } from './components'
 import { GageChartConfig } from './utils/gage-chart-config'
 import { Layout } from '@/app/global/layout'
-import { gageHttpConfig } from '../shared/mixins'
 import { mapState } from 'vuex'
 import { readingsActions } from '../shared/state'
 import { LoadingBlock, ErrorBlock } from '@/app/global/components'
@@ -50,7 +49,7 @@ export default {
     Layout,
     LoadingBlock
   },
-  mixins: [GageChartConfig, gageHttpConfig],
+  mixins: [GageChartConfig],
   data: () => ({
     selectedTimespan: 'h:mm a'
   }),
@@ -61,10 +60,8 @@ export default {
       loading: state => state.riverDetailState.gageReadingsData.loading,
       error: state => state.riverDetailState.gageReadingsData.error
     }),
-
     chartData () {
       const data = this.readings
-
       if (data) {
         const formattedData = {
           labels: [],
@@ -73,15 +70,12 @@ export default {
             data: []
           }]
         }
-
         for (let i = 0; i < data.length; i++) {
           formattedData.datasets[0].data.push(data[i].reading)
-
           formattedData.labels.push(moment(data[i].updated).format(this.selectedTimespan))
         }
         return formattedData
       }
-
       return null
     }
   },
@@ -93,11 +87,15 @@ export default {
   methods: {
     fetchReadings () {
       this.$store.dispatch(readingsActions.FETCH_GAGE_READINGS_DATA)
+    },
+    setTimescale (value) {
+      this.selectedTimespan = value
+      this.chartConfig.scales.xAxes[0].time.unit = value
     }
   },
   created () {
-    this.chartConfig.scales.xAxes[0].time.unit = this.selectedTimespan
-    this.fetchReadings()
+
+    // this.fetchReadings()
   }
 }
 </script>

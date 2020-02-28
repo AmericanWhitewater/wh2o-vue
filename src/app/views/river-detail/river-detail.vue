@@ -238,9 +238,6 @@ export default {
     height: calc(100vh - 75px);
   }
 }
-.bx--dropdown {
-  background-color: $ui-03 !important;
-}
 
 .river-detail .tabs-wrapper .bx--tabs {
   border-bottom: 0;

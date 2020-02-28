@@ -1,5 +1,9 @@
 <template>
-  <div class>
+  <div class="gage-chart-controls">
+    <hr>
+    <h2 class="mb-spacing-md">
+      active gage
+    </h2>
     <cv-dropdown
       v-model="selectedSettings.gage_name"
       :label="gageLabel"
@@ -54,18 +58,23 @@
 <script>
 import moment from 'moment'
 import { metricsActions, readingsActions } from '../../shared/state'
-import { gageHttpConfig } from '../../shared/mixins'
 import { mapState } from 'vuex'
 
 export default {
   name: 'GageChartControls',
-  mixins: [gageHttpConfig],
   data: () => ({
     gageLabel: '',
     selectedSettings: {
       label: 'Reach Gages',
       gage_name: '',
       timeScale: 'day'
+    },
+    gageHttpConfig: {
+      gauge_id: null,
+      metric_id: '2',
+      timeStart: null,
+      timeEnd: null,
+      resolution: null
     }
   }),
   computed: {
@@ -73,28 +82,13 @@ export default {
       loading: state => state.riverDetailState.gageReadingsData.loading,
       error: state => state.riverDetailState.gageReadingsData.error,
       data: state => state.riverDetailState.gageReadingsData.data,
-      metrics: state => state.riverDetailState.gageMetricsData.data
-    }),
-    storePath () {
-      return this.$store.state.riverDetailState
-    },
-    river () {
-      if (this.data) {
-        return this.data.CContainerViewJSON_view.CRiverMainGadgetJSON_main
-      }
-      return null
-    },
-    gauges () {
-      if (this.river) {
-        return this.river.gauges
-      }
-      return null
-    },
-    oneGauge () {
-      if (this.gauges.length === 1) {
-        return true
-      }
-      return false
+      metrics: state => state.riverDetailState.gageMetricsData.data,
+      river: state => state.riverDetailState.riverDetailData.data
+    })
+  },
+  watch: {
+    gageHttpConfig () {
+      this.fetchReadings()
     }
   },
   methods: {
@@ -102,6 +96,7 @@ export default {
       let start
       switch (this.selectedSettings.timeScale) {
         case 'year':
+          this.$emit('timescaleChange', 'MMM YYYY')
           this.gageHttpConfig.resolution = 60 * 60 * 730
           this.gageHttpConfig.timeScale = 'year'
           start = moment()
@@ -109,6 +104,7 @@ export default {
             .unix()
           break
         case 'month':
+          this.$emit('timescaleChange', 'll')
           this.gageHttpConfig.resolution = 60 * 60 * 24
           start = moment()
             .subtract(1, 'month')
@@ -116,12 +112,19 @@ export default {
           break
 
         case 'week':
+          this.$emit('timescaleChange', 'll')
           this.gageHttpConfig.resolution = 60 * 60 * 12
           this.gageHttpConfig.timeStart = moment()
             .subtract(1, 'weeks')
             .unix()
           break
         case 'day':
+          this.$emit('timescaleChange', 'h:mm a')
+          this.gageHttpConfig.resolution = 1
+          start = moment()
+            .subtract(1, 'days')
+            .unix()
+          break
         default:
           this.gageHttpConfig.resolution = 1
           start = moment()
@@ -134,10 +137,7 @@ export default {
       return start
     },
     fetchMetrics () {
-      if (!this.metrics) {
-        // this should only run once if the active gage has not changed
-        this.$store.dispatch(metricsActions.FETCH_GAGE_METRICS)
-      }
+      this.$store.dispatch(metricsActions.FETCH_GAGE_METRICS)
     },
     async fetchReadings () {
       await this.setTimeScale()
@@ -148,13 +148,6 @@ export default {
     }
   },
   created () {
-    if (this.gauges.length > 1) {
-      this.gageLabel = 'Reach Gages'
-    } else {
-      this.gageLabel = 'Reach Gage'
-    }
-    this.gageHttpConfig.gauge_id = this.gauges[0].gauge_id
-    this.gageHttpConfig.metric_id = this.gauges[0].gauge_metric
     this.fetchMetrics()
   },
   beforeMount () {
@@ -162,9 +155,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.bx--form-item {
-  // global scss styles and scoped styles are behaving strangely...
-  margin-bottom: 0.5rem;
-}
-</style>
