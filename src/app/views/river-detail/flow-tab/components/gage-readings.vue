@@ -14,32 +14,41 @@
             :value="`${rowIndex}`"
           >
             <cv-data-table-cell>{{ r.reading }}</cv-data-table-cell>
-            <cv-data-table-cell>{{ r.updated }}</cv-data-table-cell>
+            <cv-data-table-cell>{{ formatDate(r.updated) }}</cv-data-table-cell>
             <template slot="expandedContent" />
           </cv-data-table-row>
         </template>
       </cv-data-table>
     </template>
     <template v-else>
-      loading...
+      <loading-block />
     </template>
   </section>
 </template>
 <script>
+import Moment from 'moment'
+import { mapState } from 'vuex'
+import { LoadingBlock } from '@/app/global/components'
 export default {
   name: 'GageReadings',
+  components: {
+    LoadingBlock
+  },
   data: () => ({
     columns: ['Reading', 'Updated']
   }),
   computed: {
-    data () {
-      return this.$store.state.riverDetailState.gageReadingsData.data
-    },
-    loading () {
-      return this.$store.state.riverDetailState.gageReadingsData.loading
+    ...mapState({
+      data: state => state.riverDetailState.gageReadingsData.data,
+      loading: state => state.riverDetailState.gageReadingsData.loading,
+      error: state => state.riverDetailState.gageReadingsData.error
+    })
+  },
+  methods: {
+    formatDate (date) {
+      return Moment(date).format('llll')
     }
   },
-  methods: {},
   created () {}
 }
 </script>
