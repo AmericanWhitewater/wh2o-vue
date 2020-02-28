@@ -1,13 +1,14 @@
 import { httpClient } from '@/app/global/services'
-import axios from 'axios'
 import { apiConstants } from '../../config'
 
 const fetchGaugeReadings = data => {
-  const url = `https://americanwhitewater.org/api/gauge/${data.gauge_id}/flows/${data.metric_id}?from=${data.timeStart}&to=${data.timeEnd}&resolution=${data.resolution}`
+  // /api/gauge/36667/flows/2?from=1570336187&to=1570422587&resolution=1
 
-  return axios.get(url).then(res => res.data)
+  const url = '/api/gauge/36667/flows/2?from=1570336187&to=1570422587&resolution=1'
 
-  // return httpClient.get(url).then(res => res.data)
+  // const url = `api/gauge/${data.gauge_id}/flows/${data.metric_id}?from=${data.timeStart}&to=${data.timeEnd}&resolution=${data.resolution}`
+
+  return httpClient.get(url).then(res => res.data)
 }
 
 const fetchGaugeSourceInfo = id => {

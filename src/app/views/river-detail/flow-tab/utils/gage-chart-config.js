@@ -55,14 +55,13 @@ export const GageChartConfig = {
             display: true,
             distribution: 'series',
             time: {
-              // unit: this.timeScale,
+              unit: 'h:mm a',
               displayFormats: {
                 day: 'h:mm a',
                 week: 'll',
                 month: 'll',
                 year: 'MMM YYYY'
-              },
-              min: 0
+              }
             },
             gridLines: {
               color: 'rgba(90, 104, 114, 0.2)',
@@ -83,7 +82,8 @@ export const GageChartConfig = {
               minRotation: 45,
               // labelOffset: 20,
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
-              fontSize: 13
+              fontSize: 13,
+              min: 7
             }
           }
         ],

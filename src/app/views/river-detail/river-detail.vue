@@ -201,6 +201,7 @@ export default {
 
 <style lang="scss">
 .river-detail {
+  margin-bottom: $layout-xl;
   .tabs-wrapper {
     background-color: $ui-03;
     display: flex;

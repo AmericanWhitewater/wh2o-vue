@@ -55,6 +55,7 @@
 import moment from 'moment'
 import { metricsActions, readingsActions } from '../../shared/state'
 import { gageHttpConfig } from '../../shared/mixins'
+import { mapState } from 'vuex'
 
 export default {
   name: 'GageChartControls',
@@ -68,29 +69,32 @@ export default {
     }
   }),
   computed: {
+    ...mapState({
+      loading: state => state.riverDetailState.gageReadingsData.loading,
+      error: state => state.riverDetailState.gageReadingsData.error,
+      data: state => state.riverDetailState.gageReadingsData.data,
+      metrics: state => state.riverDetailState.gageMetricsData.data
+    }),
     storePath () {
       return this.$store.state.riverDetailState
     },
-    loading () {
-      return this.storePath.gageReadingsData.loading
-    },
     river () {
-      return this.storePath.riverDetailData.data.CContainerViewJSON_view
-        .CRiverMainGadgetJSON_main
+      if (this.data) {
+        return this.data.CContainerViewJSON_view.CRiverMainGadgetJSON_main
+      }
+      return null
     },
     gauges () {
-      return this.river.gauges
+      if (this.river) {
+        return this.river.gauges
+      }
+      return null
     },
     oneGauge () {
       if (this.gauges.length === 1) {
         return true
       }
       return false
-    },
-    metrics () {
-      // TODO: only show metrics that the reach has readings for
-      const metrics = this.$store.state.riverDetailState.gageMetricsData.data
-      return metrics
     }
   },
   methods: {
@@ -130,7 +134,7 @@ export default {
       return start
     },
     fetchMetrics () {
-      if (!this.storePath.gageMetricsData.data) {
+      if (!this.metrics) {
         // this should only run once if the active gage has not changed
         this.$store.dispatch(metricsActions.FETCH_GAGE_METRICS)
       }

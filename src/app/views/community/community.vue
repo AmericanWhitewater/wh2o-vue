@@ -7,15 +7,6 @@
       <template v-slot:sidebar>
         <cv-tile>
           <div class="sidebar">
-            <cv-button
-              v-if="$route.name !== 'community'"
-              squared
-              class="mb-sm"
-              size="small"
-              @click="$router.push('/community')"
-            >
-              back
-            </cv-button>
             <h1>{{ $route.name }}</h1>
             <hr>
             <div>Path: {{ $route.path }}</div>
