@@ -100,6 +100,13 @@ export default {
     ErrorBlock,
     LoadingBlock
   },
+  metaInfo () {
+    return {
+      title: this.riverTitle,
+      titleTemplate: '%s | American Whitewater',
+      description: 'drew test'
+    }
+  },
   data: () => ({
     reachDeleteModalVisible: false,
     reachDeleteConfirmInput: null,
@@ -127,7 +134,6 @@ export default {
     riverId () {
       return this.$route.params.id
     },
-
     riverTitle () {
       if (this.river) {
         return this.river.river
@@ -162,6 +168,18 @@ export default {
         return false
       }
       return true
+    }
+  },
+  watch: {
+    river (data) {
+      if (data) {
+        const riverDescription = this.$sanitize(data.description, {
+          allowedTags: [],
+          allowedAttributes: {}
+        })
+
+        document.getElementById('meta-description').setAttribute('content', riverDescription.slice(0, 150))
+      }
     }
   },
   methods: {
@@ -204,6 +222,7 @@ export default {
       })
       this.$store.dispatch(actionsTypes.SET_EDIT_MODE, false)
     }
+    document.getElementById('meta-description').setAttribute('content', 'default description')
     next()
   }
 }

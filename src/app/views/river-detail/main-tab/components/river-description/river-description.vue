@@ -8,6 +8,7 @@
       <template v-if="sanitizedDescription">
         <div
           ref="description"
+          class="description-content"
           v-html="sanitizedDescription"
         />
       </template>
@@ -54,10 +55,13 @@ export default {
           }
         })
 
+        const openingTags = this.$replaceText(content, '<div>', '<p>')
+        const closingTags = this.$replaceText(openingTags, '</div>', '</p>')
+
         const legacyUrl = 'http://www.americanwhitewater.org/rivers/id/'
         const updatedUrl = '/#/river-detail/'
 
-        return this.$replaceText(content, legacyUrl, updatedUrl)
+        return this.$replaceText(closingTags, legacyUrl, updatedUrl)
       }
       return null
     }
@@ -71,6 +75,13 @@ export default {
 </script>
 <style lang="scss">
 main {
+  p {
+    margin-bottom: 1.25rem;
+  }
+}
+
+.description-content {
+  @include carbon--type-style('body-long-02');
   p {
     margin-bottom: 1.25rem;
   }

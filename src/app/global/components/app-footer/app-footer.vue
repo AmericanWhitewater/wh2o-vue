@@ -1,5 +1,5 @@
 <template>
-  <div :class="[{'hidden':hideFooter},'app-footer']">
+  <div class="app-footer">
     <div class="bx--grid">
       <div class="bx--row">
         <div class="bx--col-sm-12 bx--col-md-8 bx--col-lg-8">
@@ -41,12 +41,8 @@
             </template>
           </resource-card-group>
         </div>
-        <!-- <div class="bx--col-sm-12 bx--col-md-2 bx--col-lg-3">
-          <cv-text-input placeholder="Subscribe to Newsletter" />
-        </div>
-        <div class="bx--col">
-
-        </div> -->
+        <div class="bx--col" />
+        <div class="bx--col" />
       </div>
     </div>
   </div>
@@ -68,12 +64,7 @@ export default {
   mixins: [navItems],
   data: () => ({
     loggedIn: true
-  }),
-  computed: {
-    hideFooter () {
-      return this.$route.name === 'home'
-    }
-  }
+  })
 }
 </script>
 

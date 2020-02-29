@@ -1,54 +1,67 @@
 <template>
-  <div class="bx--feature-card">
-    <router-link :to="to">
-      <div class="bx--row">
-        <div class="bx--col bx--no-gutter-left">
+  <div class="bg-topo feature-card-hero">
+    <div class="bx--feature-card bx--grid">
+      <div
+        class="bx--row"
+        style="align-self:center;justify-self:center;width:100vw;"
+      >
+        <div class="bx--col-sm-12 bx--col-md-6 bx--offset-md-2 bx--col-lg-8 bx--offset-lg-4  ">
           <div class="bx--feature-card__img bx--aspect-ratio--1x1">
             <div class="bx--aspect-ratio--object bx--feature-background">
-              <img
-                src="https://picsum.photos/3000/2000"
-                title="placeholder"
-              >
+              <aw-logo variant="xl" />
             </div>
           </div>
         </div>
       </div>
       <div class="bx--feature-card__row bx--row">
         <div
-          class="bx--col bx--col-md-4 bx--col-lg-6 bx--offset-md-4 bx--offset-lg-10 bx--feature-card__column"
+          class="bx--col bx--col-md-8 bx--col-lg-10 bx--offset-lg-6 bx--feature-card__column"
         >
-          <ResourceCard
-            title="This is a featured title"
-            subtitle="02-12-2020"
-            hide-icon
-          />
+          <resource-card-group>
+            <template #cardOne>
+              <ResourceCard
+                title="River Map"
+                to="/river-index"
+                icon="Map32"
+              />
+            </template>
+            <template #cardTwo>
+              <ResourceCard
+                title="News"
+                to="/news"
+                icon="Bullhorn32"
+              />
+            </template>
+          </resource-card-group>
         </div>
       </div>
-    </router-link>
+    </div>
   </div>
 </template>
 
 <script>
-import ResourceCard from '../resource-card/resource-card'
+import { ResourceCard, ResourceCardGroup, AwLogo } from '@/app/global/components'
 
 export default {
-  name: 'FeatureCard',
+  name: 'FeatureCardHero',
   components: {
-    ResourceCard
-  },
-  props: {
-    to: {
-      type: String,
-      required: true,
-      default: '/'
-    }
+    ResourceCardGroup,
+    ResourceCard,
+    AwLogo
   }
 }
 </script>
 
 <style lang="scss" scoped>
+
+.feature-card-hero {
+  height:100vh;
 .bx--feature-card {
   position: relative;
+  height:100%;
+  @include carbon--breakpoint("md") {
+    display: flex;
+  }
 }
 
 .bx--feature-card__row {
@@ -69,27 +82,34 @@ export default {
 .bx--feature-card__img {
   position: relative;
   img {
-    max-width:100%;
+    max-width: 100%;
+    max-height: 100vh;
   }
 }
 
-.bx--feature-card:hover .bx--feature-card__link .bx--tile {
-  background: $hover-ui;
-}
+// .bx--feature-card:hover .bx--feature-card__link .bx--tile {
+//   background: $hover-ui;
+// }
 
-.bx--feature-card:hover
-  .bx--feature-card__link
-  .bx--resource-card--dark
-  .bx--tile {
-  background: $carbon--gray-80; //$hover-ui for gray 90 theme
-}
+// .bx--feature-card:hover
+//   .bx--feature-card__link
+//   .bx--resource-card--dark
+//   .bx--tile {
+//   background: $carbon--gray-80; //$hover-ui for gray 90 theme
+// }
 
-.bx--feature-card__link:focus {
-  outline: none;
+// .bx--feature-card__link:focus {
+//   outline: none;
 
-  .bx--feature-background > * {
-    outline: 2px solid $focus;
-    outline-offset: 2px;
+//   .bx--feature-background > * {
+//     outline: 2px solid $focus;
+//     outline-offset: 2px;
+//   }
+// }
+.bx--feature-background {
+  display: none;
+   @include carbon--breakpoint("md") {
+    display: block;
   }
 }
 
@@ -134,8 +154,9 @@ export default {
   margin-left: 0;
   margin-right: 0;
 }
-
 .bx--feature-card__column {
   z-index: 1;
 }
+}
+
 </style>

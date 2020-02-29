@@ -1,7 +1,8 @@
-import { newsPageData } from './shared/state'
+import { newsData, articleData } from './shared/state'
 
 export default {
   modules: {
-    newsPageData
+    newsData,
+    articleData
   }
 }

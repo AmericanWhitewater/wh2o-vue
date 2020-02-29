@@ -1,37 +1,25 @@
 <template>
   <div class="news-page bx--grid">
     <page-header title="News" />
-    <div class="spacer" />
+    <div class="bx--row mb-lg mt-lg">
+      <div class="bx--col-sm-4 bx--offset-sm-4 bx--col-md-8 bx--col-md-4 bx--col-lg-8 bx--offset-lg-4">
+        <cv-search
+          v-model="articleSearchTerm"
+        />
+      </div>
+    </div>
+
     <div class="bx--row">
-      <template v-if="!loading && articles.length">
+      <template v-if="!loading && newsArticles.length">
         <div
-          v-for="(article, index) in articles"
+          v-for="(article, index) in newsArticles"
           :key="index"
-          class="bx--col-sm-4 bx--col-md-6 bx--col-lg-4 mb-spacing-md"
+          class="bx--col-md-4 bx--col-lg-6 bx--col-max-4  mb-spacing-lg"
         >
-          <cv-tile class="news-tile">
-            <img :src="'/content/Photo/detail/photoid/' + article.uid">
-            <div class="content-area">
-              <h6
-                class="mb-spacing-xs"
-                v-text="cleanCopy(article.posted)"
-              />
-              <h4
-                class="mb-spacing-sm"
-                v-text="cleanCopy(article.title)"
-              />
-              <p
-                class="mb-spacing-md"
-                v-html="cleanCopy(article.abstract.slice(0, 150) + '...')"
-              />
-              <cv-button
-                size="small"
-                kind="tertiary"
-                @click="readArticle(article.articleid)"
-                v-text="'Read More'"
-              />
-            </div>
-          </cv-tile>
+          <ArticleCard
+            :title="article.title"
+            :article-id="article.id"
+          />
         </div>
       </template>
       <template v-else>
@@ -41,16 +29,19 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import { PageHeader, LoadingBlock } from '@/app/global/components'
+import { mapState, mapGetters } from 'vuex'
+import { PageHeader, LoadingBlock, ArticleCard } from '@/app/global/components'
 import { newsActions } from './shared/state'
-
 export default {
   name: 'NewsPage',
   components: {
     PageHeader,
-    LoadingBlock
+    LoadingBlock,
+    ArticleCard
   },
+  data: () => ({
+    articleSearchTerm: null
+  }),
   metaInfo () {
     return {
       title: 'News - American Whitewater'
@@ -58,21 +49,11 @@ export default {
   },
   computed: {
     ...mapState({
-      loading: state => state.newsPageState.newsPageData.loading,
-      articles: state => state.newsPageState.newsPageData.data
-      // articles: state => state.newsPageState.newsPageData.data.articles
+      loading: state => state.newsPageState.newsData.loading
     }),
-    latest () {
-      return this.articles.CArticleGadgetJSON_view
-    }
-    // articleTiles() {
-    //   return this.articles.articles.CArticleGadgetJSON_view_list.slice(0, 12);
-    // }
+    ...mapGetters(['featuredArticle', 'newsArticles'])
   },
   methods: {
-    readArticle (id) {
-      this.$router.push(`/article/${id}`)
-    },
     cleanCopy (copy) {
       return this.$sanitize(copy, {
         disallowedTags: [

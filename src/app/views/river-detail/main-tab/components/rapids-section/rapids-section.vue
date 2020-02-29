@@ -5,7 +5,7 @@
       Rapids
     </h2>
     <div class>
-      <svg
+      <!-- <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"
         height="10"
@@ -94,7 +94,7 @@
             />
           </g>
         </g>
-      </svg>
+      </svg> -->
     </div>
     <template v-if="!loading">
       <div class="bx--row">

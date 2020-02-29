@@ -13,35 +13,45 @@
       <div class="bx--grid">
         <page-header
           :title="article.title"
-          :subtitle="article.posted"
+          :subtitle="formatDate(article.posted)"
         />
         <div class="spacer" />
         <div class="bx--row">
-          <div class="bx--col-sm-4 bx--col-md-2 bx--col-lg-1">
+          <div class="bx--col-sm-4 bx--col-md-1 bx--col-lg-1 pt-md">
             <div class="share-article">
               <h5>Share</h5>
               <span @click="shareArticle('facebook')">
-                <facebook-logo />
+                <LogoFacebook24 />
               </span>
               <span @click="shareArticle('linkedin')">
-                <linkedin-logo />
+                <LogoLinkedIn24 />
               </span>
               <span @click="shareArticle('google')">
-                <google-logo />
+                <LogoGoogle24 />
               </span>
               <span @click="shareArticle('email')">
-                <email-icon />
+                <Email24 />
               </span>
             </div>
           </div>
-          <div class="bx--col-md-2 bx--col-lg-8 pt-md  mb-lg">
-            <div v-html="article.contents" />
+          <div class="bx--col-md-6  bx--col-lg-8 pt-md mb-lg">
+            <div
+              class="article-content"
+              v-html="formatContent"
+            />
           </div>
-          <!-- <div class="bx--col-sm-4 bx--col-md-2 bx--col-lg-2"> -->
-          <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-12">
+          <div class="bx--col-lg-5 bx--offset-lg-1 pt-md mb-lg">
             <hr>
-            <h2>Related News</h2>
-            <!-- need to split up store for related articles  -->
+            <h2 class="mb-spacing-md">
+              Related
+            </h2>
+            <ArticleCard
+              v-for="(item, i) in frontPageArticles"
+              :key="i"
+              :title="item.title"
+              :author="item.author"
+              class="mb-spacing-sm"
+            />
           </div>
         </div>
       </div>
@@ -49,38 +59,88 @@
   </div>
 </template>
 <script>
-import virtual_LogoFacebook24 from '@carbon/icons-vue/es/logo--facebook/24'
-import virtual_LogoLinkedIn24 from '@carbon/icons-vue/es/logo--linkedin/24'
-import virtual_LogoGoogle24 from '@carbon/icons-vue/es/logo--google/24'
-import virtual_Email24 from '@carbon/icons-vue/es/email/24'
-import { PageHeader } from '@/app/global/components'
-import { newsActions } from '../shared/state'
-import { mapState } from 'vuex'
+import { PageHeader, ArticleCard } from '@/app/global/components'
+import { articleActions, newsActions } from '../shared/state'
+import { mapState, mapGetters } from 'vuex'
+import Moment from 'moment'
 export default {
   name: 'ArticleDetail',
   components: {
     PageHeader,
-    'facebook-logo': virtual_LogoFacebook24,
-    'linkedin-logo': virtual_LogoLinkedIn24,
-    'google-logo': virtual_LogoGoogle24,
-    'email-icon': virtual_Email24
+    ArticleCard
   },
+  data: () => ({
+    sharePlatform: null,
+    title: null,
+    description: null
+  }),
+  metaInfo () {
+    return {
+      title: this.getMetaTitle,
+      titleTemplate: '%s | American Whitewater'
+    }
+  },
+
   computed: {
     ...mapState({
-      article: state => state.newsPageState.newsPageData.data,
-      loading: state => state.newsPageState.newsPageData.loading
+      article: state => state.newsPageState.articleData.data,
+      loading: state => state.newsPageState.articleData.loading,
+      error: state => state.newsPageState.articleData.error
     }),
+    ...mapGetters(['frontPageArticles']),
+    getMetaTitle () {
+      if (this.article) {
+        if (this.article.title.length > 50) {
+          return this.article.title.slice(0, 47) + '...'
+        }
+
+        return this.article.title
+      }
+      return null
+    },
     articleId () {
       return this.$route.params.id
+    },
+    formatContent () {
+      if (this.article) {
+        const content = this.article.contents
+        const openingTags = this.$replaceText(content, '<div>', '<p>')
+        const closingTags = this.$replaceText(openingTags, '</div>', '</p>')
+        return closingTags
+      }
+      return null
+    }
+  },
+  watch: {
+    article (data) {
+      if (data) {
+        const content = this.$sanitize(data.abstract, {
+          allowedTags: [],
+          allowedAttributes: {}
+        })
+
+        document.getElementById('meta-description').setAttribute('content', content.slice(0, 150))
+      }
     }
   },
   methods: {
     shareArticle (platform) {
-      alert(`share article on ${platform}`)
+      this.sharePlatform = platform
+    },
+    formatDate (date) {
+      return Moment(date).format('ll')
     }
   },
   created () {
-    this.$store.dispatch(newsActions.GET_ARTICAL_DETAIL_DATA, this.articleId)
+    this.$store.dispatch(articleActions.GET_ARTICAL_DETAIL_DATA, this.articleId)
+    this.$store.dispatch(newsActions.GET_FRONT_PAGE_ARTICLES)
+  },
+  beforeRouteLeave (to, from, next) {
+    /**
+     * @todo we can make this description meta data function part of vue router global nav guards
+     */
+    document.getElementById('meta-description').setAttribute('content', 'default description')
+    next()
   }
 }
 </script>
@@ -95,6 +155,8 @@ export default {
   .share-article {
     display: flex;
     flex-flow: column nowrap;
+    position: sticky;
+    top:100px;
     h5,
     span {
       margin-bottom: $spacing-sm;
@@ -111,5 +173,12 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.article-content {
+  @include carbon--type-style('body-long-02');
+  p {
+    margin-bottom: 1.25rem;
+  }
 }
 </style>

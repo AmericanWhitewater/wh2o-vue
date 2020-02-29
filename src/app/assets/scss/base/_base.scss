@@ -5,3 +5,17 @@ a {
 body {
     background-color: $ui-01;   
 }
+
+.app-main-content {
+
+    min-height: calc(100vh - 125px);
+    background-color: $ui-background;
+
+    &.interior {
+        padding-top: $mobile-nav-height + 44px;
+        @include MQ("LG") {
+          padding-top: $desktop-nav-height + 44px;
+        }
+    }
+   
+  }
