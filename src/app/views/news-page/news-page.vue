@@ -19,6 +19,7 @@
           <ArticleCard
             :title="article.title"
             :article-id="article.id"
+            :author="article.author"
           />
         </div>
       </template>
