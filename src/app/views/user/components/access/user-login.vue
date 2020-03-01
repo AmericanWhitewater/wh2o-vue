@@ -27,7 +27,7 @@
         </h6>
       </div>
     </div>
-    <div class="bx--row ">
+    <div class="bx--row">
       <div class="bx--col">
         <cv-button
           kind="tertiary"
@@ -49,6 +49,7 @@
 </template>
 <script>
 import { userActions } from '../../shared/state'
+import { globalAppActions } from '@/app/global/state'
 /**
  * @displayName User Login
  */
@@ -69,6 +70,13 @@ export default {
         username: this.userName,
         password: this.passWord,
         admin: admin === 'admin' ? 'admin' : null
+      })
+      this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        title: 'Welcome back!',
+        kind: 'info',
+        contrast: false,
+        action: false,
+        autoHide: true
       })
       this.$router.go(-1)
     }

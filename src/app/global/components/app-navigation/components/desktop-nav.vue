@@ -5,14 +5,12 @@
         <div class="bx--row">
           <div class="bx--col-lg-16 top-bar">
             <template v-if="!editMode">
-              <!-- <router-link to="/users/login">Login</router-link> -->
               <router-link
                 v-if="user"
                 to="/user/account/1"
                 class="ml-2xs"
               >
-                <UserAvatar16 />
-                My Account
+                <UserAvatar16 />My Account
               </router-link>
               <router-link
                 to="/river-search"
@@ -105,9 +103,7 @@
                   <cv-button
                     kind="tertiary"
                     size="small"
-                  >
-                    Donate
-                  </cv-button>
+                  >Donate</cv-button>
                 </a>
               </template>
             </cv-header-nav>
@@ -156,17 +152,17 @@ export default {
 </script>
 <style lang="scss">
 .desktop-nav {
-
-  .bx--header__menu-title[role='menuitem'][aria-expanded='true'] {
-    background-color:#fff !important;
+  .bx--header__menu-title[role="menuitem"][aria-expanded="true"] {
+    background-color: #fff !important;
   }
 
-  .bx--header__menu-title[role='menuitem'][aria-expanded='true'] + .bx--header__menu {
-    @include layer('temporary-nav')
+  .bx--header__menu-title[role="menuitem"][aria-expanded="true"]
+    + .bx--header__menu {
+    @include layer("temporary-nav");
   }
 
-  a.bx--header__menu-item[role='menuitem']:hover > svg {
-    fill:$ui-04;
+  a.bx--header__menu-item[role="menuitem"]:hover > svg {
+    fill: $ui-04;
   }
 
   .bx--header__nav::before {
@@ -203,6 +199,14 @@ export default {
     }
   }
 
+  &.home {
+    header,
+    .cv-header-nav,
+    .bx--header {
+      @include layer("sticky-nav");
+    }
+  }
+
   .top-bar-wrapper {
     background-color: $brand-03;
 
@@ -226,14 +230,14 @@ export default {
       height: 25px;
       justify-content: flex-end;
       a {
-        align-items:center;
+        align-items: center;
         color: #fff;
-        display:inline-flex;
+        display: inline-flex;
         font-size: 12px;
         font-weight: 600;
         text-decoration: none;
         svg {
-          margin-right:0.25rem;
+          margin-right: 0.25rem;
           g,
           path {
             fill: #fff;

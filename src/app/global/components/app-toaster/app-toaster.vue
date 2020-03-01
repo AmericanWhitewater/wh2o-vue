@@ -1,7 +1,7 @@
 <template>
   <div class="app-toaster">
     <div class="bx--grid">
-      <div class="bx--row">
+      <div class="bx--row bx--no-gutter--left">
         <div class="bx--col">
           <transition-group
             name="list"
@@ -18,7 +18,8 @@
                   :title="t.title"
                   :low-contrast="t.contrast"
                   :action-label="t.label"
-                  @action="refreshApp"
+                  :sub-title="t.subtitle"
+                  @action="handleAction(index, t.href)"
                   @close="handleClose(index)"
                 />
               </template>
@@ -40,7 +41,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { appLocalStorage } from '@/app/global/services'
+import { globalAppActions } from '@/app/global/state'
 /**
  * @displayName App Toaster
  */
@@ -56,38 +57,25 @@ export default {
       kind: 'info',
       contrast: true,
       action: true
-    },
-    vueDevTools: {
-      title: 'Vue Dev Tools Available',
-      subtitle: 'Get a peek under the hood.',
-      kind: 'info',
-      contrast: false,
-      action: false
-    },
-    toasts: []
+    }
   }),
   computed: {
     ...mapState({
       updateAvailable: state =>
-        state.appGlobalState.appGlobalData.updateAvailable
+        state.appGlobalState.appGlobalData.updateAvailable,
+      toasts: state => state.appGlobalState.appGlobalData.toasts
     })
   },
   watch: {
-    updateAvailable () {
-      this.toasts.push(this.newUpdate)
+    updateAvailable (update) {
+      if (update) {
+        this.$store.dispatch(globalAppActions.SEND_TOAST, this.newUpdate)
+      }
     }
   },
   methods: {
     handleClose (index, title) {
-      if (index === 0) {
-        this.toasts.shift()
-      }
-      if (index === 1) {
-        this.toasts.pop()
-      }
-      if (title === this.vueDevTools.title) {
-        appLocalStorage.setItem('Vue_Toast_Dismissed', true)
-      }
+      this.$store.dispatch(globalAppActions.CLOSE_TOAST, index)
     },
     handleUpdate () {
       window.location.reload(true)
@@ -103,10 +91,13 @@ export default {
       }
       this.registration.waiting.postMessage('skipWaiting')
     },
-    showDevToolsToast () {
-      if (!appLocalStorage.getItem('Vue_Toast_Dismissed')) {
-        this.toasts.push(this.vueDevTools)
+    handleAction (index, href) {
+      if (href) {
+        this.$router.push(href)
+      } else {
+        this.refreshApp()
       }
+      this.$store.dispatch(globalAppActions.CLOSE_TOAST, index)
     }
   },
   created () {
@@ -118,7 +109,17 @@ export default {
     })
   },
   mounted () {
-    this.showDevToolsToast()
+    /**
+     * proof of concept
+     */
+    this.$store.dispatch(globalAppActions.SEND_TOAST, {
+      title: 'Legislative Emergency',
+      href: '/news',
+      label: 'help now',
+      kind: 'warning',
+      contrast: false,
+      action: true
+    })
   }
 }
 </script>
@@ -130,7 +131,10 @@ export default {
   position: fixed;
   top: 50px;
   width: 100vw;
+  right: 0;
   z-index: 9999;
+  margin: 0;
+  overflow: visible;
 
   @include MQ("LG") {
     top: 75px;

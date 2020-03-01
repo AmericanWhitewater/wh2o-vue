@@ -3,7 +3,8 @@ a {
 }
 
 body {
-    background-color: $ui-01;   
+    background-color: $ui-01;
+    overflow-x: hidden;  
 }
 
 .app-main-content {

@@ -136,30 +136,32 @@ export default {
 .mobile-nav {
   .content-area {
     @include ease(0.6s);
-    justify-content: space-between;
-    height: $mobile-nav-height;
-    display: flex;
     align-items: center;
+    display: flex;
+    height: $mobile-nav-height;
+    justify-content: space-between;
   }
 }
 
 header {
+  @include layer("sticky-nav");
+  background-color: $ui-01;
   .drawer {
-    position: fixed;
-    min-height: calc(100vh - 50px);
-    height: 100%;
-    top: $mobile-nav-height;
-    right: 0;
-    z-index: 3;
     background-color: $ui-03;
-    width: 300px;
     display: flex;
     flex-flow: column nowrap;
+    height: 100%;
+    min-height: calc(100vh - 50px);
+    position: fixed;
+    right: 0;
+    top: $mobile-nav-height;
+    width: 300px;
+    z-index: 3;
     a {
-      display: block;
-      text-decoration: none;
       color: $text-01;
+      display: block;
       margin-left: $spacing-md;
+      text-decoration: none;
       &:hover {
         text-decoration: underline;
       }
@@ -168,12 +170,12 @@ header {
 }
 
 .overlay {
-  position: fixed;
-  min-height: 100vh;
-  min-width: 100vw;
-  z-index: 2;
   background-color: rgba($ui-05, 0.5);
   cursor: pointer;
+  min-height: 100vh;
+  min-width: 100vw;
+  position: fixed;
+  z-index: 2;
 }
 svg {
   cursor: pointer;
@@ -195,7 +197,8 @@ svg {
 .fade-leave-active {
   @include ease;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 

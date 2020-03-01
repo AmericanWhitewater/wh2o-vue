@@ -232,6 +232,7 @@ import { mapState } from 'vuex'
 import screenfull from 'screenfull'
 import Moment from 'moment'
 import debounce from 'lodash.debounce'
+import { globalAppActions } from '@/app/global/state'
 export default {
   name: 'RiverIndex',
   components: {
@@ -427,6 +428,16 @@ export default {
   },
   mounted () {
     this.getUserLocation()
+
+    this.$store.dispatch(globalAppActions.SEND_TOAST, {
+      title: 'Bookmarked River Updated',
+      href: '/river-detail/347/main',
+      label: 'view',
+      kind: 'info',
+      contrast: false,
+      action: true,
+      autoHide: true
+    })
   },
   created () {
     this.debouncedHighlight = debounce(this.highlightFeature, 200)
