@@ -5,9 +5,9 @@
       title="River Detail Unavailable"
       text="Sorry for the inconvenience, our team has been notified."
     />
-    <loading-block
+    <cv-loading
       v-if="loading && !error"
-      text="Loading River..."
+      small
       overlay
     />
     <template v-if="!loading && !error">
@@ -91,14 +91,13 @@ import {
   actionsTypes,
   rapidsActions
 } from './shared/state'
-import { ErrorBlock, LoadingBlock } from '@/app/global/components'
+import { ErrorBlock } from '@/app/global/components'
 
 export default {
   name: 'RiverDetail',
   components: {
     'river-header': RiverHeader,
-    ErrorBlock,
-    LoadingBlock
+    ErrorBlock
   },
   metaInfo () {
     return {

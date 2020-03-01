@@ -15,10 +15,10 @@ import Error20 from '@carbon/icons-vue/es/error/20.js'
 import Filter16 from '@carbon/icons-vue/es/filter/16.js'
 import FitToScreen16 from '@carbon/icons-vue/es/fit-to-screen/16.js'
 import FitToScreen32 from '@carbon/icons-vue/es/fit-to-screen/32.js'
-import Grid32 from '@carbon/icons-vue/es/grid/32.js'
+import Grid16 from '@carbon/icons-vue/es/grid/16.js'
 import Help32 from '@carbon/icons-vue/es/help/32.js'
 import Launch20 from '@carbon/icons-vue/es/launch/20.js'
-import List32 from '@carbon/icons-vue/es/list/32.js'
+import List16 from '@carbon/icons-vue/es/list/16.js'
 import Map32 from '@carbon/icons-vue/es/map/32.js'
 import Notification20 from '@carbon/icons-vue/es/notification/20.js'
 import Settings32 from '@carbon/icons-vue/es/settings/32.js'
@@ -48,10 +48,10 @@ Vue.use(CarbonIconsVue, {
     Filter16,
     FitToScreen16,
     FitToScreen32,
-    Grid32,
+    Grid16,
     Help32,
     Launch20,
-    List32,
+    List16,
     Map32,
     Notification20,
     Settings32,

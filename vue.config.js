@@ -11,6 +11,7 @@ module.exports = {
    */
   lintOnSave: false,
   devServer: {
+    port: 8081,
     /**
    * disables linting overlay which disrupts workflow.
    * linting reserved for pre-commit git hook.

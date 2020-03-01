@@ -21,7 +21,7 @@
                 <img
                   v-if="rapid.photo"
                   :src="
-                    `https://prerelease.americanwhitewater.org${rapid.photo.file.uri.thumb}`
+                    `https://americanwhitewater.org${rapid.photo.url}`
                   "
                   :alt="rapid.name"
                 >
@@ -29,7 +29,7 @@
             </div>
           </div>
           <div class="bx--col-md-6">
-            <p v-html="rapid.description" />
+            <div v-html="sanitizedDescription" />
           </div>
         </div>
       </template>
@@ -67,48 +67,70 @@ export default {
         classes = 'bx--col-sm-12 bx--col-md-6 bx--col-lg-4'
       }
       return classes
+    },
+    sanitizedDescription () {
+      if (this.rapid) {
+        const content = this.$sanitize(this.rapid.description, {
+          disallowedAttributes: {
+            '*': ['style']
+          }
+        })
+
+        const openingTags = this.$replaceText(content, '<div>', '<p>')
+        const closingTags = this.$replaceText(openingTags, '</div>', '</p>')
+
+        const legacyUrl = 'http://www.americanwhitewater.org/rivers/id/'
+        const updatedUrl = '/#/river-detail/'
+
+        return this.$replaceText(closingTags, legacyUrl, updatedUrl)
+      }
+      return null
     }
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .rapid-item {
-  @include ease;
-}
-.bx--tile {
-  margin: $spacing-md 0;
+  .bx--tile {
+    margin: $spacing-md 0;
 
-  .thumbnail {
-    width: 100%;
-    min-height: 250px;
-    background-color: $ui-03;
-    margin-bottom: 1rem;
-    img {
-      object-fit: cover;
-      height: 250px;
+    .thumbnail {
       width: 100%;
+      min-height: 250px;
+      background-color: $ui-03;
+      margin-bottom: 1rem;
+      img {
+        object-fit: cover;
+        height: 250px;
+        width: 100%;
+      }
     }
   }
-}
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  span {
-    font-size: 14px;
-    &:nth-child(1) {
-      margin-right: 0.5rem;
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    span {
+      font-size: 14px;
+      &:nth-child(1) {
+        margin-right: 0.5rem;
+      }
     }
   }
-}
 
-.bx--tile--is-expanded .bx--tile-content__below-the-fold {
-  border-top: solid 1px $ui-05;
-  margin-top: $spacing-sm;
-  padding-top: 1rem;
-}
+  .bx--tile--is-expanded {
+    .bx--tile-content {
+      .bx--tile-content__below-the-fold {
+        border-top: solid 1px $ui-03;
+        margin-top: $spacing-sm;
+        padding-bottom: $spacing-lg;
+        padding-top: 1rem;
+      }
+    }
+  }
 
-.bx--tile--expandable:hover {
-  background-color: darken($ui-02, 0.05);
+  .bx--tile--expandable:hover {
+    background-color: darken($ui-02, 0.05);
+  }
 }
 </style>
