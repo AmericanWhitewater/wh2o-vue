@@ -204,6 +204,11 @@ export default {
     ContentEditor,
     LoadingBlock
   },
+  metaInfo () {
+    return {
+      title: 'Accident Report - American Whitewater'
+    }
+  },
   computed: {
     accidentId () {
       return this.$route.params.accidentId

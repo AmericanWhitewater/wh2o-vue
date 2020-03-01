@@ -39,6 +39,11 @@ export default {
     PageHeader,
     Layout
   },
+  metaInfo () {
+    return {
+      title: 'Accident Database - American Whitewater'
+    }
+  },
   computed: {
     loading () {
       return this.$store.state.accidentDatabaseState.accidentDatabaseData

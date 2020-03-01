@@ -18,6 +18,11 @@ export default {
   name: 'SafetyResources',
   components: {
     Layout
+  },
+  metaInfo () {
+    return {
+      title: 'Safety Resources - American Whitewater'
+    }
   }
 }
 </script>

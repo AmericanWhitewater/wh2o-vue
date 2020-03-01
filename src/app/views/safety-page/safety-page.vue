@@ -2,57 +2,19 @@
   <div class="safety">
     <div class="bx--grid">
       <page-header title="Safety" />
-      <div class="spacer" />
-      <div class="bx--row pt-lg mb-spacing-md">
-        <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-6">
-          <hr>
-          <h2 class="mb-spacing-md">
-            Related News
-          </h2>
-          <p class="mb-spacing-md">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </p>
-        </div>
-      </div>
-      <div class="bx--row mb-lg">
-        <template v-if="loading && !error">
-          <loading-block />
-        </template>
-        <template v-if="!loading && error">
-          <error-block :text="error" />
-        </template>
-        <template v-if="!loading && !error">
-          <div
-            v-for="(article, index) in articles.slice(0, 4)"
-            :key="index"
-            class="bx--col-sm-12 bx--col-md-6 bx--col-lg-3"
-          >
-            <article-card
-              :thumbnail-id="article.abstractphoto"
-              :date-posted="article.posted"
-              :title="article.title"
-              :abstract="article.abstract"
-              :article-id="article.articleid"
-            />
-          </div>
-        </template>
-      </div>
+      <page-description description="Safety has been a core issue for AW since 1954, and today we are leaders in accident analysis and safety education. Formal risk management is part of all our programs. We work hard to publicize safe practices that help everyone enjoy our rivers safely and advise legislative bodies and river managers on the best ways to educate whitewater paddlers." />
+      <!-- <div class="spacer" />
+
+       -->
       <div class="bx--row">
         <div class="bx--col-sm-12 bx--col-md-6 bx--col-lg-8">
-          <loading-block />
+          <loading-block hide-text />
         </div>
         <div class="bx--col-sm-12 bx--col-md-6 bx--col-lg-8 safety-resources">
           <hr>
           <h2 class="mb-spacing-md">
-            Safety Resources
+            Resources
           </h2>
-          <p class="mb-spacing-lg">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea
-          </p>
           <ul>
             <li>
               <div class="icon-wrapper">
@@ -92,7 +54,7 @@
               </div>
               <div class>
                 <h6 @click="$router.push('/new-paddlers')">
-                  For new paddlers
+                  New paddlers
                 </h6>
                 <p>
                   dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -163,6 +125,41 @@
           </ul>
         </div>
       </div>
+      <div class="bx--row pt-lg mb-spacing-md">
+        <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-6">
+          <hr>
+          <h2 class="mb-spacing-md">
+            Related News
+          </h2>
+          <p class="mb-spacing-md">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+        </div>
+      </div>
+      <div class="bx--row mb-lg">
+        <template v-if="loading && !error">
+          <loading-block />
+        </template>
+        <template v-if="!loading && error">
+          <error-block :text="error" />
+        </template>
+        <template v-if="!loading && !error">
+          <div
+            v-for="(article, index) in articles.slice(0, 4)"
+            :key="index"
+            class="bx--col-sm-12 bx--col-md-6 bx--col-lg-3"
+          >
+            <article-card
+              :thumbnail-id="article.abstractphoto"
+              :date-posted="article.posted"
+              :title="article.title"
+              :abstract="article.abstract"
+              :article-id="article.articleid"
+            />
+          </div>
+        </template>
+      </div>
     </div>
   </div>
 </template>
@@ -170,6 +167,7 @@
 import { mapState } from 'vuex'
 import {
   PageHeader,
+  PageDescription,
   ErrorBlock,
   LoadingBlock,
   ArticleCard
@@ -180,6 +178,7 @@ export default {
   name: 'SafetyPage',
   components: {
     PageHeader,
+    PageDescription,
     ErrorBlock,
     LoadingBlock,
     ArticleCard

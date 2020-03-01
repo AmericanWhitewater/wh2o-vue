@@ -1,34 +1,39 @@
 <template>
   <div class="page-not-found bg-topo">
-    <div class="bx--grid">
-      <div class="bx--row">
-        <div class="bx--col pt-lg">
-          <h2 class="mb-spacing-md">
+    <layout name="layout-full-width">
+      <template #main>
+        <header>
+          <h1 class="mb-spacing-md">
             404
-          </h2>
-          <p>
-            Sorry, the page you are looking for is missing or doesn't exist.
+          </h1>
+          <p class="mb-spacing-md">
+            Sorry, the page you are looking for is missing
           </p>
-        </div>
-      </div>
-    </div>
+          <cv-search />
+        </header>
+      </template>
+    </layout>
   </div>
 </template>
 
 <script>
+import { Layout } from '@/app/global/layout'
 export default {
-  name: 'AppPageNotFound'
+  name: 'AppPageNotFound',
+  components: {
+    Layout
+  }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .page-not-found {
   @include full-page-height;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-flow: column nowrap;
-  .bx--col {
+  header {
     text-align: center;
   }
 }

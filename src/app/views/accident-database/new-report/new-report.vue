@@ -47,7 +47,12 @@ export default {
       'Step Three',
       'Review & Submit'
     ]
-  })
+  }),
+  metaInfo () {
+    return {
+      title: 'New Report - American Whitewater'
+    }
+  }
 }
 </script>
 

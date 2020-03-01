@@ -18,6 +18,11 @@ export default {
   name: 'NewPaddlers',
   components: {
     Layout
+  },
+  metaInfo () {
+    return {
+      title: 'New Paddlers - American Whitewater'
+    }
   }
 }
 </script>
