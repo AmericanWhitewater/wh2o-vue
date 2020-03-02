@@ -24,7 +24,7 @@
         <div
           class="bx--col-sm-12 bx--col-md-6 bx--col-lg-6 "
         >
-          <ArticleCard
+          <ResourceCard
             title="River Search"
             to="/river-search"
             icon="AddAlt32"
