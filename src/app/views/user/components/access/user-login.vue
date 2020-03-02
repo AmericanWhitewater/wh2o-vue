@@ -28,7 +28,7 @@ import { appLocalStorage } from '@/app/global/services'
 export default {
   name: 'UserLogin',
   data: () => ({
-    email: ''
+    email: 'betaTester@aw.org'
   }),
   metaInfo () {
     return {

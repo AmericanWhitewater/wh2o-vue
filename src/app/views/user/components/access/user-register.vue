@@ -5,6 +5,7 @@
       class="mb-spacing-sm"
       label="Email"
       type="text"
+      theme="light"
     />
     <p
       class="bx--type--caption mb-spacing-md text-underline cursor-pointer"
@@ -55,7 +56,7 @@
         </p>
         <h2>Disclaimer</h2>
         <p>
-          This app is not an official American Whitewater app. All flow data, river data, and blog posts are courtesy of American Whitewater.
+          This app is not an official American Whitewater product. All flow data, river data, and blog posts are courtesy of American Whitewater.
         </p>
       </template>
       <template slot="primary-button">
@@ -74,7 +75,7 @@ export default {
     termsVisible: false,
     confirmationError: false,
     newUser: {
-      email: '',
+      email: 'betaTester@aw.org',
       termsConfirmed: false
     }
   }),
