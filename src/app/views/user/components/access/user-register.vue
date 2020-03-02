@@ -6,6 +6,7 @@
       label="Email"
       type="text"
       theme="light"
+      disabled
     />
     <p
       class="bx--type--caption mb-spacing-md text-underline cursor-pointer"
@@ -76,7 +77,7 @@ export default {
     confirmationError: false,
     newUser: {
       email: 'betaTester@aw.org',
-      termsConfirmed: false
+      termsConfirmed: true
     }
   }),
   methods: {
