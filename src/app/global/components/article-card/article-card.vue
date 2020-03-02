@@ -32,7 +32,7 @@
           />
           <p
             class="bx--article-card__read-time"
-            v-text="mockReadTime(20)"
+            v-text="readTime"
           />
         </div>
         <div class="bx--article-card__icon--action">
@@ -103,11 +103,17 @@ export default {
       type: String,
       required: false,
       default: 'arrowRight'
+    },
+    river: {
+      type: Boolean,
+      required: false
     }
   },
   methods: {
     readArticle () {
-      this.$router.push(`/article/${this.articleId}`, {
+      const path = this.river ? `/river-detail/${this.articleId}/main` : `/article/${this.articleId}`
+
+      this.$router.push(path, {
         meta: {
           crumbLabel: this.title
         }
@@ -118,9 +124,6 @@ export default {
         return title.slice(0, 41) + '...'
       }
       return title
-    },
-    mockReadTime (max) {
-      return `${Math.floor(Math.random() * Math.floor(max))}min`
     }
   }
 }

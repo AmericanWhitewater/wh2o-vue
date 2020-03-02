@@ -29,7 +29,8 @@
                   </li>
                   <li class="mt-lg">
                     <cv-button
-                      kind="ghost"
+                      kind="tertiary"
+                      size="small"
                       @click="$router.push('/user/access/logout')"
                     >
                       Logout

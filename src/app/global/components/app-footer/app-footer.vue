@@ -16,7 +16,7 @@
               <ResourceCard
                 v-if="loggedIn"
                 title="Inbox"
-                to="/community/events"
+                to="/user/account/1/alerts"
                 icon="Email32"
                 color="light"
               />
@@ -24,7 +24,7 @@
             <template #cardThree>
               <ResourceCard
                 title="Account Settings"
-                to="/user/access/login"
+                to="/user/account/1/settings"
                 icon="Settings32"
                 color="light"
               />

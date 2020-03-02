@@ -4,23 +4,27 @@
       <loading-block />
     </template>
     <template v-if="!loading && loadedBookmarks.length >= 1">
-      <div class="bx--row bx--no-gutter">
+      <div class="bx--row bx--no-gutter mb-lg">
         <div
           v-for="(item, index) in loadedBookmarks"
           :key="index"
           class="bx--col-sm-4 bx--col-md-8 bx--col-lg-6 "
         >
-          <ResourceCard
+          <ArticleCard
             :key="index"
-            :title="item.section.slice(0,50)+'...'"
+            :title="item.section.slice(0,75)+'...'"
             :subtitle="item.river"
+            river
+            :article-id="item.id"
             :to="`/river-detail/${item.id}/main`"
+            :read-time="item.class"
+            :author="mockFlowData(1000)"
           />
         </div>
         <div
           class="bx--col-sm-12 bx--col-md-6 bx--col-lg-6 "
         >
-          <ResourceCard
+          <ArticleCard
             title="River Search"
             to="/river-search"
             icon="AddAlt32"
@@ -49,13 +53,14 @@
 
 <script>
 import { appLocalStorage } from '@/app/global/services'
-import { ResourceCard, LoadingBlock } from '@/app/global/components'
+import { ArticleCard, ResourceCard, LoadingBlock } from '@/app/global/components'
 import { mapState } from 'vuex'
 import { bookmarksActions } from '@/app/views/river-detail/shared/state'
 
 export default {
   name: 'UserBookmarks',
   components: {
+    ArticleCard,
     ResourceCard,
     LoadingBlock
   },
@@ -89,6 +94,9 @@ export default {
           bookmarks[i]
         )
       }
+    },
+    mockFlowData (max) {
+      return `${Math.floor(Math.random() * Math.floor(max))} [cfs]`
     }
   },
   mounted () {
