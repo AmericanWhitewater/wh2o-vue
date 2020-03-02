@@ -1,12 +1,19 @@
 <template>
   <div class="user-profile">
-    preview current user profile
+    <error-block
+      title="Preview Unavailable"
+      text="Please try again later"
+    />
   </div>
 </template>
 
 <script>
+import { ErrorBlock } from '@/app/global/components'
 export default {
-  name: 'UserProfile'
+  name: 'UserProfile',
+  components: {
+    ErrorBlock
+  }
 }
 </script>
 

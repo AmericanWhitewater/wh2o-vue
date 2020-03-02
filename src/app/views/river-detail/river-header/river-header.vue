@@ -15,6 +15,7 @@
                   kind="secondary"
                   size="small"
                   class="ml-spacing-sm"
+                  :disabled="!user"
                   @click.exact="addBookmark"
                 >
                   Bookmark River
@@ -90,7 +91,8 @@ export default {
   }),
   computed: {
     ...mapState({
-      editMode: state => state.appGlobalState.appGlobalData.editMode
+      editMode: state => state.appGlobalState.appGlobalData.editMode,
+      user: state => state.userState.userData.data
     }),
     ...mapGetters(['userIsAdmin']),
     reachId () {

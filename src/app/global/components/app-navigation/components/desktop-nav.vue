@@ -7,7 +7,7 @@
             <template v-if="!editMode">
               <router-link
                 v-if="user"
-                to="/user/account/1"
+                to="/user/account/1/bookmarks"
                 class="ml-2xs"
               >
                 <UserAvatar16 />My Account

@@ -1,12 +1,19 @@
 <template>
   <div class="user-settings">
-    <p>account settings</p>
+    <error-block
+      title="Settings Unavailable"
+      text="Please try again later"
+    />
   </div>
 </template>
 
 <script>
+import { ErrorBlock } from '@/app/global/components'
 export default {
-  name: 'UserSettings'
+  name: 'UserSettings',
+  components: {
+    ErrorBlock
+  }
 }
 </script>
 

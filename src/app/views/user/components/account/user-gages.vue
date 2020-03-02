@@ -1,12 +1,19 @@
 <template>
   <div class="user-gages">
-    <p>user subscribed gages</p>
+    <error-block
+      title="Alerts Unavailable"
+      text="Please try again later"
+    />
   </div>
 </template>
 
 <script>
+import { ErrorBlock } from '@/app/global/components'
 export default {
-  name: 'UserGages'
+  name: 'UserGages',
+  components: {
+    ErrorBlock
+  }
 }
 </script>
 

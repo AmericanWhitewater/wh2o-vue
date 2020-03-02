@@ -1,14 +1,19 @@
 <template>
   <div class="user-alerts">
-    <p>
-      alerts for all things like, subscribed rivers, membership expiration, etc.
-    </p>
+    <error-block
+      title="Alerts Unavailable"
+      text="Please try again later"
+    />
   </div>
 </template>
 
 <script>
+import { ErrorBlock } from '@/app/global/components'
 export default {
-  name: 'UserAlerts'
+  name: 'UserAlerts',
+  components: {
+    ErrorBlock
+  }
 }
 </script>
 

@@ -28,7 +28,7 @@ export default {
     const self = this
     setTimeout(() => {
       self.$router.replace('/')
-    }, 500)
+    }, 1000)
   }
 }
 </script>

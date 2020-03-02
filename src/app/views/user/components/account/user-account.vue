@@ -95,12 +95,6 @@ export default {
       }
       return 'ghost'
     }
-  },
-  created () {
-    // this is temp, we want to check if there any alerts for the user, if no, push to gages.
-    if (!this.alerts) {
-      this.$router.replace('/user/account/1/bookmarks')
-    }
   }
 }
 </script>
