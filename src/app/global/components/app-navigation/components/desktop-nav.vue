@@ -95,7 +95,7 @@
                   </cv-button>
                 </router-link>
               </template>
-              <template v-else>
+              <!-- <template v-else>
                 <a
                   to="/donate"
                   class="header--btn"
@@ -103,9 +103,10 @@
                   <cv-button
                     kind="tertiary"
                     size="small"
+                    @click.exact="this.window.location='https://www.americanwhitewater.org/content/Membership/donate/?'"
                   >Donate</cv-button>
                 </a>
-              </template>
+              </template> -->
             </cv-header-nav>
           </div>
         </div>

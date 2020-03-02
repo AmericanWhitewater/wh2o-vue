@@ -14,12 +14,14 @@
  */
 import { LoadingBlock } from '@/app/global/components'
 import { userActions } from '@/app/views/user/shared/state'
+import { appLocalStorage } from '@/app/global/services'
 export default {
   name: 'UserLogout',
   components: {
     LoadingBlock
   },
   created () {
+    appLocalStorage.setItem('wh2o-registered', false)
     this.$store.dispatch(userActions.RESET_USER)
   },
   mounted () {

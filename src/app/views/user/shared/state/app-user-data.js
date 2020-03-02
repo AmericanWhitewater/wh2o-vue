@@ -35,7 +35,9 @@ const mutations = {
   },
 
   [DATA_RESET] (state) {
-    Object.assign(state, ...initialState)
+    state.data = null
+    state.error = null
+    state.loading = null
   }
 }
 

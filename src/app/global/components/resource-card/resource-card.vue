@@ -56,8 +56,7 @@ export default {
     },
     icon: {
       type: String,
-      default: 'ChartBar32',
-      required: true
+      required: false
     },
     hideIcon: {
       type: Boolean,

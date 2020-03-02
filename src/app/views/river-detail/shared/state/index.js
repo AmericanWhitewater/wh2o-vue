@@ -27,3 +27,6 @@ export * from './credits-tab/credits-data'
 
 export { default as rapidsData } from './rapids/rapids'
 export * from './rapids/rapids'
+
+export { default as bookmarksData } from './bookmarked-rivers/bookmarked-rivers'
+export * from './bookmarked-rivers/bookmarked-rivers'

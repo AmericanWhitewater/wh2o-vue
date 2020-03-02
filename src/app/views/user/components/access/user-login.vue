@@ -1,63 +1,34 @@
 <template>
   <div class="login">
     <cv-text-input
-      v-model="userName"
+      v-model="email"
       class="mb-spacing-sm"
-      label="Username or Email"
-      type="text"
-    />
-    <cv-text-input
-      v-model="passWord"
-      class="mb-spacing-lg"
-      label="Password"
-      type="password"
+      placeholder="Email Address"
+      type="email"
+      theme="light"
+      @keydown.enter="submitLogin"
     />
     <cv-button
       kind="primary"
       small
       class="mb-sm"
-      disabled
+      :disabled="email.length === 0"
       @click="submitLogin"
       v-text="'Login'"
     />
-    <div class="bx--row">
-      <div class="bx--col">
-        <h6 class="mb-2xs">
-          Login as:
-        </h6>
-      </div>
-    </div>
-    <div class="bx--row">
-      <div class="bx--col">
-        <cv-button
-          kind="tertiary"
-          small
-          @click="submitLogin('admin')"
-          v-text="'admin'"
-        />
-      </div>
-      <div class="bx--col">
-        <cv-button
-          kind="tertiary"
-          small
-          @click="submitLogin('gen')"
-          v-text="'gen user'"
-        />
-      </div>
-    </div>
   </div>
 </template>
 <script>
 import { userActions } from '../../shared/state'
 import { globalAppActions } from '@/app/global/state'
+import { appLocalStorage } from '@/app/global/services'
 /**
  * @displayName User Login
  */
 export default {
   name: 'UserLogin',
   data: () => ({
-    userName: '',
-    passWord: ''
+    email: ''
   }),
   metaInfo () {
     return {
@@ -65,12 +36,17 @@ export default {
     }
   },
   methods: {
-    submitLogin (admin) {
-      this.$store.dispatch(userActions.USER_LOGIN, {
-        username: this.userName,
-        password: this.passWord,
-        admin: admin === 'admin' ? 'admin' : null
-      })
+    submitLogin () {
+      if (this.email === 'wh2o-admin') {
+        this.$store.dispatch(userActions.USER_LOGIN, {
+          admin: 'admin'
+        })
+      } else {
+        this.$store.dispatch(userActions.USER_LOGIN, {
+          admin: null
+        })
+      }
+      appLocalStorage.setItem('wh2o-registered', true)
       this.$store.dispatch(globalAppActions.SEND_TOAST, {
         title: 'Welcome back!',
         kind: 'info',
@@ -78,7 +54,7 @@ export default {
         action: false,
         autoHide: true
       })
-      this.$router.go(-1)
+      this.$router.push('/user/account/1/bookmarks')
     }
   }
 }

@@ -3,50 +3,47 @@
     <div class="bx--grid">
       <div class="bx--row pt-lg">
         <div class="bx--col-xs-12 bx--col-sm-12 bx--col-lg-16 mb-spacing-md">
+          <hr>
           <h1>My Account</h1>
         </div>
         <div class="bx--col-xs-12 bx--col-sm-12 bx--col-lg-16">
-          <cv-tile>
-            <div class="bx--grid dashboard-wrapper">
-              <div class="bx--row">
-                <div
-                  class="bx--col-xs-12 bx--col-sm-4 bx--col-md-4 bx--col-lg-4"
-                >
-                  <ul>
-                    <li
-                      v-for="(item, index) in tabs"
-                      :key="index"
-                      class="mb-spacing-sm"
+          <div class="bx--grid dashboard-wrapper">
+            <div class="bx--row">
+              <div
+                class="bx--col-xs-12 bx--col-sm-4 bx--col-md-4 bx--col-lg-4 "
+              >
+                <ul class="bg-ui-01">
+                  <li
+                    v-for="(item, index) in tabs"
+                    :key="index"
+                    class="mb-spacing-sm"
+                  >
+                    <cv-button
+                      :kind="activeSection(item.label)"
+                      @click="
+                        $router.replace(`/user/account/1/${item.label}`)
+                      "
                     >
-                      <cv-button
-                        :kind="activeSection(item.label)"
-                        small
-                        @click="
-                          $router.replace(`/user/account/1/${item.label}`)
-                        "
-                      >
-                        {{ item.label | capitalize }}
-                      </cv-button>
-                    </li>
-                    <li>
-                      <cv-button
-                        size="small"
-                        kind="tertiary"
-                        @click="$router.push('/user/access/logout')"
-                      >
-                        Logout
-                      </cv-button>
-                    </li>
-                  </ul>
-                </div>
-                <div
-                  class="bx--col-xs-12 bx--col-sm-8 bx--col-md-8 bx--col-lg-12"
-                >
-                  <router-view />
-                </div>
+                      {{ item.label | capitalize }}
+                    </cv-button>
+                  </li>
+                  <li class="mt-lg">
+                    <cv-button
+                      kind="ghost"
+                      @click="$router.push('/user/access/logout')"
+                    >
+                      Logout
+                    </cv-button>
+                  </li>
+                </ul>
+              </div>
+              <div
+                class="bx--col-xs-12 bx--col-sm-8 bx--col-md-8 bx--col-lg-12"
+              >
+                <router-view />
               </div>
             </div>
-          </cv-tile>
+          </div>
         </div>
       </div>
     </div>
@@ -69,6 +66,9 @@ export default {
     tabs: [
       {
         label: 'alerts'
+      },
+      {
+        label: 'bookmarks'
       },
       {
         label: 'gages'
@@ -99,7 +99,7 @@ export default {
   created () {
     // this is temp, we want to check if there any alerts for the user, if no, push to gages.
     if (!this.alerts) {
-      this.$router.replace('/user/account/1/gages')
+      this.$router.replace('/user/account/1/bookmarks')
     }
   }
 }
@@ -114,6 +114,10 @@ export default {
       padding: 0;
       min-height: 50vh;
     }
+  }
+  .bg-ui-01 {
+    background-color:$ui-01;
+    @include layer('raised')
   }
 }
 </style>

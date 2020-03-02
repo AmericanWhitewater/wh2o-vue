@@ -82,7 +82,7 @@
 </template>
 <script>
 import AwLogo from '@/app/global/components/logo-library/aw-logo'
-import { CheckWindow } from '../../../mixins'
+import { CheckWindow } from '@/app/global/mixins'
 
 export default {
   name: 'MobileNav',
@@ -124,9 +124,7 @@ export default {
       this.$router.push(path)
     },
     resetRouter () {
-      if (this.drawerOpen) {
-        this.drawerOpen = false
-      }
+      this.drawerOpen = false
       this.$router.push('/')
     }
   }

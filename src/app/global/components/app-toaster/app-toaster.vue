@@ -9,7 +9,7 @@
           >
             <li
               v-for="(t, index) in toasts"
-              :key="t.title"
+              :key="randomNumber(index)"
             >
               <template v-if="t.action">
                 <cv-inline-notification
@@ -74,6 +74,9 @@ export default {
     }
   },
   methods: {
+    randomNumber (index) {
+      return Math.floor(Math.random() * 100000 + index)
+    },
     handleClose (index, title) {
       this.$store.dispatch(globalAppActions.CLOSE_TOAST, index)
     },

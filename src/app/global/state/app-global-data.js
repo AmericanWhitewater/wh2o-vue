@@ -17,6 +17,10 @@ const initialState = {
 const checkIfViewed = (newToast) => {
   const viewedToasts = appLocalStorage.getItem('viewedToasts')
 
+  if (newToast.coreAction) {
+    return newToast
+  }
+
   if (!viewedToasts) {
     appLocalStorage.setItem('viewedToasts', [newToast])
 

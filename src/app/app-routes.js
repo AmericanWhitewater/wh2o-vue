@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import { appLocalStorage } from '@/app/global/services'
+
 import staticRoutes from './views/static-routes/static-routes'
 import { accidentDatabaseRoutes } from './views/accident-database'
 import { communityRoutes } from './views/community'
@@ -25,7 +27,7 @@ const routes = [
   ...userRoutes
 ]
 
-export default new Router({
+const router = new Router({
   routes,
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {
@@ -33,10 +35,19 @@ export default new Router({
     } else if (to.hash) {
       return {
         selector: to.hash
-        // , offset: { x: 0, y: 10 }
       }
     } else {
       return { x: 0, y: 0 }
     }
   }
 })
+
+router.beforeEach((to, from, next) => {
+  const loggedIn = appLocalStorage.getItem('wh2o-registered')
+  if (to.path.includes('account') && !loggedIn) {
+    next('/user/access/login')
+  }
+  next()
+})
+
+export default router

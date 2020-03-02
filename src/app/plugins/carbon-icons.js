@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import { CarbonIconsVue } from '@carbon/icons-vue'
 
+import AddAlt32 from '@carbon/icons-vue/es/add--alt/32.js'
 import AppSwitcher20 from '@carbon/icons-vue/es/app-switcher/20.js'
 import ArrowRight16 from '@carbon/icons-vue/es/arrow--right/16.js'
 import ArrowRight20 from '@carbon/icons-vue/es/arrow--right/20.js'
+import ArrowRight32 from '@carbon/icons-vue/es/arrow--right/32.js'
 import Bullhorn32 from '@carbon/icons-vue/es/bullhorn/32.js'
 import ChartBar32 from '@carbon/icons-vue/es/chart--bar/32.js'
 import ChartLine32 from '@carbon/icons-vue/es/chart--line/32.js'
@@ -19,24 +21,23 @@ import Grid16 from '@carbon/icons-vue/es/grid/16.js'
 import Help32 from '@carbon/icons-vue/es/help/32.js'
 import Launch20 from '@carbon/icons-vue/es/launch/20.js'
 import List16 from '@carbon/icons-vue/es/list/16.js'
+import LogoFacebook24 from '@carbon/icons-vue/es/logo--facebook/24'
+import LogoGoogle24 from '@carbon/icons-vue/es/logo--google/24'
+import LogoLinkedIn24 from '@carbon/icons-vue/es/logo--linkedin/24'
 import Map32 from '@carbon/icons-vue/es/map/32.js'
 import Notification20 from '@carbon/icons-vue/es/notification/20.js'
 import Settings32 from '@carbon/icons-vue/es/settings/32.js'
 import UserAvatar16 from '@carbon/icons-vue/es/user--avatar/16.js'
 import UserAvatar20 from '@carbon/icons-vue/es/user--avatar/20.js'
 import WifiOff32 from '@carbon/icons-vue/es/wifi--off/32.js'
-import LogoFacebook24 from '@carbon/icons-vue/es/logo--facebook/24'
-import LogoLinkedIn24 from '@carbon/icons-vue/es/logo--linkedin/24'
-import LogoGoogle24 from '@carbon/icons-vue/es/logo--google/24'
 
 Vue.use(CarbonIconsVue, {
   components: {
+    AddAlt32,
     AppSwitcher20,
     ArrowRight16,
-    LogoFacebook24,
-    LogoLinkedIn24,
-    LogoGoogle24,
     ArrowRight20,
+    ArrowRight32,
     Bullhorn32,
     ChartBar32,
     ChartLine32,
@@ -52,6 +53,9 @@ Vue.use(CarbonIconsVue, {
     Help32,
     Launch20,
     List16,
+    LogoFacebook24,
+    LogoGoogle24,
+    LogoLinkedIn24,
     Map32,
     Notification20,
     Settings32,

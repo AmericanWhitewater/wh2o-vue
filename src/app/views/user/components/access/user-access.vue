@@ -7,21 +7,21 @@
             v-if="$route.name !== 'logout'"
             class="tile-header mb-spacing-sm"
           >
-            <h2>
+            <h3>
               <router-link
                 to="/user/access/login"
                 v-text="'Login'"
               />
-            </h2>
+            </h3>
             <span>
               <!-- need to work on this guy... -->
               Or</span>
-            <h2>
+            <h3>
               <router-link
                 to="/user/access/register"
                 v-text="'Register'"
               />
-            </h2>
+            </h3>
           </div>
         </div>
       </div>
@@ -52,7 +52,7 @@ export default {
       font-size: 0.875rem;
       margin-right: $spacing-sm;
     }
-    h2 {
+    h3 {
       &:first-of-type {
         margin-right: $spacing-sm;
       }

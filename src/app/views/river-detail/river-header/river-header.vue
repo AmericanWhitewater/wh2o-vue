@@ -10,6 +10,16 @@
             <div class="inside">
               <h4>{{ name }}</h4>
               <h1>{{ section }}</h1>
+              <div>
+                <cv-button
+                  kind="secondary"
+                  size="small"
+                  class="ml-spacing-sm"
+                  @click.exact="addBookmark"
+                >
+                  Bookmark River
+                </cv-button>
+              </div>
               <edit-mode-toggle v-if="userIsAdmin" />
             </div>
           </div>
@@ -54,6 +64,8 @@
 import { mapState, mapGetters } from 'vuex'
 import { EditModeToggle } from '@/app/global/components'
 import { defaultBannerImage } from '@/app/global/mixins'
+import { globalAppActions } from '@/app/global/state'
+import { bookmarksActions } from '../shared/state'
 
 export default {
   name: 'RiverHeader',
@@ -83,6 +95,18 @@ export default {
     ...mapGetters(['userIsAdmin']),
     reachId () {
       return this.$route.params.id
+    }
+  },
+  methods: {
+    addBookmark () {
+      this.$store.dispatch(bookmarksActions.ADD_BOOKMARK, this.reachId)
+      this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        title: 'Bookmark Added',
+        kind: 'success',
+        contrast: false,
+        action: false,
+        coreAction: true
+      })
     }
   }
 }

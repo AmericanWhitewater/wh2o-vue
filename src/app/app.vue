@@ -15,7 +15,8 @@ import {
   AppBreadcrumbs,
   AppFooter
 } from './global/components'
-
+import { appLocalStorage } from '@/app/global/services'
+import { userActions } from '@/app/views/user/shared/state'
 export default {
   name: 'App',
   metaInfo: {
@@ -26,6 +27,14 @@ export default {
     AppFooter,
     AppNavigation,
     AppToaster
+  },
+  mounted () {
+    const userLoggedIn = appLocalStorage.getItem('wh2o-registered')
+    if (userLoggedIn) {
+      this.$store.dispatch(userActions.USER_LOGIN, {
+        admin: null
+      })
+    }
   }
 }
 </script>
