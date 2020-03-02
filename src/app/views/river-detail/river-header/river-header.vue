@@ -10,7 +10,7 @@
             <div class="inside">
               <h4>{{ name }}</h4>
               <h1>{{ section }}</h1>
-              <edit-mode-toggle />
+              <edit-mode-toggle v-if="userIsAdmin" />
             </div>
           </div>
         </div>
@@ -51,7 +51,7 @@
   </section>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { EditModeToggle } from '@/app/global/components'
 import { defaultBannerImage } from '@/app/global/mixins'
 
@@ -80,6 +80,7 @@ export default {
     ...mapState({
       editMode: state => state.appGlobalState.appGlobalData.editMode
     }),
+    ...mapGetters(['userIsAdmin']),
     reachId () {
       return this.$route.params.id
     }

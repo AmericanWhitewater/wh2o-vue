@@ -1,4 +1,4 @@
-import { reflectKeys } from '../services'
+import { reflectKeys, appLocalStorage } from '../services'
 
 const initialState = {
   loading: false,
@@ -6,6 +6,33 @@ const initialState = {
   editMode: null,
   updateAvailable: null,
   toasts: []
+}
+
+/**
+ * @description check to see if we've shown the user this toast before
+ * @param {object} newToast takes potential new toast notification
+ *
+ */
+
+const checkIfViewed = (newToast) => {
+  const viewedToasts = appLocalStorage.getItem('viewedToasts')
+
+  if (!viewedToasts) {
+    appLocalStorage.setItem('viewedToasts', [newToast])
+
+    return newToast
+  } else {
+    const toastViewed = viewedToasts.find(t => t.title === newToast.title)
+
+    if (!toastViewed) {
+      const data = viewedToasts
+      data.push(newToast)
+      appLocalStorage.setItem('viewedToasts', data)
+
+      return newToast
+    }
+    return null
+  }
 }
 
 const namespacedPrefix = '[APP_GLOBAL]'
@@ -27,7 +54,9 @@ const mutations = {
   },
 
   [NEW_TOAST] (state, payload) {
-    state.toasts.push(payload)
+    if (checkIfViewed(payload)) {
+      state.toasts.push(payload)
+    }
   },
 
   [CLOSE_TOAST] (state, payload) {

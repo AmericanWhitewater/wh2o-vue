@@ -40,7 +40,7 @@ const mutations = {
 }
 
 export const userActions = reflectKeys(
-  ['USER_LOGIN', 'USER_REGISTER', 'USER_FORGOT'],
+  ['USER_LOGIN', 'USER_REGISTER', 'USER_FORGOT', 'RESET_USER'],
   namespacedPrefix
 )
 
@@ -70,11 +70,24 @@ const actions = {
       context.commit(DATA_SUCCESS, result)
     }
     return result
+  },
+  async [userActions.RESET_USER] (context) {
+    context.commit(DATA_RESET)
+  }
+}
+
+const getters = {
+  userIsAdmin: state => {
+    if (state.data) {
+      return state.data.admin === 'admin'
+    }
+    return null
   }
 }
 
 export default {
   mutations,
   actions,
+  getters,
   state: initialState
 }

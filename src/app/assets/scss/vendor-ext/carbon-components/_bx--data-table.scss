@@ -1,14 +1,14 @@
 .bx--data-table-container {
   width:100%;
-  .bx--data-table {
-    thead,
-    tbody,
-    tfoot {
-      tr,
-      td,
-      th {
-        vertical-align: middle;
-      }
+}
+.bx--data-table {
+  thead,
+  tbody,
+  tfoot {
+    tr,
+    td,
+    th {
+      vertical-align: middle;
     }
   }
 }

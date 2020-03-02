@@ -17,6 +17,14 @@ const userRoutes = [
             component: () => import('./components/access/user-login.vue')
           },
           {
+            path: 'logout',
+            name: 'logout',
+            meta: {
+              crumbLabel: 'Logout'
+            },
+            component: () => import('./components/access/user-logout.vue')
+          },
+          {
             path: 'register',
             name: 'register',
             meta: {

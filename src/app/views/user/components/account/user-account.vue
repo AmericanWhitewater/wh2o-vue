@@ -16,6 +16,7 @@
                     <li
                       v-for="(item, index) in tabs"
                       :key="index"
+                      class="mb-spacing-sm"
                     >
                       <cv-button
                         :kind="activeSection(item.label)"
@@ -25,6 +26,15 @@
                         "
                       >
                         {{ item.label | capitalize }}
+                      </cv-button>
+                    </li>
+                    <li>
+                      <cv-button
+                        size="small"
+                        kind="tertiary"
+                        @click="$router.push('/user/access/logout')"
+                      >
+                        Logout
                       </cv-button>
                     </li>
                   </ul>

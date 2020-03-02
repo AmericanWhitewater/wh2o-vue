@@ -8,7 +8,7 @@
               <ResourceCard
                 title="River Map"
                 to="/river-index"
-                icon="ChartLine32"
+                icon="Map32"
                 color="light"
               />
             </template>
@@ -71,7 +71,7 @@ export default {
 <style lang="scss">
 .app-footer {
   position: relative;
-  background-color: $ui-03;
+  background-color: $ui-05;
   padding: $layout-md 0;
   &.hidden {
     display:none;

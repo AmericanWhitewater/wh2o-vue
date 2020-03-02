@@ -3,7 +3,10 @@
     <div class="bx--grid app-users pt-lg">
       <div class="bx--row">
         <div class="bx--col-md-4 bx--offset-md-2 bx--col-lg-5 bx--offset-lg-5">
-          <div class="tile-header mb-spacing-sm">
+          <div
+            v-if="$route.name !== 'logout'"
+            class="tile-header mb-spacing-sm"
+          >
             <h2>
               <router-link
                 to="/user/access/login"

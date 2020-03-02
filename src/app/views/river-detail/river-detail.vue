@@ -19,9 +19,14 @@
         />
         <div class="tabs-wrapper">
           <cv-overflow-menu>
-            <cv-overflow-menu-item>Link Resources</cv-overflow-menu-item>
+            <cv-overflow-menu-item v-if="userIsAdmin">
+              Link Resources
+            </cv-overflow-menu-item>
             <cv-overflow-menu-item>Share Reach</cv-overflow-menu-item>
-            <cv-overflow-menu-item @click="reachDeleteModalVisible = true">
+            <cv-overflow-menu-item
+              v-if="userIsAdmin"
+              @click="reachDeleteModalVisible = true"
+            >
               Remove from Index
             </cv-overflow-menu-item>
           </cv-overflow-menu>
@@ -85,7 +90,7 @@
  * loading state. Then we can use skeleton text/elements
  *
  */
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import RiverHeader from './river-header/river-header'
 import {
   actionsTypes,
@@ -130,6 +135,9 @@ export default {
       editMode: state => state.riverDetailState.riverDetailData.mode,
       media: state => state.riverDetailState.galleryData.data
     }),
+    ...mapGetters(
+      ['userIsAdmin']
+    ),
     riverId () {
       return this.$route.params.id
     },
