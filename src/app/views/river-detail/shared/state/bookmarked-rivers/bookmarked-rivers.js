@@ -41,10 +41,11 @@ const mutations = {
   },
 
   [DATA_SUCCESS] (state, payload) {
-    if (state.data.length === 0) {
-      state.data.push(payload)
-      Object.assign(state, { loading: false, error: null })
-    }
+    const data = state.data
+    data.push(payload)
+    state.data = data
+
+    Object.assign(state, { loading: false, error: null })
   },
 
   [DATA_ERROR] (state, payload) {

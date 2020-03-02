@@ -71,6 +71,14 @@ export default {
     loggedIn () {
       const loggedIn = appLocalStorage.getItem('wh2o-registered')
       return loggedIn
+    },
+    storedRivers () {
+      return appLocalStorage.getItem('wh2o-bookmarked-rivers')
+    }
+  },
+  watch: {
+    storedRivers () {
+      this.fetchBookmarks(this.storedRivers)
     }
   },
   methods: {
