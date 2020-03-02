@@ -13,6 +13,16 @@ const store = new Vuex.Store({
       appGlobalData: {
         editMode: false
       }
+    },
+    userState: {
+      userData: {
+        data: false
+      }
+    }
+  },
+  getters: {
+    userIsAdmin: state => {
+      return true
     }
   }
 })
