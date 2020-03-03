@@ -5,6 +5,7 @@
       <div class="bx--col-sm-4 bx--offset-sm-4 bx--col-md-8 bx--col-md-4 bx--col-lg-8 bx--offset-lg-4">
         <cv-search
           v-model="articleSearchTerm"
+          @keydown.enter="searchArticles"
         />
       </div>
     </div>
@@ -63,6 +64,9 @@ export default {
           '*': ['style', 'class']
         }
       })
+    },
+    searchArticles () {
+      this.$store.dispatch(newsActions.SEARCH_ARTICLES, this.articleSearchTerm)
     }
   },
   created () {

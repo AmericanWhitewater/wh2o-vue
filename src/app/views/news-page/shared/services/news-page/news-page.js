@@ -11,4 +11,9 @@ const getNewsArticles = () => {
   return axios.get(url).then(res => res.data)
 }
 
-export { getArticleDetail, getNewsArticles }
+const searchArticles = (term) => {
+  const url = cmsBaseUrl + '/v2/posts?content=' + term
+  return axios.get(url).then(res => res.data)
+}
+
+export { getArticleDetail, getNewsArticles, searchArticles }

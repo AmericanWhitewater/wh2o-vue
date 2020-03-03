@@ -1,6 +1,6 @@
 import { reflectKeys } from '@/app/global/services'
 
-import { getNewsArticles } from '../services'
+import { getNewsArticles, searchArticles } from '../services'
 
 const initialState = {
   loading: false,
@@ -36,12 +36,14 @@ const mutations = {
   },
 
   [DATA_RESET] (state) {
-    Object.assign(state, ...initialState)
+    state.data = null
+    state.error = null
+    state.loading = null
   }
 }
 
 export const newsActions = reflectKeys(
-  ['GET_ARTICAL_DETAIL_DATA', 'GET_NEWS_ARTICLES'],
+  ['GET_ARTICAL_DETAIL_DATA', 'GET_NEWS_ARTICLES', 'SEARCH_ARTICLES'],
   namespacedPrefix
 )
 
@@ -51,6 +53,18 @@ const actions = {
     context.commit(DATA_REQUEST)
 
     const result = await getNewsArticles(data).catch(e => {
+      context.commit(DATA_ERROR, e)
+    })
+
+    if (result) {
+      context.commit(DATA_SUCCESS, result)
+    }
+    return result
+  },
+  async [newsActions.SEARCH_ARTICLES] (context, data) {
+    context.commit(DATA_REQUEST)
+
+    const result = await searchArticles(data).catch(e => {
       context.commit(DATA_ERROR, e)
     })
 
