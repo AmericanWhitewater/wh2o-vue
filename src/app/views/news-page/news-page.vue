@@ -10,16 +10,15 @@
     </div>
 
     <div class="bx--row">
-      <template v-if="!loading && newsArticles.length">
+      <template v-if="!loading && articles.length > 0">
         <div
-          v-for="(article, index) in newsArticles"
+          v-for="(article, index) in articles"
           :key="index"
           class="bx--col-md-4 bx--col-lg-6 bx--col-max-4  mb-spacing-lg"
         >
           <ArticleCard
-            :title="article.title"
+            :title="article.title.rendered"
             :article-id="article.id"
-            :author="article.author"
           />
         </div>
       </template>
@@ -30,7 +29,7 @@
   </div>
 </template>
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import { PageHeader, LoadingBlock, ArticleCard } from '@/app/global/components'
 import { newsActions } from './shared/state'
 export default {
@@ -50,9 +49,9 @@ export default {
   },
   computed: {
     ...mapState({
-      loading: state => state.newsPageState.newsData.loading
-    }),
-    ...mapGetters(['featuredArticle', 'newsArticles'])
+      loading: state => state.newsPageState.newsData.loading,
+      articles: state => state.newsPageState.newsData.data
+    })
   },
   methods: {
     cleanCopy (copy) {
@@ -68,7 +67,7 @@ export default {
   },
   created () {
     if (!this.articles) {
-      this.$store.dispatch(newsActions.GET_FRONT_PAGE_ARTICLES)
+      this.$store.dispatch(newsActions.GET_NEWS_ARTICLES)
     }
   }
 }

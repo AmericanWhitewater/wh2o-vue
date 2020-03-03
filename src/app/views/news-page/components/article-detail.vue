@@ -12,8 +12,9 @@
     <template v-if="!loading">
       <div class="bx--grid">
         <page-header
-          :title="article.title"
-          :subtitle="formatDate(article.posted)"
+          :title="article.title.rendered"
+          :subtitle="formatDate(article.date)"
+          :featured-img="article._links['wp:attachment'][0].href"
         />
         <div class="spacer" />
         <div class="bx--row">
@@ -37,7 +38,7 @@
           <div class="bx--col-md-6  bx--col-lg-8 pt-md mb-lg">
             <div
               class="article-content"
-              v-html="formatContent"
+              v-html="article.content.rendered"
             />
           </div>
           <div class="bx--col-lg-5 bx--offset-lg-1 pt-md mb-lg">
@@ -45,13 +46,20 @@
             <h2 class="mb-spacing-md">
               Related
             </h2>
-            <ArticleCard
-              v-for="(item, i) in frontPageArticles"
-              :key="i"
-              :title="item.title"
-              :author="item.author"
-              class="mb-spacing-sm"
-            />
+
+            <span v-if="relatedLoading">
+              Loading...
+            </span>
+            <span v-if="relatedLoading">
+              Loading...
+            </span>
+            <template v-for="(item, i) in relatedArticles">
+              <ArticleCard
+                :key="i"
+                :title="item.title.rendered"
+                :article-id="item.id"
+              />
+            </template>
           </div>
         </div>
       </div>
@@ -61,7 +69,7 @@
 <script>
 import { PageHeader, ArticleCard } from '@/app/global/components'
 import { articleActions, newsActions } from '../shared/state'
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import Moment from 'moment'
 export default {
   name: 'ArticleDetail',
@@ -85,16 +93,18 @@ export default {
     ...mapState({
       article: state => state.newsPageState.articleData.data,
       loading: state => state.newsPageState.articleData.loading,
-      error: state => state.newsPageState.articleData.error
+      error: state => state.newsPageState.articleData.error,
+      relatedArticles: state => state.newsPageState.newsData.data,
+      relatedLoading: state => state.newsPageState.newsData.loading,
+      relatedError: state => state.newsPageState.newsData.error
     }),
-    ...mapGetters(['frontPageArticles']),
     getMetaTitle () {
       if (this.article) {
-        if (this.article.title.length > 50) {
-          return this.article.title.slice(0, 47) + '...'
+        if (this.article.title.rendered.length > 50) {
+          return this.article.title.rendered.slice(0, 47) + '...'
         }
 
-        return this.article.title
+        return this.article.title.rendered
       }
       return null
     },
@@ -103,7 +113,7 @@ export default {
     },
     formatContent () {
       if (this.article) {
-        const content = this.article.contents
+        const content = this.article.content.rendered
         const openingTags = this.$replaceText(content, '<div>', '<p>')
         const closingTags = this.$replaceText(openingTags, '</div>', '</p>')
         return closingTags
@@ -112,6 +122,9 @@ export default {
     }
   },
   watch: {
+    articleId (val) {
+      this.$store.dispatch(articleActions.GET_ARTICAL_DETAIL_DATA, val)
+    },
     article (data) {
       if (data) {
         const content = this.$sanitize(data.abstract, {
@@ -133,7 +146,10 @@ export default {
   },
   created () {
     this.$store.dispatch(articleActions.GET_ARTICAL_DETAIL_DATA, this.articleId)
-    this.$store.dispatch(newsActions.GET_FRONT_PAGE_ARTICLES)
+
+    if (!this.relatedArticles) {
+      this.$store.dispatch(newsActions.GET_NEWS_ARTICLES)
+    }
   },
   beforeRouteLeave (to, from, next) {
     /**

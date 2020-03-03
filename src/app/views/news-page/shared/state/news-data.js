@@ -1,6 +1,6 @@
 import { reflectKeys } from '@/app/global/services'
 
-import { getFrontPageArticles } from '../services'
+import { getNewsArticles } from '../services'
 
 const initialState = {
   loading: false,
@@ -41,50 +41,28 @@ const mutations = {
 }
 
 export const newsActions = reflectKeys(
-  ['GET_ARTICAL_DETAIL_DATA', 'GET_FRONT_PAGE_ARTICLES'],
+  ['GET_ARTICAL_DETAIL_DATA', 'GET_NEWS_ARTICLES'],
   namespacedPrefix
 )
 
 const actions = {
 
-  async [newsActions.GET_FRONT_PAGE_ARTICLES] (context, data) {
+  async [newsActions.GET_NEWS_ARTICLES] (context, data) {
     context.commit(DATA_REQUEST)
 
-    const result = await getFrontPageArticles(data).catch(e => {
+    const result = await getNewsArticles(data).catch(e => {
       context.commit(DATA_ERROR, e)
     })
 
     if (result) {
-      context.commit(DATA_SUCCESS, result.articles)
+      context.commit(DATA_SUCCESS, result)
     }
     return result
-  }
-}
-
-const getters = {
-  featuredArticle: state => {
-    if (state.data) {
-      return state.data.CArticleGadgetJSON_view
-    }
-    return null
-  },
-  frontPageArticles: state => {
-    if (state.data) {
-      return state.data.CArticleGadgetJSON_view_list.slice(0, 4)
-    }
-    return null
-  },
-  newsArticles: state => {
-    if (state.data) {
-      return state.data.CArticleGadgetJSON_view_list
-    }
-    return null
   }
 }
 
 export default {
   mutations,
   actions,
-  getters,
   state: initialState
 }

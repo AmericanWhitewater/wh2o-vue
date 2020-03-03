@@ -1,16 +1,14 @@
-import { httpClient } from '@/app/global/services'
-
-import { apiConstants } from '../../config'
+import axios from 'axios'
+import { cmsBaseUrl } from '@/app/environment/environment'
 
 const getArticleDetail = id => {
-  const url = apiConstants.newsPage + id + apiConstants.format
-
-  return httpClient.get(url).then(res => res.data)
+  const url = cmsBaseUrl + '/v2/posts/' + id
+  return axios.get(url).then(res => res.data)
 }
 
-const getFrontPageArticles = () => {
-  const url = apiConstants.frontPage
-  return httpClient.get(url).then(res => res.data)
+const getNewsArticles = () => {
+  const url = cmsBaseUrl + '/v2/posts'
+  return axios.get(url).then(res => res.data)
 }
 
-export { getArticleDetail, getFrontPageArticles }
+export { getArticleDetail, getNewsArticles }

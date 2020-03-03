@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import { appLocalStorage } from '@/app/global/services'
+// import { appLocalStorage } from '@/app/global/services'
 
 import staticRoutes from './views/static-routes/static-routes'
 import { accidentDatabaseRoutes } from './views/accident-database'
@@ -42,12 +42,12 @@ const router = new Router({
   }
 })
 
-router.beforeEach((to, from, next) => {
-  const loggedIn = appLocalStorage.getItem('wh2o-registered')
-  if (to.path.includes('account') && !loggedIn) {
-    next('/user/access/login')
-  }
-  next()
-})
+// router.beforeEach((to, from, next) => {
+//   const loggedIn = appLocalStorage.getItem('wh2o-registered')
+//   if (to.path.includes('account') && !loggedIn) {
+//     next('/user/access/login')
+//   }
+//   next()
+// })
 
 export default router

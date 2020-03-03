@@ -111,13 +111,14 @@ export default {
   },
   methods: {
     readArticle () {
-      const path = this.river ? `/river-detail/${this.articleId}/main` : `/article/${this.articleId}`
+      let path
+      if (this.river) {
+        path = `/river-detail/${this.articleId}/main`
+      } else {
+        path = `/article/${this.articleId}`
+      }
 
-      this.$router.push(path, {
-        meta: {
-          crumbLabel: this.title
-        }
-      })
+      this.$router.push(path)
     },
     formatTitle (title) {
       if (title.length > 41) {

@@ -1,7 +1,7 @@
 <template>
   <div
     class="page-header"
-    :style="`background-image: url(${headerBg.url})`"
+    :style="`background-image: url(${featuredImg})`"
   >
     <div class="bx--grid">
       <div class="bx--row">
@@ -44,6 +44,10 @@ export default {
     },
     editable: {
       type: Boolean,
+      required: false
+    },
+    featuredImg: {
+      type: String,
       required: false
     }
   },
