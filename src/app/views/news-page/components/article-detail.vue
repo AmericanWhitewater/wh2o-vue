@@ -14,7 +14,7 @@
         <page-header
           :title="article.title.rendered"
           :subtitle="formatDate(article.date)"
-          :featured-img="article._links['wp:attachment'][0].href"
+          :featured-img="featuredMedia"
         />
         <div class="spacer" />
         <div class="bx--row">
@@ -35,24 +35,45 @@
               </span>
             </div>
           </div>
-          <div class="bx--col-md-6  bx--col-lg-8 pt-md mb-lg">
+          <div class="bx--col-md-6 bx--col-lg-8 pt-md mb-lg">
             <div
               class="article-content"
               v-html="article.content.rendered"
             />
           </div>
           <div class="bx--col-lg-5 bx--offset-lg-1 pt-md mb-lg">
+            <template v-if="article.categories.length > 0">
+              <hr>
+              <h2 class="mb-spacing-md">
+                Categories
+              </h2>
+              <template v-for="(cat, index) in article.categories">
+                <span
+                  :key="index"
+                  class="mb-spacing-sm mr-spacing-sm"
+                >{{ cat }}</span>
+              </template>
+            </template>
+
+            <template v-if="article.tags.length > 0">
+              <hr>
+              <h2 class="mb-spacing-md">
+                Tags
+              </h2>
+              <template v-for="(tag, index) in article.tags">
+                <span
+                  :key="index"
+                  class="mb-spacing-sm mr-spacing-sm"
+                >{{ tag }}</span>
+              </template>
+            </template>
             <hr>
             <h2 class="mb-spacing-md">
               Related
             </h2>
 
-            <span v-if="relatedLoading">
-              Loading...
-            </span>
-            <span v-if="relatedLoading">
-              Loading...
-            </span>
+            <span v-if="relatedLoading">Loading...</span>
+            <span v-if="relatedLoading">Loading...</span>
             <template v-for="(item, i) in relatedArticles">
               <ArticleCard
                 :key="i"
@@ -94,6 +115,7 @@ export default {
       article: state => state.newsPageState.articleData.data,
       loading: state => state.newsPageState.articleData.loading,
       error: state => state.newsPageState.articleData.error,
+      featuredMedia: state => state.newsPageState.articleData.featuredMedia,
       relatedArticles: state => state.newsPageState.newsData.data,
       relatedLoading: state => state.newsPageState.newsData.loading,
       relatedError: state => state.newsPageState.newsData.error
@@ -127,12 +149,19 @@ export default {
     },
     article (data) {
       if (data) {
+        this.$store.dispatch(
+          articleActions.GET_FEATURED_MEDIA,
+          this.article.featured_media
+        )
+
         const content = this.$sanitize(data.abstract, {
           allowedTags: [],
           allowedAttributes: {}
         })
 
-        document.getElementById('meta-description').setAttribute('content', content.slice(0, 150))
+        document
+          .getElementById('meta-description')
+          .setAttribute('content', content.slice(0, 150))
       }
     }
   },
@@ -145,7 +174,10 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch(articleActions.GET_ARTICAL_DETAIL_DATA, this.articleId)
+    this.$store.dispatch(
+      articleActions.GET_ARTICAL_DETAIL_DATA,
+      this.articleId
+    )
 
     if (!this.relatedArticles) {
       this.$store.dispatch(newsActions.GET_NEWS_ARTICLES)
@@ -155,7 +187,9 @@ export default {
     /**
      * @todo we can make this description meta data function part of vue router global nav guards
      */
-    document.getElementById('meta-description').setAttribute('content', 'default description')
+    document
+      .getElementById('meta-description')
+      .setAttribute('content', 'default description')
     next()
   }
 }
@@ -172,7 +206,7 @@ export default {
     display: flex;
     flex-flow: column nowrap;
     position: sticky;
-    top:100px;
+    top: 100px;
     h5,
     span {
       margin-bottom: $spacing-sm;
@@ -192,7 +226,7 @@ export default {
 }
 
 .article-content {
-  @include carbon--type-style('body-long-02');
+  @include carbon--type-style("body-long-02");
   p {
     margin-bottom: 1.25rem;
   }
