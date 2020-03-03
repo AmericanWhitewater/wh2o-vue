@@ -1,44 +1,99 @@
 <template>
-  <div class="news-page bx--grid">
-    <page-header title="News" />
-    <div class="bx--row mb-lg mt-lg">
-      <div class="bx--col-sm-4 bx--offset-sm-4 bx--col-md-8 bx--col-md-4 bx--col-lg-8 bx--offset-lg-4">
-        <cv-search
-          v-model="articleSearchTerm"
-          @keydown.enter="searchArticles"
-        />
-      </div>
-    </div>
-
-    <div class="bx--row">
-      <template v-if="!loading && articles.length > 0">
-        <div
-          v-for="(article, index) in articles"
-          :key="index"
-          class="bx--col-md-4 bx--col-lg-6 bx--col-max-4  mb-spacing-lg"
-        >
-          <ArticleCard
-            :title="article.title.rendered"
-            :article-id="article.id"
+  <div class="news-page bg-topo">
+    <layout
+      name="layout-two-thirds"
+      :options="{sidebar:{left:true}}"
+    >
+      <template #sidebar>
+        <hr>
+        <h1 class="mb-spacing-md">
+          News
+        </h1>
+        <div class="sidebar">
+          <cv-search
+            v-model="articleSearchTerm"
+            class="mb-spacing-md"
+            @keydown.enter="searchArticles"
           />
+          <cv-dropdown
+            label="Sort By"
+            value="05"
+            class="mb-spacing-md"
+            @change="searchArticles"
+          >
+            <cv-dropdown-item value="10">
+              Latest
+            </cv-dropdown-item>
+            <cv-dropdown-item value="20">
+              Featured
+            </cv-dropdown-item>
+            <cv-dropdown-item value="30">
+              Oldest
+            </cv-dropdown-item>
+            <cv-dropdown-item value="40">
+              Popular
+            </cv-dropdown-item>
+            <cv-dropdown-item value="50">
+              Bookmarked
+            </cv-dropdown-item>
+          </cv-dropdown>
+          <cv-dropdown
+            label="Content Type"
+            value="05"
+            @change="searchArticles"
+          >
+            <cv-dropdown-item value="10">
+              Article
+            </cv-dropdown-item>
+            <cv-dropdown-item value="20">
+              Project
+            </cv-dropdown-item>
+            <cv-dropdown-item value="30">
+              Legislation
+            </cv-dropdown-item>
+            <cv-dropdown-item value="40">
+              Video
+            </cv-dropdown-item>
+            <cv-dropdown-item value="50">
+              Photo
+            </cv-dropdown-item>
+          </cv-dropdown>
         </div>
       </template>
-      <template v-else>
-        <loading-block text="Loading articles..." />
+
+      <template #main>
+        <template v-if="!loading && articles.length > 0">
+          <div class="bx--row">
+            <div
+              v-for="(article, index) in articles"
+              :key="index"
+              class="bx--col-md-4 bx--col-lg-8 mb-spacing-lg"
+            >
+              <ArticleCard
+                :title="article.title.rendered"
+                :article-id="article.id"
+              />
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <loading-block text="Loading articles..." />
+        </template>
       </template>
-    </div>
+    </layout>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
-import { PageHeader, LoadingBlock, ArticleCard } from '@/app/global/components'
+import { LoadingBlock, ArticleCard } from '@/app/global/components'
+import { Layout } from '@/app/global/layout'
 import { newsActions } from './shared/state'
 export default {
   name: 'NewsPage',
   components: {
-    PageHeader,
     LoadingBlock,
-    ArticleCard
+    ArticleCard,
+    Layout
   },
   data: () => ({
     articleSearchTerm: null
@@ -57,9 +112,7 @@ export default {
   methods: {
     cleanCopy (copy) {
       return this.$sanitize(copy, {
-        disallowedTags: [
-          'strong', 'em', 'b', 'bold'
-        ],
+        disallowedTags: ['strong', 'em', 'b', 'bold'],
         disallowedAttributes: {
           '*': ['style', 'class']
         }
@@ -78,27 +131,10 @@ export default {
 </script>
 <style lang="scss">
 .news-page {
-  padding-bottom: $layout-lg;
-  .spacer {
-    margin-bottom: $layout-sm;
-  }
-  .news-tile {
-    padding: 0;
-    @include ease;
-    &:hover {
-      @include layer("raised");
-    }
-    img {
-      height: 150px;
-      width: 100%;
-      object-fit: cover;
-    }
-    .content-area {
-      padding: $spacing-sm;
-      p {
-        margin-bottom: $spacing-sm;
-      }
-    }
+  .sidebar {
+    background-color: $ui-01;
+    @include layer("raised");
+    padding: $spacing-md;
   }
 }
 </style>
