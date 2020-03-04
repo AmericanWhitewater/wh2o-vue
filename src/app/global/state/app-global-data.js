@@ -28,13 +28,14 @@ const checkIfViewed = (newToast) => {
   } else {
     const toastViewed = viewedToasts.find(t => t.title === newToast.title)
 
-    if (!toastViewed) {
+    if (!toastViewed || newToast.label === 'Install') {
       const data = viewedToasts
       data.push(newToast)
       appLocalStorage.setItem('viewedToasts', data)
 
       return newToast
     }
+
     return null
   }
 }
