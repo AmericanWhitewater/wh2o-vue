@@ -53,6 +53,7 @@
                   class="mb-spacing-sm mr-spacing-sm"
                 >{{ cat }}</span>
               </template>
+              <div class="mb-md" />
             </template>
 
             <template v-if="article.tags.length > 0">
@@ -66,6 +67,7 @@
                   class="mb-spacing-sm mr-spacing-sm"
                 >{{ tag }}</span>
               </template>
+              <div class="mb-md" />
             </template>
             <hr>
             <h2 class="mb-spacing-md">
@@ -74,7 +76,7 @@
 
             <span v-if="relatedLoading">Loading...</span>
             <span v-if="relatedLoading">Loading...</span>
-            <template v-for="(item, i) in relatedArticles">
+            <template v-for="(item, i) in relatedArticles.slice(0,2)">
               <ArticleCard
                 :key="i"
                 :title="item.title.rendered"
