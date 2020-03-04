@@ -61,7 +61,8 @@ module.exports = {
     workboxOptions: {
       swSrc: './src/sw.js',
       swDest: 'service-worker.js'
-    }
+    },
+    appleMobileWebAppStatusBarStyle: '#53789a'
   },
   /**
    * A function that will receive an instance of ChainableConfig powered by webpack-chain.
