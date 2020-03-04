@@ -205,7 +205,7 @@ export default {
        */
       this.$router.replace(
         `/river-detail/${this.riverId}/${this.tabs[index].toLowerCase()}`
-      )
+      ).catch(() => {})
     },
     /**
      * @temp

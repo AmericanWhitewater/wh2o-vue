@@ -234,7 +234,7 @@ export default {
       )
     },
     viewRiver (id) {
-      this.$router.push(`/river-detail/${id}/main`)
+      this.$router.push(`/river-detail/${id}/main`).catch(() => {})
     }
   },
   created () {
