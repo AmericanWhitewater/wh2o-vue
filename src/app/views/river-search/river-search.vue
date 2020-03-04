@@ -214,7 +214,7 @@ export default {
       if (this.error) {
         return 'Error'
       }
-      return null
+      return 'River Search'
     }
   },
   watch: {
