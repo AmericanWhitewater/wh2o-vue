@@ -195,7 +195,7 @@ header {
   @include layer("sticky-nav");
   background-color: $ui-01;
   .drawer {
-    background-color: $ui-03;
+    background-color: $ui-02;
     display: flex;
     flex-flow: column nowrap;
     @include full-page-height;
