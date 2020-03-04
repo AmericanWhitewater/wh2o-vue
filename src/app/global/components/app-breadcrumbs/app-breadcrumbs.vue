@@ -1,7 +1,10 @@
 <template>
   <layout name="layout-full-width">
     <template #main>
-      <div :class="[{ home: $route.name === 'home' }, 'app-breadcrumbs']">
+      <div
+        v-show="$route.name !== 'home'"
+        class="app-breadcrumbs"
+      >
         <cv-breadcrumb
           aria-label="breadcrumb"
           no-trailing-slash
