@@ -171,8 +171,4 @@ export default {
   }
 }
 
-.sticky {
-  position: sticky;
-  top:100px;
-}
 </style>

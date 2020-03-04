@@ -9,7 +9,7 @@
         <h1 class="mb-spacing-md">
           News
         </h1>
-        <div class="sidebar">
+        <div class="sidebar sticky">
           <cv-search
             v-model="articleSearchTerm"
             class="mb-spacing-md"
