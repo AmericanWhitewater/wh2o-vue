@@ -9,16 +9,14 @@
             'bx--col content-area'
           ]"
         >
-          <!-- <transition name="fade"> -->
           <template v-show="windowWidth <= breakpoints.lg">
-            <span @click="resetRouter">
+            <span @click.exact="resetRouter">
               <aw-logo />
             </span>
           </template>
-          <!-- </transition> -->
           <span
             :class="[{ 'drawer-open': drawerOpen }, 'nav-trigger']"
-            @click="drawerOpen = !drawerOpen"
+            @click.exact="drawerOpen = !drawerOpen"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -50,32 +48,80 @@
         v-if="drawerOpen"
         class="drawer pt-md"
       >
-        <!-- <cv-search small v-model="searchTerm" label="Search label"> </cv-search> -->
-        <cv-button
-          v-for="item in topBarItems"
-          :key="item.title"
-          kind="ghost"
-          @click.prevent="viewRoute(item.path)"
-        >
-          <!-- <router-link :to="item.path">{{ item.title }}</router-link> -->
-          <a href="#0">{{ item.title }}</a>
-        </cv-button>
-        <cv-button
-          v-for="item in navItems"
-          :key="item.label"
-          kind="ghost"
-          @click.prevent="viewRoute(item.path)"
-        >
-          <!-- <router-link :to="item.path">{{ item.title }}</router-link> -->
-          <a href="#0">{{ item.label }}</a>
-        </cv-button>
+        <!-- <template v-for="(item, i) in navItems">
+          <template v-if="!item.children">
+            <cv-button
+              :key="item.label"
+              kind="ghost"
+              @click.exact="viewRoute(item.path)"
+              v-text="item.label"
+              class="mb-spacing-md"
+            />
+          </template>
+          <template v-else>
+            <div
+              :key="i"
+              class="mb-spacing-md"
+            >
+              <h6 class="pl-spacing-sm">{{ item.label }}</h6>
+              <cv-button
+                v-for="subitem in item.children"
+                :key="subitem.label"
+                kind="ghost"
+                @click.exact="viewRoute(subitem.path)"
+                v-text="subitem.label"
+              />
+            </div>
+          </template>
+        </template> -->
+        <div class="main-nav-items">
+          <cv-button
+            kind="ghost"
+            @click.exact="viewRoute('/river-search')"
+            v-text="'Search'"
+          />
+          <cv-button
+            kind="ghost"
+            @click.exact="viewRoute('/river-index')"
+            v-text="'River Index'"
+          />
+          <cv-button
+            kind="ghost"
+            @click.exact="viewRoute('/safety')"
+            v-text="'Safety'"
+          />
+        </div>
+        <div>
+          <template v-if="!user">
+            <cv-button
+
+              kind="primary"
+              @click.exact="viewRoute('/user/access/login')"
+              v-text="'Login'"
+            />
+          </template>
+          <template v-else>
+            <cv-button
+              class="mb-spacing-md"
+              kind="primary"
+              @click.exact="viewRoute('/user/account/1/bookmarks')"
+              v-text="'My Account'"
+            />
+            <cv-button
+
+              kind="tertiary"
+              @click.exact="viewRoute('/user/access/logout')"
+              v-text="'Logout'"
+            />
+          </template>
+        </div>
       </div>
     </transition>
     <transition name="fade">
       <div
         v-if="drawerOpen"
         class="overlay"
-        @click="drawerOpen = false"
+        @click.exact="drawerOpen = false"
       />
     </transition>
   </header>
@@ -111,6 +157,9 @@ export default {
     ]
   }),
   computed: {
+    user () {
+      return this.$store.state.userState.userData.data
+    },
     homePage () {
       if (this.$route.name === 'Home') {
         return true
@@ -125,7 +174,8 @@ export default {
     },
     resetRouter () {
       this.drawerOpen = false
-      this.$router.push('/')
+      /* keep catch empty to avoid nav duplication error */
+      this.$router.push('/').catch(() => {})
     }
   }
 }
@@ -148,13 +198,13 @@ header {
     background-color: $ui-03;
     display: flex;
     flex-flow: column nowrap;
-    height: 100%;
-    min-height: calc(100vh - 50px);
+    @include full-page-height;
     position: fixed;
     right: 0;
     top: $mobile-nav-height;
     width: 300px;
     z-index: 3;
+    justify-content: space-between;
     a {
       color: $text-01;
       display: block;
@@ -164,6 +214,10 @@ header {
         text-decoration: underline;
       }
     }
+  }
+  .main-nav-items {
+    display: flex;
+    flex-flow: column nowrap;
   }
 }
 

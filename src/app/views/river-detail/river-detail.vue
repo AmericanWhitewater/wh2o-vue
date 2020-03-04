@@ -32,14 +32,12 @@
           </cv-overflow-menu>
           <cv-tabs
             aria-label="navigation tab label"
-            no-default-to-first
             @tab-selected="switchTab($event)"
           >
             <cv-tab
               v-for="(tab, index) in tabs"
               :id="'tab-' + index + 1"
               :key="tab"
-              no-default-to-first
               :label="tab"
             />
           </cv-tabs>
@@ -107,14 +105,13 @@ export default {
   metaInfo () {
     return {
       title: this.riverTitle,
-      titleTemplate: '%s | American Whitewater',
-      description: 'drew test'
+      titleTemplate: '%s | American Whitewater'
     }
   },
   data: () => ({
     reachDeleteModalVisible: false,
     reachDeleteConfirmInput: null,
-    selected: true,
+    selected: 'main',
     prevRoute: null,
     tabs: [
       'Main',
@@ -144,6 +141,13 @@ export default {
     riverTitle () {
       if (this.river) {
         return this.river.river
+      }
+      if (this.loading) {
+        return 'Loading...'
+      }
+
+      if (this.error) {
+        return 'Error'
       }
       return null
     },
@@ -214,9 +218,9 @@ export default {
   created () {
     this.$store.dispatch(actionsTypes.FETCH_RIVER_DETAIL_DATA, this.riverId)
   },
-  mounted () {
-    this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId)
-  },
+  // mounted () {
+  //   this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId)
+  // },
   beforeRouteLeave (to, from, next) {
     if (this.editMode) {
       // use as a check for unsaved changes
@@ -269,6 +273,7 @@ export default {
       width: 6rem;
     }
   }
+
 }
 
 .river-detail .tabs-wrapper .bx--tabs {
@@ -282,4 +287,5 @@ export default {
   align-items: center;
   min-height:3rem;
 }
+
 </style>

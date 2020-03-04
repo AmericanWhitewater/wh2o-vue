@@ -4,26 +4,27 @@
     <h2 class="mb-spacing-md">
       Rapids
     </h2>
-    <div>
-      <cv-button
-        kind="tertiary"
-        size="small"
-        label="Grid View"
-        class="mr-spacing-sm"
-        @click.prevent="viewMode = 'grid'"
-      >
-        <Grid16 />
-      </cv-button>
-      <cv-button
-        kind="tertiary"
-        size="small"
-        label="List View"
-        @click.prevent="viewMode = 'list'"
-      >
-        <List16 />
-      </cv-button>
-    </div>
-    <template v-if="!loading">
+    <template v-if="!loading && sortedRapids">
+      <div>
+        <cv-button
+          kind="tertiary"
+          size="small"
+          label="Grid View"
+          class="mr-spacing-sm"
+          @click.prevent="viewMode = 'grid'"
+        >
+          <Grid16 />
+        </cv-button>
+        <cv-button
+          kind="tertiary"
+          size="small"
+          label="List View"
+          @click.prevent="viewMode = 'list'"
+        >
+          <List16 />
+        </cv-button>
+      </div>
+
       <div class="bx--row">
         <rapid-item
           v-for="(rapid, index) in sortedRapids"
@@ -34,8 +35,13 @@
         />
       </div>
     </template>
-    <template v-else>
+    <template v-if="!loading && !sortedRapids">
       This reach has no rapid data.
+    </template>
+    <template v-if="error">
+      <div class="">
+        error
+      </div>
     </template>
   </section>
 </template>
@@ -54,6 +60,7 @@ export default {
   computed: {
     ...mapState({
       loading: state => state.riverDetailState.rapidsData.loading,
+      error: state => state.riverDetailState.rapidsData.error,
       rapids: state => state.riverDetailState.rapidsData.data
     }),
     sortedRapids () {

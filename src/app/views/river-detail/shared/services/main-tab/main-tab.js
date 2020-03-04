@@ -29,10 +29,10 @@ const fetchRiverDetailData = data => {
              permitid,
              permitinfo,
              permiturl,
-             photo {
-               url
-             },
-             photoid,
+            # photo {
+            #   url
+            # },
+            # photoid,
              plat,
              ploc,
              plon,

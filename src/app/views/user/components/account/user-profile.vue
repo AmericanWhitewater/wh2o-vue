@@ -1,7 +1,7 @@
 <template>
   <div class="user-profile">
     <error-block
-      title="Preview Unavailable"
+      title="Profile Unavailable"
       text="Please try again later"
     />
   </div>

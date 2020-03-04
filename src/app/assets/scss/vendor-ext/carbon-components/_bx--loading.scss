@@ -1,3 +1,5 @@
 .bx--loading-overlay {
-    background-color: rgba($ui-02, 1)
+    background-color: rgba($ui-02, 1);
+    @include full-page-height;
+    margin-top: $desktop-nav-height;
 }

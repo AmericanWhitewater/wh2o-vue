@@ -144,7 +144,7 @@
         <template v-if="!loading && error">
           <error-block :text="error" />
         </template>
-        <template v-if="!loading && !error">
+        <template v-if="!loading && articles">
           <div
             v-for="(article, index) in articles.slice(0, 4)"
             :key="index"

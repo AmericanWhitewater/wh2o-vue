@@ -8,7 +8,7 @@
         <div
           v-for="(item, index) in loadedBookmarks"
           :key="index"
-          class="bx--col-sm-4 bx--col-md-8 bx--col-lg-6 "
+          class="bx--col-sm-12 bx--col-md-8 bx--col-lg-8 bx--col-max-6"
         >
           <ArticleCard
             :key="index"
@@ -21,30 +21,18 @@
             :author="mockFlowData(1000)"
           />
         </div>
-        <div
-          class="bx--col-sm-12 bx--col-md-6 bx--col-lg-6 "
-        >
-          <ResourceCard
-            title="River Search"
-            to="/river-search"
-            icon="AddAlt32"
-          />
-        </div>
       </div>
     </template>
     <template v-if="!loading && loadedBookmarks.length === 0">
       <cv-tile>
-        <h3 class="mb-spacing-sm">
-          No Bookmarks
-        </h3>
-        <p class="mb-spacing-sm">
-          Start adding some!
+        <p class="mb-spacing-lg">
+          You dont have any bookmarks. <br>Start by searching for a river.
         </p>
-        <ResourceCard
-
-          title="River Search"
-          to="/river-search"
-          icon="AddAlt32"
+        <cv-search
+          v-model="searchTerm"
+          placeholder="e.g. Animas"
+          theme="light"
+          @keypress.enter="searchRiver"
         />
       </cv-tile>
     </template>
@@ -53,18 +41,19 @@
 
 <script>
 import { appLocalStorage } from '@/app/global/services'
-import { ArticleCard, ResourceCard, LoadingBlock } from '@/app/global/components'
+import { ArticleCard, LoadingBlock } from '@/app/global/components'
 import { mapState } from 'vuex'
 import { bookmarksActions } from '@/app/views/river-detail/shared/state'
+import { riverSearchActions } from '@/app/views/river-search/shared/state'
 
 export default {
   name: 'UserBookmarks',
   components: {
     ArticleCard,
-    ResourceCard,
     LoadingBlock
   },
   data: () => ({
+    searchTerm: null,
     bookmarks: null
   }),
   computed: {
@@ -97,6 +86,18 @@ export default {
     },
     mockFlowData (max) {
       return `${Math.floor(Math.random() * Math.floor(max))} [cfs]`
+    },
+    searchRiver () {
+      this.$store.dispatch(
+        riverSearchActions.FETCH_RIVER_SEARCH_DATA, {
+          river: this.searchTerm
+        }
+      )
+      /**
+       * @todo figure out how to dynamically set scroll position
+       * transition to search page is jarring, search results obscured
+       */
+      this.$router.push('/river-search')
     }
   },
   mounted () {

@@ -33,7 +33,7 @@
                 @click="toggleFocus"
               >
                 <component
-                  :is="mapFocused ? 'icon-maximize' : 'icon-minimize'"
+                  :is="mapFocused ? 'Maximize16' : 'Minimize16'"
                 />
               </div>
             </div>
@@ -43,99 +43,114 @@
           :class="[
             mapFocused ? unfocusedArea : focusedArea,
             { fullscreen: fullscreen },
+            { slideTable: slideTable },
             { 'bx--no-gutter--left': fullscreen },
             'sidebar-wrapper'
           ]"
         >
           <div class="outside">
             <div class="inside sidebar">
-              <template v-if="fullscreen">
+              <template v-if="fullscreen && !mobileDevice">
                 <aw-logo variant="sm" />
                 <h3 class="mt-sm">
                   River Index
                 </h3>
                 <hr>
               </template>
-              <template v-else>
+              <template v-if="!fullscreen && !mobileDevice">
                 <h1>River Index</h1>
                 <hr>
               </template>
-
-              <div class="bx--row">
-                <div class="bx--col">
-                  <cv-toolbar>
-                    <cv-toolbar-search
-                      v-model="riverSearchHttpConfig.river"
-                      @keydown.enter="fetchRivers"
-                    />
-
-                    <cv-overflow-menu class="bx--toolbar-action">
-                      <template slot="trigger">
-                        <Filter16 class="bx--overflow-menu__icon bx--toolbar-filter-icon" />
-                      </template>
-                      <cv-toolbar-title title="Show Features" />
-                      <cv-toolbar-option>
-                        <cv-checkbox
-                          v-model="visibleFeatures.rapids"
-                          value="rapids"
-                          label="Rapids"
+              <div class="table-controls">
+                <div class="bx--grid">
+                  <div class="bx--row">
+                    <div class="bx--col-md-4">
+                      <cv-toolbar>
+                        <cv-toolbar-search
+                          v-model="riverSearchHttpConfig.river"
+                          @keydown.enter="fetchRivers"
                         />
-                      </cv-toolbar-option>
-                      <cv-toolbar-option>
-                        <cv-checkbox
-                          v-model="visibleFeatures.projects"
-                          value="projects"
-                          label="Projects"
+                        <cv-overflow-menu class="bx--toolbar-action">
+                          <template slot="trigger">
+                            <Filter16 class="bx--overflow-menu__icon bx--toolbar-filter-icon" />
+                          </template>
+                          <cv-toolbar-title title="Show Features" />
+                          <cv-toolbar-option>
+                            <cv-checkbox
+                              v-model="visibleFeatures.rapids"
+                              value="rapids"
+                              label="Rapids"
+                            />
+                          </cv-toolbar-option>
+                          <cv-toolbar-option>
+                            <cv-checkbox
+                              v-model="visibleFeatures.projects"
+                              value="projects"
+                              label="Projects"
+                            />
+                          </cv-toolbar-option>
+                          <cv-toolbar-option>
+                            <cv-checkbox
+                              v-model="visibleFeatures.bookmarks"
+                              value="bookmarks"
+                              label="Saved Points"
+                            />
+                          </cv-toolbar-option>
+                        </cv-overflow-menu>
+                        <cv-overflow-menu class="bx--toolbar-action">
+                          <cv-overflow-menu-item primary-focus>
+                            Refresh table
+                          </cv-overflow-menu-item>
+                          <cv-toolbar-divider />
+                          <cv-toolbar-title title="Map Style" />
+                          <cv-toolbar-option>
+                            <cv-radio-button
+                              v-model="mapStyle"
+                              name="row-height"
+                              label="Topographic"
+                              value="topo"
+                            />
+                          </cv-toolbar-option>
+                          <cv-toolbar-option>
+                            <cv-radio-button
+                              v-model="mapStyle"
+                              name="row-height"
+                              label="Satellite"
+                              value="satellite"
+                            />
+                          </cv-toolbar-option>
+                          <cv-toolbar-option>
+                            <cv-radio-button
+                              v-model="mapStyle"
+                              name="row-height"
+                              label="Graphic"
+                              value="graphic"
+                            />
+                          </cv-toolbar-option>
+                        </cv-overflow-menu>
+                        <cv-button
+                          v-if="!mobileDevice"
+                          kind="tertiary"
+                          size="small"
+                          small
+                          @click="toggleFullscreen"
+                          v-text="'Fullscreen'"
                         />
-                      </cv-toolbar-option>
-                      <cv-toolbar-option>
-                        <cv-checkbox
-                          v-model="visibleFeatures.bookmarks"
-                          value="bookmarks"
-                          label="Saved Points"
-                        />
-                      </cv-toolbar-option>
-                    </cv-overflow-menu>
-
-                    <cv-overflow-menu class="bx--toolbar-action">
-                      <cv-overflow-menu-item primary-focus>
-                        Refresh table
-                      </cv-overflow-menu-item>
-                      <cv-toolbar-divider />
-                      <cv-toolbar-title title="Map Style" />
-                      <cv-toolbar-option>
-                        <cv-radio-button
-                          v-model="mapStyle"
-                          name="row-height"
-                          label="Topographic"
-                          value="topo"
-                        />
-                      </cv-toolbar-option>
-                      <cv-toolbar-option>
-                        <cv-radio-button
-                          v-model="mapStyle"
-                          name="row-height"
-                          label="Satellite"
-                          value="satellite"
-                        />
-                      </cv-toolbar-option>
-                      <cv-toolbar-option>
-                        <cv-radio-button
-                          v-model="mapStyle"
-                          name="row-height"
-                          label="Graphic"
-                          value="graphic"
-                        />
-                      </cv-toolbar-option>
-                    </cv-overflow-menu>
-                    <cv-button
-                      kind="tertiary"
-                      size="small"
-                      small
-                      @click="toggleFullscreen"
-                      v-text="'Fullscreen'"
-                    />
-                  </cv-toolbar>
+                      </cv-toolbar>
+                    </div>
+                    <div
+                      v-if="mobileDevice"
+                      class="bx--col-md-2 bx--offset-md-2"
+                    >
+                      <cv-button
+                        kind="tertiary"
+                        size="small"
+                        small
+                        @click="slideTable = !slideTable"
+                        v-text="'Hide Results'"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="bx--data-table-container">
@@ -211,10 +226,8 @@
   </div>
 </template>
 <script>
-import virtual_Maximize16 from '@carbon/icons-vue/es/maximize/16'
-import virtual_Minimize16 from '@carbon/icons-vue/es/minimize/16'
 import { StaticUsMap } from './shared/components'
-import { riverSearchHttpConfig } from '@/app/global/mixins'
+import { riverSearchHttpConfig, CheckWindow } from '@/app/global/mixins'
 import scrollIntoView from 'scroll-into-view-if-needed'
 import { LoadingBlock, AwLogo } from '@/app/global/components'
 import { riverIndexActions } from './shared/state'
@@ -232,6 +245,7 @@ import { mapState } from 'vuex'
 import screenfull from 'screenfull'
 import Moment from 'moment'
 import debounce from 'lodash.debounce'
+
 import { globalAppActions } from '@/app/global/state'
 export default {
   name: 'RiverIndex',
@@ -239,17 +253,16 @@ export default {
     NationalMapAppVue,
     StaticUsMap,
     LoadingBlock,
-    AwLogo,
-    'icon-maximize': virtual_Maximize16,
-    'icon-minimize': virtual_Minimize16
+    AwLogo
   },
-  mixins: [riverSearchHttpConfig, InternationalReaches, LevelsList],
+  mixins: [riverSearchHttpConfig, InternationalReaches, LevelsList, CheckWindow],
   metaInfo () {
     return {
       title: 'National Whitewater Inventory - American Whitewater'
     }
   },
   data: () => ({
+    slideTable: false,
     tileserver: nwiTileServer,
     mapStyle: 'topo',
     fullscreen: false,
@@ -258,8 +271,8 @@ export default {
     token: mapboxAccessToken,
     expandToggleTxt: 'Hide',
     mapFocused: true,
-    focusedArea: 'bx--col-sm-4 bx--col-md-6 bx--col-lg-12',
-    unfocusedArea: 'bx--col-sm-4 bx--col-md-2 bx--col-lg-4',
+    focusedArea: 'bx--col-sm-4  bx--col-max-12',
+    unfocusedArea: 'bx--col-sm-4  bx--col-max-4',
     location: null,
     coords: {
       lat: null,
@@ -291,6 +304,9 @@ export default {
         min: Math.floor(Math.random() * 10 + 1),
         max: Math.floor(Math.random() * 100 + 1)
       }
+    },
+    mobileDevice () {
+      return this.windowWidth < this.breakpoints.lg
     }
   },
   watch: {
@@ -374,11 +390,16 @@ export default {
       this.$router.push(`/river-detail/${id}/main`)
     },
     toggleFocus () {
-      this.mapFocused = !this.mapFocused
-      if (this.mapFocused) {
-        this.expandToggleTxt = 'Hide'
+      if (this.windowWidth > this.breakpoints.lg) {
+        this.mapFocused = !this.mapFocused
+
+        if (this.mapFocused) {
+          this.expandToggleTxt = 'Hide'
+        } else {
+          this.expandToggleTxt = 'Show'
+        }
       } else {
-        this.expandToggleTxt = 'Show'
+        this.slideTable = !this.slideTable
       }
     },
     fetchRivers () {
@@ -459,14 +480,18 @@ export default {
 }
 
 .river-index {
+
+  .table-controls {
+    width:100%;
+  }
   .map {
-    height: calc(100vh - 175px);
+    align-items: center;
     background-color: $brand-03;
     display: flex;
+    height: calc(100vh - 175px);
     justify-content: center;
-    align-items: center;
-    width: 100%;
     position: relative;
+    width: 100%;
 
     @include MQ(MD) {
       height: $content-height;
@@ -478,36 +503,48 @@ export default {
       }
     }
     .expand-toggle {
+      background-color: #fff;
+      bottom: 0;
+      cursor: pointer;
+      display: block;
       display: none;
-      transform: rotate(90deg);
       font-size: 14px;
       font-weight: bolder;
-      white-space: nowrap;
-      cursor: pointer;
-      white-space: nowrap;
       line-height: 50px;
-      width: 50px;
-      text-align: center;
       position: absolute;
       right: 0;
-      top: 1rem;
-      background-color: #fff;
-      @include MQ(MD) {
-        display: block;
+      text-align: center;
+      transform: rotate(90deg);
+      white-space: nowrap;
+      width: 50px;
+      @include MQ(LG) {
+        bottom: unset;
+        right: 0;
+        top: 1rem;
       }
     }
   }
   .sidebar-wrapper {
+    background-color:$ui-01;
     padding-top: 1rem;
+    top:100vh;
+
     &.fullscreen {
       padding-top: $layout-sm;
     }
     .sidebar {
-      display: flex;
       align-items: flex-start;
+      display: flex;
       flex-flow: column nowrap;
-      width: 100%;
       overflow: hidden;
+      width: 100%;
+    }
+    &.slideTable {
+      left:0;
+      padding: 0 2vw;
+      position: fixed;
+      top: 25vh;
+      z-index: 5;
     }
   }
 }

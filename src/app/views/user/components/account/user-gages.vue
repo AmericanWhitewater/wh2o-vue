@@ -1,7 +1,7 @@
 <template>
   <div class="user-gages">
     <error-block
-      title="Alerts Unavailable"
+      title="Gages Unavailable"
       text="Please try again later"
     />
   </div>

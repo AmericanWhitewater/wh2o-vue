@@ -5,7 +5,7 @@
         class="bx--row"
         style="align-self:center;justify-self:center;width:100vw;"
       >
-        <div class="bx--col-sm-12 bx--col-md-6 bx--offset-md-2 bx--col-lg-8 bx--offset-lg-4  ">
+        <div class="bx--col-sm-12 bx--col-md-6 bx--offset-md-1 bx--col-lg-8 bx--offset-lg-4  ">
           <div class="bx--feature-card__img bx--aspect-ratio--1x1">
             <div class="bx--aspect-ratio--object bx--feature-background">
               <aw-logo variant="xl" />

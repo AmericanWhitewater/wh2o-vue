@@ -22,16 +22,16 @@
           <loading-block v-if="loading" />
           <error-block v-if="!loading && error" />
 
-          <template v-if="!loading && !error">
+          <template v-if="!loading && articles">
             <div
-              v-for="(item, i) in frontPageArticles"
+              v-for="(item, i) in articles.slice(0,4)"
               :key="i"
               class="bx--col-md-4 bx--col-lg-6 bx--col-max-4  mb-spacing-lg"
             >
               <ArticleCard
-                :author="item.author"
+                :author="item.author.toString()"
                 :article-id="item.id"
-                :title="item.title"
+                :title="item.title.rendered"
                 action-icon="arrowRight"
               />
             </div>
@@ -46,7 +46,7 @@ import { FeatureCardHero } from './components'
 import { Layout } from '@/app/global/layout'
 import { LoadingBlock, ErrorBlock, ArticleCard } from '@/app/global/components'
 import { newsActions } from '@/app/views/news-page/shared/state'
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   name: 'HomePage',
@@ -60,12 +60,12 @@ export default {
   computed: {
     ...mapState({
       loading: state => state.newsPageState.newsData.loading,
-      error: state => state.newsPageState.newsData.error
-    }),
-    ...mapGetters(['featuredArticle', 'frontPageArticles'])
+      error: state => state.newsPageState.newsData.error,
+      articles: state => state.newsPageState.newsData.data
+    })
   },
   mounted () {
-    this.$store.dispatch(newsActions.GET_FRONT_PAGE_ARTICLES)
+    this.$store.dispatch(newsActions.GET_NEWS_ARTICLES)
   }
 }
 </script>

@@ -25,6 +25,8 @@ import LogoFacebook24 from '@carbon/icons-vue/es/logo--facebook/24'
 import LogoGoogle24 from '@carbon/icons-vue/es/logo--google/24'
 import LogoLinkedIn24 from '@carbon/icons-vue/es/logo--linkedin/24'
 import Map32 from '@carbon/icons-vue/es/map/32.js'
+import Maximize16 from '@carbon/icons-vue/es/maximize/16.js'
+import Minimize16 from '@carbon/icons-vue/es/minimize/16.js'
 import Notification20 from '@carbon/icons-vue/es/notification/20.js'
 import Settings32 from '@carbon/icons-vue/es/settings/32.js'
 import UserAvatar16 from '@carbon/icons-vue/es/user--avatar/16.js'
@@ -57,6 +59,8 @@ Vue.use(CarbonIconsVue, {
     LogoGoogle24,
     LogoLinkedIn24,
     Map32,
+    Maximize16,
+    Minimize16,
     Notification20,
     Settings32,
     UserAvatar16,

@@ -17,9 +17,11 @@ img {
     background-color: $ui-background;
 
     &.interior {
-        padding-top: $mobile-nav-height + 44px;
+        padding-top: $mobile-nav-height;
+        // padding-top: $mobile-nav-height + 44px;
         @include MQ("LG") {
-          padding-top: $desktop-nav-height + 44px;
+          padding-top: $desktop-nav-height;
+        //   padding-top: $desktop-nav-height + 44px;
         }
     }
    

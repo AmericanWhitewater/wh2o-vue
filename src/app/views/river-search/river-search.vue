@@ -5,7 +5,7 @@
       class="mb-sm"
     />
     <div class="bx--row mb-md pl-spacing-md">
-      <div class="bx--col-auto mr-xs search-col">
+      <div class="bx--col-auto mr-xs search-col mb-spacing-sm">
         <label class="bx--label">Search</label>
         <cv-search
           v-model="searchParams.river"
@@ -14,7 +14,7 @@
           @keydown.enter="fetchRivers"
         />
       </div>
-      <div class="bx--col-auto mr-xs">
+      <div class="bx--col-auto mr-xs mb-spacing-sm">
         <cv-dropdown
           v-model="searchParams.state"
           label="State"
@@ -28,7 +28,7 @@
           </cv-dropdown-item>
         </cv-dropdown>
       </div>
-      <div class="bx--col-auto mr-xs">
+      <div class="bx--col-auto mr-xs mb-spacing-sm">
         <cv-dropdown
           v-model="searchParams.level"
           label="Level"
@@ -42,7 +42,7 @@
           </cv-dropdown-item>
         </cv-dropdown>
       </div>
-      <div class="bx--col-auto mr-xs">
+      <div class="bx--col-auto mr-xs mb-spacing-sm">
         <cv-dropdown
           v-model="searchParams.state"
           label="International Reaches"
@@ -115,10 +115,6 @@
                   </td>
                   <td>{{ r.class }}</td>
                   <td>
-                    <!-- <template
-                      v-if="r.gauge_min && r.gauge._max"
-                    >{{ r.gauge_min }} - {{ r.gauge_max }}</template>
-                      <template v-else>Data Unavailable</template>-->
                     {{ Math.floor(r.gauge_min) }} -
                     {{ Math.floor(r.gauge_max) }}
                   </td>
@@ -183,7 +179,8 @@ export default {
   mixins: [InternationalReaches, LevelsList, UsStatesList, UsStatesRegions],
   metaInfo () {
     return {
-      title: 'River Search - American Whitewater'
+      title: this.searchMetaTitle,
+      titleTemplate: '%s | American Whitewater'
     }
   },
   data: () => ({
@@ -197,13 +194,28 @@ export default {
       atLeast: '',
       atMost: ''
     },
-    showAll: false
+    showAll: false,
+    metaTitle: null
   }),
   computed: {
     ...mapState({
       loading: state => state.riverSearchState.riverSearchData.loading,
-      data: state => state.riverSearchState.riverSearchData.data
-    })
+      data: state => state.riverSearchState.riverSearchData.data,
+      searchTerm: state => state.riverSearchState.riverSearchData.searchTerm
+    }),
+    searchMetaTitle () {
+      if (this.data) {
+        return `Search Results: ${this.data.length}`
+      }
+      if (this.loading) {
+        return 'Loading...'
+      }
+
+      if (this.error) {
+        return 'Error'
+      }
+      return null
+    }
   },
   watch: {
     /**
@@ -223,6 +235,16 @@ export default {
     },
     viewRiver (id) {
       this.$router.push(`/river-detail/${id}/main`)
+    }
+  },
+  created () {
+    /**
+     * load search with previous search value.
+     * intended to clue users that there are search results below fold
+     * when redirected to this page
+     */
+    if (this.searchTerm) {
+      this.searchParams.river = this.searchTerm
     }
   }
 }
