@@ -258,7 +258,8 @@ export default {
   mixins: [riverSearchHttpConfig, InternationalReaches, LevelsList, CheckWindow],
   metaInfo () {
     return {
-      title: 'National Whitewater Inventory - American Whitewater'
+      title: this.metaTitle,
+      titleTemplate: '%s | American Whitewater'
     }
   },
   data: () => ({
@@ -307,6 +308,12 @@ export default {
     },
     mobileDevice () {
       return this.windowWidth < this.breakpoints.lg
+    },
+    metaTitle () {
+      if (this.reachesInViewport) {
+        return `Rivers Found: ${this.reachesInViewport.length} `
+      }
+      return null
     }
   },
   watch: {
@@ -494,7 +501,7 @@ export default {
     width: 100%;
 
     @include MQ(MD) {
-      height: $content-height;
+      height: $content-height - 10px;
     }
 
     &.fullscreen {

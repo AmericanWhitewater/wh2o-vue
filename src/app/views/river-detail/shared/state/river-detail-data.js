@@ -66,11 +66,7 @@ const actions = {
     })
 
     if (result) {
-      if (!result.errors) {
-        context.commit(DATA_SUCCESS, result.data.reach)
-      } else {
-        context.commit(DATA_ERROR, result.errors)
-      }
+      context.commit(DATA_SUCCESS, result.data.reach)
     }
 
     return result

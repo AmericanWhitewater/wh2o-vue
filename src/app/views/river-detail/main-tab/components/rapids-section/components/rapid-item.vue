@@ -1,6 +1,7 @@
 <template>
   <div :class="[containerClasses, 'rapid-item']">
     <cv-tile
+      v-if="rapid.description"
       :kind="rapid.description.length > 50 ? 'expandable' : 'standard'"
       :cv-type="rapid.description.length > 50 ? 'expandable' : ''"
       :expanded="expanded"

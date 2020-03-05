@@ -8,7 +8,18 @@
         <beta-box />
       </template>
       <template #right>
-        <loading-block :hide-text="true" />
+        <template v-if="loading">
+          <loading-block :hide-text="true" />
+        </template>
+        <template v-if="!loading && data">
+          <NwiMap
+            :include-legend="false"
+            :has-sidebar="false"
+            :mapbox-access-token="token"
+            :tileservers="[tileserver]"
+            :has-controls="false"
+          />
+        </template>
       </template>
     </layout>
     <layout
@@ -34,9 +45,14 @@
   </div>
 </template>
 <script>
-
+import {
+  mapboxAccessToken,
+  nwiTileServer
+} from '@/app/environment/environment'
 import { LoadingBlock } from '@/app/global/components'
 import { Layout } from '@/app/global/layout'
+import { NwiMap } from '@/app/views/river-index/components/national-map-app/components'
+import { mapState } from 'vuex'
 import {
   SideBar,
   BetaBox,
@@ -54,7 +70,19 @@ export default {
     BetaBox,
     RiverDescription,
     LoadingBlock,
-    Layout
+    Layout,
+    NwiMap
+  },
+  data: () => ({
+    tileserver: nwiTileServer,
+    token: mapboxAccessToken
+  }),
+  computed: {
+    ...mapState({
+      loading: state => state.riverDetailState.riverDetailData.loading,
+      data: state => state.riverDetailState.riverDetailData.data,
+      error: state => state.riverDetailState.riverDetailData.error
+    })
   }
 }
 </script>

@@ -13,9 +13,8 @@
           title="Map unavailable"
           text="please try again later"
         />
-        <nwi-map
+        <!-- <nwi-map
           v-if="!loading && !error"
-          :starting-bounds="mockBBox"
           :source-layers="sourceLayers"
           :tileservers="tileservers"
           :detail-reach-id="reachId"
@@ -24,6 +23,15 @@
           :include-legend="includeLegend"
           :map-controls="mapControls"
           @clickFeature="clickFeature"
+        /> -->
+
+        <NwiMap
+          v-if="!loading && !error"
+          :include-legend="false"
+          :has-sidebar="false"
+          :mapbox-access-token="token"
+          :tileservers="[tileserver]"
+          :has-controls="false"
         />
       </template>
       <template #sidebar>
@@ -57,8 +65,8 @@ export default {
     mapControls: ['baseMap', 'color', 'fullscreen'],
     mockBBox: ['-106.297217', '38.776635', '-105.967627', '38.907397'],
     sourceLayers: ['reach-segments', 'rapids', 'access'],
-    tileservers: [],
-    token: null,
+    tileserver: nwiTileServer,
+    token: mapboxAccessToken,
     mapHttpConfig: {
       lat: null,
       lon: null
@@ -93,10 +101,6 @@ export default {
     clickFeature (feature) {
       this.detailFeature = feature
     }
-  },
-  created () {
-    this.token = mapboxAccessToken
-    this.tileservers.push(nwiTileServer)
   }
 }
 </script>

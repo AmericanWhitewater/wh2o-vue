@@ -3,7 +3,7 @@
     <template v-if="loading">
       <loading-block />
     </template>
-    <template v-if="!loading && loadedBookmarks.length >= 1">
+    <template v-if="!loading && loadedBookmarks">
       <div class="bx--row bx--no-gutter mb-lg">
         <div
           v-for="(item, index) in loadedBookmarks"
@@ -23,7 +23,7 @@
         </div>
       </div>
     </template>
-    <template v-if="!loading && loadedBookmarks.length === 0">
+    <template v-if="!loading && loadedBookmarks">
       <cv-tile>
         <p class="mb-spacing-lg">
           You dont have any bookmarks. <br>Start by searching for a river.
@@ -97,7 +97,7 @@ export default {
        * @todo figure out how to dynamically set scroll position
        * transition to search page is jarring, search results obscured
        */
-      this.$router.push('/river-search')
+      this.$router.push('/river-search').catch(() => {})
     }
   },
   mounted () {

@@ -13,7 +13,7 @@
         />
         <div
           v-if="!loading && !error"
-          class="bx--data-table-container"
+          class="bx--data-table-container mb-lg"
         >
           <table class="bx--data-table">
             <thead>
@@ -26,33 +26,54 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="(a, index) in accidents"
-                :key="index"
-              >
-                <td v-text="'{ date }'" />
-                <td v-text="'{ flow }'" />
-                <td v-text="'{ result }'" />
-                <td v-text="'{ factor }'" />
-                <td>
-                  <cv-button
-                    small
-                    kind="tertiary"
-                    @click="viewAccident(a.id)"
-                  >
-                    Full Report
-                  </cv-button>
-                </td>
-              </tr>
+              <template v-if="accidents.length > 0">
+                <tr
+                  v-for="(a, index) in accidents"
+                  :key="index"
+                >
+                  <td v-text="'{ date }'" />
+                  <td v-text="'{ flow }'" />
+                  <td v-text="'{ result }'" />
+                  <td v-text="'{ factor }'" />
+                  <td>
+                    <cv-button
+                      small
+                      kind="tertiary"
+                      @click.exact="viewAccident(a.id)"
+                    >
+                      Full Report
+                    </cv-button>
+                  </td>
+                </tr>
+              </template>
+              <template v-else>
+                <tr>
+                  <td colspan="5">
+                    No Accident Reports
+                  </td>
+                </tr>
+              </template>
             </tbody>
           </table>
         </div>
       </template>
       <template #sidebar>
-        <h3 class="mb-spacing-md">
-          Submit Accident Report
-        </h3>
-        <p>If someone gets hurt on a river, or you read about a whitewater-related injury, please report it to American Whitewater. Don't worry about multiple submissions from other witnesses, as our safety editors will turn multiple witness reports into a single unified accident report.</p>
+        <div class="sticky">
+          <hr>
+          <h2 class="mb-spacing-md">
+            Submit Accident Report
+          </h2>
+          <p class="mb-spacing-lg">
+            If someone gets hurt on a river, or you read about a whitewater-related injury, please report it to American Whitewater. Don't worry about multiple submissions from other witnesses, as our safety editors will turn multiple witness reports into a single unified accident report.
+          </p>
+          <cv-button
+            size="small"
+            kind="secondary"
+            @click.exact="$router.push('/accident-database/new-report')"
+          >
+            Continue to Form
+          </cv-button>
+        </div>
       </template>
     </layout>
   </div>
@@ -95,7 +116,7 @@ export default {
         accidentDetailActions.GET_ACCIDENT_DETAIL_DATA,
         this.riverId
       )
-      this.$router.push(`/accident-database/${accidentId}`)
+      this.$router.push(`/accident-database/accident-detail/${accidentId}`).catch(() => {})
     }
   },
   created () {

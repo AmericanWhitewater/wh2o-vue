@@ -1,15 +1,25 @@
 <template>
   <section class="bx--grid river-detail">
-    <error-block
-      v-if="error && !loading"
-      title="River Detail Unavailable"
-      text="Sorry for the inconvenience, our team has been notified."
-    />
-    <cv-loading
-      v-if="loading && !error"
-      small
-      overlay
-    />
+    <transition
+      name="fade"
+      mode="out-in"
+    >
+      <error-block
+        v-if="error && !loading"
+        title="River Detail Unavailable"
+        text="Sorry for the inconvenience, our team has been notified."
+      />
+    </transition>
+    <transition
+      name="fade"
+      mode="out-in"
+    >
+      <cv-loading
+        v-if="loading && !error"
+        small
+        overlay
+      />
+    </transition>
     <template v-if="!loading && !error">
       <template v-if="river">
         <river-header
@@ -203,9 +213,11 @@ export default {
        * cv-tabs emits indexof tab on click, use that to push to the correct tab
        * use $router.replace to avoid making log into history
        */
-      this.$router.replace(
+      if (this.riverId) {
+        this.$router.replace(
         `/river-detail/${this.riverId}/${this.tabs[index].toLowerCase()}`
-      ).catch(() => {})
+        ).catch(() => {})
+      }
     },
     /**
      * @temp
@@ -218,9 +230,9 @@ export default {
   created () {
     this.$store.dispatch(actionsTypes.FETCH_RIVER_DETAIL_DATA, this.riverId)
   },
-  // mounted () {
-  //   this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId)
-  // },
+  mounted () {
+    this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId)
+  },
   beforeRouteLeave (to, from, next) {
     if (this.editMode) {
       // use as a check for unsaved changes

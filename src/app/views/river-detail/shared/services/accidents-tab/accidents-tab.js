@@ -9,13 +9,11 @@ const fetchAccidentsData = data => {
       query: `
       query {
         reach(id:${data}){
-          accidents(first:100, page:1){
+          accidents(first:20, page:1){
             data {
               id,
                 rellevel,
-                injuries{
-                  injury
-                  },
+                status,
                 factors{
                     factor
                 }

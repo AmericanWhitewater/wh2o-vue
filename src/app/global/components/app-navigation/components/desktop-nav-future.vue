@@ -5,7 +5,7 @@
         <div class="bx--row">
           <div class="bx--col-lg-16 top-bar">
             <template v-if="!editMode">
-              <!-- <router-link
+              <router-link
                 v-if="user"
                 to="/user/account/1/bookmarks"
                 class="ml-2xs"
@@ -17,7 +17,7 @@
                 class="ml-2xs"
               >
                 <icon-search />Search
-              </router-link> -->
+              </router-link>
             </template>
             <template v-else>
               <aw-logo />
@@ -46,51 +46,68 @@
             >
               <aw-logo />
             </router-link>
-            <header>
-              <cv-button
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/river-index')"
-              >
-                River Index
-              </cv-button>
-
-              <cv-button
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/news')"
-              >
-                News
-              </cv-button>
-              <cv-button
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/river-search')"
-              >
-                Search
-              </cv-button>
-              <cv-button
-                v-if="!user"
-                kind="primary"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/user/access/login')"
-              >
-                Login
-              </cv-button>
-              <cv-button
-                v-if="user"
-                kind="tertiary"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/user/account/1/bookmarks')"
-              >
-                My Account
-              </cv-button>
-            </header>
+            <cv-header-nav>
+              <template v-for="(navItem, index) in navItems">
+                <template v-if="!navItem.children">
+                  <cv-header-menu-item
+                    :key="navItem.label + '-' + index"
+                    :style="`color:#292929`"
+                    :to="navItem.path"
+                  >
+                    {{ navItem.label }}
+                  </cv-header-menu-item>
+                </template>
+                <template v-else>
+                  <cv-header-menu
+                    :key="navItem.label + '-' + index"
+                    :aria-label="navItem.label"
+                    :title="navItem.label"
+                  >
+                    <template v-for="(child, i) in navItem.children">
+                      <cv-header-menu-item
+                        v-if="!child.legacy"
+                        :key="child.label + '-' + i"
+                        :to="child.path"
+                      >
+                        {{ child.label }}
+                      </cv-header-menu-item>
+                      <cv-header-menu-item
+                        v-else
+                        :key="child.label + '-' + i"
+                        :href="child.path"
+                      >
+                        {{ child.label }}
+                      </cv-header-menu-item>
+                    </template>
+                  </cv-header-menu>
+                </template>
+              </template>
+              <template v-if="!user">
+                <router-link
+                  to="/user/access/login"
+                  class="header--btn"
+                >
+                  <cv-button
+                    kind="primary"
+                    size="small"
+                  >
+                    Login
+                  </cv-button>
+                </router-link>
+              </template>
+              <!-- <template v-else>
+                <a
+                  to="/donate"
+                  class="header--btn"
+                >
+                  <cv-button
+                    kind="tertiary"
+                    size="small"
+                    @click.exact="this.window.location='https://www.americanwhitewater.org/content/Membership/donate/?'"
+                  >Donate</cv-button>
+                </a>
+              </template> -->
+            </cv-header-nav>
           </div>
         </div>
       </div>
@@ -98,14 +115,22 @@
   </div>
 </template>
 <script>
+import virtual_Search16 from '@carbon/icons-vue/es/search/16'
 import { mapState } from 'vuex'
 import AwLogo from '@/app/global/components/logo-library/aw-logo'
 import { globalAppActions } from '@/app/global/state'
 
+/**
+ *
+ * @note this component is best suited for a mega nav
+ *
+ */
+
 export default {
   name: 'DesktopNav',
   components: {
-    'aw-logo': AwLogo
+    'aw-logo': AwLogo,
+    'icon-search': virtual_Search16
   },
   props: {
     navItems: {
@@ -186,7 +211,6 @@ export default {
     .cv-header-nav,
     .bx--header {
       @include layer("sticky-nav");
-      padding:$spacing-sm;
     }
   }
 
