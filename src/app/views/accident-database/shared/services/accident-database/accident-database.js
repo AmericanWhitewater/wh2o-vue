@@ -9,7 +9,7 @@ const getAccidentDatabase = data => {
       query: `
       query {
         reach(id:${data}){
-          accidents(first:100, page:1){
+          accidents(first:20, page:1){
             data {
                 # causes,
                 # factors,

@@ -64,7 +64,7 @@ const actions = {
     })
 
     if (!result.errors) {
-      context.commit(DATA_SUCCESS, result.data.reach.rapids)
+      context.commit(DATA_SUCCESS, result.data.reach.pois)
     } else {
       context.commit(DATA_ERROR, 'error')
     }

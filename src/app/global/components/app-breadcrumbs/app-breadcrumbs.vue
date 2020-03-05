@@ -81,7 +81,7 @@
           </template>
         </cv-breadcrumb>
         <cv-tag
-          v-if="$route.name === 'river-index'"
+          v-if="$route.name === 'river-index' && riverIndexData"
           kind="blue"
           :label="`Rivers Found: ${riverIndexData.length}`"
           :disabled="false"

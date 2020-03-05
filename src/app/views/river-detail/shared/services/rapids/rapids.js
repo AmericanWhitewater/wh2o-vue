@@ -9,19 +9,20 @@ const fetchRapidsData = data => {
       query: `
         query {
           reach(id:${data}) {
-            rapids {
+            pois {
                 name,
-                isputin,
-                istakeout,
-                isaccess,
-                isportage,
-                ishazard,
-                iswaterfall,
-                isplayspot,
-                distance,
-                difficulty,
-                description,
-                approximate
+                id
+               # isputin,
+               # istakeout,
+               # isaccess,
+               # isportage,
+               # ishazard,
+               # iswaterfall,
+               # isplayspot,
+               # distance,
+               # difficulty,
+               # description,
+               # approximate
           }
         }
       }
