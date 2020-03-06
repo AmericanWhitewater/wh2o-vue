@@ -14,7 +14,7 @@ const fetchAccidentsData = data => {
               id,
                 rellevel,
                 status,
-                factors{
+                factors {
                     factor
                 }
             }

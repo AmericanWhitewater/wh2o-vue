@@ -10,7 +10,7 @@
           <div class="bx--grid dashboard-wrapper">
             <div class="bx--row">
               <div
-                class="bx--col-sm-4 bx--col-md-2 bx--col-lg-2"
+                class="bx--col-sm-4 bx--col-md-3 bx--col-lg-3"
               >
                 <template v-if="windowWidth > breakpoints.md">
                   <ul class="bg-ui-01 sticky">

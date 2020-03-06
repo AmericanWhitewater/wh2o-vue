@@ -4,7 +4,7 @@
     @click.exact="readArticle"
   >
     <div class="bx--article-card__img" />
-    <div class="bx--aspect-ratio bx--aspect-ratio--2x1">
+    <div :class="[windowWidth > breakpoints.lg ? 'bx--aspect-ratio--2x1' : 'bx--aspect-ratio--1x1','bx--aspect-ratio']">
       <div
         class="bx--aspect-ratio--object bx--article-card__tile"
       >
@@ -20,20 +20,26 @@
         />
 
         <div class="bx--article-card__info">
-          <p
-            v-if="author"
-            class="bx--article-card__author"
-            v-text="author"
+          <flow-color-block
+            v-if="condition"
+            :status="condition"
           />
-          <p
-            v-if="datePosted"
-            class="bx--article-card__date"
-            v-text="datePosted"
-          />
-          <p
-            class="bx--article-card__read-time"
-            v-text="readTime"
-          />
+          <div>
+            <p
+              v-if="author"
+              class="bx--article-card__author"
+              v-text="author"
+            />
+            <p
+              v-if="datePosted"
+              class="bx--article-card__date"
+              v-text="datePosted"
+            />
+            <p
+              class="bx--article-card__read-time"
+              v-text="readTime"
+            />
+          </div>
         </div>
         <div class="bx--article-card__icon--action">
           <Launch20
@@ -63,8 +69,14 @@
 </template>
 
 <script>
+import { FlowColorBlock } from '@/app/views/river-detail/main-tab/components'
+import { CheckWindow } from '@/app/global/mixins'
 export default {
   name: 'ArticleCard',
+  components: {
+    FlowColorBlock
+  },
+  mixins: [CheckWindow],
   props: {
     disabled: {
       type: Boolean,
@@ -107,6 +119,10 @@ export default {
     river: {
       type: Boolean,
       required: false
+    },
+    condition: {
+      type: String,
+      required: false
     }
   },
   methods: {
@@ -121,8 +137,11 @@ export default {
       this.$router.push(path)
     },
     formatTitle (title) {
-      if (title.length > 41) {
+      if (this.windowWidth > this.breakpoints.lg && title.length > 41) {
         return title.slice(0, 41) + '...'
+      }
+      if (this.windowWidth < this.breakpoints.md && title.length > 41) {
+        return title.slice(0, 100) + '...'
       }
       return title
     }
@@ -170,6 +189,7 @@ export default {
   left: 1rem;
   padding: 0;
   color: $text-02;
+  display: flex;
 }
 
 .bx--article-card__info p {

@@ -17,10 +17,6 @@
         <td v-text="river.avggradient" />
       </tr>
       <tr>
-        <td>Max Gradient</td>
-        <td v-text="river.maxgradient" />
-      </tr>
-      <tr>
         <td>Gage</td>
         <td>n/a</td>
       </tr>

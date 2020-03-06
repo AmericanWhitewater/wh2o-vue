@@ -15,6 +15,7 @@
             :title="item.section.slice(0,75)+'...'"
             :subtitle="item.river"
             river
+            condition="low"
             :article-id="item.id"
             :to="`/river-detail/${item.id}/main`"
             :read-time="item.class"
@@ -23,7 +24,7 @@
         </div>
       </div>
     </template>
-    <template v-if="!loading && loadedBookmarks">
+    <template v-if="!loading && !loadedBookmarks.length">
       <cv-tile>
         <p class="mb-spacing-lg">
           You dont have any bookmarks. <br>Start by searching for a river.

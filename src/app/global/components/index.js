@@ -16,5 +16,5 @@ export { default as PageDescription } from './page-description/page-description.
 export { default as PageHeader } from './page-header/page-header.vue'
 export { default as ResourceCard } from './resource-card/resource-card.vue'
 export { default as ResourceCardGroup } from './resource-card-group/resource-card-group.vue'
-export { default as SkeletonBlock } from './skeleton-block/skeleton-block.vue'
 export { default as SearchResultsCounter } from './search-results-counter/search-results-counter.vue'
+export { default as SkeletonBlock } from './skeleton-block/skeleton-block.vue'
