@@ -9,7 +9,7 @@
           <template v-if="loading">
             <loading-block />
           </template>
-          <template v-if="!loading && error">
+          <template v-if="!loading && !chartData">
             <error-block />
           </template>
           <template v-if="!loading && chartData">

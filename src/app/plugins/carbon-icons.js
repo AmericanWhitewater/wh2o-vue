@@ -31,38 +31,42 @@ import Settings32 from '@carbon/icons-vue/es/settings/32.js'
 import UserAvatar16 from '@carbon/icons-vue/es/user--avatar/16.js'
 import UserAvatar20 from '@carbon/icons-vue/es/user--avatar/20.js'
 import WifiOff32 from '@carbon/icons-vue/es/wifi--off/32.js'
+import ErrorOutline32 from '@carbon/icons-vue/es/error--outline/32.js'
+
+export const components = {
+  AddAlt32,
+  AppSwitcher20,
+  ArrowRight16,
+  ArrowRight20,
+  ArrowRight32,
+  Bullhorn32,
+  ChartBar32,
+  ChartLine32,
+  Download20,
+  Email20,
+  Email24,
+  Email32,
+  Error20,
+  ErrorOutline32,
+  Filter16,
+  FitToScreen16,
+  FitToScreen32,
+  Grid16,
+  Help32,
+  Launch20,
+  List16,
+  LogoFacebook24,
+  LogoLinkedIn24,
+  Map32,
+  Maximize16,
+  Minimize16,
+  Notification20,
+  Settings32,
+  UserAvatar16,
+  UserAvatar20,
+  WifiOff32
+}
 
 Vue.use(CarbonIconsVue, {
-  components: {
-    AddAlt32,
-    AppSwitcher20,
-    ArrowRight16,
-    ArrowRight20,
-    ArrowRight32,
-    Bullhorn32,
-    ChartBar32,
-    ChartLine32,
-    Download20,
-    Email20,
-    Email24,
-    Email32,
-    Error20,
-    Filter16,
-    FitToScreen16,
-    FitToScreen32,
-    Grid16,
-    Help32,
-    Launch20,
-    List16,
-    LogoFacebook24,
-    LogoLinkedIn24,
-    Map32,
-    Maximize16,
-    Minimize16,
-    Notification20,
-    Settings32,
-    UserAvatar16,
-    UserAvatar20,
-    WifiOff32
-  }
+  components
 })

@@ -51,7 +51,7 @@
     "@vue/cli-plugin-unit-jest": "^4.2.3",
     "@vue/cli-service": "^4.2.3",
     "@vue/eslint-config-standard": "^5.1.2",
-    "@vue/test-utils": "^1.0.0-beta.31",
+    "@vue/test-utils": "1.0.0-beta.31",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.0.6",
     "eslint": "^6.8.0",
@@ -74,9 +74,6 @@
       "autoprefixer": {}
     }
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged && npm run test:unit"
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
@@ -84,6 +81,9 @@
   ],
   "engines": {
     "node": "10.x"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged && npm run test:unit"
   },
   "homepage": "https://github.com/drewalth/wh2o-vue"
 }

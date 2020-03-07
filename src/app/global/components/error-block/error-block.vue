@@ -1,9 +1,8 @@
 <template>
   <div
-    class="error-block"
+    id="error-block"
     :style="`height:${height}px`"
   >
-    <error-outlined v-if="!hideIcon" />
     <h2>{{ title }}</h2>
     <p>{{ text }}</p>
   </div>
@@ -13,13 +12,9 @@
  * @todo refactor loading-block, error-block, skeleton-block into one component
  *
  */
-import error_outlined32 from '@carbon/icons-vue/es/error--outline/32'
 
 export default {
   name: 'ErrorBlock',
-  components: {
-    'error-outlined': error_outlined32
-  },
   props: {
     title: {
       type: String,
@@ -34,16 +29,12 @@ export default {
     height: {
       type: String,
       default: '350'
-    },
-    hideIcon: {
-      type: Boolean,
-      required: false
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-.error-block {
+#error-block {
   width: 100%;
   background-color: $ui-02;
   display: flex;
