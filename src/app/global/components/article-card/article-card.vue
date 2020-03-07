@@ -4,7 +4,7 @@
     @click.exact="readArticle"
   >
     <div class="bx--article-card__img" />
-    <div :class="[windowWidth > breakpoints.lg ? 'bx--aspect-ratio--2x1' : 'bx--aspect-ratio--1x1','bx--aspect-ratio']">
+    <div :class="[windowWidth > breakpoints.lg ? 'bx--aspect-ratio--2x1' : 'bx--aspect-ratio--4x3','bx--aspect-ratio']">
       <div
         class="bx--aspect-ratio--object bx--article-card__tile"
       >
@@ -70,13 +70,13 @@
 
 <script>
 import { FlowColorBlock } from '@/app/views/river-detail/main-tab/components'
-import { CheckWindow } from '@/app/global/mixins'
+import { checkWindow } from '@/app/global/mixins'
 export default {
   name: 'ArticleCard',
   components: {
     FlowColorBlock
   },
-  mixins: [CheckWindow],
+  mixins: [checkWindow],
   props: {
     disabled: {
       type: Boolean,

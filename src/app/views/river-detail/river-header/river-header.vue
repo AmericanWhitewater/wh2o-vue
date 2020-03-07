@@ -70,7 +70,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import { EditModeToggle } from '@/app/global/components'
-import { defaultBannerImage, CheckWindow } from '@/app/global/mixins'
+import { defaultBannerImage, checkWindow } from '@/app/global/mixins'
 import { globalAppActions } from '@/app/global/state'
 import { bookmarksActions } from '../shared/state'
 
@@ -79,7 +79,7 @@ export default {
   components: {
     EditModeToggle
   },
-  mixins: [defaultBannerImage, CheckWindow],
+  mixins: [defaultBannerImage, checkWindow],
   props: {
     name: {
       type: String,

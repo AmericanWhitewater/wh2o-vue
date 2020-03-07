@@ -78,7 +78,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { CheckWindow } from '@/app/global/mixins'
+import { checkWindow } from '@/app/global/mixins'
 
 /**
  * User Dashboard / My Account
@@ -100,7 +100,7 @@ export default {
       return value.charAt(0).toUpperCase() + value.slice(1)
     }
   },
-  mixins: [CheckWindow],
+  mixins: [checkWindow],
   data: () => ({
     /**
      * active / selected route
