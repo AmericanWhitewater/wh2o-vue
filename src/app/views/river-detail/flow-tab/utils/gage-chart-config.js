@@ -1,6 +1,6 @@
 export const GageChartConfig = {
   data: () => ({
-    chartHeight: 200,
+    chartHeight: 250,
     chartConfig: {
       legend: {
         display: false

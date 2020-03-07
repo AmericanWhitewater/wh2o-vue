@@ -39,7 +39,6 @@
     >
       <template #main>
         <rapids-section />
-        <comments-section />
       </template>
     </layout>
   </div>
@@ -57,7 +56,6 @@ import {
   SideBar,
   BetaBox,
   RapidsSection,
-  CommentsSection,
   RiverDescription
 } from './components'
 
@@ -66,7 +64,6 @@ export default {
   components: {
     SideBar,
     RapidsSection,
-    CommentsSection,
     BetaBox,
     RiverDescription,
     LoadingBlock,

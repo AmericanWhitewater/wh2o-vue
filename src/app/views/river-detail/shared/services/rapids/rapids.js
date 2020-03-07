@@ -12,17 +12,17 @@ const fetchRapidsData = data => {
             pois {
                 name,
                 id
-               # isputin,
+               character,
                # istakeout,
                # isaccess,
                # isportage,
                # ishazard,
                # iswaterfall,
                # isplayspot,
-               # distance,
-               # difficulty,
-               # description,
-               # approximate
+                distance,
+                difficulty,
+                description,
+                approximate
           }
         }
       }

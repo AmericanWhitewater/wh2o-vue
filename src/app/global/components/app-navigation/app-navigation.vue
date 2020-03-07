@@ -12,7 +12,7 @@
 <script>
 import DesktopNav from './components/desktop-nav'
 import MobileNav from './components/mobile-nav'
-import { navItems, CheckWindow } from '@/app/global/mixins'
+import { navItems, checkWindow } from '@/app/global/mixins'
 
 /**
  * @displayName App Navigation
@@ -24,7 +24,7 @@ export default {
     'desktop-nav': DesktopNav,
     'mobile-nav': MobileNav
   },
-  mixins: [CheckWindow, navItems],
+  mixins: [checkWindow, navItems],
   computed: {
     homePage () {
       if (this.$route.name === 'home') {

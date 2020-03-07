@@ -7,8 +7,8 @@ const fetchRiverDetailData = data => {
   return httpClient
     .post(url, {
       query: `
-      query {
-        reach(id:${data}){
+      {
+        reach(id: ${data}) {
           agency
           altname
           avggradient
@@ -62,7 +62,7 @@ const fetchRiverDetailData = data => {
           was_final
           zipcode
         }
-    }
+      }
     
     `
     })

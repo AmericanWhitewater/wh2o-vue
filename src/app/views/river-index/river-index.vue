@@ -227,7 +227,7 @@
 </template>
 <script>
 import { StaticUsMap } from './shared/components'
-import { riverSearchHttpConfig, CheckWindow } from '@/app/global/mixins'
+import { riverSearchHttpConfig, checkWindow } from '@/app/global/mixins'
 import scrollIntoView from 'scroll-into-view-if-needed'
 import { LoadingBlock, AwLogo } from '@/app/global/components'
 import { riverIndexActions } from './shared/state'
@@ -255,7 +255,7 @@ export default {
     LoadingBlock,
     AwLogo
   },
-  mixins: [riverSearchHttpConfig, InternationalReaches, LevelsList, CheckWindow],
+  mixins: [riverSearchHttpConfig, InternationalReaches, LevelsList, checkWindow],
   metaInfo () {
     return {
       title: this.metaTitle,

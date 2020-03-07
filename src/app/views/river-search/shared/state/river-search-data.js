@@ -3,7 +3,7 @@ import { reflectKeys } from '@/app/global/services'
 import { fetchRiverSearchData } from '../services'
 
 const initialState = {
-  loading: false,
+  loading: null,
   data: null,
   error: null,
   searchTerm: null
@@ -40,7 +40,7 @@ const mutations = {
   },
 
   [SEARCH_TERM] (state, payload) {
-    Object.assign(state, { loading: false, searchTerm: payload })
+    Object.assign(state, { searchTerm: payload })
   }
 }
 

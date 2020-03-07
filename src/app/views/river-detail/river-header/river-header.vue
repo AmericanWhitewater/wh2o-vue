@@ -8,15 +8,21 @@
         <div class="bx--col-lg-10">
           <div class="outside">
             <div class="inside">
-              <h4>{{ name }}</h4>
-              <h1>{{ section }}</h1>
+              <template v-if="windowWidth > breakpoints.md">
+                <h4>{{ name }}</h4>
+                <h1>{{ section }}</h1>
+              </template>
+              <template v-if="windowWidth < breakpoints.md">
+                <h6>{{ name }}</h6>
+                <h3>{{ section }}</h3>
+              </template>
               <div>
                 <cv-button
                   kind="secondary"
                   size="small"
                   class="ml-spacing-sm"
                   :disabled="!user"
-                  @click.exact="addBookmark"
+                  @click.exact="toggleBookmark"
                 >
                   Bookmark River
                 </cv-button>
@@ -64,7 +70,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import { EditModeToggle } from '@/app/global/components'
-import { defaultBannerImage } from '@/app/global/mixins'
+import { defaultBannerImage, checkWindow } from '@/app/global/mixins'
 import { globalAppActions } from '@/app/global/state'
 import { bookmarksActions } from '../shared/state'
 
@@ -73,7 +79,7 @@ export default {
   components: {
     EditModeToggle
   },
-  mixins: [defaultBannerImage],
+  mixins: [defaultBannerImage, checkWindow],
   props: {
     name: {
       type: String,
@@ -92,15 +98,26 @@ export default {
   computed: {
     ...mapState({
       editMode: state => state.appGlobalState.appGlobalData.editMode,
-      user: state => state.userState.userData.data
+      user: state => state.userState.userData.data,
+      bookmarks: state => state.riverDetailState.bookmarksData.data
     }),
     ...mapGetters(['userIsAdmin']),
     reachId () {
-      return this.$route.params.id
+      return parseInt(this.$route.params.id, 10)
+    },
+    bookmarked () {
+      if (this.bookmarks) {
+        const isBookmarked = this.bookmarks.indexOf(this.reachId)
+        return isBookmarked
+      }
+      return null
     }
   },
   methods: {
-    addBookmark () {
+    /**
+     * @todo add the toggle
+     */
+    toggleBookmark () {
       this.$store.dispatch(bookmarksActions.ADD_BOOKMARK, this.reachId)
       this.$store.dispatch(globalAppActions.SEND_TOAST, {
         title: 'Bookmark Added',
@@ -134,15 +151,17 @@ section {
       padding-bottom: $spacing-lg;
     }
     h1,
+    h3,
+    h6,
     h4 {
       background-color: #fff;
       width: fit-content;
     }
-    h1 {
+    h1,h3 {
       margin-bottom: $spacing-sm;
       padding: 11px 12px 11px 2rem;
     }
-    h4 {
+    h4,h6 {
       padding: 11px 12px 0 2rem;
     }
   }

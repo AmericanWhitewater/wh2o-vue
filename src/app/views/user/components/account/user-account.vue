@@ -10,7 +10,7 @@
           <div class="bx--grid dashboard-wrapper">
             <div class="bx--row">
               <div
-                class="bx--col-sm-4 bx--col-md-2 bx--col-lg-2"
+                class="bx--col-sm-4 bx--col-md-3 bx--col-lg-3"
               >
                 <template v-if="windowWidth > breakpoints.md">
                   <ul class="bg-ui-01 sticky">
@@ -78,7 +78,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { CheckWindow } from '@/app/global/mixins'
+import { checkWindow } from '@/app/global/mixins'
 
 /**
  * User Dashboard / My Account
@@ -100,7 +100,7 @@ export default {
       return value.charAt(0).toUpperCase() + value.slice(1)
     }
   },
-  mixins: [CheckWindow],
+  mixins: [checkWindow],
   data: () => ({
     /**
      * active / selected route

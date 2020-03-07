@@ -6,6 +6,10 @@
   />
 </template>
 <script>
+/**
+ * @todo refactor loading-block, error-block, skeleton-block into one component
+ *
+ */
 export default {
   name: 'SkeletonBlock',
   props: {

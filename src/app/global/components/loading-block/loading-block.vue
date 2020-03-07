@@ -13,6 +13,7 @@
 <script>
 /**
  * @displayName Loading Block
+ * @todo refactor loading-block, error-block, skeleton-block into one component
  */
 export default {
   name: 'LoadingBlock',

@@ -53,9 +53,6 @@ export const rapidsActions = reflectKeys(
   namespacedPrefix
 )
 
-/**
- * actions
- */
 const actions = {
   async [rapidsActions.FETCH_RAPIDS_DATA] (context, data) {
     context.commit(DATA_REQUEST)

@@ -5,7 +5,7 @@
 
 import Breakpoints from '../services/breakpoints/breakpoints'
 
-export const CheckWindow = {
+export const checkWindow = {
   data: () => ({
     breakpoints: Breakpoints,
     windowWidth: 0

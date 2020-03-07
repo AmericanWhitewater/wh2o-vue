@@ -1,11 +1,13 @@
-import { reflectKeys, appLocalStorage } from '../services'
+import { reflectKeys, appLocalStorage, Breakpoints } from '../services'
 
 const initialState = {
   loading: false,
   error: null,
   editMode: null,
   updateAvailable: null,
-  toasts: []
+  toasts: [],
+  breakpoints: Breakpoints,
+  windowWidth: null
 }
 
 /**

@@ -128,14 +128,14 @@
 </template>
 <script>
 import AwLogo from '@/app/global/components/logo-library/aw-logo'
-import { CheckWindow } from '@/app/global/mixins'
+import { checkWindow } from '@/app/global/mixins'
 
 export default {
   name: 'MobileNav',
   components: {
     'aw-logo': AwLogo
   },
-  mixins: [CheckWindow],
+  mixins: [checkWindow],
   props: {
     navItems: {
       type: Array,
