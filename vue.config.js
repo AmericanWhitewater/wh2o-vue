@@ -10,6 +10,7 @@ module.exports = {
    * linting reserved for pre-commit git hook.
    */
   lintOnSave: false,
+
   devServer: {
     port: 8081,
     /**
@@ -21,31 +22,15 @@ module.exports = {
       warning: false
     }
   },
+
   css: {
     loaderOptions: {
       sass: {
-        /**
-         * prependData gives all single file components (SFC) access to variables, mixins, themes.
-         * @note it is important to only add abstracts and not include class rule declarations here. For example:
-         *
-         * GOOD
-         * $color-01: #ccc;
-         *
-         * BAD
-         * .foo {background-color:red}
-         *
-         * This will be a part of the output for every SFC and cause CSS bloat if there are class declarations.
-         *
-         */
-        prependData: `
-          @import '@/app/assets/scss/abstracts/_variables.scss';
-          @import '@/app/assets/scss/abstracts/_mixins.scss';
-          @import '@/app/assets/scss/vendor/_carbon-components-helpers.scss';
-          @import '@/app/assets/scss/helpers/_media-queries.scss';       
-          `
+        prependData: '\n          @import \'@/app/assets/scss/abstracts/_variables.scss\';\n          @import \'@/app/assets/scss/abstracts/_mixins.scss\';\n          @import \'@/app/assets/scss/vendor/_carbon-components-helpers.scss\';\n          @import \'@/app/assets/scss/helpers/_media-queries.scss\';       \n          '
       }
     }
   },
+
   /**
    * Progressive Web Application features
    * @reference https://cli.vuejs.org/config/#pwa
@@ -62,8 +47,9 @@ module.exports = {
       swSrc: './src/sw.js',
       swDest: 'service-worker.js'
     },
-    appleMobileWebAppStatusBarStyle: '#53789a'
+    appleMobileWebAppStatusBarStyle: 'black-translucent'
   },
+
   /**
    * A function that will receive an instance of ChainableConfig powered by webpack-chain.
    * Allows for more fine-grained modification of the internal webpack config.
@@ -77,5 +63,6 @@ module.exports = {
       .use('file-loader')
       .loader('file-loader')
       .end()
-  }
+  },
+  productionSourceMap: false
 }

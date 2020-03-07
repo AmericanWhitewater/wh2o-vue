@@ -27,9 +27,6 @@
               <span @click="shareArticle('linkedin')">
                 <LogoLinkedIn24 />
               </span>
-              <span @click="shareArticle('google')">
-                <LogoGoogle24 />
-              </span>
               <span @click="shareArticle('email')">
                 <Email24 />
               </span>
@@ -49,7 +46,7 @@
               </h2>
               <template v-for="(cat, index) in article.categories">
                 <span
-                  :key="index"
+                  :key="randomNumber(index)"
                   class="mb-spacing-sm mr-spacing-sm"
                 >{{ cat }}</span>
               </template>
@@ -61,9 +58,9 @@
               <h2 class="mb-spacing-md">
                 Tags
               </h2>
-              <template v-for="(tag, index) in article.tags">
+              <template v-for="(tag, k) in article.tags">
                 <span
-                  :key="index"
+                  :key="randomNumber(k)"
                   class="mb-spacing-sm mr-spacing-sm"
                 >{{ tag }}</span>
               </template>
@@ -78,7 +75,7 @@
             <span v-if="relatedLoading">Loading...</span>
             <template v-for="(item, i) in relatedArticles.slice(0,2)">
               <ArticleCard
-                :key="i"
+                :key="randomNumber(i)"
                 :title="item.title.rendered"
                 :article-id="item.id"
               />
@@ -173,6 +170,9 @@ export default {
     },
     formatDate (date) {
       return Moment(date).format('ll')
+    },
+    randomNumber (index) {
+      return Math.floor(Math.random() * (10000 + index))
     }
   },
   created () {
