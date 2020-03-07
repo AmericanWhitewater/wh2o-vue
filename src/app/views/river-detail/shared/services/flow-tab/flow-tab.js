@@ -1,16 +1,18 @@
 import { httpClient } from '@/app/global/services'
 import { apiConstants } from '../../config'
+import axios from 'axios'
 
 const fetchGaugeReadings = data => {
   /**
-   * @todo need gage id
+   * @todo remove proxy and setup local gage server
+   * @temp get flow data from prod
+   *
    */
-
-  // const url = '/api/gauge/36667/flows/2?from=1570336187&to=1570422587&resolution=1'
-  // const url = `/api/gauge/${data.gauge_id}/flows/${data.metric_id}?from=${data.timeStart}&to=${data.timeEnd}&resolution=${data.resolution}`
-  const url = `/api/gauge/36667/flows/${data.metric_id}?from=${data.timeStart}&to=${data.timeEnd}&resolution=${data.resolution}`
-
-  return httpClient.get(url).then(res => res.data)
+  const url = `https://cors-anywhere.herokuapp.com/https://americanwhitewater.org/api/gauge/${data.gauge_id}/flows/${data.metric_id}?from=${data.timeStart}&to=${data.timeEnd}&resolution=${data.resolution}`
+  /**
+   * @temp ideally keep axios in httpClient wrapper
+   */
+  return axios.get(url).then(res => res.data)
 }
 
 const fetchGaugeSourceInfo = id => {

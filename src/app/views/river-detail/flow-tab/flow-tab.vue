@@ -12,20 +12,23 @@
           <error-block />
         </template>
         <template v-if="!loading && chartData">
-          <gage-chart
-            :chart-data="chartData"
-            :height="chartHeight"
-            :options="chartConfig"
-          />
+          <template v-if="viewMode === 'chart'">
+            <gage-chart
+              :chart-data="chartData"
+              :height="chartHeight"
+              :options="chartConfig"
+            />
+          </template>
+          <template v-else>
+            <GageReadings />
+          </template>
         </template>
       </template>
       <template #sidebar>
-        <GageChartControls @timescaleChange="setTimescale" />
-      </template>
-    </layout>
-    <layout name="layout-two-thirds">
-      <template #main>
-        <GageReadings />
+        <GageChartControls
+          @viewModeChange="viewMode = $event"
+          @timescaleChange="setTimescale"
+        />
       </template>
     </layout>
   </div>
@@ -51,7 +54,8 @@ export default {
   },
   mixins: [GageChartConfig],
   data: () => ({
-    selectedTimespan: 'h:mm a'
+    selectedTimespan: 'h:mm a',
+    viewMode: 'chart'
   }),
 
   computed: {
@@ -89,8 +93,10 @@ export default {
       this.$store.dispatch(readingsActions.FETCH_GAGE_READINGS_DATA)
     },
     setTimescale (value) {
-      this.selectedTimespan = value
-      this.chartConfig.scales.xAxes[0].time.unit = value
+      if (value && this.chartConfig.scales.xAxes[0].time) {
+        this.selectedTimespan = value
+        this.chartConfig.scales.xAxes[0].time.unit = value
+      }
     }
   },
   created () {

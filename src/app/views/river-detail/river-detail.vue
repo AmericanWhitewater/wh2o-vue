@@ -42,6 +42,7 @@
           </cv-overflow-menu>
           <cv-tabs
             aria-label="navigation tab label"
+            no-default-to-first
             @tab-selected="switchTab($event)"
           >
             <cv-tab

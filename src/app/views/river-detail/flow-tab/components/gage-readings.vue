@@ -1,27 +1,32 @@
 <template>
   <section class="mt-3">
-    <hr>
-    <h2 class="mb-spacing-md">
-      Readings
-    </h2>
-
-    <cv-data-table
+    <div
       v-if="!loading && data"
-      :columns="columns"
-      :auto-width="false"
+      class="bx--data-table-container"
     >
-      <template slot="data">
-        <cv-data-table-row
-          v-for="(r, rowIndex) in data.slice(0, 10)"
-          :key="`${rowIndex}`"
-          :value="`${rowIndex}`"
-        >
-          <cv-data-table-cell>{{ r.reading }}</cv-data-table-cell>
-          <cv-data-table-cell>{{ formatDate(r.updated) }}</cv-data-table-cell>
-          <template slot="expandedContent" />
-        </cv-data-table-row>
-      </template>
-    </cv-data-table>
+      <table class="bx--data-table">
+        <thead>
+          <tr>
+            <th>
+              Flow Rate
+            </th>
+            <th>
+              Date / Time
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(r, rowIndex) in data.slice(0, 10)"
+            :key="`${rowIndex}`"
+            :value="`${rowIndex}`"
+          >
+            <td v-text="`${Math.floor(r.reading)} [${r.metric}]`" />
+            <td>{{ formatDate(r.updated) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <loading-block v-if="loading" />
     <error-block v-if="!loading && error" />
   </section>
