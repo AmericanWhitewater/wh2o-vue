@@ -41,23 +41,7 @@
           {{ g.gauge_name }}
         </cv-dropdown-item>
       </cv-dropdown>
-      <template v-if="availableMetrics">
-        <cv-dropdown
-          v-model="formData.metric_id"
-          label="Metric"
-          :disabled="availableMetrics.length === 1"
-          class="mb-spacing-md"
-          @change="fetchReadings"
-        >
-          <cv-dropdown-item
-            v-for="(g, index) in availableMetrics"
-            :key="index"
-            :value="g.id"
-          >
-            {{ g.label }}
-          </cv-dropdown-item>
-        </cv-dropdown>
-      </template>
+
       <cv-dropdown
         v-model="formData.timeScale"
         label="Timespan"
@@ -78,6 +62,23 @@
           Year
         </cv-dropdown-item>
       </cv-dropdown>
+
+      <cv-dropdown
+        v-if="availableMetrics"
+        v-model="formData.metric_id"
+        label="Metric"
+        :disabled="availableMetrics.length === 1"
+        class="mb-spacing-md"
+        @change="fetchReadings"
+      >
+        <cv-dropdown-item
+          v-for="(g, index) in availableMetrics"
+          :key="index"
+          :value="g.id"
+        >
+          {{ g.label }}
+        </cv-dropdown-item>
+      </cv-dropdown>
     </template>
   </div>
 </template>
@@ -87,9 +88,7 @@ import { metricsActions, readingsActions } from '../../shared/state'
 import { mapState } from 'vuex'
 /**
  * @todo create globally availble Title Case filter. Will help with better
- * blog post titles and gage name typesetting.
- *
- * @todo metric input hides then reappears when chart params change. clunky. fix this.
+ * blog post titles and gage name typesetting
  *
  */
 export default {
