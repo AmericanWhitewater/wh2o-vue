@@ -89,6 +89,8 @@ import { mapState } from 'vuex'
  * @todo create globally availble Title Case filter. Will help with better
  * blog post titles and gage name typesetting.
  *
+ * @todo metric input hides then reappears when chart params change. clunky. fix this.
+ *
  */
 export default {
   name: 'GageChartControls',
