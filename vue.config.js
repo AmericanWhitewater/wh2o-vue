@@ -47,7 +47,7 @@ module.exports = {
       swSrc: './src/sw.js',
       swDest: 'service-worker.js'
     },
-    appleMobileWebAppStatusBarStyle: 'black-translucent'
+    appleMobileWebAppStatusBarStyle: 'black'
   },
 
   /**
