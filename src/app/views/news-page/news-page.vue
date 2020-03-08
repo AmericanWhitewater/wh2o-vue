@@ -70,7 +70,7 @@
               class="bx--col-md-4 bx--col-lg-8 mb-spacing-lg"
             >
               <ArticleCard
-                :title="article.title.rendered"
+                :title="$titleCase(article.title.rendered)"
                 :article-id="article.id"
               />
             </div>

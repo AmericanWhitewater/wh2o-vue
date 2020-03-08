@@ -22,7 +22,7 @@
           n/a
         </td>
         <td v-else>
-          {{ gages[0].gauge.name }}
+          {{ $titleCase(gages[0].gauge.name) }}
         </td>
       </tr>
       <tr>

@@ -178,7 +178,8 @@ export default {
   display: flex;
   padding: $spacing-sm 0;
   justify-content: space-between;
-  // width:100%;
+  max-width:100%;
+  overflow-x: scroll;
   @include MQ("LG") {
     top: $desktop-nav-height;
   }

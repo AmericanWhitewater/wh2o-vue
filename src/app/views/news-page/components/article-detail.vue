@@ -12,7 +12,7 @@
     <template v-if="!loading">
       <div class="bx--grid">
         <page-header
-          :title="article.title.rendered"
+          :title="$titleCase(article.title.rendered)"
           :subtitle="formatDate(article.date)"
           :featured-img="featuredMedia"
         />

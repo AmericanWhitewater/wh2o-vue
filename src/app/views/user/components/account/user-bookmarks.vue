@@ -103,7 +103,7 @@ export default {
   },
   mounted () {
     this.bookmarks = appLocalStorage.getItem('wh2o-bookmarked-rivers')
-    if (this.loadedBookmarks.length === 0) {
+    if (!this.loadedBookmarks) {
       this.fetchBookmarks(this.bookmarks)
     }
   }

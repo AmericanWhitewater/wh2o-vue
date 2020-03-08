@@ -28,7 +28,7 @@
       <cv-dropdown
         v-if="gages"
         v-model="formData.gauge_id"
-        :placeholder="formData.gauge_name"
+        :placeholder="$titleCase(formData.gauge_name)"
         :label="gages.length === 1 ? 'Gage' : 'Gages'"
         class="mb-spacing-md"
         :disabled="gages.length === 1"
@@ -39,7 +39,7 @@
           :key="index"
           :value="g.gauge.id"
         >
-          {{ g.gauge.name }}
+          {{ $titleCase(g.gauge.name) }}
         </cv-dropdown-item>
       </cv-dropdown>
 
@@ -108,7 +108,7 @@ export default {
      */
     formData: {
       gauge_id: '',
-      gauge_name: 'POTOMAC RIVER NEAR WASH, DC LITTLE FALLS PUMP STA USA-MRY',
+      gauge_name: '',
       metric_id: '2',
       timeStart: null,
       timeEnd: null,
