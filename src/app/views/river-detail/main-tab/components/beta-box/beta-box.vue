@@ -1,5 +1,5 @@
 <template>
-  <div class="beta-box">
+  <div class="beta-box mb-md">
     <table
       v-if="!loading"
       class="bx--data-table bx--data-table--zebra"
