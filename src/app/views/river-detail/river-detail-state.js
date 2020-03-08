@@ -8,6 +8,7 @@ import {
   galleryData,
   mapData,
   rapidsData,
+  reachGagesData,
   riverDetailData,
   weatherData
 } from './shared/state'
@@ -23,6 +24,7 @@ export default {
     galleryData,
     mapData,
     rapidsData,
+    reachGagesData,
     riverDetailData,
     weatherData
   }

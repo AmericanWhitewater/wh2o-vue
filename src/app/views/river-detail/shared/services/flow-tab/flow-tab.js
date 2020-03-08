@@ -26,5 +26,37 @@ const fetchGaugeMetrics = () => {
 
   return httpClient.get(url).then(res => res.data)
 }
+const fetchGages = data => {
+  const url = `${apiConstants.graphql}`
+  return httpClient
+    .post(url, {
+      query: `
+      {
+        getGaugeInformationForReachID(id: ${data}) {
+          gauges {
+              rc,
+              gauge_reading,
+              range_comment,
+              class,
+              excluded,
+              url,
+              rmin,
+              rmax,
+              gauge {
+                  name
+              }
+              updated,
+              last_gauge_reading,
+              last_gauge_updated,
+              gauge_perfect,
+              adjusted_reach_class
+          }
+      }
+        }
+    
+    `
+    })
+    .then(res => res.data)
+}
 
-export { fetchGaugeReadings, fetchGaugeSourceInfo, fetchGaugeMetrics }
+export { fetchGaugeReadings, fetchGaugeSourceInfo, fetchGaugeMetrics, fetchGages }

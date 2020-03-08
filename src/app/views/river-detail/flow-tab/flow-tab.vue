@@ -15,11 +15,15 @@
           <template v-if="!loading && chartData">
             <template v-if="viewMode === 'chart'">
               <template v-if="readings.length > 0">
-                <gage-chart
-                  :chart-data="chartData"
-                  :height="chartHeight"
-                  :options="chartConfig"
-                />
+                <div style="max-width:100%;overflow-x:scroll">
+                  <div :style="chartSize">
+                    <gage-chart
+                      :chart-data="chartData"
+                      :height="chartHeight"
+                      :options="chartConfig"
+                    />
+                  </div>
+                </div>
               </template>
               <template v-else>
                 <error-block
@@ -51,14 +55,11 @@
         </template>
         <template v-else>
           <hr>
-          <h2 class="mb-spacing-md">
-            Add Gage
-          </h2>
           <p class="mb-spacing-md">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            If you know this reach has a gage, you can search from our list of preregistered gages or add a new gage to the database. You can also create a virtual gage, { some copy on what that means }...
           </p>
           <cv-button
-            disabled
+            :disabled="!user"
             size="small"
           >
             Action
@@ -77,6 +78,7 @@ import { Layout } from '@/app/global/layout'
 import { mapState } from 'vuex'
 import { readingsActions } from '../shared/state'
 import { LoadingBlock, ErrorBlock } from '@/app/global/components'
+import { checkWindow } from '@/app/global/mixins'
 
 /**
  * @todo this component is getting pretty wild. consider composition API.
@@ -92,7 +94,7 @@ export default {
     Layout,
     LoadingBlock
   },
-  mixins: [GageChartConfig],
+  mixins: [GageChartConfig, checkWindow],
   data: () => ({
     /**
      * @temp use these until we get a list of gages from graphql
@@ -100,18 +102,18 @@ export default {
      *
      */
     mockGages: [
-      {
-        gauge_name: 'POTOMAC RIVER NEAR WASH, DC LITTLE FALLS PUMP STA USA-MRY',
-        gauge_id: '569'
-      },
-      {
-        gauge_name: 'S F SOUTH BRANCH POTOMAC RIVER NR MOOREFIELD, WV USA-WVR',
-        gauge_id: '550'
-      },
-      {
-        gauge_name: 'GAULEY RIVER NEAR CRAIGSVILLE, WV USA-WVR',
-        gauge_id: '1433'
-      }
+      // {
+      //   gauge_name: 'POTOMAC RIVER NEAR WASH, DC LITTLE FALLS PUMP STA USA-MRY',
+      //   gauge_id: '569'
+      // },
+      // {
+      //   gauge_name: 'S F SOUTH BRANCH POTOMAC RIVER NR MOOREFIELD, WV USA-WVR',
+      //   gauge_id: '550'
+      // },
+      // {
+      //   gauge_name: 'GAULEY RIVER NEAR CRAIGSVILLE, WV USA-WVR',
+      //   gauge_id: '1433'
+      // }
     ],
     /**
      * default timespan to day format
@@ -124,6 +126,7 @@ export default {
   }),
   computed: {
     ...mapState({
+      user: state => state.userState.userData.data,
       readings: state => state.riverDetailState.gageReadingsData.data,
       loading: state => state.riverDetailState.gageReadingsData.loading,
       error: state => state.riverDetailState.gageReadingsData.error
@@ -150,6 +153,13 @@ export default {
         return formattedData
       }
       return null
+    },
+    chartSize () {
+      if (this.windowWidth > this.breakpoints.sm) {
+        return null
+      } else {
+        return 'position:relative;width:' + (this.breakpoints.sm * 2) + 'px'
+      }
     }
   },
   watch: {

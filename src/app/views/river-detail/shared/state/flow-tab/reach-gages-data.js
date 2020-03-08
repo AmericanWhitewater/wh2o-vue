@@ -1,6 +1,5 @@
 import { reflectKeys } from '@/app/global/services'
-
-import { fetchGaugeSourceInfo } from '../../services'
+import { fetchGages } from '../../services'
 
 const initialState = {
   loading: false,
@@ -8,7 +7,7 @@ const initialState = {
   error: null
 }
 
-const namespacedPrefix = '[GAGE_SOURCE]'
+const namespacedPrefix = '[REACH_GAGES]'
 
 const mutationTypes = reflectKeys(
   ['DATA_SUCCESS', 'DATA_REQUEST', 'DATA_ERROR', 'DATA_RESET'],
@@ -20,7 +19,7 @@ const { DATA_ERROR, DATA_REQUEST, DATA_RESET, DATA_SUCCESS } = mutationTypes
 const mutations = {
 
   [DATA_REQUEST] (state) {
-    Object.assign(state, { loading: true, error: null })
+    Object.assign(state, { loading: true, error: null, data: null })
   },
 
   [DATA_SUCCESS] (state, payload) {
@@ -40,22 +39,22 @@ const mutations = {
   }
 }
 
-export const sourceActions = reflectKeys(
-  ['FETCH_GAGE_SOURCE_INFO'],
+export const reachGagesActions = reflectKeys(
+  ['FETCH_GAGES'],
   namespacedPrefix
 )
 
 const actions = {
 
-  async [sourceActions.FETCH_GAGE_SOURCE_INFO] (context, gageId, authCred) {
+  async [reachGagesActions.FETCH_GAGES] (context, data) {
     context.commit(DATA_REQUEST)
 
-    const result = await fetchGaugeSourceInfo(gageId, authCred).catch(e => {
+    const result = await fetchGages(data).catch(e => {
       context.commit(DATA_ERROR, e)
     })
 
     if (result) {
-      context.commit(DATA_SUCCESS, result)
+      context.commit(DATA_SUCCESS, result.data.getGaugeInformationForReachID.gauges)
     }
 
     return result

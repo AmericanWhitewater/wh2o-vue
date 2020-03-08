@@ -42,7 +42,7 @@
           </cv-overflow-menu>
           <cv-tabs
             aria-label="navigation tab label"
-            no-default-to-first
+            :no-default-to-first="windowWidth > breakpoints.lg"
             @tab-selected="switchTab($event)"
           >
             <cv-tab
@@ -103,9 +103,11 @@ import { mapState, mapGetters } from 'vuex'
 import RiverHeader from './river-header/river-header'
 import {
   actionsTypes,
-  rapidsActions
+  rapidsActions,
+  reachGagesActions
 } from './shared/state'
 import { ErrorBlock } from '@/app/global/components'
+import { checkWindow } from '@/app/global/mixins'
 
 export default {
   name: 'RiverDetail',
@@ -113,6 +115,7 @@ export default {
     'river-header': RiverHeader,
     ErrorBlock
   },
+  mixins: [checkWindow],
   metaInfo () {
     return {
       title: this.riverTitle,
@@ -230,6 +233,7 @@ export default {
   },
   created () {
     this.$store.dispatch(actionsTypes.FETCH_RIVER_DETAIL_DATA, this.riverId)
+    this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.riverId)
   },
   mounted () {
     this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId)
