@@ -5,7 +5,7 @@
       class="mb-lg"
     >
       <template #main>
-        <template v-if="mockGages && mockGages.length > 0">
+        <template v-if="gages && gages.length > 0">
           <template v-if="loading">
             <loading-block />
           </template>
@@ -47,7 +47,7 @@
         </template>
       </template>
       <template #sidebar>
-        <template v-if="mockGages && mockGages.length > 0">
+        <template v-if="gages && gages.length > 0">
           <GageChartControls
             @viewModeChange="viewMode = $event"
             @timescaleChange="setTimescale"
@@ -97,25 +97,6 @@ export default {
   mixins: [GageChartConfig, checkWindow],
   data: () => ({
     /**
-     * @temp use these until we get a list of gages from graphql
-     * @todo create getter for gages?
-     *
-     */
-    mockGages: [
-      // {
-      //   gauge_name: 'POTOMAC RIVER NEAR WASH, DC LITTLE FALLS PUMP STA USA-MRY',
-      //   gauge_id: '569'
-      // },
-      // {
-      //   gauge_name: 'S F SOUTH BRANCH POTOMAC RIVER NR MOOREFIELD, WV USA-WVR',
-      //   gauge_id: '550'
-      // },
-      // {
-      //   gauge_name: 'GAULEY RIVER NEAR CRAIGSVILLE, WV USA-WVR',
-      //   gauge_id: '1433'
-      // }
-    ],
-    /**
      * default timespan to day format
      */
     selectedTimespan: 'h:mm a',
@@ -129,7 +110,8 @@ export default {
       user: state => state.userState.userData.data,
       readings: state => state.riverDetailState.gageReadingsData.data,
       loading: state => state.riverDetailState.gageReadingsData.loading,
-      error: state => state.riverDetailState.gageReadingsData.error
+      error: state => state.riverDetailState.gageReadingsData.error,
+      gages: state => state.riverDetailState.reachGagesData.data
     }),
     /**
      * vue-chartjs requires data to be formatted this way
@@ -147,7 +129,7 @@ export default {
           }]
         }
         for (let i = 0; i < data.length; i++) {
-          formattedData.datasets[0].data.push(data[i].reading)
+          formattedData.datasets[0].data.push(Math.floor(data[i].reading))
           formattedData.labels.push(moment(data[i].updated).format(this.selectedTimespan))
         }
         return formattedData

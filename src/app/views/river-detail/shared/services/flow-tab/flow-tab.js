@@ -43,7 +43,8 @@ const fetchGages = data => {
               rmin,
               rmax,
               gauge {
-                  name
+                  name,
+                  id
               }
               updated,
               last_gauge_reading,

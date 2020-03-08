@@ -26,19 +26,20 @@
         </cv-overflow-menu>
       </cv-toolbar>
       <cv-dropdown
-        v-if="mockGages"
+        v-if="gages"
         v-model="formData.gauge_id"
         :placeholder="formData.gauge_name"
-        label="Gage(s)"
+        :label="gages.length === 1 ? 'Gage' : 'Gages'"
         class="mb-spacing-md"
+        :disabled="gages.length === 1"
         @change="fetchReadings"
       >
         <cv-dropdown-item
-          v-for="(g, index) in mockGages"
+          v-for="(g, index) in gages"
           :key="index"
-          :value="g.gauge_id.toString()"
+          :value="g.gauge.id"
         >
-          {{ g.gauge_name }}
+          {{ g.gauge.name }}
         </cv-dropdown-item>
       </cv-dropdown>
 
@@ -95,24 +96,6 @@ export default {
   name: 'GageChartControls',
   data: () => ({
     /**
-     * @temp use these until we get a list of gages from graphql
-     *
-     */
-    mockGages: [
-      {
-        gauge_name: 'POTOMAC RIVER NEAR WASH, DC LITTLE FALLS PUMP STA USA-MRY',
-        gauge_id: '569'
-      },
-      {
-        gauge_name: 'S F SOUTH BRANCH POTOMAC RIVER NR MOOREFIELD, WV USA-WVR',
-        gauge_id: '550'
-      },
-      {
-        gauge_name: 'GAULEY RIVER NEAR CRAIGSVILLE, WV USA-WVR',
-        gauge_id: '1433'
-      }
-    ],
-    /**
      * toggles the flow chart view or table view
      * @values chart, table
      * @todo need to make UI elements for this more noticable
@@ -139,7 +122,8 @@ export default {
       error: state => state.riverDetailState.gageReadingsData.error,
       data: state => state.riverDetailState.gageReadingsData.data,
       metrics: state => state.riverDetailState.gageMetricsData.data,
-      river: state => state.riverDetailState.riverDetailData.data
+      river: state => state.riverDetailState.riverDetailData.data,
+      gages: state => state.riverDetailState.reachGagesData.data
     }),
     /**
      * @description look through the readings response to find
@@ -252,8 +236,8 @@ export default {
      * @todo if the reach does not have any gages, display empty content block
      *
      */
-    if (this.mockGages) {
-      this.formData.gauge_id = this.mockGages[0].gauge_id
+    if (this.gages) {
+      this.formData.gauge_id = this.gages[0].gauge.id
     }
     this.fetchMetrics()
   },

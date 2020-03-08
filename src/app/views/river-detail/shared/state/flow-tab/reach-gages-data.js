@@ -1,3 +1,8 @@
+/**
+ * @todo this file feels clunky. consider refactoring gage / flow tab vuex modules
+ *
+ */
+
 import { reflectKeys } from '@/app/global/services'
 import { fetchGages } from '../../services'
 
