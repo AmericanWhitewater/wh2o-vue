@@ -137,7 +137,7 @@ export default {
       return null
     },
     chartSize () {
-      if (this.windowWidth > this.breakpoints.sm) {
+      if (this.windowWidth > this.breakpoints.md) {
         return null
       } else {
         return 'position:relative;width:' + (this.breakpoints.sm * 2) + 'px'

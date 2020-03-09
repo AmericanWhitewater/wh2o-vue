@@ -79,6 +79,7 @@
           <cv-button
             class="mb-spacing-md"
             kind="ghost"
+            disabled
             @click.exact="viewRoute('/safety')"
             v-text="'Safety'"
           />
@@ -180,6 +181,7 @@ export default {
        * @todo figure out how to dynamically set scroll position
        * transition to search page is jarring, search results obscured
        */
+      this.searchTerm = ''
       this.$router.push('/river-search').catch(() => {})
     }
   }

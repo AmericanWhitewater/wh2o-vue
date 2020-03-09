@@ -30,7 +30,7 @@
               <img
                 class="thumb"
                 :src="
-                  `https://prerelease.americanwhitewater.org${image.url}`
+                  `https://americanwhitewater.org${image.url}`
                 "
                 @click="openLightbox(index)"
               >

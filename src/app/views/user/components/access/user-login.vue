@@ -9,6 +9,7 @@
       @keydown.enter="submitLogin"
     />
     <cv-button
+      v-if="email.length > 0"
       kind="primary"
       small
       class="mb-sm"
