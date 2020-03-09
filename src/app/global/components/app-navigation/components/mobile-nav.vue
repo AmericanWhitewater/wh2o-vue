@@ -48,72 +48,61 @@
         v-if="drawerOpen"
         class="drawer pt-md"
       >
-        <!-- <template v-for="(item, i) in navItems">
-          <template v-if="!item.children">
-            <cv-button
-              :key="item.label"
-              kind="ghost"
-              @click.exact="viewRoute(item.path)"
-              v-text="item.label"
-              class="mb-spacing-md"
-            />
-          </template>
-          <template v-else>
-            <div
-              :key="i"
-              class="mb-spacing-md"
-            >
-              <h6 class="pl-spacing-sm">{{ item.label }}</h6>
-              <cv-button
-                v-for="subitem in item.children"
-                :key="subitem.label"
-                kind="ghost"
-                @click.exact="viewRoute(subitem.path)"
-                v-text="subitem.label"
-              />
-            </div>
-          </template>
-        </template> -->
         <div class="main-nav-items">
-          <cv-button
-            kind="ghost"
-            @click.exact="viewRoute('/river-search')"
-            v-text="'Search'"
+          <cv-search
+            v-model="searchTerm"
+            theme="light"
+            class="mb-spacing-md"
+            placeholder="River Search"
+            @keypress.enter="searchRiver"
           />
+          <transition
+            name="fade"
+            mode="out-in"
+          >
+            <cv-button
+              v-if="searchTerm.length > 0"
+              class="mb-spacing-md"
+              size="small"
+              kind="secondary"
+              @click.exact="searchRiver"
+            >
+              Submit
+            </cv-button>
+          </transition>
           <cv-button
             kind="ghost"
+            disabled
             @click.exact="viewRoute('/river-index')"
-            v-text="'River Index'"
+            v-text="'River Map'"
           />
           <cv-button
+            class="mb-spacing-md"
             kind="ghost"
             @click.exact="viewRoute('/safety')"
             v-text="'Safety'"
           />
         </div>
-        <div>
-          <template v-if="!user">
-            <cv-button
-
-              kind="primary"
-              @click.exact="viewRoute('/user/access/login')"
-              v-text="'Login'"
-            />
-          </template>
-          <template v-else>
-            <cv-button
-              class="mb-spacing-md"
-              kind="primary"
-              @click.exact="viewRoute('/user/account/1/bookmarks')"
-              v-text="'My Account'"
-            />
-            <cv-button
-
-              kind="tertiary"
-              @click.exact="viewRoute('/user/access/logout')"
-              v-text="'Logout'"
-            />
-          </template>
+        <div class="main-nav-items mb-md">
+          <cv-button
+            v-if="user"
+            kind="primary"
+            class="mb-spacing-lg"
+            @click.exact="viewRoute('/user/account/1/bookmarks')"
+            v-text="'My Account'"
+          />
+          <cv-button
+            v-if="!user"
+            kind="primary"
+            @click.exact="viewRoute('/user/access/login')"
+            v-text="'Login'"
+          />
+          <cv-button
+            v-else
+            kind="tertiary"
+            @click.exact="viewRoute('/user/access/logout')"
+            v-text="'Logout'"
+          />
         </div>
       </div>
     </transition>
@@ -129,7 +118,7 @@
 <script>
 import AwLogo from '@/app/global/components/logo-library/aw-logo'
 import { checkWindow } from '@/app/global/mixins'
-
+import { riverSearchActions } from '@/app/views/river-search/shared/state'
 export default {
   name: 'MobileNav',
   components: {
@@ -176,6 +165,22 @@ export default {
       this.drawerOpen = false
       /* keep catch empty to avoid nav duplication error */
       this.$router.push('/').catch(() => {})
+    },
+    /**
+     * this func is is getting replicated a lot.
+     */
+    searchRiver () {
+      this.drawerOpen = false
+      this.$store.dispatch(
+        riverSearchActions.FETCH_RIVER_SEARCH_DATA, {
+          river: this.searchTerm
+        }
+      )
+      /**
+       * @todo figure out how to dynamically set scroll position
+       * transition to search page is jarring, search results obscured
+       */
+      this.$router.push('/river-search').catch(() => {})
     }
   }
 }
@@ -195,16 +200,19 @@ header {
   @include layer("sticky-nav");
   background-color: $ui-01;
   .drawer {
+    @include full-page-height;
     background-color: $ui-02;
     display: flex;
     flex-flow: column nowrap;
-    @include full-page-height;
+    justify-content: space-between;
+    padding-left: $spacing-xl;
+    padding-right: $spacing-xl;
+    padding-bottom: $spacing-xl;
     position: fixed;
     right: 0;
     top: $mobile-nav-height;
     width: 300px;
     z-index: 3;
-    justify-content: space-between;
     a {
       color: $text-01;
       display: block;
