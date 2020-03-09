@@ -21,10 +21,9 @@
                   kind="secondary"
                   size="small"
                   class="ml-spacing-sm"
-                  :disabled="!user"
                   @click.exact="toggleBookmark"
                 >
-                  Bookmark River
+                  {{ bookmarked ? 'Remove Bookmark' : 'Add Bookmark' }}
                 </cv-button>
               </div>
               <edit-mode-toggle v-if="userIsAdmin" />
@@ -72,6 +71,7 @@ import { mapState, mapGetters } from 'vuex'
 import { EditModeToggle } from '@/app/global/components'
 import { defaultBannerImage, checkWindow } from '@/app/global/mixins'
 import { globalAppActions } from '@/app/global/state'
+import { appLocalStorage } from '@/app/global/services'
 import { bookmarksActions } from '../shared/state'
 
 export default {
@@ -93,40 +93,51 @@ export default {
     }
   },
   data: () => ({
-    showConfirmation: false
+    showConfirmation: false,
+    bookmarked: false
   }),
   computed: {
     ...mapState({
       editMode: state => state.appGlobalState.appGlobalData.editMode,
-      user: state => state.userState.userData.data,
-      bookmarks: state => state.riverDetailState.bookmarksData.data
+      user: state => state.userState.userData.data
     }),
     ...mapGetters(['userIsAdmin']),
     reachId () {
       return parseInt(this.$route.params.id, 10)
-    },
-    bookmarked () {
-      if (this.bookmarks) {
-        const isBookmarked = this.bookmarks.indexOf(this.reachId)
-        return isBookmarked
-      }
-      return null
     }
+
   },
   methods: {
-    /**
-     * @todo add the toggle
-     */
     toggleBookmark () {
-      this.$store.dispatch(bookmarksActions.ADD_BOOKMARK, this.reachId)
+      if (!this.bookmarked) {
+        this.$store.dispatch(bookmarksActions.ADD_BOOKMARK, this.reachId)
+        this.bookmarked = true
+      } else {
+        this.$store.dispatch(bookmarksActions.REMOVE_BOOKMARK, this.reachId)
+        this.bookmarked = false
+      }
       this.$store.dispatch(globalAppActions.SEND_TOAST, {
-        title: 'Bookmark Added',
+        title: this.bookmarked ? 'Bookmark Added' : 'Bookmark Removed',
         kind: 'success',
         contrast: false,
         action: false,
         coreAction: true
       })
+    },
+    checkBookmarks () {
+      const bookmarks = appLocalStorage.getItem('wh2o-bookmarked-rivers')
+      if (bookmarks) {
+        const data = bookmarks.find(b => b === this.reachId)
+        if (data) {
+          this.bookmarked = true
+        }
+      } else {
+        this.bookmarked = false
+      }
     }
+  },
+  created () {
+    this.checkBookmarks()
   }
 }
 </script>

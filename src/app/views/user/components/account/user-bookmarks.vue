@@ -25,7 +25,7 @@
       </div>
     </template>
     <template v-if="!loading && !loadedBookmarks.length">
-      <cv-tile>
+      <cv-tile class="mb-lg">
         <p class="mb-spacing-lg">
           You dont have any bookmarks. <br>Start by searching for a river.
         </p>
@@ -54,8 +54,7 @@ export default {
     LoadingBlock
   },
   data: () => ({
-    searchTerm: null,
-    bookmarks: null
+    searchTerm: ''
   }),
   computed: {
     ...mapState({
@@ -65,18 +64,39 @@ export default {
     }),
     loggedIn () {
       const loggedIn = appLocalStorage.getItem('wh2o-registered')
-      return loggedIn
+      if (loggedIn) {
+        return loggedIn
+      }
+      return null
     },
-    storedRivers () {
-      return appLocalStorage.getItem('wh2o-bookmarked-rivers')
-    }
-  },
-  watch: {
-    storedRivers () {
-      this.fetchBookmarks(this.storedRivers)
+    saveData () {
+      const savedData = appLocalStorage.getItem('wh2o-bookmarked-rivers')
+      if (savedData) {
+        return savedData
+      }
+      return null
     }
   },
   methods: {
+    /**
+     * check for existence of bookmarked rivers
+     * then check to see if user added a bookmark during session
+     *
+     */
+    checkBookmarks () {
+      if (this.savedData && !this.loadedBookmarks.length) {
+        this.fetchBookmarks(this.saveData)
+      }
+      if (this.saveData && this.loadedBookmarks) {
+        if (this.saveData.length !== this.loadedBookmarks.length) {
+          this.fetchBookmarks(this.saveData)
+        }
+      }
+    },
+    /**
+     * @param {array} bookmarks user stored bookmarks, An array of reach IDs.
+     *
+     */
     fetchBookmarks (bookmarks) {
       for (let i = 0; i < bookmarks.length; i++) {
         this.$store.dispatch(
@@ -102,10 +122,7 @@ export default {
     }
   },
   mounted () {
-    this.bookmarks = appLocalStorage.getItem('wh2o-bookmarked-rivers')
-    if (!this.loadedBookmarks) {
-      this.fetchBookmarks(this.bookmarks)
-    }
+    this.checkBookmarks()
   }
 }
 </script>

@@ -41,9 +41,21 @@ const mutations = {
   },
 
   [DATA_SUCCESS] (state, payload) {
+    /**
+     * make a copy of state to work with
+     */
     const data = state.data
-    data.push(payload)
-    state.data = data
+    /**
+     * check to see if river has been previously bookmarked,
+     * if true, do not push
+     * @todo this check should happen before making the API call
+     */
+    const savedBookmark = data.find(b => b.id === payload.id)
+
+    if (!savedBookmark) {
+      data.push(payload)
+      state.data = data
+    }
 
     Object.assign(state, { loading: false, error: null })
   },
@@ -62,19 +74,30 @@ const mutations = {
 }
 
 export const bookmarksActions = reflectKeys(
-  ['ADD_BOOKMARK', 'FETCH_BOOKMARKS_DATA'],
+  ['ADD_BOOKMARK', 'FETCH_BOOKMARKS_DATA', 'REMOVE_BOOKMARK'],
   namespacedPrefix
 )
 
 const actions = {
   [bookmarksActions.ADD_BOOKMARK] (context, data) {
-    const bookmarkRivers = appLocalStorage.getItem('wh2o-bookmarked-rivers')
+    const bookmarkedRivers = appLocalStorage.getItem('wh2o-bookmarked-rivers')
 
-    if (!bookmarkRivers) {
+    if (!bookmarkedRivers) {
       appLocalStorage.setItem('wh2o-bookmarked-rivers', [data])
     } else {
-      const updatedBookmarks = merge_array(bookmarkRivers, [data])
+      const updatedBookmarks = merge_array(bookmarkedRivers, [data])
       appLocalStorage.setItem('wh2o-bookmarked-rivers', updatedBookmarks)
+    }
+
+    return appLocalStorage.getItem('wh2o-bookmarked-rivers')
+  },
+  [bookmarksActions.REMOVE_BOOKMARK] (context, data) {
+    const bookmarkedRivers = appLocalStorage.getItem('wh2o-bookmarked-rivers')
+
+    if (bookmarkedRivers) {
+      const index = bookmarkedRivers.indexOf(data)
+      bookmarkedRivers.splice(index, 1)
+      appLocalStorage.setItem('wh2o-bookmarked-rivers', bookmarkedRivers)
     }
 
     return appLocalStorage.getItem('wh2o-bookmarked-rivers')
