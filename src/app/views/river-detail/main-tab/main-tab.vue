@@ -11,13 +11,19 @@
         <template v-if="loading">
           <loading-block :hide-text="true" />
         </template>
-        <template v-if="!loading && data">
+        <template v-if="!loading && data && token">
           <NwiMap
             :include-legend="false"
             :has-sidebar="false"
             :mapbox-access-token="token"
             :tileservers="[tileserver]"
             :has-controls="false"
+          />
+        </template>
+        <template v-if="!token">
+          <error-block
+            title="Disabled"
+            text="map is currently unavailable"
           />
         </template>
       </template>
@@ -48,7 +54,7 @@ import {
   mapboxAccessToken,
   nwiTileServer
 } from '@/app/environment/environment'
-import { LoadingBlock } from '@/app/global/components'
+import { LoadingBlock, ErrorBlock } from '@/app/global/components'
 import { Layout } from '@/app/global/layout'
 import { NwiMap } from '@/app/views/river-index/components/national-map-app/components'
 import { mapState } from 'vuex'
@@ -65,6 +71,7 @@ export default {
     SideBar,
     RapidsSection,
     BetaBox,
+    ErrorBlock,
     RiverDescription,
     LoadingBlock,
     Layout,

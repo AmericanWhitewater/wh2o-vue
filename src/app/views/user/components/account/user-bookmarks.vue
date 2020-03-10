@@ -8,7 +8,7 @@
         <div
           v-for="(item, index) in loadedBookmarks"
           :key="index"
-          class="bx--col-sm-12 bx--col-md-8 bx--col-lg-8 bx--col-max-6"
+          class="bx--col-sm-12 bx--col-md-4 bx--col-lg-8 bx--col-max-5"
         >
           <ArticleCard
             :key="index"

@@ -14,16 +14,18 @@
         >
           <div class="outside">
             <div :class="[{ fullscreen: fullscreen }, 'inside', 'map']">
-              <national-map-app-vue
-                v-show="mapStyle !== 'graphic'"
-                :show-search="false"
-                :show-controls="false"
-                :show-sidebar="false"
-                :show-legend="false"
-                :show-rivers-table="false"
-                :mapbox-access-token="token"
-                :tileserver="tileserver"
-              />
+              <template v-if="token">
+                <national-map-app-vue
+                  v-show="mapStyle !== 'graphic'"
+                  :show-search="false"
+                  :show-controls="false"
+                  :show-sidebar="false"
+                  :show-legend="false"
+                  :show-rivers-table="false"
+                  :mapbox-access-token="token"
+                  :tileserver="tileserver"
+                />
+              </template>
               <static-us-map
                 v-show="mapStyle === 'graphic'"
                 @stateClicked="fetchRivers"

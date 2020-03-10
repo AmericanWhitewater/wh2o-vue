@@ -29,15 +29,40 @@ const routes = [
 
 const router = new Router({
   routes,
+  /**
+   *
+   * @param {object} to next route target
+   * @param {object} from previous route
+   * @param {object} savedPosition uses position provided by browser back/forward buttons.
+   */
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
-    } else if (to.hash) {
-      return {
-        selector: to.hash
-      }
     } else {
-      return { x: 0, y: 0 }
+      /**
+       * if on a river detail page, do not reset scroll position
+       * too jarring
+       */
+      switch (to.name) {
+        case 'flow-tab':
+          return
+        case 'main-tab':
+          return
+        case 'map-tab':
+          return
+        case 'gallery-tab':
+          return
+        case 'accidents-tab':
+          return
+        case 'credits-tab':
+          return
+        case 'weather-tab':
+          return
+        case 'news-tab':
+          return
+        default:
+          return { x: 0, y: 0 }
+      }
     }
   }
 })

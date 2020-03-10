@@ -16,7 +16,7 @@
       </div>
       <template slot="below">
         <div class="bx--row">
-          <div class="bx--col-md-2">
+          <div class="bx--col-sm-12 bx--col-md-2">
             <div class="outside">
               <div class="inside thumbnail">
                 <img
@@ -29,7 +29,7 @@
               </div>
             </div>
           </div>
-          <div class="bx--col-md-6">
+          <div class="bx--col-sm-12 bx--col-md-6">
             <div v-html="sanitizedDescription" />
           </div>
         </div>

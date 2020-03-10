@@ -5,24 +5,34 @@
       Rapids
     </h2>
     <template v-if="!loading && sortedRapids">
-      <div>
+      <div class="">
         <cv-button
-          kind="tertiary"
-          size="small"
-          label="Grid View"
           class="mr-spacing-sm"
-          @click.prevent="viewMode = 'grid'"
-        >
-          <Grid16 />
-        </cv-button>
-        <cv-button
-          kind="tertiary"
           size="small"
-          label="List View"
-          @click.prevent="viewMode = 'list'"
+          kind="secondary"
+          @click.exact="addRapidModalVisible = true"
         >
-          <List16 />
+          Add Rapid
         </cv-button>
+        <template v-if="windowWidth > breakpoints.lg">
+          <cv-button
+            kind="tertiary"
+            size="small"
+            label="Grid View"
+            class="mr-spacing-sm"
+            @click.prevent="viewMode = 'grid'"
+          >
+            <Grid16 />
+          </cv-button>
+          <cv-button
+            kind="tertiary"
+            size="small"
+            label="List View"
+            @click.prevent="viewMode = 'list'"
+          >
+            <List16 />
+          </cv-button>
+        </template>
       </div>
 
       <div class="bx--row">
@@ -48,14 +58,16 @@
 <script>
 import { mapState } from 'vuex'
 import { RapidItem } from './components'
-
+import { checkWindow } from '@/app/global/mixins'
 export default {
   name: 'RapidsSection',
   components: {
     RapidItem
   },
+  mixins: [checkWindow],
   data: () => ({
-    viewMode: 'list'
+    viewMode: 'list',
+    addRadpiModalVisible: false
   }),
   computed: {
     ...mapState({

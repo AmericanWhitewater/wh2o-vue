@@ -1,7 +1,6 @@
 <template>
   <section
-    :class="[{ 'bg-topo': !headerBg.url }, 'bleed river-header']"
-    :style="`background-image: url(${headerBg.url})`"
+    class="bleed river-header bg-topo"
   >
     <div class="bx--grid">
       <div class="bx--row">
@@ -69,7 +68,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import { EditModeToggle } from '@/app/global/components'
-import { defaultBannerImage, checkWindow } from '@/app/global/mixins'
+import { checkWindow } from '@/app/global/mixins'
 import { globalAppActions } from '@/app/global/state'
 import { appLocalStorage } from '@/app/global/services'
 import { bookmarksActions } from '../shared/state'
@@ -79,7 +78,7 @@ export default {
   components: {
     EditModeToggle
   },
-  mixins: [defaultBannerImage, checkWindow],
+  mixins: [checkWindow],
   props: {
     name: {
       type: String,
@@ -105,7 +104,6 @@ export default {
     reachId () {
       return parseInt(this.$route.params.id, 10)
     }
-
   },
   methods: {
     toggleBookmark () {
@@ -146,8 +144,7 @@ section {
   &.river-header {
     width: 100%;
     height: 50vh;
-    background-size: cover;
-    background-position: center center;
+
     .bx--grid,
     .bx--row,
     .bx--col,
@@ -161,6 +158,7 @@ section {
       justify-content: flex-end;
       padding-bottom: $spacing-lg;
     }
+
     h1,
     h3,
     h6,

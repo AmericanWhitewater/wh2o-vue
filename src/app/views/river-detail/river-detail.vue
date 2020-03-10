@@ -32,10 +32,12 @@
             <cv-overflow-menu-item v-if="userIsAdmin">
               Link Resources
             </cv-overflow-menu-item>
-            <cv-overflow-menu-item>Share Reach</cv-overflow-menu-item>
+            <cv-overflow-menu-item @click.exact="reachShareModalVisible = true">
+              Share Reach
+            </cv-overflow-menu-item>
             <cv-overflow-menu-item
               v-if="userIsAdmin"
-              @click="reachDeleteModalVisible = true"
+              @click.exact="reachDeleteModalVisible = true"
             >
               Remove from Index
             </cv-overflow-menu-item>
@@ -90,6 +92,27 @@
           Delete
         </template>
       </cv-modal>
+      <cv-modal
+        :visible="reachShareModalVisible"
+        size="small"
+        auto-hide-off
+        @modal-hidden="reachShareModalVisible = false"
+        @primary-click="reachShareModalVisible = false"
+        @secondary-click="reachShareModalVisible = false"
+        @modal-hide-request="reachShareModalVisible = false"
+      >
+        <template slot="title">
+          Share
+        </template>
+        <template slot="content">
+          <p class="mb-sm">
+            ayyyy, I'm a share modal.
+          </p>
+        </template>
+        <template slot="primary-button">
+          Close
+        </template>
+      </cv-modal>
     </template>
   </section>
 </template>
@@ -123,6 +146,7 @@ export default {
     }
   },
   data: () => ({
+    reachShareModalVisible: false,
     reachDeleteModalVisible: false,
     reachDeleteConfirmInput: null,
     selected: 'main',
@@ -260,7 +284,8 @@ export default {
 .river-detail {
   margin-bottom: $layout-xl;
   .tabs-wrapper {
-    background-color: $ui-03;
+    background-color: $ui-02;
+     border-bottom: 1px solid #8897a2;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -275,13 +300,16 @@ export default {
       width: auto;
 
       .bx--tabs__nav, .bx--tabs-trigger {
-
-        width:50%;
+        border-bottom: 1px solid transparent;
+          width:auto;
            @include MQ(MD) {
         width: auto;
-      }
-      }
 
+      }
+       &:focus {
+         outline-offset: 0;
+       }
+      }
     }
   }
   a.bx--tabs__nav-link {
@@ -289,8 +317,13 @@ export default {
     &:focus {
       width: 6rem;
     }
+    @media (min-width: 42rem) {
+      border-bottom: 0;
+    }
   }
-
+  .bx--tabs-trigger-text {
+          margin-right: 1rem;
+        }
 }
 
 .river-detail .tabs-wrapper .bx--tabs {

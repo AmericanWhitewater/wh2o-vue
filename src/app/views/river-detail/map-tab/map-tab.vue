@@ -26,7 +26,7 @@
         /> -->
 
         <NwiMap
-          v-if="!loading && !error"
+          v-if="!loading && !error && token"
           :include-legend="false"
           :has-sidebar="false"
           :mapbox-access-token="token"

@@ -1,6 +1,6 @@
 <template>
   <div :class="[{ home: homePage }, 'app-header']">
-    <template v-if="windowWidth >= breakpoints.lg">
+    <template v-if="windowWidth >= breakpoints.md">
       <desktop-nav :nav-items="navItems" />
     </template>
     <template v-else>
