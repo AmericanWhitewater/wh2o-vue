@@ -30,7 +30,7 @@ const checkIfViewed = (newToast) => {
   } else {
     const toastViewed = viewedToasts.find(t => t.title === newToast.title)
 
-    if (!toastViewed || newToast.label === 'Install') {
+    if (!toastViewed || newToast.label === 'Install' || newToast.override) {
       const data = viewedToasts
       data.push(newToast)
       appLocalStorage.setItem('viewedToasts', data)

@@ -1,30 +1,6 @@
 <template>
   <div class="gage-chart-controls">
     <template v-if="metrics">
-      <cv-toolbar>
-        <cv-overflow-menu class="bx--toolbar-action">
-          <template slot="trigger">
-            <Settings32 class="bx--overflow-menu__icon bx--toolbar-settings-icon" />
-          </template>
-          <cv-toolbar-title title="View Mode" />
-          <cv-toolbar-option>
-            <cv-radio-button
-              v-model="viewMode"
-              name="chart"
-              label="Chart"
-              value="chart"
-            />
-          </cv-toolbar-option>
-          <cv-toolbar-option>
-            <cv-radio-button
-              v-model="viewMode"
-              name="table"
-              label="Table"
-              value="table"
-            />
-          </cv-toolbar-option>
-        </cv-overflow-menu>
-      </cv-toolbar>
       <cv-dropdown
         v-if="gages"
         v-model="formData.gauge_id"
@@ -80,6 +56,30 @@
           {{ g.label }}
         </cv-dropdown-item>
       </cv-dropdown>
+      <cv-toolbar>
+        <cv-overflow-menu class="bx--toolbar-action">
+          <template slot="trigger">
+            <Settings32 class="bx--overflow-menu__icon bx--toolbar-settings-icon" />
+          </template>
+          <cv-toolbar-title title="View Mode" />
+          <cv-toolbar-option>
+            <cv-radio-button
+              v-model="viewMode"
+              name="chart"
+              label="Chart"
+              value="chart"
+            />
+          </cv-toolbar-option>
+          <cv-toolbar-option>
+            <cv-radio-button
+              v-model="viewMode"
+              name="table"
+              label="Table"
+              value="table"
+            />
+          </cv-toolbar-option>
+        </cv-overflow-menu>
+      </cv-toolbar>
     </template>
   </div>
 </template>

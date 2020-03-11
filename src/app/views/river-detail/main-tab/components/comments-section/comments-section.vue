@@ -56,7 +56,7 @@
     <cv-modal
       :visible="newCommentModalVisible"
       @modal-hidden="cancelComment"
-      @primary-click="cancelComment"
+      @primary-click="notifyUser"
     >
       <template slot="title">
         New Comment
@@ -78,6 +78,7 @@
 import Moment from 'moment'
 import { commentsActions } from '@/app/views/river-detail/shared/state'
 import { LoadingBlock, ErrorBlock } from '@/app/global/components'
+import { globalAppActions } from '@/app/global/state'
 import { mapState } from 'vuex'
 
 export default {
@@ -121,6 +122,17 @@ export default {
     },
     cancelComment () {
       this.newCommentModalVisible = false
+    },
+    notifyUser () {
+      this.newCommentModalVisible = false
+      this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        title: 'Comment Added',
+        kind: 'success',
+        override: true,
+        contrast: false,
+        action: false,
+        autoHide: true
+      })
     }
   },
   created () {

@@ -35,8 +35,8 @@
     </template>
     <cv-modal
       :visible="newRapidModalVisible"
-      @modal-hidden="cancelNewRapid"
-      @primary-click="cancelNewRapid"
+      @primary-click="notifyUser"
+      @secondary-click="cancelNewRapid"
     >
       <template slot="title">
         New Rapid
@@ -86,6 +86,7 @@
 import { mapState } from 'vuex'
 import { RapidItem } from './components'
 import { checkWindow } from '@/app/global/mixins'
+import { globalAppActions } from '@/app/global/state'
 export default {
   name: 'RapidsSection',
   components: {
@@ -119,6 +120,17 @@ export default {
   methods: {
     cancelNewRapid () {
       this.newRapidModalVisible = false
+    },
+    notifyUser () {
+      this.newRapidModalVisible = false
+      this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        title: 'Rapid Created',
+        kind: 'success',
+        override: true,
+        contrast: false,
+        action: false,
+        autoHide: true
+      })
     }
   }
 }

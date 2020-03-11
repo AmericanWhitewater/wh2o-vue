@@ -25,10 +25,11 @@
             @close="doClose(index)"
             @action="$router.push(`/river-detail/${$route.params.id}/news`)"
           />
+          <template v-if="!alerts.length">
+            <p>There are no new alerts</p>
+          </template>
         </template>
-        <template v-if="!loading && !alerts">
-          <p>There are no new alerts</p>
-        </template>
+
         <template v-if="loading">
           <cv-inline-loading
             state="loading"
@@ -47,8 +48,8 @@
     </div>
     <cv-modal
       :visible="newAlertModalVisible"
-      @modal-hidden="cancelNewAlert"
-      @primary-click="cancelNewAlert"
+      @secondary-click="cancelNewAlert"
+      @primary-click="notifyUser"
     >
       <template slot="title">
         New Alert
@@ -96,6 +97,7 @@
 <script>
 import { mapState } from 'vuex'
 import { alertsActions } from '../../../shared/state'
+import { globalAppActions } from '@/app/global/state'
 export default {
   name: 'SideBar',
   data: () => ({
@@ -132,6 +134,17 @@ export default {
       } else {
         this.sticky = true
       }
+    },
+    notifyUser () {
+      this.newAlertModalVisible = false
+      this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        title: 'Alert Submitted',
+        kind: 'success',
+        override: true,
+        contrast: false,
+        action: false,
+        autoHide: true
+      })
     }
   },
 

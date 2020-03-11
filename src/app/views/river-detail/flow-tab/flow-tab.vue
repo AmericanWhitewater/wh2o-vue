@@ -48,6 +48,38 @@
       </template>
       <template #sidebar>
         <template v-if="gages && gages.length > 0">
+          <div class="flow-stats bx--row mb-spacing-md">
+            <div class="bx--col">
+              <h6>Avg</h6>
+              <h3 v-if="!loading">
+                {{ flowStats ? flowStats.avg : 'n/a' }}
+              </h3>
+              <cv-skeleton-text
+                v-if="loading"
+                headline
+              />
+            </div>
+            <div class="bx--col">
+              <h6>High</h6>
+              <h3 v-if="!loading">
+                {{ flowStats ? flowStats.max : 'n/a' }}
+              </h3>
+              <cv-skeleton-text
+                v-if="loading"
+                headline
+              />
+            </div>
+            <div class="bx--col">
+              <h6>Low</h6>
+              <h3 v-if="!loading">
+                {{ flowStats ? flowStats.min : 'n/a' }}
+              </h3>
+              <cv-skeleton-text
+                v-if="loading"
+                headline
+              />
+            </div>
+          </div>
           <GageChartControls
             @viewModeChange="viewMode = $event"
             @timescaleChange="setTimescale"
@@ -133,6 +165,27 @@ export default {
           formattedData.labels.push(moment(data[i].updated).format(this.selectedTimespan))
         }
         return formattedData
+      }
+      return null
+    },
+    /**
+     * @todo calculate trending +/-
+     */
+    flowStats () {
+      if (this.readings) {
+        const readings = []
+        let readingsSum = 0
+
+        for (let i = 0; i < this.readings.length; i++) {
+          readings.push(parseInt(this.readings[i].reading, 10))
+          readingsSum = readingsSum + parseInt(this.readings[i].reading, 10)
+        }
+
+        return ({
+          min: Math.min(...readings),
+          max: Math.max(...readings),
+          avg: Math.floor(readingsSum / this.readings.length)
+        })
       }
       return null
     },
