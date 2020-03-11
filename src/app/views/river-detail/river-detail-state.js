@@ -1,6 +1,7 @@
 import {
   accidentsData,
   bookmarksData,
+  commentsData,
   creditsData,
   gageMetricsData,
   gageReadingsData,
@@ -17,6 +18,7 @@ export default {
   modules: {
     accidentsData,
     bookmarksData,
+    commentsData,
     creditsData,
     gageMetricsData,
     gageReadingsData,

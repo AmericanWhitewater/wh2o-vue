@@ -34,17 +34,11 @@
     >
       <template #main>
         <river-description />
+        <rapids-section />
+        <comments-section />
       </template>
       <template #sidebar>
         <side-bar />
-      </template>
-    </layout>
-    <layout
-      name="layout-full-width"
-      class="mb-lg"
-    >
-      <template #main>
-        <rapids-section />
       </template>
     </layout>
   </div>
@@ -62,7 +56,8 @@ import {
   SideBar,
   BetaBox,
   RapidsSection,
-  RiverDescription
+  RiverDescription,
+  CommentsSection
 } from './components'
 
 export default {
@@ -71,6 +66,7 @@ export default {
     SideBar,
     RapidsSection,
     BetaBox,
+    CommentsSection,
     ErrorBlock,
     RiverDescription,
     LoadingBlock,

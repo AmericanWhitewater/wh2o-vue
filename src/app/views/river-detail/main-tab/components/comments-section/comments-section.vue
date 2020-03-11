@@ -11,43 +11,79 @@
     >
       New Comment
     </cv-button>
+    <template v-if="comments && !loading">
+      <div
+
+        class="comment-wrapper"
+      >
+        <div
+          v-for="(c,i) in comments.slice(0,5)"
+          :key="i"
+          class="bx--tile mb-sm comment"
+        >
+          <div
+            class="bx--row "
+          >
+            <div class=" bx--col-sm-12 bx--col-lg-3">
+              <img
+                class="mb-spacing-md"
+                :src="`https://americanwhitewater.org${c.user.image.uri.big}`"
+                alt=""
+              >
+            </div>
+            <div class="bx--col-sm-12 bx--col-lg-11">
+              <h5
+                class="mr-spacing-sm"
+                v-text="c.user.uname"
+              />
+              <span
+                class="date"
+                v-text="formatDate(c.post_date)"
+              />
+              <hr>
+              <div
+                class="detail"
+                v-text="c.detail"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+    <loading-block v-if="loading" />
+    <error-block v-if="!loading && error" />
   </section>
 </template>
 
 <script>
+import Moment from 'moment'
+import { commentsActions } from '@/app/views/river-detail/shared/state'
+import { LoadingBlock, ErrorBlock } from '@/app/global/components'
+import { mapState } from 'vuex'
+
 export default {
   name: 'CommentsSection',
+  components: {
+    LoadingBlock,
+    ErrorBlock
+  },
   data: () => ({
     layoutOptions: {
       sidebar: {
         left: true
       }
-    },
-    comments: [
-      {
-        name: 'John Doe',
-
-        comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      },
-      {
-        name: 'Oliver Windle',
-
-        comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      },
-      {
-        name: 'Dude Guy',
-        comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      },
-      {
-        name: 'Another Name',
-        comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      },
-      {
-        name: 'Creative Name',
-        comment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      }
-    ]
+    }
   }),
+  computed: {
+    ...mapState({
+      comments: state => state.riverDetailState.commentsData.data,
+      loading: state => state.riverDetailState.commentsData.loading,
+      error: state => state.riverDetailState.commentsData.error
+    }),
+    reachId () {
+      return this.$route.params.id
+    }
+  },
   methods: {
     profilePreview (userid) {
       return userid
@@ -59,24 +95,24 @@ export default {
       const lastInitial = splitName[splitName.length - 1].charAt(0)
       const initials = firstInitial + lastInitial
       return initials
+    },
+    formatDate (date) {
+      return Moment(date).format('ll')
     }
+  },
+  created () {
+    this.$store.dispatch(commentsActions.FETCH_COMMENTS_DATA, this.reachId)
   }
 }
 </script>
 
 <style lang="scss">
 .comment {
-  display: flex;
- .user-initials {
-   height:4rem;
-  width:4rem;
-  flex-basis: 20%;
-  background-color:$ui-04;
-  color:$ui-01;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
+ .detail {
+    @include carbon--type-style('body-long-01')
+ }
+ .date {
+   @include carbon--type-style('label-01')
  }
 }
 </style>

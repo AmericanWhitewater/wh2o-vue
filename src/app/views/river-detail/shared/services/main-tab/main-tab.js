@@ -60,7 +60,28 @@ const fetchRiverDetailData = data => {
           tlon
           trrn
           was_final
-          zipcode
+          zipcode,
+          posts(post_type: PHOTO_POST, first:1, page:1) {
+            data {
+                id,
+                title,
+                detail,
+                post_date,
+                revision,
+                post_type,
+                user {
+                    uname,
+                    uid,
+                    image {
+                        uri{
+                            thumb,
+                            medium,
+                            big
+                        }
+                    }
+                }
+            }
+        }
         }
       }
     

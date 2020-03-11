@@ -1,5 +1,5 @@
 <template>
-  <section class="rapids-section">
+  <section class="rapids-section mb-lg">
     <hr>
     <h2 class="mb-spacing-md">
       Rapids
@@ -40,7 +40,7 @@
           v-for="(rapid, index) in sortedRapids"
           :key="index"
           :rapid="rapid"
-          :expanded="index === 0 ? true : false"
+          :first-p-o-i="index === 0 ? true : false"
           :mode="viewMode"
         />
       </div>

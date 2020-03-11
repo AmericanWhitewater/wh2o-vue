@@ -21,14 +21,13 @@
         <td v-if="!gages">
           n/a
         </td>
-        <td v-if="gages.length">
+        <td v-if="gages && gages.length">
           {{ $titleCase(gages[0].gauge.name) }}
         </td>
       </tr>
       <tr>
         <td>Flow Range</td>
-
-        <td v-if="gages.length">
+        <td v-if="gages && gages.length">
           {{ `${gages[0].rmin} - ${gages[0].rmax}` }}
         </td>
         <td v-else>
@@ -38,12 +37,12 @@
       <tr>
         <td>
           Flow Rate
-          <template v-if="gages.length">
+          <template v-if="gages && gages.length">
             as of {{ gages[0].last_gauge_updated }}
           </template>
         </td>
 
-        <td v-if="gages.length">
+        <td v-if="gages && gages.length">
           {{ gages[0].last_gauge_reading }}
         </td>
         <td v-else>

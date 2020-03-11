@@ -1,40 +1,119 @@
 <template>
-  <div :class="[containerClasses, 'rapid-item']">
+  <div :class="[containerClasses, {'form-visible':uploadFormVisible}, 'rapid-item']">
     <cv-tile
       v-if="rapid.description"
-      :kind="rapid.description.length > 50 ? 'expandable' : 'standard'"
-      :cv-type="rapid.description.length > 50 ? 'expandable' : ''"
-      :expanded="expanded"
+      kind="standard"
+      cv-type="standard"
+      :expanded="firstPOI"
     >
       <div class="top-bar">
-        <div class>
+        <div class="title">
           <h4>{{ rapid.name }}</h4>
-          <span class="mr-spacing-xs">Class: {{ rapid.difficulty }}</span>
-          <span>Distance: {{ rapid.distance }}</span>
+          <span
+            v-if="rapid.difficulty !== 'N/A'"
+            class="mr-spacing-xs"
+            v-text="`Class: ${rapid.difficulty}`"
+          />
+          <span v-text="`Distance: ${rapid.distance}`" />
         </div>
         <rapid-icon-bar :data="rapid" />
       </div>
-      <template slot="below">
-        <div class="bx--row">
-          <div class="bx--col-sm-12 bx--col-md-2">
-            <div class="outside">
-              <div class="inside thumbnail">
+      <hr>
+      <template>
+        <div
+          v-if="!uploadFormVisible"
+          class="bx--row pb-md"
+        >
+          <div class="bx--col-sm-12 bx--col-lg-5">
+            <div class="outside ">
+              <div
+                v-if="false"
+                class="inside thumbnail bx--aspect-ratio--1x1"
+              >
                 <img
-                  v-if="rapid.photo"
+
                   :src="
-                    `https://americanwhitewater.org${rapid.photo.url}`
+                    `https://americanwhitewater.org/${rapid.photo.uri}`
                   "
                   :alt="rapid.name"
                 >
               </div>
+              <div
+                v-else
+                class="inside upload-prompt"
+              >
+                <cv-button
+                  size="small"
+                  kind="tertiary"
+                  class="mb-spacing-lg"
+                  @click="uploadFormVisible = true"
+                >
+                  add media
+                </cv-button>
+              </div>
             </div>
           </div>
-          <div class="bx--col-sm-12 bx--col-md-6">
-            <div v-html="sanitizedDescription" />
+          <div class="bx--col-sm-12 bx--col-lg-11">
+            <div
+              class="description"
+              v-html="sanitizedDescription"
+            />
+          </div>
+        </div>
+        <div
+          v-else
+          class="bx--row pb-md"
+        >
+          <div class="bx--col bx--col-md-7 bx--col-lg-8">
+            <cv-form @submit.prevent="">
+              <cv-file-uploader
+                ref="fileUploader"
+                label="Choose files to upload"
+                helper-text="Max file size 10mb - PNG, JPG"
+                accept=".jpg,.png"
+                theme="light"
+                multiple
+                class="mb-spacing-md"
+              />
+              <cv-text-input
+                theme="light"
+                label="Video Embed URL"
+                class="mb-spacing-lg"
+              />
+              <cv-button-set>
+                <cv-button
+                  kind="secondary"
+                  @click.exact="showConfirmation = true"
+                >
+                  Cancel
+                </cv-button>
+                <cv-button kind="primary">
+                  Submit
+                </cv-button>
+              </cv-button-set>
+            </cv-form>
           </div>
         </div>
       </template>
     </cv-tile>
+    <cv-modal
+      :visible="showConfirmation"
+      @modal-hidden="cancelUpload"
+      @primary-click="cancelUpload"
+    >
+      <template slot="title">
+        Are you sure?
+      </template>
+      <template slot="content">
+        <p>All unsaved changes will be lost.</p>
+      </template>
+      <template slot="secondary-button">
+        Cancel
+      </template>
+      <template slot="primary-button">
+        OK
+      </template>
+    </cv-modal>
   </div>
 </template>
 <script>
@@ -50,15 +129,18 @@ export default {
       type: Object,
       required: true
     },
-    expanded: {
-      type: Boolean,
-      required: false
-    },
     mode: {
       type: String,
       default: 'grid'
+    },
+    firstPOI: {
+      type: Boolean
     }
   },
+  data: () => ({
+    uploadFormVisible: false,
+    showConfirmation: false
+  }),
   computed: {
     containerClasses () {
       let classes
@@ -87,24 +169,45 @@ export default {
       }
       return null
     }
+  },
+  methods: {
+    uploadMedia () {
+      return 'upload media'
+    },
+    cancelUpload () {
+      this.showConfirmation = false
+      this.uploadFormVisible = false
+    }
+  },
+  created () {
+    if (this.firstPOI) {
+      this.rapidExpanded = true
+    }
   }
 }
 </script>
 <style lang="scss">
 .rapid-item {
+  &.form-visible {
+    outline: 3px solid $brand-01;
+  }
   .bx--tile {
     margin: $spacing-md 0;
-
+  .upload-prompt {
+        width:100%;
+        display: block;
+      }
     .thumbnail {
       width: 100%;
       min-height: 250px;
-      background-color: $ui-03;
       margin-bottom: 1rem;
       img {
         object-fit: cover;
         height: 250px;
         width: 100%;
+        background-color: $ui-05;
       }
+
     }
   }
   .top-bar {
@@ -133,5 +236,9 @@ export default {
   .bx--tile--expandable:hover {
     background-color: darken($ui-02, 0.05);
   }
+}
+
+.description {
+  @include carbon--type-style('body-long-01')
 }
 </style>

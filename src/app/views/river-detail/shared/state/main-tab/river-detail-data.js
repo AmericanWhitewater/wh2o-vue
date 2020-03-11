@@ -1,6 +1,14 @@
+/**
+ *
+ * @todo this submodule should only be used for core, above the fold
+ * reach data. for example, river name, section. each component should
+ * be responsible for getting it's own data
+ *
+ */
+
 import { reflectKeys } from '@/app/global/services'
 
-import { fetchRiverDetailData } from '../services'
+import { fetchRiverDetailData } from '../../services'
 
 const initialState = {
   loading: false,
