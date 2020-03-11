@@ -1,5 +1,6 @@
 import {
   accidentsData,
+  alertsData,
   bookmarksData,
   commentsData,
   creditsData,
@@ -17,6 +18,7 @@ import {
 export default {
   modules: {
     accidentsData,
+    alertsData,
     bookmarksData,
     commentsData,
     creditsData,

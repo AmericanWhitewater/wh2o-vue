@@ -4,6 +4,9 @@ export * from './main-tab/river-detail-data'
 export { default as commentsData } from './main-tab/comments-data'
 export * from './main-tab/comments-data'
 
+export { default as alertsData } from './main-tab/alerts-data'
+export * from './main-tab/alerts-data'
+
 export { default as gageReadingsData } from './flow-tab/gage-readings-data'
 export * from './flow-tab/gage-readings-data'
 

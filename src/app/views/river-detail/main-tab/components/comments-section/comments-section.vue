@@ -8,6 +8,7 @@
       kind="secondary"
       size="small"
       class="mb-spacing-lg"
+      @click.exact="newCommentModalVisible = true"
     >
       New Comment
     </cv-button>
@@ -40,7 +41,7 @@
                 class="date"
                 v-text="formatDate(c.post_date)"
               />
-              <hr>
+              <hr class="ui-01">
               <div
                 class="detail"
                 v-text="c.detail"
@@ -52,6 +53,24 @@
     </template>
     <loading-block v-if="loading" />
     <error-block v-if="!loading && error" />
+    <cv-modal
+      :visible="newCommentModalVisible"
+      @modal-hidden="cancelComment"
+      @primary-click="cancelComment"
+    >
+      <template slot="title">
+        New Comment
+      </template>
+      <template slot="content">
+        <cv-text-area />
+      </template>
+      <template slot="secondary-button">
+        Cancel
+      </template>
+      <template slot="primary-button">
+        Submit
+      </template>
+    </cv-modal>
   </section>
 </template>
 
@@ -68,6 +87,7 @@ export default {
     ErrorBlock
   },
   data: () => ({
+    newCommentModalVisible: false,
     layoutOptions: {
       sidebar: {
         left: true
@@ -98,6 +118,9 @@ export default {
     },
     formatDate (date) {
       return Moment(date).format('ll')
+    },
+    cancelComment () {
+      this.newCommentModalVisible = false
     }
   },
   created () {

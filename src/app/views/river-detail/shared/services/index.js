@@ -12,6 +12,7 @@ export * from './gallery-tab/gallery-tab'
  */
 export * from './main-tab/main-tab'
 export * from './main-tab/comments'
+export * from './main-tab/alerts'
 export * from './rapids/rapids'
 
 export * from './map-tab/map-tab'

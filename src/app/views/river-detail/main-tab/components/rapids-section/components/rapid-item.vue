@@ -1,5 +1,5 @@
 <template>
-  <div :class="[containerClasses, {'form-visible':uploadFormVisible}, 'rapid-item']">
+  <div :class="[{'form-visible':uploadFormVisible}, 'rapid-item, bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm']">
     <cv-tile
       v-if="rapid.description"
       kind="standard"
@@ -18,7 +18,7 @@
         </div>
         <rapid-icon-bar :data="rapid" />
       </div>
-      <hr>
+      <hr class="ui-03">
       <template>
         <div
           v-if="!uploadFormVisible"
@@ -48,7 +48,7 @@
                   class="mb-spacing-lg"
                   @click="uploadFormVisible = true"
                 >
-                  add media
+                  Add Media
                 </cv-button>
               </div>
             </div>
@@ -78,6 +78,11 @@
               <cv-text-input
                 theme="light"
                 label="Video Embed URL"
+                class="mb-spacing-md"
+              />
+              <cv-text-area
+                theme="light"
+                label="Description"
                 class="mb-spacing-lg"
               />
               <cv-button-set>
@@ -110,9 +115,6 @@
       <template slot="secondary-button">
         Cancel
       </template>
-      <template slot="primary-button">
-        OK
-      </template>
     </cv-modal>
   </div>
 </template>
@@ -142,15 +144,6 @@ export default {
     showConfirmation: false
   }),
   computed: {
-    containerClasses () {
-      let classes
-      if (this.mode === 'list') {
-        classes = 'bx--col-sm-12 bx--col-md-12 bx--col-lg-16'
-      } else {
-        classes = 'bx--col-sm-12 bx--col-md-6 bx--col-lg-4'
-      }
-      return classes
-    },
     sanitizedDescription () {
       if (this.rapid) {
         const content = this.$sanitize(this.rapid.description, {

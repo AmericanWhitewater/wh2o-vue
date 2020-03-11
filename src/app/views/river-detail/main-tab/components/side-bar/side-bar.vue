@@ -7,19 +7,32 @@
       :class="[{ sticky: sticky }, 'content-area bx--row']"
     >
       <div class="bx--col">
-        <h4>Alerts</h4>
-        <template v-if="alerts.length > 0">
+        <span class="header-row">
+          <h4>Alerts</h4>
+          <cv-button
+            kind="tertiary"
+            size="small"
+            @click.exact="newAlertModalVisible = true"
+          >New Alert</cv-button>
+        </span>
+        <template v-if="!loading && alerts">
           <cv-inline-notification
-            v-for="(alert, index) in alerts"
+            v-for="(alert, index) in alerts.slice(0,2)"
             :key="index"
-            :kind="alert.kind"
             :title="alert.title"
-            :sub-title="alert.subtitle"
+            :sub-title="alert.detail.slice(0,50) + '...'"
+            action-label="Read More"
             @close="doClose(index)"
+            @action="$router.push(`/river-detail/${$route.params.id}/news`)"
           />
         </template>
-        <template v-else>
+        <template v-if="!loading && !alerts">
           <p>There are no new alerts</p>
+        </template>
+        <template v-if="loading">
+          <cv-inline-loading
+            state="loading"
+          />
         </template>
         <template v-if="articles.length > 0">
           <h4>News</h4>
@@ -32,34 +45,86 @@
         </template>
       </div>
     </div>
+    <cv-modal
+      :visible="newAlertModalVisible"
+      @modal-hidden="cancelNewAlert"
+      @primary-click="cancelNewAlert"
+    >
+      <template slot="title">
+        New Alert
+      </template>
+      <template slot="content">
+        <cv-file-uploader
+          ref="fileUploader"
+          label="Choose files to upload"
+          helper-text="Max file size 10mb - PNG, JPG"
+          accept=".jpg,.png"
+          theme="light"
+          multiple
+          class="mb-spacing-md"
+        />
+        <cv-dropdown
+          v-model="formData.kind"
+          class="mb-spacing-md"
+        >
+          <cv-dropdown-item value="info">
+            Info
+          </cv-dropdown-item>
+          <cv-dropdown-item value="warning">
+            Warning
+          </cv-dropdown-item>
+          <cv-dropdown-item value="danger">
+            Danger
+          </cv-dropdown-item>
+        </cv-dropdown>
+        <cv-text-area
+          v-model="formData.message"
+          label="Message"
+          theme="light"
+          class="mb-spacing-md"
+        />
+      </template>
+      <template slot="secondary-button">
+        Cancel
+      </template>
+      <template slot="primary-button">
+        Submit
+      </template>
+    </cv-modal>
   </aside>
 </template>
 <script>
+import { mapState } from 'vuex'
+import { alertsActions } from '../../../shared/state'
 export default {
   name: 'SideBar',
   data: () => ({
+    formData: {
+      message: '',
+      kind: 'warning'
+    },
+    newAlertModalVisible: false,
     sticky: false,
-    alerts: [
-      {
-        title: 'uh oh',
-        kind: 'warning',
-        subtitle:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-      },
-      {
-        title: 'uh oh',
-        kind: 'error',
-        subtitle:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-      }
-    ],
     articles: [],
     projects: [],
     documents: []
   }),
+  computed: {
+    ...mapState({
+      alerts: state => state.riverDetailState.alertsData.data,
+      loading: state => state.riverDetailState.alertsData.loading,
+      error: state => state.riverDetailState.alertsData.error
+    }),
+    routeID () {
+      return this.$route.params.id
+    }
+  },
   methods: {
     doClose (index) {
       alert(`Do something for alert: ${index}`)
+    },
+    cancelNewAlert () {
+      this.newAlertModalVisible = false
     },
     isSticky () {
       if (this.$refs.contentArea.clientHeight > 800) {
@@ -69,8 +134,10 @@ export default {
       }
     }
   },
+
   mounted () {
     this.isSticky()
+    this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.routeID)
   }
 }
 </script>
@@ -88,6 +155,11 @@ export default {
         top: 75px;
       }
     }
+  }
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
   }
 }
 </style>

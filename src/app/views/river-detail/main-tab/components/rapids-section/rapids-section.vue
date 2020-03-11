@@ -7,32 +7,13 @@
     <template v-if="!loading && sortedRapids">
       <div class="">
         <cv-button
-          class="mr-spacing-sm"
+          class="mr-spacing-sm mb-sm"
           size="small"
           kind="secondary"
-          @click.exact="addRapidModalVisible = true"
+          @click.exact="newRapidModalVisible = true"
         >
           Add Rapid
         </cv-button>
-        <template v-if="windowWidth > breakpoints.lg">
-          <cv-button
-            kind="tertiary"
-            size="small"
-            label="Grid View"
-            class="mr-spacing-sm"
-            @click.prevent="viewMode = 'grid'"
-          >
-            <Grid16 />
-          </cv-button>
-          <cv-button
-            kind="tertiary"
-            size="small"
-            label="List View"
-            @click.prevent="viewMode = 'list'"
-          >
-            <List16 />
-          </cv-button>
-        </template>
       </div>
 
       <div class="bx--row">
@@ -41,7 +22,6 @@
           :key="index"
           :rapid="rapid"
           :first-p-o-i="index === 0 ? true : false"
-          :mode="viewMode"
         />
       </div>
     </template>
@@ -53,6 +33,53 @@
         error
       </div>
     </template>
+    <cv-modal
+      :visible="newRapidModalVisible"
+      @modal-hidden="cancelNewRapid"
+      @primary-click="cancelNewRapid"
+    >
+      <template slot="title">
+        New Rapid
+      </template>
+      <template slot="content">
+        <cv-file-uploader
+          ref="fileUploader"
+          label="Choose files to upload"
+          helper-text="Max file size 10mb - PNG, JPG"
+          accept=".jpg,.png"
+          theme="light"
+          multiple
+          class="mb-spacing-md"
+        />
+        <cv-text-input
+          v-model="formData.name"
+          label="Name"
+          class="mb-spacing-md"
+        />
+        <cv-text-input
+          v-model="formData.distance"
+          label="Distance"
+          class="mb-spacing-md"
+        />
+        <cv-text-input
+          v-model="formData.class"
+          label="Class"
+          class="mb-spacing-md"
+        />
+        <cv-text-area
+          v-model="formData.description"
+          label="Description"
+          theme="light"
+          class="mb-spacing-md"
+        />
+      </template>
+      <template slot="secondary-button">
+        Cancel
+      </template>
+      <template slot="primary-button">
+        Submit
+      </template>
+    </cv-modal>
   </section>
 </template>
 <script>
@@ -66,8 +93,14 @@ export default {
   },
   mixins: [checkWindow],
   data: () => ({
-    viewMode: 'list',
-    addRadpiModalVisible: false
+    newRapidModalVisible: false,
+    formData: {
+      files: [],
+      name: '',
+      distance: '',
+      class: '',
+      description: ''
+    }
   }),
   computed: {
     ...mapState({
@@ -81,6 +114,11 @@ export default {
         return rapids.sort((a, b) => (a.distance > b.distance) ? 1 : -1)
       }
       return null
+    }
+  },
+  methods: {
+    cancelNewRapid () {
+      this.newRapidModalVisible = false
     }
   }
 }

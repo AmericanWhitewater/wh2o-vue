@@ -87,17 +87,6 @@ html {
     }
   }
 
-  hr {
-    border-bottom: $spacing-2xs solid $brand-01;
-    border-left: 0;
-    border-right: 0;
-    border-top: 0;
-    margin: $spacing-sm 0;
-    width: 3em;
-    &.hr--light {
-      border-bottom: $spacing-2xs solid $ui-02;
-    }
-  }
 }
 
 // override for the content editor?
