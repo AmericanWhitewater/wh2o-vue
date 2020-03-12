@@ -121,7 +121,7 @@ import AwLogo from '@/app/global/components/logo-library/aw-logo'
 import { checkWindow } from '@/app/global/mixins'
 import { riverSearchActions } from '@/app/views/river-search/shared/state'
 export default {
-  name: 'MobileNav',
+  name: 'mobile-nav',
   components: {
     'aw-logo': AwLogo
   },

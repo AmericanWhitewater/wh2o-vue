@@ -133,7 +133,7 @@ import { ErrorBlock } from '@/app/global/components'
 import { checkWindow } from '@/app/global/mixins'
 
 export default {
-  name: 'RiverDetail',
+  name: 'river-detail',
   components: {
     'river-header': RiverHeader,
     ErrorBlock
@@ -302,7 +302,7 @@ export default {
       .bx--tabs__nav, .bx--tabs-trigger {
         border-bottom: 1px solid transparent;
           width:auto;
-           @include MQ(MD) {
+           @include carbon--breakpoint('md') {
         width: auto;
 
       }

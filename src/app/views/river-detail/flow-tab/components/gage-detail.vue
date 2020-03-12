@@ -11,7 +11,7 @@
 </template>
 <script>
 export default {
-  name: 'GageDetail'
+  name: 'gage-detail'
 }
 </script>
 <style lang="scss"></style>

@@ -16,7 +16,7 @@ import { LoadingBlock } from '@/app/global/components'
 import { userActions } from '@/app/views/user/shared/state'
 import { appLocalStorage } from '@/app/global/services'
 export default {
-  name: 'UserLogout',
+  name: 'user-logout',
   components: {
     LoadingBlock
   },

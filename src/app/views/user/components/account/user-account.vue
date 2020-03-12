@@ -87,7 +87,7 @@ import { checkWindow } from '@/app/global/mixins'
  *
  */
 export default {
-  name: 'UserAccount',
+  name: 'user-account',
   filters: {
     /**
      * capitalizes first letter in string

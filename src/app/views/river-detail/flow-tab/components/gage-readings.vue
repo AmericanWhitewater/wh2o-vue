@@ -36,7 +36,7 @@ import Moment from 'moment'
 import { mapState } from 'vuex'
 import { LoadingBlock, ErrorBlock } from '@/app/global/components'
 export default {
-  name: 'GageReadings',
+  name: 'gage-readings',
   components: {
     LoadingBlock,
     ErrorBlock

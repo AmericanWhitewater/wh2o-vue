@@ -61,7 +61,7 @@ import { mapState } from 'vuex'
 import { Layout } from '@/app/global/layout'
 import { moduleActions } from './shared/state'
 export default {
-  name: 'ModuleTemplate',
+  name: 'module-template',
   components: {
     Layout
   },

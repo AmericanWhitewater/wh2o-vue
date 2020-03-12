@@ -51,8 +51,12 @@
         </div>
       </div>
     </template>
-    <loading-block v-if="loading" />
-    <error-block v-if="!loading && error" />
+    <template v-if="loading">
+      <loading-block />
+    </template>
+    <template v-if="!loading && error">
+      <error-block />
+    </template>
     <cv-modal
       :visible="newCommentModalVisible"
       @modal-hidden="cancelComment"
@@ -82,7 +86,7 @@ import { globalAppActions } from '@/app/global/state'
 import { mapState } from 'vuex'
 
 export default {
-  name: 'CommentsSection',
+  name: 'comments-section',
   components: {
     LoadingBlock,
     ErrorBlock

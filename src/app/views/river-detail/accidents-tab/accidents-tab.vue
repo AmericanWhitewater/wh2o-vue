@@ -97,7 +97,7 @@ import { LoadingBlock, ErrorBlock } from '@/app/global/components'
 import { Layout } from '@/app/global/layout'
 
 export default {
-  name: 'AccidentsTab',
+  name: 'accidents-tab',
   components: {
     ErrorBlock,
     LoadingBlock,

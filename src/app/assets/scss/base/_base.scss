@@ -18,10 +18,8 @@ img {
 
     &.interior {
         padding-top: $mobile-nav-height;
-        // padding-top: $mobile-nav-height + 44px;
-        @include MQ("LG") {
+        @include MQ("MD") {
           padding-top: $desktop-nav-height;
-        //   padding-top: $desktop-nav-height + 44px;
         }
     }
    

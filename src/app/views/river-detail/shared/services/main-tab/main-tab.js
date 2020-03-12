@@ -31,7 +31,19 @@ const fetchRiverDetailData = data => {
           pois
           {name,id}
           photo {
-            id
+            id,
+            post {
+              user {
+                  uname,
+                  uid
+              }
+          },
+            image {
+              uri {
+                medium,
+                big
+              }
+            }
           }
           plat
           ploc

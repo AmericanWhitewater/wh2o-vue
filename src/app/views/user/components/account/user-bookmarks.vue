@@ -48,7 +48,7 @@ import { bookmarksActions } from '@/app/views/river-detail/shared/state'
 import { riverSearchActions } from '@/app/views/river-search/shared/state'
 
 export default {
-  name: 'UserBookmarks',
+  name: 'user-bookmarks',
   components: {
     ArticleCard,
     LoadingBlock

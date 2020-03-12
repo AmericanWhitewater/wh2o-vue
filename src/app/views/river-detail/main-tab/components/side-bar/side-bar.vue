@@ -10,7 +10,7 @@
         <span class="header-row">
           <h4>Alerts</h4>
           <cv-button
-            kind="tertiary"
+            kind="secondary"
             size="small"
             @click.exact="newAlertModalVisible = true"
           >New Alert</cv-button>
@@ -99,7 +99,7 @@ import { mapState } from 'vuex'
 import { alertsActions } from '../../../shared/state'
 import { globalAppActions } from '@/app/global/state'
 export default {
-  name: 'SideBar',
+  name: 'side-bar',
   data: () => ({
     formData: {
       message: '',

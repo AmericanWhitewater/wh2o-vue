@@ -92,7 +92,7 @@ import { articleActions, newsActions } from '../shared/state'
 import { mapState } from 'vuex'
 import Moment from 'moment'
 export default {
-  name: 'ArticleDetail',
+  name: 'article-detail',
   components: {
     PageHeader,
     ArticleCard

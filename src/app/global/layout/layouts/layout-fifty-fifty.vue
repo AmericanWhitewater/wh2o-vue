@@ -13,6 +13,6 @@
 
 <script>
 export default {
-  name: 'LayoutFiftyFifty'
+  name: 'layout-fifty-fifty'
 }
 </script>

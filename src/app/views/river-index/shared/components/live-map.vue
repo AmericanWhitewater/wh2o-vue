@@ -43,7 +43,7 @@ const fitBoundsOptions = {
 }
 
 export default {
-  name: 'LiveMap',
+  name: 'live-map',
   components: {
     NwiMapLegend,
     NwiMapControls
@@ -537,7 +537,7 @@ export default {
   &.hasSidebar {
     height: 65%;
 
-    @include MQ(MD) {
+    @include carbon--breakpoint('md') {
       width: 68%;
       height: 100%;
     }

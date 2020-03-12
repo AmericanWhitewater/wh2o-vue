@@ -25,7 +25,7 @@ import { mapState } from 'vuex'
 import { ErrorBlock } from '@/app/global/components'
 
 export default {
-  name: 'GalleryUploadForm',
+  name: 'gallery-upload-form',
   components: {
     ErrorBlock
   },

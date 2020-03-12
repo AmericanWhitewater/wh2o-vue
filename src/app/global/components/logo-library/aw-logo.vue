@@ -120,7 +120,7 @@
 </template>
 <script>
 export default {
-  name: 'AwLogo',
+  name: 'aw-logo',
   props: {
     title: {
       type: String,

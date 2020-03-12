@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Router from 'vue-router'
+import VueRouter from 'vue-router'
 
 import { appLocalStorage } from '@/app/global/services'
 
@@ -13,7 +13,7 @@ import { riverSearchRoutes } from './views/river-search'
 import { safetyPageRoutes } from './views/safety-page'
 import { userRoutes } from './views/user'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
 const routes = [
   ...accidentDatabaseRoutes,
@@ -27,7 +27,7 @@ const routes = [
   ...userRoutes
 ]
 
-const router = new Router({
+const router = new VueRouter({
   routes,
   /**
    *

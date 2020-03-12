@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: 'LoadingOverlay',
+  name: 'loading-overlay',
   computed: {
     loading () {
       return this.$store.state.globalAppState.globalAppData.loading

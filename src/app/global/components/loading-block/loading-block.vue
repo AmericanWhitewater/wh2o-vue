@@ -16,7 +16,7 @@
  * @todo refactor loading-block, error-block, skeleton-block into one component
  */
 export default {
-  name: 'LoadingBlock',
+  name: 'loading-block',
   props: {
     height: {
       type: String,

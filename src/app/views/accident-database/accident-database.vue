@@ -34,7 +34,7 @@ import { PageHeader } from '@/app/global/components'
 import { accidentDatabaseActions } from './shared/state'
 import { Layout } from '@/app/global/layout'
 export default {
-  name: 'AccidentDatabase',
+  name: 'accident-database',
   components: {
     PageHeader,
     Layout

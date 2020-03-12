@@ -27,7 +27,7 @@ import { appLocalStorage } from '@/app/global/services'
  * @displayName User Login
  */
 export default {
-  name: 'UserLogin',
+  name: 'user-login',
   data: () => ({
     email: 'betaTester@aw.org'
   }),

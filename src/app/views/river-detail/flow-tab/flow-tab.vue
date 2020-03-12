@@ -50,7 +50,9 @@
         <template v-if="gages && gages.length > 0">
           <div class="flow-stats bx--row mb-spacing-md">
             <div class="bx--col">
-              <h6>Avg</h6>
+              <h6 class="mb-spacing-2xs">
+                Avg
+              </h6>
               <h3 v-if="!loading">
                 {{ flowStats ? flowStats.avg : 'n/a' }}
               </h3>
@@ -60,7 +62,9 @@
               />
             </div>
             <div class="bx--col">
-              <h6>High</h6>
+              <h6 class="mb-spacing-2xs">
+                High
+              </h6>
               <h3 v-if="!loading">
                 {{ flowStats ? flowStats.max : 'n/a' }}
               </h3>
@@ -70,7 +74,9 @@
               />
             </div>
             <div class="bx--col">
-              <h6>Low</h6>
+              <h6 class="mb-spacing-2xs">
+                Low
+              </h6>
               <h3 v-if="!loading">
                 {{ flowStats ? flowStats.min : 'n/a' }}
               </h3>
@@ -117,7 +123,7 @@ import { checkWindow } from '@/app/global/mixins'
  *
  */
 export default {
-  name: 'FlowTab',
+  name: 'flow-tab',
   components: {
     ErrorBlock,
     GageChart,
@@ -172,7 +178,7 @@ export default {
      * @todo calculate trending +/-
      */
     flowStats () {
-      if (this.readings) {
+      if (this.readings && this.readings.length > 0) {
         const readings = []
         let readingsSum = 0
 

@@ -93,7 +93,7 @@ import { mapState } from 'vuex'
  *
  */
 export default {
-  name: 'GageChartControls',
+  name: 'gage-chart-controls',
   data: () => ({
     /**
      * toggles the flow chart view or table view

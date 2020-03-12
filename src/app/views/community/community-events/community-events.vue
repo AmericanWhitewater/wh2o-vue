@@ -14,7 +14,7 @@ import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
 export default {
-  name: 'CommunityEvents',
+  name: 'community-events',
   components: {
     FullCalendar
   },

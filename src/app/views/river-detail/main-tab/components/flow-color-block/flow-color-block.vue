@@ -22,7 +22,7 @@
 </template>
 <script>
 export default {
-  name: 'FlowColorBlock',
+  name: 'flow-color-block',
   mixins: [],
   props: {
     status: {

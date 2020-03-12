@@ -46,7 +46,7 @@ import { globalAppActions } from '@/app/global/state'
  * @displayName App Toaster
  */
 export default {
-  name: 'AppToaster',
+  name: 'app-toaster',
   data: () => ({
     refreshing: false,
     registration: null,

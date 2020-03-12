@@ -52,7 +52,7 @@ import {
 } from '@/app/environment/environment'
 
 export default {
-  name: 'MapTab',
+  name: 'map-tab',
   components: {
     ErrorBlock,
     Layout,

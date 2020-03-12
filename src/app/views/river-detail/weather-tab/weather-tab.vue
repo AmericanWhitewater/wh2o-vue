@@ -123,7 +123,7 @@ import { weatherActions } from '../shared/state'
 import { LoadingBlock, ErrorBlock } from '@/app/global/components'
 
 export default {
-  name: 'WeatherTab',
+  name: 'weather-tab',
   components: {
     LoadingBlock,
     ErrorBlock

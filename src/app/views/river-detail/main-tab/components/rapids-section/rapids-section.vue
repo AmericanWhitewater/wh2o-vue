@@ -88,7 +88,7 @@ import { RapidItem } from './components'
 import { checkWindow } from '@/app/global/mixins'
 import { globalAppActions } from '@/app/global/state'
 export default {
-  name: 'RapidsSection',
+  name: 'rapids-section',
   components: {
     RapidItem
   },

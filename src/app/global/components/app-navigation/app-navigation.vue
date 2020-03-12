@@ -1,10 +1,10 @@
 <template>
   <div :class="[{ home: homePage }, 'app-header']">
-    <template v-if="windowWidth >= breakpoints.md">
-      <desktop-nav :nav-items="navItems" />
+    <template v-if="windowWidth <= breakpoints.md">
+      <mobile-nav :nav-items="navItems" />
     </template>
     <template v-else>
-      <mobile-nav :nav-items="navItems" />
+      <desktop-nav :nav-items="navItems" />
     </template>
   </div>
 </template>
@@ -19,7 +19,7 @@ import { navItems, checkWindow } from '@/app/global/mixins'
  *
  */
 export default {
-  name: 'AppNavigation',
+  name: 'app-navigation',
   components: {
     'desktop-nav': DesktopNav,
     'mobile-nav': MobileNav

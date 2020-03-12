@@ -89,7 +89,7 @@ import { LoadingBlock, ArticleCard } from '@/app/global/components'
 import { Layout } from '@/app/global/layout'
 import { newsActions } from './shared/state'
 export default {
-  name: 'NewsPage',
+  name: 'news-page',
   components: {
     LoadingBlock,
     ArticleCard,

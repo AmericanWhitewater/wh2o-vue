@@ -11,7 +11,7 @@
  *
  */
 export default {
-  name: 'SkeletonBlock',
+  name: 'skeleton-block',
   props: {
     height: {
       type: String,

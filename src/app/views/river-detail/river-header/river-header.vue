@@ -1,10 +1,11 @@
 <template>
   <section
-    class="bleed river-header bg-topo"
+    :class="[ {'has-bg': bgImg},'bleed river-header bg-topo']"
+    :style="bgImg ? `background-image:url(${bgImg.url})` : ''"
   >
-    <div class="bx--grid">
+    <div class="bx--grid bx--no-gutter">
       <div class="bx--row">
-        <div class="bx--col-lg-10">
+        <div class="bx--col-sm-12 bx--col-md-15 bx--col-lg-15 info-section">
           <div class="outside">
             <div class="inside">
               <template v-if="windowWidth > breakpoints.md">
@@ -25,21 +26,45 @@
                   {{ bookmarked ? 'Remove Bookmark' : 'Add Bookmark' }}
                 </cv-button>
               </div>
-              <edit-mode-toggle v-if="userIsAdmin" />
+              <edit-mode-toggle
+                v-if="userIsAdmin"
+                class="mt-spacing-sm"
+              />
             </div>
           </div>
         </div>
-        <div class="bx--col">
-          <div
-            v-show="editMode"
-            class="edit-icons"
-          >
-            <cv-button small>
-              Drag Icon
-            </cv-button>
-            <cv-button small>
-              Upload Icon
-            </cv-button>
+        <div :class="[{'edit':editMode},'bx--col-sm-12 bx--col-md-1 bx--col-lg-1 edit-section']">
+          <div class="outside">
+            <div class="inside">
+              <div :class="[{'edit':editMode},'edit-actions-wrapper']">
+                <cv-interactive-tooltip
+                  v-if="!editMode"
+                  alignment="center"
+                  direction="left"
+                >
+                  <template slot="trigger">
+                    <div class="icon">
+                      <CameraAction24 />
+                    </div>
+                  </template>
+                  <template slot="content">
+                    <div class>
+                      <h6>Photo</h6>
+                      <p>{{ bgImg.credit }}</p>
+                    </div>
+                  </template>
+                </cv-interactive-tooltip>
+
+                <template v-if="editMode">
+                  <div class="icon mb-spacing-sm edit">
+                    <Upload24 />
+                  </div>
+                  <div class="icon edit">
+                    <ZoomPan24 />
+                  </div>
+                </template>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -74,7 +99,7 @@ import { appLocalStorage } from '@/app/global/services'
 import { bookmarksActions } from '../shared/state'
 
 export default {
-  name: 'RiverHeader',
+  name: 'river-header',
   components: {
     EditModeToggle
   },
@@ -93,16 +118,35 @@ export default {
   },
   data: () => ({
     showConfirmation: false,
-    bookmarked: false
+    bookmarked: false,
+    iconAlways: {
+      name: 'CameraAction32',
+      functional: false,
+      props: {
+        title: {
+          type: null
+        }
+      }
+    }
   }),
   computed: {
     ...mapState({
       editMode: state => state.appGlobalState.appGlobalData.editMode,
-      user: state => state.userState.userData.data
+      user: state => state.userState.userData.data,
+      river: state => state.riverDetailState.riverDetailData.data
     }),
     ...mapGetters(['userIsAdmin']),
     reachId () {
       return parseInt(this.$route.params.id, 10)
+    },
+    bgImg () {
+      if (this.river && this.river.photo) {
+        return {
+          url: `https://americanwhitewater.org${this.river.photo.image.uri.big}`,
+          credit: this.river.photo.post.user.uname
+        }
+      }
+      return null
     }
   },
   methods: {
@@ -139,12 +183,39 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 section {
   &.river-header {
     width: 100%;
     height: 50vh;
 
+    &.has-bg {
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+    .edit-actions-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+
+      &.edit {
+        flex-flow: column nowrap;
+      }
+      .icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 32px;
+        min-width: 32px;
+        padding: $spacing-2xs;
+        background-color: $ui-01;
+        &.edit {
+          height: 50px;
+          width: 50px;
+        }
+      }
+    }
     .bx--grid,
     .bx--row,
     .bx--col,
@@ -166,16 +237,37 @@ section {
       background-color: #fff;
       width: fit-content;
     }
-    h1,h3 {
+    h1,
+    h3 {
       margin-bottom: $spacing-sm;
       padding: 11px 12px 11px 2rem;
     }
-    h4,h6 {
+    h4,
+    h6 {
       padding: 11px 12px 0 2rem;
     }
   }
-}
-.bx--grid {
-  padding-left: 0;
+
+  .info-section {
+    order: 2;
+    @include carbon--breakpoint("lg") {
+      order: 1;
+    }
+  }
+
+  .edit-section {
+    order: 1;
+    height: 5rem;
+    // display: flex;
+    // flex-flow: column nowrap;
+
+    &.edit {
+      height: 10rem;
+    }
+    @include carbon--breakpoint("lg") {
+      height: auto;
+      order: 2;
+    }
+  }
 }
 </style>

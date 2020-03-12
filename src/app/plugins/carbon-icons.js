@@ -7,6 +7,7 @@ import ArrowRight16 from '@carbon/icons-vue/es/arrow--right/16.js'
 import ArrowRight20 from '@carbon/icons-vue/es/arrow--right/20.js'
 import ArrowRight32 from '@carbon/icons-vue/es/arrow--right/32.js'
 import Bullhorn32 from '@carbon/icons-vue/es/bullhorn/32.js'
+import CameraAction24 from '@carbon/icons-vue/es/camera--action/24.js'
 import ChartBar32 from '@carbon/icons-vue/es/chart--bar/32.js'
 import ChartLine32 from '@carbon/icons-vue/es/chart--line/32.js'
 import Download20 from '@carbon/icons-vue/es/download/20.js'
@@ -30,7 +31,9 @@ import Notification20 from '@carbon/icons-vue/es/notification/20.js'
 import Settings32 from '@carbon/icons-vue/es/settings/32.js'
 import UserAvatar16 from '@carbon/icons-vue/es/user--avatar/16.js'
 import UserAvatar20 from '@carbon/icons-vue/es/user--avatar/20.js'
+import Upload24 from '@carbon/icons-vue/es/upload/24.js'
 import WifiOff32 from '@carbon/icons-vue/es/wifi--off/32.js'
+import ZoomPan24 from '@carbon/icons-vue/es/watson-health/zoom-pan/32.js'
 
 Vue.use(CarbonIconsVue, {
   components: {
@@ -40,12 +43,15 @@ Vue.use(CarbonIconsVue, {
     ArrowRight20,
     ArrowRight32,
     Bullhorn32,
+    CameraAction24,
     ChartBar32,
     ChartLine32,
     Download20,
     Email20,
+    ZoomPan24,
     Email24,
     Email32,
+    Upload24,
     Error20,
     Filter16,
     FitToScreen16,

@@ -22,7 +22,7 @@ import { creditsActions } from '../shared/state'
 import { LoadingBlock, ErrorBlock } from '@/app/global/components'
 
 export default {
-  name: 'CreditsTab',
+  name: 'credits-tab',
   components: {
     ErrorBlock,
     LoadingBlock

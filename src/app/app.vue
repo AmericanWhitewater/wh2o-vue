@@ -23,7 +23,7 @@ import {
 import { appLocalStorage } from '@/app/global/services'
 import { userActions } from '@/app/views/user/shared/state'
 export default {
-  name: 'App',
+  name: 'app',
   metaInfo: {
     title: 'American Whitewater'
   },

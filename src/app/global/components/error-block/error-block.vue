@@ -16,7 +16,7 @@
 import error_outlined32 from '@carbon/icons-vue/es/error--outline/32'
 
 export default {
-  name: 'ErrorBlock',
+  name: 'error-block',
   components: {
     'error-outlined': error_outlined32
   },

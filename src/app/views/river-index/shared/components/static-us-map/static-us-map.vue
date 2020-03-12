@@ -1339,7 +1339,7 @@
 </template>
 <script>
 export default {
-  name: 'StaticUsMap',
+  name: 'static-us-map',
   props: {
     activeState: {
       type: String,

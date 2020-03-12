@@ -183,7 +183,7 @@ import {
 import { Layout } from '@/app/global/layout'
 
 export default {
-  name: 'RiverSearch',
+  name: 'river-search',
   components: {
     Layout,
     LoadingBlock,

@@ -250,7 +250,7 @@ import debounce from 'lodash.debounce'
 
 import { globalAppActions } from '@/app/global/state'
 export default {
-  name: 'RiverIndex',
+  name: 'river-index',
   components: {
     NationalMapAppVue,
     StaticUsMap,
@@ -502,12 +502,12 @@ export default {
     position: relative;
     width: 100%;
 
-    @include MQ(MD) {
+    @include carbon--breakpoint('md') {
       height: $content-height - 10px;
     }
 
     &.fullscreen {
-      @include MQ(MD) {
+      @include carbon--breakpoint('md') {
         height: 100vh;
       }
     }
@@ -526,7 +526,7 @@ export default {
       transform: rotate(90deg);
       white-space: nowrap;
       width: 50px;
-      @include MQ(LG) {
+      @include carbon--breakpoint('lg') {
         bottom: unset;
         right: 0;
         top: 1rem;

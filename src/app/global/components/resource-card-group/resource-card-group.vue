@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: 'ResourceCardGroup'
+  name: 'resource-card-group'
 }
 </script>
 

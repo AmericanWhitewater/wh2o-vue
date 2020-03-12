@@ -67,7 +67,7 @@ import scrollIntoView from 'scroll-into-view-if-needed'
 import { Breakpoints } from '@/app/global/services'
 
 export default {
-  name: 'NwiRiversTable',
+  name: 'nwi-rivers-table',
   components: {
     ZoomIn16
   },
@@ -182,7 +182,7 @@ export default {
   width: 100%;
   height: 35%;
 
-  @include MQ(MD) {
+  @include carbon--breakpoint('md') {
     width: 32%;
     height: 100%;
   }

@@ -104,7 +104,7 @@ import { Layout } from '@/app/global/layout'
  */
 
 export default {
-  name: 'AppBreadcrumbs',
+  name: 'app-breadcrumbs',
   components: {
     Layout
   },
@@ -186,7 +186,7 @@ export default {
   justify-content: space-between;
   max-width:100%;
   overflow-x: scroll;
-  @include MQ("LG") {
+  @include MQ("MD") {
     top: $desktop-nav-height;
   }
   &.home {

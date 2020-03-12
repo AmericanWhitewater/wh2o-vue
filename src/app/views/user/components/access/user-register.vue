@@ -71,7 +71,7 @@
 import { appLocalStorage } from '@/app/global/services'
 
 export default {
-  name: 'UserRegister',
+  name: 'user-register',
   data: () => ({
     termsVisible: false,
     confirmationError: false,

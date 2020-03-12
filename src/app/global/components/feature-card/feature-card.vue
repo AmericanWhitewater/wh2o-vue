@@ -32,7 +32,7 @@
 import ResourceCard from '../resource-card/resource-card'
 
 export default {
-  name: 'FeatureCard',
+  name: 'feature-card',
   components: {
     ResourceCard
   },

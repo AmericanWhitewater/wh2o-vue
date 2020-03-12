@@ -13,7 +13,7 @@
 <script>
 import { Layout } from '@/app/global/layout'
 export default {
-  name: 'PageDescription',
+  name: 'page-description',
   components: {
     Layout
   },

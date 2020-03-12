@@ -218,7 +218,7 @@
 </template>
 <script>
 export default {
-  name: 'RapidIconBar',
+  name: 'rapid-icon-bar',
   props: {
     data: {
       type: Object,
