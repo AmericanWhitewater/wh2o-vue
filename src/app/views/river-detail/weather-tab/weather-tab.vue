@@ -1,6 +1,6 @@
 <template>
   <div class="weather-tab">
-    <template v-if="!loading && !error">
+    <template v-if="!loading && weather">
       <div class="bx--row mb-md">
         <div class="bx--col-lg-16 mb-spacing-lg">
           <h2>Currently</h2>
@@ -102,9 +102,6 @@
           </cv-tile>
         </div>
       </div>
-    </template>
-    <template v-if="loading">
-      <loading-block text="Loading weather..." />
     </template>
     <template v-if="loading && !error">
       <loading-block text="Loading weather..." />

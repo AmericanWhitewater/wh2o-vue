@@ -20,43 +20,41 @@
         overlay
       />
     </transition>
-    <template v-if="!loading && !error">
-      <template v-if="river">
-        <river-header
-          :name="river.river"
-          :section="river.section"
-          :background-image="bgImage"
-        />
-        <div class="tabs-wrapper">
-          <cv-overflow-menu>
-            <cv-overflow-menu-item v-if="userIsAdmin">
-              Link Resources
-            </cv-overflow-menu-item>
-            <cv-overflow-menu-item @click.exact="reachShareModalVisible = true">
-              Share Reach
-            </cv-overflow-menu-item>
-            <cv-overflow-menu-item
-              v-if="userIsAdmin"
-              @click.exact="reachDeleteModalVisible = true"
-            >
-              Remove from Index
-            </cv-overflow-menu-item>
-          </cv-overflow-menu>
-          <cv-tabs
-            aria-label="navigation tab label"
-            :no-default-to-first="windowWidth > breakpoints.lg"
-            @tab-selected="switchTab($event)"
+    <template v-if="!loading && river">
+      <river-header
+        :name="river.river"
+        :section="river.section"
+        :background-image="bgImage"
+      />
+      <div class="tabs-wrapper">
+        <cv-overflow-menu>
+          <cv-overflow-menu-item v-if="userIsAdmin">
+            Link Resources
+          </cv-overflow-menu-item>
+          <cv-overflow-menu-item @click.exact="reachShareModalVisible = true">
+            Share Reach
+          </cv-overflow-menu-item>
+          <cv-overflow-menu-item
+            v-if="userIsAdmin"
+            @click.exact="reachDeleteModalVisible = true"
           >
-            <cv-tab
-              v-for="(tab, index) in tabs"
-              :id="'tab-' + index + 1"
-              :key="tab"
-              :label="tab"
-            />
-          </cv-tabs>
-        </div>
-        <router-view />
-      </template>
+            Remove from Index
+          </cv-overflow-menu-item>
+        </cv-overflow-menu>
+        <cv-tabs
+          aria-label="navigation tab label"
+          :no-default-to-first="windowWidth > breakpoints.lg"
+          @tab-selected="switchTab($event)"
+        >
+          <cv-tab
+            v-for="(tab, index) in tabs"
+            :id="'tab-' + index + 1"
+            :key="tab"
+            :label="tab"
+          />
+        </cv-tabs>
+      </div>
+      <router-view />
       <cv-modal
         :visible="reachDeleteModalVisible"
         kind="danger"
