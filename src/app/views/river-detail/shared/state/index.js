@@ -39,3 +39,6 @@ export * from './rapids/rapids'
 
 export { default as bookmarksData } from './bookmarked-rivers/bookmarked-rivers'
 export * from './bookmarked-rivers/bookmarked-rivers'
+
+export { default as newsTabData } from './news-tab/news-tab-data'
+export * from './news-tab/news-tab-data'

@@ -1,28 +1,53 @@
 <template>
-  <div class="map-tab">
-    <template v-if="loading">
-      <loading-block text="Loading news" />
-    </template>
-    <template v-if="!loading && error">
-      <error-block
-        title="News unavailable"
-        text="please try again later"
-      />
-    </template>
-    <template v-if="!loading && !error">
-      <div class>
-        map results!
+  <section class="map-tab">
+    <div class="alerts">
+      <hr>
+      <h2 class="mb-spacing-sm">
+        Alerts
+      </h2>
+      <cv-button
+        kind="secondary"
+        size="small"
+        class="mb-sm"
+      >
+        New Alert
+      </cv-button>
+      <div
+        v-if="loading"
+      >
+        <loading-block text="loading alerts" />
       </div>
-    </template>
-  </div>
+      <div
+        v-else-if="alerts"
+      >
+        <div class="bx--row">
+          <div
+            v-for="(alert, index) in alerts"
+            :key="index"
+            class="alert-item bx--col-sm-12 bx--col-md-6 mb-sm bx--tile"
+          >
+            <h4 v-if="alert.title">
+              {{ alert.title }}
+            </h4>
+            <p v-text="alert.detail" />
+          </div>
+        </div>
+      </div>
+      <div
+        v-else
+      >
+        <error-block />
+      </div>
+    </div>
+  </section>
 </template>
 <script>
 import { mapState } from 'vuex'
-import { mapActions } from '../shared/state'
+import { newsTabActions } from '../shared/state'
 import { LoadingBlock, ErrorBlock } from '@/app/global/components'
 
 export default {
-  name: 'map-tab',
+  name: 'news-tab',
   components: {
     ErrorBlock,
     LoadingBlock
@@ -35,14 +60,15 @@ export default {
   }),
   computed: {
     ...mapState({
-      loading: state => state.riverDetailState.mapData.loading,
-      error: state => state.riverDetailState.mapData.error
+      loading: state => state.riverDetailState.newsTabData.loading,
+      error: state => state.riverDetailState.newsTabData.error,
+      alerts: state => state.riverDetailState.newsTabData.data
     })
   },
   methods: {
     loadData () {
-      if (!this.data && !this.error) {
-        this.$store.dispatch(mapActions.FETCH_MAP_DATA, this.mapHttpConfig)
+      if (!this.alerts && !this.error) {
+        this.$store.dispatch(newsTabActions.FETCH_NEWS_TAB_DATA, this.$route.params.id)
       }
     }
   },

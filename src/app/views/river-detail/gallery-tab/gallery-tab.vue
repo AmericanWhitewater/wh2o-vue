@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     loadData () {
-      if (!this.$store.state.riverDetailState.galleryData.data && !this.error) {
+      if (!this.photos && !this.error) {
         this.$store.dispatch(galleryActions.FETCH_GALLERY_DATA, this.riverId)
       }
     },
@@ -128,90 +128,20 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .gallery-tab {
   padding-top: 2rem;
-  .img-thumb {
-    cursor: pointer;
-    display: inline-block;
+  // give the photoswipe thumbnails some style
+  img[itemprop="thumbnail"] {
     height: 200px;
-    width: 200px;
-    margin: $spacing-md;
-    @include MQ("LG") {
-      width: 33%;
+    object-fit: cover;
+    @include carbon--breakpoint("md") {
+      width: 250px;
+      height: 250px;
     }
-    .thumb {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      &.video {
-        background-color: $ui-03;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-flow: column nowrap;
-      }
-    }
-  }
-  .lightbox {
-    position: fixed;
-    z-index: 9999;
-    height: 100vh;
-    width: 100vw;
-    background-color: rgba(#000, 0.95);
-    top: 0;
-    left: 0;
-
-    .close-btn {
-      position: fixed;
-      top: 0;
-      right: 0;
-    }
-    .prev-btn {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-    }
-    .next-btn {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-    }
-    .grid-container {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      .bx--grid {
-        height: 90vh;
-        .bx--row {
-          height: 100%;
-          .media-container {
-            display: flex;
-            // need to mess with this width value
-            min-width: calc(75vw - 350px);
-            height: 100%;
-            justify-content: center;
-            align-items: center;
-            img {
-              @include ease;
-              height: auto;
-              width: auto;
-              max-width: 100%;
-              max-height: 90vh;
-            }
-          }
-          .media-info {
-            @include ease;
-            height: 100%;
-            background-color: $ui-01;
-            position: relative;
-            padding: $spacing-md;
-            max-height: calc(100vh - 100px);
-            min-width: 350px;
-          }
-        }
-      }
+    @include carbon--breakpoint("lg") {
+      width: 350px;
+      height: 250px;
     }
   }
 }

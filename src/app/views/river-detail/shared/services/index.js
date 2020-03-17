@@ -5,6 +5,7 @@ export * from './bookmark-river/bookmark-river'
 export * from './credits-tab/credits-tab'
 
 export * from './flow-tab/flow-tab'
+export * from './news-tab/news-tab'
 
 export * from './gallery-tab/gallery-tab'
 /**
