@@ -48,6 +48,7 @@ export default {
   align-items: center;
   .bx--inline-loading {
     justify-content: center;
+     @include carbon--type-style('code-01');
   }
 }
 </style>
