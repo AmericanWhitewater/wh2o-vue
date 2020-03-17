@@ -26,7 +26,7 @@
         <cv-button-set>
           <cv-button
             kind="secondary"
-            @click.exact="showConfirmation = true"
+            @click.exact="$emit('cancel')"
           >
             Cancel
           </cv-button>
@@ -36,21 +36,6 @@
         </cv-button-set>
       </div>
     </div>
-    <cv-modal
-      :visible="showConfirmation"
-      @modal-hidden="cancelUpload"
-      @primary-click="cancelUpload"
-    >
-      <template slot="title">
-        Are you sure?
-      </template>
-      <template slot="content">
-        <p>All unsaved changes will be lost.</p>
-      </template>
-      <template slot="secondary-button">
-        Cancel
-      </template>
-    </cv-modal>
   </div>
 </template>
 
@@ -59,12 +44,7 @@ export default {
   name: 'rapid-media-uploader',
   data: () => ({
     showConfirmation: false
-  }),
-  methods: {
-    cancelUpload () {
-      this.$emit('cancel')
-    }
-  }
+  })
 }
 </script>
 

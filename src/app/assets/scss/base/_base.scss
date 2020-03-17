@@ -4,7 +4,8 @@ a {
 
 body {
     background-color: $ui-01;
-    overflow-x: hidden;  
+    overflow-x: hidden;
+    word-wrap: break-word;
 }
 
 img {

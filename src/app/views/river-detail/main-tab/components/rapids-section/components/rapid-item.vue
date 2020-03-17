@@ -1,5 +1,7 @@
 <template>
-  <div :class="[{'form-visible':uploadFormVisible}, 'rapid-item, bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm']">
+  <div
+    :class="[{'form-visible':uploadFormVisible}, 'rapid-item, bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm']"
+  >
     <cv-tile
       v-if="rapid"
       kind="standard"
@@ -30,7 +32,7 @@
           class="bx--row pb-md"
         >
           <div class="bx--col-sm-12 bx--col-lg-5">
-            <div class="outside ">
+            <div class="outside">
               <div
                 v-if="rapid.photo && rapid.photo.image"
                 class="inside thumbnail pb-spacing-sm"
@@ -42,9 +44,7 @@
                   :alt="rapid.name"
                 >
               </div>
-              <div
-                class="inside upload-prompt"
-              >
+              <div class="inside upload-prompt">
                 <cv-button
                   size="small"
                   kind="tertiary"
@@ -85,9 +85,10 @@
               </template>
             </template>
             <template v-else>
-              <div class="">
+              <div class>
                 <p>
-                  This rapid does not have a description.<br> Log in to add one.
+                  This rapid does not have a description.
+                  <br>Log in to add one.
                 </p>
               </div>
             </template>
@@ -199,10 +200,10 @@ export default {
   }
   .bx--tile {
     margin: $spacing-md 0;
-  .upload-prompt {
-        width:100%;
-        display: block;
-      }
+    .upload-prompt {
+      width: 100%;
+      display: block;
+    }
     .thumbnail {
       width: 100%;
       min-height: 250px;
@@ -214,20 +215,7 @@ export default {
         width: 100%;
         background-color: $ui-05;
       }
-
     }
-  }
-  .top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  .title {
-      span {
-      &:nth-child(1) {
-        margin-right: 0.5rem;
-      }
-    }
-  }
   }
 
   .bx--tile--is-expanded {
@@ -247,11 +235,18 @@ export default {
 }
 
 .rapid-meta {
- @include carbon--type-style('code-01');
+  @include carbon--type-style("code-01");
 }
 
 .description {
-  @include carbon--type-style('body-long-02')
+  @include carbon--type-style("body-long-02");
 }
 
+.top-bar {
+  @include carbon--breakpoint("lg") {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
 </style>

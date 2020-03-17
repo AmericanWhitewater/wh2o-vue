@@ -283,7 +283,7 @@ export default {
   margin-bottom: $layout-xl;
   .tabs-wrapper {
     background-color: $ui-02;
-     border-bottom: 1px solid #8897a2;
+    border-bottom: 1px solid #8897a2;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -297,16 +297,18 @@ export default {
       border-bottom: 3px solid $ui-03;
       width: auto;
 
-      .bx--tabs__nav, .bx--tabs-trigger {
+      .bx--tabs__nav,
+      .bx--tabs-trigger {
+        box-shadow: none;
         border-bottom: 1px solid transparent;
-          width:auto;
-           @include carbon--breakpoint('md') {
         width: auto;
-
-      }
-       &:focus {
-         outline-offset: 0;
-       }
+        @include carbon--breakpoint("md") {
+          width: auto;
+          box-shadow: none;
+        }
+        &:focus {
+          outline-offset: 0;
+        }
       }
     }
   }
@@ -320,8 +322,8 @@ export default {
     }
   }
   .bx--tabs-trigger-text {
-          margin-right: 1rem;
-        }
+    margin-right: 1rem;
+  }
 }
 
 .river-detail .tabs-wrapper .bx--tabs {
@@ -333,7 +335,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height:3rem;
+  min-height: 3rem;
 }
-
 </style>

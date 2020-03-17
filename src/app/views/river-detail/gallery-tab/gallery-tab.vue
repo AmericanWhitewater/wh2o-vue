@@ -57,11 +57,6 @@ export default {
     }
   },
   methods: {
-    loadData () {
-      if (!this.photos && !this.error) {
-        this.$store.dispatch(galleryActions.FETCH_GALLERY_DATA, this.riverId)
-      }
-    },
     /**
      * We need to structure the data so photoswipe will accept
      * @param {Array<object>} photos accepts query results
@@ -124,7 +119,7 @@ export default {
     }
   },
   created () {
-    this.loadData()
+    this.$store.dispatch(galleryActions.FETCH_GALLERY_DATA, this.riverId)
   }
 }
 </script>

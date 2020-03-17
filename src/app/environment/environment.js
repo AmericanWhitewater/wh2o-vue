@@ -13,6 +13,8 @@ const {
   VUE_APP_NWI_TILE_SERVER,
   VUE_APP_MAPBOX_ACCESS_TOKEN,
   VUE_APP_BASE_URL,
+  VUE_APP_CLIENT_ID,
+  VUE_APP_CLIENT_SECRET,
   VUE_APP_API_BASE_URL,
   NODE_ENV = ''
 } = process.env
@@ -20,6 +22,8 @@ const {
 const environment = NODE_ENV.toLowerCase()
 const apiBaseUrl = VUE_APP_API_BASE_URL
 const appBaseUrl = VUE_APP_BASE_URL
+const clientId = VUE_APP_CLIENT_ID
+const clientSecret = VUE_APP_CLIENT_SECRET
 const mapboxAccessToken = VUE_APP_MAPBOX_ACCESS_TOKEN
 const nwiTileServer = VUE_APP_NWI_TILE_SERVER
 const cmsBaseUrl = VUE_APP_WP_API_URL
@@ -30,5 +34,7 @@ export {
   appBaseUrl,
   mapboxAccessToken,
   nwiTileServer,
-  cmsBaseUrl
+  cmsBaseUrl,
+  clientId,
+  clientSecret
 }
