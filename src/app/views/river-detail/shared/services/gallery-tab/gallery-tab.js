@@ -9,17 +9,25 @@ const fetchGalleryData = data => {
       query: `
       query {
         reach(id:${data}){
-                photos(first:20) {
-                  data {
-                      caption,
-                      description,
-                      url,
-                      post {
-                        reading,
-                        detail
-                    }
-                  }
+          photos(first: 50,page:1) {
+            data {
+              image {
+                uri {
+                  big
+                  medium
+                  thumb
+                }
+              }
+              post {
+                reading
+                detail
+                user {
+                  uname
+                }
+              }
             }
+          }
+            
         }
     }
     

@@ -12,6 +12,7 @@
 </template>
 <script>
 /**
+ * @deprecated
  * @displayName Loading Block
  * @todo refactor loading-block, error-block, skeleton-block into one component
  */
@@ -30,6 +31,11 @@ export default {
       type: Boolean,
       required: false
     }
+  },
+  created () {
+    const msg = 'this component is deprecated in favor of the <utility-block />'
+    // eslint-disable-next-line no-console
+    console.log('%cWarning', 'background: yellow; color: black; padding: 2px 4px; border-radius: 3px; font-weight: bold;', msg)
   }
 }
 </script>

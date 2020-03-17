@@ -11,7 +11,7 @@
 <script>
 /**
  * @todo refactor loading-block, error-block, skeleton-block into one component
- *
+ * @deprecated
  */
 import error_outlined32 from '@carbon/icons-vue/es/error--outline/32'
 
@@ -39,6 +39,11 @@ export default {
       type: Boolean,
       required: false
     }
+  },
+  created () {
+    const msg = 'this component is deprecated in favor of the <utility-block />'
+    // eslint-disable-next-line no-console
+    console.log('%cWarning', 'background: yellow; color: black; padding: 2px 4px; border-radius: 3px; font-weight: bold;', msg)
   }
 }
 </script>

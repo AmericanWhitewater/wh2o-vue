@@ -7,26 +7,27 @@ const fetchRapidsData = data => {
   return httpClient
     .post(url, {
       query: `
-        query {
-          reach(id:${data}) {
-            pois {
-                name,
-                id
-               character,
-               # istakeout,
-               # isaccess,
-               # isportage,
-               # ishazard,
-               # iswaterfall,
-               # isplayspot,
-                distance,
-                difficulty,
-                description,
-                approximate
+      query {
+        reach(id: ${data}) {
+          pois {
+            approximate
+            character
+            description
+            difficulty
+            distance
+            id
+            name
+            photo {
+              image {
+                uri {
+                  big
+                  medium
+                }
+              }
+            }
           }
         }
       }
-    
     `
     })
     .then(res => res.data)
