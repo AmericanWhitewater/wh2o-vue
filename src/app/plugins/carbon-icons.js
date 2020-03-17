@@ -23,6 +23,7 @@ import Help32 from '@carbon/icons-vue/es/help/32.js'
 import Launch20 from '@carbon/icons-vue/es/launch/20.js'
 import List16 from '@carbon/icons-vue/es/list/16.js'
 import LogoFacebook24 from '@carbon/icons-vue/es/logo--facebook/24'
+import LogoFacebook32 from '@carbon/icons-vue/es/logo--facebook/32'
 import LogoLinkedIn24 from '@carbon/icons-vue/es/logo--linkedin/24'
 import Map32 from '@carbon/icons-vue/es/map/32.js'
 import Maximize16 from '@carbon/icons-vue/es/maximize/16.js'
@@ -61,6 +62,7 @@ Vue.use(CarbonIconsVue, {
     Launch20,
     List16,
     LogoFacebook24,
+    LogoFacebook32,
     LogoLinkedIn24,
     Map32,
     Maximize16,
