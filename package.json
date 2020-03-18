@@ -5,7 +5,8 @@
   "author": "Drew Althage",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --modern",
+    "build": "vue-cli-service build",
+    "build:modern": "vue-cli-service build --modern",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint --fix",
     "postinstall": "if test \"$NODE_ENV\" = \"production\" ; then npm run build ; fi ",
@@ -62,10 +63,13 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^6.2.1",
+    "vue-apollo": "^3.0.0-beta.11",
+    "graphql-tag": "^2.9.0",
     "jest-transform-stub": "^2.0.0",
     "node-sass": "^4.13.1",
     "prettier": "^1.19.1",
     "sass-loader": "^8.0.2",
+    "vue-cli-plugin-apollo": "^0.21.3",
     "vue-cli-plugin-styleguidist": "^4.13.1",
     "vue-template-compiler": "^2.6.11",
     "yorkie": "^2.0.0"
@@ -75,9 +79,6 @@
       "autoprefixer": {}
     }
   },
-  "gitHooks": {
-    "pre-commit": "lint-staged && npm run test:unit"
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
@@ -85,6 +86,9 @@
   ],
   "engines": {
     "node": "10.x"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged && npm run test:unit"
   },
   "homepage": "https://github.com/drewalth/wh2o-vue"
 }
