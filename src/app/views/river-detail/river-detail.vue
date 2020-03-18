@@ -126,7 +126,6 @@ import { mapState, mapGetters } from 'vuex'
 import RiverHeader from './river-header/river-header'
 import {
   actionsTypes,
-  rapidsActions,
   reachGagesActions
 } from './shared/state'
 import { ErrorBlock } from '@/app/global/components'
@@ -252,15 +251,11 @@ export default {
      */
     resetStores () {
       this.$store.dispatch(actionsTypes.INITIAL_STATE)
-      this.$store.dispatch(rapidsActions.INITIAL_STATE)
     }
   },
   created () {
     this.$store.dispatch(actionsTypes.FETCH_RIVER_DETAIL_DATA, this.riverId)
     this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.riverId)
-  },
-  mounted () {
-    this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId)
   },
   beforeRouteLeave (to, from, next) {
     if (this.editMode) {

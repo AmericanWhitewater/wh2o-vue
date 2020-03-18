@@ -7,9 +7,9 @@ const fetchGalleryData = data => {
   return httpClient
     .post(url, {
       query: `
-      query {
-        reach(id:${data}){
-          photos(first: 50,page:1) {
+      {
+        reach(id: ${data}) {
+          photos(first: 20, page: 1) {
             data {
               image {
                 uri {
@@ -23,15 +23,24 @@ const fetchGalleryData = data => {
                 detail
                 user {
                   uname
+                  uid
                 }
+                title
               }
+              poi_name
+              poi_id
+              caption
+              description
+              author
+              photo_date
+              id
+              subject
+              url
+              revision
             }
           }
-            
         }
-    }
-    
-    `
+      }`
     })
     .then(res => res.data)
 }

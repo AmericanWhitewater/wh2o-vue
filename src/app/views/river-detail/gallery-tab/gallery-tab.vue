@@ -29,6 +29,11 @@ import { galleryActions } from '../shared/state'
 import { LoadingBlock, ErrorBlock } from '@/app/global/components'
 import { galleryUploadForm } from './components'
 import { Layout } from '@/app/global/layout'
+/**
+ * @todo the gallery needs to be a standalone component
+ * which you can pass an array of images to
+ *
+ */
 export default {
   name: 'gallery-tab',
   components: {

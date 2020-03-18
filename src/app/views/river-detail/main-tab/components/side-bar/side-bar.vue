@@ -1,5 +1,6 @@
 <template>
   <aside
+    v-view.once="loadData"
     class="main-tab-sidebar"
   >
     <div
@@ -121,6 +122,11 @@ export default {
       return this.$route.params.id
     }
   },
+  watch: {
+    alerts () {
+      this.isSticky()
+    }
+  },
   methods: {
     doClose (index) {
       alert(`Do something for alert: ${index}`)
@@ -145,12 +151,10 @@ export default {
         action: false,
         autoHide: true
       })
+    },
+    loadData () {
+      this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.routeID)
     }
-  },
-
-  mounted () {
-    this.isSticky()
-    this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.routeID)
   }
 }
 </script>

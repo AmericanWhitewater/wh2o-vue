@@ -1,10 +1,17 @@
 <template>
-  <section class="rapids-section mb-lg">
+  <section
+    v-view.once="loadRapids"
+    class="rapids-section mb-lg"
+  >
     <hr>
     <h2 class="mb-spacing-md">
       Rapids
     </h2>
-    <template v-if="!loading && sortedRapids">
+    <template v-if="loading">
+      loading
+    </template>
+
+    <template v-else-if="sortedRapids">
       <div class="">
         <cv-button
           class="mr-spacing-sm mb-sm"
@@ -25,13 +32,8 @@
         />
       </div>
     </template>
-    <template v-if="!loading && !sortedRapids">
-      This reach has no rapid data.
-    </template>
-    <template v-if="error">
-      <div class="">
-        error
-      </div>
+    <template v-else>
+      error
     </template>
     <cv-modal
       :visible="newRapidModalVisible"
@@ -83,10 +85,12 @@
   </section>
 </template>
 <script>
-import { mapState } from 'vuex'
 import { RapidItem } from './components'
 import { checkWindow } from '@/app/global/mixins'
 import { globalAppActions } from '@/app/global/state'
+import { mapState } from 'vuex'
+import { rapidsActions } from '../../../shared/state'
+
 export default {
   name: 'rapids-section',
   components: {
@@ -118,6 +122,9 @@ export default {
     }
   },
   methods: {
+    loadRapids () {
+      this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.$route.params.id)
+    },
     cancelNewRapid () {
       this.newRapidModalVisible = false
     },

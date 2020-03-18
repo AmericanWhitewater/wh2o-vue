@@ -1,5 +1,8 @@
 <template>
-  <section class="comments-section">
+  <section
+    v-view.once="loadComments"
+    class="comments-section"
+  >
     <hr>
     <h2 class="mb-spacing-md">
       Comments
@@ -110,6 +113,9 @@ export default {
     }
   },
   methods: {
+    loadComments () {
+      this.$store.dispatch(commentsActions.FETCH_COMMENTS_DATA, this.reachId)
+    },
     profilePreview (userid) {
       return userid
     },
@@ -138,9 +144,6 @@ export default {
         autoHide: true
       })
     }
-  },
-  created () {
-    this.$store.dispatch(commentsActions.FETCH_COMMENTS_DATA, this.reachId)
   }
 }
 </script>
