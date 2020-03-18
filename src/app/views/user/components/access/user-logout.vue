@@ -22,6 +22,7 @@ export default {
   },
   created () {
     appLocalStorage.setItem('wh2o-registered', false)
+    this.$gtag.event('logout', { method: 'Google' })
     this.$store.dispatch(userActions.RESET_USER)
   },
   mounted () {
@@ -35,6 +36,5 @@ export default {
 
 <style lang="scss" scoped>
 .user-logout {
-
 }
 </style>

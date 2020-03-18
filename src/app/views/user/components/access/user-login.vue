@@ -125,6 +125,7 @@ export default {
             admin: 'admin'
           })
           appLocalStorage.setItem('wh2o-registered', true)
+          this.$gtag.event('login', { method: 'Google' })
           this.$router.replace('/user/account/1/bookmarks')
           this.$store.dispatch(globalAppActions.SEND_TOAST, {
             title: 'Welcome back!',
