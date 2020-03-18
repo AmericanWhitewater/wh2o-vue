@@ -43,7 +43,7 @@
         </cv-overflow-menu>
         <cv-tabs
           aria-label="navigation tab label"
-          :no-default-to-first="windowWidth > breakpoints.lg"
+          :no-default-to-first="windowWidth > breakpoints.md"
           @tab-selected="switchTab($event)"
         >
           <cv-tab
@@ -54,7 +54,9 @@
           />
         </cv-tabs>
       </div>
-      <router-view />
+      <keep-alive>
+        <router-view />
+      </keep-alive>
       <cv-modal
         :visible="reachDeleteModalVisible"
         kind="danger"
