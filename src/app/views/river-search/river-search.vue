@@ -2,84 +2,74 @@
   <layout
     name="layout-two-thirds"
     :options="{sidebar:{left:true}}"
-    class="bg-topo"
+    class="river-search bg-topo"
   >
     <template #sidebar>
-      <div class="sidebar-wrapper">
-        <hr>
-        <h1 class="mb-spacing-lg">
-          Search
-        </h1>
-        <div class="bx--row mt-sm mb-spacing-sm pl-spacing-md">
-          <div class="bx--col-sm-12 mr-xs mb-spacing-sm">
-            <cv-search
-              v-model="searchParams.river"
-              :disabled="loading"
-              :placeholder="'e.g. Animas'"
-              size="large"
-              @keydown.enter="fetchRivers"
-            />
-          </div>
-          <div class="bx--col-auto mr-xs mb-spacing-sm">
-            <cv-dropdown
-              v-model="searchParams.state"
-              label="State"
-              :disabled="loading"
-            >
-              <cv-dropdown-item
-                v-for="(s, index) in UsStatesList"
-                :key="index"
-                :value="s.value"
-              >
-                {{ s.text }}
-              </cv-dropdown-item>
-            </cv-dropdown>
-          </div>
-          <div class="bx--col-auto mr-xs mb-spacing-sm">
-            <cv-dropdown
-              v-model="searchParams.level"
-              label="Level"
-              :disabled="loading"
-            >
-              <cv-dropdown-item
-                v-for="(l, index) in levelsList"
-                :key="index"
-                :value="l.value"
-              >
-                {{ l.text }}
-              </cv-dropdown-item>
-            </cv-dropdown>
-          </div>
-          <div class="bx--col-auto mr-xs mb-spacing-sm">
-            <cv-dropdown
-              v-model="searchParams.state"
-              label="International Reaches"
-              :disabled="loading"
-              @change="fetchRivers"
-            >
-              <cv-dropdown-item
-                v-for="(i, index) in InternationalReaches"
-                :key="index"
-                :value="i.value"
-              >
-                {{ i.text }}
-              </cv-dropdown-item>
-            </cv-dropdown>
-          </div>
-        </div>
-        <div class="bx--row mb-md">
-          <div class="bx--col">
-            <cv-button
-              kind="secondary"
-              size="small"
-              class="search-btn"
-              :disabled="loading"
-              @click.exact="fetchRivers"
-            >
-              Submit
-            </cv-button>
-          </div>
-        </div>
+      <hr>
+      <h1 class="mb-spacing-md">
+        Search
+      </h1>
+      <div class="sidebar sticky mb-spacing-lg">
+        <cv-search
+          v-model="searchParams.river"
+          :disabled="loading"
+          :placeholder="'e.g. Animas'"
+          size="large"
+          class="mb-spacing-md"
+          @keydown.enter="fetchRivers"
+        />
+        <cv-dropdown
+          v-model="searchParams.state"
+          label="State"
+          :disabled="loading"
+          class="mb-spacing-md"
+        >
+          <cv-dropdown-item
+            v-for="(s, index) in UsStatesList"
+            :key="index"
+            :value="s.value"
+          >
+            {{ s.text }}
+          </cv-dropdown-item>
+        </cv-dropdown>
+        <cv-dropdown
+          v-model="searchParams.level"
+          label="Level"
+          :disabled="loading"
+          class="mb-spacing-md"
+        >
+          <cv-dropdown-item
+            v-for="(l, index) in levelsList"
+            :key="index"
+            :value="l.value"
+          >
+            {{ l.text }}
+          </cv-dropdown-item>
+        </cv-dropdown>
+        <cv-dropdown
+          v-model="searchParams.state"
+          label="International Reaches"
+          :disabled="loading"
+          class="mb-spacing-md"
+          @change="fetchRivers"
+        >
+          <cv-dropdown-item
+            v-for="(i, index) in InternationalReaches"
+            :key="index"
+            :value="i.value"
+          >
+            {{ i.text }}
+          </cv-dropdown-item>
+        </cv-dropdown>
+        <cv-button
+          kind="secondary"
+          size="small"
+          class="search-btn"
+          :disabled="loading"
+          @click.exact="fetchRivers"
+        >
+          Submit
+        </cv-button>
       </div>
     </template>
     <template #main>
@@ -91,7 +81,7 @@
       </template>
       <template v-if="!loading && data">
         <div class="bx--data-table-container">
-          <table class="bx--data-table">
+          <table class="bx--data-table river-table">
             <thead>
               <tr>
                 <th>
@@ -100,8 +90,7 @@
                 </th>
                 <th>Class/Grade</th>
                 <th>
-                  <strong>Flow Reading</strong>
-                  <br>Updated
+                  Flow Reading
                 </th>
                 <th>&nbsp;</th>
               </tr>
@@ -114,11 +103,11 @@
               </tr>
               <template v-if="data.length > 0">
                 <tr
-                  v-for="(r, index) in data.slice(0, 25)"
+                  v-for="(r, index) in data"
                   :key="index"
                 >
                   <td
-                    class="river-name-section"
+                    :class="[r.color,'river-name-section']"
                     @click="viewRiver(r.id)"
                   >
                     <strong>{{ r.name }}</strong>
@@ -126,7 +115,16 @@
                     {{ r.section }}
                   </td>
                   <td>{{ r.class }}</td>
-                  <td>{{ formatFlowRange(r.gauge_min, r.gauge_max) }}</td>
+                  <td v-if="r.reading_formatted">
+                    {{ r.reading_formatted }}
+
+                    <template v-if="r.reading_delta">
+                      - {{ r.reading_delta }}
+                    </template>
+                  </td>
+                  <td v-else>
+                    Data Unavailable
+                  </td>
                   <td>
                     <cv-overflow-menu
                       flip-menu
@@ -301,10 +299,11 @@ export default {
     height: 40px !important;
   }
 }
-
-.sidebar-wrapper {
-  @include layer("raised");
-  padding: $spacing-md;
-  background-color: $ui-01;
+.river-search {
+  .sidebar {
+    background-color: $ui-01;
+    @include layer("raised");
+    padding: $spacing-md;
+  }
 }
 </style>

@@ -514,14 +514,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 
-// todo: move to global scss
-@mixin flow-border($color) {
-  border-left: 0.5rem solid $color;
-  &:hover {
-    border-left: 1.5rem solid $color;
-  }
-}
-
 .river-index {
 
   .table-controls {
