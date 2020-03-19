@@ -43,7 +43,7 @@
 <script>
 import { Layout } from '@/app/global/layout'
 import { LoadingBlock, ErrorBlock } from '@/app/global/components'
-import { NwiMap } from '@/app/views/river-index/components/national-map-app/components'
+import { NwiMap } from '@/app/views/river-index/components'
 import { mapActions } from '../shared/state'
 import { mapState } from 'vuex'
 import {

@@ -50,7 +50,7 @@ import {
 } from '@/app/environment/environment'
 import { LoadingBlock, ErrorBlock } from '@/app/global/components'
 import { Layout } from '@/app/global/layout'
-import { NwiMap } from '@/app/views/river-index/components/national-map-app/components'
+import { NwiMap } from '@/app/views/river-index/components'
 import { mapState } from 'vuex'
 import {
   SideBar,

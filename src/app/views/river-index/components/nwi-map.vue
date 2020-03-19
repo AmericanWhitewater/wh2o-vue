@@ -35,7 +35,7 @@ import NwiMapLegend from './nwi-map-legend.vue'
 import NwiMapControls from './nwi-map-controls.vue'
 import { Events as topic } from '@/app/global/services'
 import { mapState } from 'vuex'
-import { riverIndexActions } from '../../../shared/state'
+import { riverIndexActions } from '../shared/state'
 
 const fitBoundsOptions = {
   padding: 80
