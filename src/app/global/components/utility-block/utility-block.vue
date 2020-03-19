@@ -3,6 +3,16 @@
     id="utility-block"
     :style="`height:${height}px`"
   >
+    <h2
+      v-if="title"
+      class="mb-spacing-md"
+      v-text="title"
+    />
+    <p
+      v-if="text"
+      class="mb-spacing-md"
+      v-text="text"
+    />
     <slot name="content">
       <cv-inline-loading
         small
@@ -25,7 +35,11 @@ export default {
     },
     text: {
       type: String,
-      default: 'loading data...'
+      required: false
+    },
+    title: {
+      type: String,
+      required: false
     },
     hideText: {
       type: Boolean,
@@ -44,8 +58,12 @@ export default {
   background-color: $ui-02;
   display: flex;
   width: 100%;
-
+  min-height:250px;
+  height:100%;
+  padding: $spacing-md;
   align-items: center;
+  justify-content: center;
+  flex-flow: column nowrap;
   .bx--inline-loading {
     justify-content: center;
     @include carbon--type-style("code-01");
