@@ -49,11 +49,31 @@ const fetchBookmarksData = data => {
          class,
          id
       }
-    }
-    
+    }    
     `
     })
     .then(res => res.data)
 }
+const fetchBookmarksGageData = data => {
+  const url = `${apiConstants.graphql}`
 
-export { bookmarkRiver, fetchBookmarksData }
+  const gqlConfig = {
+    query: `
+
+    getGaugeInformationForReachID(id: ${data}) {
+      gauges {
+        gauge_reading
+        gauge_min
+        gauge_max
+        class
+      }
+    }
+`
+  }
+
+  return httpClient
+    .post(url, gqlConfig)
+    .then(res => res.data)
+}
+
+export { bookmarkRiver, fetchBookmarksData, fetchBookmarksGageData }

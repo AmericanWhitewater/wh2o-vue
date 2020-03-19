@@ -103,6 +103,10 @@ export default {
           bookmarksActions.FETCH_BOOKMARKS_DATA,
           bookmarks[i]
         )
+        this.$store.dispatch(
+          bookmarksActions.FETCH_BOOKMARKS_GAGE_DATA,
+          bookmarks[i]
+        )
       }
     },
     mockFlowData (max) {

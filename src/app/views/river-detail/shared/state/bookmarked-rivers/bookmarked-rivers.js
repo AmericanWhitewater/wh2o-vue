@@ -1,6 +1,6 @@
 import { reflectKeys, appLocalStorage } from '@/app/global/services'
 
-import { fetchBookmarksData } from '../../services'
+import { fetchBookmarksData, fetchBookmarksGageData } from '../../services'
 
 const initialState = {
   loading: false,
@@ -74,7 +74,7 @@ const mutations = {
 }
 
 export const bookmarksActions = reflectKeys(
-  ['ADD_BOOKMARK', 'FETCH_BOOKMARKS_DATA', 'REMOVE_BOOKMARK'],
+  ['ADD_BOOKMARK', 'FETCH_BOOKMARKS_DATA', 'REMOVE_BOOKMARK', 'FETCH_BOOKMARKS_GAGE_DATA'],
   namespacedPrefix
 )
 
@@ -106,6 +106,19 @@ const actions = {
     context.commit(DATA_REQUEST)
 
     const result = await fetchBookmarksData(data).catch(e => {
+      context.commit(DATA_ERROR, e)
+    })
+
+    if (result) {
+      context.commit(DATA_SUCCESS, result.data.reach)
+    }
+
+    return result
+  },
+  async [bookmarksActions.FETCH_BOOKMARKS_GAGE_DATA] (context, data) {
+    context.commit(DATA_REQUEST)
+
+    const result = await fetchBookmarksGageData(data).catch(e => {
       context.commit(DATA_ERROR, e)
     })
 
