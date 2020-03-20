@@ -10,7 +10,7 @@
 <script>
 import { submoduleOneActions } from '../shared/state'
 export default {
-  name: 'SubmoduleOne',
+  name: 'submodule-one',
   created () {
     this.$store.dispatch(submoduleOneActions.FETCH_SUBMODULE_ONE_DATA)
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="weather-tab">
-    <template v-if="!loading && !error">
+    <template v-if="!loading && weather">
       <div class="bx--row mb-md">
         <div class="bx--col-lg-16 mb-spacing-lg">
           <h2>Currently</h2>
@@ -103,9 +103,6 @@
         </div>
       </div>
     </template>
-    <template v-if="loading">
-      <loading-block text="Loading weather..." />
-    </template>
     <template v-if="loading && !error">
       <loading-block text="Loading weather..." />
     </template>
@@ -123,7 +120,7 @@ import { weatherActions } from '../shared/state'
 import { LoadingBlock, ErrorBlock } from '@/app/global/components'
 
 export default {
-  name: 'WeatherTab',
+  name: 'weather-tab',
   components: {
     LoadingBlock,
     ErrorBlock

@@ -1,11 +1,11 @@
 <template>
   <section
-    :class="[{ 'bg-topo': !headerBg.url }, 'bleed river-header']"
-    :style="`background-image: url(${headerBg.url})`"
+    :class="[ {'has-bg': bgImg},'bleed river-header bg-topo']"
+    :style="bgImg ? `background-image:url(${bgImg.url})` : ''"
   >
-    <div class="bx--grid">
+    <div class="bx--grid bx--no-gutter">
       <div class="bx--row">
-        <div class="bx--col-lg-10">
+        <div class="bx--col-sm-12 bx--col-md-15 bx--col-lg-15 info-section">
           <div class="outside">
             <div class="inside">
               <template v-if="windowWidth > breakpoints.md">
@@ -21,27 +21,50 @@
                   kind="secondary"
                   size="small"
                   class="ml-spacing-sm"
-                  :disabled="!user"
                   @click.exact="toggleBookmark"
                 >
-                  Bookmark River
+                  {{ bookmarked ? 'Remove Bookmark' : 'Add Bookmark' }}
                 </cv-button>
               </div>
-              <edit-mode-toggle v-if="userIsAdmin" />
+              <edit-mode-toggle
+                v-if="userIsAdmin"
+                class="mt-spacing-sm"
+              />
             </div>
           </div>
         </div>
-        <div class="bx--col">
-          <div
-            v-show="editMode"
-            class="edit-icons"
-          >
-            <cv-button small>
-              Drag Icon
-            </cv-button>
-            <cv-button small>
-              Upload Icon
-            </cv-button>
+        <div :class="[{'edit':editMode},'bx--col-sm-12 bx--col-md-1 bx--col-lg-1 edit-section']">
+          <div class="outside">
+            <div class="inside">
+              <div :class="[{'edit':editMode},'edit-actions-wrapper']">
+                <cv-interactive-tooltip
+                  v-if="!editMode"
+                  alignment="center"
+                  direction="left"
+                >
+                  <template slot="trigger">
+                    <div class="icon">
+                      <CameraAction24 />
+                    </div>
+                  </template>
+                  <template slot="content">
+                    <div class>
+                      <h6>Photo</h6>
+                      <p>{{ bgImg.credit }}</p>
+                    </div>
+                  </template>
+                </cv-interactive-tooltip>
+
+                <template v-if="editMode">
+                  <div class="icon mb-spacing-sm edit">
+                    <Upload24 />
+                  </div>
+                  <div class="icon edit">
+                    <ZoomPan24 />
+                  </div>
+                </template>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -70,16 +93,17 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import { EditModeToggle } from '@/app/global/components'
-import { defaultBannerImage, checkWindow } from '@/app/global/mixins'
+import { checkWindow } from '@/app/global/mixins'
 import { globalAppActions } from '@/app/global/state'
+import { appLocalStorage } from '@/app/global/services'
 import { bookmarksActions } from '../shared/state'
 
 export default {
-  name: 'RiverHeader',
+  name: 'river-header',
   components: {
     EditModeToggle
   },
-  mixins: [defaultBannerImage, checkWindow],
+  mixins: [checkWindow],
   props: {
     name: {
       type: String,
@@ -93,50 +117,105 @@ export default {
     }
   },
   data: () => ({
-    showConfirmation: false
+    showConfirmation: false,
+    bookmarked: false,
+    iconAlways: {
+      name: 'CameraAction32',
+      functional: false,
+      props: {
+        title: {
+          type: null
+        }
+      }
+    }
   }),
   computed: {
     ...mapState({
       editMode: state => state.appGlobalState.appGlobalData.editMode,
       user: state => state.userState.userData.data,
-      bookmarks: state => state.riverDetailState.bookmarksData.data
+      river: state => state.riverDetailState.riverDetailData.data
     }),
     ...mapGetters(['userIsAdmin']),
     reachId () {
       return parseInt(this.$route.params.id, 10)
     },
-    bookmarked () {
-      if (this.bookmarks) {
-        const isBookmarked = this.bookmarks.indexOf(this.reachId)
-        return isBookmarked
+    bgImg () {
+      if (this.river && this.river.photo) {
+        return {
+          url: `https://americanwhitewater.org${this.river.photo.image.uri.big}`,
+          credit: this.river.photo.post.user.uname
+        }
       }
       return null
     }
   },
   methods: {
-    /**
-     * @todo add the toggle
-     */
     toggleBookmark () {
-      this.$store.dispatch(bookmarksActions.ADD_BOOKMARK, this.reachId)
+      if (!this.bookmarked) {
+        this.$store.dispatch(bookmarksActions.ADD_BOOKMARK, this.reachId)
+        this.bookmarked = true
+      } else {
+        this.$store.dispatch(bookmarksActions.REMOVE_BOOKMARK, this.reachId)
+        this.bookmarked = false
+      }
       this.$store.dispatch(globalAppActions.SEND_TOAST, {
-        title: 'Bookmark Added',
+        title: this.bookmarked ? 'Bookmark Added' : 'Bookmark Removed',
         kind: 'success',
         contrast: false,
         action: false,
         coreAction: true
       })
+    },
+    checkBookmarks () {
+      const bookmarks = appLocalStorage.getItem('wh2o-bookmarked-rivers')
+      if (bookmarks) {
+        const data = bookmarks.find(b => b === this.reachId)
+        if (data) {
+          this.bookmarked = true
+        }
+      } else {
+        this.bookmarked = false
+      }
     }
+  },
+  created () {
+    this.checkBookmarks()
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 section {
   &.river-header {
     width: 100%;
     height: 50vh;
-    background-size: cover;
-    background-position: center center;
+
+    &.has-bg {
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+    .edit-actions-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+
+      &.edit {
+        flex-flow: column nowrap;
+      }
+      .icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 32px;
+        min-width: 32px;
+        padding: $spacing-2xs;
+        background-color: $ui-01;
+        &.edit {
+          height: 50px;
+          width: 50px;
+        }
+      }
+    }
     .bx--grid,
     .bx--row,
     .bx--col,
@@ -150,6 +229,7 @@ section {
       justify-content: flex-end;
       padding-bottom: $spacing-lg;
     }
+
     h1,
     h3,
     h6,
@@ -157,16 +237,37 @@ section {
       background-color: #fff;
       width: fit-content;
     }
-    h1,h3 {
+    h1,
+    h3 {
       margin-bottom: $spacing-sm;
       padding: 11px 12px 11px 2rem;
     }
-    h4,h6 {
+    h4,
+    h6 {
       padding: 11px 12px 0 2rem;
     }
   }
-}
-.bx--grid {
-  padding-left: 0;
+
+  .info-section {
+    order: 2;
+    @include carbon--breakpoint("lg") {
+      order: 1;
+    }
+  }
+
+  .edit-section {
+    order: 1;
+    height: 5rem;
+    // display: flex;
+    // flex-flow: column nowrap;
+
+    &.edit {
+      height: 10rem;
+    }
+    @include carbon--breakpoint("lg") {
+      height: auto;
+      order: 2;
+    }
+  }
 }
 </style>

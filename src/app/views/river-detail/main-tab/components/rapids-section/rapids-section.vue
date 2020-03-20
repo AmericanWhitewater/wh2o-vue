@@ -1,27 +1,25 @@
 <template>
-  <section class="rapids-section">
+  <section
+    v-view.once="loadRapids"
+    class="rapids-section mb-lg"
+  >
     <hr>
     <h2 class="mb-spacing-md">
       Rapids
     </h2>
-    <template v-if="!loading && sortedRapids">
-      <div>
+    <template v-if="loading">
+      loading
+    </template>
+
+    <template v-else-if="sortedRapids">
+      <div class="">
         <cv-button
-          kind="tertiary"
+          class="mr-spacing-sm mb-sm"
           size="small"
-          label="Grid View"
-          class="mr-spacing-sm"
-          @click.prevent="viewMode = 'grid'"
+          kind="secondary"
+          @click.exact="newRapidModalVisible = true"
         >
-          <Grid16 />
-        </cv-button>
-        <cv-button
-          kind="tertiary"
-          size="small"
-          label="List View"
-          @click.prevent="viewMode = 'list'"
-        >
-          <List16 />
+          Add Rapid
         </cv-button>
       </div>
 
@@ -30,32 +28,84 @@
           v-for="(rapid, index) in sortedRapids"
           :key="index"
           :rapid="rapid"
-          :expanded="index === 0 ? true : false"
-          :mode="viewMode"
+          :first-p-o-i="index === 0 ? true : false"
         />
       </div>
     </template>
-    <template v-if="!loading && !sortedRapids">
-      This reach has no rapid data.
+    <template v-else>
+      error
     </template>
-    <template v-if="error">
-      <div class="">
-        error
-      </div>
-    </template>
+    <cv-modal
+      :visible="newRapidModalVisible"
+      @primary-click="notifyUser"
+      @secondary-click="cancelNewRapid"
+    >
+      <template slot="title">
+        New Rapid
+      </template>
+      <template slot="content">
+        <cv-file-uploader
+          ref="fileUploader"
+          label="Choose files to upload"
+          helper-text="Max file size 10mb - PNG, JPG"
+          accept=".jpg,.png"
+          theme="light"
+          multiple
+          class="mb-spacing-md"
+        />
+        <cv-text-input
+          v-model="formData.name"
+          label="Name"
+          class="mb-spacing-md"
+        />
+        <cv-text-input
+          v-model="formData.distance"
+          label="Distance"
+          class="mb-spacing-md"
+        />
+        <cv-text-input
+          v-model="formData.class"
+          label="Class"
+          class="mb-spacing-md"
+        />
+        <cv-text-area
+          v-model="formData.description"
+          label="Description"
+          theme="light"
+          class="mb-spacing-md"
+        />
+      </template>
+      <template slot="secondary-button">
+        Cancel
+      </template>
+      <template slot="primary-button">
+        Submit
+      </template>
+    </cv-modal>
   </section>
 </template>
 <script>
-import { mapState } from 'vuex'
 import { RapidItem } from './components'
+import { checkWindow } from '@/app/global/mixins'
+import { globalAppActions } from '@/app/global/state'
+import { mapState } from 'vuex'
+import { rapidsActions } from '../../../shared/state'
 
 export default {
-  name: 'RapidsSection',
+  name: 'rapids-section',
   components: {
     RapidItem
   },
+  mixins: [checkWindow],
   data: () => ({
-    viewMode: 'list'
+    newRapidModalVisible: false,
+    formData: {
+      files: [],
+      name: '',
+      distance: '',
+      class: '',
+      description: ''
+    }
   }),
   computed: {
     ...mapState({
@@ -69,6 +119,25 @@ export default {
         return rapids.sort((a, b) => (a.distance > b.distance) ? 1 : -1)
       }
       return null
+    }
+  },
+  methods: {
+    loadRapids () {
+      this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.$route.params.id)
+    },
+    cancelNewRapid () {
+      this.newRapidModalVisible = false
+    },
+    notifyUser () {
+      this.newRapidModalVisible = false
+      this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        title: 'Rapid Created',
+        kind: 'success',
+        override: true,
+        contrast: false,
+        action: false,
+        autoHide: true
+      })
     }
   }
 }

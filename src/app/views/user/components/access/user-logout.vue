@@ -16,12 +16,13 @@ import { LoadingBlock } from '@/app/global/components'
 import { userActions } from '@/app/views/user/shared/state'
 import { appLocalStorage } from '@/app/global/services'
 export default {
-  name: 'UserLogout',
+  name: 'user-logout',
   components: {
     LoadingBlock
   },
   created () {
     appLocalStorage.setItem('wh2o-registered', false)
+    this.$gtag.event('logout', { method: 'Google' })
     this.$store.dispatch(userActions.RESET_USER)
   },
   mounted () {
@@ -35,6 +36,5 @@ export default {
 
 <style lang="scss" scoped>
 .user-logout {
-
 }
 </style>

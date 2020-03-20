@@ -53,7 +53,7 @@ import { Layout } from '@/app/global/layout'
 import { moduleActions } from './shared/state'
 
 export default {
-  name: 'Community',
+  name: 'community',
   components: {
     Layout
   },

@@ -10,7 +10,7 @@
 <script>
 import { ErrorBlock } from '@/app/global/components'
 export default {
-  name: 'UserAlerts',
+  name: 'user-alerts',
   components: {
     ErrorBlock
   }

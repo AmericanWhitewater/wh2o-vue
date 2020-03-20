@@ -15,7 +15,7 @@ Vue.config.productionTip = false
 Vue.use(CarbonComponents)
 Vue.use(VueMeta)
 
-new Vue({
+export const wh2o = new Vue({
   router,
   store,
   render: h => h(App)

@@ -34,11 +34,12 @@
   </main>
 </template>
 <script>
+import { appBaseUrl } from '@/app/environment/environment'
 import { mapState } from 'vuex'
 import { ContentEditor } from '@/app/global/components'
 import { globalAppActions } from '@/app/global/state'
 export default {
-  name: 'RiverDescription',
+  name: 'river-description',
   components: { ContentEditor },
   editedContent: null,
   computed: {
@@ -59,7 +60,7 @@ export default {
         const closingTags = this.$replaceText(openingTags, '</div>', '</p>')
 
         const legacyUrl = 'http://www.americanwhitewater.org/rivers/id/'
-        const updatedUrl = '/#/river-detail/'
+        const updatedUrl = `${appBaseUrl}/#/river-detail/`
 
         return this.$replaceText(closingTags, legacyUrl, updatedUrl)
       }

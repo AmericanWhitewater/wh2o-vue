@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'NewReportStep03'
+  name: 'new-report-step03'
 }
 </script>
 

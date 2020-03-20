@@ -5,7 +5,7 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  name: 'SearchResultsCounter',
+  name: 'search-results-counter',
   computed: {
     ...mapState({
       searchResults: state => state.riverSearchState.riverSearchData.data,

@@ -70,7 +70,7 @@
               class="bx--col-md-4 bx--col-lg-8 mb-spacing-lg"
             >
               <ArticleCard
-                :title="article.title.rendered"
+                :title="$titleCase(article.title.rendered)"
                 :article-id="article.id"
               />
             </div>
@@ -89,7 +89,7 @@ import { LoadingBlock, ArticleCard } from '@/app/global/components'
 import { Layout } from '@/app/global/layout'
 import { newsActions } from './shared/state'
 export default {
-  name: 'NewsPage',
+  name: 'news-page',
   components: {
     LoadingBlock,
     ArticleCard,

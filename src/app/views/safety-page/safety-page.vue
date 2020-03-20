@@ -175,7 +175,7 @@ import {
 import { safetyPageActions } from './shared/state'
 
 export default {
-  name: 'SafetyPage',
+  name: 'safety-page',
   components: {
     PageHeader,
     PageDescription,

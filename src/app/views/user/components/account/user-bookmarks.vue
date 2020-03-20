@@ -8,7 +8,7 @@
         <div
           v-for="(item, index) in loadedBookmarks"
           :key="index"
-          class="bx--col-sm-12 bx--col-md-8 bx--col-lg-8 bx--col-max-6"
+          class="bx--col-sm-12 bx--col-md-4 bx--col-lg-8 bx--col-max-5"
         >
           <ArticleCard
             :key="index"
@@ -25,7 +25,7 @@
       </div>
     </template>
     <template v-if="!loading && !loadedBookmarks.length">
-      <cv-tile>
+      <cv-tile class="mb-lg">
         <p class="mb-spacing-lg">
           You dont have any bookmarks. <br>Start by searching for a river.
         </p>
@@ -48,14 +48,13 @@ import { bookmarksActions } from '@/app/views/river-detail/shared/state'
 import { riverSearchActions } from '@/app/views/river-search/shared/state'
 
 export default {
-  name: 'UserBookmarks',
+  name: 'user-bookmarks',
   components: {
     ArticleCard,
     LoadingBlock
   },
   data: () => ({
-    searchTerm: null,
-    bookmarks: null
+    searchTerm: ''
   }),
   computed: {
     ...mapState({
@@ -65,18 +64,39 @@ export default {
     }),
     loggedIn () {
       const loggedIn = appLocalStorage.getItem('wh2o-registered')
-      return loggedIn
+      if (loggedIn) {
+        return loggedIn
+      }
+      return null
     },
-    storedRivers () {
-      return appLocalStorage.getItem('wh2o-bookmarked-rivers')
-    }
-  },
-  watch: {
-    storedRivers () {
-      this.fetchBookmarks(this.storedRivers)
+    saveData () {
+      const savedData = appLocalStorage.getItem('wh2o-bookmarked-rivers')
+      if (savedData) {
+        return savedData
+      }
+      return null
     }
   },
   methods: {
+    /**
+     * check for existence of bookmarked rivers
+     * then check to see if user added a bookmark during session
+     *
+     */
+    checkBookmarks () {
+      if (this.savedData && !this.loadedBookmarks.length) {
+        this.fetchBookmarks(this.saveData)
+      }
+      if (this.saveData && this.loadedBookmarks) {
+        if (this.saveData.length !== this.loadedBookmarks.length) {
+          this.fetchBookmarks(this.saveData)
+        }
+      }
+    },
+    /**
+     * @param {array} bookmarks user stored bookmarks, An array of reach IDs.
+     *
+     */
     fetchBookmarks (bookmarks) {
       for (let i = 0; i < bookmarks.length; i++) {
         this.$store.dispatch(
@@ -98,14 +118,12 @@ export default {
        * @todo figure out how to dynamically set scroll position
        * transition to search page is jarring, search results obscured
        */
+      this.searchTerm = ''
       this.$router.push('/river-search').catch(() => {})
     }
   },
   mounted () {
-    this.bookmarks = appLocalStorage.getItem('wh2o-bookmarked-rivers')
-    if (this.loadedBookmarks.length === 0) {
-      this.fetchBookmarks(this.bookmarks)
-    }
+    this.checkBookmarks()
   }
 }
 </script>

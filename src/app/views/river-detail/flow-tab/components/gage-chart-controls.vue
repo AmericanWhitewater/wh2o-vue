@@ -1,44 +1,21 @@
 <template>
   <div class="gage-chart-controls">
     <template v-if="metrics">
-      <cv-toolbar>
-        <cv-overflow-menu class="bx--toolbar-action">
-          <template slot="trigger">
-            <Settings32 class="bx--overflow-menu__icon bx--toolbar-settings-icon" />
-          </template>
-          <cv-toolbar-title title="View Mode" />
-          <cv-toolbar-option>
-            <cv-radio-button
-              v-model="viewMode"
-              name="chart"
-              label="Chart"
-              value="chart"
-            />
-          </cv-toolbar-option>
-          <cv-toolbar-option>
-            <cv-radio-button
-              v-model="viewMode"
-              name="table"
-              label="Table"
-              value="table"
-            />
-          </cv-toolbar-option>
-        </cv-overflow-menu>
-      </cv-toolbar>
       <cv-dropdown
-        v-if="mockGages"
+        v-if="gages"
         v-model="formData.gauge_id"
-        :placeholder="formData.gauge_name"
-        label="Gage(s)"
+        :placeholder="$titleCase(formData.gauge_name)"
+        :label="gages.length === 1 ? 'Gage' : 'Gages'"
         class="mb-spacing-md"
+        :disabled="gages.length === 1"
         @change="fetchReadings"
       >
         <cv-dropdown-item
-          v-for="(g, index) in mockGages"
+          v-for="(g, index) in gages"
           :key="index"
-          :value="g.gauge_id.toString()"
+          :value="g.gauge.id"
         >
-          {{ g.gauge_name }}
+          {{ $titleCase(g.gauge.name) }}
         </cv-dropdown-item>
       </cv-dropdown>
 
@@ -79,6 +56,30 @@
           {{ g.label }}
         </cv-dropdown-item>
       </cv-dropdown>
+      <cv-toolbar>
+        <cv-overflow-menu class="bx--toolbar-action">
+          <template slot="trigger">
+            <Settings32 class="bx--overflow-menu__icon bx--toolbar-settings-icon" />
+          </template>
+          <cv-toolbar-title title="View Mode" />
+          <cv-toolbar-option>
+            <cv-radio-button
+              v-model="viewMode"
+              name="chart"
+              label="Chart"
+              value="chart"
+            />
+          </cv-toolbar-option>
+          <cv-toolbar-option>
+            <cv-radio-button
+              v-model="viewMode"
+              name="table"
+              label="Table"
+              value="table"
+            />
+          </cv-toolbar-option>
+        </cv-overflow-menu>
+      </cv-toolbar>
     </template>
   </div>
 </template>
@@ -92,26 +93,8 @@ import { mapState } from 'vuex'
  *
  */
 export default {
-  name: 'GageChartControls',
+  name: 'gage-chart-controls',
   data: () => ({
-    /**
-     * @temp use these until we get a list of gages from graphql
-     *
-     */
-    mockGages: [
-      {
-        gauge_name: 'POTOMAC RIVER NEAR WASH, DC LITTLE FALLS PUMP STA USA-MRY',
-        gauge_id: '569'
-      },
-      {
-        gauge_name: 'S F SOUTH BRANCH POTOMAC RIVER NR MOOREFIELD, WV USA-WVR',
-        gauge_id: '550'
-      },
-      {
-        gauge_name: 'GAULEY RIVER NEAR CRAIGSVILLE, WV USA-WVR',
-        gauge_id: '1433'
-      }
-    ],
     /**
      * toggles the flow chart view or table view
      * @values chart, table
@@ -125,7 +108,7 @@ export default {
      */
     formData: {
       gauge_id: '',
-      gauge_name: 'POTOMAC RIVER NEAR WASH, DC LITTLE FALLS PUMP STA USA-MRY',
+      gauge_name: '',
       metric_id: '2',
       timeStart: null,
       timeEnd: null,
@@ -139,7 +122,8 @@ export default {
       error: state => state.riverDetailState.gageReadingsData.error,
       data: state => state.riverDetailState.gageReadingsData.data,
       metrics: state => state.riverDetailState.gageMetricsData.data,
-      river: state => state.riverDetailState.riverDetailData.data
+      river: state => state.riverDetailState.riverDetailData.data,
+      gages: state => state.riverDetailState.reachGagesData.data
     }),
     /**
      * @description look through the readings response to find
@@ -252,8 +236,8 @@ export default {
      * @todo if the reach does not have any gages, display empty content block
      *
      */
-    if (this.mockGages) {
-      this.formData.gauge_id = this.mockGages[0].gauge_id
+    if (this.gages) {
+      this.formData.gauge_id = this.gages[0].gauge.id
     }
     this.fetchMetrics()
   },

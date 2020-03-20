@@ -39,7 +39,7 @@ import { riverIndexActions } from '../../shared/state'
  */
 
 export default {
-  name: 'NationalMapApp',
+  name: 'national-map-app',
   components: {
     NwiMap,
     NwiRiversTable
@@ -153,7 +153,7 @@ export default {
     height: 95vh;
   }
 
-  @include MQ(LG) {
+  @include carbon--breakpoint('lg') {
     height: 80vh;
   }
 }

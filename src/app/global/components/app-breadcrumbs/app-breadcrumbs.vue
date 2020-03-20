@@ -1,94 +1,96 @@
 <template>
-  <layout name="layout-full-width">
-    <template #main>
-      <div
-        v-show="$route.name !== 'home'"
-        class="app-breadcrumbs"
-      >
-        <cv-breadcrumb
-          aria-label="breadcrumb"
-          no-trailing-slash
+  <div class="app-breadcrumbs-wrapper">
+    <layout name="layout-full-width">
+      <template #main>
+        <div
+          v-show="$route.name !== 'home'"
+          class="app-breadcrumbs"
         >
-          <cv-breadcrumb-item>
-            <cv-link
-              to="/"
-              aria-current="page"
-            >
-              Home
-            </cv-link>
-          </cv-breadcrumb-item>
-          <template v-if="crumbs.length <= 2">
-            <cv-breadcrumb-item
-              v-for="(crumb, index) in crumbs"
-              :key="index"
-            >
-              <template v-if="index + 1 !== crumbs.length">
-                <cv-link
-                  :to="crumb.path"
-                  aria-current="page"
-                >
-                  {{ getLabel(crumb.label) }}
-                </cv-link>
-              </template>
-              <template v-else>
-                <cv-link
-                  href="#"
-                  aria-current="page"
-                >
-                  {{ getLabel(crumb.label) }}
-                </cv-link>
-              </template>
-            </cv-breadcrumb-item>
-          </template>
-          <template v-else>
+          <cv-breadcrumb
+            aria-label="breadcrumb"
+            no-trailing-slash
+          >
             <cv-breadcrumb-item>
-              <cv-dropdown
-                placeholder="..."
-                value="  "
+              <cv-link
+                to="/"
+                aria-current="page"
               >
-                <cv-dropdown-item
-                  v-for="(crumb, index) in crumbs
-                    .slice(0, crumbs.length - 2)
-                    .reverse()"
-                  :key="index"
-                  :value="index.toString()"
-                >
+                Home
+              </cv-link>
+            </cv-breadcrumb-item>
+            <template v-if="crumbs.length <= 2">
+              <cv-breadcrumb-item
+                v-for="(crumb, index) in crumbs"
+                :key="index"
+              >
+                <template v-if="index + 1 !== crumbs.length">
                   <cv-link
                     :to="crumb.path"
                     aria-current="page"
                   >
                     {{ getLabel(crumb.label) }}
                   </cv-link>
-                </cv-dropdown-item>
-              </cv-dropdown>
-            </cv-breadcrumb-item>
-            <cv-breadcrumb-item>
-              <cv-link
-                :to="crumbs[crumbs.length - 2].path"
-                aria-current="page"
-              >
-                {{ getLabel(crumbs[crumbs.length - 2].label) }}
-              </cv-link>
-            </cv-breadcrumb-item>
-            <cv-breadcrumb-item>
-              <cv-link
-                href="#"
-                aria-current="page"
-              >
-                {{ getLabel(crumbs[crumbs.length - 1].label) }}
-              </cv-link>
-            </cv-breadcrumb-item>
-          </template>
-        </cv-breadcrumb>
-        <cv-tag
-          v-if="$route.name === 'river-index' && riverIndexData"
-          kind="blue"
-          :label="`Rivers Found: ${riverIndexData.length}`"
-          :disabled="false"
-        />
-      </div>
-    </template>
-  </layout>
+                </template>
+                <template v-else>
+                  <cv-link
+                    href="#"
+                    aria-current="page"
+                  >
+                    {{ getLabel(crumb.label) }}
+                  </cv-link>
+                </template>
+              </cv-breadcrumb-item>
+            </template>
+            <template v-else>
+              <cv-breadcrumb-item>
+                <cv-dropdown
+                  placeholder="..."
+                  value="  "
+                >
+                  <cv-dropdown-item
+                    v-for="(crumb, index) in crumbs
+                      .slice(0, crumbs.length - 2)
+                      .reverse()"
+                    :key="index"
+                    :value="index.toString()"
+                  >
+                    <cv-link
+                      :to="crumb.path"
+                      aria-current="page"
+                    >
+                      {{ getLabel(crumb.label) }}
+                    </cv-link>
+                  </cv-dropdown-item>
+                </cv-dropdown>
+              </cv-breadcrumb-item>
+              <cv-breadcrumb-item>
+                <cv-link
+                  :to="crumbs[crumbs.length - 2].path"
+                  aria-current="page"
+                >
+                  {{ getLabel(crumbs[crumbs.length - 2].label) }}
+                </cv-link>
+              </cv-breadcrumb-item>
+              <cv-breadcrumb-item>
+                <cv-link
+                  href="#"
+                  aria-current="page"
+                >
+                  {{ getLabel(crumbs[crumbs.length - 1].label) }}
+                </cv-link>
+              </cv-breadcrumb-item>
+            </template>
+          </cv-breadcrumb>
+          <cv-tag
+            v-if="$route.name === 'river-index' && riverIndexData"
+            kind="blue"
+            :label="`Rivers Found: ${riverIndexData.length}`"
+            :disabled="false"
+          />
+        </div>
+      </template>
+    </layout>
+  </div>
 </template>
 
 <script>
@@ -102,7 +104,7 @@ import { Layout } from '@/app/global/layout'
  */
 
 export default {
-  name: 'AppBreadcrumbs',
+  name: 'app-breadcrumbs',
   components: {
     Layout
   },
@@ -171,6 +173,10 @@ export default {
 </script>
 
 <style lang="scss">
+.app-breadcrumbs-wrapper {
+  position: relative;
+
+}
 .app-breadcrumbs {
   top: $mobile-nav-height;
   z-index: 2;
@@ -178,8 +184,9 @@ export default {
   display: flex;
   padding: $spacing-sm 0;
   justify-content: space-between;
-  // width:100%;
-  @include MQ("LG") {
+  max-width:100%;
+  overflow-x: scroll;
+  @include MQ("MD") {
     top: $desktop-nav-height;
   }
   &.home {

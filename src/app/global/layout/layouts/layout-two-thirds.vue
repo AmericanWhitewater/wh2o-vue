@@ -24,7 +24,7 @@
 <script>
 
 export default {
-  name: 'LayoutTwoThirds',
+  name: 'layout-two-thirds',
   props: {
     options: {
       type: Object,

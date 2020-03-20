@@ -72,7 +72,7 @@
 import { FlowColorBlock } from '@/app/views/river-detail/main-tab/components'
 import { checkWindow } from '@/app/global/mixins'
 export default {
-  name: 'ArticleCard',
+  name: 'article-card',
   components: {
     FlowColorBlock
   },

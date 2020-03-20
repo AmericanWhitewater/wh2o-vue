@@ -1,5 +1,5 @@
 <template>
-  <div class="beta-box">
+  <div class="beta-box mb-md">
     <table
       v-if="!loading"
       class="bx--data-table bx--data-table--zebra"
@@ -18,15 +18,36 @@
       </tr>
       <tr>
         <td>Gage</td>
-        <td>n/a</td>
+        <td v-if="!gages">
+          n/a
+        </td>
+        <td v-if="gages && gages.length">
+          {{ $titleCase(gages[0].gauge.name) }}
+        </td>
       </tr>
       <tr>
         <td>Flow Range</td>
-        <td>n/a</td>
+        <td v-if="gages && gages.length">
+          {{ `${gages[0].rmin} - ${gages[0].rmax}` }}
+        </td>
+        <td v-else>
+          n/a
+        </td>
       </tr>
       <tr>
-        <td>Flow Rate as of</td>
-        <td>n/a</td>
+        <td>
+          Flow Rate
+          <template v-if="gages && gages.length">
+            as of {{ gages[0].last_gauge_updated }}
+          </template>
+        </td>
+
+        <td v-if="gages && gages.length">
+          {{ gages[0].last_gauge_reading }}
+        </td>
+        <td v-else>
+          n/a
+        </td>
       </tr>
       <tr>
         <td>Reach Info Last Updated</td>
@@ -106,9 +127,13 @@
 <script>
 import { mapState } from 'vuex'
 import Moment from 'moment'
-
+/**
+ * @todo if reach has multiple gages, add dropdown to
+ * gage tr, v-model+watch+fetch.gageActions.FETCH_GAGE_DATA and make other table values reactive
+ *
+ */
 export default {
-  name: 'BetaBox',
+  name: 'beta-box',
   filters: {
     capitalize (value) {
       if (!value) return ''
@@ -124,7 +149,9 @@ export default {
     ...mapState({
       loading: state => state.riverDetailState.riverDetailData.loading,
       river: state => state.riverDetailState.riverDetailData.data,
-      editMode: state => state.appGlobalState.appGlobalData.editMode
+      error: state => state.riverDetailState.riverDetailData.error,
+      editMode: state => state.appGlobalState.appGlobalData.editMode,
+      gages: state => state.riverDetailState.reachGagesData.data
     })
   },
   methods: {

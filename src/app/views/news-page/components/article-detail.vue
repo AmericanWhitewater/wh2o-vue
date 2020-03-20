@@ -12,7 +12,7 @@
     <template v-if="!loading">
       <div class="bx--grid">
         <page-header
-          :title="article.title.rendered"
+          :title="$titleCase(article.title.rendered)"
           :subtitle="formatDate(article.date)"
           :featured-img="featuredMedia"
         />
@@ -92,7 +92,7 @@ import { articleActions, newsActions } from '../shared/state'
 import { mapState } from 'vuex'
 import Moment from 'moment'
 export default {
-  name: 'ArticleDetail',
+  name: 'article-detail',
   components: {
     PageHeader,
     ArticleCard

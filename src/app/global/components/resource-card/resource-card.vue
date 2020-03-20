@@ -38,7 +38,7 @@
 <script>
 
 export default {
-  name: 'ResourceCard',
+  name: 'resource-card',
   props: {
     title: {
       type: String,

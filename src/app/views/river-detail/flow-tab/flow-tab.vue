@@ -5,7 +5,7 @@
       class="mb-lg"
     >
       <template #main>
-        <template v-if="mockGages && mockGages.length > 0">
+        <template v-if="gages && gages.length > 0">
           <template v-if="loading">
             <loading-block />
           </template>
@@ -15,11 +15,15 @@
           <template v-if="!loading && chartData">
             <template v-if="viewMode === 'chart'">
               <template v-if="readings.length > 0">
-                <gage-chart
-                  :chart-data="chartData"
-                  :height="chartHeight"
-                  :options="chartConfig"
-                />
+                <div style="max-width:100%;overflow-x:scroll">
+                  <div :style="chartSize">
+                    <gage-chart
+                      :chart-data="chartData"
+                      :height="chartHeight"
+                      :options="chartConfig"
+                    />
+                  </div>
+                </div>
               </template>
               <template v-else>
                 <error-block
@@ -43,7 +47,45 @@
         </template>
       </template>
       <template #sidebar>
-        <template v-if="mockGages && mockGages.length > 0">
+        <template v-if="gages && gages.length > 0">
+          <div class="flow-stats bx--row mb-spacing-md">
+            <div class="bx--col">
+              <h6 class="mb-spacing-2xs">
+                Avg
+              </h6>
+              <h3 v-if="!loading">
+                {{ flowStats ? flowStats.avg : 'n/a' }}
+              </h3>
+              <cv-skeleton-text
+                v-if="loading"
+                headline
+              />
+            </div>
+            <div class="bx--col">
+              <h6 class="mb-spacing-2xs">
+                High
+              </h6>
+              <h3 v-if="!loading">
+                {{ flowStats ? flowStats.max : 'n/a' }}
+              </h3>
+              <cv-skeleton-text
+                v-if="loading"
+                headline
+              />
+            </div>
+            <div class="bx--col">
+              <h6 class="mb-spacing-2xs">
+                Low
+              </h6>
+              <h3 v-if="!loading">
+                {{ flowStats ? flowStats.min : 'n/a' }}
+              </h3>
+              <cv-skeleton-text
+                v-if="loading"
+                headline
+              />
+            </div>
+          </div>
           <GageChartControls
             @viewModeChange="viewMode = $event"
             @timescaleChange="setTimescale"
@@ -51,14 +93,11 @@
         </template>
         <template v-else>
           <hr>
-          <h2 class="mb-spacing-md">
-            Add Gage
-          </h2>
           <p class="mb-spacing-md">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            If you know this reach has a gage, you can search from our list of preregistered gages or add a new gage to the database. You can also create a virtual gage, { some copy on what that means }...
           </p>
           <cv-button
-            disabled
+            :disabled="!user"
             size="small"
           >
             Action
@@ -77,13 +116,14 @@ import { Layout } from '@/app/global/layout'
 import { mapState } from 'vuex'
 import { readingsActions } from '../shared/state'
 import { LoadingBlock, ErrorBlock } from '@/app/global/components'
+import { checkWindow } from '@/app/global/mixins'
 
 /**
  * @todo this component is getting pretty wild. consider composition API.
  *
  */
 export default {
-  name: 'FlowTab',
+  name: 'flow-tab',
   components: {
     ErrorBlock,
     GageChart,
@@ -92,27 +132,8 @@ export default {
     Layout,
     LoadingBlock
   },
-  mixins: [GageChartConfig],
+  mixins: [GageChartConfig, checkWindow],
   data: () => ({
-    /**
-     * @temp use these until we get a list of gages from graphql
-     * @todo create getter for gages?
-     *
-     */
-    mockGages: [
-      {
-        gauge_name: 'POTOMAC RIVER NEAR WASH, DC LITTLE FALLS PUMP STA USA-MRY',
-        gauge_id: '569'
-      },
-      {
-        gauge_name: 'S F SOUTH BRANCH POTOMAC RIVER NR MOOREFIELD, WV USA-WVR',
-        gauge_id: '550'
-      },
-      {
-        gauge_name: 'GAULEY RIVER NEAR CRAIGSVILLE, WV USA-WVR',
-        gauge_id: '1433'
-      }
-    ],
     /**
      * default timespan to day format
      */
@@ -124,9 +145,11 @@ export default {
   }),
   computed: {
     ...mapState({
+      user: state => state.userState.userData.data,
       readings: state => state.riverDetailState.gageReadingsData.data,
       loading: state => state.riverDetailState.gageReadingsData.loading,
-      error: state => state.riverDetailState.gageReadingsData.error
+      error: state => state.riverDetailState.gageReadingsData.error,
+      gages: state => state.riverDetailState.reachGagesData.data
     }),
     /**
      * vue-chartjs requires data to be formatted this way
@@ -144,12 +167,40 @@ export default {
           }]
         }
         for (let i = 0; i < data.length; i++) {
-          formattedData.datasets[0].data.push(data[i].reading)
+          formattedData.datasets[0].data.push(Math.floor(data[i].reading))
           formattedData.labels.push(moment(data[i].updated).format(this.selectedTimespan))
         }
         return formattedData
       }
       return null
+    },
+    /**
+     * @todo calculate trending +/-
+     */
+    flowStats () {
+      if (this.readings && this.readings.length > 0) {
+        const readings = []
+        let readingsSum = 0
+
+        for (let i = 0; i < this.readings.length; i++) {
+          readings.push(parseInt(this.readings[i].reading, 10))
+          readingsSum = readingsSum + parseInt(this.readings[i].reading, 10)
+        }
+
+        return ({
+          min: Math.min(...readings),
+          max: Math.max(...readings),
+          avg: Math.floor(readingsSum / this.readings.length)
+        })
+      }
+      return null
+    },
+    chartSize () {
+      if (this.windowWidth > this.breakpoints.md) {
+        return null
+      } else {
+        return 'position:relative;width:' + (this.breakpoints.sm * 2) + 'px'
+      }
     }
   },
   watch: {

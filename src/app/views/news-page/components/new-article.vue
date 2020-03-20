@@ -47,7 +47,7 @@
 import { Layout } from '@/app/global/layout'
 import { ContentEditor } from '@/app/global/components'
 export default {
-  name: 'NewArticle',
+  name: 'new-article',
   components: {
     Layout,
     ContentEditor

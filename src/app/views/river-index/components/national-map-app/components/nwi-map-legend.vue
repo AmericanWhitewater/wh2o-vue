@@ -18,7 +18,7 @@
 import MapStyles from './nwi-map-styles'
 
 export default {
-  name: 'NwiMapLegend',
+  name: 'nwi-map-legend',
   props: {
     colorBy: {
       type: String,
@@ -55,7 +55,7 @@ export default {
 
   display: none;
 
-  @include MQ(MD) {
+  @include carbon--breakpoint('md') {
     display: block;
   }
 

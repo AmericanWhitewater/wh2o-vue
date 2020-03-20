@@ -3,8 +3,8 @@ import { httpClient } from '@/app/global/services'
 import { apiConstants } from '../../config'
 
 const fetchRiverSearchData = data => {
-  let url = apiConstants.base + apiConstants.state + data.state
-
+  // let url = apiConstants.base + apiConstants.state + data.state
+  let url = `https://cors-anywhere.herokuapp.com/https://americanwhitewater.org/${apiConstants.base + apiConstants.state + data.state}`
   if (data.level) {
     url += `${apiConstants.level}${data.level}`
   }

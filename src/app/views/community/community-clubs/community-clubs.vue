@@ -44,7 +44,7 @@
 import { submoduleOneActions } from '../shared/state'
 import { ResourceCardGroup, ResourceCard, FeatureCard } from '@/app/global/components'
 export default {
-  name: 'CommunityClubs',
+  name: 'community-clubs',
   components: {
     ResourceCardGroup,
     ResourceCard,

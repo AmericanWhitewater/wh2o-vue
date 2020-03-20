@@ -1,120 +1,219 @@
 <template>
-  <div :class="[containerClasses, 'rapid-item']">
+  <div
+    :class="[{'form-visible':uploadFormVisible}, 'rapid-item, bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm']"
+  >
     <cv-tile
-      v-if="rapid.description"
-      :kind="rapid.description.length > 50 ? 'expandable' : 'standard'"
-      :cv-type="rapid.description.length > 50 ? 'expandable' : ''"
-      :expanded="expanded"
+      v-if="rapid"
+      kind="standard"
+      cv-type="standard"
+      :expanded="firstPOI"
     >
       <div class="top-bar">
-        <div class>
-          <h4>{{ rapid.name }}</h4>
-          <span class="mr-spacing-xs">Class: {{ rapid.difficulty }}</span>
-          <span>Distance: {{ rapid.distance }}</span>
+        <div class="title">
+          <h4 class="mb-spacing-xs">
+            {{ rapid.name }}
+          </h4>
+          <span
+            v-if="rapid.difficulty && rapid.difficulty !== 'N/A'"
+            class="mr-spacing-md rapid-meta"
+            v-text="`Class: ${rapid.difficulty}`"
+          />
+          <span
+            class="rapid-meta"
+            v-text="`Distance: ${rapid.distance}`"
+          />
         </div>
-        <rapid-icon-bar :data="rapid" />
+        <rapid-icon-bar :character="rapid.character" />
       </div>
-      <template slot="below">
-        <div class="bx--row">
-          <div class="bx--col-md-2">
+      <hr class="ui-03">
+      <template>
+        <div
+          v-if="!uploadFormVisible"
+          class="bx--row pb-md"
+        >
+          <div class="bx--col-sm-12 bx--col-lg-5">
             <div class="outside">
-              <div class="inside thumbnail">
+              <div
+                v-if="rapid.photo && rapid.photo.image"
+                class="inside thumbnail pb-spacing-sm"
+              >
                 <img
-                  v-if="rapid.photo"
                   :src="
-                    `https://americanwhitewater.org${rapid.photo.url}`
+                    `https://americanwhitewater.org/${rapid.photo.image.uri.medium}`
                   "
                   :alt="rapid.name"
                 >
               </div>
+              <div class="inside upload-prompt">
+                <cv-button
+                  size="small"
+                  kind="tertiary"
+                  class="mb-spacing-lg"
+                  @click="uploadFormVisible = true"
+                >
+                  Add Media
+                </cv-button>
+                <cv-button
+                  v-if="sanitizedDescription.length > characterLimit"
+                  size="small"
+                  kind="tertiary"
+                  class="mb-spacing-lg"
+                  @click="readMoreActive = !readMoreActive"
+                >
+                  Show Full Description
+                </cv-button>
+              </div>
             </div>
           </div>
-          <div class="bx--col-md-6">
-            <div v-html="sanitizedDescription" />
+          <div class="bx--col-sm-12 bx--col-lg-11">
+            <template v-if="sanitizedDescription">
+              <template v-if="sanitizedDescription.length > characterLimit">
+                <div
+                  class="description"
+                  v-html="sanitizedDescription.slice(0, characterLimit) + '...'"
+                />
+                <div
+                  v-if="readMoreActive"
+                  v-html="sanitizedDescription.slice(characterLimit, sanitizedDescription.length * 2)"
+                />
+              </template>
+              <template v-else>
+                <div
+                  class="description"
+                  v-html="sanitizedDescription"
+                />
+              </template>
+            </template>
+            <template v-else>
+              <div class>
+                <p>
+                  This rapid does not have a description.
+                  <br>Log in to add one.
+                </p>
+              </div>
+            </template>
           </div>
         </div>
+        <rapid-media-uploader
+          v-if="uploadFormVisible"
+          :rapid-id="rapid.id"
+          @cancel="uploadFormVisible = false"
+        />
       </template>
     </cv-tile>
+    <cv-modal
+      :visible="showConfirmation"
+      @modal-hidden="cancelUpload"
+      @primary-click="cancelUpload"
+    >
+      <template slot="title">
+        Are you sure?
+      </template>
+      <template slot="content">
+        <p>All unsaved changes will be lost.</p>
+      </template>
+      <template slot="secondary-button">
+        Cancel
+      </template>
+      <template slot="primary-button">
+        Confirm
+      </template>
+    </cv-modal>
   </div>
 </template>
 <script>
 import RapidIconBar from './rapid-icon-bar'
-
+import RapidMediaUploader from './rapid-media-uploader'
 export default {
-  name: 'RapidsItem',
+  name: 'rapids-item',
   components: {
-    'rapid-icon-bar': RapidIconBar
+    RapidIconBar,
+    RapidMediaUploader
   },
   props: {
     rapid: {
       type: Object,
       required: true
     },
-    expanded: {
-      type: Boolean,
-      required: false
-    },
     mode: {
       type: String,
       default: 'grid'
+    },
+    firstPOI: {
+      type: Boolean
     }
   },
+  data: () => ({
+    uploadFormVisible: false,
+    showConfirmation: false,
+    readMoreActive: false,
+    characterLimit: 1000
+  }),
   computed: {
-    containerClasses () {
-      let classes
-      if (this.mode === 'list') {
-        classes = 'bx--col-sm-12 bx--col-md-12 bx--col-lg-16'
-      } else {
-        classes = 'bx--col-sm-12 bx--col-md-6 bx--col-lg-4'
-      }
-      return classes
-    },
+    /**
+     * @todo make this a globally available func
+     *
+     */
     sanitizedDescription () {
       if (this.rapid) {
-        const content = this.$sanitize(this.rapid.description, {
+        let content = this.$sanitize(this.rapid.description, {
           disallowedAttributes: {
             '*': ['style']
           }
         })
 
-        const openingTags = this.$replaceText(content, '<div>', '<p>')
-        const closingTags = this.$replaceText(openingTags, '</div>', '</p>')
+        content = this.$replaceText(content, '\n\n', '<br/><br/>')
+        content = this.$replaceText(content, '\n', '')
+        content = this.$replaceText(content, '\r', '')
+        content = this.$replaceText(content, '\t', '')
 
         const legacyUrl = 'http://www.americanwhitewater.org/rivers/id/'
         const updatedUrl = '/#/river-detail/'
 
-        return this.$replaceText(closingTags, legacyUrl, updatedUrl)
+        content = this.$replaceText(content, legacyUrl, updatedUrl)
+
+        return content
       }
       return null
+    }
+  },
+  methods: {
+    uploadMedia () {
+      return 'upload media'
+    },
+    cancelUpload () {
+      this.showConfirmation = false
+      this.uploadFormVisible = false
+    }
+  },
+  created () {
+    if (this.firstPOI) {
+      this.rapidExpanded = true
     }
   }
 }
 </script>
 <style lang="scss">
 .rapid-item {
+  &.form-visible {
+    outline: 3px solid $brand-01;
+  }
   .bx--tile {
     margin: $spacing-md 0;
-
+    .upload-prompt {
+      width: 100%;
+      display: block;
+    }
     .thumbnail {
       width: 100%;
       min-height: 250px;
-      background-color: $ui-03;
+      max-height: 250px;
       margin-bottom: 1rem;
       img {
         object-fit: cover;
         height: 250px;
         width: 100%;
-      }
-    }
-  }
-  .top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    span {
-      font-size: 14px;
-      &:nth-child(1) {
-        margin-right: 0.5rem;
+        background-color: $ui-05;
       }
     }
   }
@@ -132,6 +231,22 @@ export default {
 
   .bx--tile--expandable:hover {
     background-color: darken($ui-02, 0.05);
+  }
+}
+
+.rapid-meta {
+  @include carbon--type-style("code-01");
+}
+
+.description {
+  @include carbon--type-style("body-long-02");
+}
+
+.top-bar {
+  @include carbon--breakpoint("lg") {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 </style>

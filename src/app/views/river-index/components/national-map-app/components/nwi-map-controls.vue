@@ -62,7 +62,7 @@ import NwiToolbarSearch from './nwi-toolbar-search.vue'
 import screenfull from 'screenfull'
 import { httpClient } from '@/app/global/services'
 export default {
-  name: 'NwiMapControls',
+  name: 'nwi-map-controls',
   components: {
     ScreenOff20,
     Screen20,
@@ -167,7 +167,7 @@ export default {
   z-index: 2;
   background-color: rgba(255, 255, 255, 0.7);
 
-  @include MQ(MD) {
+  @include carbon--breakpoint('md') {
     width: 68%;
   }
 
@@ -185,7 +185,7 @@ export default {
   cursor: unset;
   display: none;
 
-  @include MQ(LG) {
+  @include carbon--breakpoint('lg') {
     display: inline-flex;
   }
 }

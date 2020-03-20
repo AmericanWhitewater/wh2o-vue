@@ -3,12 +3,7 @@
     <app-toaster />
     <app-navigation />
     <app-breadcrumbs />
-    <transition
-      name="fade"
-      mode="out-in"
-    >
-      <router-view :class="[$route.name !== 'home' ? 'interior': null ,'app-main-content']" />
-    </transition>
+    <router-view :class="[$route.name !== 'home' ? 'interior': null ,'app-main-content']" />
     <app-footer />
   </div>
 </template>
@@ -23,7 +18,7 @@ import {
 import { appLocalStorage } from '@/app/global/services'
 import { userActions } from '@/app/views/user/shared/state'
 export default {
-  name: 'App',
+  name: 'app',
   metaInfo: {
     title: 'American Whitewater'
   },

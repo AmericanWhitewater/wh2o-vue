@@ -10,6 +10,6 @@
 
 <script>
 export default {
-  name: 'LayoutFullWidth'
+  name: 'layout-full-width'
 }
 </script>

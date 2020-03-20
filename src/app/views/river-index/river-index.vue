@@ -14,16 +14,18 @@
         >
           <div class="outside">
             <div :class="[{ fullscreen: fullscreen }, 'inside', 'map']">
-              <national-map-app-vue
-                v-show="mapStyle !== 'graphic'"
-                :show-search="false"
-                :show-controls="false"
-                :show-sidebar="false"
-                :show-legend="false"
-                :show-rivers-table="false"
-                :mapbox-access-token="token"
-                :tileserver="tileserver"
-              />
+              <template v-if="token">
+                <national-map-app-vue
+                  v-show="mapStyle !== 'graphic'"
+                  :show-search="false"
+                  :show-controls="false"
+                  :show-sidebar="false"
+                  :show-legend="false"
+                  :show-rivers-table="false"
+                  :mapbox-access-token="token"
+                  :tileserver="tileserver"
+                />
+              </template>
               <static-us-map
                 v-show="mapStyle === 'graphic'"
                 @stateClicked="fetchRivers"
@@ -62,12 +64,13 @@
                 <hr>
               </template>
               <div class="table-controls">
-                <div class="bx--grid">
-                  <div class="bx--row">
+                <div class="bx--grid bx--grid--condensed">
+                  <div class="bx--row bx--no-gutter">
                     <div class="bx--col-md-4">
                       <cv-toolbar>
                         <cv-toolbar-search
                           v-model="riverSearchHttpConfig.river"
+                          disabled
                           @keydown.enter="fetchRivers"
                         />
                         <cv-overflow-menu class="bx--toolbar-action">
@@ -128,14 +131,17 @@
                             />
                           </cv-toolbar-option>
                         </cv-overflow-menu>
-                        <cv-button
-                          v-if="!mobileDevice"
-                          kind="tertiary"
-                          size="small"
-                          small
-                          @click="toggleFullscreen"
-                          v-text="'Fullscreen'"
-                        />
+
+                        <div>
+                          <cv-button
+                            v-if="!mobileDevice"
+                            kind="tertiary"
+                            size="small"
+                            small
+                            @click="toggleFullscreen"
+                            v-text="'Fullscreen'"
+                          />
+                        </div>
                       </cv-toolbar>
                     </div>
                     <div
@@ -153,7 +159,32 @@
                   </div>
                 </div>
               </div>
-              <div class="bx--data-table-container">
+              <utility-block
+                title="Map Error"
+                text="Try searching for a river instead"
+              >
+                <template #content>
+                  <div>
+                    <cv-search
+                      v-model="riverSearchHttpConfig.river"
+                      theme="light"
+                      class="mb-spacing-sm"
+                      @keydown.enter="fetchRivers"
+                    />
+
+                    <cv-button
+                      v-if="riverSearchHttpConfig.river && riverSearchHttpConfig.river.length > 2"
+                      @click.exact="fetchRivers"
+                    >
+                      Submit
+                    </cv-button>
+                  </div>
+                </template>
+              </utility-block>
+              <div
+                v-if="showTable"
+                class="bx--data-table-container"
+              >
                 <table class="bx--data-table">
                   <thead>
                     <tr>
@@ -211,7 +242,7 @@
                     <template v-if="!searchLoading && !reachesInViewport">
                       <tr>
                         <td colspan="4">
-                          Sorry, no results found. Please try again.
+                          No results. Try again.
                         </td>
                       </tr>
                     </template>
@@ -229,7 +260,7 @@
 import { StaticUsMap } from './shared/components'
 import { riverSearchHttpConfig, checkWindow } from '@/app/global/mixins'
 import scrollIntoView from 'scroll-into-view-if-needed'
-import { LoadingBlock, AwLogo } from '@/app/global/components'
+import { LoadingBlock, AwLogo, UtilityBlock } from '@/app/global/components'
 import { riverIndexActions } from './shared/state'
 import { riverSearchActions } from '../river-search/shared/state'
 import {
@@ -244,16 +275,17 @@ import NationalMapAppVue from './components/national-map-app/national-map-app.vu
 import { mapState } from 'vuex'
 import screenfull from 'screenfull'
 import Moment from 'moment'
-import debounce from 'lodash.debounce'
+// import debounce from 'lodash.debounce'
 
 import { globalAppActions } from '@/app/global/state'
 export default {
-  name: 'RiverIndex',
+  name: 'river-index',
   components: {
     NationalMapAppVue,
     StaticUsMap,
     LoadingBlock,
-    AwLogo
+    AwLogo,
+    UtilityBlock
   },
   mixins: [riverSearchHttpConfig, InternationalReaches, LevelsList, checkWindow],
   metaInfo () {
@@ -263,6 +295,7 @@ export default {
     }
   },
   data: () => ({
+    showTable: false,
     slideTable: false,
     tileserver: nwiTileServer,
     mapStyle: 'topo',
@@ -272,8 +305,8 @@ export default {
     token: mapboxAccessToken,
     expandToggleTxt: 'Hide',
     mapFocused: true,
-    focusedArea: 'bx--col-sm-4  bx--col-max-12',
-    unfocusedArea: 'bx--col-sm-4  bx--col-max-4',
+    focusedArea: 'bx--col-sm-12  bx--col-lg-12 bx--col-max-12',
+    unfocusedArea: 'bx--col-sm-12  bx--col-lg-4 bx--col-max-4',
     location: null,
     coords: {
       lat: null,
@@ -414,6 +447,8 @@ export default {
         riverSearchActions.FETCH_RIVER_SEARCH_DATA,
         this.riverSearchHttpConfig
       )
+      // temp
+      this.$router.push('/river-search')
     },
     /**
      * @description helper func used to retrieve users location and put data in vuex store.
@@ -456,20 +491,21 @@ export default {
   },
   mounted () {
     this.getUserLocation()
-
+    /**
+     * this is just a mock notification
+     * while we display disabled message
+     */
     this.$store.dispatch(globalAppActions.SEND_TOAST, {
-      title: 'Bookmarked River Updated',
-      href: '/river-detail/347/main',
-      label: 'view',
-      kind: 'info',
+      title: 'Tile Server Connection Failed',
+      kind: 'error',
       contrast: false,
-      action: true,
+      action: false,
       autoHide: true
     })
   },
-  created () {
-    this.debouncedHighlight = debounce(this.highlightFeature, 200)
-  },
+  // created () {
+  //   this.debouncedHighlight = debounce(this.highlightFeature, 200)
+  // },
   beforeRouteLeave (to, from, next) {
     this.$store.dispatch(riverIndexActions.SET_MAP_POSITION, 'testing')
     next()
@@ -477,14 +513,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
-// todo: move to global scss
-@mixin flow-border($color) {
-  border-left: 0.5rem solid $color;
-  &:hover {
-    border-left: 1.5rem solid $color;
-  }
-}
 
 .river-index {
 
@@ -500,12 +528,12 @@ export default {
     position: relative;
     width: 100%;
 
-    @include MQ(MD) {
+    @include carbon--breakpoint('md') {
       height: $content-height - 10px;
     }
 
     &.fullscreen {
-      @include MQ(MD) {
+      @include carbon--breakpoint('md') {
         height: 100vh;
       }
     }
@@ -524,7 +552,7 @@ export default {
       transform: rotate(90deg);
       white-space: nowrap;
       width: 50px;
-      @include MQ(LG) {
+      @include carbon--breakpoint('lg') {
         bottom: unset;
         right: 0;
         top: 1rem;

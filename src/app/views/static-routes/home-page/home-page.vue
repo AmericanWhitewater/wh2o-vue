@@ -49,7 +49,7 @@ import { newsActions } from '@/app/views/news-page/shared/state'
 import { mapState } from 'vuex'
 
 export default {
-  name: 'HomePage',
+  name: 'home-page',
   components: {
     FeatureCardHero,
     Layout,

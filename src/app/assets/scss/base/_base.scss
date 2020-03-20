@@ -4,7 +4,8 @@ a {
 
 body {
     background-color: $ui-01;
-    overflow-x: hidden;  
+    overflow-x: hidden;
+    word-wrap: break-word;
 }
 
 img {
@@ -18,10 +19,8 @@ img {
 
     &.interior {
         padding-top: $mobile-nav-height;
-        // padding-top: $mobile-nav-height + 44px;
-        @include MQ("LG") {
+        @include MQ("MD") {
           padding-top: $desktop-nav-height;
-        //   padding-top: $desktop-nav-height + 44px;
         }
     }
    

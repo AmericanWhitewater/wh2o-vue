@@ -36,7 +36,7 @@
 <script>
 import { Layout } from '@/app/global/layout'
 export default {
-  name: 'NewReport',
+  name: 'new-report',
   components: {
     Layout
   },

@@ -11,7 +11,7 @@
 <script>
 import { Layout } from '@/app/global/layout'
 export default {
-  name: 'NewReportStep04',
+  name: 'new-report-step04',
   components: {
     Layout
   }

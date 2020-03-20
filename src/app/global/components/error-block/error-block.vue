@@ -3,45 +3,47 @@
     id="error-block"
     :style="`height:${height}px`"
   >
-    <h2>{{ title }}</h2>
-    <p>{{ text }}</p>
+    <cv-inline-loading
+      small
+      state="error"
+      :loading-text="hideText ? '' : text"
+    />
   </div>
 </template>
 <script>
 /**
  * @todo refactor loading-block, error-block, skeleton-block into one component
- *
+ * @deprecated
  */
 
 export default {
-  name: 'ErrorBlock',
+  name: 'error-block',
   props: {
-    title: {
-      type: String,
-      required: false,
-      default: 'error'
-    },
-    text: {
-      type: String,
-      required: false,
-      default: 'Something went wrong'
-    },
     height: {
       type: String,
       default: '350'
+    },
+    text: {
+      type: String,
+      default: 'failed to load data'
+    },
+    hideText: {
+      type: Boolean,
+      required: false
     }
   }
 }
 </script>
 <style lang="scss" scoped>
 #error-block {
-  width: 100%;
   background-color: $ui-02;
   display: flex;
-  justify-content: center;
+  width: 100%;
   align-items: center;
-  min-height: 250px;
-  flex-flow: column nowrap;
+  .bx--inline-loading {
+    justify-content: center;
+     @include carbon--type-style('code-01');
+  }
 }
 </style>
 <docs>

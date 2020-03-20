@@ -20,41 +20,43 @@
         overlay
       />
     </transition>
-    <template v-if="!loading && !error">
-      <template v-if="river">
-        <river-header
-          :name="river.river"
-          :section="river.section"
-          :background-image="bgImage"
-        />
-        <div class="tabs-wrapper">
-          <cv-overflow-menu>
-            <cv-overflow-menu-item v-if="userIsAdmin">
-              Link Resources
-            </cv-overflow-menu-item>
-            <cv-overflow-menu-item>Share Reach</cv-overflow-menu-item>
-            <cv-overflow-menu-item
-              v-if="userIsAdmin"
-              @click="reachDeleteModalVisible = true"
-            >
-              Remove from Index
-            </cv-overflow-menu-item>
-          </cv-overflow-menu>
-          <cv-tabs
-            aria-label="navigation tab label"
-            no-default-to-first
-            @tab-selected="switchTab($event)"
+    <template v-if="!loading && river">
+      <river-header
+        :name="river.river"
+        :section="river.section"
+        :background-image="bgImage"
+      />
+      <div class="tabs-wrapper">
+        <cv-overflow-menu>
+          <cv-overflow-menu-item v-if="userIsAdmin">
+            Link Resources
+          </cv-overflow-menu-item>
+          <cv-overflow-menu-item @click.exact="reachShareModalVisible = true">
+            Share Reach
+          </cv-overflow-menu-item>
+          <cv-overflow-menu-item
+            v-if="userIsAdmin"
+            @click.exact="reachDeleteModalVisible = true"
           >
-            <cv-tab
-              v-for="(tab, index) in tabs"
-              :id="'tab-' + index + 1"
-              :key="tab"
-              :label="tab"
-            />
-          </cv-tabs>
-        </div>
+            Remove from Index
+          </cv-overflow-menu-item>
+        </cv-overflow-menu>
+        <cv-tabs
+          aria-label="navigation tab label"
+          :no-default-to-first="windowWidth > breakpoints.md"
+          @tab-selected="switchTab($event)"
+        >
+          <cv-tab
+            v-for="(tab, index) in tabs"
+            :id="'tab-' + index + 1"
+            :key="tab"
+            :label="tab"
+          />
+        </cv-tabs>
+      </div>
+      <keep-alive>
         <router-view />
-      </template>
+      </keep-alive>
       <cv-modal
         :visible="reachDeleteModalVisible"
         kind="danger"
@@ -90,6 +92,27 @@
           Delete
         </template>
       </cv-modal>
+      <cv-modal
+        :visible="reachShareModalVisible"
+        size="small"
+        auto-hide-off
+        @modal-hidden="reachShareModalVisible = false"
+        @primary-click="reachShareModalVisible = false"
+        @secondary-click="reachShareModalVisible = false"
+        @modal-hide-request="reachShareModalVisible = false"
+      >
+        <template slot="title">
+          Share
+        </template>
+        <template slot="content">
+          <p class="mb-sm">
+            ayyyy, I'm a share modal.
+          </p>
+        </template>
+        <template slot="primary-button">
+          Close
+        </template>
+      </cv-modal>
     </template>
   </section>
 </template>
@@ -103,16 +126,18 @@ import { mapState, mapGetters } from 'vuex'
 import RiverHeader from './river-header/river-header'
 import {
   actionsTypes,
-  rapidsActions
+  reachGagesActions
 } from './shared/state'
 import { ErrorBlock } from '@/app/global/components'
+import { checkWindow } from '@/app/global/mixins'
 
 export default {
-  name: 'RiverDetail',
+  name: 'river-detail',
   components: {
     'river-header': RiverHeader,
     ErrorBlock
   },
+  mixins: [checkWindow],
   metaInfo () {
     return {
       title: this.riverTitle,
@@ -120,6 +145,7 @@ export default {
     }
   },
   data: () => ({
+    reachShareModalVisible: false,
     reachDeleteModalVisible: false,
     reachDeleteConfirmInput: null,
     selected: 'main',
@@ -225,14 +251,11 @@ export default {
      */
     resetStores () {
       this.$store.dispatch(actionsTypes.INITIAL_STATE)
-      this.$store.dispatch(rapidsActions.INITIAL_STATE)
     }
   },
   created () {
     this.$store.dispatch(actionsTypes.FETCH_RIVER_DETAIL_DATA, this.riverId)
-  },
-  mounted () {
-    this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.riverId)
+    this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.riverId)
   },
   beforeRouteLeave (to, from, next) {
     if (this.editMode) {
@@ -256,7 +279,8 @@ export default {
 .river-detail {
   margin-bottom: $layout-xl;
   .tabs-wrapper {
-    background-color: $ui-03;
+    background-color: $ui-02;
+    border-bottom: 1px solid #8897a2;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -270,14 +294,19 @@ export default {
       border-bottom: 3px solid $ui-03;
       width: auto;
 
-      .bx--tabs__nav, .bx--tabs-trigger {
-
-        width:50%;
-           @include MQ(MD) {
+      .bx--tabs__nav,
+      .bx--tabs-trigger {
+        box-shadow: none;
+        border-bottom: 1px solid transparent;
         width: auto;
+        @include carbon--breakpoint("md") {
+          width: auto;
+          box-shadow: none;
+        }
+        &:focus {
+          outline-offset: 0;
+        }
       }
-      }
-
     }
   }
   a.bx--tabs__nav-link {
@@ -285,8 +314,13 @@ export default {
     &:focus {
       width: 6rem;
     }
+    @media (min-width: 42rem) {
+      border-bottom: 0;
+    }
   }
-
+  .bx--tabs-trigger-text {
+    margin-right: 1rem;
+  }
 }
 
 .river-detail .tabs-wrapper .bx--tabs {
@@ -298,7 +332,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height:3rem;
+  min-height: 3rem;
 }
-
 </style>

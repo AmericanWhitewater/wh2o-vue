@@ -1,6 +1,6 @@
 <template>
   <div
-    class="edit-mode-toggle"
+    class="edit-mode-toggle ml-spacing-sm"
     @click.exact="toggleEditMode"
   >
     <span>Edit mode</span>
@@ -11,10 +11,10 @@
       @change="toggleEditMode"
     >
       <template slot="text-left">
-        &nbsp;
+        <span />
       </template>
       <template slot="text-right">
-        &nbsp;
+        <span />
       </template>
     </cv-toggle>
   </div>
@@ -24,7 +24,7 @@
 import { globalAppActions } from '@/app/global/state'
 
 export default {
-  name: 'EditModeToggle',
+  name: 'edit-mode-toggle',
   computed: {
     editMode () {
       return this.$store.state.appGlobalState.appGlobalData.editMode
@@ -40,7 +40,6 @@ export default {
 
 <style lang="scss" scoped>
 .edit-mode-toggle {
-  margin-left: 2rem;
   display: flex;
   align-items: center;
   width: fit-content;

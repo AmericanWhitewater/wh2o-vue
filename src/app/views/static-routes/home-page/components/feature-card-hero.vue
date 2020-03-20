@@ -43,7 +43,7 @@
 import { ResourceCard, ResourceCardGroup, AwLogo } from '@/app/global/components'
 
 export default {
-  name: 'FeatureCardHero',
+  name: 'feature-card-hero',
   components: {
     ResourceCardGroup,
     ResourceCard,

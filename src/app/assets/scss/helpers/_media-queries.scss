@@ -14,12 +14,12 @@
 //   }
 // }
 
-$XS: 576px;
-$SM: 576px;
-$MD: 768px;
-$LG: 992px;
-$XL: 1200px;
-$XXL: 1600px;
+$XS: 320px;
+$SM: 320px;
+$MD: 672px;
+$LG: 1056px;
+$XL: 1312px;
+$XXL: 1584px;
 
 @mixin MQ($canvas) {
   @if $canvas == XS {

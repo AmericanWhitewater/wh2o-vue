@@ -198,7 +198,7 @@ import {
 } from '@/app/global/components'
 import { accidentDetailActions } from '../shared/state'
 export default {
-  name: 'ArticleDetail',
+  name: 'article-detail',
   components: {
     PageHeader,
     ContentEditor,

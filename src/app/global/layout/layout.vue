@@ -14,7 +14,7 @@
 <script>
 import { LayoutTwoThirds, LayoutFullWidth, LayoutFiftyFifty } from './layouts'
 export default {
-  name: 'Layout',
+  name: 'layout',
   components: {
     LayoutTwoThirds,
     LayoutFullWidth,

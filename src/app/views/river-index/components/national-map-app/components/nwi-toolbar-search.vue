@@ -18,7 +18,7 @@
 // Carbon Vue doesn't allow you to set a number of properties on the inner element that I
 // need to set and I don't like the open/close behavior of the search form, changing here
 export default {
-  name: 'NwiToolbarSearch',
+  name: 'nwi-toolbar-search',
   inheritAttrs: false,
   props: {
     value: String,
