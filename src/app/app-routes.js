@@ -40,29 +40,16 @@ const router = new VueRouter({
       return savedPosition
     } else {
       /**
-       * if on a river detail page, do not reset scroll position
-       * too jarring
+       * @description check to see if user is navigating to river-detail for first time.
+       * if yes, then reset the scroll position to top of screen, if not, keep scroll position
+       * where it is. better UX when switching between river-detail tabs.
+       *
        */
-      switch (to.name) {
-        case 'flow-tab':
-          return
-        case 'main-tab':
-          return
-        case 'map-tab':
-          return
-        case 'gallery-tab':
-          return
-        case 'accidents-tab':
-          return
-        case 'credits-tab':
-          return
-        case 'weather-tab':
-          return
-        case 'news-tab':
-          return
-        default:
-          return { x: 0, y: 0 }
+      const riverDetailRouteNames = ['flow-tab', 'main-tab', 'map-tab', 'gallery-tab', 'accidents-tab', 'credits-tab', 'weather-tab', 'news-tab']
+      if (riverDetailRouteNames.indexOf(to.name) !== -1 && riverDetailRouteNames.indexOf(from.name) !== -1) {
+        return
       }
+      return { x: 0, y: 0 }
     }
   }
 })
