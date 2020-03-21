@@ -24,14 +24,15 @@
 
           <template v-if="!loading && articles">
             <div
-              v-for="(item, i) in articles.slice(0,4)"
+              v-for="(item, i) in articles.slice(0, 4)"
               :key="i"
               class="bx--col-md-4 bx--col-lg-6 bx--col-max-4  mb-spacing-lg"
             >
               <ArticleCard
                 :author="item.author.toString()"
                 :article-id="item.id"
-                :title="item.title.rendered"
+                :title="item.title"
+                :read-time="estReadingTime(item.contents)"
                 action-icon="arrowRight"
               />
             </div>
@@ -61,11 +62,29 @@ export default {
     ...mapState({
       loading: state => state.newsPageState.newsData.loading,
       error: state => state.newsPageState.newsData.error,
-      articles: state => state.newsPageState.newsData.data
+      articles: state => state.newsPageState.newsData.frontPageNews
     })
   },
+  methods: {
+    estReadingTime (content) {
+      if (content) {
+        const wordsPerMinute = 200 // Average case.
+        let result
+
+        const textLength = content.split(' ').length // Split by words
+        if (textLength > 0) {
+          const value = Math.ceil(textLength / wordsPerMinute)
+          result = `${value} min read`
+          return result
+        }
+      }
+      return ''
+    }
+  },
   mounted () {
-    this.$store.dispatch(newsActions.GET_NEWS_ARTICLES)
+    if (!this.articles) {
+      this.$store.dispatch(newsActions.FRONT_PAGE_NEWS)
+    }
   }
 }
 </script>

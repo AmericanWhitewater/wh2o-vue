@@ -1,10 +1,12 @@
 import { reflectKeys } from '@/app/global/services'
 
-import { getNewsArticles, searchArticles } from '../services'
+import { getNewsArticles, searchArticles, getFrontPageNews } from '../services'
 
 const initialState = {
   loading: false,
   data: null,
+  frontPageNews: null,
+  featured: null,
   error: null
 }
 
@@ -24,7 +26,17 @@ const mutations = {
   },
 
   [DATA_SUCCESS] (state, payload) {
-    Object.assign(state, { loading: false, data: payload })
+    /**
+     * result picking...
+     *
+     * @todo make gql query
+     *
+     */
+
+    state.loading = false
+    state.data = payload
+    state.featured = payload.articles ? payload.articles.CArticleGadgetJSON_view : null
+    state.frontPageNews = payload.articles ? payload.articles.CArticleGadgetJSON_view_list : null
   },
 
   [DATA_ERROR] (state, payload) {
@@ -43,7 +55,7 @@ const mutations = {
 }
 
 export const newsActions = reflectKeys(
-  ['GET_ARTICAL_DETAIL_DATA', 'GET_NEWS_ARTICLES', 'SEARCH_ARTICLES'],
+  ['GET_ARTICAL_DETAIL_DATA', 'GET_NEWS_ARTICLES', 'SEARCH_ARTICLES', 'FRONT_PAGE_NEWS'],
   namespacedPrefix
 )
 
@@ -53,6 +65,18 @@ const actions = {
     context.commit(DATA_REQUEST)
 
     const result = await getNewsArticles(data).catch(e => {
+      context.commit(DATA_ERROR, e)
+    })
+
+    if (result) {
+      context.commit(DATA_SUCCESS, result)
+    }
+    return result
+  },
+  async [newsActions.FRONT_PAGE_NEWS] (context, data) {
+    context.commit(DATA_REQUEST)
+
+    const result = await getFrontPageNews(data).catch(e => {
       context.commit(DATA_ERROR, e)
     })
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="article-detail">
+  <div class="article-detail bg-topo">
     <transition name="fade">
       <template v-if="loading">
         <cv-loading
@@ -11,75 +11,58 @@
     </transition>
     <template v-if="!loading">
       <div class="bx--grid">
-        <page-header
-          :title="$titleCase(article.title.rendered)"
-          :subtitle="formatDate(article.date)"
-          :featured-img="featuredMedia"
-        />
-        <div class="spacer" />
         <div class="bx--row">
-          <div class="bx--col-sm-4 bx--col-md-1 bx--col-lg-1 pt-md">
-            <div class="share-article">
-              <h5>Share</h5>
-              <span @click="shareArticle('facebook')">
-                <LogoFacebook24 />
-              </span>
-              <span @click="shareArticle('linkedin')">
-                <LogoLinkedIn24 />
-              </span>
-              <span @click="shareArticle('email')">
-                <Email24 />
-              </span>
+          <div
+            class="bx--col-lg-10 bx--offset-lg-3 bx--offset-max-3 bx--col-max-8 mb-lg"
+          >
+            <img
+              :src="
+                `https://americanwhitewater.org/resources/images/contents/${article.contentsphoto}`
+              "
+              alt=""
+              class="mb-spacing-lg"
+            >
+
+            <h1 class="mb-spacing-md">
+              {{ article.title }}
+            </h1>
+            <h6 class="mb-spacing-md">
+              {{ article.author }} - {{ formatDate(article.post_date, "ll") }}
+            </h6>
+            <hr class="mb-spacing-md">
+            <!-- <cv-button size="small" kind="tertiary" class="mr-spacing-sm"
+              >Facebook</cv-button
+            >
+            <cv-button size="small" kind="tertiary" class="mr-spacing-sm"
+              >Twitter</cv-button
+            >
+            <cv-button size="small" kind="tertiary" class="mr-spacing-sm"
+              >LinkedIn</cv-button
+            > -->
+            <div class="article-wrapper">
+              <div
+                class="article-content"
+                v-html="article.contents"
+              />
             </div>
           </div>
-          <div class="bx--col-md-6 bx--col-lg-8 pt-md mb-lg">
+
+          <div
+            class="bx--col-lg-6 bx--offset-lg-3 bx--col-max-4 bx--offset-max-1 pt-md mb-lg"
+          >
             <div
-              class="article-content"
-              v-html="article.content.rendered"
-            />
-          </div>
-          <div class="bx--col-lg-5 bx--offset-lg-1 pt-md mb-lg">
-            <template v-if="article.categories.length > 0">
-              <hr>
-              <h2 class="mb-spacing-md">
-                Categories
-              </h2>
-              <template v-for="(cat, index) in article.categories">
-                <span
-                  :key="randomNumber(index)"
-                  class="mb-spacing-sm mr-spacing-sm"
-                >{{ cat }}</span>
-              </template>
-              <div class="mb-md" />
-            </template>
-
-            <template v-if="article.tags.length > 0">
-              <hr>
-              <h2 class="mb-spacing-md">
-                Tags
-              </h2>
-              <template v-for="(tag, k) in article.tags">
-                <span
-                  :key="randomNumber(k)"
-                  class="mb-spacing-sm mr-spacing-sm"
-                >{{ tag }}</span>
-              </template>
-              <div class="mb-md" />
-            </template>
-            <hr>
-            <h2 class="mb-spacing-md">
-              Related
-            </h2>
-
-            <span v-if="relatedLoading">Loading...</span>
-            <span v-if="relatedLoading">Loading...</span>
-            <template v-for="(item, i) in relatedArticles.slice(0,2)">
+              v-if="relatedArticles"
+              class="sticky related-wrapper"
+            >
               <ArticleCard
+                v-for="(item, i) in relatedArticles.slice(0, 2)"
                 :key="randomNumber(i)"
-                :title="item.title.rendered"
+                :title="item.title"
                 :article-id="item.id"
+                :author="item.author.toString()"
+                :read-time="estReadingTime(item.contents)"
               />
-            </template>
+            </div>
           </div>
         </div>
       </div>
@@ -87,14 +70,13 @@
   </div>
 </template>
 <script>
-import { PageHeader, ArticleCard } from '@/app/global/components'
+import { ArticleCard } from '@/app/global/components'
 import { articleActions, newsActions } from '../shared/state'
 import { mapState } from 'vuex'
 import Moment from 'moment'
 export default {
   name: 'article-detail',
   components: {
-    PageHeader,
     ArticleCard
   },
   data: () => ({
@@ -115,17 +97,17 @@ export default {
       loading: state => state.newsPageState.articleData.loading,
       error: state => state.newsPageState.articleData.error,
       featuredMedia: state => state.newsPageState.articleData.featuredMedia,
-      relatedArticles: state => state.newsPageState.newsData.data,
+      relatedArticles: state => state.newsPageState.newsData.frontPageNews,
       relatedLoading: state => state.newsPageState.newsData.loading,
       relatedError: state => state.newsPageState.newsData.error
     }),
     getMetaTitle () {
       if (this.article) {
-        if (this.article.title.rendered.length > 50) {
-          return this.article.title.rendered.slice(0, 47) + '...'
+        if (this.article.title.length > 50) {
+          return this.article.title.slice(0, 47) + '...'
         }
 
-        return this.article.title.rendered
+        return this.article.title
       }
       return null
     },
@@ -134,7 +116,7 @@ export default {
     },
     formatContent () {
       if (this.article) {
-        const content = this.article.content.rendered
+        const content = this.article.contents
         const openingTags = this.$replaceText(content, '<div>', '<p>')
         const closingTags = this.$replaceText(openingTags, '</div>', '</p>')
         return closingTags
@@ -148,16 +130,14 @@ export default {
     },
     article (data) {
       if (data) {
-        this.$store.dispatch(
-          articleActions.GET_FEATURED_MEDIA,
-          this.article.featured_media
-        )
-
+        // this.$store.dispatch(
+        //   articleActions.GET_FEATURED_MEDIA,
+        //   this.article.featured_media
+        // );
         const content = this.$sanitize(data.abstract, {
           allowedTags: [],
           allowedAttributes: {}
         })
-
         document
           .getElementById('meta-description')
           .setAttribute('content', content.slice(0, 150))
@@ -182,7 +162,7 @@ export default {
     )
 
     if (!this.relatedArticles) {
-      this.$store.dispatch(newsActions.GET_NEWS_ARTICLES)
+      this.$store.dispatch(newsActions.FRONT_PAGE_NEWS)
     }
   },
   beforeRouteLeave (to, from, next) {
@@ -217,6 +197,14 @@ export default {
       cursor: pointer;
     }
   }
+  h1 {
+    @include carbon--breakpoint("sm") {
+      @include carbon--type-style("productive-heading-04");
+    }
+    @include carbon--breakpoint("md") {
+      @include carbon--type-style("productive-heading-05");
+    }
+  }
 }
 .fade-enter-active,
 .fade-leave-active {
@@ -227,10 +215,28 @@ export default {
   opacity: 0;
 }
 
+.article-wrapper {
+  background-color: $ui-01;
+  z-index: 2;
+  position: relative;
+
+  @include carbon--breakpoint("sm") {
+    padding: $spacing-sm;
+  }
+}
+
 .article-content {
   @include carbon--type-style("body-long-02");
   p {
     margin-bottom: 1.25rem;
+  }
+}
+
+.featured-image-wrapper {
+  position: relative;
+  .featured-image {
+    position: absolute;
+    z-index: 1;
   }
 }
 </style>

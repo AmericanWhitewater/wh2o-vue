@@ -2,7 +2,7 @@
   <div class="news-page bg-topo">
     <layout
       name="layout-two-thirds"
-      :options="{sidebar:{left:true}}"
+      :options="{ sidebar: { left: true } }"
     >
       <template #sidebar>
         <hr>
@@ -13,9 +13,11 @@
           <cv-search
             v-model="articleSearchTerm"
             class="mb-spacing-md"
+            disabled
             @keydown.enter="searchArticles"
           />
           <cv-dropdown
+            disabled
             label="Sort By"
             value="05"
             class="mb-spacing-md"
@@ -38,6 +40,7 @@
             </cv-dropdown-item>
           </cv-dropdown>
           <cv-dropdown
+            disabled
             label="Content Type"
             value="05"
             @change="searchArticles"
@@ -70,8 +73,10 @@
               class="bx--col-md-4 bx--col-lg-8 mb-spacing-lg"
             >
               <ArticleCard
-                :title="$titleCase(article.title.rendered)"
+                :title="$titleCase(article.title)"
                 :article-id="article.id"
+                :author="article.author"
+                :read-time="estReadingTime(article.contents)"
               />
             </div>
           </div>
@@ -106,7 +111,7 @@ export default {
   computed: {
     ...mapState({
       loading: state => state.newsPageState.newsData.loading,
-      articles: state => state.newsPageState.newsData.data
+      articles: state => state.newsPageState.newsData.frontPageNews
     })
   },
   methods: {
@@ -124,7 +129,7 @@ export default {
   },
   created () {
     if (!this.articles) {
-      this.$store.dispatch(newsActions.GET_NEWS_ARTICLES)
+      this.$store.dispatch(newsActions.FRONT_PAGE_NEWS)
     }
   }
 }
