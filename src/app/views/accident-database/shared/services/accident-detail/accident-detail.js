@@ -7,49 +7,48 @@ const getAccidentDetail = data => {
   return httpClient
     .post(url, {
       query: `
-      query {
-        reach(id:${data}){
-          accidents(first:100, page:1){
-            data {
-                causes{
-                  cause
-                },
-                injuries{
-                  injury
-                  },
-                factors{
-                    factor
-                },
-                # contact,
-                # email,
-                age,
-                boattype,
-                cause,
-                contactname,
-                contactphone,
-                countryabbr,
-                description,
-                difficulty,
-                experience,
-                groupinfo,
-                id,
-                location,
-                numvictims,
-                othervictimnames,
-                privcomm,
-                reach_id,
-                rellevel,
-                river,
-                section,
-                state,
-                status,
-                type,
-                victimname,
-                waterlevel,
+      query  {
+        accidents(id: ${data}, first: 10, page: 1) {
+          data {
+            age
+            accidentdate
+            boattype
+            cause
+            causes {
+              cause
             }
+            contactemail
+            contactname
+            contactphone
+            countryabbr
+            description
+            difficulty
+            experience
+            factors {
+              factor
+            }
+            groupinfo
+            id
+            injuries {
+              injury
+            }
+            location
+            numvictims
+            othervictimnames
+            privcomm
+            reach_id
+            rellevel
+            river
+            section
+            status
+            state
+            type
+            victimname
+            waterlevel
+          }
         }
       }
-    }
+      
     
     `
     })

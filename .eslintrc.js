@@ -9,6 +9,7 @@ module.exports = {
   rules: {
     'no-console': 2,
     'no-debugger': 2,
+    'import/export': 1,
     'vue/attributes-order': 2,
     'vue/eqeqeq': 2,
     'vue/html-self-closing': 1,

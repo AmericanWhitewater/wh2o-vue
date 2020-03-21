@@ -93,10 +93,14 @@
             </h2>
 
             <template v-if="!editMode">
-              <p v-html="accident.description" />
+              <p
+                v-if="accident.description"
+                v-html="accident.description"
+              />
             </template>
             <template v-else>
               <content-editor
+                v-if="accident.description"
                 show-control-bar
                 :content="accident.description"
               />
@@ -197,6 +201,7 @@ import {
   LoadingBlock
 } from '@/app/global/components'
 import { accidentDetailActions } from '../shared/state'
+import { mapState } from 'vuex'
 export default {
   name: 'article-detail',
   components: {
@@ -211,23 +216,14 @@ export default {
   },
   computed: {
     accidentId () {
-      return this.$route.params.accidentId
+      return parseInt(this.$route.params.accidentId, 10)
     },
-    accident () {
-      const {
-        data
-      } = this.$store.state.accidentDatabaseState.accidentDetailData
-      if (data) {
-        return data.find(a => a.id === this.accidentId)
-      }
-      return null
-    },
-    loading () {
-      return this.$store.state.accidentDatabaseState.accidentDetailData.loading
-    },
-    editMode () {
-      return this.$store.state.appGlobalState.appGlobalData.editMode
-    }
+    ...mapState({
+      loading: state => state.accidentDatabaseState.accidentDetailData.loading,
+      error: state => state.accidentDatabaseState.accidentDetailData.error,
+      accident: state => state.accidentDatabaseState.accidentDetailData.data,
+      editMode: state => state.appGlobalState.appGlobalData.editMode
+    })
   },
   methods: {
     viewReach (id) {
@@ -237,7 +233,7 @@ export default {
   created () {
     this.$store.dispatch(
       accidentDetailActions.GET_ACCIDENT_DETAIL_DATA,
-      '3452'
+      this.accidentId
     )
   }
 }
