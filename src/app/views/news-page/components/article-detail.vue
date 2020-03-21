@@ -24,7 +24,7 @@
             >
 
             <h1 class="mb-spacing-md">
-              {{ article.title }}
+              {{ this.$titleCase(article.title) }}
             </h1>
             <h6 class="mb-spacing-md">
               {{ article.author }} - {{ formatDate(article.post_date, "ll") }}
