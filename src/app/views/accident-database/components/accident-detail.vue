@@ -6,7 +6,10 @@
         :subtitle="`Report No. ${accidentId}`"
         editable
       />
-      <template v-if="!loading">
+      <template v-if="loading">
+        <utility-block state="loading" />
+      </template>
+      <template v-else-if="accident">
         <div class="bx--row pt-lg pb-lg">
           <div class="bx--col">
             <h5 class="mb-spacing-2xs">
@@ -180,10 +183,7 @@
         </div>
       </template>
       <template v-else>
-        <loading-block
-          text=" "
-          class="mt-lg"
-        />
+        <utility-block state="error" />
       </template>
     </div>
   </div>
@@ -195,11 +195,8 @@
  * @todo clean up template. try merging data into one set for the <template v-ifs>
  *
  */
-import {
-  PageHeader,
-  ContentEditor,
-  LoadingBlock
-} from '@/app/global/components'
+import { PageHeader, UtilityBlock } from '@/app/global/components'
+import ContentEditor from '@/app/global/components/content-editor/content-editor'
 import { accidentDetailActions } from '../shared/state'
 import { mapState } from 'vuex'
 export default {
@@ -207,7 +204,7 @@ export default {
   components: {
     PageHeader,
     ContentEditor,
-    LoadingBlock
+    UtilityBlock
   },
   metaInfo () {
     return {
