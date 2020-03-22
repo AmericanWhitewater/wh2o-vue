@@ -9,7 +9,7 @@
         />
       </template>
     </transition>
-    <template v-if="!loading">
+    <template v-if="!loading && article">
       <div class="bx--grid">
         <div class="bx--row">
           <div
@@ -26,10 +26,10 @@
             <h1 class="mb-spacing-md">
               {{ this.$titleCase(article.title) }}
             </h1>
-            <h6 class="mb-spacing-md">
+            <h6 class="mb-sm">
               {{ article.author }} - {{ formatDate(article.post_date, "ll") }}
             </h6>
-            <hr class="mb-spacing-md">
+            <hr class="mb-sm">
             <social-sharing
               :url="shareMeta.url"
               :title="shareMeta.title"
@@ -86,6 +86,7 @@
                 </network>
               </div>
             </social-sharing>
+            <div class="mb-sm" />
             <div class="article-wrapper">
               <div
                 class="article-content"
@@ -102,8 +103,8 @@
               class="sticky related-wrapper"
             >
               <ArticleCard
-                v-for="(item, i) in relatedArticles.slice(0, 2)"
-                :key="randomNumber(i)"
+                v-for="(item, i) in relatedArticles"
+                :key="i"
                 :title="item.title"
                 :article-id="item.id"
                 :author="item.author.toString()"
@@ -127,9 +128,7 @@ export default {
     ArticleCard
   },
   data: () => ({
-    sharePlatform: null,
-    title: null,
-    description: null
+    relatedArticles: null
   }),
   metaInfo () {
     return {
@@ -144,7 +143,7 @@ export default {
       loading: state => state.newsPageState.articleData.loading,
       error: state => state.newsPageState.articleData.error,
       featuredMedia: state => state.newsPageState.articleData.featuredMedia,
-      relatedArticles: state => state.newsPageState.newsData.frontPageNews,
+      frontPageNews: state => state.newsPageState.newsData.frontPageNews,
       relatedLoading: state => state.newsPageState.newsData.loading,
       relatedError: state => state.newsPageState.newsData.error
     }),
@@ -205,11 +204,36 @@ export default {
           .getElementById('meta-description')
           .setAttribute('content', content.slice(0, 150))
       }
+    },
+    frontPageNews (val) {
+      if (val) {
+        this.randomRelatedArticles()
+      }
     }
   },
   methods: {
-    shareArticle (platform) {
-      this.sharePlatform = platform
+    /**
+     * @returns two random articles from loaded articles
+     * used to add some variety to 'related news' sidebar
+     */
+    randomRelatedArticles () {
+      if (this.frontPageNews && this.frontPageNews.length > 0) {
+        const articles = []
+
+        const randomNumber = () =>
+          Math.floor(Math.random() * (this.frontPageNews.length - 1) + 1)
+        const numberOfArticles = 2
+
+        for (let i = 0; articles.length < numberOfArticles; i++) {
+          const candidate = this.frontPageNews[randomNumber()]
+          const prevAdded = articles.find(a => a.id === candidate.id)
+
+          if (!prevAdded && candidate.id !== parseInt(this.articleId, 10)) {
+            articles.push(candidate)
+          }
+        }
+        this.relatedArticles = articles
+      }
     },
     formatDate (date) {
       return Moment(date).format('ll')
@@ -238,7 +262,7 @@ export default {
       this.articleId
     )
 
-    if (!this.relatedArticles) {
+    if (!this.frontPageNews) {
       this.$store.dispatch(newsActions.FRONT_PAGE_NEWS)
     }
   },
@@ -285,14 +309,6 @@ export default {
     }
   }
 }
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
 
 .article-wrapper {
   background-color: $ui-01;
@@ -301,6 +317,9 @@ export default {
 
   @include carbon--breakpoint("sm") {
     padding: $spacing-sm;
+  }
+  @include carbon--breakpoint("md") {
+    padding: $spacing-md;
   }
 }
 
