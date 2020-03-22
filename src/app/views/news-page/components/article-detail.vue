@@ -266,6 +266,11 @@ export default {
       this.$store.dispatch(newsActions.FRONT_PAGE_NEWS)
     }
   },
+  mounted () {
+    if (this.frontPageNews) {
+      this.randomRelatedArticles()
+    }
+  },
   beforeRouteLeave (to, from, next) {
     /**
      * @todo we can make this description meta data function part of vue router global nav guards
