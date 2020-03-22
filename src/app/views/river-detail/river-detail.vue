@@ -1,5 +1,5 @@
 <template>
-  <section class="bx--grid river-detail">
+  <section class="river-detail">
     <transition
       name="fade"
       mode="out-in"
@@ -26,33 +26,35 @@
         :section="river.section"
         :background-image="bgImage"
       />
-      <div class="tabs-wrapper">
-        <cv-overflow-menu>
-          <cv-overflow-menu-item v-if="userIsAdmin">
-            Link Resources
-          </cv-overflow-menu-item>
-          <cv-overflow-menu-item @click.exact="reachShareModalVisible = true">
-            Share Reach
-          </cv-overflow-menu-item>
-          <cv-overflow-menu-item
-            v-if="userIsAdmin"
-            @click.exact="reachDeleteModalVisible = true"
+      <div class="bx--grid">
+        <div class="tabs-wrapper">
+          <cv-overflow-menu>
+            <cv-overflow-menu-item v-if="userIsAdmin">
+              Link Resources
+            </cv-overflow-menu-item>
+            <cv-overflow-menu-item @click.exact="reachShareModalVisible = true">
+              Share Reach
+            </cv-overflow-menu-item>
+            <cv-overflow-menu-item
+              v-if="userIsAdmin"
+              @click.exact="reachDeleteModalVisible = true"
+            >
+              Remove from Index
+            </cv-overflow-menu-item>
+          </cv-overflow-menu>
+          <cv-tabs
+            aria-label="navigation tab label"
+            :no-default-to-first="windowWidth > breakpoints.md"
+            @tab-selected="switchTab($event)"
           >
-            Remove from Index
-          </cv-overflow-menu-item>
-        </cv-overflow-menu>
-        <cv-tabs
-          aria-label="navigation tab label"
-          :no-default-to-first="windowWidth > breakpoints.md"
-          @tab-selected="switchTab($event)"
-        >
-          <cv-tab
-            v-for="(tab, index) in tabs"
-            :id="'tab-' + index + 1"
-            :key="tab"
-            :label="tab"
-          />
-        </cv-tabs>
+            <cv-tab
+              v-for="(tab, index) in tabs"
+              :id="'tab-' + index + 1"
+              :key="tab"
+              :label="tab"
+            />
+          </cv-tabs>
+        </div>
       </div>
       <keep-alive>
         <router-view />
@@ -373,11 +375,13 @@ export default {
       .bx--tabs__nav,
       .bx--tabs-trigger {
         box-shadow: none;
+        -webkit-box-shadow: none;
         border-bottom: 1px solid transparent;
         width: auto;
         @include carbon--breakpoint("md") {
           width: auto;
           box-shadow: none;
+          -webkit-box-shadow: none;
         }
         &:focus {
           outline-offset: 0;

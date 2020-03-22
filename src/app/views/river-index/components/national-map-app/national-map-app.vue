@@ -149,11 +149,11 @@ export default {
   position: relative;
   height: 70vh;
 
-  @include MQ(XS) {
+  @include carbon--breakpoint("sm") {
     height: 95vh;
   }
 
-  @include carbon--breakpoint('lg') {
+  @include carbon--breakpoint("lg") {
     height: 80vh;
   }
 }

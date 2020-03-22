@@ -8,9 +8,8 @@
 }
 
 @mixin full-page-height {
-
   height: calc(100vh - 50px);
-  @include MQ("LG") {
+  @include carbon--breakpoint('lg') {
     height: calc(100vh - 75px);
   }
 }

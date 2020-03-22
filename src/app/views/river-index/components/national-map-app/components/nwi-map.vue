@@ -335,7 +335,9 @@ export default {
       reaches = this.map
         .queryRenderedFeatures({ layers: ['reachSegments'] })
         // eslint-disable-next-line
-        .filter(obj => !uniq[obj.properties.id] && (uniq[obj.properties.id] = true));
+        .filter(
+          obj => !uniq[obj.properties.id] && (uniq[obj.properties.id] = true)
+        )
       // because the map events aren't exactly synchronous, we improve usability by
       // including a search filter here
       if (this.searchResults) {
@@ -537,44 +539,45 @@ export default {
   width: 100%;
   position: relative;
 
-#nwi-map {
-  height: 100%;
-  width: 100%;
+  #nwi-map {
+    height: 100%;
+    width: 100%;
 
-  &.hasSidebar {
-    height: 65%;
+    &.hasSidebar {
+      height: 65%;
 
-    @include carbon--breakpoint('md') {
-      width: 68%;
-      height: 100%;
-    }
+      @include carbon--breakpoint("md") {
+        width: 68%;
+        height: 100%;
+      }
 
-    @include MQ(XXL) {
-      width: 76%;
+      @include carbon--breakpoint("max") {
+        width: 76%;
+      }
     }
   }
-}
 
-.cv-loading {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  z-index: 8000;
-}
+  .cv-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    z-index: 8000;
+  }
 
-// I think we have to show the logo for legal reasons, hiding it for demo purposes
-  a.mapboxgl-ctrl-logo , .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+  // I think we have to show the logo for legal reasons, hiding it for demo purposes
+  a.mapboxgl-ctrl-logo,
+  .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
     display: none !important;
   }
 }

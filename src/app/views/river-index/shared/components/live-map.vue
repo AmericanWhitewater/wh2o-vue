@@ -334,7 +334,9 @@ export default {
       reaches = this.map
         .queryRenderedFeatures({ layers: ['reachSegments'] })
         // eslint-disable-next-line
-        .filter(obj => !uniq[obj.properties.id] && (uniq[obj.properties.id] = true));
+        .filter(
+          obj => !uniq[obj.properties.id] && (uniq[obj.properties.id] = true)
+        )
       // because the map events aren't exactly synchronous, we improve usability by
       // including a search filter here
       if (this.searchResults) {
@@ -537,12 +539,12 @@ export default {
   &.hasSidebar {
     height: 65%;
 
-    @include carbon--breakpoint('md') {
+    @include carbon--breakpoint("md") {
       width: 68%;
       height: 100%;
     }
 
-    @include MQ(XXL) {
+    @include carbon--breakpoint("max") {
       width: 76%;
     }
   }
