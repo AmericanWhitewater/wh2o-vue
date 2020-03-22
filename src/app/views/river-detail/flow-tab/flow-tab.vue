@@ -5,44 +5,61 @@
       class="mb-lg"
     >
       <template #main>
-        <template v-if="gages && gages.length > 0">
-          <template v-if="loading">
-            <loading-block />
-          </template>
-          <template v-if="!loading && !chartData">
-            <error-block />
-          </template>
-          <template v-if="!loading && chartData">
-            <template v-if="viewMode === 'chart'">
-              <template v-if="readings.length > 0">
-                <div style="max-width:100%;overflow-x:scroll">
-                  <div :style="chartSize">
-                    <gage-chart
-                      :chart-data="chartData"
-                      :height="chartHeight"
-                      :options="chartConfig"
-                    />
+        <template v-if="loading">
+          <utility-block
+            height="500"
+            state="loading"
+            text="loading gages..."
+          />
+        </template>
+        <template v-else-if="gages">
+          <template v-if="gages && gages.length > 0">
+            <template v-if="!loading && chartData">
+              <template v-if="viewMode === 'chart'">
+                <template v-if="readings.length > 0">
+                  <div style="max-width:100%;overflow-x:scroll">
+                    <div :style="chartSize">
+                      <gage-chart
+                        :chart-data="chartData"
+                        :height="chartHeight"
+                        :options="chartConfig"
+                      />
+                    </div>
                   </div>
-                </div>
+                </template>
+                <template v-else>
+                  <utility-block
+                    height="500"
+                    state="content"
+                    title="No Results"
+                    text="please try again"
+                  />
+                </template>
               </template>
               <template v-else>
-                <error-block
-                  hide-icon
-                  title="No Results"
-                  text="please try again"
-                />
+                <GageReadings />
               </template>
             </template>
             <template v-else>
-              <GageReadings />
+              <utility-block
+                state="loading"
+                text="loading readings..."
+              />
             </template>
+          </template>
+          <template v-else>
+            <utility-block
+              height="500"
+              title="No Gages"
+              state="error"
+              text="This river doesn't have any associated gages"
+            />
           </template>
         </template>
         <template v-else>
-          <error-block
-            hide-icon
-            title="No Gages"
-            text="This river doesn't have any associated gages"
+          <utility-block
+            height="500"
+            state="error"
           />
         </template>
       </template>
@@ -54,7 +71,7 @@
                 Avg
               </h6>
               <h3 v-if="!loading">
-                {{ flowStats ? flowStats.avg : 'n/a' }}
+                {{ flowStats ? flowStats.avg : "n/a" }}
               </h3>
               <cv-skeleton-text
                 v-if="loading"
@@ -66,7 +83,7 @@
                 High
               </h6>
               <h3 v-if="!loading">
-                {{ flowStats ? flowStats.max : 'n/a' }}
+                {{ flowStats ? flowStats.max : "n/a" }}
               </h3>
               <cv-skeleton-text
                 v-if="loading"
@@ -78,7 +95,7 @@
                 Low
               </h6>
               <h3 v-if="!loading">
-                {{ flowStats ? flowStats.min : 'n/a' }}
+                {{ flowStats ? flowStats.min : "n/a" }}
               </h3>
               <cv-skeleton-text
                 v-if="loading"
@@ -94,13 +111,12 @@
         <template v-else>
           <hr>
           <p class="mb-spacing-md">
-            If you know this reach has a gage, you can search from our list of preregistered gages or add a new gage to the database. You can also create a virtual gage, { some copy on what that means }...
+            If you know this reach has a gage, you can search from our list of
+            preregistered gages or add a new gage to the database. You can also
+            create a virtual gage, { some copy on what that means }...
           </p>
-          <cv-button
-            :disabled="!user"
-            size="small"
-          >
-            Action
+          <cv-button size="small">
+            Add Gage
           </cv-button>
         </template>
       </template>
@@ -115,7 +131,7 @@ import { GageChartConfig } from './utils/gage-chart-config'
 import { Layout } from '@/app/global/layout'
 import { mapState } from 'vuex'
 import { readingsActions } from '../shared/state'
-import { LoadingBlock, ErrorBlock } from '@/app/global/components'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { checkWindow } from '@/app/global/mixins'
 
 /**
@@ -125,12 +141,11 @@ import { checkWindow } from '@/app/global/mixins'
 export default {
   name: 'flow-tab',
   components: {
-    ErrorBlock,
     GageChart,
     GageChartControls,
     GageReadings,
     Layout,
-    LoadingBlock
+    UtilityBlock
   },
   mixins: [GageChartConfig, checkWindow],
   data: () => ({
@@ -161,14 +176,18 @@ export default {
       if (data) {
         const formattedData = {
           labels: [],
-          datasets: [{
-            label: 'label',
-            data: []
-          }]
+          datasets: [
+            {
+              label: 'label',
+              data: []
+            }
+          ]
         }
         for (let i = 0; i < data.length; i++) {
           formattedData.datasets[0].data.push(Math.floor(data[i].reading))
-          formattedData.labels.push(moment(data[i].updated).format(this.selectedTimespan))
+          formattedData.labels.push(
+            moment(data[i].updated).format(this.selectedTimespan)
+          )
         }
         return formattedData
       }
@@ -187,11 +206,11 @@ export default {
           readingsSum = readingsSum + parseInt(this.readings[i].reading, 10)
         }
 
-        return ({
+        return {
           min: Math.min(...readings),
           max: Math.max(...readings),
           avg: Math.floor(readingsSum / this.readings.length)
-        })
+        }
       }
       return null
     },
@@ -199,7 +218,7 @@ export default {
       if (this.windowWidth > this.breakpoints.md) {
         return null
       } else {
-        return 'position:relative;width:' + (this.breakpoints.sm * 2) + 'px'
+        return 'position:relative;width:' + this.breakpoints.sm * 2 + 'px'
       }
     }
   },

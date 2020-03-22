@@ -2,19 +2,23 @@
   <div
     id="utility-block"
     :style="`height:${height}px`"
+    :class="`utility-block-${state}`"
   >
-    <h2
-      v-if="title"
-      class="mb-spacing-md"
-      v-text="title"
-    />
-    <p
-      v-if="text"
-      class="mb-spacing-md"
-      v-text="text"
-    />
+    <template v-if="state === 'content'">
+      <h2
+        v-if="title"
+        class="mb-spacing-md"
+        v-text="title"
+      />
+      <p
+        v-if="text"
+        class="mb-spacing-md"
+        v-text="text"
+      />
+    </template>
     <slot name="content">
       <cv-inline-loading
+        v-if="state !== 'content'"
         small
         :state="state"
         :loading-text="hideText ? '' : text"
@@ -48,7 +52,8 @@ export default {
     state: {
       type: String,
       required: false,
-      validator: value => ['loading', 'error', 'complete'].indexOf(value) !== -1
+      validator: value =>
+        ['loading', 'error', 'complete', 'content'].indexOf(value) !== -1
     }
   }
 }
@@ -58,8 +63,8 @@ export default {
   background-color: $ui-02;
   display: flex;
   width: 100%;
-  min-height:250px;
-  height:100%;
+  min-height: 250px;
+  height: 100%;
   padding: $spacing-md;
   align-items: center;
   justify-content: center;

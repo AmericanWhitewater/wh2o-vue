@@ -22,16 +22,25 @@ import Grid16 from '@carbon/icons-vue/es/grid/16.js'
 import Help32 from '@carbon/icons-vue/es/help/32.js'
 import Launch20 from '@carbon/icons-vue/es/launch/20.js'
 import List16 from '@carbon/icons-vue/es/list/16.js'
+import ListBulleted16 from '@carbon/icons-vue/es/list--bulleted/16.js'
+import ListNumbered16 from '@carbon/icons-vue/es/list--numbered/16.js'
 import LogoFacebook24 from '@carbon/icons-vue/es/logo--facebook/24'
 import LogoLinkedIn24 from '@carbon/icons-vue/es/logo--linkedin/24'
 import Map32 from '@carbon/icons-vue/es/map/32.js'
 import Maximize16 from '@carbon/icons-vue/es/maximize/16.js'
 import Minimize16 from '@carbon/icons-vue/es/minimize/16.js'
 import Notification20 from '@carbon/icons-vue/es/notification/20.js'
+import Paragraph16 from '@carbon/icons-vue/es/paragraph/16.js'
+import Quotes16 from '@carbon/icons-vue/es/quotes/16.js'
+import Redo16 from '@carbon/icons-vue/es/redo/16.js'
 import Settings32 from '@carbon/icons-vue/es/settings/32.js'
+import TextBold16 from '@carbon/icons-vue/es/text--bold/16.js'
+import TextItalic16 from '@carbon/icons-vue/es/text--italic/16.js'
+import TextUnderline16 from '@carbon/icons-vue/es/text--underline/16.js'
+import Undo16 from '@carbon/icons-vue/es/undo/16.js'
+import Upload24 from '@carbon/icons-vue/es/upload/24.js'
 import UserAvatar16 from '@carbon/icons-vue/es/user--avatar/16.js'
 import UserAvatar20 from '@carbon/icons-vue/es/user--avatar/20.js'
-import Upload24 from '@carbon/icons-vue/es/upload/24.js'
 import WarningSquare32 from '@carbon/icons-vue/es/warning-square/32.js'
 import WifiOff32 from '@carbon/icons-vue/es/wifi--off/32.js'
 import ZoomPan24 from '@carbon/icons-vue/es/watson-health/zoom-pan/32.js'
@@ -49,10 +58,8 @@ Vue.use(CarbonIconsVue, {
     ChartLine32,
     Download20,
     Email20,
-    ZoomPan24,
     Email24,
     Email32,
-    Upload24,
     Error20,
     Filter16,
     FitToScreen16,
@@ -61,16 +68,27 @@ Vue.use(CarbonIconsVue, {
     Help32,
     Launch20,
     List16,
+    ListBulleted16,
+    ListNumbered16,
     LogoFacebook24,
     LogoLinkedIn24,
     Map32,
     Maximize16,
     Minimize16,
     Notification20,
+    Paragraph16,
+    Quotes16,
+    Redo16,
     Settings32,
+    TextBold16,
+    TextItalic16,
+    TextUnderline16,
+    Undo16,
+    Upload24,
     UserAvatar16,
     UserAvatar20,
     WarningSquare32,
-    WifiOff32
+    WifiOff32,
+    ZoomPan24
   }
 })

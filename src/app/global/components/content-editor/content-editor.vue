@@ -96,15 +96,6 @@
  * @todo need to wire content editor v-model
  * look at b3 :model.sync
  */
-import Undo16 from '@carbon/icons-vue/es/undo/16.js'
-import Redo16 from '@carbon/icons-vue/es/redo/16.js'
-import TextBold16 from '@carbon/icons-vue/es/text--bold/16.js'
-import TextItalic16 from '@carbon/icons-vue/es/text--italic/16.js'
-import TextUnderline16 from '@carbon/icons-vue/es/text--underline/16.js'
-import Paragraph16 from '@carbon/icons-vue/es/paragraph/16.js'
-import ListBulleted16 from '@carbon/icons-vue/es/list--bulleted/16.js'
-import ListNumbered16 from '@carbon/icons-vue/es/list--numbered/16.js'
-import Quotes16 from '@carbon/icons-vue/es/quotes/16.js'
 
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
 import {
@@ -124,16 +115,7 @@ export default {
   name: 'content-editor',
   components: {
     EditorContent,
-    EditorMenuBar,
-    Undo16,
-    Redo16,
-    TextBold16,
-    TextItalic16,
-    TextUnderline16,
-    Paragraph16,
-    ListBulleted16,
-    ListNumbered16,
-    Quotes16
+    EditorMenuBar
   },
   props: {
     showControlBar: {
