@@ -77,7 +77,7 @@
             the reach from the river index. This cannot be undone.
           </p>
           <div class="confirm-delete-warning-text mb-sm">
-            <h4>{{ river.river + ' ' + river.section }}</h4>
+            <h4>{{ river.river + " " + river.section }}</h4>
           </div>
           <cv-text-input
             v-model="reachDeleteConfirmInput"
@@ -105,9 +105,50 @@
           Share
         </template>
         <template slot="content">
-          <p class="mb-sm">
-            ayyyy, I'm a share modal.
-          </p>
+          <social-sharing
+            :url="shareMeta.url"
+            :title="shareMeta.title"
+            :description="shareMeta.description"
+            :quote="shareMeta.quote"
+            :hashtags="shareMeta.hashtags"
+            twitter-user="AmerWhitewater"
+            inline-template
+          >
+            <div>
+              <network network="facebook">
+                <cv-button
+                  kind="tertiary"
+                  class="mb-spacing-md mr-spacing-sm"
+                >
+                  Facebook
+                </cv-button>
+              </network>
+              <network network="twitter">
+                <cv-button
+                  kind="tertiary"
+                  class="mb-spacing-md mr-spacing-sm"
+                >
+                  Twitter
+                </cv-button>
+              </network>
+              <network network="linkedin">
+                <cv-button
+                  kind="tertiary"
+                  class="mb-spacing-md mr-spacing-sm"
+                >
+                  LinkedIn
+                </cv-button>
+              </network>
+              <network network="email">
+                <cv-button
+                  kind="tertiary"
+                  class="mb-spacing-md mr-spacing-sm"
+                >
+                  Email
+                </cv-button>
+              </network>
+            </div>
+          </social-sharing>
         </template>
         <template slot="primary-button">
           Close
@@ -124,10 +165,7 @@
  */
 import { mapState, mapGetters } from 'vuex'
 import RiverHeader from './river-header/river-header'
-import {
-  actionsTypes,
-  reachGagesActions
-} from './shared/state'
+import { actionsTypes, reachGagesActions } from './shared/state'
 import { ErrorBlock } from '@/app/global/components'
 import { checkWindow } from '@/app/global/mixins'
 
@@ -169,9 +207,27 @@ export default {
       editMode: state => state.riverDetailState.riverDetailData.mode,
       media: state => state.riverDetailState.galleryData.data
     }),
-    ...mapGetters(
-      ['userIsAdmin']
-    ),
+    ...mapGetters(['userIsAdmin']),
+    shareMeta () {
+      if (this.river) {
+        const description = this.formatShareDescription(this.river.description)
+        const url = `https://wh2o-vue.herokuapp.com/#/river-detail/${this.river.id}`
+        const title = this.river.river
+        /**
+         * @temp until we can get quote + hashtag wired to db
+         */
+        const quote = description
+        const hashtags = 'whitewater,river,conservation'
+        return {
+          title,
+          url,
+          description,
+          quote,
+          hashtags
+        }
+      }
+      return null
+    },
     riverId () {
       return this.$route.params.id
     },
@@ -226,11 +282,27 @@ export default {
           allowedAttributes: {}
         })
 
-        document.getElementById('meta-description').setAttribute('content', riverDescription.slice(0, 150))
+        document
+          .getElementById('meta-description')
+          .setAttribute('content', riverDescription.slice(0, 150))
       }
     }
   },
   methods: {
+    /**
+     * remove html from article abstract
+     */
+    formatShareDescription (description) {
+      if (description) {
+        const shareDescription = this.$sanitize(description, {
+          allowedTags: [],
+          allowedAttributes: {}
+        })
+
+        return shareDescription.slice(0, 150) + '...'
+      }
+      return 'Check this out on American Whitewater.'
+    },
     deleteReach () {
       /* eslint-disable-next-line no-console */
       console.log('perform this action')
@@ -241,9 +313,11 @@ export default {
        * use $router.replace to avoid making log into history
        */
       if (this.riverId) {
-        this.$router.replace(
-        `/river-detail/${this.riverId}/${this.tabs[index].toLowerCase()}`
-        ).catch(() => {})
+        this.$router
+          .replace(
+            `/river-detail/${this.riverId}/${this.tabs[index].toLowerCase()}`
+          )
+          .catch(() => {})
       }
     },
     /**
@@ -269,7 +343,9 @@ export default {
       })
       this.$store.dispatch(actionsTypes.SET_EDIT_MODE, false)
     }
-    document.getElementById('meta-description').setAttribute('content', 'default description')
+    document
+      .getElementById('meta-description')
+      .setAttribute('content', 'default description')
     next()
   }
 }

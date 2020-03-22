@@ -30,15 +30,62 @@
               {{ article.author }} - {{ formatDate(article.post_date, "ll") }}
             </h6>
             <hr class="mb-spacing-md">
-            <!-- <cv-button size="small" kind="tertiary" class="mr-spacing-sm"
-              >Facebook</cv-button
+            <social-sharing
+              :url="shareMeta.url"
+              :title="shareMeta.title"
+              :description="shareMeta.description"
+              :quote="shareMeta.quote"
+              :hashtags="shareMeta.hashtags"
+              twitter-user="AmerWhitewater"
+              inline-template
             >
-            <cv-button size="small" kind="tertiary" class="mr-spacing-sm"
-              >Twitter</cv-button
-            >
-            <cv-button size="small" kind="tertiary" class="mr-spacing-sm"
-              >LinkedIn</cv-button
-            > -->
+              <div>
+                <network
+                  network="facebook"
+                  class="mr-spacing-sm"
+                >
+                  <cv-button
+                    size="small"
+                    kind="tertiary"
+                  >
+                    Facebook
+                  </cv-button>
+                </network>
+                <network
+                  network="twitter"
+                  class="mr-spacing-sm"
+                >
+                  <cv-button
+                    size="small"
+                    kind="tertiary"
+                  >
+                    Twitter
+                  </cv-button>
+                </network>
+                <network
+                  network="linkedin"
+                  class="mr-spacing-sm"
+                >
+                  <cv-button
+                    size="small"
+                    kind="tertiary"
+                  >
+                    LinkedIn
+                  </cv-button>
+                </network>
+                <network
+                  network="email"
+                  class="mr-spacing-sm"
+                >
+                  <cv-button
+                    size="small"
+                    kind="tertiary"
+                  >
+                    Email
+                  </cv-button>
+                </network>
+              </div>
+            </social-sharing>
             <div class="article-wrapper">
               <div
                 class="article-content"
@@ -103,11 +150,9 @@ export default {
     }),
     getMetaTitle () {
       if (this.article) {
-        if (this.article.title.length > 50) {
-          return this.article.title.slice(0, 47) + '...'
-        }
-
-        return this.article.title
+        return this.article.title.length > 50
+          ? this.article.title.slice(0, 47) + '...'
+          : this.article.title
       }
       return null
     },
@@ -122,18 +167,36 @@ export default {
         return closingTags
       }
       return null
+    },
+    shareMeta () {
+      if (this.article) {
+        const description = this.formatShareDescription(this.article.abstract)
+        const url = `https://wh2o-vue.herokuapp.com/#/article/${this.article.id}`
+        const title = this.article.title
+        /**
+         * @temp until we can get quote + hashtag wired to db
+         */
+        const quote = description
+        const hashtags = 'whitewater,river,conservation'
+        return {
+          title,
+          url,
+          description,
+          quote,
+          hashtags
+        }
+      }
+      return null
     }
   },
   watch: {
     articleId (val) {
-      this.$store.dispatch(articleActions.GET_ARTICAL_DETAIL_DATA, val)
+      if (val) {
+        this.$store.dispatch(articleActions.GET_ARTICAL_DETAIL_DATA, val)
+      }
     },
     article (data) {
       if (data) {
-        // this.$store.dispatch(
-        //   articleActions.GET_FEATURED_MEDIA,
-        //   this.article.featured_media
-        // );
         const content = this.$sanitize(data.abstract, {
           allowedTags: [],
           allowedAttributes: {}
@@ -150,6 +213,20 @@ export default {
     },
     formatDate (date) {
       return Moment(date).format('ll')
+    },
+    /**
+     * remove html from article abstract
+     */
+    formatShareDescription (abstract) {
+      if (abstract) {
+        const shareDescription = this.$sanitize(abstract, {
+          allowedTags: [],
+          allowedAttributes: {}
+        })
+
+        return shareDescription.slice(0, 150) + '...'
+      }
+      return 'Check this out on American Whitewater.'
     },
     randomNumber (index) {
       return Math.floor(Math.random() * (10000 + index))
@@ -169,9 +246,11 @@ export default {
     /**
      * @todo we can make this description meta data function part of vue router global nav guards
      */
+    const defaultDescription =
+      'American Whitewater is the primary advocate for the preservation and protection of whitewater rivers throughout the United States and connects the interests of human-powered recreational river users with ecological and science-based data to achieve goals within our mission.'
     document
       .getElementById('meta-description')
-      .setAttribute('content', 'default description')
+      .setAttribute('content', defaultDescription)
     next()
   }
 }
