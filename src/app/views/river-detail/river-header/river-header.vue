@@ -44,7 +44,7 @@
               <div class="inside">
                 <div :class="[{ edit: editMode }, 'edit-actions-wrapper']">
                   <cv-interactive-tooltip
-                    v-if="!editMode"
+                    v-if="!editMode && bgImg"
                     alignment="center"
                     direction="left"
                   >
