@@ -53,7 +53,7 @@ const actions = {
     })
 
     if (result) {
-      context.commit(DATA_SUCCESS, result.data.reach.accidents.data)
+      context.commit(DATA_SUCCESS, result.data.accidents.data[0])
     }
 
     return result

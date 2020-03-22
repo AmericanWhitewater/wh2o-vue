@@ -1,67 +1,74 @@
 <template>
-  <div
-    class="bx--article-card bx--tile bx--tile--clickable"
-    @click.exact="readArticle"
-  >
-    <div class="bx--article-card__img" />
-    <div :class="[windowWidth > breakpoints.lg ? 'bx--aspect-ratio--2x1' : 'bx--aspect-ratio--4x3','bx--aspect-ratio']">
+  <div>
+    <div
+      class="bx--article-card bx--tile bx--tile--clickable"
+      @click.exact="readArticle"
+    >
+      <div class="bx--article-card__img" />
       <div
-        class="bx--aspect-ratio--object bx--article-card__tile"
+        :class="[
+          windowWidth > breakpoints.lg
+            ? 'bx--aspect-ratio--2x1'
+            : 'bx--aspect-ratio--4x3',
+          'bx--aspect-ratio'
+        ]"
       >
-        <h5
-          v-if="subtitle"
-          class="bx--article-card__subtitle"
-          v-text="subtitle"
-        />
-        <h4
-          v-if="title"
-          class="bx--article-card__title"
-          v-text="formatTitle(title)"
-        />
-
-        <div class="bx--article-card__info">
-          <flow-color-block
-            v-if="condition"
-            :status="condition"
+        <div class="bx--aspect-ratio--object bx--article-card__tile">
+          <h5
+            v-if="subtitle"
+            class="bx--article-card__subtitle"
+            v-text="subtitle"
           />
-          <div>
-            <p
-              v-if="author"
-              class="bx--article-card__author"
-              v-text="author"
+          <h4
+            v-if="title"
+            class="bx--article-card__title"
+            v-text="formatTitle(title)"
+          />
+
+          <div class="bx--article-card__info">
+            <flow-color-block
+              v-if="condition"
+              :status="condition"
             />
-            <p
-              v-if="datePosted"
-              class="bx--article-card__date"
-              v-text="datePosted"
+            <div>
+              <p
+                v-if="author"
+                class="bx--article-card__author"
+                v-text="author"
+              />
+              <p
+                v-if="datePosted"
+                class="bx--article-card__date"
+                v-text="datePosted"
+              />
+              <p
+                class="bx--article-card__read-time"
+                v-text="readTime"
+              />
+            </div>
+          </div>
+          <div class="bx--article-card__icon--action">
+            <Launch20
+              v-if="actionIcon === 'launch' && !disabled"
+              aria-label="Open"
             />
-            <p
-              class="bx--article-card__read-time"
-              v-text="readTime"
+            <ArrowRight20
+              v-if="actionIcon === 'arrowRight' && !disabled"
+              aria-label="Open"
+            />
+            <Download20
+              v-if="actionIcon === 'download' && !disabled"
+              aria-label="Open"
+            />
+            <Email20
+              v-if="actionIcon === 'download' && !disabled"
+              aria-label="Open"
+            />
+            <Error20
+              v-if="actionIcon === 'disabled' || disabled"
+              aria-label="Open"
             />
           </div>
-        </div>
-        <div class="bx--article-card__icon--action">
-          <Launch20
-            v-if="actionIcon === 'launch' && !disabled"
-            aria-label="Open"
-          />
-          <ArrowRight20
-            v-if="actionIcon === 'arrowRight' && !disabled"
-            aria-label="Open"
-          />
-          <Download20
-            v-if="actionIcon === 'download' && !disabled"
-            aria-label="Open"
-          />
-          <Email20
-            v-if="actionIcon === 'download' && !disabled"
-            aria-label="Open"
-          />
-          <Error20
-            v-if="actionIcon === 'disabled' || disabled"
-            aria-label="Open"
-          />
         </div>
       </div>
     </div>
@@ -171,13 +178,13 @@ export default {
 }
 
 .bx--article-card__title {
-  @include carbon--type-style('productive-heading-03');
+  @include carbon--type-style("productive-heading-03");
   text-decoration: none;
   color: $text-01;
 }
 
 .bx--article-card__subtitle {
-  @include carbon--type-style('heading-01');
+  @include carbon--type-style("heading-01");
   font-weight: 400;
   text-decoration: none;
   color: $text-01;
@@ -193,7 +200,7 @@ export default {
 }
 
 .bx--article-card__info p {
-  @include carbon--type-style('caption-01');
+  @include carbon--type-style("caption-01");
 }
 
 .bx--article-card__img .gatsby-resp-image-wrapper {
@@ -250,24 +257,18 @@ export default {
   color: $disabled-03;
 }
 
-.bx--article-card--disabled
-  .bx--article-card__icon--action
-  svg {
+.bx--article-card--disabled .bx--article-card__icon--action svg {
   fill: $disabled-02;
 }
 
 // Disabled dark
-.bx--article-card--disabled.bx--article-card--dark
-  .bx--tile:hover {
+.bx--article-card--disabled.bx--article-card--dark .bx--tile:hover {
   background: $carbon--gray-90; //$ui-background for gray 90 theme
 }
 
-.bx--article-card--disabled.bx--article-card--dark
-  .bx--article-card__title,
-.bx--article-card--disabled.bx--article-card--dark
-  .bx--article-card__subtitle,
-.bx--article-card--disabled.bx--article-card--dark
-  .bx--article-card__info {
+.bx--article-card--disabled.bx--article-card--dark .bx--article-card__title,
+.bx--article-card--disabled.bx--article-card--dark .bx--article-card__subtitle,
+.bx--article-card--disabled.bx--article-card--dark .bx--article-card__info {
   color: $carbon--gray-50; //$disabled-03 for gray 90
 }
 
@@ -276,5 +277,4 @@ export default {
   svg {
   fill: $carbon--gray-70; //$disabled-02 for gray 90
 }
-
 </style>

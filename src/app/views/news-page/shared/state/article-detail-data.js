@@ -72,7 +72,7 @@ const actions = {
     })
 
     if (result) {
-      context.commit(MEDIA_SUCCESS, result.media_details.sizes.large.source_url)
+      context.commit(MEDIA_SUCCESS, result)
     }
 
     return result

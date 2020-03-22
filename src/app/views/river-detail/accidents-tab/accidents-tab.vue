@@ -31,20 +31,18 @@
                   v-for="(a, index) in accidents"
                   :key="index"
                 >
-                  <td v-text="'{ date }'" />
-                  <td v-text="a.rellevel" />
+                  <td v-text="formatDate(a.accidentdate, 'll')" />
+                  <td v-text="a.waterlevel" />
                   <td v-text="a.status" />
                   <td>
-                    <template v-if="a.factors.length > 1">
-                      <cv-list>
-                        <cv-list-item
-                          v-for="(factor, i) in a.factors"
-                          :key="i"
-                        >
-                          list item 1
-                        </cv-list-item>
-                      </cv-list>
-                    </template>
+                    <cv-list>
+                      <cv-list-item
+                        v-for="(factor, i) in a.factors"
+                        :key="i"
+                      >
+                        {{ factor.factor }}
+                      </cv-list-item>
+                    </cv-list>
                   </td>
                   <td>
                     <cv-button

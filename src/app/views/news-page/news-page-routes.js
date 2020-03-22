@@ -10,11 +10,17 @@ const newsPageRoutes = [
   {
     path: '/article/:id',
     name: 'article-detail',
+    meta: {
+      crumbLabel: 'Article'
+    },
     component: () => import('./components/article-detail.vue')
   },
   {
     path: '/new-article',
     name: 'new-article',
+    meta: {
+      crumbLabel: 'New Article'
+    },
     component: () => import('./components/new-article.vue')
   }
 ]

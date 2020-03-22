@@ -8,19 +8,21 @@ const fetchAccidentsData = data => {
     .post(url, {
       query: `
       query {
-        reach(id:${data}){
-          accidents(first:20, page:1){
+        reach(id: ${data}) {
+          accidents(first: 20, page: 1) {
             data {
-              id,
-                rellevel,
-                status,
-                factors {
-                    factor
-                }
+              accidentdate
+              waterlevel
+              status
+              factors {
+                factor
+              }
+              id
             }
+          }
         }
       }
-    }
+      
     
     `
     })

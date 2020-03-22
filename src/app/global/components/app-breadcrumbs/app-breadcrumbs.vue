@@ -96,6 +96,7 @@
 <script>
 import { mapState } from 'vuex'
 import { Layout } from '@/app/global/layout'
+import { checkWindow } from '@/app/global/mixins'
 /**
  * @description Breadcrumbs which show the session history.
  * @reference https://www.carbondesignsystem.com/components/breadcrumb/usage
@@ -108,6 +109,7 @@ export default {
   components: {
     Layout
   },
+  mixins: [checkWindow],
   data: () => ({
     prevRoute: {
       path: null,
@@ -157,11 +159,12 @@ export default {
       }
     },
     getLabel (label) {
-      // crumb.label
-
       if (label === 'River Detail') {
         const currentRiver = `${this.riverName} - ${this.riverSection}`
-        return `${currentRiver.slice(0, 20)}...`
+        if (this.windowWidth < this.breakpoints.lg) {
+          return `${currentRiver.slice(0, 20)}...`
+        }
+        return currentRiver
       }
       return label
     }
@@ -175,7 +178,6 @@ export default {
 <style lang="scss">
 .app-breadcrumbs-wrapper {
   position: relative;
-
 }
 .app-breadcrumbs {
   top: $mobile-nav-height;
@@ -184,9 +186,9 @@ export default {
   display: flex;
   padding: $spacing-sm 0;
   justify-content: space-between;
-  max-width:100%;
+  max-width: 100%;
   overflow-x: scroll;
-  @include MQ("MD") {
+  @include carbon--breakpoint("lg") {
     top: $desktop-nav-height;
   }
   &.home {

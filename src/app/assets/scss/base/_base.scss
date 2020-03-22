@@ -1,27 +1,26 @@
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 body {
-    background-color: $ui-01;
-    overflow-x: hidden;
-    word-wrap: break-word;
+  background-color: $ui-01;
+  overflow-x: hidden;
+  word-wrap: break-word;
 }
 
 img {
-    max-width:100%;
+  max-width: 100%;
 }
 
 .app-main-content {
-
-    min-height: calc(100vh - 125px);
-    background-color: $ui-background;
-
-    &.interior {
-        padding-top: $mobile-nav-height;
-        @include MQ("MD") {
-          padding-top: $desktop-nav-height;
-        }
+  background-color: $ui-background;
+  min-height: 100vh;
+  &.interior {
+    @include carbon--breakpoint('sm') {
+      padding-top: $mobile-nav-height;
     }
-   
+    @include carbon--breakpoint('lg') {
+      padding-top: $desktop-nav-height;
+    }
   }
+}
