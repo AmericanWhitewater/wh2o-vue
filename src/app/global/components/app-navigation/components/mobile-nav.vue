@@ -138,7 +138,7 @@ export default {
     }
   },
   data: () => ({
-    drawerOpen: true,
+    drawerOpen: false,
     searchTerm: '',
     topBarItems: [
       {
