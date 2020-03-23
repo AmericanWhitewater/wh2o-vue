@@ -5,7 +5,7 @@
       class="mb-lg"
     >
       <template #main>
-        <template v-if="loading">
+        <template v-if="loading && !gages">
           <utility-block
             height="500"
             state="loading"
@@ -14,7 +14,14 @@
         </template>
         <template v-else-if="gages">
           <template v-if="gages && gages.length > 0">
-            <template v-if="!loading && chartData">
+            <template v-if="loading">
+              <utility-block
+                height="600"
+                state="loading"
+                text="loading readings..."
+              />
+            </template>
+            <template v-else-if="readings">
               <template v-if="viewMode === 'chart'">
                 <template v-if="readings.length > 0">
                   <div style="max-width:100%;overflow-x:scroll">
@@ -40,12 +47,7 @@
                 <GageReadings />
               </template>
             </template>
-            <template v-else>
-              <utility-block
-                state="loading"
-                text="loading readings..."
-              />
-            </template>
+            <template v-else />
           </template>
           <template v-else>
             <utility-block
@@ -164,7 +166,9 @@ export default {
       readings: state => state.riverDetailState.gageReadingsData.data,
       loading: state => state.riverDetailState.gageReadingsData.loading,
       error: state => state.riverDetailState.gageReadingsData.error,
-      gages: state => state.riverDetailState.reachGagesData.data
+      gages: state => state.riverDetailState.reachGagesData.data,
+      gagesLoading: state => state.riverDetailState.reachGagesData.loading,
+      gagesError: state => state.riverDetailState.reachGagesData.error
     }),
     /**
      * vue-chartjs requires data to be formatted this way

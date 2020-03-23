@@ -1,174 +1,194 @@
 <template>
-  <layout
-    name="layout-two-thirds"
-    :options="{sidebar:{left:true}}"
-    class="river-search bg-topo"
-  >
-    <template #sidebar>
-      <hr>
-      <h1 class="mb-spacing-md">
-        Search
-      </h1>
-      <div class="sidebar sticky mb-spacing-lg">
-        <cv-search
-          v-model="searchParams.river"
-          :disabled="loading"
-          :placeholder="'e.g. Animas'"
-          size="large"
-          class="mb-spacing-md"
-          @keydown.enter="fetchRivers"
-        />
-        <cv-dropdown
-          v-model="searchParams.state"
-          label="State"
-          :disabled="loading"
-          class="mb-spacing-md"
-        >
-          <cv-dropdown-item
-            v-for="(s, index) in UsStatesList"
-            :key="index"
-            :value="s.value"
-          >
-            {{ s.text }}
-          </cv-dropdown-item>
-        </cv-dropdown>
-        <cv-dropdown
-          v-model="searchParams.level"
-          label="Level"
-          :disabled="loading"
-          class="mb-spacing-md"
-        >
-          <cv-dropdown-item
-            v-for="(l, index) in levelsList"
-            :key="index"
-            :value="l.value"
-          >
-            {{ l.text }}
-          </cv-dropdown-item>
-        </cv-dropdown>
-        <cv-dropdown
-          v-model="searchParams.state"
-          label="International Reaches"
-          :disabled="loading"
-          class="mb-spacing-md"
-          @change="fetchRivers"
-        >
-          <cv-dropdown-item
-            v-for="(i, index) in InternationalReaches"
-            :key="index"
-            :value="i.value"
-          >
-            {{ i.text }}
-          </cv-dropdown-item>
-        </cv-dropdown>
-        <cv-button
-          kind="secondary"
-          size="small"
-          class="search-btn"
-          :disabled="loading"
-          @click.exact="fetchRivers"
-        >
-          Submit
-        </cv-button>
-      </div>
-    </template>
-    <template #main>
-      <template v-if="loading && !error">
-        <loading-block text="lookin for water..." />
+  <div class="river-search bg-topo">
+    <layout name="layout-full-width">
+      <template #main>
+        <hr>
+        <h1 class="mb-spacing-md">
+          Search
+        </h1>
       </template>
-      <template v-if="error && !loading">
-        <error-block />
-      </template>
-      <template v-if="!loading && data">
-        <div class="bx--data-table-container">
-          <table class="bx--data-table river-table">
-            <thead>
-              <tr>
-                <th>
-                  <strong>Name</strong>
-                  <br>Section
-                </th>
-                <th>Class/Grade</th>
-                <th>
-                  Flow Reading
-                </th>
-                <th>&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-if="data.length === 0">
-                <td colspan="4">
-                  No Results.
-                </td>
-              </tr>
-              <template v-if="data.length > 0">
-                <tr
-                  v-for="(r, index) in data"
-                  :key="index"
-                >
-                  <td
-                    :class="[r.color,'river-name-section']"
-                    @click="viewRiver(r.id)"
-                  >
-                    <strong>{{ r.name }}</strong>
-                    <br>
-                    {{ r.section }}
-                  </td>
-                  <td>{{ r.class }}</td>
-                  <td v-if="r.reading_formatted">
-                    {{ r.reading_formatted }}
+    </layout>
 
-                    <template v-if="r.reading_delta">
-                      - {{ r.reading_delta }}
-                    </template>
-                  </td>
-                  <td v-else>
-                    Data Unavailable
-                  </td>
-                  <td>
-                    <cv-overflow-menu
-                      flip-menu
-                      tip-position="left"
-                    >
-                      <cv-overflow-menu-item
-                        primary-focus
-                        @click.exact="$router.push('/river-index')"
-                      >
-                        View on Map
-                      </cv-overflow-menu-item>
-                      <cv-overflow-menu-item @click.exact="toggleBookmark(r.id)">
-                        Bookmark
-                      </cv-overflow-menu-item>
-                    </cv-overflow-menu>
-                  </td>
-                </tr>
-              </template>
-            </tbody>
-            <tfoot v-if="data && !showAll && data.length > 25">
-              <tr>
-                <td colspan="4">
-                  <cv-button
-                    kind="secondary"
-                    @click="showAll = !showAll"
-                  >
-                    Show All
-                  </cv-button>
-                </td>
-              </tr>
-            </tfoot>
-          </table>
+    <layout
+      name="layout-two-thirds"
+      :options="{ sidebar: { left: true } }"
+    >
+      <template #sidebar>
+        <div class="sidebar sticky mb-spacing-lg">
+          <cv-search
+            v-model="searchParams.river"
+            :disabled="loading"
+            :placeholder="'e.g. Animas'"
+            size="large"
+            class="mb-spacing-md"
+            @keydown.enter="fetchRivers"
+          />
+          <cv-dropdown
+            v-model="searchParams.state"
+            label="State"
+            :disabled="loading"
+            class="mb-spacing-md"
+          >
+            <cv-dropdown-item
+              v-for="(s, index) in UsStatesList"
+              :key="index"
+              :value="s.value"
+            >
+              {{ s.text }}
+            </cv-dropdown-item>
+          </cv-dropdown>
+          <cv-dropdown
+            v-model="searchParams.level"
+            label="Level"
+            :disabled="loading"
+            class="mb-spacing-md"
+          >
+            <cv-dropdown-item
+              v-for="(l, index) in levelsList"
+              :key="index"
+              :value="l.value"
+            >
+              {{ l.text }}
+            </cv-dropdown-item>
+          </cv-dropdown>
+          <cv-dropdown
+            v-model="searchParams.state"
+            label="International Reaches"
+            :disabled="loading"
+            class="mb-spacing-md"
+            @change="fetchRivers"
+          >
+            <cv-dropdown-item
+              v-for="(i, index) in InternationalReaches"
+              :key="index"
+              :value="i.value"
+            >
+              {{ i.text }}
+            </cv-dropdown-item>
+          </cv-dropdown>
+          <cv-button
+            kind="secondary"
+            size="small"
+            class="search-btn"
+            :disabled="loading"
+            @click.exact="fetchRivers"
+          >
+            Submit
+          </cv-button>
         </div>
       </template>
-      <div class="mb-lg" />
-    </template>
-  </layout>
+      <template #main>
+        <template v-if="!loading && !error && !data">
+          <utility-block
+            state="content"
+            blank
+          />
+        </template>
+        <template v-if="loading">
+          <utility-block
+            state="loading"
+            text="lookin for water"
+          />
+        </template>
+        <template v-else-if="data">
+          <div class="bx--data-table-container">
+            <table class="bx--data-table river-table">
+              <thead>
+                <tr>
+                  <th>
+                    <strong>Name</strong>
+                    <br>Section
+                  </th>
+                  <th>Class/Grade</th>
+                  <th>
+                    Flow Reading
+                  </th>
+                  <th>&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-if="data.length === 0">
+                  <td colspan="4">
+                    No Results.
+                  </td>
+                </tr>
+                <template v-if="data.length > 0">
+                  <tr
+                    v-for="(r, index) in data"
+                    :key="index"
+                  >
+                    <td
+                      :class="[r.color, 'river-name-section']"
+                      @click="viewRiver(r.id)"
+                    >
+                      <strong>{{ r.name }}</strong>
+                      <br>
+                      {{ r.section }}
+                    </td>
+                    <td>{{ r.class }}</td>
+                    <td
+                      v-if="r.reading_formatted"
+                      @click.exact="viewRiver(r.id, 'flow')"
+                    >
+                      <div>{{ r.reading_formatted }}</div>
+
+                      <template v-if="r.reading_delta">
+                        <span> {{ r.reading_delta }}</span>
+                      </template>
+                    </td>
+                    <td v-else>
+                      Data Unavailable
+                    </td>
+                    <td>
+                      <cv-overflow-menu
+                        flip-menu
+                        tip-position="left"
+                      >
+                        <cv-overflow-menu-item
+                          primary-focus
+                          @click.exact="$router.push('/river-index')"
+                        >
+                          View on Map
+                        </cv-overflow-menu-item>
+                        <cv-overflow-menu-item
+                          @click.exact="toggleBookmark(r.id)"
+                        >
+                          Bookmark
+                        </cv-overflow-menu-item>
+                      </cv-overflow-menu>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+              <tfoot v-if="data && !showAll && data.length > 25">
+                <tr>
+                  <td colspan="4">
+                    <cv-button
+                      kind="secondary"
+                      @click="showAll = !showAll"
+                    >
+                      Show All
+                    </cv-button>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </template>
+        <template v-if="error">
+          <utility-block state="error" />
+        </template>
+        <div class="mb-lg" />
+      </template>
+    </layout>
+  </div>
 </template>
 <script>
 /**
  * @todo replicate user account sidebar col widths
  */
 import { mapState } from 'vuex'
-import { LoadingBlock, ErrorBlock } from '@/app/global/components'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { riverSearchActions } from './shared/state'
 import { bookmarksActions } from '@/app/views/river-detail/shared/state'
 import { globalAppActions } from '@/app/global/state'
@@ -184,8 +204,7 @@ export default {
   name: 'river-search',
   components: {
     Layout,
-    LoadingBlock,
-    ErrorBlock
+    UtilityBlock
   },
   mixins: [InternationalReaches, LevelsList, UsStatesList, UsStatesRegions],
   metaInfo () {
@@ -203,7 +222,6 @@ export default {
       atLeast: null,
       atMost: null
     },
-
     showAll: false
   }),
   computed: {
@@ -244,8 +262,10 @@ export default {
         this.searchParams
       )
     },
-    viewRiver (id) {
-      this.$router.push(`/river-detail/${id}/main`).catch(() => {})
+    viewRiver (id, tab) {
+      this.$router
+        .push(`/river-detail/${id}/${tab || 'main'}`)
+        .catch(() => {})
     },
     formatFlowRange (min, max) {
       if (!min || !max) {

@@ -3,11 +3,11 @@
     <div class="bx--row">
       <template v-if="options.sidebar.left">
         <div
-          class="bx--col-sm-4 bx--col-md-6 bx--col-lg-6 bx--col-max-5 bx--offset-max-1"
+          class="bx--col-sm-4 bx--col-md-6 bx--col-lg-6 bx--col-max-5"
         >
           <slot name="sidebar" />
         </div>
-        <div class="bx--col-sm-4 bx--col-md-6 bx--col-lg-10 bx--offset-lg-1">
+        <div class="bx--col-sm-4 bx--col-md-6 bx--col-lg-10 ">
           <slot name="main" />
         </div>
       </template>

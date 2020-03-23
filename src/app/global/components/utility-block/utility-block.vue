@@ -4,21 +4,21 @@
     :style="`height:${height}px`"
     :class="`utility-block-${state}`"
   >
-    <template v-if="state === 'content' && !blank">
+    <template v-if="!blank">
       <h2
         v-if="title"
         class="utility-block-title mb-spacing-md"
         v-text="title"
       />
       <p
-        v-if="text"
+        v-if="text && state === 'content'"
         class="utility-block-text mb-spacing-md"
         v-text="text"
       />
     </template>
     <slot name="content">
       <cv-inline-loading
-        v-if="state !== 'content' && !blank"
+        v-if="state !== 'content' && !blank && !title"
         small
         :state="state"
         :loading-text="hideText ? '' : text"

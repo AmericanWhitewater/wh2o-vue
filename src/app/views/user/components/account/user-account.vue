@@ -21,6 +21,7 @@
                     >
                       <cv-button
                         :kind="activeSection(item.label)"
+                        :disabled="item.disabled"
                         @click="
                           $router.replace(`/user/account/1/${item.label}`)
                         "
@@ -111,19 +112,23 @@ export default {
      */
     tabs: [
       {
-        label: 'alerts'
+        label: 'alerts',
+        disabled: true
       },
       {
         label: 'bookmarks'
       },
       {
-        label: 'gages'
+        label: 'gages',
+        disabled: true
       },
       {
-        label: 'profile'
+        label: 'profile',
+        disabled: true
       },
       {
-        label: 'settings'
+        label: 'settings',
+        disabled: true
       }
     ]
   }),

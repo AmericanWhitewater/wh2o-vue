@@ -1,56 +1,67 @@
 <template>
-  <section class="map-tab">
-    <div class="alerts">
-      <hr>
-      <h2 class="mb-spacing-sm">
-        Alerts
-      </h2>
-      <cv-button
-        kind="secondary"
-        size="small"
-        class="mb-sm"
-      >
-        New Alert
-      </cv-button>
-      <div
-        v-if="loading"
-      >
-        <loading-block text="loading alerts" />
-      </div>
-      <div
-        v-else-if="alerts"
-      >
-        <div class="bx--row">
-          <div
-            v-for="(alert, index) in alerts"
-            :key="index"
-            class="alert-item bx--col-sm-12 bx--col-md-6 mb-sm bx--tile"
+  <layout name="layout-full-width">
+    <template #main>
+      <section class="map-tab">
+        <div class="alerts">
+          <hr>
+          <h2 class="mb-spacing-sm">
+            Alerts
+          </h2>
+          <cv-button
+            kind="secondary"
+            size="small"
+            class="mb-sm"
           >
-            <h4 v-if="alert.title">
-              {{ alert.title }}
-            </h4>
-            <p v-text="alert.detail" />
+            New Alert
+          </cv-button>
+          <div
+            v-if="loading"
+          >
+            <utility-block
+              state="loading"
+              text="loading alerts"
+            />
+          </div>
+          <div
+            v-else-if="alerts"
+          >
+            <div class="bx--row">
+              <div
+                v-for="(alert, index) in alerts"
+                :key="index"
+                class="alert-item bx--col-sm-12 bx--col-md-6 mb-sm bx--tile"
+              >
+                <h4 v-if="alert.title">
+                  {{ alert.title }}
+                </h4>
+                <p v-text="alert.detail" />
+              </div>
+            </div>
+          </div>
+          <div
+            v-else
+          >
+            <utility-block
+              state="error"
+              title="News unavaile"
+              text="please try again later"
+            />
           </div>
         </div>
-      </div>
-      <div
-        v-else
-      >
-        <error-block />
-      </div>
-    </div>
-  </section>
+      </section>
+    </template>
+  </layout>
 </template>
 <script>
 import { mapState } from 'vuex'
 import { newsTabActions } from '../shared/state'
-import { LoadingBlock, ErrorBlock } from '@/app/global/components'
-
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
+import { Layout } from '@/app/global/layout'
 export default {
   name: 'news-tab',
   components: {
-    ErrorBlock,
-    LoadingBlock
+    UtilityBlock,
+    Layout
   },
   data: () => ({
     mapHttpConfig: {

@@ -27,10 +27,6 @@
                     {{ bookmarked ? "Remove Bookmark" : "Add Bookmark" }}
                   </cv-button>
                 </div>
-                <edit-mode-toggle
-                  v-if="userIsAdmin"
-                  class="mt-spacing-sm"
-                />
               </div>
             </div>
           </div>
@@ -99,7 +95,6 @@
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex'
-import { EditModeToggle } from '@/app/global/components'
 import { checkWindow } from '@/app/global/mixins'
 import { globalAppActions } from '@/app/global/state'
 import { appLocalStorage } from '@/app/global/services'
@@ -107,9 +102,6 @@ import { bookmarksActions } from '../shared/state'
 
 export default {
   name: 'river-header',
-  components: {
-    EditModeToggle
-  },
   mixins: [checkWindow],
   props: {
     name: {

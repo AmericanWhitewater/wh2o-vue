@@ -16,6 +16,8 @@ const fetchRiverDetailData = data => {
           edited
           length
           maxgradient
+          plat
+          plon
           photo {
             id
             post {

@@ -29,18 +29,18 @@
       <div class="bx--grid">
         <div class="tabs-wrapper">
           <cv-overflow-menu>
-            <cv-overflow-menu-item v-if="userIsAdmin">
+            <!-- <cv-overflow-menu-item v-if="userIsAdmin">
               Link Resources
-            </cv-overflow-menu-item>
+            </cv-overflow-menu-item> -->
             <cv-overflow-menu-item @click.exact="reachShareModalVisible = true">
               Share Reach
             </cv-overflow-menu-item>
-            <cv-overflow-menu-item
+            <!-- <cv-overflow-menu-item
               v-if="userIsAdmin"
               @click.exact="reachDeleteModalVisible = true"
             >
               Remove from Index
-            </cv-overflow-menu-item>
+            </cv-overflow-menu-item> -->
           </cv-overflow-menu>
           <cv-tabs
             aria-label="navigation tab label"
