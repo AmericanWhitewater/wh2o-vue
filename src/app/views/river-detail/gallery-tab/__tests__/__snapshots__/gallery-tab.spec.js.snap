@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GalleryTab shows error block when error 1`] = `
+<div id="utility-block" class="utility-block-error" style="height: 350px;">
+  <!---->
+  <!---->
+  <div data-inline-loading="" role="alert" aria-live="assertive" class="bx--inline-loading" small="">
+    <div class="bx--inline-loading__animation">
+      <div class="bx--loading bx--loading--small" style="display: none;"><svg viewBox="-75 -75 150 150" class="bx--loading__svg">
+          <circle cx="0" cy="0" r="26.8125" class="bx--loading__background"></circle>
+          <circle cx="0" cy="0" r="26.8125" class="bx--loading__stroke"></circle>
+        </svg></div><svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" hidden="hidden" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="bx--inline-loading__checkmark-container" style="will-change: transform;">
+        <path d="M8,1C4.1,1,1,4.1,1,8c0,3.9,3.1,7,7,7s7-3.1,7-7C15,4.1,11.9,1,8,1z M7,11L4.3,8.3l0.9-0.8L7,9.3l4-3.9l0.9,0.8L7,11z"></path>
+        <path d="M7,11L4.3,8.3l0.9-0.8L7,9.3l4-3.9l0.9,0.8L7,11z" data-icon-path="inner-path" opacity="0"></path>
+      </svg><svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="bx--inline-loading--error" style="will-change: transform;">
+        <path d="M8,1C4.1,1,1,4.1,1,8s3.1,7,7,7s7-3.1,7-7S11.9,1,8,1z M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z"></path>
+        <path fill="none" d="M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z" data-icon-path="inner-path" opacity="0"></path>
+      </svg>
+    </div>
+    <p class="bx--inline-loading__text">Loading data failed.</p>
+  </div>
+</div>
+`;
+
+exports[`GalleryTab shows loading block when loading 1`] = `
+<div class="gallery-tab">
+  <div class="bx--grid">
+    <div class="bx--row">
+      <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-10">
+        <div id="utility-block" class="utility-block-loading" style="height: 350px;">
+          <!---->
+          <!---->
+          <div data-inline-loading="" role="alert" aria-live="assertive" class="bx--inline-loading" small="">
+            <div class="bx--inline-loading__animation">
+              <div class="bx--loading bx--loading--small"><svg viewBox="-75 -75 150 150" class="bx--loading__svg">
+                  <circle cx="0" cy="0" r="26.8125" class="bx--loading__background"></circle>
+                  <circle cx="0" cy="0" r="26.8125" class="bx--loading__stroke"></circle>
+                </svg></div><svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" hidden="hidden" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="bx--inline-loading__checkmark-container" style="will-change: transform;">
+                <path d="M8,1C4.1,1,1,4.1,1,8c0,3.9,3.1,7,7,7s7-3.1,7-7C15,4.1,11.9,1,8,1z M7,11L4.3,8.3l0.9-0.8L7,9.3l4-3.9l0.9,0.8L7,11z"></path>
+                <path d="M7,11L4.3,8.3l0.9-0.8L7,9.3l4-3.9l0.9,0.8L7,11z" data-icon-path="inner-path" opacity="0"></path>
+              </svg><svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" hidden="hidden" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="bx--inline-loading--error" style="will-change: transform;">
+                <path d="M8,1C4.1,1,1,4.1,1,8s3.1,7,7,7s7-3.1,7-7S11.9,1,8,1z M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z"></path>
+                <path fill="none" d="M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z" data-icon-path="inner-path" opacity="0"></path>
+              </svg>
+            </div>
+            <p class="bx--inline-loading__text">Loading data...</p>
+          </div>
+        </div>
+      </div>
+      <div class="bx--col-sm-4 bx--col-md-6 bx--col-lg-6 bx--col-max-5 bx--offset-max-1">
+        <div class="gallery-upload-form">
+          <hr>
+          <h2>Upload Photos</h2>
+          <div data-notification="" aria-live="polite" class="cv-inline-notification bx--inline-notification bx--inline-notification--info">
+            <div class="bx--inline-notification__details">
+              <!---->
+              <div class="bx--inline-notification__text-wrapper">
+                <p class="bx--inline-notification__title">Login to Upload</p>
+                <p class="bx--inline-notification__subtitle"></p>
+              </div>
+            </div>
+            <!----><button type="button" aria-label="Dismiss notification" data-notification-btn="" class="bx--inline-notification__close-button"><svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true" class="bx--inline-notification__close-icon" style="will-change: transform;">
+                <path d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4 14.6 16 8 22.6 9.4 24 16 17.4 22.6 24 24 22.6 17.4 16 24 9.4z"></path>
+              </svg></button>
+          </div>
+          <div class="cv-form-item bx--form-item cv-file-uploader"><strong class="bx--file--label"></strong>
+            <p class="bx--label-description">Select the files you want to upload</p>
+            <div data-file="" class="bx--file"><label for="uid-0698c96e-9fb0-4839-b61c-8bae9b5b57b0" role="button" tabindex="0" class="bx--file-browse-btn">
+                <div data-file-drop-container="" class="bx--file__drop-container">Drag and drop files here or click to upload<input type="file" id="uid-0698c96e-9fb0-4839-b61c-8bae9b5b57b0" data-file-uploader="" data-target="[data-file-container]" accept="image/jpg,image/png" multiple="multiple" disabled="disabled" class="bx--file-input"></div>
+              </label>
+              <div data-file-container="" class="bx--file-container"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`GalleryTab shows no results block when error 1`] = `
+<div class="gallery-tab">
+  <div class="bx--grid">
+    <div class="bx--row">
+      <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-10">
+        <!---->
+        <div id="utility-block" class="utility-block-content" style="height: 350px;">
+          <h2 class="utility-block-title mb-spacing-md">No Media</h2>
+          <p class="utility-block-text mb-spacing-md">if you have media for this reach, please share</p>
+          <!---->
+        </div>
+      </div>
+      <div class="bx--col-sm-4 bx--col-md-6 bx--col-lg-6 bx--col-max-5 bx--offset-max-1">
+        <div class="gallery-upload-form">
+          <hr>
+          <h2>Upload Photos</h2>
+          <div data-notification="" aria-live="polite" class="cv-inline-notification bx--inline-notification bx--inline-notification--info">
+            <div class="bx--inline-notification__details">
+              <!---->
+              <div class="bx--inline-notification__text-wrapper">
+                <p class="bx--inline-notification__title">Login to Upload</p>
+                <p class="bx--inline-notification__subtitle"></p>
+              </div>
+            </div>
+            <!----><button type="button" aria-label="Dismiss notification" data-notification-btn="" class="bx--inline-notification__close-button"><svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32" aria-hidden="true" class="bx--inline-notification__close-icon" style="will-change: transform;">
+                <path d="M24 9.4L22.6 8 16 14.6 9.4 8 8 9.4 14.6 16 8 22.6 9.4 24 16 17.4 22.6 24 24 22.6 17.4 16 24 9.4z"></path>
+              </svg></button>
+          </div>
+          <div class="cv-form-item bx--form-item cv-file-uploader"><strong class="bx--file--label"></strong>
+            <p class="bx--label-description">Select the files you want to upload</p>
+            <div data-file="" class="bx--file"><label for="uid-bbae2cb5-7511-4b52-b21c-24a027691199" role="button" tabindex="0" class="bx--file-browse-btn">
+                <div data-file-drop-container="" class="bx--file__drop-container">Drag and drop files here or click to upload<input type="file" id="uid-bbae2cb5-7511-4b52-b21c-24a027691199" data-file-uploader="" data-target="[data-file-container]" accept="image/jpg,image/png" multiple="multiple" disabled="disabled" class="bx--file-input"></div>
+              </label>
+              <div data-file-container="" class="bx--file-container"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

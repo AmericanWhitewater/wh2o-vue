@@ -29,6 +29,8 @@ describe('FlowTab', () => {
       }
     })
 
+    expect(wrapper.find('.weather-tab')).toMatchSnapshot()
+
     expect(wrapper.find('.utility-block-loading').exists()).toBe(true)
     expect(wrapper.find('.utility-block-error').exists()).toBe(false)
     expect(wrapper.find('.utility-block-content').exists()).toBe(false)
@@ -45,6 +47,8 @@ describe('FlowTab', () => {
         lon: null
       }
     })
+
+    expect(wrapper.find('.weather-tab')).toMatchSnapshot()
 
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
     expect(wrapper.find('.utility-block-error').exists()).toBe(true)

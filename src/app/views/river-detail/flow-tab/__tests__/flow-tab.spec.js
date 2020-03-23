@@ -23,6 +23,9 @@ describe('FlowTab', () => {
   it('shows loading block when loading', () => {
     state.riverDetailState.gageReadingsData.loading = true
     const wrapper = createWrapper(FlowTab, state, {})
+
+    expect(wrapper.find('.flow-tab')).toMatchSnapshot()
+
     expect(wrapper.find('.utility-block-loading').exists()).toBe(true)
     expect(wrapper.find('.utility-block-error').exists()).toBe(false)
     expect(wrapper.find('.utility-block-content').exists()).toBe(false)
@@ -32,6 +35,9 @@ describe('FlowTab', () => {
     state.riverDetailState.gageReadingsData.loading = false
     state.riverDetailState.gageReadingsData.error = true
     const wrapper = createWrapper(FlowTab, state, {})
+
+    expect(wrapper.find('.flow-tab')).toMatchSnapshot()
+
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
     expect(wrapper.find('.utility-block-error').exists()).toBe(true)
     expect(wrapper.find('.utility-block-content').exists()).toBe(false)

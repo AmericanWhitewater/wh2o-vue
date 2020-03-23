@@ -22,6 +22,8 @@ describe('FlowTab', () => {
     state.riverDetailState.riverDetailData.loading = true
     const wrapper = createWrapper(BetaBox, state, {})
 
+    expect(wrapper.find('.beta-box')).toMatchSnapshot()
+
     expect(wrapper.find('#utility-block').exists()).toBe(true)
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
     expect(wrapper.find('.utility-block-error').exists()).toBe(false)
@@ -32,6 +34,9 @@ describe('FlowTab', () => {
     state.riverDetailState.riverDetailData.loading = false
     state.riverDetailState.riverDetailData.error = true
     const wrapper = createWrapper(BetaBox, state, {})
+
+    expect(wrapper.find('.beta-box')).toMatchSnapshot()
+
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
     expect(wrapper.find('.utility-block-error').exists()).toBe(false)
     expect(wrapper.find('.utility-block-content').exists()).toBe(false)

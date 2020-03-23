@@ -1,56 +1,38 @@
+// import RiverHeader from '@/app/views/river-detail/river-header/river-header.vue'
+// import { createWrapper } from '@/app/global/services'
 
-test.todo('what does this component do?')
-// import Vuex from 'vuex'
-// import { shallowMount, createLocalVue } from '@vue/test-utils'
-// import CarbonComponents from '@carbon/vue'
-// import RiverHeader from '../river-header.vue'
+// const state = {
+//   // userState: {
+//   //   userData: {
+//   //     data: null
+//   //   }
+//   // },
+//   // riverDetailState: {
+//   //   newsTabData: {
+//   //     error: null,
+//   //     data: null,
+//   //     loading: null
+//   //   }
+//   // }
+// }
 
-// const localVue = createLocalVue()
-// localVue.use(Vuex)
-// localVue.use(CarbonComponents)
+// describe('RiverHeader', () => {
+//   it('shows loading block when loading', () => {
+//     // state.riverDetailState.newsTabData.loading = true
+//     const wrapper = createWrapper(RiverHeader, state, {})
 
-// const store = new Vuex.Store({
-//   state: {
-//     appGlobalState: {
-//       appGlobalData: {
-//         editMode: false
-//       }
-//     },
-//     userState: {
-//       userData: {
-//         data: false
-//       }
-//     },
-//     riverDetailState: {
-//       bookmarksData: {
-//         data: null
-//       }
-//     }
-//   },
-//   getters: {
-//     userIsAdmin: state => {
-//       return true
-//     }
-//   }
-// })
+//     expect(wrapper.find('.utility-block-loading')).toMatchSnapshot()
 
-// const riverName = 'River Name'
-// const riverSection = 'River Section'
-
-// const wrapper = shallowMount(RiverHeader, {
-//   store,
-//   localVue,
-//   propsData: {
-//     name: riverName,
-//     section: riverSection
-//   }
-// })
-
-// describe('RiverHeader.vue', () => {
-//   it('renders props.name when passed', () => {
-//     expect(wrapper.find('h4').text()).toMatch(riverName)
+//     expect(wrapper.find('.utility-block-loading').exists()).toBe(true)
+//     expect(wrapper.find('.utility-block-error').exists()).toBe(false)
+//     expect(wrapper.find('.utility-block-content').exists()).toBe(false)
 //   })
-//   it('renders props.section when passed', () => {
-//     expect(wrapper.find('h1').text()).toMatch(riverSection)
+
+//   it('shows error block when error', () => {
+//     // state.riverDetailState.newsTabData.loading = false
+//     // state.riverDetailState.newsTabData.error = true
+//     const wrapper = createWrapper(RiverHeader, state, {})
+
 //   })
 // })
+test.todo('river header')

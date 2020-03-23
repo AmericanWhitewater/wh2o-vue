@@ -20,6 +20,9 @@ describe('CreditsTab', () => {
   it('shows loading block when loading', () => {
     state.riverDetailState.creditsData.loading = true
     const wrapper = createWrapper(CreditsTab, state, {})
+
+    expect(wrapper.find('.credits-tab')).toMatchSnapshot()
+
     expect(wrapper.find('.utility-block-loading').exists()).toBe(true)
     expect(wrapper.find('.utility-block-error').exists()).toBe(false)
     expect(wrapper.find('.utility-block-content').exists()).toBe(false)
@@ -29,6 +32,9 @@ describe('CreditsTab', () => {
     state.riverDetailState.creditsData.loading = false
     state.riverDetailState.creditsData.error = true
     const wrapper = createWrapper(CreditsTab, state, {})
+
+    expect(wrapper.find('.credits-tab')).toMatchSnapshot()
+
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
     expect(wrapper.find('.utility-block-error').exists()).toBe(true)
     expect(wrapper.find('.utility-block-content').exists()).toBe(false)

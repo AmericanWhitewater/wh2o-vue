@@ -1,5 +1,8 @@
 <template>
-  <layout name="layout-full-width">
+  <layout
+    name="layout-full-width"
+    class="news-tab"
+  >
     <template #main>
       <section class="map-tab">
         <div class="alerts">
