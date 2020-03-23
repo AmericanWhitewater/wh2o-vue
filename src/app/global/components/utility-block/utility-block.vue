@@ -4,7 +4,7 @@
     :style="`height:${height}px`"
     :class="`utility-block-${state}`"
   >
-    <template v-if="state === 'content'">
+    <template v-if="state === 'content' && !blank">
       <h2
         v-if="title"
         class="utility-block-title mb-spacing-md"
@@ -18,7 +18,7 @@
     </template>
     <slot name="content">
       <cv-inline-loading
-        v-if="state !== 'content'"
+        v-if="state !== 'content' && !blank"
         small
         :state="state"
         :loading-text="hideText ? '' : text"
@@ -33,6 +33,10 @@
 export default {
   name: 'utility-block',
   props: {
+    blank: {
+      type: Boolean,
+      required: false
+    },
     height: {
       type: String,
       default: '350'
