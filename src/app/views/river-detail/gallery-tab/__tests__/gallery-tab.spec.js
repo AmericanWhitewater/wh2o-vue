@@ -1,6 +1,15 @@
 import GalleryTab from '@/app/views/river-detail/gallery-tab/gallery-tab.vue'
 import { createWrapper } from '@/app/global/services'
 
+/**
+ *
+ * @note snapshot testing on components
+ * which use the FileUploader or any child component
+ * which generates random id/key/class/attr in html
+ * markup will fail on every test.
+ *
+ */
+
 const state = {
   userState: {
     userData: {
@@ -32,8 +41,6 @@ describe('GalleryTab', () => {
       formattedData: null
     })
 
-    expect(wrapper.find('.gallery-tab')).toMatchSnapshot()
-
     expect(wrapper.find('.utility-block-loading').exists()).toBe(true)
     expect(wrapper.find('.utility-block-error').exists()).toBe(false)
     expect(wrapper.find('.utility-block-content').exists()).toBe(false)
@@ -44,8 +51,6 @@ describe('GalleryTab', () => {
     state.riverDetailState.galleryData.error = true
 
     const wrapper = createWrapper(GalleryTab, state, route)
-
-    expect(wrapper.find('.utility-block-error')).toMatchSnapshot()
 
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
     expect(wrapper.find('.utility-block-error').exists()).toBe(true)
@@ -58,8 +63,6 @@ describe('GalleryTab', () => {
     state.riverDetailState.galleryData.data = []
 
     const wrapper = createWrapper(GalleryTab, state, route)
-
-    expect(wrapper.find('.gallery-tab')).toMatchSnapshot()
 
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
     expect(wrapper.find('.utility-block-error').exists()).toBe(false)

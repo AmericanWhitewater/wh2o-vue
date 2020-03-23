@@ -8,7 +8,7 @@
     "build": "vue-cli-service build",
     "build:modern": "vue-cli-service build --modern",
     "test:unit": "vue-cli-service test:unit",
-    "test:coverage":"vue-cli-service test:unit --coverage",
+    "test:coverage": "vue-cli-service test:unit --coverage",
     "snapshot:update": " vue-cli-service test:unit --updateSnapshot",
     "lint": "vue-cli-service lint --fix",
     "postinstall": "if test \"$NODE_ENV\" = \"production\" ; then npm run build ; fi ",
