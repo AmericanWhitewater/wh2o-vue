@@ -8,17 +8,27 @@ const localVue = createLocalVue()
 
 localVue.use(CarbonComponents)
 
-const createWrapper = (component, stateConfig = {}, routeConfig = {}, localStub) => {
+/**
+ *
+ * @param {object} component vue component to be tested
+ * @param {object} stateConfig test suite local state mock
+ * @param {object} routeConfig test suite local route mock.
+ *
+ */
+const createWrapper = (component, stateConfig = {}, routeConfig = {}) => {
   const wrapper = mount(component, ({
     localVue,
     mocks: {
       $store: {
         state: {
           ...stateConfig
-        }
+        },
+        dispatch: jest.fn()
       },
       $route: {
-        ...routeConfig
+        params: {
+          ...routeConfig.params
+        }
       }
     },
     stubs: {

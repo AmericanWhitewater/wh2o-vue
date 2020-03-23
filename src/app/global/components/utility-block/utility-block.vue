@@ -7,12 +7,12 @@
     <template v-if="state === 'content'">
       <h2
         v-if="title"
-        class="mb-spacing-md"
+        class="utility-block-title mb-spacing-md"
         v-text="title"
       />
       <p
         v-if="text"
-        class="mb-spacing-md"
+        class="utility-block-text mb-spacing-md"
         v-text="text"
       />
     </template>
