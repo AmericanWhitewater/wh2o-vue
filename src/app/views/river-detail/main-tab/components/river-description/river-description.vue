@@ -5,7 +5,11 @@
       River Description
     </h2>
     <template v-if="loading">
-      loading
+      <cv-skeleton-text
+        class="cv-skeleton-text"
+        paragraph
+        :line-count="3"
+      />
     </template>
     <template v-else-if="river">
       <template v-if="!editMode">
@@ -38,6 +42,13 @@
           show-control-bar
         />
       </template>
+    </template>
+    <template v-else>
+      <cv-skeleton-text
+        class="cv-skeleton-text"
+        paragraph
+        :line-count="3"
+      />
     </template>
   </main>
 </template>

@@ -8,6 +8,10 @@ const localVue = createLocalVue()
 
 localVue.use(CarbonComponents)
 
+const test = () => {
+  return 'test'
+}
+localVue.directive('view', test)
 /**
  *
  * @param {object} component vue component to be tested

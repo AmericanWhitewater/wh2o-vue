@@ -57,7 +57,7 @@
 <script>
 import { globalAppActions } from '@/app/global/state'
 import { appLocalStorage, httpClient } from '@/app/global/services'
-import { userActions } from '../../shared/state'
+import { userActions } from '../../../shared/state'
 import {
   apiBaseUrl,
   clientId,
@@ -70,9 +70,9 @@ export default {
   name: 'user-login',
   data: () => ({
     formData: {
-      grant_type: 'password',
-      username: null,
-      password: null,
+      grant_type: 'client_credentials',
+      username: 'drewalth',
+      password: 'jfhlsdjhflskjdfhu',
       client_id: null,
       client_secret: null,
       scope: ''
