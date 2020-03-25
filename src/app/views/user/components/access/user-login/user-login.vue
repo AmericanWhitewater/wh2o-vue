@@ -70,10 +70,10 @@ export default {
   name: 'user-login',
   data: () => ({
     formData: {
-      grant_type: 'client_credentials',
-      username: 'drewalth',
-      password: 'jfhlsdjhflskjdfhu',
-      client_id: null,
+      grant_type: 'password',
+      username: '',
+      password: '',
+      client_id: 6,
       client_secret: null,
       scope: ''
     },
@@ -114,7 +114,7 @@ export default {
       }
 
       if (!this.passwordError && !this.usernameError) {
-        const url = apiBaseUrl + 'oauth/token'
+        const url = apiBaseUrl + 'oauth/authorize'
         const input = JSON.stringify(this.formData)
         const result = await httpClient.post(url, input).catch(e => {
           /* eslint-disable-next-line no-console */

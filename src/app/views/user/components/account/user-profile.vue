@@ -1,18 +1,27 @@
 <template>
   <div class="user-profile">
-    <error-block
-      title="Profile Unavailable"
-      text="Please try again later"
-    />
+    <template v-if="loading">
+      loading
+    </template>
+    <template v-else-if="data">
+      {{ data }}
+    </template>
+    <template v-else>
+      error
+    </template>
   </div>
 </template>
 
 <script>
-import { ErrorBlock } from '@/app/global/components'
+import { mapState } from 'vuex'
 export default {
   name: 'user-profile',
-  components: {
-    ErrorBlock
+  computed: {
+    ...mapState({
+      data: state => state.userState.userData.data,
+      loading: state => state.userState.userData.loading,
+      error: state => state.userState.userData.error
+    })
   }
 }
 </script>

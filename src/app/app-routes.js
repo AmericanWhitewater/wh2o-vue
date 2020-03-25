@@ -55,8 +55,8 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const loggedIn = appLocalStorage.getItem('wh2o-registered')
-  if (to.path.includes('account') && !loggedIn) {
+  const token = appLocalStorage.getItem('wh2o-auth')
+  if (to.path.includes('account') && !token) {
     next('/user/access/login')
   }
   next()

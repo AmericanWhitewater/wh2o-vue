@@ -1,6 +1,6 @@
 import { reflectKeys } from '@/app/global/services'
 
-import { userRegister, userForgot } from '../services'
+import { fetchUserData } from '../services'
 
 const initialState = {
   loading: false,
@@ -35,46 +35,28 @@ const mutations = {
   },
 
   [DATA_RESET] (state) {
-    state.data = null
-    state.error = null
-    state.loading = null
+    Object.assign(state, initialState)
   }
 }
 
 export const userActions = reflectKeys(
-  ['USER_LOGIN', 'USER_REGISTER', 'USER_FORGOT', 'RESET_USER'],
+  ['FETCH_USER_DATA'],
   namespacedPrefix
 )
 
 const actions = {
-  async [userActions.USER_LOGIN] (context, data) {
+  async [userActions.FETCH_USER_DATA] (context, data) {
     context.commit(DATA_REQUEST)
-    // temp. needs to follow defined pattern
-    context.commit(DATA_SUCCESS, data)
-    return data
-  },
-  async [userActions.USER_REGISTER] (context, data) {
-    context.commit(DATA_REQUEST)
-    const result = await userRegister(data).catch(e => {
+
+    const result = await fetchUserData(data).catch(e => {
       context.commit(DATA_ERROR, e)
     })
+
     if (result) {
       context.commit(DATA_SUCCESS, result)
     }
+
     return result
-  },
-  async [userActions.USER_FORGOT] (context, data) {
-    context.commit(DATA_REQUEST)
-    const result = await userForgot(data).catch(e => {
-      context.commit(DATA_ERROR, e)
-    })
-    if (result) {
-      context.commit(DATA_SUCCESS, result)
-    }
-    return result
-  },
-  async [userActions.RESET_USER] (context) {
-    context.commit(DATA_RESET)
   }
 }
 
@@ -92,5 +74,5 @@ export default {
   mutations,
   actions,
   getters,
-  state: initialState
+  state: Object.assign({}, initialState)
 }

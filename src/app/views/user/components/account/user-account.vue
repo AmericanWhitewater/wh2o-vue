@@ -80,6 +80,7 @@
 <script>
 import { mapState } from 'vuex'
 import { checkWindow } from '@/app/global/mixins'
+import { userActions } from '../../shared/state'
 
 /**
  * User Dashboard / My Account
@@ -123,8 +124,8 @@ export default {
         disabled: true
       },
       {
-        label: 'profile',
-        disabled: true
+        label: 'profile'
+        // disabled: true
       },
       {
         label: 'settings',
@@ -134,7 +135,7 @@ export default {
   }),
   computed: {
     ...mapState({
-      alerts: state => state.userState.userData.data.alerts,
+      data: state => state.userState.userData.data,
       loading: state => state.userState.userData.loading,
       error: state => state.userState.userData.error
     })
@@ -157,6 +158,9 @@ export default {
       }
       return 'ghost'
     }
+  },
+  created () {
+    this.$store.dispatch(userActions.FETCH_USER_DATA)
   }
 }
 </script>
