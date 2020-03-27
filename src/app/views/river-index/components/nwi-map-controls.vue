@@ -166,14 +166,6 @@ export default {
   width: 100%;
   z-index: 2;
   background-color: rgba(255, 255, 255, 0.7);
-
-  @include carbon--breakpoint("md") {
-    width: 68%;
-  }
-
-  @include carbon--breakpoint("max") {
-    width: 76%;
-  }
 }
 
 .bx--dropdown {

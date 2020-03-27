@@ -2,20 +2,16 @@
   <div>
     <app-toaster />
     <app-navigation />
-    <app-breadcrumbs />
     <router-view
       :class="[$route.name !== 'home' ? 'interior' : null, 'app-main-content']"
     />
-    <app-footer />
   </div>
 </template>
 
 <script>
 import {
   AppToaster,
-  AppNavigation,
-  AppBreadcrumbs,
-  AppFooter
+  AppNavigation
 } from './global/components'
 import { appLocalStorage } from '@/app/global/services'
 import { userActions } from '@/app/views/user/shared/state'
@@ -25,8 +21,6 @@ export default {
     title: 'American Whitewater'
   },
   components: {
-    AppBreadcrumbs,
-    AppFooter,
     AppNavigation,
     AppToaster
   },

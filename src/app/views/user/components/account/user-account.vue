@@ -112,25 +112,25 @@ export default {
      * user account subroutes
      */
     tabs: [
-      {
-        label: 'alerts',
-        disabled: true
-      },
+      // {
+      //   label: 'alerts',
+      //   disabled: true
+      // },
       {
         label: 'bookmarks'
       },
-      {
-        label: 'gages',
-        disabled: true
-      },
+      // {
+      //   label: 'gages',
+      //   disabled: true
+      // },
       {
         label: 'profile'
         // disabled: true
-      },
-      {
-        label: 'settings',
-        disabled: true
       }
+      // {
+      //   label: 'settings',
+      //   disabled: true
+      // }
     ]
   }),
   computed: {

@@ -1,41 +1,5 @@
 <template>
   <div :class="[{ home: homePage }, 'desktop-nav']">
-    <div :class="[{ 'edit-mode': editMode }, 'top-bar-wrapper']">
-      <div class="bx--grid">
-        <div class="bx--row">
-          <div class="bx--col-lg-16 top-bar">
-            <template v-if="!editMode">
-              <!-- <router-link
-                v-if="user"
-                to="/user/account/1/bookmarks"
-                class="ml-2xs"
-              >
-                <UserAvatar16 />My Account
-              </router-link>
-              <router-link
-                to="/river-search"
-                class="ml-2xs"
-              >
-                <icon-search />Search
-              </router-link> -->
-            </template>
-            <template v-else>
-              <aw-logo />
-              <h4 class="productive-heading-02">
-                Edit Mode
-              </h4>
-              <cv-button
-                kind="tertiary"
-                small
-                @click="exitEditMode"
-              >
-                Exit
-              </cv-button>
-            </template>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="primary-nav-wrapper">
       <div class="bx--grid">
         <div class="bx--row">
@@ -53,7 +17,7 @@
                 class="header--btn"
                 @click.exact="$router.push('/river-index')"
               >
-                River Index
+                Map
               </cv-button>
 
               <cv-button
@@ -138,10 +102,10 @@ export default {
     background-color: #fff !important;
   }
 
-  .bx--header__menu-title[role="menuitem"][aria-expanded="true"]
-    + .bx--header__menu {
-    @include layer("temporary-nav");
-  }
+  // .bx--header__menu-title[role="menuitem"][aria-expanded="true"]
+  //   + .bx--header__menu {
+  //   @include layer("temporary-nav");
+  // }
 
   a.bx--header__menu-item[role="menuitem"]:hover > svg {
     fill: $ui-04;
@@ -185,7 +149,7 @@ export default {
     header,
     .cv-header-nav,
     .bx--header {
-      @include layer("sticky-nav");
+      // @include layer("sticky-nav");
       padding:$spacing-sm;
     }
   }
@@ -194,7 +158,7 @@ export default {
     background-color: $brand-03;
 
     &.edit-mode {
-      @include layer("raised");
+      // @include layer("raised");
       background-color: $support-03;
       height: 75px;
       position: fixed;

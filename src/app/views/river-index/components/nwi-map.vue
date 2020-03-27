@@ -535,10 +535,11 @@ export default {
 #nwi-map-container {
   min-height: 500px;
   min-width: 100%;
-  height: 100%;
+  height: calc(100vh - 75px);
   width: 100%;
   position: relative;
 
+  canvas,
   #nwi-map {
     height: 100%;
     width: 100%;
@@ -547,6 +548,12 @@ export default {
       height: 65%;
 
       @include carbon--breakpoint("md") {
+        height: 100%;
+      }
+    }
+
+    &.river-detail {
+       @include carbon--breakpoint("md") {
         width: 68%;
         height: 100%;
       }
@@ -555,6 +562,7 @@ export default {
         width: 76%;
       }
     }
+
   }
 
   .cv-loading {

@@ -43,6 +43,7 @@ module.exports = {
   pwa: {
     name: 'American Whitewater',
     themeColor: '#cdd1d4',
+    backgroundColor: '#000000',
     msTileColor: '#FFFFFF',
     assetsVersion: Math.floor(Math.random() * 1000000000),
     appleMobileWebAppCapable: 'yes',

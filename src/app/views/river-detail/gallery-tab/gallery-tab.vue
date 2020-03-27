@@ -78,8 +78,8 @@ export default {
     formatData (photos) {
       if (photos) {
         const data = []
-
-        for (let i = 0; i < photos.length; i++) {
+        const numberOfImages = photos.length
+        for (let i = 0; i < numberOfImages; i++) {
           const input = {
             src: null,
             thumbnail: null,

@@ -188,9 +188,6 @@ export default {
   justify-content: space-between;
   max-width: 100%;
   overflow-x: scroll;
-  @include carbon--breakpoint("lg") {
-    top: $desktop-nav-height;
-  }
   &.home {
     visibility: hidden;
   }

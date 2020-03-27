@@ -1,31 +1,39 @@
 <template>
   <div id="national-map-app">
-    <nwi-map
-      :external-loading="loading"
-      :feature-to-center="featureToCenter"
-      :has-sidebar="showSidebar"
-      :has-controls="showControls"
-      :highlighted-feature="highlightedFeature"
-      :mapbox-access-token="mapboxAccessToken"
-      :source-layers="sourceLayers"
-      :tileservers="tileservers"
-      center-on-user-location
-      id-for-full-screen="national-map-app"
-      :include-legend="showLegend"
-      @centeredFeature="centerFeature"
-      @changeReachesInViewport="changeReachesInViewport"
-      @clickFeature="clickFeature"
-      @highlightFeature="changeHighlightedFeature"
-      @searchResults="updateSearchResults"
-    />
-    <nwi-rivers-table
-      v-if="showRiversTable"
-      :highlighted-feature="highlightedFeature"
-      :reaches="reachesInViewport"
-      :showing-search-results="showingSearchResults"
-      @centerReach="centerFeature"
-      @highlightFeature="changeHighlightedFeature"
-    />
+    <div class="bx--grid">
+      <div class="bx--row">
+        <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-12 bx--col-max-12">
+          <nwi-map
+            :external-loading="loading"
+            :feature-to-center="featureToCenter"
+            :has-sidebar="showSidebar"
+            :has-controls="showControls"
+            :highlighted-feature="highlightedFeature"
+            :mapbox-access-token="mapboxAccessToken"
+            :source-layers="sourceLayers"
+            :tileservers="tileservers"
+            center-on-user-location
+            id-for-full-screen="national-map-app"
+            :include-legend="showLegend"
+            @centeredFeature="centerFeature"
+            @changeReachesInViewport="changeReachesInViewport"
+            @clickFeature="clickFeature"
+            @highlightFeature="changeHighlightedFeature"
+            @searchResults="updateSearchResults"
+          />
+        </div>
+        <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-4 bx--col-max-4">
+          <nwi-rivers-table
+            v-if="showRiversTable"
+            :highlighted-feature="highlightedFeature"
+            :reaches="reachesInViewport"
+            :showing-search-results="showingSearchResults"
+            @centerReach="centerFeature"
+            @highlightFeature="changeHighlightedFeature"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -159,7 +167,7 @@ export default {
   position: relative;
   height: 70vh;
 
-  @include MQ(XS) {
+  @include carbon--breakpoint('sm') {
     height: 95vh;
   }
 

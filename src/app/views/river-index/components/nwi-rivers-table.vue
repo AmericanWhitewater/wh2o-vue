@@ -3,60 +3,70 @@
     id="nwi-rivers-table"
     kind="standard"
   >
-    <div
-      v-if="noReaches"
-      class="no-reaches-notice"
-    >
+    <template v-if="loading">
+      <utility-block state="loading" />
+    </template>
+    <template v-else-if="noReaches">
       <h3 v-if="showingSearchResults">
-        No rivers in the viewport match your search query.
+        <utility-block
+          state="content"
+          text="No rivers in the viewport match your search query."
+        />
       </h3>
       <h3 v-else>
-        Zoom in on the map to display river details here.
+        <utility-block
+          state="content"
+          text="Zoom in on the map to display river details here."
+        />
       </h3>
-    </div>
-    <cv-data-table
-      v-else
-      :columns="columns"
-      :borderless="false"
-      :row-size="rowSize"
-    >
-      <template slot="data">
-        <cv-data-table-row
-          v-for="reach in reaches"
-          :key="reach.properties.id"
-          :ref="`reach-${reach.properties.id}`"
-          :class="[
-            friendlyCurrentFlow(reach.properties.condition),
-            highlightedClass(reach.properties.id)
-          ]"
-          @mouseover.native="debouncedHighlight(reach)"
-        >
-          <cv-data-table-cell>
-            <a
-              :href="reachDetailUrl(reach.properties.id)"
-              class="reach-link"
-            >
-              <h3 class="bx--type-zeta">{{ reach.properties.river }}</h3>
-              <span class="section bx--type-caption">{{
-                reach.properties.section
-              }}</span>
-            </a>
-          </cv-data-table-cell>
-          <cv-data-table-cell>{{ reach.properties.class }}</cv-data-table-cell>
-          <cv-data-table-cell>
-            {{ friendlyCurrentFlow(reach.properties.condition) }}
-          </cv-data-table-cell>
-          <cv-data-table-cell>
-            <zoom-in16
-              class="zoom-button"
-              width="21"
-              height="21"
-              @click="centerReach(reach)"
-            />
-          </cv-data-table-cell>
-        </cv-data-table-row>
-      </template>
-    </cv-data-table>
+    </template>
+    <template v-else-if="reaches">
+      <cv-data-table
+        :columns="columns"
+        borderless
+        :row-size="rowSize"
+      >
+        <template slot="data">
+          <cv-data-table-row
+            v-for="reach in reaches"
+            :key="reach.properties.id"
+            :ref="`reach-${reach.properties.id}`"
+            :class="[
+              friendlyCurrentFlow(reach.properties.condition),
+              highlightedClass(reach.properties.id)
+            ]"
+            @mouseover.native="debouncedHighlight(reach)"
+          >
+            <cv-data-table-cell>
+              <a
+                :href="reachDetailUrl(reach.properties.id)"
+                class="reach-link"
+              >
+                <h3 class="bx--type-zeta">{{ reach.properties.river }}</h3>
+                <span class="section bx--type-caption">{{
+                  reach.properties.section
+                }}</span>
+              </a>
+            </cv-data-table-cell>
+            <cv-data-table-cell>{{ reach.properties.class }}</cv-data-table-cell>
+            <cv-data-table-cell>
+              {{ friendlyCurrentFlow(reach.properties.condition) }}
+            </cv-data-table-cell>
+            <cv-data-table-cell>
+              <zoom-in16
+                class="zoom-button"
+                width="21"
+                height="21"
+                @click="centerReach(reach)"
+              />
+            </cv-data-table-cell>
+          </cv-data-table-row>
+        </template>
+      </cv-data-table>
+    </template>
+    <template v-else>
+      Error
+    </template>
   </cv-tile>
 </template>
 
@@ -65,11 +75,12 @@ import debounce from 'lodash.debounce'
 import ZoomIn16 from '@carbon/icons-vue/lib/zoom--in/16'
 import scrollIntoView from 'scroll-into-view-if-needed'
 import { Breakpoints } from '@/app/global/services'
-
+import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 export default {
   name: 'nwi-rivers-table',
   components: {
-    ZoomIn16
+    ZoomIn16,
+    UtilityBlock
   },
   props: {
     reaches: {
@@ -88,7 +99,8 @@ export default {
   },
   data: () => ({
     windowWidth: 0,
-    mq: Breakpoints
+    mq: Breakpoints,
+    loading: false
   }),
   computed: {
     noReaches () {
@@ -170,25 +182,27 @@ export default {
 
 <style lang="scss">
 #nwi-rivers-table {
-  background: rgba(255, 255, 255, 0.7);
+  // background-color: $ui-02;
   border: none;
   bottom: 0;
   right: 0;
   padding: 0;
-  position: absolute;
   overflow-y: scroll;
   z-index: 2;
-
   width: 100%;
-  height: 35%;
+  height: 100%;
 
   @include carbon--breakpoint("md") {
-    width: 32%;
     height: 100%;
   }
-
-  @include carbon--breakpoint("max") {
-    width: 24%;
+  &.river-detail {
+    @include carbon--breakpoint("md") {
+      width: 32%;
+      height: 100%;
+    }
+    @include carbon--breakpoint("max") {
+      width: 24%;
+    }
   }
 
   table.bx--data-table,
@@ -198,6 +212,7 @@ export default {
 
   .no-reaches-notice {
     height: 100%;
+    width: 100%;
     padding: 1rem;
     display: flex;
     justify-content: center;
@@ -250,12 +265,6 @@ export default {
   .bx--table-toolbar {
     display: none;
   }
-  // .bx--data-table th:first-of-type, .bx--data-table td:first-of-type {
-  //   padding-left: 0.5rem;
-  // }
-  // .bx--data-table th:last-of-type, .bx--data-table td:last-of-type {
-  //   padding-right: 0.5rem;
-  // }
   a.reach-link {
     color: $text-01;
     text-decoration: none;

@@ -5,6 +5,7 @@ import Home from './home-page/home-page.vue'
 const staticRoutes = [
   {
     path: '/',
+    redirect: '/river-index',
     name: 'home',
     meta: {
       crumbLabel: 'Home'

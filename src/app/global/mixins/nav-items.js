@@ -64,7 +64,7 @@ const navItems = {
       //   ]
       // },
       {
-        label: 'River Index',
+        label: 'Map',
         path: '/river-index',
         children: null
       },
