@@ -2,7 +2,7 @@
 node_modules
 /dist
 /live
-
+/coverage
 # local env files
 .env.local
 .env.*.local
@@ -21,3 +21,4 @@ yarn-error.log*
 *.sln
 *.sw?
 .env
+package-lock.json

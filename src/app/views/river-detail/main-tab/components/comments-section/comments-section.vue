@@ -15,19 +15,17 @@
     >
       New Comment
     </cv-button>
-    <template v-if="comments && !loading">
-      <div
-
-        class="comment-wrapper"
-      >
+    <template v-if="loading">
+      <utility-block state="loading" />
+    </template>
+    <template v-else-if="comments">
+      <div class="comment-wrapper">
         <div
-          v-for="(c,i) in comments.slice(0,5)"
+          v-for="(c, i) in comments.slice(0, 5)"
           :key="i"
           class="bx--tile mb-sm comment"
         >
-          <div
-            class="bx--row "
-          >
+          <div class="bx--row ">
             <div class=" bx--col-sm-12 bx--col-lg-3">
               <img
                 class="mb-spacing-md"
@@ -42,7 +40,7 @@
               />
               <span
                 class="date"
-                v-text="formatDate(c.post_date)"
+                v-text="formatDate(c.post_date, 'll')"
               />
               <hr class="ui-01">
               <div
@@ -54,11 +52,8 @@
         </div>
       </div>
     </template>
-    <template v-if="loading">
-      <loading-block />
-    </template>
-    <template v-if="!loading && error">
-      <error-block />
+    <template v-else>
+      <utility-block state="error" />
     </template>
     <cv-modal
       :visible="newCommentModalVisible"
@@ -82,17 +77,15 @@
 </template>
 
 <script>
-import Moment from 'moment'
 import { commentsActions } from '@/app/views/river-detail/shared/state'
-import { LoadingBlock, ErrorBlock } from '@/app/global/components'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { globalAppActions } from '@/app/global/state'
 import { mapState } from 'vuex'
 
 export default {
   name: 'comments-section',
   components: {
-    LoadingBlock,
-    ErrorBlock
+    UtilityBlock
   },
   data: () => ({
     newCommentModalVisible: false,
@@ -127,9 +120,6 @@ export default {
       const initials = firstInitial + lastInitial
       return initials
     },
-    formatDate (date) {
-      return Moment(date).format('ll')
-    },
     cancelComment () {
       this.newCommentModalVisible = false
     },
@@ -150,11 +140,11 @@ export default {
 
 <style lang="scss">
 .comment {
- .detail {
-    @include carbon--type-style('body-long-01')
- }
- .date {
-   @include carbon--type-style('label-01')
- }
+  .detail {
+    @include carbon--type-style("body-long-01");
+  }
+  .date {
+    @include carbon--type-style("label-01");
+  }
 }
 </style>

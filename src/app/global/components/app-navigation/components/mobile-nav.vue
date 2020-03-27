@@ -72,16 +72,21 @@
           </transition>
           <cv-button
             kind="ghost"
-            disabled
+            class="mb-spacing-xs"
             @click.exact="viewRoute('/river-index')"
-            v-text="'River Map'"
+            v-text="'River Index'"
           />
           <cv-button
-            class="mb-spacing-md"
+            class="mb-spacing-xs"
             kind="ghost"
-            disabled
-            @click.exact="viewRoute('/safety')"
-            v-text="'Safety'"
+            @click.exact="viewRoute('/news')"
+            v-text="'News'"
+          />
+          <cv-button
+            class="mb-spacing-xs"
+            kind="ghost"
+            @click.exact="viewRoute('/river-search')"
+            v-text="'Search'"
           />
         </div>
         <div class="main-nav-items mb-md">
@@ -172,11 +177,9 @@ export default {
      */
     searchRiver () {
       this.drawerOpen = false
-      this.$store.dispatch(
-        riverSearchActions.FETCH_RIVER_SEARCH_DATA, {
-          river: this.searchTerm
-        }
-      )
+      this.$store.dispatch(riverSearchActions.FETCH_RIVER_SEARCH_DATA, {
+        river: this.searchTerm
+      })
       /**
        * @todo figure out how to dynamically set scroll position
        * transition to search page is jarring, search results obscured

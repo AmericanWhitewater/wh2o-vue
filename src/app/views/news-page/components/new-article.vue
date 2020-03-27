@@ -31,7 +31,9 @@
         Discard Draft
       </template>
       <template slot="content">
-        <p>Are you sure you want to discard your draft? All changes will be lost.</p>
+        <p>
+          Are you sure you want to discard your draft? All changes will be lost.
+        </p>
       </template>
       <template slot="secondary-button">
         cancel
@@ -45,7 +47,7 @@
 
 <script>
 import { Layout } from '@/app/global/layout'
-import { ContentEditor } from '@/app/global/components'
+import ContentEditor from '@/app/global/components/content-editor/content-editor'
 export default {
   name: 'new-article',
   components: {
@@ -60,5 +62,4 @@ export default {
 </script>
 
 <style>
-
 </style>

@@ -18,10 +18,10 @@
         </span>
         <template v-if="!loading && alerts">
           <cv-inline-notification
-            v-for="(alert, index) in alerts.slice(0,2)"
+            v-for="(alert, index) in alerts.slice(0, 2)"
             :key="index"
             :title="alert.title"
-            :sub-title="alert.detail.slice(0,50) + '...'"
+            :sub-title="alert.detail.slice(0, 50) + '...'"
             action-label="Read More"
             @close="doClose(index)"
             @action="$router.push(`/river-detail/${$route.params.id}/news`)"
@@ -32,9 +32,7 @@
         </template>
 
         <template v-if="loading">
-          <cv-inline-loading
-            state="loading"
-          />
+          <cv-inline-loading state="loading" />
         </template>
         <template v-if="articles.length > 0">
           <h4>News</h4>
@@ -168,7 +166,7 @@ export default {
     &.sticky {
       position: sticky;
       top: 50px;
-      @include MQ("LG") {
+      @include carbon--breakpoint("lg") {
         top: 75px;
       }
     }
@@ -176,7 +174,7 @@ export default {
   .header-row {
     display: flex;
     justify-content: space-between;
-    align-items:center;
+    align-items: center;
   }
 }
 </style>

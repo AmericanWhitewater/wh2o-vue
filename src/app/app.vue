@@ -3,7 +3,9 @@
     <app-toaster />
     <app-navigation />
     <app-breadcrumbs />
-    <router-view :class="[$route.name !== 'home' ? 'interior': null ,'app-main-content']" />
+    <router-view
+      :class="[$route.name !== 'home' ? 'interior' : null, 'app-main-content']"
+    />
     <app-footer />
   </div>
 </template>
@@ -28,18 +30,27 @@ export default {
     AppNavigation,
     AppToaster
   },
-  mounted () {
-    const userLoggedIn = appLocalStorage.getItem('wh2o-registered')
-    if (userLoggedIn) {
-      this.$store.dispatch(userActions.USER_LOGIN, {
-        admin: null
-      })
+  methods: {
+    /**
+     * until login form is wired properly,
+     * generate access token in postman/insomnia
+     * and add that to env temp_user_access_token
+     *
+     */
+    initTempAuth () {
+      const tempToken = process.env.VUE_APP_TEMP_USER_ACCESS_TOKEN || false
+
+      appLocalStorage.setItem('wh2o-auth', tempToken)
+
+      const userLoggedIn = appLocalStorage.getItem('wh2o-auth')
+
+      if (userLoggedIn) {
+        this.$store.dispatch(userActions.FETCH_USER_DATA)
+      }
     }
+  },
+  created () {
+    this.initTempAuth()
   }
 }
 </script>
-<style lang="scss">
-.app-main-content {
-  min-height: calc(100vh - 125px);
-}
-</style>

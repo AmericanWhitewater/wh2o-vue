@@ -1,70 +1,26 @@
 <template>
-  <div class="app-footer">
+  <div
+    v-show="$route.name !== 'home'"
+    class="app-footer"
+  >
     <div class="bx--grid">
       <div class="bx--row">
-        <div class="bx--col-sm-12 bx--col-md-8 bx--col-lg-8">
-          <resource-card-group>
-            <template #cardOne>
-              <ResourceCard
-                title="River Map"
-                to="/river-index"
-                icon="Map32"
-                color="light"
-              />
-            </template>
-            <template #cardTwo>
-              <ResourceCard
-                v-if="loggedIn"
-                title="Inbox"
-                to="/user/account/1/alerts"
-                icon="Email32"
-                color="light"
-              />
-            </template>
-            <template #cardThree>
-              <ResourceCard
-                title="Account Settings"
-                to="/user/account/1/settings"
-                icon="Settings32"
-                color="light"
-              />
-            </template>
-            <template #cardFour>
-              <ResourceCard
-                v-if="loggedIn"
-                subtitle="new"
-                title="Saved Rivers"
-                to="/user/account/1/gages"
-                icon="WifiOff32"
-                color="light"
-              />
-            </template>
-          </resource-card-group>
+        <div class="bx--col">
+          <div class="contents">
+            <h6>American Whitewater</h6>
+          </div>
         </div>
-        <div class="bx--col" />
-        <div class="bx--col" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import ResourceCardGroup from '../resource-card-group/resource-card-group'
-import ResourceCard from '../resource-card/resource-card'
-import { navItems } from '@/app/global/mixins'
 /**
  * @displayName App Footer
  */
 export default {
-  name: 'app-footer',
-  components: {
-    ResourceCardGroup,
-    ResourceCard
-  },
-  mixins: [navItems],
-  data: () => ({
-    loggedIn: true
-  })
+  name: 'app-footer'
 }
 </script>
 
@@ -72,18 +28,11 @@ export default {
 .app-footer {
   position: relative;
   background-color: $ui-05;
-  padding: $layout-md 0;
-  &.hidden {
-    display:none;
-  }
-  .bx--list__item {
-    color: #fff;
-    .bx--link {
-      color: #fff;
-      &:visited {
-        color: #fff;
-      }
-    }
+  .contents {
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    color: $ui-02;
   }
 }
 </style>

@@ -2,71 +2,71 @@
   <div class="accidents-tab">
     <layout :name="!loading && !error ? 'layout-two-thirds' : 'layout-full-width'">
       <template #main>
-        <loading-block
-          v-if="loading"
-          text="Loading accident data"
-        />
-        <error-block
-          v-if="!loading && error"
-          title="Accident data unavailable"
-          text="please try again later"
-        />
-        <div
-          v-if="!loading && !error"
-          class="bx--data-table-container mb-lg"
-        >
-          <table class="bx--data-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Flow</th>
-                <th>Result</th>
-                <th>Factor</th>
-                <th>&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody>
-              <template v-if="accidents.length > 0">
-                <tr
-                  v-for="(a, index) in accidents"
-                  :key="index"
-                >
-                  <td v-text="'{ date }'" />
-                  <td v-text="a.rellevel" />
-                  <td v-text="a.status" />
-                  <td>
-                    <template v-if="a.factors.length > 1">
+        <template v-if="loading">
+          <utility-block
+            v-if="loading"
+            state="loading"
+            text="Loading accident data"
+          />
+        </template>
+        <template v-else-if="accidents">
+          <div
+            class="bx--data-table-container mb-lg"
+          >
+            <table class="bx--data-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Flow</th>
+                  <th>Result</th>
+                  <th>Factor</th>
+                  <th>&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody>
+                <template v-if="accidents.length > 0">
+                  <tr
+                    v-for="(a, index) in accidents"
+                    :key="index"
+                  >
+                    <td v-text="formatDate(a.accidentdate, 'll')" />
+                    <td v-text="a.waterlevel" />
+                    <td v-text="a.status" />
+                    <td>
                       <cv-list>
                         <cv-list-item
                           v-for="(factor, i) in a.factors"
                           :key="i"
                         >
-                          list item 1
+                          {{ factor.factor }}
                         </cv-list-item>
                       </cv-list>
-                    </template>
-                  </td>
-                  <td>
-                    <cv-button
-                      small
-                      kind="tertiary"
-                      @click.exact="viewAccident(a.id)"
-                    >
-                      Full Report
-                    </cv-button>
-                  </td>
-                </tr>
-              </template>
-              <template v-else>
-                <tr>
-                  <td colspan="5">
-                    No Accident Reports
-                  </td>
-                </tr>
-              </template>
-            </tbody>
-          </table>
-        </div>
+                    </td>
+                    <td>
+                      <cv-button
+                        small
+                        kind="tertiary"
+                        @click.exact="viewAccident(a.id)"
+                      >
+                        Full Report
+                      </cv-button>
+                    </td>
+                  </tr>
+                </template>
+                <template v-else>
+                  <tr>
+                    <td colspan="5">
+                      No Accident Reports
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+        </template>
+        <template v-else>
+          <utility-block state="error" />
+        </template>
       </template>
       <template #sidebar>
         <div class="sticky">
@@ -93,14 +93,13 @@
 import { mapState } from 'vuex'
 import { accidentsActions } from '../shared/state'
 import { accidentDetailActions } from '@/app/views/accident-database/shared/state'
-import { LoadingBlock, ErrorBlock } from '@/app/global/components'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { Layout } from '@/app/global/layout'
 
 export default {
   name: 'accidents-tab',
   components: {
-    ErrorBlock,
-    LoadingBlock,
+    UtilityBlock,
     Layout
   },
   computed: {

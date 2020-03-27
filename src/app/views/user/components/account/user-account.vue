@@ -21,6 +21,7 @@
                     >
                       <cv-button
                         :kind="activeSection(item.label)"
+                        :disabled="item.disabled"
                         @click="
                           $router.replace(`/user/account/1/${item.label}`)
                         "
@@ -79,6 +80,7 @@
 <script>
 import { mapState } from 'vuex'
 import { checkWindow } from '@/app/global/mixins'
+import { userActions } from '../../shared/state'
 
 /**
  * User Dashboard / My Account
@@ -111,25 +113,29 @@ export default {
      */
     tabs: [
       {
-        label: 'alerts'
+        label: 'alerts',
+        disabled: true
       },
       {
         label: 'bookmarks'
       },
       {
-        label: 'gages'
+        label: 'gages',
+        disabled: true
       },
       {
         label: 'profile'
+        // disabled: true
       },
       {
-        label: 'settings'
+        label: 'settings',
+        disabled: true
       }
     ]
   }),
   computed: {
     ...mapState({
-      alerts: state => state.userState.userData.data.alerts,
+      data: state => state.userState.userData.data,
       loading: state => state.userState.userData.loading,
       error: state => state.userState.userData.error
     })
@@ -152,6 +158,9 @@ export default {
       }
       return 'ghost'
     }
+  },
+  created () {
+    this.$store.dispatch(userActions.FETCH_USER_DATA)
   }
 }
 </script>

@@ -57,7 +57,7 @@
 <script>
 import { globalAppActions } from '@/app/global/state'
 import { appLocalStorage, httpClient } from '@/app/global/services'
-import { userActions } from '../../shared/state'
+import { userActions } from '../../../shared/state'
 import {
   apiBaseUrl,
   clientId,
@@ -71,9 +71,9 @@ export default {
   data: () => ({
     formData: {
       grant_type: 'password',
-      username: null,
-      password: null,
-      client_id: null,
+      username: '',
+      password: '',
+      client_id: 6,
       client_secret: null,
       scope: ''
     },
@@ -114,7 +114,7 @@ export default {
       }
 
       if (!this.passwordError && !this.usernameError) {
-        const url = apiBaseUrl + 'oauth/token'
+        const url = apiBaseUrl + 'oauth/authorize'
         const input = JSON.stringify(this.formData)
         const result = await httpClient.post(url, input).catch(e => {
           /* eslint-disable-next-line no-console */

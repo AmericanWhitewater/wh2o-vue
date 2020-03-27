@@ -1,6 +1,6 @@
 <template>
   <div :class="[{ home: homePage }, 'app-header']">
-    <template v-if="windowWidth <= breakpoints.md">
+    <template v-if="windowWidth <= breakpoints.lg">
       <mobile-nav :nav-items="navItems" />
     </template>
     <template v-else>

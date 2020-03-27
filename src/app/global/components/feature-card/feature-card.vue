@@ -6,8 +6,8 @@
           <div class="bx--feature-card__img bx--aspect-ratio--1x1">
             <div class="bx--aspect-ratio--object bx--feature-background">
               <img
-                src="https://picsum.photos/3000/2000"
-                title="placeholder"
+                :src="img"
+                :title="title"
               >
             </div>
           </div>
@@ -18,8 +18,9 @@
           class="bx--col bx--col-md-4 bx--col-lg-6 bx--offset-md-4 bx--offset-lg-10 bx--feature-card__column"
         >
           <ResourceCard
-            title="This is a featured title"
-            subtitle="02-12-2020"
+            :title="title"
+            :subtitle="subtitle"
+            :to="to"
             hide-icon
           />
         </div>
@@ -39,8 +40,19 @@ export default {
   props: {
     to: {
       type: String,
-      required: true,
-      default: '/'
+      required: true
+    },
+    img: {
+      type: String,
+      required: true
+    },
+    title: {
+      type: String,
+      required: true
+    },
+    subtitle: {
+      type: String,
+      required: false
     }
   }
 }
@@ -49,6 +61,8 @@ export default {
 <style lang="scss" scoped>
 .bx--feature-card {
   position: relative;
+  z-index: 1;
+  overflow: hidden;
 }
 
 .bx--feature-card__row {
@@ -69,7 +83,17 @@ export default {
 .bx--feature-card__img {
   position: relative;
   img {
-    max-width:100%;
+    max-width: 100%;
+    min-width: 100%;
+    object-fit: cover;
+    height: 100%;
+    @include carbon--breakpoint("sm") {
+      max-height: 80vh;
+    }
+
+    @include carbon--breakpoint("md") {
+      max-height: 80vh;
+    }
   }
 }
 

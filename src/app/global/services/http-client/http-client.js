@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import { appLocalStorage } from '@/app/global/services'
 import { apiBaseUrl } from '../../../environment/environment'
 
 const config = {
@@ -14,6 +14,21 @@ const config = {
 
 const httpClient = axios.create(config)
 
+/**
+ * Auth interceptor
+ * @description add authorization token here.
+ * @param {object} config
+ * @returns axios config
+ */
+const authInterceptor = config => {
+  const token = appLocalStorage.getItem('wh2o-auth')
+
+  config.headers.Authorization = `Bearer ${token}`
+
+  return config
+}
+
+httpClient.interceptors.request.use(authInterceptor)
 httpClient.interceptors.response.use(
   response => response,
   error =>

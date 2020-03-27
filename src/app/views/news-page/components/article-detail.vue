@@ -1,5 +1,5 @@
 <template>
-  <div class="article-detail">
+  <div class="article-detail bg-topo">
     <transition name="fade">
       <template v-if="loading">
         <cv-loading
@@ -9,77 +9,108 @@
         />
       </template>
     </transition>
-    <template v-if="!loading">
+    <template v-if="!loading && article">
       <div class="bx--grid">
-        <page-header
-          :title="$titleCase(article.title.rendered)"
-          :subtitle="formatDate(article.date)"
-          :featured-img="featuredMedia"
-        />
-        <div class="spacer" />
         <div class="bx--row">
-          <div class="bx--col-sm-4 bx--col-md-1 bx--col-lg-1 pt-md">
-            <div class="share-article">
-              <h5>Share</h5>
-              <span @click="shareArticle('facebook')">
-                <LogoFacebook24 />
-              </span>
-              <span @click="shareArticle('linkedin')">
-                <LogoLinkedIn24 />
-              </span>
-              <span @click="shareArticle('email')">
-                <Email24 />
-              </span>
+          <div
+            class="bx--col-lg-10 bx--offset-lg-3 bx--offset-max-3 bx--col-max-8 mb-lg"
+          >
+            <img
+              :src="
+                `https://americanwhitewater.org/resources/images/contents/${article.contentsphoto}`
+              "
+              alt=""
+              class="mb-spacing-lg"
+            >
+
+            <h1 class="mb-spacing-md">
+              {{ this.$titleCase(article.title) }}
+            </h1>
+            <h6 class="mb-sm">
+              {{ article.author }} - {{ formatDate(article.post_date, "ll") }}
+            </h6>
+            <hr class="mb-sm">
+            <social-sharing
+              :url="shareMeta.url"
+              :title="shareMeta.title"
+              :description="shareMeta.description"
+              :quote="shareMeta.quote"
+              :hashtags="shareMeta.hashtags"
+              twitter-user="AmerWhitewater"
+              inline-template
+            >
+              <div>
+                <network
+                  network="facebook"
+                  class="mr-spacing-sm"
+                >
+                  <cv-button
+                    size="small"
+                    kind="tertiary"
+                  >
+                    Facebook
+                  </cv-button>
+                </network>
+                <network
+                  network="twitter"
+                  class="mr-spacing-sm"
+                >
+                  <cv-button
+                    size="small"
+                    kind="tertiary"
+                  >
+                    Twitter
+                  </cv-button>
+                </network>
+                <network
+                  network="linkedin"
+                  class="mr-spacing-sm"
+                >
+                  <cv-button
+                    size="small"
+                    kind="tertiary"
+                  >
+                    LinkedIn
+                  </cv-button>
+                </network>
+                <network
+                  network="email"
+                  class="mr-spacing-sm"
+                >
+                  <cv-button
+                    size="small"
+                    kind="tertiary"
+                  >
+                    Email
+                  </cv-button>
+                </network>
+              </div>
+            </social-sharing>
+            <div class="mb-sm" />
+            <div class="article-wrapper">
+              <div
+                class="article-content"
+                v-html="article.contents"
+              />
             </div>
           </div>
-          <div class="bx--col-md-6 bx--col-lg-8 pt-md mb-lg">
+
+          <div
+            class="bx--col-lg-6 bx--offset-lg-3 bx--col-max-4 bx--offset-max-1 pt-md mb-lg"
+          >
             <div
-              class="article-content"
-              v-html="article.content.rendered"
-            />
-          </div>
-          <div class="bx--col-lg-5 bx--offset-lg-1 pt-md mb-lg">
-            <template v-if="article.categories.length > 0">
-              <hr>
-              <h2 class="mb-spacing-md">
-                Categories
-              </h2>
-              <template v-for="(cat, index) in article.categories">
-                <span
-                  :key="randomNumber(index)"
-                  class="mb-spacing-sm mr-spacing-sm"
-                >{{ cat }}</span>
-              </template>
-              <div class="mb-md" />
-            </template>
-
-            <template v-if="article.tags.length > 0">
-              <hr>
-              <h2 class="mb-spacing-md">
-                Tags
-              </h2>
-              <template v-for="(tag, k) in article.tags">
-                <span
-                  :key="randomNumber(k)"
-                  class="mb-spacing-sm mr-spacing-sm"
-                >{{ tag }}</span>
-              </template>
-              <div class="mb-md" />
-            </template>
-            <hr>
-            <h2 class="mb-spacing-md">
-              Related
-            </h2>
-
-            <span v-if="relatedLoading">Loading...</span>
-            <span v-if="relatedLoading">Loading...</span>
-            <template v-for="(item, i) in relatedArticles.slice(0,2)">
+              v-if="relatedArticles"
+              class="sticky related-wrapper"
+            >
               <ArticleCard
-                :key="randomNumber(i)"
-                :title="item.title.rendered"
+                v-for="(item, i) in relatedArticles"
+                :key="i"
+                :title="item.title"
                 :article-id="item.id"
+                :author="item.author.toString()"
+                :read-time="estReadingTime(item.contents)"
               />
-            </template>
+            </div>
           </div>
         </div>
       </div>
@@ -87,20 +118,17 @@
   </div>
 </template>
 <script>
-import { PageHeader, ArticleCard } from '@/app/global/components'
+import { ArticleCard } from '@/app/global/components'
 import { articleActions, newsActions } from '../shared/state'
 import { mapState } from 'vuex'
 import Moment from 'moment'
 export default {
   name: 'article-detail',
   components: {
-    PageHeader,
     ArticleCard
   },
   data: () => ({
-    sharePlatform: null,
-    title: null,
-    description: null
+    relatedArticles: null
   }),
   metaInfo () {
     return {
@@ -115,17 +143,15 @@ export default {
       loading: state => state.newsPageState.articleData.loading,
       error: state => state.newsPageState.articleData.error,
       featuredMedia: state => state.newsPageState.articleData.featuredMedia,
-      relatedArticles: state => state.newsPageState.newsData.data,
+      frontPageNews: state => state.newsPageState.newsData.frontPageNews,
       relatedLoading: state => state.newsPageState.newsData.loading,
       relatedError: state => state.newsPageState.newsData.error
     }),
     getMetaTitle () {
       if (this.article) {
-        if (this.article.title.rendered.length > 50) {
-          return this.article.title.rendered.slice(0, 47) + '...'
-        }
-
-        return this.article.title.rendered
+        return this.article.title.length > 50
+          ? this.article.title.slice(0, 47) + '...'
+          : this.article.title
       }
       return null
     },
@@ -134,42 +160,97 @@ export default {
     },
     formatContent () {
       if (this.article) {
-        const content = this.article.content.rendered
+        const content = this.article.contents
         const openingTags = this.$replaceText(content, '<div>', '<p>')
         const closingTags = this.$replaceText(openingTags, '</div>', '</p>')
         return closingTags
+      }
+      return null
+    },
+    shareMeta () {
+      if (this.article) {
+        const description = this.formatShareDescription(this.article.abstract)
+        const url = `https://wh2o-vue.herokuapp.com/#/article/${this.article.id}`
+        const title = this.article.title
+        /**
+         * @temp until we can get quote + hashtag wired to db
+         */
+        const quote = description
+        const hashtags = 'whitewater,river,conservation'
+        return {
+          title,
+          url,
+          description,
+          quote,
+          hashtags
+        }
       }
       return null
     }
   },
   watch: {
     articleId (val) {
-      this.$store.dispatch(articleActions.GET_ARTICAL_DETAIL_DATA, val)
+      if (val) {
+        this.$store.dispatch(articleActions.GET_ARTICAL_DETAIL_DATA, val)
+      }
     },
     article (data) {
       if (data) {
-        this.$store.dispatch(
-          articleActions.GET_FEATURED_MEDIA,
-          this.article.featured_media
-        )
-
         const content = this.$sanitize(data.abstract, {
           allowedTags: [],
           allowedAttributes: {}
         })
-
         document
           .getElementById('meta-description')
           .setAttribute('content', content.slice(0, 150))
       }
+    },
+    frontPageNews (val) {
+      if (val) {
+        this.randomRelatedArticles()
+      }
     }
   },
   methods: {
-    shareArticle (platform) {
-      this.sharePlatform = platform
+    /**
+     * @returns two random articles from loaded articles
+     * used to add some variety to 'related news' sidebar
+     */
+    randomRelatedArticles () {
+      if (this.frontPageNews && this.frontPageNews.length > 0) {
+        const articles = []
+
+        const randomNumber = () =>
+          Math.floor(Math.random() * (this.frontPageNews.length - 1) + 1)
+        const numberOfArticles = 2
+
+        for (let i = 0; articles.length < numberOfArticles; i++) {
+          const candidate = this.frontPageNews[randomNumber()]
+          const prevAdded = articles.find(a => a.id === candidate.id)
+
+          if (!prevAdded && candidate.id !== parseInt(this.articleId, 10)) {
+            articles.push(candidate)
+          }
+        }
+        this.relatedArticles = articles
+      }
     },
     formatDate (date) {
       return Moment(date).format('ll')
+    },
+    /**
+     * remove html from article abstract
+     */
+    formatShareDescription (abstract) {
+      if (abstract) {
+        const shareDescription = this.$sanitize(abstract, {
+          allowedTags: [],
+          allowedAttributes: {}
+        })
+
+        return shareDescription.slice(0, 150) + '...'
+      }
+      return 'Check this out on American Whitewater.'
     },
     randomNumber (index) {
       return Math.floor(Math.random() * (10000 + index))
@@ -181,17 +262,24 @@ export default {
       this.articleId
     )
 
-    if (!this.relatedArticles) {
-      this.$store.dispatch(newsActions.GET_NEWS_ARTICLES)
+    if (!this.frontPageNews) {
+      this.$store.dispatch(newsActions.FRONT_PAGE_NEWS)
+    }
+  },
+  mounted () {
+    if (this.frontPageNews) {
+      this.randomRelatedArticles()
     }
   },
   beforeRouteLeave (to, from, next) {
     /**
      * @todo we can make this description meta data function part of vue router global nav guards
      */
+    const defaultDescription =
+      'American Whitewater is the primary advocate for the preservation and protection of whitewater rivers throughout the United States and connects the interests of human-powered recreational river users with ecological and science-based data to achieve goals within our mission.'
     document
       .getElementById('meta-description')
-      .setAttribute('content', 'default description')
+      .setAttribute('content', defaultDescription)
     next()
   }
 }
@@ -217,20 +305,41 @@ export default {
       cursor: pointer;
     }
   }
+  h1 {
+    @include carbon--breakpoint("sm") {
+      @include carbon--type-style("productive-heading-04");
+    }
+    @include carbon--breakpoint("md") {
+      @include carbon--type-style("productive-heading-05");
+    }
+  }
 }
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
+
+.article-wrapper {
+  background-color: $ui-01;
+  z-index: 2;
+  position: relative;
+
+  @include carbon--breakpoint("sm") {
+    padding: $spacing-sm;
+  }
+  @include carbon--breakpoint("md") {
+    padding: $spacing-md;
+  }
 }
 
 .article-content {
   @include carbon--type-style("body-long-02");
   p {
     margin-bottom: 1.25rem;
+  }
+}
+
+.featured-image-wrapper {
+  position: relative;
+  .featured-image {
+    position: absolute;
+    z-index: 1;
   }
 }
 </style>

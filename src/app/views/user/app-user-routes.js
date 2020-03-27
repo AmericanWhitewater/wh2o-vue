@@ -14,7 +14,7 @@ const userRoutes = [
             meta: {
               crumbLabel: 'Login'
             },
-            component: () => import('./components/access/user-login.vue')
+            component: () => import('./components/access/user-login/user-login.vue')
           },
           {
             path: 'logout',

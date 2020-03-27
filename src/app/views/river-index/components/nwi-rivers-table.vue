@@ -182,12 +182,12 @@ export default {
   width: 100%;
   height: 35%;
 
-  @include carbon--breakpoint('md') {
+  @include carbon--breakpoint("md") {
     width: 32%;
     height: 100%;
   }
 
-  @include MQ(XXL) {
+  @include carbon--breakpoint("max") {
     width: 24%;
   }
 

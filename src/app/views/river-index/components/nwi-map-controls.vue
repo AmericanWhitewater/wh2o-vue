@@ -167,11 +167,11 @@ export default {
   z-index: 2;
   background-color: rgba(255, 255, 255, 0.7);
 
-  @include carbon--breakpoint('md') {
+  @include carbon--breakpoint("md") {
     width: 68%;
   }
 
-  @include MQ(XXL) {
+  @include carbon--breakpoint("max") {
     width: 76%;
   }
 }
@@ -185,7 +185,7 @@ export default {
   cursor: unset;
   display: none;
 
-  @include carbon--breakpoint('lg') {
+  @include carbon--breakpoint("lg") {
     display: inline-flex;
   }
 }

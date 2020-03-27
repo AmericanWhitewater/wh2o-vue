@@ -139,7 +139,7 @@ export default {
   margin: 0;
   overflow: visible;
 
-  @include MQ("LG") {
+  @include carbon--breakpoint("lg") {
     top: 75px;
   }
   &.hidden {

@@ -1,31 +1,37 @@
 <template>
   <div class="credits-tab">
-    <template v-if="loading">
-      <loading-block text="Loading Credits..." />
-    </template>
-    <template v-if="!loading && error">
-      <error-block
-        title="Credits unavailable"
-        text="please try again later"
-      />
-    </template>
-    <template v-if="!loading && !error">
-      <div class>
-        credits results!
-      </div>
-    </template>
+    <layout name="layout-full-width">
+      <template #main>
+        <template v-if="loading">
+          <utility-block
+            state="loading"
+            text="Loading Credits..."
+          />
+        </template>
+        <template v-else-if="credits">
+          results
+        </template>
+        <template v-else>
+          <utility-block
+            state="error"
+            title="Credits unavailable"
+            text="please try again later"
+          />
+        </template>
+      </template>
+    </layout>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
 import { creditsActions } from '../shared/state'
-import { LoadingBlock, ErrorBlock } from '@/app/global/components'
-
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
+import { Layout } from '@/app/global/layout'
 export default {
   name: 'credits-tab',
   components: {
-    ErrorBlock,
-    LoadingBlock
+    UtilityBlock,
+    Layout
   },
   data: () => ({
     creditsHttpConfig: 'let there be error'
@@ -33,7 +39,8 @@ export default {
   computed: {
     ...mapState({
       loading: state => state.riverDetailState.creditsData.loading,
-      error: state => state.riverDetailState.creditsData.error
+      error: state => state.riverDetailState.creditsData.error,
+      credits: state => state.riverDetailState.creditsData.credits
     })
   },
   methods: {

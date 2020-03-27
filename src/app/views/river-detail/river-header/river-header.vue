@@ -1,98 +1,100 @@
 <template>
-  <section
-    :class="[ {'has-bg': bgImg},'bleed river-header bg-topo']"
-    :style="bgImg ? `background-image:url(${bgImg.url})` : ''"
-  >
-    <div class="bx--grid bx--no-gutter">
-      <div class="bx--row">
-        <div class="bx--col-sm-12 bx--col-md-15 bx--col-lg-15 info-section">
-          <div class="outside">
-            <div class="inside">
-              <template v-if="windowWidth > breakpoints.md">
-                <h4>{{ name }}</h4>
-                <h1>{{ section }}</h1>
-              </template>
-              <template v-if="windowWidth < breakpoints.md">
-                <h6>{{ name }}</h6>
-                <h3>{{ section }}</h3>
-              </template>
-              <div>
-                <cv-button
-                  kind="secondary"
-                  size="small"
-                  class="ml-spacing-sm"
-                  @click.exact="toggleBookmark"
-                >
-                  {{ bookmarked ? 'Remove Bookmark' : 'Add Bookmark' }}
-                </cv-button>
+  <div class="bx--grid">
+    <section
+      :class="[{ 'has-bg': bgImg }, 'bleed river-header bg-topo']"
+      :style="bgImg ? `background-image:url(${bgImg.url})` : ''"
+    >
+      <div class="bx--grid bx--no-gutter">
+        <div class="bx--row">
+          <div class="bx--col-sm-12 bx--col-md-15 bx--col-lg-15 info-section">
+            <div class="outside">
+              <div class="inside">
+                <template v-if="windowWidth > breakpoints.md">
+                  <h4>{{ name }}</h4>
+                  <h1>{{ section }}</h1>
+                </template>
+                <template v-if="windowWidth < breakpoints.md">
+                  <h6>{{ name }}</h6>
+                  <h3>{{ section }}</h3>
+                </template>
+                <div>
+                  <cv-button
+                    kind="secondary"
+                    size="small"
+                    class="ml-spacing-sm"
+                    @click.exact="toggleBookmark"
+                  >
+                    {{ bookmarked ? "Remove Bookmark" : "Add Bookmark" }}
+                  </cv-button>
+                </div>
               </div>
-              <edit-mode-toggle
-                v-if="userIsAdmin"
-                class="mt-spacing-sm"
-              />
             </div>
           </div>
-        </div>
-        <div :class="[{'edit':editMode},'bx--col-sm-12 bx--col-md-1 bx--col-lg-1 edit-section']">
-          <div class="outside">
-            <div class="inside">
-              <div :class="[{'edit':editMode},'edit-actions-wrapper']">
-                <cv-interactive-tooltip
-                  v-if="!editMode"
-                  alignment="center"
-                  direction="left"
-                >
-                  <template slot="trigger">
-                    <div class="icon">
-                      <CameraAction24 />
-                    </div>
-                  </template>
-                  <template slot="content">
-                    <div class>
-                      <h6>Photo</h6>
-                      <p>{{ bgImg.credit }}</p>
-                    </div>
-                  </template>
-                </cv-interactive-tooltip>
+          <div
+            :class="[
+              { edit: editMode },
+              'bx--col-sm-12 bx--col-md-1 bx--col-lg-1 edit-section'
+            ]"
+          >
+            <div class="outside">
+              <div class="inside">
+                <div :class="[{ edit: editMode }, 'edit-actions-wrapper']">
+                  <cv-interactive-tooltip
+                    v-if="!editMode && bgImg"
+                    alignment="center"
+                    direction="left"
+                  >
+                    <template slot="trigger">
+                      <div class="icon">
+                        <CameraAction24 />
+                      </div>
+                    </template>
+                    <template slot="content">
+                      <div class>
+                        <h6>Photo</h6>
+                        <p>{{ bgImg.credit }}</p>
+                      </div>
+                    </template>
+                  </cv-interactive-tooltip>
 
-                <template v-if="editMode">
-                  <div class="icon mb-spacing-sm edit">
-                    <Upload24 />
-                  </div>
-                  <div class="icon edit">
-                    <ZoomPan24 />
-                  </div>
-                </template>
+                  <template v-if="editMode">
+                    <div class="icon mb-spacing-sm edit">
+                      <Upload24 />
+                    </div>
+                    <div class="icon edit">
+                      <ZoomPan24 />
+                    </div>
+                  </template>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <cv-modal
-      v-if="showConfirmation"
-      kind="danger"
-      :visible="showConfirmation"
-    >
-      <!-- <template slot="label">label</template> -->
-      <template slot="title">
-        Are you sure?
-      </template>
-      <template slot="content">
-        <p>This action cannot be undone.</p>
-      </template>
-      <template slot="secondary-button">
-        Cancel
-      </template>
-      <template slot="primary-button">
-        OK
-      </template>
-    </cv-modal>
-  </section>
+      <cv-modal
+        v-if="showConfirmation"
+        kind="danger"
+        :visible="showConfirmation"
+      >
+        <!-- <template slot="label">label</template> -->
+        <template slot="title">
+          Are you sure?
+        </template>
+        <template slot="content">
+          <p>This action cannot be undone.</p>
+        </template>
+        <template slot="secondary-button">
+          Cancel
+        </template>
+        <template slot="primary-button">
+          OK
+        </template>
+      </cv-modal>
+    </section>
+  </div>
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex'
-import { EditModeToggle } from '@/app/global/components'
 import { checkWindow } from '@/app/global/mixins'
 import { globalAppActions } from '@/app/global/state'
 import { appLocalStorage } from '@/app/global/services'
@@ -100,9 +102,6 @@ import { bookmarksActions } from '../shared/state'
 
 export default {
   name: 'river-header',
-  components: {
-    EditModeToggle
-  },
   mixins: [checkWindow],
   props: {
     name: {

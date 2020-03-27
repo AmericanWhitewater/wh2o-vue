@@ -8,9 +8,15 @@
 }
 
 @mixin full-page-height {
-
   height: calc(100vh - 50px);
-  @include MQ("LG") {
+  @include carbon--breakpoint('lg') {
     height: calc(100vh - 75px);
+  }
+}
+
+@mixin flow-border($color) {
+  border-left: 0.5rem solid $color;
+  &:hover {
+    border-left: 1.5rem solid $color;
   }
 }

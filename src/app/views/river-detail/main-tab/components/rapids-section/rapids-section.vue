@@ -8,7 +8,7 @@
       Rapids
     </h2>
     <template v-if="loading">
-      loading
+      <utility-block state="loading" />
     </template>
 
     <template v-else-if="sortedRapids">
@@ -33,7 +33,7 @@
       </div>
     </template>
     <template v-else>
-      error
+      <utility-block state="error" />
     </template>
     <cv-modal
       :visible="newRapidModalVisible"
@@ -88,13 +88,15 @@
 import { RapidItem } from './components'
 import { checkWindow } from '@/app/global/mixins'
 import { globalAppActions } from '@/app/global/state'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { mapState } from 'vuex'
 import { rapidsActions } from '../../../shared/state'
 
 export default {
   name: 'rapids-section',
   components: {
-    RapidItem
+    RapidItem,
+    UtilityBlock
   },
   mixins: [checkWindow],
   data: () => ({
@@ -116,14 +118,17 @@ export default {
     sortedRapids () {
       if (this.rapids) {
         const rapids = this.rapids
-        return rapids.sort((a, b) => (a.distance > b.distance) ? 1 : -1)
+        return rapids.sort((a, b) => (a.distance > b.distance ? 1 : -1))
       }
       return null
     }
   },
   methods: {
     loadRapids () {
-      this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.$route.params.id)
+      this.$store.dispatch(
+        rapidsActions.FETCH_RAPIDS_DATA,
+        this.$route.params.id
+      )
     },
     cancelNewRapid () {
       this.newRapidModalVisible = false

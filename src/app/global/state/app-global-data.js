@@ -19,7 +19,7 @@ const initialState = {
 const checkIfViewed = (newToast) => {
   const viewedToasts = appLocalStorage.getItem('viewedToasts')
 
-  if (newToast.coreAction) {
+  if (newToast.coreAction || newToast.kind === 'error') {
     return newToast
   }
 

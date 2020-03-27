@@ -1,24 +1,29 @@
 <template>
   <div class="gallery-tab">
-    <layout
-      name="layout-two-thirds"
-    >
+    <layout name="layout-two-thirds">
       <template #sidebar>
         <gallery-upload-form />
       </template>
       <template #main>
-        <div v-if="loading">
-          <loading-block text="loading media" />
-        </div>
-        <div v-else-if="formattedData">
+        <template v-if="loading">
+          <utility-block state="loading" />
+        </template>
+        <template v-else-if="photos">
           <vue-picture-swipe
+            v-if="formattedData && formattedData.length > 0"
             ref="pictureSwipe"
             :items="formattedData"
           />
-        </div>
-        <div v-else>
-          <error-block />
-        </div>
+          <utility-block
+            v-if="!formattedData"
+            state="content"
+            title="No Media"
+            text="if you have media for this reach, please share"
+          />
+        </template>
+        <template v-else>
+          <utility-block state="error" />
+        </template>
       </template>
     </layout>
   </div>
@@ -26,7 +31,7 @@
 <script>
 import { mapState } from 'vuex'
 import { galleryActions } from '../shared/state'
-import { LoadingBlock, ErrorBlock } from '@/app/global/components'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { galleryUploadForm } from './components'
 import { Layout } from '@/app/global/layout'
 /**
@@ -37,8 +42,7 @@ import { Layout } from '@/app/global/layout'
 export default {
   name: 'gallery-tab',
   components: {
-    ErrorBlock,
-    LoadingBlock,
+    UtilityBlock,
     galleryUploadForm,
     Layout
   },
@@ -54,6 +58,9 @@ export default {
     }),
     riverId () {
       return parseInt(this.$route.params.id, 10)
+    },
+    stateTest () {
+      return this.$store.state.riverDetailState.galleryData
     }
   },
   watch: {
@@ -120,7 +127,9 @@ export default {
           }
         }
         this.formattedData = data
+        return
       }
+      this.formattedData = []
     }
   },
   created () {
