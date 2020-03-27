@@ -38,7 +38,7 @@ export default {
 
 <style lang="scss">
 .app-header {
-  // @include layer("overlay");
+  @include layer("raised");
   border-bottom: 1px solid $ui-03;
   background-color: $ui-01;
   position: fixed;
