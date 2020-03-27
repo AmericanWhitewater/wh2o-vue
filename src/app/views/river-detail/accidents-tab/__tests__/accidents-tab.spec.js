@@ -11,10 +11,20 @@ const state = {
   }
 }
 
+const options = {
+  mocks: {
+    $route: {
+      params: {
+        id: '123456789'
+      }
+    }
+  }
+}
+
 describe('AccidentsTab', () => {
   it('shows loading block when loading', () => {
     state.riverDetailState.accidentsData.loading = true
-    const wrapper = createWrapper(AccidentsTab, state, {})
+    const wrapper = createWrapper(AccidentsTab, state, [], options)
 
     expect(wrapper.find('.accidents-tab')).toMatchSnapshot()
 
@@ -26,7 +36,7 @@ describe('AccidentsTab', () => {
   it('shows error block when error', () => {
     state.riverDetailState.accidentsData.loading = false
     state.riverDetailState.accidentsData.error = true
-    const wrapper = createWrapper(AccidentsTab, state, {})
+    const wrapper = createWrapper(AccidentsTab, state, [], options)
 
     expect(wrapper.find('.accidents-tab')).toMatchSnapshot()
 

@@ -25,9 +25,13 @@ const state = {
   }
 }
 
-const route = {
-  params: {
-    id: '357'
+const options = {
+  mocks: {
+    $route: {
+      params: {
+        id: '123456789'
+      }
+    }
   }
 }
 
@@ -35,7 +39,7 @@ describe('GalleryTab', () => {
   it('shows loading block when loading', async () => {
     state.riverDetailState.galleryData.loading = true
 
-    const wrapper = createWrapper(GalleryTab, state, route)
+    const wrapper = createWrapper(GalleryTab, state, [], options)
 
     wrapper.setData({
       formattedData: null
@@ -50,7 +54,7 @@ describe('GalleryTab', () => {
     state.riverDetailState.galleryData.loading = false
     state.riverDetailState.galleryData.error = true
 
-    const wrapper = createWrapper(GalleryTab, state, route)
+    const wrapper = createWrapper(GalleryTab, state, [], options)
 
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
     expect(wrapper.find('.utility-block-error').exists()).toBe(true)
@@ -62,7 +66,7 @@ describe('GalleryTab', () => {
     state.riverDetailState.galleryData.error = true
     state.riverDetailState.galleryData.data = []
 
-    const wrapper = createWrapper(GalleryTab, state, route)
+    const wrapper = createWrapper(GalleryTab, state, [], options)
 
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
     expect(wrapper.find('.utility-block-error').exists()).toBe(false)
