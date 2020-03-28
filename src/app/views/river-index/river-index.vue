@@ -7,10 +7,10 @@
       >
         <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-12 bx--col-max-12">
           <nwi-map
-            :external-loading="loading"
+            :external-loading="loading || searchLoading"
             :feature-to-center="featureToCenter"
             :has-sidebar="showSidebar"
-            :has-controls="showControls"
+            :has-controls="false"
             :highlighted-feature="highlightedFeature"
             :mapbox-access-token="mapboxAccessToken"
             :source-layers="sourceLayers"
@@ -27,14 +27,13 @@
         </div>
         <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-4 bx--col-max-4">
           <NwiMapControlsV2 />
-          <template v-if="loading">
+          <template v-if="loading || searchLoading">
             <UtilityBlock state="loading" />
           </template>
-          <template v-else-if="reachesInViewport && showRiversTable">
+          <template v-else-if="results">
             <nwi-rivers-table
-
               :highlighted-feature="highlightedFeature"
-              :reaches="reachesInViewport"
+              :reaches="results"
               :showing-search-results="showingSearchResults"
               @centerReach="centerFeature"
               @highlightFeature="changeHighlightedFeature"
@@ -111,12 +110,23 @@ export default {
       searchLoading: state => state.riverSearchState.riverSearchData.loading,
       reachesInViewport: state => state.riverIndexState.riverIndexData.data,
       error: state => state.riverIndexState.riverIndexData.error,
-      highlightedFeature: state => state.riverIndexState.riverIndexData.highlightedFeature
-    })
-    // showingSearchResults () {
-    //   // if bool, it's false, otherwise true
-    //   return typeof this.searchResults !== 'null'
-    // }
+      highlightedFeature: state =>
+        state.riverIndexState.riverIndexData.highlightedFeature
+    }),
+    showingSearchResults () {
+      return this.searchResults && this.searchResults.length > 0
+    },
+    results () {
+      if (this.reachesInViewport && this.reachesInViewport.length > 0) {
+        return this.reachesInViewport
+      }
+
+      if (this.searchResults && this.searchResults.length > 0) {
+        return this.searchResults
+      }
+
+      return null
+    }
   },
   methods: {
     updateSearchResults (newVal) {
@@ -124,7 +134,7 @@ export default {
     },
     changeHighlightedFeature (feature) {
       this.$store.dispatch(riverIndexActions.HIGHLIGHT_FEATURE, feature)
-      this.highlightedFeature = feature
+      // this.highlightedFeature = feature
     },
     changeReachesInViewport (newReaches) {
       this.$store.dispatch(riverIndexActions.LOAD_REACHES, newReaches)
@@ -182,23 +192,20 @@ export default {
 
 <style lang="scss" scoped>
 #national-map-app {
+  height: 100%;
+  overflow: hidden;
   width: 100%;
   position: relative;
-  height: 70vh;
 
-  @include carbon--breakpoint('sm') {
+  @include carbon--breakpoint("sm") {
     height: 95vh;
   }
 
-  @include carbon--breakpoint('lg') {
+  @include carbon--breakpoint("lg") {
     height: 80vh;
   }
 }
-
-.river-index {
-  #national-map-app {
-    height: 100%;
-    overflow: hidden;
-  }
+#fullscreen-target {
+  background-color: #fff;
 }
 </style>

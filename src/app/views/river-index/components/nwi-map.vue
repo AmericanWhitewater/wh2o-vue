@@ -25,7 +25,7 @@
         :active="loading"
       />
     </template>
-    <template>
+    <template v-else>
       <utility-block
         state="error"
         text="insert one token to continue"

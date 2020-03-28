@@ -15,28 +15,30 @@
         <template slot="data">
           <cv-data-table-row
             v-for="reach in reaches"
-            :key="reach.properties.id"
-            :ref="`reach-${reach.properties.id}`"
+            :key="reach.id"
+            :ref="`reach-${reach.id}`"
             :class="[
-              friendlyCurrentFlow(reach.properties.condition),
-              highlightedClass(reach.properties.id)
+              friendlyCurrentFlow(reach.condition),
+              highlightedClass(reach.id)
             ]"
             @mouseover.native="debouncedHighlight(reach)"
           >
             <cv-data-table-cell>
-              <a
-                :href="reachDetailUrl(reach.properties.id)"
+              <router-link
+                :to="`/river-detail/${reach.id}/main`"
                 class="reach-link"
               >
-                <h3 class="bx--type-zeta">{{ reach.properties.river }}</h3>
+                <h3 class="bx--type-zeta">
+                  {{ reach.river }}
+                </h3>
                 <span class="section bx--type-caption">{{
-                  reach.properties.section
+                  reach.section
                 }}</span>
-              </a>
+              </router-link>
             </cv-data-table-cell>
-            <cv-data-table-cell>{{ reach.properties.class }}</cv-data-table-cell>
+            <cv-data-table-cell>{{ reach.class }}</cv-data-table-cell>
             <cv-data-table-cell>
-              {{ friendlyCurrentFlow(reach.properties.condition) }}
+              {{ friendlyCurrentFlow(reach.condition) }}
             </cv-data-table-cell>
             <cv-data-table-cell>
               <zoom-in16
@@ -51,18 +53,18 @@
       </cv-data-table>
     </template>
     <template v-else-if="noReaches">
-      <h3 v-if="showingSearchResults">
+      <template v-if="showingSearchResults">
         <utility-block
           state="content"
           text="No rivers in the viewport match your search query."
         />
-      </h3>
-      <h3 v-else>
+      </template>
+      <template v-else>
         <utility-block
           state="content"
           text="Zoom in on the map to display river details here."
         />
-      </h3>
+      </template>
     </template>
     <template v-else>
       Error
@@ -119,7 +121,7 @@ export default {
   watch: {
     highlightedFeature (feature) {
       if (feature) {
-        const reachId = feature.properties.reach_id || feature.properties.id
+        const reachId = feature.reach_id || feature.id
         if (
           this.$refs[`reach-${reachId}`] &&
           this.$refs[`reach-${reachId}`].length > 0
@@ -138,14 +140,11 @@ export default {
     highlightedClass (reachId) {
       if (
         this.highlightedFeature &&
-        reachId === this.highlightedFeature.properties.id
+        reachId === this.highlightedFeature.id
       ) {
         return 'active'
       }
       return ''
-    },
-    reachDetailUrl (reachId) {
-      return `/content/River/detail/id/${reachId}/`
     },
     highlightFeature (reach) {
       this.$emit('highlightFeature', reach)
@@ -162,7 +161,7 @@ export default {
         case 'high':
           return 'high'
         default:
-          return 'unknown'
+          return 'n/a'
       }
     }
   },
