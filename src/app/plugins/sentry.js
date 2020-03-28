@@ -13,7 +13,7 @@ import { environment } from '@/app/environment/environment'
  *
  */
 
-if (environment !== 'development') {
+if (environment === 'production') {
   Sentry.init({
     dsn: 'https://51a942e027c04dc9ab33b5e3613c276e@sentry.io/2564210',
     integrations: [new Integrations.Vue({ Vue, attachProps: true })]

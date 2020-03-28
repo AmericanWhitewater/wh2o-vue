@@ -21,141 +21,143 @@
       />
     </transition>
     <template v-if="!loading && river">
-      <river-header
-        :name="river.river"
-        :section="river.section"
-        :background-image="bgImage"
-      />
-      <div class="bx--grid">
-        <div class="tabs-wrapper">
-          <cv-overflow-menu>
-            <!-- <cv-overflow-menu-item v-if="userIsAdmin">
+      <div class="river-detail-content">
+        <river-header
+          :name="river.river"
+          :section="river.section"
+          :background-image="bgImage"
+        />
+        <div class="bx--grid">
+          <div class="tabs-wrapper">
+            <cv-overflow-menu>
+              <!-- <cv-overflow-menu-item v-if="userIsAdmin">
               Link Resources
             </cv-overflow-menu-item> -->
-            <cv-overflow-menu-item @click.exact="reachShareModalVisible = true">
-              Share Reach
-            </cv-overflow-menu-item>
+              <cv-overflow-menu-item @click.exact="reachShareModalVisible = true">
+                Share Reach
+              </cv-overflow-menu-item>
             <!-- <cv-overflow-menu-item
               v-if="userIsAdmin"
               @click.exact="reachDeleteModalVisible = true"
             >
               Remove from Index
             </cv-overflow-menu-item> -->
-          </cv-overflow-menu>
-          <cv-tabs
-            aria-label="navigation tab label"
-            :no-default-to-first="windowWidth > breakpoints.md"
-            @tab-selected="switchTab($event)"
-          >
-            <cv-tab
-              v-for="(tab, index) in tabs"
-              :id="'tab-' + index + 1"
-              :key="tab"
-              :label="tab"
-            />
-          </cv-tabs>
-        </div>
-      </div>
-      <keep-alive>
-        <router-view />
-      </keep-alive>
-      <cv-modal
-        :visible="reachDeleteModalVisible"
-        kind="danger"
-        size="small"
-        :primary-button-disabled="deleteReachPrimaryButtonDisabled"
-        auto-hide-off
-        @modal-hidden="reachDeleteConfirmInput = null"
-        @primary-click="deleteReach"
-        @secondary-click="reachDeleteModalVisible = false"
-        @modal-hide-request="reachDeleteModalVisible = false"
-      >
-        <template slot="title">
-          Confirm Delete
-        </template>
-        <template slot="content">
-          <p class="mb-sm">
-            Deleting {{ river.river + river.section }} will permanently remove
-            the reach from the river index. This cannot be undone.
-          </p>
-          <div class="confirm-delete-warning-text mb-sm">
-            <h4>{{ river.river + " " + river.section }}</h4>
+            </cv-overflow-menu>
+            <cv-tabs
+              aria-label="navigation tab label"
+              :no-default-to-first="windowWidth > breakpoints.md"
+              @tab-selected="switchTab($event)"
+            >
+              <cv-tab
+                v-for="(tab, index) in tabs"
+                :id="'tab-' + index + 1"
+                :key="tab"
+                :label="tab"
+              />
+            </cv-tabs>
           </div>
-          <cv-text-input
-            v-model="reachDeleteConfirmInput"
-            theme="light"
-            label="Type reach name and section to confirm"
-          />
-        </template>
-        <template slot="secondary-button">
-          Cancel
-        </template>
-        <template slot="primary-button">
-          Delete
-        </template>
-      </cv-modal>
-      <cv-modal
-        :visible="reachShareModalVisible"
-        size="small"
-        auto-hide-off
-        @modal-hidden="reachShareModalVisible = false"
-        @primary-click="reachShareModalVisible = false"
-        @secondary-click="reachShareModalVisible = false"
-        @modal-hide-request="reachShareModalVisible = false"
-      >
-        <template slot="title">
-          Share
-        </template>
-        <template slot="content">
-          <social-sharing
-            :url="shareMeta.url"
-            :title="shareMeta.title"
-            :description="shareMeta.description"
-            :quote="shareMeta.quote"
-            :hashtags="shareMeta.hashtags"
-            twitter-user="AmerWhitewater"
-            inline-template
-          >
-            <div>
-              <network network="facebook">
-                <cv-button
-                  kind="tertiary"
-                  class="mb-spacing-md mr-spacing-sm"
-                >
-                  Facebook
-                </cv-button>
-              </network>
-              <network network="twitter">
-                <cv-button
-                  kind="tertiary"
-                  class="mb-spacing-md mr-spacing-sm"
-                >
-                  Twitter
-                </cv-button>
-              </network>
-              <network network="linkedin">
-                <cv-button
-                  kind="tertiary"
-                  class="mb-spacing-md mr-spacing-sm"
-                >
-                  LinkedIn
-                </cv-button>
-              </network>
-              <network network="email">
-                <cv-button
-                  kind="tertiary"
-                  class="mb-spacing-md mr-spacing-sm"
-                >
-                  Email
-                </cv-button>
-              </network>
+        </div>
+        <keep-alive>
+          <router-view />
+        </keep-alive>
+        <cv-modal
+          :visible="reachDeleteModalVisible"
+          kind="danger"
+          size="small"
+          :primary-button-disabled="deleteReachPrimaryButtonDisabled"
+          auto-hide-off
+          @modal-hidden="reachDeleteConfirmInput = null"
+          @primary-click="deleteReach"
+          @secondary-click="reachDeleteModalVisible = false"
+          @modal-hide-request="reachDeleteModalVisible = false"
+        >
+          <template slot="title">
+            Confirm Delete
+          </template>
+          <template slot="content">
+            <p class="mb-sm">
+              Deleting {{ river.river + river.section }} will permanently remove
+              the reach from the river index. This cannot be undone.
+            </p>
+            <div class="confirm-delete-warning-text mb-sm">
+              <h4>{{ river.river + " " + river.section }}</h4>
             </div>
-          </social-sharing>
-        </template>
-        <template slot="primary-button">
-          Close
-        </template>
-      </cv-modal>
+            <cv-text-input
+              v-model="reachDeleteConfirmInput"
+              theme="light"
+              label="Type reach name and section to confirm"
+            />
+          </template>
+          <template slot="secondary-button">
+            Cancel
+          </template>
+          <template slot="primary-button">
+            Delete
+          </template>
+        </cv-modal>
+        <cv-modal
+          :visible="reachShareModalVisible"
+          size="small"
+          auto-hide-off
+          @modal-hidden="reachShareModalVisible = false"
+          @primary-click="reachShareModalVisible = false"
+          @secondary-click="reachShareModalVisible = false"
+          @modal-hide-request="reachShareModalVisible = false"
+        >
+          <template slot="title">
+            Share
+          </template>
+          <template slot="content">
+            <social-sharing
+              :url="shareMeta.url"
+              :title="shareMeta.title"
+              :description="shareMeta.description"
+              :quote="shareMeta.quote"
+              :hashtags="shareMeta.hashtags"
+              twitter-user="AmerWhitewater"
+              inline-template
+            >
+              <div>
+                <network network="facebook">
+                  <cv-button
+                    kind="tertiary"
+                    class="mb-spacing-md mr-spacing-sm"
+                  >
+                    Facebook
+                  </cv-button>
+                </network>
+                <network network="twitter">
+                  <cv-button
+                    kind="tertiary"
+                    class="mb-spacing-md mr-spacing-sm"
+                  >
+                    Twitter
+                  </cv-button>
+                </network>
+                <network network="linkedin">
+                  <cv-button
+                    kind="tertiary"
+                    class="mb-spacing-md mr-spacing-sm"
+                  >
+                    LinkedIn
+                  </cv-button>
+                </network>
+                <network network="email">
+                  <cv-button
+                    kind="tertiary"
+                    class="mb-spacing-md mr-spacing-sm"
+                  >
+                    Email
+                  </cv-button>
+                </network>
+              </div>
+            </social-sharing>
+          </template>
+          <template slot="primary-button">
+            Close
+          </template>
+        </cv-modal>
+      </div>
     </template>
   </section>
 </template>

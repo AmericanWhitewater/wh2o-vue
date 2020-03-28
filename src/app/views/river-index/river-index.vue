@@ -1,38 +1,54 @@
 <template>
   <div id="national-map-app">
     <div class="bx--grid">
-      <div class="bx--row">
-        <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-12 bx--col-max-12">
-          <nwi-map
-            :external-loading="loading"
-            :feature-to-center="featureToCenter"
-            :has-sidebar="showSidebar"
-            :has-controls="showControls"
-            :highlighted-feature="highlightedFeature"
-            :mapbox-access-token="mapboxAccessToken"
-            :source-layers="sourceLayers"
-            :tileservers="tileservers"
-            center-on-user-location
-            id-for-full-screen="national-map-app"
-            :include-legend="showLegend"
-            @centeredFeature="centerFeature"
-            @changeReachesInViewport="changeReachesInViewport"
-            @clickFeature="clickFeature"
-            @highlightFeature="changeHighlightedFeature"
-            @searchResults="updateSearchResults"
-          />
+      <template v-if="mapboxAccessToken">
+        <div class="bx--row">
+          <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-12 bx--col-max-12">
+            <nwi-map
+              :external-loading="loading"
+              :feature-to-center="featureToCenter"
+              :has-sidebar="showSidebar"
+              :has-controls="showControls"
+              :highlighted-feature="highlightedFeature"
+              :mapbox-access-token="mapboxAccessToken"
+              :source-layers="sourceLayers"
+              :tileservers="tileservers"
+              center-on-user-location
+              id-for-full-screen="national-map-app"
+              :include-legend="showLegend"
+              @centeredFeature="centerFeature"
+              @changeReachesInViewport="changeReachesInViewport"
+              @clickFeature="clickFeature"
+              @highlightFeature="changeHighlightedFeature"
+              @searchResults="updateSearchResults"
+            />
+          </div>
+          <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-4 bx--col-max-4">
+            <nwi-rivers-table
+              v-if="showRiversTable"
+              :highlighted-feature="highlightedFeature"
+              :reaches="reachesInViewport"
+              :showing-search-results="showingSearchResults"
+              @centerReach="centerFeature"
+              @highlightFeature="changeHighlightedFeature"
+            />
+          </div>
         </div>
-        <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-4 bx--col-max-4">
-          <nwi-rivers-table
-            v-if="showRiversTable"
-            :highlighted-feature="highlightedFeature"
-            :reaches="reachesInViewport"
-            :showing-search-results="showingSearchResults"
-            @centerReach="centerFeature"
-            @highlightFeature="changeHighlightedFeature"
+      </template>
+      <template>
+        <utility-block
+          state="error"
+          text="insert one token to continue"
+        >
+          <cv-search
+            v-model="searchTerm"
+            class="mt-spacing-sm"
+            theme="light"
+            placeholder="River Search"
+            @keydown.enter="searchRiver"
           />
-        </div>
-      </div>
+        </utility-block>
+      </template>
     </div>
   </div>
 </template>
@@ -41,11 +57,12 @@
 import { NwiRiversTable, NwiMap } from './components'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { riverIndexActions } from './shared/state'
+import { riverSearchActions } from '@/app/views/river-search/shared/state'
 import {
   mapboxAccessToken,
   nwiTileServer
 } from '@/app/environment/environment'
-
+import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 /**
  * @todo beforeDestroy store bbox / zoom level
  */
@@ -54,7 +71,8 @@ export default {
   name: 'river-index',
   components: {
     NwiMap,
-    NwiRiversTable
+    NwiRiversTable,
+    UtilityBlock
   },
   props: {
     // mapboxAccessToken: {
@@ -88,6 +106,7 @@ export default {
   },
   data () {
     return {
+      searchTerm: '',
       mapboxAccessToken: '',
       tileserver: '',
       river: null,
@@ -146,6 +165,17 @@ export default {
           )
         }
       }
+    },
+    searchRiver () {
+      this.$store.dispatch(riverSearchActions.FETCH_RIVER_SEARCH_DATA, {
+        river: this.searchTerm
+      })
+      /**
+       * @todo figure out how to dynamically set scroll position
+       * transition to search page is jarring, search results obscured
+       */
+      this.searchTerm = ''
+      this.$router.push('/river-search').catch(() => {})
     },
     reachDetailUrl (reachId) {
       return `/content/River/detail/id/${reachId}/`

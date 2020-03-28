@@ -16,14 +16,16 @@
         v-text="text"
       />
     </template>
-    <slot name="content">
+    <div>
       <cv-inline-loading
         v-if="state !== 'content' && !blank && !title"
         small
         :state="state"
         :loading-text="hideText ? '' : text"
+        :error-text="hideText ? '' : text"
       />
-    </slot>
+      <slot />
+    </div>
   </div>
 </template>
 <script>

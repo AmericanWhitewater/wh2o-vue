@@ -7,20 +7,22 @@ exports[`FlowTab shows error block when error 1`] = `
       <div id="utility-block" class="utility-block-error" style="height: 350px;">
         <!---->
         <!---->
-        <div data-inline-loading="" role="alert" aria-live="assertive" class="bx--inline-loading" small="">
-          <div class="bx--inline-loading__animation">
-            <div class="bx--loading bx--loading--small" style="display: none;"><svg viewBox="-75 -75 150 150" class="bx--loading__svg">
-                <circle cx="0" cy="0" r="26.8125" class="bx--loading__background"></circle>
-                <circle cx="0" cy="0" r="26.8125" class="bx--loading__stroke"></circle>
-              </svg></div><svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" hidden="hidden" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="bx--inline-loading__checkmark-container" style="will-change: transform;">
-              <path d="M8,1C4.1,1,1,4.1,1,8c0,3.9,3.1,7,7,7s7-3.1,7-7C15,4.1,11.9,1,8,1z M7,11L4.3,8.3l0.9-0.8L7,9.3l4-3.9l0.9,0.8L7,11z"></path>
-              <path d="M7,11L4.3,8.3l0.9-0.8L7,9.3l4-3.9l0.9,0.8L7,11z" data-icon-path="inner-path" opacity="0"></path>
-            </svg><svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="bx--inline-loading--error" style="will-change: transform;">
-              <path d="M8,1C4.1,1,1,4.1,1,8s3.1,7,7,7s7-3.1,7-7S11.9,1,8,1z M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z"></path>
-              <path fill="none" d="M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z" data-icon-path="inner-path" opacity="0"></path>
-            </svg>
+        <div>
+          <div data-inline-loading="" role="alert" aria-live="assertive" class="bx--inline-loading" small="">
+            <div class="bx--inline-loading__animation">
+              <div class="bx--loading bx--loading--small" style="display: none;"><svg viewBox="-75 -75 150 150" class="bx--loading__svg">
+                  <circle cx="0" cy="0" r="26.8125" class="bx--loading__background"></circle>
+                  <circle cx="0" cy="0" r="26.8125" class="bx--loading__stroke"></circle>
+                </svg></div><svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" hidden="hidden" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="bx--inline-loading__checkmark-container" style="will-change: transform;">
+                <path d="M8,1C4.1,1,1,4.1,1,8c0,3.9,3.1,7,7,7s7-3.1,7-7C15,4.1,11.9,1,8,1z M7,11L4.3,8.3l0.9-0.8L7,9.3l4-3.9l0.9,0.8L7,11z"></path>
+                <path d="M7,11L4.3,8.3l0.9-0.8L7,9.3l4-3.9l0.9,0.8L7,11z" data-icon-path="inner-path" opacity="0"></path>
+              </svg><svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="bx--inline-loading--error" style="will-change: transform;">
+                <path d="M8,1C4.1,1,1,4.1,1,8s3.1,7,7,7s7-3.1,7-7S11.9,1,8,1z M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z"></path>
+                <path fill="none" d="M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z" data-icon-path="inner-path" opacity="0"></path>
+              </svg>
+            </div>
+            <p class="bx--inline-loading__text">Loading data failed.</p>
           </div>
-          <p class="bx--inline-loading__text">Loading data failed.</p>
         </div>
       </div>
     </div>
@@ -35,20 +37,22 @@ exports[`FlowTab shows loading block when loading 1`] = `
       <div id="utility-block" class="utility-block-loading" style="height: 350px;">
         <!---->
         <!---->
-        <div data-inline-loading="" role="alert" aria-live="assertive" class="bx--inline-loading" small="">
-          <div class="bx--inline-loading__animation">
-            <div class="bx--loading bx--loading--small"><svg viewBox="-75 -75 150 150" class="bx--loading__svg">
-                <circle cx="0" cy="0" r="26.8125" class="bx--loading__background"></circle>
-                <circle cx="0" cy="0" r="26.8125" class="bx--loading__stroke"></circle>
-              </svg></div><svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" hidden="hidden" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="bx--inline-loading__checkmark-container" style="will-change: transform;">
-              <path d="M8,1C4.1,1,1,4.1,1,8c0,3.9,3.1,7,7,7s7-3.1,7-7C15,4.1,11.9,1,8,1z M7,11L4.3,8.3l0.9-0.8L7,9.3l4-3.9l0.9,0.8L7,11z"></path>
-              <path d="M7,11L4.3,8.3l0.9-0.8L7,9.3l4-3.9l0.9,0.8L7,11z" data-icon-path="inner-path" opacity="0"></path>
-            </svg><svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" hidden="hidden" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="bx--inline-loading--error" style="will-change: transform;">
-              <path d="M8,1C4.1,1,1,4.1,1,8s3.1,7,7,7s7-3.1,7-7S11.9,1,8,1z M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z"></path>
-              <path fill="none" d="M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z" data-icon-path="inner-path" opacity="0"></path>
-            </svg>
+        <div>
+          <div data-inline-loading="" role="alert" aria-live="assertive" class="bx--inline-loading" small="">
+            <div class="bx--inline-loading__animation">
+              <div class="bx--loading bx--loading--small"><svg viewBox="-75 -75 150 150" class="bx--loading__svg">
+                  <circle cx="0" cy="0" r="26.8125" class="bx--loading__background"></circle>
+                  <circle cx="0" cy="0" r="26.8125" class="bx--loading__stroke"></circle>
+                </svg></div><svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" hidden="hidden" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="bx--inline-loading__checkmark-container" style="will-change: transform;">
+                <path d="M8,1C4.1,1,1,4.1,1,8c0,3.9,3.1,7,7,7s7-3.1,7-7C15,4.1,11.9,1,8,1z M7,11L4.3,8.3l0.9-0.8L7,9.3l4-3.9l0.9,0.8L7,11z"></path>
+                <path d="M7,11L4.3,8.3l0.9-0.8L7,9.3l4-3.9l0.9,0.8L7,11z" data-icon-path="inner-path" opacity="0"></path>
+              </svg><svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" hidden="hidden" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="bx--inline-loading--error" style="will-change: transform;">
+                <path d="M8,1C4.1,1,1,4.1,1,8s3.1,7,7,7s7-3.1,7-7S11.9,1,8,1z M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z"></path>
+                <path fill="none" d="M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z" data-icon-path="inner-path" opacity="0"></path>
+              </svg>
+            </div>
+            <p class="bx--inline-loading__text">Loading data...</p>
           </div>
-          <p class="bx--inline-loading__text">Loading data...</p>
         </div>
       </div>
     </div>
