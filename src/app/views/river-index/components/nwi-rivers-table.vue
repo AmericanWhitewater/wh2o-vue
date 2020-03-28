@@ -6,20 +6,6 @@
     <template v-if="loading">
       <utility-block state="loading" />
     </template>
-    <template v-else-if="noReaches">
-      <h3 v-if="showingSearchResults">
-        <utility-block
-          state="content"
-          text="No rivers in the viewport match your search query."
-        />
-      </h3>
-      <h3 v-else>
-        <utility-block
-          state="content"
-          text="Zoom in on the map to display river details here."
-        />
-      </h3>
-    </template>
     <template v-else-if="reaches">
       <cv-data-table
         :columns="columns"
@@ -64,6 +50,20 @@
         </template>
       </cv-data-table>
     </template>
+    <template v-else-if="noReaches">
+      <h3 v-if="showingSearchResults">
+        <utility-block
+          state="content"
+          text="No rivers in the viewport match your search query."
+        />
+      </h3>
+      <h3 v-else>
+        <utility-block
+          state="content"
+          text="Zoom in on the map to display river details here."
+        />
+      </h3>
+    </template>
     <template v-else>
       Error
     </template>
@@ -104,7 +104,7 @@ export default {
   }),
   computed: {
     noReaches () {
-      return this.reaches.length === 0
+      return this.reaches && this.reaches.length === 0
     },
     columns () {
       return ['Reach', 'Difficulty', 'Flow', 'Zoom']

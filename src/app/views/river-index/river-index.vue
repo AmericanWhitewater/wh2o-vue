@@ -1,63 +1,61 @@
 <template>
   <div id="national-map-app">
     <div class="bx--grid">
-      <template v-if="mapboxAccessToken">
-        <div class="bx--row">
-          <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-12 bx--col-max-12">
-            <nwi-map
-              :external-loading="loading"
-              :feature-to-center="featureToCenter"
-              :has-sidebar="showSidebar"
-              :has-controls="showControls"
-              :highlighted-feature="highlightedFeature"
-              :mapbox-access-token="mapboxAccessToken"
-              :source-layers="sourceLayers"
-              :tileservers="tileservers"
-              center-on-user-location
-              id-for-full-screen="national-map-app"
-              :include-legend="showLegend"
-              @centeredFeature="centerFeature"
-              @changeReachesInViewport="changeReachesInViewport"
-              @clickFeature="clickFeature"
-              @highlightFeature="changeHighlightedFeature"
-              @searchResults="updateSearchResults"
-            />
-          </div>
-          <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-4 bx--col-max-4">
+      <div
+        id="fullscreen-target"
+        class="bx--row"
+      >
+        <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-12 bx--col-max-12">
+          <nwi-map
+            :external-loading="loading"
+            :feature-to-center="featureToCenter"
+            :has-sidebar="showSidebar"
+            :has-controls="showControls"
+            :highlighted-feature="highlightedFeature"
+            :mapbox-access-token="mapboxAccessToken"
+            :source-layers="sourceLayers"
+            :tileservers="[tileserver]"
+            center-on-user-location
+            id-for-full-screen="national-map-app"
+            :include-legend="showLegend"
+            @centeredFeature="centerFeature"
+            @changeReachesInViewport="changeReachesInViewport"
+            @clickFeature="clickFeature"
+            @highlightFeature="changeHighlightedFeature"
+            @searchResults="updateSearchResults"
+          />
+        </div>
+        <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-4 bx--col-max-4">
+          <NwiMapControlsV2 />
+          <template v-if="loading">
+            <UtilityBlock state="loading" />
+          </template>
+          <template v-else-if="reachesInViewport && showRiversTable">
             <nwi-rivers-table
-              v-if="showRiversTable"
+
               :highlighted-feature="highlightedFeature"
               :reaches="reachesInViewport"
               :showing-search-results="showingSearchResults"
               @centerReach="centerFeature"
               @highlightFeature="changeHighlightedFeature"
             />
-          </div>
+          </template>
+          <template v-else>
+            <UtilityBlock state="error" />
+          </template>
         </div>
-      </template>
-      <template>
-        <utility-block
-          state="error"
-          text="insert one token to continue"
-        >
-          <cv-search
-            v-model="searchTerm"
-            class="mt-spacing-sm"
-            theme="light"
-            placeholder="River Search"
-            @keydown.enter="searchRiver"
-          />
-        </utility-block>
-      </template>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { NwiRiversTable, NwiMap } from './components'
+import { NwiRiversTable, NwiMap, NwiMapControlsV2 } from './components'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { riverIndexActions } from './shared/state'
 import { riverSearchActions } from '@/app/views/river-search/shared/state'
+import { mapState } from 'vuex'
+import { riverSearchHttpConfig, checkWindow } from '@/app/global/mixins'
 import {
   mapboxAccessToken,
   nwiTileServer
@@ -72,17 +70,11 @@ export default {
   components: {
     NwiMap,
     NwiRiversTable,
-    UtilityBlock
+    UtilityBlock,
+    NwiMapControlsV2
   },
+  mixins: [riverSearchHttpConfig, checkWindow],
   props: {
-    // mapboxAccessToken: {
-    //   type: String,
-    //   required: true
-    // },
-    // tileserver: {
-    //   type: String,
-    //   default: 'http://localhost:8080/tiles/{z}/{x}/{y}.mvt'
-    // },
     showSidebar: {
       type: Boolean,
       default: true,
@@ -104,41 +96,38 @@ export default {
       required: false
     }
   },
-  data () {
-    return {
-      searchTerm: '',
-      mapboxAccessToken: '',
-      tileserver: '',
-      river: null,
-      highlightedFeature: null,
-      reachesInViewport: [],
-      featureToCenter: null,
-      searchResults: false,
-      loading: false,
-      tileservers: [this.tileserver],
-      sourceLayers: ['reach-segments', 'reach-segment-labels', 'projects']
-    }
-  },
+  data: () => ({
+    searchTerm: '',
+    mapboxAccessToken: '',
+    tileserver: '',
+    river: null,
+    featureToCenter: null,
+    loading: false,
+    sourceLayers: ['reach-segments', 'reach-segment-labels', 'projects']
+  }),
   computed: {
-    showingSearchResults () {
-      // if bool, it's false, otherwise true
-      return typeof this.searchResults !== 'boolean'
-    }
+    ...mapState({
+      searchResults: state => state.riverSearchState.riverSearchData.data,
+      searchLoading: state => state.riverSearchState.riverSearchData.loading,
+      reachesInViewport: state => state.riverIndexState.riverIndexData.data,
+      error: state => state.riverIndexState.riverIndexData.error,
+      highlightedFeature: state => state.riverIndexState.riverIndexData.highlightedFeature
+    })
+    // showingSearchResults () {
+    //   // if bool, it's false, otherwise true
+    //   return typeof this.searchResults !== 'null'
+    // }
   },
   methods: {
     updateSearchResults (newVal) {
       this.searchResults = newVal
     },
     changeHighlightedFeature (feature) {
+      this.$store.dispatch(riverIndexActions.HIGHLIGHT_FEATURE, feature)
       this.highlightedFeature = feature
     },
-    async changeReachesInViewport (newReaches) {
-      //  only use store if we're in the vue spa
-      if (this.$route.name === 'river-index') {
-        await this.$store.dispatch(riverIndexActions.LOAD_REACHES, newReaches)
-      }
-
-      this.reachesInViewport = newReaches
+    changeReachesInViewport (newReaches) {
+      this.$store.dispatch(riverIndexActions.LOAD_REACHES, newReaches)
     },
     centerFeature (feature) {
       this.featureToCenter = feature

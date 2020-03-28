@@ -1,7 +1,5 @@
 import { reflectKeys } from '@/app/global/services'
 
-// import { getUserLocation } from "../services";
-
 const initialState = {
   loading: false,
   data: null,
@@ -46,7 +44,8 @@ const mutations = {
   },
 
   [DATA_SUCCESS] (state, payload) {
-    Object.assign(state, { loading: false, data: payload })
+    state.loading = false
+    state.data = payload.length > 0 ? payload : null
   },
 
   [USER_LOCATION] (state, payload) {
