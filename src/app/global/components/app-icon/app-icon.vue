@@ -26,15 +26,11 @@
 </template>
 
 <script>
-import { surf, walk, takeOut, putIn, waterfall, access } from './icon-set'
+import { surf, waterfall } from './icon-set'
 export default {
   name: 'app-icon',
   components: {
     surf,
-    walk,
-    access,
-    putIn,
-    takeOut,
     waterfall
   },
   props: {

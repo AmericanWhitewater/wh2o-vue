@@ -1,6 +1,2 @@
 export { default as surf } from './surf'
-export { default as walk } from './walk'
-export { default as access } from './access'
-export { default as putIn } from './put-in'
-export { default as takeOut } from './take-out'
 export { default as waterfall } from './waterfall'

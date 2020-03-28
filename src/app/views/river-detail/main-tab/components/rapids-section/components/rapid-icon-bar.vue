@@ -1,61 +1,93 @@
 <template>
-  <div :class="[character.length > 0 ? 'has-icons' : '' ,'rapid-icon-bar']">
-    <ul :class="{ 'edit-mode': editMode }">
-      <template v-if="hazard">
-        <li>
-          <cv-tooltip tip="Hazard">
-            <icon
-              name="waterfall"
-              tip="Hazard"
-            />
+  <div :class="[character.length > 0 ? 'has-icons' : '', 'rapid-icon-bar']">
+    <template v-if="!editMode">
+      <ul id="character-icons-wrapper">
+        <li
+          v-if="putin"
+          id="put-in-icon"
+        >
+          <cv-tooltip tip="Put In">
+            <Login32 />
           </cv-tooltip>
         </li>
-      </template>
-      <template v-if="playspot">
-        <li>
+        <li
+          v-if="access"
+          id="access-icon"
+        >
+          <cv-tooltip tip="Access Point">
+            <Repeat32 />
+          </cv-tooltip>
+        </li>
+
+        <li
+          v-if="hazard"
+          id="hazard-icon"
+        >
+          <cv-tooltip tip="Hazard">
+            <WarningSquare32 />
+          </cv-tooltip>
+        </li>
+
+        <li
+          v-if="playspot"
+          id="surf-icon"
+        >
           <icon
             name="surf"
             tip="Surf Spot"
           />
         </li>
-      </template>
-      <template v-if="portage">
-        <li>
-          <icon
-            name="walk"
-            tip="Portage"
-          />
+
+        <li
+          v-if="portage"
+          id="portage-icon"
+        >
+          <cv-tooltip tip="Portage">
+            <Pedestrian32 />
+          </cv-tooltip>
         </li>
-      </template>
-      <template v-if="putin">
-        <li>
-          <icon
-            name="put-in"
-            tip="Put In"
-          />
+
+        <li
+          v-if="waterfall"
+          id="waterfall-icon"
+        >
+          <cv-tooltip tip="Waterfall">
+            <WarningSquare32 />
+          </cv-tooltip>
         </li>
-      </template>
-      <template v-if="takeout">
-        <li>
-          <icon
-            name="take-out"
-            tip="Take Out"
-          />
+
+        <li
+          v-if="takeout"
+          id="take-out-icon"
+        >
+          <cv-tooltip tip="Take Out">
+            <Logout32 />
+          </cv-tooltip>
         </li>
-      </template>
-      <template v-if="waterfall">
-        <icon
-          name="waterfall"
-          tip="Waterfall"
-        />
-      </template>
-      <template v-if="access">
-        <icon
-          name="access"
-          tip="Access Point"
-        />
-      </template>
-    </ul>
+      </ul>
+    </template>
+    <template v-else>
+      <div>
+        <cv-button
+          id="edit-button"
+          kind="secondary"
+          size="small"
+          @click.exact="$emit('rapid:edit')"
+          @keydown.enter="$emit('rapid:edit')"
+        >
+          Edit
+        </cv-button>
+        <cv-button
+          id="delete-button"
+          kind="danger"
+          size="small"
+          @click.exact="$emit('rapid:delete')"
+          @keydown.enter="$emit('rapid:delete')"
+        >
+          Delete
+        </cv-button>
+      </div>
+    </template>
   </div>
 </template>
 <script>
@@ -68,7 +100,16 @@ export default {
   props: {
     character: {
       type: Array,
-      required: true
+      required: true,
+      default: function () {
+        return []
+      },
+      validator: val => {
+        // throw warning if endpoint response changes
+        const knownCharacteristics = ['takeout', 'putin', 'waterfall', 'portage', 'playspot', 'hazard', 'access']
+        const isKnownCharacteristic = input => knownCharacteristics.indexOf(input) > -1
+        return val.every(isKnownCharacteristic)
+      }
     }
   },
   computed: {
@@ -103,11 +144,11 @@ export default {
 .rapid-icon-bar {
   display: flex;
   align-items: center;
- &.has-icons {
+  &.has-icons {
     @include carbon--breakpoint("sm") {
-    margin: $spacing-md 0;
+      margin: $spacing-md 0;
+    }
   }
- }
   ul {
     &.edit-mode {
       margin-right: $spacing-md;

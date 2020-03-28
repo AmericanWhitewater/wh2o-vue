@@ -12,13 +12,16 @@
           <loading-block :hide-text="true" />
         </template>
         <template v-if="!loading && data && token">
-          <NwiMap
-            :include-legend="false"
-            :has-sidebar="false"
-            :mapbox-access-token="token"
-            :tileservers="[tileserver]"
-            :has-controls="false"
-          />
+          <div class="map-wrapper">
+            <NwiMap
+              height="350"
+              :include-legend="false"
+              :has-sidebar="false"
+              :mapbox-access-token="token"
+              :tileservers="[tileserver]"
+              :has-controls="false"
+            />
+          </div>
         </template>
         <template v-if="!token">
           <error-block
@@ -82,7 +85,10 @@ export default {
       loading: state => state.riverDetailState.riverDetailData.loading,
       data: state => state.riverDetailState.riverDetailData.data,
       error: state => state.riverDetailState.riverDetailData.error
-    })
+    }),
+    riverId () {
+      return this.$route.params.id
+    }
   }
 }
 </script>
@@ -91,6 +97,9 @@ export default {
   padding-top: $spacing-xl;
   .bx--skeleton__heading {
     height: 400px;
+  }
+  .map-wrapper {
+    height:350px
   }
 }
 </style>
