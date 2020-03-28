@@ -40,7 +40,10 @@
             />
           </template>
           <template v-else>
-            <UtilityBlock state="error" />
+            <UtilityBlock
+              state="error"
+              text="Map Error. Try search."
+            />
           </template>
         </div>
       </div>

@@ -1,5 +1,8 @@
 <template>
-  <div id="nwi-map-container">
+  <div
+    id="nwi-map-container"
+    :style="height ? `height:${height}px`:''"
+  >
     <template v-if="mapboxAccessToken">
       <nwi-map-controls
         v-if="hasControls"
@@ -58,6 +61,10 @@ export default {
     UtilityBlock
   },
   props: {
+    height: {
+      type: String,
+      required: false
+    },
     // toggles controls
     hasControls: {
       type: Boolean,
@@ -554,7 +561,6 @@ export default {
 
 <style lang="scss">
 #nwi-map-container {
-  min-height: 500px;
   min-width: 100%;
   height: calc(100vh - 75px);
   width: 100%;
