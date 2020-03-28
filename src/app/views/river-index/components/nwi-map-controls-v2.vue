@@ -52,9 +52,8 @@
           />
         </cv-toolbar-option>
       </cv-overflow-menu>
-      <div>
+      <div v-if="!mobileDevice">
         <cv-button
-          v-if="!mobileDevice"
           kind="tertiary"
           size="small"
           small

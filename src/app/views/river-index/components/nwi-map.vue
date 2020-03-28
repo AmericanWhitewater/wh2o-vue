@@ -566,9 +566,9 @@ export default {
     width: 100%;
 
     &.hasSidebar {
-      height: 65%;
+      height: 95%;
 
-      @include carbon--breakpoint("md") {
+      @include carbon--breakpoint("lg") {
         height: 100%;
       }
     }

@@ -193,7 +193,6 @@ export default {
 <style lang="scss" scoped>
 #national-map-app {
   height: 100%;
-  overflow: hidden;
   width: 100%;
   position: relative;
 
@@ -203,6 +202,7 @@ export default {
 
   @include carbon--breakpoint("lg") {
     height: 80vh;
+    overflow: hidden;
   }
 }
 #fullscreen-target {
