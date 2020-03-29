@@ -1,6 +1,6 @@
 import { httpClient } from '@/app/global/services'
 
-import { apiConstants } from '../../config'
+import { apiConstants } from '../config'
 
 const fetchRiverDetailData = data => {
   const url = `${apiConstants.graphql}`
@@ -43,4 +43,9 @@ const fetchRiverDetailData = data => {
     .then(res => res.data)
 }
 
-export { fetchRiverDetailData }
+const updateBetaBox = data => {
+  const url = `/rapid/${data.id}`
+  return httpClient.patch(url, data)
+}
+
+export { fetchRiverDetailData, updateBetaBox }

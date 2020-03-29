@@ -1,15 +1,15 @@
 import { httpClient } from '@/app/global/services'
 
-import { apiConstants } from '../../config'
+import { apiConstants } from '../config'
 
-const fetchCommentsData = data => {
+const fetchNewsTabData = data => {
   const url = `${apiConstants.graphql}`
   return httpClient
     .post(url, {
       query: `
       query {
         reach(id:${data}){
-            posts(post_type: COMMENT, first:10, page:1) {
+            posts(post_type: WARNING, first:20, page:1) {
                 data {
                     id,
                     title,
@@ -38,4 +38,4 @@ const fetchCommentsData = data => {
     .then(res => res.data)
 }
 
-export { fetchCommentsData }
+export { fetchNewsTabData }

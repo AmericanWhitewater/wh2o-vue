@@ -1,6 +1,6 @@
 import { httpClient } from '@/app/global/services'
 
-import { apiConstants } from '../../config'
+import { apiConstants } from '../config'
 
 const fetchAccidentsData = data => {
   const url = `${apiConstants.graphql}`

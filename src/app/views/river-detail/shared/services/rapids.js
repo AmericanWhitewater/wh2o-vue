@@ -1,6 +1,6 @@
 import { httpClient } from '@/app/global/services'
 
-import { apiConstants } from '../../config'
+import { apiConstants } from '../config'
 
 const fetchRapidsData = data => {
   const url = `${apiConstants.graphql}`
@@ -33,4 +33,19 @@ const fetchRapidsData = data => {
     .then(res => res.data)
 }
 
-export { fetchRapidsData }
+const createRapid = data => {
+  const url = `/rapid/${data.id}`
+  return httpClient.post(url, data)
+}
+
+const updateRapid = data => {
+  const url = `/rapid/${data.id}`
+  return httpClient.patch(url, data)
+}
+
+const deleteRapid = data => {
+  const url = `/rapid/${data.id}`
+  return httpClient.delete(url, data)
+}
+
+export { fetchRapidsData, createRapid, updateRapid, deleteRapid }

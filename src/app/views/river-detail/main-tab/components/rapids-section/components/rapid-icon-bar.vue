@@ -51,7 +51,7 @@
           v-if="waterfall"
           id="waterfall-icon"
         >
-          <cv-tooltip tip="Waterfall">
+          <cv-tooltip tip="Waterfall / Large Drop">
             <WarningSquare32 />
           </cv-tooltip>
         </li>

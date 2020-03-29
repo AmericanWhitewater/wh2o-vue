@@ -115,7 +115,7 @@ exports[`rapid-icon-bar.vue shows waterfall icon when poi is waterfall 1`] = `
     <!---->
     <!---->
     <!---->
-    <li id="waterfall-icon"><button type="button" class="cv-tooltip bx--tooltip__trigger bx--tooltip--a11y bx--tooltip--top bx--tooltip--align-center"><span class="bx--assistive-text">Waterfall</span>
+    <li id="waterfall-icon"><button type="button" class="cv-tooltip bx--tooltip__trigger bx--tooltip--a11y bx--tooltip--top bx--tooltip--align-center"><span class="bx--assistive-text">Waterfall / Large Drop</span>
         <warningsquare32-stub></warningsquare32-stub></button></li>
     <!---->
   </ul>

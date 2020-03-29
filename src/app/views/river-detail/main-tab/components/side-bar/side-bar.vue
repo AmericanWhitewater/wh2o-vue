@@ -48,37 +48,32 @@
     <cv-modal
       :visible="newAlertModalVisible"
       @secondary-click="cancelNewAlert"
-      @primary-click="notifyUser"
+      @primary-click="submitForm"
     >
       <template slot="title">
-        New Alert
+        Create Alert
       </template>
       <template slot="content">
-        <cv-file-uploader
-          ref="fileUploader"
-          label="Choose files to upload"
-          helper-text="Max file size 10mb - PNG, JPG"
-          accept=".jpg,.png"
-          theme="light"
-          multiple
+        <cv-text-input
+          v-model="formData.title"
           class="mb-spacing-md"
+          label="Title"
+          placeholder="label"
+          :disabled="formPending"
         />
         <cv-dropdown
-          v-model="formData.kind"
+          v-model="formData.gauge_id"
+          label="Gage"
+        />
+        <cv-text-input
+          v-model="formData.reading"
           class="mb-spacing-md"
-        >
-          <cv-dropdown-item value="info">
-            Info
-          </cv-dropdown-item>
-          <cv-dropdown-item value="warning">
-            Warning
-          </cv-dropdown-item>
-          <cv-dropdown-item value="danger">
-            Danger
-          </cv-dropdown-item>
-        </cv-dropdown>
+          label="Flow Level"
+          placeholder="label"
+          :disabled="formPending"
+        />
         <cv-text-area
-          v-model="formData.message"
+          v-model="formData.detail"
           label="Message"
           theme="light"
           class="mb-spacing-md"
@@ -100,9 +95,17 @@ import { globalAppActions } from '@/app/global/state'
 export default {
   name: 'side-bar',
   data: () => ({
+    formPending: false,
     formData: {
-      message: '',
-      kind: 'warning'
+      detail: '',
+      post_type: 'WARNING',
+      gauge_id: '',
+      metric_id: '',
+      post_date: '',
+      reach_id: '',
+      reading: '',
+      title: '',
+      user_id: ''
     },
     newAlertModalVisible: false,
     sticky: false,
@@ -139,8 +142,9 @@ export default {
         this.sticky = true
       }
     },
-    notifyUser () {
+    submitForm () {
       this.newAlertModalVisible = false
+      this.$store.dispatch(alertsActions.CREATE_ALERT, this.formData)
       this.$store.dispatch(globalAppActions.SEND_TOAST, {
         title: 'Alert Submitted',
         kind: 'success',

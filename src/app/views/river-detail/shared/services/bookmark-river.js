@@ -1,5 +1,5 @@
 import { appLocalStorage, httpClient } from '@/app/global/services'
-import { apiConstants } from '../../config'
+import { apiConstants } from '../config'
 const merge_array = (array1, array2) => {
   var result_array = []
   var arr = array1.concat(array2)

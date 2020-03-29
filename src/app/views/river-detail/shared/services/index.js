@@ -1,21 +1,12 @@
-export * from './accidents-tab/accidents-tab'
-
-export * from './bookmark-river/bookmark-river'
-
-export * from './credits-tab/credits-tab'
-
-export * from './flow-tab/flow-tab'
-export * from './news-tab/news-tab'
-
-export * from './gallery-tab/gallery-tab'
-/**
- * @todo refactor rapids
- */
-export * from './main-tab/main-tab'
-export * from './main-tab/comments'
-export * from './main-tab/alerts'
-export * from './rapids/rapids'
-
-export * from './map-tab/map-tab'
-
-export * from './weather-tab/weather-tab'
+export * from './accidents-tab'
+export * from './alerts'
+export * from './bookmark-river'
+export * from './comments'
+export * from './credits-tab'
+export * from './flow-tab'
+export * from './gallery-tab'
+export * from './main-tab'
+export * from './map-tab'
+export * from './news-tab'
+export * from './rapids'
+export * from './weather-tab'

@@ -5,10 +5,9 @@ import { apiBaseUrl } from '../../../environment/environment'
 const config = {
   baseURL: apiBaseUrl,
   headers: {
-    common: {
-      'X-Requested-With': 'XMLHttpRequest',
-      'Content-Type': 'application/json'
-    }
+    'X-Requested-With': 'XMLHttpRequest',
+    'Content-Type': 'application/json; charset=utf-8',
+    'Cache-Control': 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0'
   }
 }
 

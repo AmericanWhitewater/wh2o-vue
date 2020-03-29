@@ -1,5 +1,5 @@
 import { httpClient } from '@/app/global/services'
-import { apiConstants } from '../../config'
+import { apiConstants } from '../config'
 import axios from 'axios'
 
 const fetchGaugeReadings = data => {

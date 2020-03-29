@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="mb-xl">
     <hr>
     <h2 class="mb-spacing-md">
       River Description
@@ -36,11 +36,19 @@
       </template>
       <template v-else>
         <content-editor
+
           :content="
             sanitizedDescription ? sanitizedDescription : 'start typing...'
           "
           show-control-bar
         />
+        <cv-button
+          class="mt-spacing-sm"
+          @click.exact="submitForm"
+          @keydown.enter="submitForm"
+        >
+          Submit
+        </cv-button>
       </template>
     </template>
     <template v-else>
@@ -58,13 +66,21 @@ import { mapState } from 'vuex'
 // the content editor needs to be directly imported?
 import ContentEditor from '@/app/global/components/content-editor/content-editor.vue'
 import { globalAppActions } from '@/app/global/state'
+import { httpClient } from '@/app/global/services'
 export default {
   name: 'river-description',
   components: {
     'content-editor': ContentEditor
   },
   data: () => ({
-    editedContent: null
+    editedContent: null,
+    formData: {
+      id: null,
+      reachid: null,
+      description: 'lorem ipsum.',
+      is_final: null,
+      was_final: null
+    }
   }),
   computed: {
     ...mapState({
@@ -91,12 +107,23 @@ export default {
         return this.$replaceText(closingTags, legacyUrl, updatedUrl)
       }
       return null
+    },
+    reachId () {
+      return this.$route.params.id
     }
   },
   methods: {
     toggleEditMode () {
       this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, !this.editMode)
+    },
+    submitForm () {
+      const url = `https://beta.americanwhitewater.org/content/StreamTeam/edit-skdescription:1/reachid/${this.reachId}`
+      httpClient.post(url, JSON.stringify(this.formData))
     }
+  },
+  mounted () {
+    this.formData.id = this.reachId
+    this.formData.reachid = this.reachId
   }
 }
 </script>

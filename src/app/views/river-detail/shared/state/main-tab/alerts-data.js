@@ -1,5 +1,5 @@
 import { reflectKeys } from '@/app/global/services'
-import { fetchAlertsData } from '../../services'
+import { fetchAlertsData, createAlert } from '../../services'
 const initialState = {
   data: null,
   error: null,
@@ -38,7 +38,7 @@ const mutations = {
 }
 
 export const alertsActions = reflectKeys(
-  ['FETCH_ALERTS_DATA'],
+  ['FETCH_ALERTS_DATA', 'CREATE_ALERT'],
   namespacedPrefix
 )
 
@@ -52,6 +52,20 @@ const actions = {
 
     if (result) {
       context.commit(DATA_SUCCESS, result.data.reach.posts.data)
+    }
+
+    return result
+  },
+  async [alertsActions.CREATE_ALERT] (context, data) {
+    context.commit(DATA_REQUEST)
+
+    const result = await createAlert(data).catch(e => {
+      context.commit(DATA_ERROR, e)
+    })
+
+    if (result) {
+      // eslint-disable-next-line no-console
+      console.log('result :', result)
     }
 
     return result

@@ -19,18 +19,28 @@ const state = {
   }
 }
 
+const options = {
+  mocks: {
+    $route: {
+      params: {
+        id: '123456789'
+      }
+    }
+  }
+}
+
 describe('RiverDescription', () => {
   it('shows skeleton text when loading', () => {
     state.riverDetailState.riverDetailData.loading = true
 
-    const wrapper = createWrapper(RiverDescription, state, {})
+    const wrapper = createWrapper(RiverDescription, state, [], options)
     expect(wrapper.find('.cv-skeleton-text').exists()).toBe(true)
   })
 
   it('shows skeleton text when error', () => {
     state.riverDetailState.riverDetailData.loading = false
     state.riverDetailState.riverDetailData.error = true
-    const wrapper = createWrapper(RiverDescription, state, {})
+    const wrapper = createWrapper(RiverDescription, state, [], options)
     expect(wrapper.find('.cv-skeleton-text').exists()).toBe(true)
   })
 

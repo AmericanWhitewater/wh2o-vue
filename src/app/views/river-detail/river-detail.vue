@@ -169,7 +169,7 @@
  */
 import { mapState, mapGetters } from 'vuex'
 import RiverHeader from './river-header/river-header'
-import { actionsTypes, reachGagesActions } from './shared/state'
+import { riverDetailActions, reachGagesActions } from './shared/state'
 import { ErrorBlock } from '@/app/global/components'
 import { checkWindow } from '@/app/global/mixins'
 
@@ -328,11 +328,11 @@ export default {
      * @temp
      */
     resetStores () {
-      this.$store.dispatch(actionsTypes.INITIAL_STATE)
+      this.$store.dispatch(riverDetailActions.INITIAL_STATE)
     }
   },
   created () {
-    this.$store.dispatch(actionsTypes.FETCH_RIVER_DETAIL_DATA, this.riverId)
+    this.$store.dispatch(riverDetailActions.FETCH_RIVER_DETAIL_DATA, this.riverId)
     this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.riverId)
   },
   beforeRouteLeave (to, from, next) {
@@ -345,7 +345,7 @@ export default {
           next(false)
         }
       })
-      this.$store.dispatch(actionsTypes.SET_EDIT_MODE, false)
+      this.$store.dispatch(riverDetailActions.SET_EDIT_MODE, false)
     }
     document
       .getElementById('meta-description')

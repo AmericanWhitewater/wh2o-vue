@@ -18,7 +18,10 @@
                   <h3>{{ section }}</h3>
                 </template>
                 <div>
+                  <edit-mode-toggle class="mb-spacing-sm" />
+
                   <cv-button
+                    v-if="!editMode"
                     kind="secondary"
                     size="small"
                     class="ml-spacing-sm"
@@ -58,11 +61,12 @@
                   </cv-interactive-tooltip>
 
                   <template v-if="editMode">
-                    <div class="icon mb-spacing-sm edit">
+                    <div
+                      class="icon mb-spacing-sm edit"
+                      @click.exact="uploadModalVisible = true"
+                      @keydown.enter="uploadModalVisible = true"
+                    >
                       <Upload24 />
-                    </div>
-                    <div class="icon edit">
-                      <ZoomPan24 />
                     </div>
                   </template>
                 </div>
@@ -71,12 +75,17 @@
           </div>
         </div>
       </div>
+      <media-upload-modal
+        :visible="uploadModalVisible"
+        section="reach"
+        @secondary-click="uploadModalVisible = false"
+        @modal-hidden="uploadModalVisible = false"
+      />
       <cv-modal
         v-if="showConfirmation"
         kind="danger"
         :visible="showConfirmation"
       >
-        <!-- <template slot="label">label</template> -->
         <template slot="title">
           Are you sure?
         </template>
@@ -98,10 +107,16 @@ import { mapState, mapGetters } from 'vuex'
 import { checkWindow } from '@/app/global/mixins'
 import { globalAppActions } from '@/app/global/state'
 import { appLocalStorage } from '@/app/global/services'
+import { EditModeToggle } from '@/app/global/components'
 import { bookmarksActions } from '../shared/state'
+import { MediaUploadModal } from '../shared/components'
 
 export default {
   name: 'river-header',
+  components: {
+    EditModeToggle,
+    MediaUploadModal
+  },
   mixins: [checkWindow],
   props: {
     name: {
@@ -116,6 +131,7 @@ export default {
     }
   },
   data: () => ({
+    uploadModalVisible: false,
     showConfirmation: false,
     bookmarked: false,
     iconAlways: {
@@ -141,7 +157,7 @@ export default {
     bgImg () {
       if (this.river && this.river.photo) {
         return {
-          url: `https://americanwhitewater.org${this.river.photo.image.uri.big}`,
+          url: `https://americanwhitewater.org${this.river.photo.image.uri.big || this.river.photo.image.uri.medium}`,
           credit: this.river.photo.post.user.uname
         }
       }
@@ -209,6 +225,7 @@ section {
         min-width: 32px;
         padding: $spacing-2xs;
         background-color: $ui-01;
+        cursor: pointer;
         &.edit {
           height: 50px;
           width: 50px;
@@ -257,8 +274,6 @@ section {
   .edit-section {
     order: 1;
     height: 5rem;
-    // display: flex;
-    // flex-flow: column nowrap;
 
     &.edit {
       height: 10rem;

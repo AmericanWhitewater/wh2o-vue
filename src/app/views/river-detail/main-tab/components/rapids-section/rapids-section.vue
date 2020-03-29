@@ -1,7 +1,7 @@
 <template>
   <section
     v-view.once="loadRapids"
-    class="rapids-section mb-lg"
+    class="rapids-section mb-xl"
   >
     <hr>
     <h2 class="mb-spacing-md">

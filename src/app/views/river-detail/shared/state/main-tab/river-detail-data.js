@@ -59,14 +59,14 @@ const mutations = {
   }
 }
 
-export const actionsTypes = reflectKeys(
+export const riverDetailActions = reflectKeys(
   ['FETCH_RIVER_DETAIL_DATA', 'SET_EDIT_MODE', 'INITIAL_STATE'],
   namespacedPrefix
 )
 
 const actions = {
 
-  async [actionsTypes.FETCH_RIVER_DETAIL_DATA] (context, riverId) {
+  async [riverDetailActions.FETCH_RIVER_DETAIL_DATA] (context, riverId) {
     context.commit(DATA_REQUEST)
 
     const result = await fetchRiverDetailData(riverId).catch(e => {
@@ -80,10 +80,10 @@ const actions = {
     return result
   },
 
-  async [actionsTypes.SET_EDIT_MODE] (context, data) {
+  async [riverDetailActions.SET_EDIT_MODE] (context, data) {
     context.commit(MODE_SET, data)
   },
-  async [actionsTypes.INITIAL_STATE] (context, data) {
+  async [riverDetailActions.INITIAL_STATE] (context, data) {
     context.commit(DATA_RESET)
   }
 }

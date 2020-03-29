@@ -32,7 +32,8 @@ const options = {
         id: '123456789'
       }
     }
-  }
+  },
+  stubs: ['media-upload-form']
 }
 
 describe('GalleryTab', () => {

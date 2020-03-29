@@ -53,7 +53,7 @@ const actions = {
     })
 
     if (result) {
-      context.commit(DATA_SUCCESS, result)
+      context.commit(DATA_SUCCESS, result.data.me)
     }
 
     return result
@@ -63,6 +63,9 @@ const actions = {
 const getters = {
   userIsAdmin: state => {
     if (state.data) {
+      /**
+       * @todo
+       */
       // return state.data.admin === 'admin'
       return true
     }

@@ -2,7 +2,10 @@
   <div class="gallery-tab">
     <layout name="layout-two-thirds">
       <template #sidebar>
-        <gallery-upload-form />
+        <media-upload-form
+          title="Upload Media"
+          section="gallery"
+        />
       </template>
       <template #main>
         <template v-if="loading">
@@ -32,7 +35,7 @@
 import { mapState } from 'vuex'
 import { galleryActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
-import { galleryUploadForm } from './components'
+import { MediaUploadForm } from '../shared/components'
 import { Layout } from '@/app/global/layout'
 /**
  * @todo the gallery needs to be a standalone component
@@ -43,7 +46,7 @@ export default {
   name: 'gallery-tab',
   components: {
     UtilityBlock,
-    galleryUploadForm,
+    MediaUploadForm,
     Layout
   },
   data: () => ({
