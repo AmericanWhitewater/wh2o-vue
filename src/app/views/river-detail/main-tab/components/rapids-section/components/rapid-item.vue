@@ -26,6 +26,7 @@
         <rapid-icon-bar
           :character="rapid.character"
           @rapid:edit="editModalVisible = true"
+          @rapid:delete="deleteModalVisible = true"
         />
       </div>
       <hr class="ui-03">
@@ -105,7 +106,15 @@
         <rapid-edit-modal
           :visible="editModalVisible"
           :rapid-id="rapid.id"
-          @secondary-click="editModalVisible = false"
+          @edit:cancelled="editModalVisible = false"
+          @edit:success="editModalVisible = false"
+        />
+        <confirm-delete-modal
+          :visible="deleteModalVisible"
+          :resource-name="rapid.name"
+          @edit:cancelled="deleteModalVisible = false"
+          @edit:success="deleteModalVisible = false"
+          @delete:confirmed="deleteRapid"
         />
       </template>
     </cv-tile>
@@ -115,12 +124,14 @@
 import RapidIconBar from './rapid-icon-bar'
 import RapidMediaUploader from './rapid-media-uploader'
 import RapidEditModal from './rapid-edit-modal'
+import ConfirmDeleteModal from '@/app/global/components/confirm-delete-modal/confirm-delete-modal.vue'
 export default {
   name: 'rapids-item',
   components: {
     RapidIconBar,
     RapidMediaUploader,
-    RapidEditModal
+    RapidEditModal,
+    ConfirmDeleteModal
   },
   props: {
     rapid: {
@@ -137,6 +148,7 @@ export default {
   },
   data: () => ({
     editModalVisible: false,
+    deleteModalVisible: false,
     uploadFormVisible: false,
     showConfirmation: false,
     readMoreActive: false,
@@ -177,6 +189,10 @@ export default {
     cancelUpload () {
       this.showConfirmation = false
       this.uploadFormVisible = false
+    },
+    deleteRapid () {
+      this.deleteModalVisible = false
+      this.$emit('woo... rapid deleted')
     }
   },
   created () {

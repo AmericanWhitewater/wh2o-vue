@@ -77,13 +77,6 @@
             >
               <ListNumbered16 />
             </button>
-            <button
-              class="menubar__button"
-              :class="{ 'is-active': isActive.blockquote() }"
-              @click="commands.blockquote"
-            >
-              <Quotes16 />
-            </button>
           </div>
         </div>
       </editor-menu-bar>
@@ -99,7 +92,6 @@
 
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
 import {
-  Blockquote,
   Heading,
   OrderedList,
   BulletList,
@@ -133,12 +125,10 @@ export default {
   },
   data () {
     return {
-      // Create an `Editor` instance with some default content. The editor is
-      // then passed to the `EditorContent` component as a `prop`
+      updatedContent: '',
       editor: new Editor({
         content: this.content ? this.content : 'Start typing...',
         extensions: [
-          new Blockquote(),
           new BulletList(),
           new Heading({ levels: [3] }),
           new ListItem(),
@@ -148,13 +138,26 @@ export default {
           new Italic(),
           new Underline(),
           new History()
-        ]
+        ],
+        onUpdate: ({ getHTML }) => {
+          this.updatedContent = getHTML()
+          /**
+           * @todo need to debounce
+           */
+          this.$emit('content:updated', this.updatedContent)
+        }
       })
     }
+  },
+  mounted () {
+    this.$emit('editor:mounted')
   },
   beforeDestroy () {
     // Always destroy your editor instance when it's no longer needed
     this.editor.destroy()
+  },
+  destroyed () {
+    this.$emit('editor:destroyed')
   }
 }
 </script>

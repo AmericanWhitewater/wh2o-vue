@@ -36,11 +36,12 @@
       </template>
       <template v-else>
         <content-editor
-
           :content="
             sanitizedDescription ? sanitizedDescription : 'start typing...'
           "
           show-control-bar
+          @content:updated="handleUpdate"
+          @editor:destroyed="handleEditorDestroy"
         />
         <cv-button
           class="mt-spacing-sm"
@@ -73,7 +74,7 @@ export default {
     'content-editor': ContentEditor
   },
   data: () => ({
-    editedContent: null,
+    updatedDescription: '',
     formData: {
       id: null,
       reachid: null,
@@ -98,13 +99,13 @@ export default {
           }
         })
 
-        const openingTags = this.$replaceText(content, '<div>', '<p>')
-        const closingTags = this.$replaceText(openingTags, '</div>', '</p>')
+        // const openingTags = this.$replaceText(content, '<div>', '<p>')
+        // const closingTags = this.$replaceText(openingTags, '</div>', '</p>')
 
         const legacyUrl = 'http://www.americanwhitewater.org/rivers/id/'
         const updatedUrl = `${appBaseUrl}/#/river-detail/`
 
-        return this.$replaceText(closingTags, legacyUrl, updatedUrl)
+        return this.$replaceText(content, legacyUrl, updatedUrl)
       }
       return null
     },
@@ -119,6 +120,12 @@ export default {
     submitForm () {
       const url = `https://beta.americanwhitewater.org/content/StreamTeam/edit-skdescription:1/reachid/${this.reachId}`
       httpClient.post(url, JSON.stringify(this.formData))
+    },
+    handleUpdate (v) {
+      this.updatedDescription = v
+    },
+    handleEditorDestroy () {
+      this.updatedDescription = ''
     }
   },
   mounted () {

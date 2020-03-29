@@ -160,22 +160,22 @@ export default {
   },
   methods: {
     submitForm () {
-      this.$emit('primary-click')
+      this.$emit('edit:submitted')
+
+      setTimeout(() => {
+        this.$emit('edit:success')
+        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          title: 'Rapid Edited',
+          kind: 'success',
+          override: true,
+          contrast: false,
+          action: false,
+          autoHide: true
+        })
+      })
     },
     handleCancel () {
-      this.$emit('secondary-click')
-      this.$emit('cancel')
-    },
-    notifyUser () {
-      this.newRapidModalVisible = false
-      this.$store.dispatch(globalAppActions.SEND_TOAST, {
-        title: 'Rapid Created',
-        kind: 'success',
-        override: true,
-        contrast: false,
-        action: false,
-        autoHide: true
-      })
+      this.$emit('edit:cancelled')
     }
   },
   mounted () {

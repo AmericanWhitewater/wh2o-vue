@@ -63,6 +63,7 @@
         />
         <cv-dropdown
           v-model="formData.gauge_id"
+          class="mb-spacing-md"
           label="Gage"
         />
         <cv-text-input

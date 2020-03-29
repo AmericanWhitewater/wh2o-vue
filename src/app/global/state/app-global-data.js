@@ -3,7 +3,7 @@ import { reflectKeys, appLocalStorage, Breakpoints } from '../services'
 const initialState = {
   loading: false,
   error: null,
-  editMode: true,
+  editMode: false,
   updateAvailable: null,
   toasts: [],
   breakpoints: Breakpoints,

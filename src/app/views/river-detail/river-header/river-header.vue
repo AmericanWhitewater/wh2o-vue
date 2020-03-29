@@ -81,24 +81,6 @@
         @secondary-click="uploadModalVisible = false"
         @modal-hidden="uploadModalVisible = false"
       />
-      <cv-modal
-        v-if="showConfirmation"
-        kind="danger"
-        :visible="showConfirmation"
-      >
-        <template slot="title">
-          Are you sure?
-        </template>
-        <template slot="content">
-          <p>This action cannot be undone.</p>
-        </template>
-        <template slot="secondary-button">
-          Cancel
-        </template>
-        <template slot="primary-button">
-          OK
-        </template>
-      </cv-modal>
     </section>
   </div>
 </template>
@@ -132,7 +114,6 @@ export default {
   },
   data: () => ({
     uploadModalVisible: false,
-    showConfirmation: false,
     bookmarked: false,
     iconAlways: {
       name: 'CameraAction32',
