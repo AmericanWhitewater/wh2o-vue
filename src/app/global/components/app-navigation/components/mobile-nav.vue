@@ -74,7 +74,7 @@
             kind="ghost"
             class="mb-spacing-xs"
             @click.exact="viewRoute('/river-index')"
-            v-text="'River Index'"
+            v-text="'Map'"
           />
           <cv-button
             class="mb-spacing-xs"

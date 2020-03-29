@@ -11,6 +11,11 @@ const fetchUserData = data => {
         me {
           uid
           email
+          mobile_profile
+          gauge_notification {
+            gauge_id
+          }
+          permissions
           image {
             uri {
               big

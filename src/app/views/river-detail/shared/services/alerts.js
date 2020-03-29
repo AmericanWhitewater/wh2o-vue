@@ -36,27 +36,28 @@ const fetchAlertsData = data => {
 }
 
 const createAlert = () => {
+  // does this need to be sent as JSON
+
   const data = {
     post: {
       title: 'Lorem Ipsum',
+      detail: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      post_type: 'WARNING',
+      post_date: Date.now(),
       reach_id: 356,
       gauge_id: null,
+      user_id: 153461,
       metric_id: null,
-      reading: null,
-      detail: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      post_date: Date.now(),
-      post_type: 'WARNING',
-      user_id: 153461
+      reading: null
     }
   }
 
   return httpClient.post('/graphql', {
     query: `
-            mutation newAlert {
-                postCreate(${data})
-                id
-            }
-        
+      mutation {
+          postCreate(${data})
+          id
+      }
         `
   })
 }

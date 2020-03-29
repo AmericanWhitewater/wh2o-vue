@@ -9,7 +9,7 @@
       :expanded="firstPOI"
     >
       <div class="top-bar">
-        <div class="title">
+        <div class="title mb-spacing-xs">
           <h4 class="mb-spacing-xs">
             {{ rapid.name }}
           </h4>
@@ -23,7 +23,10 @@
             v-text="`Distance: ${rapid.distance}`"
           />
         </div>
-        <rapid-icon-bar :character="rapid.character" />
+        <rapid-icon-bar
+          :character="rapid.character"
+          @rapid:edit="editModalVisible = true"
+        />
       </div>
       <hr class="ui-03">
       <template>
@@ -99,36 +102,25 @@
           :rapid-id="rapid.id"
           @cancel="uploadFormVisible = false"
         />
+        <rapid-edit-modal
+          :visible="editModalVisible"
+          :rapid-id="rapid.id"
+          @secondary-click="editModalVisible = false"
+        />
       </template>
     </cv-tile>
-    <cv-modal
-      :visible="showConfirmation"
-      @modal-hidden="cancelUpload"
-      @primary-click="cancelUpload"
-    >
-      <template slot="title">
-        Are you sure?
-      </template>
-      <template slot="content">
-        <p>All unsaved changes will be lost.</p>
-      </template>
-      <template slot="secondary-button">
-        Cancel
-      </template>
-      <template slot="primary-button">
-        Confirm
-      </template>
-    </cv-modal>
   </div>
 </template>
 <script>
 import RapidIconBar from './rapid-icon-bar'
 import RapidMediaUploader from './rapid-media-uploader'
+import RapidEditModal from './rapid-edit-modal'
 export default {
   name: 'rapids-item',
   components: {
     RapidIconBar,
-    RapidMediaUploader
+    RapidMediaUploader,
+    RapidEditModal
   },
   props: {
     rapid: {
@@ -144,6 +136,7 @@ export default {
     }
   },
   data: () => ({
+    editModalVisible: false,
     uploadFormVisible: false,
     showConfirmation: false,
     readMoreActive: false,
