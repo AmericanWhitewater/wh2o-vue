@@ -177,7 +177,7 @@ export default {
   methods: {
     viewRoute (path) {
       this.drawerOpen = false
-      this.$router.push(path)
+      this.$router.push(path).catch(() => {})
     },
     resetRouter () {
       this.drawerOpen = false
