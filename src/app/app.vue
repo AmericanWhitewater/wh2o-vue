@@ -42,9 +42,6 @@ export default {
         this.$store.dispatch(userActions.FETCH_USER_DATA)
       }
     }
-  },
-  created () {
-    this.initTempAuth()
   }
 }
 </script>

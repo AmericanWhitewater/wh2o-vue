@@ -7,7 +7,8 @@ const initialState = {
   updateAvailable: null,
   toasts: [],
   breakpoints: Breakpoints,
-  windowWidth: null
+  windowWidth: null,
+  offline: null
 }
 
 /**
@@ -45,11 +46,11 @@ const checkIfViewed = (newToast) => {
 const namespacedPrefix = '[APP_GLOBAL]'
 
 const mutationTypes = reflectKeys(
-  ['SUCCESS', 'REQUEST', 'ERROR', 'RESET', 'EDIT_MODE', 'NEW_UPDATE', 'NEW_TOAST', 'RESET_TOAST', 'CLOSE_TOAST'],
+  ['SUCCESS', 'REQUEST', 'ERROR', 'RESET', 'EDIT_MODE', 'NEW_UPDATE', 'NEW_TOAST', 'RESET_TOAST', 'CLOSE_TOAST', 'NETWORK'],
   namespacedPrefix
 )
 
-const { ERROR, LOADING, EDIT_MODE, RESET, NEW_UPDATE, NEW_TOAST, RESET_TOASTS, CLOSE_TOAST } = mutationTypes
+const { ERROR, LOADING, EDIT_MODE, RESET, NEW_UPDATE, NEW_TOAST, RESET_TOASTS, CLOSE_TOAST, NETWORK } = mutationTypes
 
 const mutations = {
   [LOADING] (state, payload) {
@@ -89,6 +90,13 @@ const mutations = {
   [EDIT_MODE] (state, payload) {
     Object.assign(state, { editMode: payload })
   },
+  [NETWORK] (state, payload) {
+    if (payload === 'offline') {
+      state.offline = true
+    } else {
+      state.offline = false
+    }
+  },
 
   [RESET] (state) {
     Object.assign(state, ...initialState)
@@ -96,29 +104,32 @@ const mutations = {
 }
 
 export const globalAppActions = reflectKeys(
-  ['TOGGLE_EDIT_MODE', 'TOGGLE_LOADING', 'UPDATE_AVAILABLE', 'SEND_TOAST', 'RESET_TOASTS', 'CLOSE_TOAST'],
+  ['TOGGLE_EDIT_MODE', 'TOGGLE_LOADING', 'UPDATE_AVAILABLE', 'SEND_TOAST', 'RESET_TOASTS', 'CLOSE_TOAST', 'NETWORK_STATUS'],
   namespacedPrefix
 )
 
 const actions = {
-  async [globalAppActions.TOGGLE_EDIT_MODE] (context, data) {
+  [globalAppActions.TOGGLE_EDIT_MODE] (context, data) {
     context.commit(EDIT_MODE, data)
   },
-  async [globalAppActions.TOGGLE_LOADING] (context, data) {
+  [globalAppActions.TOGGLE_LOADING] (context, data) {
     context.commit(LOADING, data)
   },
-  async [globalAppActions.UPDATE_AVAILABLE] (context, data) {
+  [globalAppActions.UPDATE_AVAILABLE] (context, data) {
     context.commit(NEW_UPDATE, data)
   },
-  async [globalAppActions.SEND_TOAST] (context, data) {
+  [globalAppActions.SEND_TOAST] (context, data) {
     data.id = Math.floor(Math.random() * 1000)
     context.commit(NEW_TOAST, data)
   },
-  async [globalAppActions.RESET_TOASTS] (context, data) {
+  [globalAppActions.RESET_TOASTS] (context, data) {
     context.commit(RESET_TOASTS, data)
   },
-  async [globalAppActions.CLOSE_TOAST] (context, data) {
+  [globalAppActions.CLOSE_TOAST] (context, data) {
     context.commit(CLOSE_TOAST, data)
+  },
+  [globalAppActions.NETWORK_STATUS] (context, data) {
+    context.commit(NETWORK, data)
   }
 }
 

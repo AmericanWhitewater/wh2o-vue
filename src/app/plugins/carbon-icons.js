@@ -46,7 +46,7 @@ import Upload24 from '@carbon/icons-vue/es/upload/24.js'
 import UserAvatar16 from '@carbon/icons-vue/es/user--avatar/16.js'
 import UserAvatar20 from '@carbon/icons-vue/es/user--avatar/20.js'
 import WarningSquare32 from '@carbon/icons-vue/es/warning-square/32.js'
-import WifiOff32 from '@carbon/icons-vue/es/wifi--off/32.js'
+import WifiOff24 from '@carbon/icons-vue/es/wifi--off/24.js'
 import ZoomPan24 from '@carbon/icons-vue/es/watson-health/zoom-pan/32.js'
 
 /**
@@ -98,7 +98,7 @@ export const components = {
   UserAvatar16,
   UserAvatar20,
   WarningSquare32,
-  WifiOff32,
+  WifiOff24,
   ZoomPan24
 }
 

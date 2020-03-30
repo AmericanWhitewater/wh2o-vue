@@ -1,10 +1,16 @@
 <template>
   <div :class="[{ home: homePage }, 'app-header']">
     <template v-if="windowWidth <= breakpoints.lg">
-      <mobile-nav :nav-items="navItems" />
+      <mobile-nav
+        :nav-items="navItems"
+        :offline="offline"
+      />
     </template>
     <template v-else>
-      <desktop-nav :nav-items="navItems" />
+      <desktop-nav
+        :nav-items="navItems"
+        :offline="offline"
+      />
     </template>
   </div>
 </template>
@@ -13,6 +19,7 @@
 import DesktopNav from './components/desktop-nav'
 import MobileNav from './components/mobile-nav'
 import { navItems, checkWindow } from '@/app/global/mixins'
+import { mapState } from 'vuex'
 
 /**
  * @displayName App Navigation
@@ -26,6 +33,9 @@ export default {
   },
   mixins: [checkWindow, navItems],
   computed: {
+    ...mapState({
+      offline: state => state.appGlobalState.appGlobalData.offline
+    }),
     homePage () {
       if (this.$route.name === 'home') {
         return true

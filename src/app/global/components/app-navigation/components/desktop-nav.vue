@@ -4,12 +4,31 @@
       <div class="bx--grid">
         <div class="bx--row">
           <div class="bx--col-lg-16 nav-main-content-area">
-            <router-link
-              v-show="!homePage"
-              to="/"
-            >
-              <aw-logo />
-            </router-link>
+            <div class="logo-wrapper">
+              <div>
+                <router-link
+                  v-show="!homePage"
+                  to="/"
+                >
+                  <aw-logo />
+                </router-link>
+              </div>
+
+              <transition
+                name="fade"
+                mode="out-in"
+              >
+                <div
+                  v-if="offline"
+                  class="ml-spacing-md"
+                >
+                  <cv-tag
+                    kind="red"
+                    label="Network Disconnected"
+                  />
+                </div>
+              </transition>
+            </div>
             <header>
               <cv-button
                 kind="ghost"
@@ -75,6 +94,10 @@ export default {
     navItems: {
       type: Array,
       default: () => null
+    },
+    offline: {
+      type: Boolean,
+      required: true
     }
   },
   computed: {
@@ -102,10 +125,10 @@ export default {
     background-color: #fff !important;
   }
 
-  // .bx--header__menu-title[role="menuitem"][aria-expanded="true"]
-  //   + .bx--header__menu {
-  //   @include layer("temporary-nav");
-  // }
+ .logo-wrapper {
+   display: flex;
+   align-items: center;
+ }
 
   a.bx--header__menu-item[role="menuitem"]:hover > svg {
     fill: $ui-04;

@@ -9,37 +9,44 @@
             'bx--col content-area'
           ]"
         >
-          <template v-show="windowWidth <= breakpoints.lg">
-            <span @click.exact="resetRouter">
-              <aw-logo />
-            </span>
-          </template>
-          <span
-            :class="[{ 'drawer-open': drawerOpen }, 'nav-trigger']"
-            @click.exact="drawerOpen = !drawerOpen"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
-              <g fill="#5a6872">
-                <path
-                  data-color="color-2"
-                  d="M23,13H1c-0.552,0-1-0.447-1-1s0.448-1,1-1h22c0.552,0,1,0.447,1,1S23.552,13,23,13z"
-                />
-                <path
-                  fill="#5a6872"
-                  d="M23,6H1C0.448,6,0,5.553,0,5s0.448-1,1-1h22c0.552,0,1,0.447,1,1S23.552,6,23,6z"
-                />
-                <path
-                  fill="#5a6872"
-                  d="M23,20H12c-0.552,0-1-0.447-1-1s0.448-1,1-1h11c0.552,0,1,0.447,1,1S23.552,20,23,20z"
-                />
-              </g>
-            </svg>
+          <span @click.exact="resetRouter">
+            <aw-logo />
           </span>
+          <div>
+            <cv-tooltip
+              tip="Network Disconnected"
+              direction="bottom"
+            >
+              <WifiOff24 />
+            </cv-tooltip>
+
+            <span
+              :class="[{ 'drawer-open': drawerOpen }, 'nav-trigger ml-spacing-md']"
+              @click.exact="drawerOpen = !drawerOpen"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+              >
+                <g fill="#5a6872">
+                  <path
+                    data-color="color-2"
+                    d="M23,13H1c-0.552,0-1-0.447-1-1s0.448-1,1-1h22c0.552,0,1,0.447,1,1S23.552,13,23,13z"
+                  />
+                  <path
+                    fill="#5a6872"
+                    d="M23,6H1C0.448,6,0,5.553,0,5s0.448-1,1-1h22c0.552,0,1,0.447,1,1S23.552,6,23,6z"
+                  />
+                  <path
+                    fill="#5a6872"
+                    d="M23,20H12c-0.552,0-1-0.447-1-1s0.448-1,1-1h11c0.552,0,1,0.447,1,1S23.552,20,23,20z"
+                  />
+                </g>
+              </svg>
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -132,6 +139,10 @@ export default {
   },
   mixins: [checkWindow],
   props: {
+    offline: {
+      type: Boolean,
+      required: true
+    },
     navItems: {
       type: Array,
       default: () => null

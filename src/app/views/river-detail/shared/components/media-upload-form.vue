@@ -140,7 +140,9 @@ export default {
     }
   },
   created () {
-    this.formData.photo.author = this.user.uname
+    if (this.user && this.user.uname) {
+      this.formData.photo.author = this.user.uname
+    }
   }
 }
 </script>
