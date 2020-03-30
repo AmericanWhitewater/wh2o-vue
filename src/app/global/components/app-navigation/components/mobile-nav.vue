@@ -14,6 +14,7 @@
           </span>
           <div>
             <cv-tooltip
+              v-if="offline"
               tip="Network Disconnected"
               direction="bottom"
             >
