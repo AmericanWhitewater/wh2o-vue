@@ -55,7 +55,6 @@
   </section>
 </template>
 <script>
-import { globalAppActions } from '@/app/global/state'
 import { appLocalStorage, httpClient } from '@/app/global/services'
 import { userActions } from '../../../shared/state'
 import {
@@ -73,9 +72,9 @@ export default {
       grant_type: 'password',
       username: '',
       password: '',
-      client_id: 6,
+      client_id: null,
       client_secret: null,
-      scope: ''
+      scope: '*'
     },
     usernameError: false,
     passwordError: false
@@ -86,11 +85,24 @@ export default {
     }
   },
   computed: {
+    user () {
+      return this.$store.state.userState.userData.data
+    },
     loginDisabled () {
       if (!this.formData.username || !this.formData.password) {
         return true
       }
       return false
+    }
+  },
+  watch: {
+    user (v) {
+      if (v.uid) {
+        /**
+ * @todo add welcome message
+ */
+        this.$router.push('/user/account/1/bookmarks')
+      }
     }
   },
   methods: {
@@ -114,26 +126,15 @@ export default {
       }
 
       if (!this.passwordError && !this.usernameError) {
-        const url = apiBaseUrl + 'oauth/authorize'
+        const url = apiBaseUrl + 'oauth/token'
         const input = JSON.stringify(this.formData)
         const result = await httpClient.post(url, input).catch(e => {
           /* eslint-disable-next-line no-console */
           console.log('e :', e)
         })
         if (result) {
-          this.$store.dispatch(userActions.USER_LOGIN, {
-            admin: 'admin'
-          })
-          appLocalStorage.setItem('wh2o-registered', true)
-          this.$gtag.event('login', { method: 'Google' })
-          this.$router.replace('/user/account/1/bookmarks')
-          this.$store.dispatch(globalAppActions.SEND_TOAST, {
-            title: 'Welcome back!',
-            kind: 'info',
-            contrast: false,
-            action: false,
-            autoHide: true
-          })
+          appLocalStorage.setItem('wh2o-auth', result.data.access_token)
+          this.$store.dispatch(userActions.FETCH_USER_DATA)
         }
       }
     }

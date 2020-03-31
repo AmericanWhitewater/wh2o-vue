@@ -21,9 +21,8 @@ export default {
     LoadingBlock
   },
   created () {
-    appLocalStorage.setItem('wh2o-registered', false)
-    this.$gtag.event('logout', { method: 'Google' })
-    this.$store.dispatch(userActions.RESET_USER)
+    appLocalStorage.removeItem('wh2o-auth')
+    this.$store.dispatch(userActions.LOGOUT)
   },
   mounted () {
     const self = this

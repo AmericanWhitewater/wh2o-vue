@@ -40,7 +40,7 @@ const mutations = {
 }
 
 export const userActions = reflectKeys(
-  ['FETCH_USER_DATA'],
+  ['FETCH_USER_DATA', 'LOGOUT'],
   namespacedPrefix
 )
 
@@ -57,6 +57,9 @@ const actions = {
     }
 
     return result
+  },
+  async [userActions.LOGOUT] (context, data) {
+    context.commit(DATA_RESET)
   }
 }
 
