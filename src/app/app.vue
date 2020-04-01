@@ -13,6 +13,8 @@ import {
   AppToaster,
   AppNavigation
 } from './global/components'
+import { appLocalStorage } from '@/app/global/services'
+import { userActions } from '@/app/views/user/shared/state'
 export default {
   name: 'app',
   metaInfo: {
@@ -21,6 +23,11 @@ export default {
   components: {
     AppNavigation,
     AppToaster
+  },
+  created () {
+    if (appLocalStorage.getItem('wh2o-auth')) {
+      this.$store.dispatch(userActions.FETCH_USER_DATA)
+    }
   }
 }
 </script>

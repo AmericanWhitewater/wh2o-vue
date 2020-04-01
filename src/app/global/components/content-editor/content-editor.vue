@@ -51,6 +51,13 @@
             </button>
             <button
               class="menubar__button"
+              :class="{ 'is-active': isActive.link() }"
+              @click="commands.link"
+            >
+              <Link16 />
+            </button>
+            <button
+              class="menubar__button"
               :class="{ 'is-active': isActive.paragraph() }"
               @click="commands.paragraph"
             >

@@ -41,6 +41,7 @@ import Settings32 from '@carbon/icons-vue/es/settings/32.js'
 import TextBold16 from '@carbon/icons-vue/es/text--bold/16.js'
 import TextItalic16 from '@carbon/icons-vue/es/text--italic/16.js'
 import TextUnderline16 from '@carbon/icons-vue/es/text--underline/16.js'
+import Link16 from '@carbon/icons-vue/es/link/16.js'
 import Undo16 from '@carbon/icons-vue/es/undo/16.js'
 import Upload24 from '@carbon/icons-vue/es/upload/24.js'
 import UserAvatar16 from '@carbon/icons-vue/es/user--avatar/16.js'
@@ -74,6 +75,7 @@ export const components = {
   Help32,
   Launch20,
   List16,
+  Link16,
   ListBulleted16,
   ListNumbered16,
   Login32,

@@ -4,7 +4,7 @@
     <h2 class="mb-spacing-md">
       River Description
     </h2>
-    <template v-if="loading">
+    <template v-if="loading || updatePending">
       <cv-skeleton-text
         class="cv-skeleton-text"
         paragraph
@@ -74,13 +74,12 @@ export default {
     'content-editor': ContentEditor
   },
   data: () => ({
-    updatedDescription: '',
+    updatePending: false,
+    error: false,
+    refreshedDescription: '',
+    updatedDescription: null,
     formData: {
-      id: null,
-      reachid: null,
-      description: 'lorem ipsum.',
-      is_final: null,
-      was_final: null
+      description: 'lorem ipsum.'
     }
   }),
   computed: {
@@ -92,7 +91,9 @@ export default {
       editMode: state => state.appGlobalState.appGlobalData.editMode
     }),
     sanitizedDescription () {
-      if (this.riverDescription) {
+      if (this.refreshedDescription) {
+        return this.refreshedDescription
+      } else if (this.riverDescription) {
         const content = this.$sanitize(this.river.description, {
           disallowedAttributes: {
             '*': ['style']
@@ -118,8 +119,45 @@ export default {
       this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, !this.editMode)
     },
     submitForm () {
-      const url = `https://beta.americanwhitewater.org/content/StreamTeam/edit-skdescription:1/reachid/${this.reachId}`
-      httpClient.post(url, JSON.stringify(this.formData))
+      if (this.updatedDescription) {
+        this.updatePending = true
+
+        const data = this.updatedDescription.toString()
+
+        const url = 'https://beta.americanwhitewater.org/graphql'
+
+        httpClient.post(url, {
+          query: `
+          mutation  {
+            reachUpdate(id: ${this.reachId}, reach:{ description: "${data}"}) {
+              description
+            }
+          }
+        `
+        }).then(r => {
+          this.refreshedDescription = r.data.data.reachUpdate.description
+          this.updatePending = false
+          this.$store.dispatch(globalAppActions.SEND_TOAST, {
+            title: 'Description Updated',
+            kind: 'success',
+            override: true,
+            contrast: false,
+            action: false,
+            autoHide: true
+          })
+        }).catch(e => {
+          this.updatePending = false
+          this.error = true
+          this.$store.dispatch(globalAppActions.SEND_TOAST, {
+            title: 'Update Failed',
+            kind: 'error',
+            override: true,
+            contrast: false,
+            action: false,
+            autoHide: true
+          })
+        })
+      }
     },
     handleUpdate (v) {
       this.updatedDescription = v
