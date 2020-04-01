@@ -27,7 +27,7 @@ export default {
   mounted () {
     const self = this
     setTimeout(() => {
-      self.$router.replace('/')
+      self.$router.replace('/user/access/login')
     }, 1000)
   }
 }

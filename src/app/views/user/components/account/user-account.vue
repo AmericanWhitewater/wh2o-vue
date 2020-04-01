@@ -119,10 +119,9 @@ export default {
       {
         label: 'bookmarks'
       },
-      // {
-      //   label: 'gages',
-      //   disabled: true
-      // },
+      {
+        label: 'gages'
+      },
       {
         label: 'profile'
         // disabled: true
