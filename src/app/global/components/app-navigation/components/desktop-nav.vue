@@ -34,7 +34,7 @@
                 kind="ghost"
                 size="small"
                 class="header--btn"
-                @click.exact="$router.push('/river-index')"
+                @click.exact="$router.push('/river-index').catch(()=>{})"
               >
                 Map
               </cv-button>
@@ -43,7 +43,7 @@
                 kind="ghost"
                 size="small"
                 class="header--btn"
-                @click.exact="$router.push('/news')"
+                @click.exact="$router.push('/news').catch(()=>{})"
               >
                 News
               </cv-button>
@@ -51,7 +51,7 @@
                 kind="ghost"
                 size="small"
                 class="header--btn"
-                @click.exact="$router.push('/river-search')"
+                @click.exact="$router.push('/river-search').catch(()=>{})"
               >
                 Search
               </cv-button>
@@ -60,7 +60,7 @@
                 kind="primary"
                 size="small"
                 class="header--btn"
-                @click.exact="$router.push('/user/access/login')"
+                @click.exact="$router.push('/user/access/login').catch(()=>{})"
               >
                 Login
               </cv-button>
@@ -69,7 +69,7 @@
                 kind="tertiary"
                 size="small"
                 class="header--btn"
-                @click.exact="$router.push('/user/account/1/bookmarks')"
+                @click.exact="$router.push('/user/account/1/bookmarks').catch(()=>{})"
               >
                 My Account
               </cv-button>
