@@ -7,33 +7,25 @@ const fetchNewsTabData = data => {
   return httpClient
     .post(url, {
       query: `
-      query {
-        reach(id:${data}){
-            posts(post_type: WARNING, first:20, page:1) {
-                data {
-                    id,
-                    title,
-                    detail,
-                    post_date,
-                    revision,
-                    post_type,
-                    user {
-                        uname,
-                        uid,
-                        image {
-                            uri{
-                                thumb,
-                                medium,
-                                big
-                            }
-                        }
+        query {
+            getRiverArticles(id: ${data}) {
+                articles {
+                abstract
+                abstractimage {
+                    uri {
+                    big
+                    medium
+                    thumb
                     }
                 }
+                author
+                posted
+                title
+                contents
+                id
+                }
             }
-            }
-        }
-    
-    `
+        }`
     })
     .then(res => res.data)
 }

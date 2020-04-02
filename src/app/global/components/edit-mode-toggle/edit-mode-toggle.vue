@@ -8,6 +8,7 @@
       small
       value
       :checked="editMode"
+      :disabled="!user"
       @change="toggleEditMode"
     >
       <template slot="text-left">
@@ -28,11 +29,25 @@ export default {
   computed: {
     editMode () {
       return this.$store.state.appGlobalState.appGlobalData.editMode
+    },
+    user () {
+      return this.$store.state.userState.userData.data
     }
   },
   methods: {
     toggleEditMode () {
-      this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, !this.editMode)
+      if (this.user) {
+        this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, !this.editMode)
+      } else {
+        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          title: 'Must log in to edit',
+          kind: 'error',
+          override: true,
+          contrast: false,
+          action: false,
+          autoHide: true
+        })
+      }
     }
   }
 }

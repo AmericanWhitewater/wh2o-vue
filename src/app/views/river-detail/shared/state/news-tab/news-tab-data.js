@@ -54,7 +54,7 @@ const actions = {
       if (result.errors) {
         context.commit(DATA_ERROR, result.errors[0].message)
       } else {
-        context.commit(DATA_SUCCESS, result.data.reach.posts.data)
+        context.commit(DATA_SUCCESS, result.data.getRiverArticles.articles)
       }
     }
 
