@@ -3,7 +3,7 @@
     v-view.once="loadData"
     class="main-tab-sidebar"
   >
-    <div
+    <cv-tile
       ref="contentArea"
       :class="[{ sticky: sticky }, 'content-area bx--row']"
     >
@@ -20,31 +20,64 @@
           <cv-inline-notification
             v-for="(alert, index) in alerts.slice(0, 2)"
             :key="index"
-            :title="alert.title"
+            :title="alert.title ? alert.title.slice(0,35) : null"
             :sub-title="alert.detail.slice(0, 50) + '...'"
             action-label="Read More"
             @close="doClose(index)"
             @action="$router.push(`/river-detail/${$route.params.id}/news`)"
           />
           <template v-if="!alerts.length">
-            <p>There are no new alerts</p>
+            <p class="pt-spacing-md pb-spacing-md">
+              There are no new alerts.
+            </p>
           </template>
         </template>
 
         <template v-if="loading">
-          <cv-inline-loading state="loading" />
+          <div class="pt-spacing-md pb-spacing-md">
+            <cv-inline-loading state="loading" />
+          </div>
         </template>
-        <template v-if="articles.length > 0">
-          <h4>News</h4>
+
+        <h4 class="mb-spacing-sm">
+          News
+        </h4>
+        <template v-if="articlesLoading">
+          <div class="pt-spacing-md pb-spacing-md">
+            <cv-inline-loading state="loading" />
+          </div>
         </template>
-        <template v-if="documents.length > 0">
-          <h4>Documents</h4>
+        <template v-else-if="articles && articles.length > 0">
+          <div
+            v-for="(article, i) in articles.slice(0,2)"
+            :key="i+3*4"
+            class="bx--row mb-spacing-xs sidebar-article"
+            @keydown.enter="$router.push(`/article/${article.id}`)"
+            @click.exact="$router.push(`/article/${article.id}`)"
+          >
+            <div class="bx--col-sm-12 bx--col-md-3">
+              <div
+                class="article-thumb bx--aspect-ratio--1x1"
+                :style="`background-image: url(https://americanwhitewater.org${article.abstractimage.uri.medium || article.abstractimage.uri.thumb})`"
+                :alt="article.title"
+              />
+            </div>
+            <div class="bx--col-sm-12 bx--col-md-5">
+              <div>
+                <h5
+                  class="mb-spacing-2xs"
+                  v-text="$titleCase(article.title)"
+                />
+                <p v-html="article.abstract.slice(0,50)" />
+              </div>
+            </div>
+          </div>
         </template>
-        <template v-if="projects.length > 0">
-          <h4>Projects</h4>
+        <template v-else>
+          No articles
         </template>
       </div>
-    </div>
+    </cv-tile>
     <cv-modal
       :visible="newAlertModalVisible"
       @secondary-click="cancelNewAlert"
@@ -91,7 +124,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { alertsActions } from '../../../shared/state'
+import { alertsActions, newsTabActions } from '../../../shared/state'
 import { globalAppActions } from '@/app/global/state'
 export default {
   name: 'side-bar',
@@ -109,16 +142,16 @@ export default {
       user_id: ''
     },
     newAlertModalVisible: false,
-    sticky: false,
-    articles: [],
-    projects: [],
-    documents: []
+    sticky: false
   }),
   computed: {
     ...mapState({
       alerts: state => state.riverDetailState.alertsData.data,
       loading: state => state.riverDetailState.alertsData.loading,
-      error: state => state.riverDetailState.alertsData.error
+      error: state => state.riverDetailState.alertsData.error,
+      articlesLoading: state => state.riverDetailState.newsTabData.loading,
+      articlesError: state => state.riverDetailState.newsTabData.error,
+      articles: state => state.riverDetailState.newsTabData.data
     }),
     routeID () {
       return this.$route.params.id
@@ -127,11 +160,15 @@ export default {
   watch: {
     alerts () {
       this.isSticky()
+    },
+    articles () {
+      this.isSticky()
     }
   },
   methods: {
     doClose (index) {
-      alert(`Do something for alert: ${index}`)
+      // eslint-disable-next-line no-console
+      console.log('index :', index)
     },
     cancelNewAlert () {
       this.newAlertModalVisible = false
@@ -156,7 +193,13 @@ export default {
       })
     },
     loadData () {
-      this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.routeID)
+      if (!this.alerts) {
+        this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.$route.params.id)
+      }
+
+      if (!this.articles) {
+        this.$store.dispatch(newsTabActions.FETCH_NEWS_TAB_DATA, this.$route.params.id)
+      }
     }
   }
 }
@@ -166,7 +209,7 @@ export default {
   min-height: 100%;
   .content-area {
     height: auto;
-    background-color: $ui-03;
+    // background-color: $ui-03;
     padding: $spacing-sm 0;
     &.sticky {
       position: sticky;
@@ -182,4 +225,22 @@ export default {
     align-items: center;
   }
 }
+.sidebar-article {
+
+&:hover {
+  cursor: pointer;
+  h5,p {
+    text-decoration: underline;
+  }
+}
+
+.article-thumb {
+   background-position: center center;
+   background-size:cover;
+   background-repeat: no-repeat;
+   background-color: $ui-03;
+}
+
+}
+
 </style>

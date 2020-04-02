@@ -23,29 +23,27 @@
         <div
           v-for="(c, i) in comments.slice(0, 5)"
           :key="i"
-          class="bx--tile mb-sm comment"
+          class="mb-md comment"
         >
           <div class="bx--row ">
-            <div class=" bx--col-sm-12 bx--col-lg-3">
-              <img
-                class="mb-spacing-md"
-                :src="`https://americanwhitewater.org${c.user.image.uri.big}`"
-                alt=""
-              >
+            <div class="pl-sm bx--col-auto">
+              <user-avatar
+                :image-u-r-i="formatURI(c.user.image.uri.big)"
+                :username="c.user.uname"
+              />
             </div>
             <div class="bx--col-sm-12 bx--col-lg-11">
               <h5
                 class="mr-spacing-sm"
                 v-text="c.user.uname"
               />
-              <span
-                class="date"
+              <h6
+                class="date mb-spacing-xs"
                 v-text="formatDate(c.post_date, 'll')"
               />
-              <hr class="ui-01">
               <div
                 class="detail"
-                v-text="c.detail"
+                v-html="c.detail"
               />
             </div>
           </div>
@@ -79,13 +77,15 @@
 <script>
 import { commentsActions } from '@/app/views/river-detail/shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
+import UserAvatar from '@/app/global/components/user-avatar/user-avatar'
 import { globalAppActions } from '@/app/global/state'
 import { mapState } from 'vuex'
 
 export default {
   name: 'comments-section',
   components: {
-    UtilityBlock
+    UtilityBlock,
+    UserAvatar
   },
   data: () => ({
     newCommentModalVisible: false,
@@ -106,6 +106,13 @@ export default {
     }
   },
   methods: {
+    formatURI (input) {
+      if (input) {
+        return `https://americanwhitewater.org${input}`
+      }
+
+      return null
+    },
     loadComments () {
       this.$store.dispatch(commentsActions.FETCH_COMMENTS_DATA, this.reachId)
     },
@@ -140,6 +147,11 @@ export default {
 
 <style lang="scss">
 .comment {
+  padding: $spacing-md;
+  &:hover {
+    @include layer('raised')
+  }
+
   .detail {
     @include carbon--type-style("body-long-01");
   }
@@ -147,4 +159,5 @@ export default {
     @include carbon--type-style("label-01");
   }
 }
+
 </style>

@@ -1,7 +1,10 @@
 <template>
   <div class="user-bookmarks">
     <template v-if="loading">
-      <loading-block />
+      <utility-block
+        state="loading"
+        text="loading bookmarks"
+      />
     </template>
     <template v-if="!loading && loadedBookmarks">
       <div class="bx--row bx--no-gutter mb-lg">
@@ -42,7 +45,8 @@
 
 <script>
 import { appLocalStorage } from '@/app/global/services'
-import { ArticleCard, LoadingBlock } from '@/app/global/components'
+import { ArticleCard } from '@/app/global/components'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { mapState } from 'vuex'
 import { bookmarksActions } from '@/app/views/river-detail/shared/state'
 import { riverSearchActions } from '@/app/views/river-search/shared/state'
@@ -51,7 +55,7 @@ export default {
   name: 'user-bookmarks',
   components: {
     ArticleCard,
-    LoadingBlock
+    UtilityBlock
   },
   data: () => ({
     searchTerm: ''

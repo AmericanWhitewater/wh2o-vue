@@ -1,40 +1,46 @@
 <template>
   <div class="user-profile">
     <template v-if="loading">
-      loading
+      <utility-block
+        state="loading"
+        text="loading profile"
+      />
     </template>
     <template v-else-if="data">
       <cv-tile>
-        <div class="bx--row">
+        <div class="bx--row pl-spacing-md pt-spacing-sm pb-spacing-sm">
           <div class="bx--col-auto">
-            <div
-              class="user-avatar"
-              image="true"
-            >
-              <img
-                v-if="data.image.uri.big || data.image.uri.medium"
-                :src="`https://americanwhitewater.org/${data.image.uri.big || data.image.uri.medium}`"
-                alt="User Profile Pic"
-              >
-            </div>
+            <user-avatar
+              :image-u-r-i="`https://americanwhitewater.org/${data.image.uri.big || data.image.uri.medium}`"
+              :username="data.uname"
+            />
           </div>
           <div class="bx--col">
-            <h3>username: {{ data.uname }}</h3>
-            <h3>email: {{ data.email }}</h3>
+            <h2 v-text="data.uname" />
+            <h3 v-text="data.email" />
           </div>
         </div>
       </cv-tile>
     </template>
     <template v-else>
-      error
+      <utility-block
+        state="error"
+        text="failed to load profile"
+      />
     </template>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import UserAvatar from '@/app/global/components/user-avatar/user-avatar'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 export default {
   name: 'user-profile',
+  components: {
+    UserAvatar,
+    UtilityBlock
+  },
   computed: {
     ...mapState({
       data: state => state.userState.userData.data,
@@ -44,34 +50,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-
-.user-avatar {
-  height:75px;
-  min-width:75px;
-  width: 75px;
-  align-items: center;
-    border-radius: 50%;
-    display: inline-flex;
-    justify-content: center;
-    line-height: normal;
-    position: relative;
-    text-align: center;
-    vertical-align: middle;
-    overflow: hidden;
-    img {
-      border-radius: inherit;
-    display: inline-flex;
-    height: inherit;
-    width: inherit;
-    border-style:none;
-    overflow-wrap: break-word;
-    white-space: normal;
-    text-align: center;
-    line-height: normal;
-    object-fit: cover;
-    }
-}
-
-</style>

@@ -39,6 +39,7 @@
         class="mb-sm"
         :disabled="loginDisabled || formPending"
         @click.exact="submitLogin"
+        @keydown.enter="submitLogin"
         v-text="'Submit'"
       />
     </main>

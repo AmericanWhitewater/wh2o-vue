@@ -1,4 +1,3 @@
-/* eslint-disable import/export */
 
 export * from './http-client/http-client'
 export * from './app-logger/app-logger'
