@@ -15,14 +15,11 @@
         >
           <ArticleCard
             :key="index"
-            :title="item.section.slice(0,75)+'...'"
+            :title="item.section.slice(0,100)+'...'"
             :subtitle="item.river"
-            river
-            condition="low"
             :article-id="item.id"
+            river
             :to="`/river-detail/${item.id}/main`"
-            :read-time="item.class"
-            :author="mockFlowData(1000)"
           />
         </div>
       </div>

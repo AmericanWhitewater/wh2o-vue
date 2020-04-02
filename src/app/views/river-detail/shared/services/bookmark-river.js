@@ -49,7 +49,7 @@ const fetchBookmarksData = data => {
          class,
          id
       }
-    }    
+    }
     `
     })
     .then(res => res.data)
@@ -59,16 +59,16 @@ const fetchBookmarksGageData = data => {
 
   const gqlConfig = {
     query: `
-
-    getGaugeInformationForReachID(id: ${data}) {
-      gauges {
-        gauge_reading
-        gauge_min
-        gauge_max
-        class
-      }
-    }
-`
+      query {
+        getGaugeInformationForReachID(id: ${data}) {
+          gauges {
+            gauge_max
+            gauge_min
+            class
+            gauge_reading
+          }
+        }
+      }`
   }
 
   return httpClient

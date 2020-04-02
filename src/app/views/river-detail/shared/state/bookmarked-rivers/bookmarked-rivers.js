@@ -5,6 +5,7 @@ import { fetchBookmarksData, fetchBookmarksGageData } from '../../services'
 const initialState = {
   loading: false,
   data: [],
+  gageData: [],
   error: null
 }
 
@@ -29,15 +30,21 @@ const merge_array = (array1, array2) => {
 }
 
 const mutationTypes = reflectKeys(
-  ['DATA_SUCCESS', 'DATA_REQUEST', 'DATA_ERROR', 'DATA_RESET'],
+  ['DATA_SUCCESS', 'DATA_REQUEST', 'DATA_ERROR', 'DATA_RESET', 'GAGE_SUCCESS'],
   namespacedPrefix
 )
 
-const { DATA_ERROR, DATA_REQUEST, DATA_RESET, DATA_SUCCESS } = mutationTypes
+const { DATA_ERROR, DATA_REQUEST, DATA_RESET, DATA_SUCCESS, GAGE_SUCCESS } = mutationTypes
 
 const mutations = {
   [DATA_REQUEST] (state) {
     Object.assign(state, { loading: true, error: null })
+  },
+
+  [GAGE_SUCCESS] (state, payload) {
+    state.gageData = merge_array(state.gageData, [payload])
+    // Object.assign(state, { gageData: payload, error: null, loading: false })
+    // state.gageData = payload
   },
 
   [DATA_SUCCESS] (state, payload) {
@@ -123,7 +130,7 @@ const actions = {
     })
 
     if (result) {
-      context.commit(DATA_SUCCESS, result.data.reach)
+      context.commit(GAGE_SUCCESS, result.data.getGaugeInformationForReachID.gauges)
     }
 
     return result
