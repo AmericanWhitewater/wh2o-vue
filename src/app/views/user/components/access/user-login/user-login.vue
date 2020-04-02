@@ -2,11 +2,13 @@
   <section class="login">
     <main>
       <cv-text-input
+        ref="username"
         v-model="formData.username"
         class="mb-spacing-sm"
-        placeholder="Email Address"
-        type="email"
+        placeholder="Username"
+        type="text"
         theme="light"
+        :disabled="formPending"
       >
         <template
           v-if="usernameError"
@@ -21,6 +23,7 @@
         placeholder="Password"
         type="password"
         theme="light"
+        :disabled="formPending"
         @keydown.enter="submitLogin"
       >
         <template
@@ -34,7 +37,7 @@
         kind="primary"
         small
         class="mb-sm"
-        :disabled="loginDisabled"
+        :disabled="loginDisabled || formPending"
         @click.exact="submitLogin"
         v-text="'Submit'"
       />
@@ -43,19 +46,12 @@
       <cv-link to="/user/access/forgot">
         Forgot Password
       </cv-link>
-      <div class="">
-        <cv-button
-          kind="tertiary"
-          size="small"
-        >
-          <LogoFacebook24 />
-        </cv-button>
-      </div>
     </footer>
   </section>
 </template>
 <script>
 import { appLocalStorage, httpClient } from '@/app/global/services'
+import { globalAppActions } from '@/app/global/state'
 import { userActions } from '../../../shared/state'
 import {
   apiBaseUrl,
@@ -68,6 +64,8 @@ import {
 export default {
   name: 'user-login',
   data: () => ({
+    formPending: false,
+    formError: false,
     formData: {
       grant_type: 'password',
       username: '',
@@ -99,9 +97,16 @@ export default {
     user (v) {
       if (v.uid) {
         /**
- * @todo add welcome message
- */
-        this.$router.push('/user/account/1/bookmarks')
+         * @todo add welcome message
+         */
+        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          title: 'Welcome back!',
+          kind: 'info',
+          autoHide: true
+        })
+        setTimeout(() => {
+          this.$router.push('/user/account/1/bookmarks')
+        }, 500)
       }
     }
   },
@@ -126,11 +131,12 @@ export default {
       }
 
       if (!this.passwordError && !this.usernameError) {
+        this.formPending = true
         const url = apiBaseUrl + 'oauth/token'
         const input = JSON.stringify(this.formData)
         const result = await httpClient.post(url, input).catch(e => {
-          /* eslint-disable-next-line no-console */
-          console.log('e :', e)
+          this.formPending = false
+          this.formError = true
         })
         if (result) {
           appLocalStorage.setItem('wh2o-auth', result.data.access_token)
@@ -142,6 +148,9 @@ export default {
   created () {
     this.formData.client_id = clientId
     this.formData.client_secret = clientSecret
+  },
+  mounted () {
+    this.$refs.username.$refs.input.focus()
   }
 }
 </script>
