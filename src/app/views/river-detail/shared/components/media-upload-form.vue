@@ -89,7 +89,7 @@ export default {
         caption: '',
         description: '',
         photo_date: '',
-        poi_id: '',
+        poi_id: 0,
         poi_name: '',
         post_id: '',
         subject: ''
@@ -132,7 +132,7 @@ export default {
                 description: "${this.formData.photo.description}",
                 photo_date: "${this.todaysDate()}",
                 poi_id: "${this.formData.photo.poi_id}",
-                post_id: "${this.formData.photo.post_id}",
+                post_id: "${this.$randomId}",
                 poi_name: "${this.formData.photo.poi_name}"
               }
             ) {
