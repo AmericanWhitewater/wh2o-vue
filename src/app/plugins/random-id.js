@@ -1,5 +1,4 @@
 import Vue from 'vue'
-// import genid from "nanoid/generate"
 
 import { nanoid } from 'nanoid'
 
@@ -9,4 +8,4 @@ import { nanoid } from 'nanoid'
  *
  */
 
-Vue.prototype.$randomId = nanoid()
+Vue.prototype.$randomId = nanoid(21, '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
