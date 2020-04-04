@@ -115,7 +115,7 @@ export default {
   },
   methods: {
     setFile (input) {
-      this.formData.fileinput.file = input[0]
+      this.formData.fileinput.file = input[0].file
     },
     /**
      * @todo clear form after file upload started but make copy incase error

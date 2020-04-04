@@ -13,8 +13,6 @@ const httpLink = createUploadLink({
   uri: process.env.VUE_APP_GRAPHQL_HTTP || 'http://localhost:8080/graphql'
 })
 
-const cache = new InMemoryCache()
-
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
   let token = ''
@@ -35,8 +33,7 @@ const authLink = setContext((_, { headers }) => {
 
 const apolloClient = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache,
-  connectToDevTools: true
+  cache: new InMemoryCache()
 })
 
 const ApolloProvider = new VueApollo({
