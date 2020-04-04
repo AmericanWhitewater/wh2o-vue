@@ -18,7 +18,6 @@
       v-model="formData.photo.author"
       class="mb-spacing-md"
       label="Author"
-      placeholder="label"
       required
       :disabled="formPending"
     />
@@ -43,15 +42,16 @@
     <cv-button
       v-if="!parentIsModal"
       :disabled="formPending"
-      @click.exact="submitForm"
-      @keydown.enter="submitForm"
+      @click.exact="sendFile"
+      @keydown.enter="sendFile"
     >
       Submit
     </cv-button>
   </div>
 </template>
 <script>
-import { httpClient } from '@/app/global/services'
+import gql from 'graphql-tag'
+import { globalAppActions } from '@/app/global/state'
 export default {
   name: 'media-upload-form',
   props: {
@@ -114,51 +114,112 @@ export default {
     }
   },
   methods: {
-    async submitForm () {
+    setFile (input) {
+      this.formData.fileinput.file = input[0]
+    },
+    /**
+     * @todo clear form after file upload started but make copy incase error
+     * @note how is upload getting linked to user and to reach? Shouldnt those be
+     * added to the create call?
+     *
+     */
+    sendFile () {
       this.formPending = true
-      await httpClient.post('/graphql', {
-        query: `
-          mutation($file: Upload!) {
-            photoFileCreate(
-              fileinput: {
-                file: $file,
-                section: ${this.section.toUpperCase()},
-                section_id: "${0}"
-              },
-              photo: {
-                author: "${this.formData.photo.author}",
-                caption: "${this.formData.photo.caption}",
-                subject: "${this.formData.photo.subject}",
-                description: "${this.formData.photo.description}",
-                photo_date: "${this.todaysDate()}",
-                poi_id: "${this.formData.photo.poi_id}",
-                post_id: "${this.$randomId}",
-                poi_name: "${this.formData.photo.poi_name}"
+
+      const data = {
+        section: 'POST',
+        section_id: this.$randomId,
+        file: this.formData.fileinput.file
+      }
+
+      const photo = this.formData.photo
+
+      photo.photo_date = this.todaysDate()
+
+      if (!photo.id || photo.id <= 0) {
+        photo.id = this.$randomId
+      }
+
+      if (!photo.id || photo.id < 0) {
+        photo.id = this.$randomId
+      }
+
+      const params = {
+        id: photo.id,
+        fileinput: data,
+        photo: photo
+      }
+
+      params.id = photo.id
+      params.photo.post_id = this.$randomId
+
+      delete (params.photo.id)
+
+      this.$apollo.mutate({
+        mutation: gql`
+        mutation sendFile ($id: ID!, $fileinput: PhotoFileInput!, $photo: PhotoInput) {
+          photo: photoFileUpdate(id: $id, fileinput: $fileinput, photo: $photo) {
+            id
+            caption
+            description
+            subject
+            photo_date
+            author
+            poi_name
+            poi_id
+            image {
+              ext
+              uri {
+                thumb
+                medium
+                big
               }
-            ) {
-              id
             }
-          }`,
-        variables: {
-          file: this.formData.fileinput.file
-        }
+          }
+        }`,
+        variables: params
       }).then(r => {
-        this.formPending = false
         // eslint-disable-next-line no-console
         console.log('r :', r)
-      }).catch(e => {
+        this.resetForm()
         this.formPending = false
+        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          title: 'Upload Successful',
+          kind: 'success',
+          override: true,
+          contrast: false,
+          action: false,
+          autoHide: true
+        })
+      }).catch(e => {
         // eslint-disable-next-line no-console
         console.log('e :', e)
+        this.formPending = false
+        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          title: 'Upload Failed',
+          kind: 'error',
+          override: true,
+          contrast: false,
+          action: false,
+          autoHide: true
+        })
       })
-    },
-    setFile (input) {
-      /** single file upload for now... */
-      this.formData.fileinput.file = input[0].file
     },
     todaysDate () {
       const today = new Date()
       return today.toISOString()
+    },
+    resetForm () {
+      this.$refs.fileUploader.clear()
+
+      for (const i in this.formData) {
+        // eslint-disable-next-line no-prototype-builtins
+        if (this.formData.hasOwnProperty(i)) {
+          Object.keys(this.formData[i]).forEach((key, index) => {
+            this.formData[i][key] = null
+          })
+        }
+      }
     }
   },
   created () {
