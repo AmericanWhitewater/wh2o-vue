@@ -1,12 +1,13 @@
 const riverDetailRoutes = [
   {
     path: '/content/River/detail/id/:id',
-    redirect: '/river-detail/:id',
+    redirect: '/river-detail/:id/main',
     component: () => import('./river-detail.vue')
   },
   {
     path: '/river-detail/:id',
     name: 'river-detail',
+    redirect: '/river-detail/:id/main',
     component: () => import('./river-detail.vue'),
     children: [
       {

@@ -62,7 +62,6 @@
   </main>
 </template>
 <script>
-import { appBaseUrl } from '@/app/environment/environment'
 import { mapState } from 'vuex'
 // the content editor needs to be directly imported?
 import ContentEditor from '@/app/global/components/content-editor/content-editor.vue'
@@ -94,19 +93,7 @@ export default {
       if (this.refreshedDescription) {
         return this.refreshedDescription
       } else if (this.riverDescription) {
-        const content = this.$sanitize(this.river.description, {
-          disallowedAttributes: {
-            '*': ['style']
-          }
-        })
-
-        // const openingTags = this.$replaceText(content, '<div>', '<p>')
-        // const closingTags = this.$replaceText(openingTags, '</div>', '</p>')
-
-        const legacyUrl = 'http://www.americanwhitewater.org/rivers/id/'
-        const updatedUrl = `${appBaseUrl}/#/river-detail/`
-
-        return this.$replaceText(content, legacyUrl, updatedUrl)
+        return this.cleanContent(this.riverDescription)
       }
       return null
     },
@@ -122,14 +109,10 @@ export default {
       if (this.updatedDescription) {
         this.updatePending = true
 
-        const data = this.updatedDescription.toString()
-
-        const url = 'https://beta.americanwhitewater.org/graphql'
-
-        httpClient.post(url, {
+        httpClient.post('/graphql', {
           query: `
           mutation  {
-            reachUpdate(id: ${this.reachId}, reach:{ description: "${data}"}) {
+            reachUpdate(id: ${this.reachId}, reach:{ description: "${this.cleanContent(this.updatedDescription)}"}) {
               description
             }
           }
@@ -164,6 +147,48 @@ export default {
     },
     handleEditorDestroy () {
       this.updatedDescription = ''
+    },
+    /**
+     * use this to remove double quotes, inline style,
+     * and other unwanted attributes n' such from river description.
+     *
+     * @note when updating river description, you need to remove
+     * double quotes otherwise GQL will not be able to parse.
+     *
+     *
+     * @todo add functionality to accept replacement pairs
+      *
+      * data = [ ['foo','bar'], ['joan','baez']]
+      *
+      *  run each pair through $replaceText and return
+      * squeaky clean content.
+     */
+    cleanContent (data) {
+      if (data) {
+        let content = this.$sanitize(data, {
+          disallowedAttributes: {
+            '*': ['style', 'class']
+          }
+        })
+        // href="../../content/River_detail_id_3190_"
+        // content = this.$replaceText(content, '../../content/River_detail_id_', 'http://www.americanwhitewater.org/content/River/detail/id/')
+        // debugger
+        const updatedUrl = '/#/river-detail/'
+        const legacyUrls = ['http://www.americanwhitewater.org/rivers/id/', 'http://www.americanwhitewater.org/content/River/detail/id/', 'http://www.americanwhitewater.org/content/River_detail_id_']
+
+        const urlsLength = legacyUrls.length
+        for (let i = 0; i < urlsLength; i++) {
+          content = this.$replaceText(content, legacyUrls[i], updatedUrl)
+        }
+
+        content = this.$replaceText(content, '&nbsp;', '')
+        // replace double quotes otherwise gql parsing error
+        content = this.$replaceText(content, '"', '\'')
+
+        return content
+      }
+
+      return null
     }
   },
   mounted () {

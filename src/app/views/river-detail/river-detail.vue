@@ -279,6 +279,10 @@ export default {
     }
   },
   watch: {
+    riverId () {
+      this.$store.dispatch(riverDetailActions.FETCH_RIVER_DETAIL_DATA, this.riverId)
+      this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.riverId)
+    },
     river (data) {
       if (data) {
         const riverDescription = this.$sanitize(data.description, {
