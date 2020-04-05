@@ -4,60 +4,62 @@
       <utility-block blank />
     </template>
     <template v-else-if="river">
-      <table
-        v-if="!loading"
-        class="bx--data-table bx--data-table--zebra"
-      >
-        <tr>
-          <td>Difficulty</td>
-          <td v-text="river.class" />
-        </tr>
-        <tr>
-          <td>Length</td>
-          <td v-text="river.length" />
-        </tr>
-        <tr>
-          <td>Avg Gradient</td>
-          <td v-text="river.avggradient" />
-        </tr>
-        <tr>
-          <td>Gage</td>
-          <td v-if="!gages">
-            n/a
-          </td>
-          <td v-if="gages && gages.length">
-            {{ $titleCase(gages[0].gauge.name) }}
-          </td>
-        </tr>
-        <tr>
-          <td>Flow Range</td>
-          <td v-if="gages && gages.length">
-            {{ `${gages[0].rmin} - ${gages[0].rmax}` }}
-          </td>
-          <td v-else>
-            n/a
-          </td>
-        </tr>
-        <tr>
-          <td>
-            Flow Rate
-            <template v-if="gages && gages.length">
-              as of {{ gages[0].last_gauge_updated }}
-            </template>
-          </td>
+      <div class="bx--data-table-container">
+        <table
+          v-if="!loading"
+          class="bx--data-table bx--data-table--zebra"
+        >
+          <tr>
+            <td>Difficulty</td>
+            <td v-text="river.class" />
+          </tr>
+          <tr>
+            <td>Length</td>
+            <td v-text="river.length" />
+          </tr>
+          <tr>
+            <td>Avg Gradient</td>
+            <td v-text="river.avggradient" />
+          </tr>
+          <tr>
+            <td>Gage</td>
+            <td v-if="!gages">
+              n/a
+            </td>
+            <td v-if="gages && gages.length">
+              {{ $titleCase(gages[0].gauge.name) }}
+            </td>
+          </tr>
+          <tr>
+            <td>Flow Range</td>
+            <td v-if="gages && gages.length">
+              {{ `${gages[0].rmin} - ${gages[0].rmax}` }}
+            </td>
+            <td v-else>
+              n/a
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Flow Rate
+              <template v-if="gages && gages.length">
+                as of {{ gages[0].last_gauge_updated }}
+              </template>
+            </td>
 
-          <td v-if="gages && gages.length">
-            {{ gages[0].last_gauge_reading }}
-          </td>
-          <td v-else>
-            n/a
-          </td>
-        </tr>
-        <tr>
-          <td>Reach Info Last Updated</td>
-          <td v-text="formatDate(river.edited)" />
-        </tr>
-      </table>
+            <td v-if="gages && gages.length">
+              {{ gages[0].last_gauge_reading }}
+            </td>
+            <td v-else>
+              n/a
+            </td>
+          </tr>
+          <tr>
+            <td>Reach Info Last Updated</td>
+            <td v-text="formatDate(river.edited)" />
+          </tr>
+        </table>
+      </div>
       <div
         v-if="editMode"
         class="edit-overlay"

@@ -10,6 +10,13 @@ const fetchCommentsData = data => {
         query {
         reach(id: ${data}) {
             posts(post_type: COMMENT, first: 10, page: 1) {
+                    paginatorInfo {
+                    count
+                    currentPage
+                    firstItem
+                    hasMorePages
+                    total
+                  }
             data {
                 id
                 title
