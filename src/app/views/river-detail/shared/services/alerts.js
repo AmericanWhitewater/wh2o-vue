@@ -14,6 +14,9 @@ const fetchAlertsData = data => {
                     post_date,
                     revision,
                     post_type,
+                    gauge {
+                      name
+                    }
                     user {
                         uname,
                         uid,

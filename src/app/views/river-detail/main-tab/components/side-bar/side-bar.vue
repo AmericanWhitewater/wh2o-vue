@@ -18,10 +18,10 @@
         </span>
         <template v-if="!loading && alerts">
           <cv-inline-notification
-            v-for="(alert, index) in alerts.slice(0, 2)"
+            v-for="(alert, index) in sortedAlerts.slice(0, 2)"
             :key="index"
             :title="alert.title ? alert.title.slice(0, 35) : null"
-            :sub-title="alert.detail.slice(0, 50) + '...'"
+            :sub-title="alert.detail.length > 50 ? alert.detail.slice(0, 50) + '...': alert.detail"
             action-label="Read More"
             @close="doClose(index)"
             @action="$router.push(`/river-detail/${$route.params.id}/news`)"
@@ -170,6 +170,12 @@ export default {
     }),
     reachId () {
       return this.$route.params.id
+    },
+    sortedAlerts () {
+      if (this.alerts) {
+        return this.alerts.sort((a, b) => (a.post_date < b.post_date ? 1 : -1))
+      }
+      return null
     }
   },
   watch: {
@@ -195,11 +201,9 @@ export default {
         this.sticky = true
       }
     },
-    submitForm () {
-      this.newAlertModalVisible = false
-      this.$store.dispatch(alertsActions.CREATE_ALERT, this.formData)
-    },
-
+    /**
+     * @todo move this to the store.
+     */
     submitAlert () {
       this.newAlertModalVisible = false
 
@@ -210,6 +214,7 @@ export default {
         id: this.$randomId,
         post: {
           user_id: this.user.uid,
+          title: this.formData.title,
           detail: this.formData.detail,
           post_date: today.toISOString(),
           post_type: 'WARNING',

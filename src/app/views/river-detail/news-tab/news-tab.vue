@@ -27,8 +27,25 @@
               <cv-tile>
                 <h3
                   v-if="alert.title"
+                  class="mb-spacing-2xs"
                   v-text="alert.title"
                 />
+                <h3
+                  v-else
+                  class="mb-spacing-2xs"
+                >
+                  Untitled
+                </h3>
+
+                <h6>
+                  {{ formatDate(alert.post_date,'ll') }}
+
+                  <template v-if="alert.user">
+                    - {{ alert.user.uname }}
+                  </template>
+                </h6>
+                <hr>
+
                 <p
                   v-if="alert.detail"
                   v-text="alert.detail"

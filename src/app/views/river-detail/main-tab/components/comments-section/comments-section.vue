@@ -21,18 +21,18 @@
     <template v-else-if="comments">
       <div class="comment-wrapper">
         <div
-          v-for="(c, i) in comments.slice(0, 5)"
+          v-for="(c, i) in sortedComments"
           :key="i"
           class="mb-md comment"
         >
-          <div class="bx--row ">
-            <div class="pl-sm bx--col-auto">
+          <div class="bx--row">
+            <div class="bx--col-sm-1 bx--col-md-1">
               <user-avatar
                 :image-u-r-i="formatURI(c.user.image.uri.big)"
                 :username="c.user.uname"
               />
             </div>
-            <div class="bx--col-sm-12 bx--col-lg-11">
+            <div class="bx--col-sm-3 bx--col-lg-11">
               <h5
                 class="mr-spacing-sm"
                 v-text="c.user.uname"
@@ -41,6 +41,27 @@
                 class="date mb-spacing-xs"
                 v-text="formatDate(c.post_date, 'll')"
               />
+              <template v-if="user && c.user.uid === user.uid">
+                <cv-button
+                  size="small"
+                  kind="secondary"
+                >
+                  Edit
+                </cv-button>
+                <cv-button
+                  size="small"
+                  kind="danger"
+                  class="mb-spacing-xs"
+                  @click.exact="deleteComment(c.id)"
+                  @keydown.enter="deleteComment(c.id)"
+                >
+                  Delete
+                </cv-button>
+              </template>
+            </div>
+          </div>
+          <div class="bx--row">
+            <div class="bx--col-sm-4 bx--offset-md-1">
               <div
                 class="detail"
                 v-html="c.detail"
@@ -55,14 +76,20 @@
     </template>
     <cv-modal
       :visible="newCommentModalVisible"
-      @modal-hidden="cancelComment"
-      @primary-click="notifyUser"
+      size="large"
+      @secondary-click="cancelNewComment"
+      @primary-click="submitComment"
     >
       <template slot="title">
         New Comment
       </template>
       <template slot="content">
-        <cv-text-area />
+        <cv-text-area
+          ref="message"
+          v-model="formData.detail"
+          label="Message"
+          class="mb-spacing-md"
+        />
       </template>
       <template slot="secondary-button">
         Cancel
@@ -80,7 +107,7 @@ import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import UserAvatar from '@/app/global/components/user-avatar/user-avatar'
 import { globalAppActions } from '@/app/global/state'
 import { mapState } from 'vuex'
-
+import { httpClient } from '@/app/global/services'
 export default {
   name: 'comments-section',
   components: {
@@ -89,6 +116,9 @@ export default {
   },
   data: () => ({
     newCommentModalVisible: false,
+    formData: {
+      detail: ''
+    },
     layoutOptions: {
       sidebar: {
         left: true
@@ -99,13 +129,21 @@ export default {
     ...mapState({
       comments: state => state.riverDetailState.commentsData.data,
       loading: state => state.riverDetailState.commentsData.loading,
-      error: state => state.riverDetailState.commentsData.error
+      error: state => state.riverDetailState.commentsData.error,
+      user: state => state.userState.userData.data
     }),
     reachId () {
       return this.$route.params.id
+    },
+    sortedComments () {
+      if (this.comments) {
+        return this.comments.sort((a, b) => (a.post_date < b.post_date ? 1 : -1))
+      }
+      return null
     }
   },
   methods: {
+
     formatURI (input) {
       if (input) {
         return `https://americanwhitewater.org${input}`
@@ -127,7 +165,7 @@ export default {
       const initials = firstInitial + lastInitial
       return initials
     },
-    cancelComment () {
+    cancelNewComment () {
       this.newCommentModalVisible = false
     },
     notifyUser () {
@@ -140,6 +178,95 @@ export default {
         action: false,
         autoHide: true
       })
+    },
+    /**
+     * @todo move this to the store.
+     */
+    submitComment () {
+      if (this.user) {
+        this.newCommentModalVisible = false
+
+        const today = new Date()
+
+        // We save the user input in case of an error
+        const data = {
+          id: this.$randomId,
+          post: {
+            user_id: this.user.uid,
+            detail: this.formData.detail,
+            post_date: today.toISOString(),
+            post_type: 'COMMENT',
+            reach_id: this.reachId
+          }
+        }
+
+        httpClient
+          .post('/graphql', {
+            query: `
+          mutation ($id:ID!, $post: PostInput!) {
+              post:postUpdate(id: $id, post:$post)  {
+              id
+        }
+        }`,
+            variables: data
+          })
+          .then(r => {
+            this.formData.detail = ''
+            if (!r.errors) {
+              this.$store.dispatch(globalAppActions.SEND_TOAST, {
+                title: 'Comment Submitted',
+                kind: 'success',
+                override: true,
+                contrast: false,
+                action: false,
+                autoHide: true
+              })
+              this.$store.dispatch(
+                commentsActions.FETCH_COMMENTS_DATA,
+                this.reachId
+              )
+            }
+          })
+          .catch(e => {
+            this.formData.detail = ''
+            // eslint-disable-next-line no-console
+            console.log('e :', e)
+          })
+      }
+    },
+    /**
+     * @todo move this to the store.
+     */
+    deleteComment (commentId) {
+      httpClient
+        .post('/graphql', {
+          query: `
+            mutation ($post_id:ID!){postDelete(id:$post_id){id}}
+          `,
+          variables: {
+            post_id: commentId
+          }
+        })
+        .then(r => {
+          if (!r.errors) {
+            this.$store.dispatch(globalAppActions.SEND_TOAST, {
+              title: 'Comment Removed',
+              kind: 'success',
+              override: true,
+              contrast: false,
+              action: false,
+              autoHide: true
+            })
+            this.$store.dispatch(
+              commentsActions.FETCH_COMMENTS_DATA,
+              this.reachId
+            )
+          }
+        })
+        .catch(e => {
+          // eslint-disable-next-line no-console
+          console.log('e :', e)
+        })
     }
   }
 }
@@ -149,7 +276,7 @@ export default {
 .comment {
   padding: $spacing-md;
   &:hover {
-    @include layer('raised')
+    @include layer("raised");
   }
 
   .detail {
@@ -159,5 +286,4 @@ export default {
     @include carbon--type-style("label-01");
   }
 }
-
 </style>
