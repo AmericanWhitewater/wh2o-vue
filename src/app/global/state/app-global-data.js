@@ -15,6 +15,8 @@ const initialState = {
  * @description check to see if we've shown the user this toast before
  * @param {object} newToast takes potential new toast notification
  *
+ * @note this is no good...
+ *
  */
 
 const checkIfViewed = (newToast) => {
