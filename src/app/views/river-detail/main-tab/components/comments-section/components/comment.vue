@@ -50,6 +50,7 @@
     <cv-modal
       :visible="deleteCommentModalVisible"
       @secondary-click="deleteCommentModalVisible = false"
+      @modal-hidden="deleteCommentModalVisible = false"
       @primary-click="deleteComment(comment.id)"
     >
       <template slot="title">
@@ -131,7 +132,6 @@ export default {
       return null
     },
     deleteComment (commentId) {
-      this.$emit('comment:delete', this.comment.id)
       this.deleteCommentModalVisible = false
       httpClient
         .post('/graphql', {
@@ -152,6 +152,7 @@ export default {
               action: false,
               autoHide: true
             })
+            this.$emit('comment:delete', this.comment.id)
           }
         })
         .catch(e => {
@@ -160,7 +161,6 @@ export default {
         })
     },
     editComment (id) {
-      this.$emit('comment:edit', this.comment.id)
       if (this.user) {
         this.editCommentModalVisible = false
 
@@ -199,6 +199,7 @@ export default {
                 action: false,
                 autoHide: true
               })
+              this.$emit('comment:edit', this.comment.id)
             }
           })
           .catch(e => {
@@ -214,11 +215,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.comment {
-
-}
-</style>
-<docs>
-
-</docs>
