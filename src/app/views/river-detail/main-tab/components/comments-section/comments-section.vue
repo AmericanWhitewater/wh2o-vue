@@ -20,55 +20,13 @@
     </template>
     <template v-else-if="comments">
       <div class="comment-wrapper">
-        <div
+        <comment
           v-for="(c, i) in sortedComments"
           :key="i"
-          class="mb-md comment"
-        >
-          <div class="bx--row">
-            <div class="bx--col-sm-1 bx--col-md-1">
-              <user-avatar
-                :image-u-r-i="formatURI(c.user.image.uri.big)"
-                :username="c.user.uname"
-              />
-            </div>
-            <div class="bx--col-sm-3 bx--col-lg-11">
-              <h5
-                class="mr-spacing-sm"
-                v-text="c.user.uname"
-              />
-              <h6
-                class="date mb-spacing-xs"
-                v-text="formatDate(c.post_date, 'll')"
-              />
-              <template v-if="user && c.user.uid === user.uid">
-                <cv-button
-                  size="small"
-                  kind="secondary"
-                >
-                  Edit
-                </cv-button>
-                <cv-button
-                  size="small"
-                  kind="danger"
-                  class="mb-spacing-xs"
-                  @click.exact="deleteComment(c.id)"
-                  @keydown.enter="deleteComment(c.id)"
-                >
-                  Delete
-                </cv-button>
-              </template>
-            </div>
-          </div>
-          <div class="bx--row">
-            <div class="bx--col-sm-4 bx--offset-md-1">
-              <div
-                class="detail"
-                v-html="c.detail"
-              />
-            </div>
-          </div>
-        </div>
+          :comment="c"
+          @comment:delete="loadComments"
+          @comment:edit="loadComments"
+        />
       </div>
     </template>
     <template v-else>
@@ -79,6 +37,7 @@
       size="large"
       @secondary-click="cancelNewComment"
       @primary-click="submitComment"
+      @modal-hidden="newCommentModalVisible = false"
     >
       <template slot="title">
         New Comment
@@ -104,15 +63,15 @@
 <script>
 import { commentsActions } from '@/app/views/river-detail/shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
-import UserAvatar from '@/app/global/components/user-avatar/user-avatar'
 import { globalAppActions } from '@/app/global/state'
 import { mapState } from 'vuex'
 import { httpClient } from '@/app/global/services'
+import { Comment } from './components'
 export default {
   name: 'comments-section',
   components: {
     UtilityBlock,
-    UserAvatar
+    Comment
   },
   data: () => ({
     newCommentModalVisible: false,
@@ -144,13 +103,6 @@ export default {
   },
   methods: {
 
-    formatURI (input) {
-      if (input) {
-        return `https://americanwhitewater.org${input}`
-      }
-
-      return null
-    },
     loadComments () {
       this.$store.dispatch(commentsActions.FETCH_COMMENTS_DATA, this.reachId)
     },
@@ -233,40 +185,6 @@ export default {
             console.log('e :', e)
           })
       }
-    },
-    /**
-     * @todo move this to the store.
-     */
-    deleteComment (commentId) {
-      httpClient
-        .post('/graphql', {
-          query: `
-            mutation ($post_id:ID!){postDelete(id:$post_id){id}}
-          `,
-          variables: {
-            post_id: commentId
-          }
-        })
-        .then(r => {
-          if (!r.errors) {
-            this.$store.dispatch(globalAppActions.SEND_TOAST, {
-              title: 'Comment Removed',
-              kind: 'success',
-              override: true,
-              contrast: false,
-              action: false,
-              autoHide: true
-            })
-            this.$store.dispatch(
-              commentsActions.FETCH_COMMENTS_DATA,
-              this.reachId
-            )
-          }
-        })
-        .catch(e => {
-          // eslint-disable-next-line no-console
-          console.log('e :', e)
-        })
     }
   }
 }

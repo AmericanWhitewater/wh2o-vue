@@ -85,6 +85,7 @@
       :visible="newAlertModalVisible"
       @modal-shown="$refs.title.$refs.input.focus()"
       @secondary-click="cancelNewAlert"
+      @modal-hidden="newAlertModalVisible = false"
       @primary-click="submitAlert"
     >
       <template slot="title">
