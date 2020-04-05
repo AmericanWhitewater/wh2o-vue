@@ -21,12 +21,12 @@
             v-for="(alert, index) in sortedAlerts.slice(0, 2)"
             :key="index"
             :title="alert.title ? alert.title.slice(0, 35) : null"
-            :sub-title="alert.detail.length > 50 ? alert.detail.slice(0, 50) + '...': alert.detail"
+            :sub-title="alert.detail ? alert.detail.slice(0, 50) + '...' : ''"
             action-label="Read More"
             @close="doClose(index)"
             @action="$router.push(`/river-detail/${$route.params.id}/news`)"
           />
-          <template v-if="!alerts.length">
+          <template v-if="!alerts">
             <p class="pt-spacing-md pb-spacing-md">
               There are no new alerts.
             </p>
