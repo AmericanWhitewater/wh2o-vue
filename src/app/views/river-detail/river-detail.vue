@@ -97,7 +97,6 @@
         </cv-modal>
         <cv-modal
           :visible="reachShareModalVisible"
-          size="small"
           auto-hide-off
           @modal-hidden="reachShareModalVisible = false"
           @primary-click="reachShareModalVisible = false"
@@ -108,6 +107,11 @@
             Share
           </template>
           <template slot="content">
+            <div class="mb-spacing-md">
+              <cv-code-snippet class="bg-ui-02">
+                {{ `https://wh2o-vue.herokuapp.com/#/river-detail/${riverId}/main` }}
+              </cv-code-snippet>
+            </div>
             <social-sharing
               :url="shareMeta.url"
               :title="shareMeta.title"
@@ -122,6 +126,7 @@
                   <cv-button
                     kind="tertiary"
                     class="mb-spacing-md mr-spacing-sm"
+                    size="small"
                   >
                     Facebook
                   </cv-button>
@@ -130,6 +135,7 @@
                   <cv-button
                     kind="tertiary"
                     class="mb-spacing-md mr-spacing-sm"
+                    size="small"
                   >
                     Twitter
                   </cv-button>
@@ -138,6 +144,7 @@
                   <cv-button
                     kind="tertiary"
                     class="mb-spacing-md mr-spacing-sm"
+                    size="small"
                   >
                     LinkedIn
                   </cv-button>
@@ -146,6 +153,7 @@
                   <cv-button
                     kind="tertiary"
                     class="mb-spacing-md mr-spacing-sm"
+                    size="small"
                   >
                     Email
                   </cv-button>
