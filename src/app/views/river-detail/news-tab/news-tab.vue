@@ -20,7 +20,7 @@
         <template v-else-if="alerts">
           <div class="bx--row">
             <div
-              v-for="(alert, index) in alerts"
+              v-for="(alert, index) in sortedAlerts"
               :key="index"
               class="bx--col-sm-12 bx--col-lg-8 mb-spacing-md"
             >
@@ -147,7 +147,13 @@ export default {
       alertsLoading: state => state.riverDetailState.alertsData.loading,
       alertsError: state => state.riverDetailState.alertsData.error,
       alerts: state => state.riverDetailState.alertsData.data
-    })
+    }),
+    sortedAlerts () {
+      if (this.alerts) {
+        return this.alerts.sort((a, b) => (a.post_date < b.post_date ? 1 : -1))
+      }
+      return null
+    }
   },
   methods: {
     loadData () {

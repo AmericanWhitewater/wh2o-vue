@@ -55,7 +55,6 @@ import { appLocalStorage, httpClient } from '@/app/global/services'
 import { globalAppActions } from '@/app/global/state'
 import { userActions } from '../../../shared/state'
 import {
-  apiBaseUrl,
   clientId,
   clientSecret
 } from '@/app/environment/environment'
@@ -133,9 +132,8 @@ export default {
 
       if (!this.passwordError && !this.usernameError) {
         this.formPending = true
-        const url = apiBaseUrl + 'oauth/token'
         const input = JSON.stringify(this.formData)
-        const result = await httpClient.post(url, input).catch(e => {
+        const result = await httpClient.post('/oauth/token', input).catch(e => {
           this.formPending = false
           this.formError = true
         })
