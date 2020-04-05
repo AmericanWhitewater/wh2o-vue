@@ -9,7 +9,7 @@
           >
             <li
               v-for="(t, index) in toasts"
-              :key="randomNumber(index)"
+              :key="randomId(index)"
             >
               <template v-if="t.action">
                 <cv-inline-notification
@@ -67,6 +67,14 @@ export default {
     })
   },
   watch: {
+    toasts () {
+      /**
+       * @note this is not a permanent solution for auto hide
+       */
+      setTimeout(() => {
+        this.$store.dispatch(globalAppActions.CLOSE_TOAST, 0)
+      }, 5000)
+    },
     updateAvailable (update) {
       if (update) {
         this.$store.dispatch(globalAppActions.SEND_TOAST, this.newUpdate)
@@ -74,8 +82,11 @@ export default {
     }
   },
   methods: {
-    randomNumber (index) {
-      return Math.floor(Math.random() * 100000 + index)
+    randomId () {
+      /**
+       * linter requires this to take an argument?
+       */
+      return this.$randomId
     },
     handleClose (index, title) {
       this.$store.dispatch(globalAppActions.CLOSE_TOAST, index)
