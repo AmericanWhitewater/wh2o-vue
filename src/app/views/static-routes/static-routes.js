@@ -13,6 +13,14 @@ const staticRoutes = [
     component: Home
   },
   {
+    path: '/terms-of-service',
+    name: 'terms-of-service',
+    meta: {
+      crumbLabel: 'Terms of Service'
+    },
+    component: () => import('./legal/terms-of-service')
+  },
+  {
     path: '*',
     name: 'page-not-found',
     meta: {
