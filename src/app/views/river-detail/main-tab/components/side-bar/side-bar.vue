@@ -20,7 +20,7 @@
           <cv-inline-notification
             v-for="(alert, index) in alerts.slice(0, 2)"
             :key="index"
-            :title="alert.title ? alert.title.slice(0,35) : null"
+            :title="alert.title ? alert.title.slice(0, 35) : null"
             :sub-title="alert.detail.slice(0, 50) + '...'"
             action-label="Read More"
             @close="doClose(index)"
@@ -49,8 +49,8 @@
         </template>
         <template v-else-if="articles && articles.length > 0">
           <div
-            v-for="(article, i) in articles.slice(0,2)"
-            :key="i+3*4"
+            v-for="(article, i) in articles.slice(0, 2)"
+            :key="i + 3 * 4"
             class="bx--row mb-spacing-xs sidebar-article"
             @keydown.enter="$router.push(`/article/${article.id}`)"
             @click.exact="$router.push(`/article/${article.id}`)"
@@ -58,7 +58,10 @@
             <div class="bx--col-sm-12 bx--col-md-3">
               <div
                 class="article-thumb bx--aspect-ratio--1x1"
-                :style="`background-image: url(https://americanwhitewater.org${article.abstractimage.uri.medium || article.abstractimage.uri.thumb})`"
+                :style="`background-image: url(https://americanwhitewater.org${
+                  article.abstractimage.uri.medium ||
+                  article.abstractimage.uri.thumb
+                })`"
                 :alt="article.title"
               />
             </div>
@@ -68,7 +71,7 @@
                   class="mb-spacing-2xs"
                   v-text="$titleCase(article.title)"
                 />
-                <p v-html="article.abstract.slice(0,50)" />
+                <p v-html="article.abstract.slice(0, 50)" />
               </div>
             </div>
           </div>
@@ -80,30 +83,39 @@
     </cv-tile>
     <cv-modal
       :visible="newAlertModalVisible"
+      @modal-shown="$refs.title.$refs.input.focus()"
       @secondary-click="cancelNewAlert"
-      @primary-click="submitForm"
+      @primary-click="submitAlert"
     >
       <template slot="title">
         Create Alert
       </template>
       <template slot="content">
         <cv-text-input
+          ref="title"
           v-model="formData.title"
           class="mb-spacing-md"
           label="Title"
-          placeholder="label"
           :disabled="formPending"
         />
         <cv-dropdown
+          v-if="gages"
           v-model="formData.gauge_id"
           class="mb-spacing-md"
           label="Gage"
-        />
+        >
+          <cv-dropdown-item
+            v-for="(g, i) in gages"
+            :key="i"
+            :value="g.gauge.id"
+          >
+            {{ g.gauge.name }}
+          </cv-dropdown-item>
+        </cv-dropdown>
         <cv-text-input
           v-model="formData.reading"
           class="mb-spacing-md"
           label="Flow Level"
-          placeholder="label"
           :disabled="formPending"
         />
         <cv-text-area
@@ -126,6 +138,7 @@
 import { mapState } from 'vuex'
 import { alertsActions, newsTabActions } from '../../../shared/state'
 import { globalAppActions } from '@/app/global/state'
+import { httpClient } from '@/app/global/services'
 export default {
   name: 'side-bar',
   data: () => ({
@@ -151,9 +164,11 @@ export default {
       error: state => state.riverDetailState.alertsData.error,
       articlesLoading: state => state.riverDetailState.newsTabData.loading,
       articlesError: state => state.riverDetailState.newsTabData.error,
-      articles: state => state.riverDetailState.newsTabData.data
+      articles: state => state.riverDetailState.newsTabData.data,
+      gages: state => state.riverDetailState.reachGagesData.data,
+      user: state => state.userState.userData.data
     }),
-    routeID () {
+    reachId () {
       return this.$route.params.id
     }
   },
@@ -183,23 +198,77 @@ export default {
     submitForm () {
       this.newAlertModalVisible = false
       this.$store.dispatch(alertsActions.CREATE_ALERT, this.formData)
-      this.$store.dispatch(globalAppActions.SEND_TOAST, {
-        title: 'Alert Submitted',
-        kind: 'success',
-        override: true,
-        contrast: false,
-        action: false,
-        autoHide: true
-      })
     },
+
+    submitAlert () {
+      this.newAlertModalVisible = false
+
+      const today = new Date()
+
+      // We save the user input in case of an error
+      const data = {
+        id: this.$randomId,
+        post: {
+          user_id: this.user.uid,
+          detail: this.formData.detail,
+          post_date: today.toISOString(),
+          post_type: 'WARNING',
+          reach_id: this.reachId
+        }
+      }
+
+      httpClient
+        .post('/graphql', {
+          query: `
+          mutation ($id:ID!, $post: PostInput!) {
+              post:postUpdate(id: $id, post:$post)  {
+              id
+        }
+        }`,
+          variables: data
+        })
+        .then(r => {
+          if (!r.errors) {
+            this.$store.dispatch(globalAppActions.SEND_TOAST, {
+              title: 'Alert Submitted',
+              kind: 'success',
+              override: true,
+              contrast: false,
+              action: false,
+              autoHide: true
+            })
+            this.$store.dispatch(
+              alertsActions.FETCH_ALERTS_DATA,
+              this.$route.params.id
+            )
+          }
+        })
+        .catch(e => {
+          // eslint-disable-next-line no-console
+          console.log('e :', e)
+        })
+    },
+
     loadData () {
       if (!this.alerts) {
-        this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.$route.params.id)
+        this.$store.dispatch(
+          alertsActions.FETCH_ALERTS_DATA,
+          this.$route.params.id
+        )
       }
 
       if (!this.articles) {
-        this.$store.dispatch(newsTabActions.FETCH_NEWS_TAB_DATA, this.$route.params.id)
+        this.$store.dispatch(
+          newsTabActions.FETCH_NEWS_TAB_DATA,
+          this.$route.params.id
+        )
       }
+    }
+  },
+  mounted () {
+    if (this.gages) {
+      this.formData.gauge_id = this.gages[0].gauge.id
+      this.formData.reading = this.gages[0].gauge_reading.toString()
     }
   }
 }
@@ -226,21 +295,19 @@ export default {
   }
 }
 .sidebar-article {
+  &:hover {
+    cursor: pointer;
+    h5,
+    p {
+      text-decoration: underline;
+    }
+  }
 
-&:hover {
-  cursor: pointer;
-  h5,p {
-    text-decoration: underline;
+  .article-thumb {
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: $ui-03;
   }
 }
-
-.article-thumb {
-   background-position: center center;
-   background-size:cover;
-   background-repeat: no-repeat;
-   background-color: $ui-03;
-}
-
-}
-
 </style>

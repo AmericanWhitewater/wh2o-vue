@@ -34,6 +34,11 @@
     <layout
       name="layout-two-thirds"
       class="mb-lg"
+      :options="{
+        sidebar: {
+          left: windowWidth < breakpoints.lg
+        }
+      }"
     >
       <template #main>
         <river-description />
@@ -54,6 +59,7 @@ import {
 import { LoadingBlock, ErrorBlock } from '@/app/global/components'
 import { Layout } from '@/app/global/layout'
 import { NwiMap } from '@/app/views/river-index/components'
+import { checkWindow } from '@/app/global/mixins'
 import { mapState } from 'vuex'
 import {
   SideBar,
@@ -76,6 +82,7 @@ export default {
     Layout,
     NwiMap
   },
+  mixins: [checkWindow],
   data: () => ({
     tileserver: nwiTileServer,
     token: mapboxAccessToken
