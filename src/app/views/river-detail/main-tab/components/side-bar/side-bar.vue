@@ -20,8 +20,8 @@
           <cv-inline-notification
             v-for="(alert, index) in sortedAlerts.slice(0, 2)"
             :key="index"
-            :title="alert.title ? alert.title.slice(0, 35) : null"
-            :sub-title="alert.detail ? alert.detail.slice(0, 50) + '...' : ''"
+            :title="formatTitle(alert.title, 30)"
+            :sub-title="formatTitle(alert.detail, 50)"
             action-label="Read More"
             @close="doClose(index)"
             @action="$router.push(`/river-detail/${$route.params.id}/news`)"
@@ -180,6 +180,9 @@ export default {
     }
   },
   watch: {
+    reachId () {
+      this.loadData()
+    },
     alerts () {
       this.isSticky()
     },
@@ -188,6 +191,12 @@ export default {
     }
   },
   methods: {
+    formatTitle (title, max) {
+      if (title && title.length > max) {
+        return title.slice(0, max) + '...'
+      }
+      return title
+    },
     doClose (index) {
       // eslint-disable-next-line no-console
       console.log('index :', index)
@@ -256,19 +265,15 @@ export default {
     },
 
     loadData () {
-      if (!this.alerts) {
-        this.$store.dispatch(
-          alertsActions.FETCH_ALERTS_DATA,
-          this.$route.params.id
-        )
-      }
+      this.$store.dispatch(
+        alertsActions.FETCH_ALERTS_DATA,
+        this.$route.params.id
+      )
 
-      if (!this.articles) {
-        this.$store.dispatch(
-          newsTabActions.FETCH_NEWS_TAB_DATA,
-          this.$route.params.id
-        )
-      }
+      this.$store.dispatch(
+        newsTabActions.FETCH_NEWS_TAB_DATA,
+        this.$route.params.id
+      )
     }
   },
   mounted () {
