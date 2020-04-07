@@ -18,7 +18,7 @@
         </span>
         <template v-if="!loading && alerts">
           <cv-inline-notification
-            v-for="(alert, index) in sortedAlerts.slice(0, 2)"
+            v-for="(alert, index) in alerts.slice(0, 2)"
             :key="index"
             :title="formatTitle(alert.title, 30)"
             :sub-title="formatTitle(alert.detail, 50)"
@@ -171,13 +171,13 @@ export default {
     }),
     reachId () {
       return this.$route.params.id
-    },
-    sortedAlerts () {
-      if (this.alerts) {
-        return this.alerts.sort((a, b) => (a.post_date < b.post_date ? 1 : -1))
-      }
-      return null
     }
+    // sortedAlerts () {
+    //   if (this.alerts) {
+    //     return this.alerts.sort((a, b) => (a.post_date < b.post_date ? 1 : -1))
+    //   }
+    //   return null
+    // }
   },
   watch: {
     reachId () {

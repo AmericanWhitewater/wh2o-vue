@@ -62,6 +62,8 @@ module.exports = {
    *
    */
   chainWebpack: config => {
+    config.output.filename('[name].js')
+    config.output.chunkFilename('[name].js')
     config.module
       .rule('file')
       .test(/\.(png|mp4|jpe?g|gif)$/i)
@@ -69,5 +71,16 @@ module.exports = {
       .loader('file-loader')
       .end()
   },
-  productionSourceMap: false
+  configureWebpack: config => {
+    if (process.env.NODE_ENV === 'production') {
+      config.optimization = {
+        minimize: true
+      }
+    } else {
+      config.optimization = {
+        minimize: false
+      }
+    }
+  },
+  publicPath: process.env.VUE_APP_BASE_URL
 }
