@@ -21,4 +21,4 @@ export const wh2o = new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#wh2o-vue')
