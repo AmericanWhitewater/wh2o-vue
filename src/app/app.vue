@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="wh2o-vue">
     <app-toaster />
     <app-navigation />
     <router-view
@@ -35,3 +35,8 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.wh2o-vue {
+  @import '@/app/assets/scss/app.scss';
+}
+</style>
