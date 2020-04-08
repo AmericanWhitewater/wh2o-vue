@@ -23,4 +23,7 @@ img {
       padding-top: $desktop-nav-height;
     }
   }
+  &.laravel-deploy {
+    padding-top: 25px;
+  }
 }

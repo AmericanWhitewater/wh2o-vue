@@ -5,6 +5,7 @@
  */
 
 module.exports = {
+  filenameHashing: false,
   /**
    * disables lint on save which disrupts workflow.
    * linting reserved for pre-commit git hook.
@@ -62,8 +63,6 @@ module.exports = {
    *
    */
   chainWebpack: config => {
-    config.output.filename('[name].js')
-    config.output.chunkFilename('[name].js')
     config.module
       .rule('file')
       .test(/\.(png|mp4|jpe?g|gif)$/i)
@@ -82,5 +81,5 @@ module.exports = {
       }
     }
   },
-  publicPath: process.env.VUE_APP_BASE_URL
+  publicPath: process.env.VUE_APP_BASE_URL || '/'
 }
