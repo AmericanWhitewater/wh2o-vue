@@ -36,7 +36,5 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.wh2o-vue {
-  @import '@/app/assets/scss/app.scss';
-}
+
 </style>
