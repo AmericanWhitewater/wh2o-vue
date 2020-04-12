@@ -6,6 +6,7 @@ module.exports = {
     'src/**/*.{js,vue}',
     '!src/js/main.js',
     '!src/**/index.js',
-    '!src/**/create-wrapper.js'
+    '!src/**/create-wrapper.js',
+    '!src/**/api-constants.js'
   ]
 }
