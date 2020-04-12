@@ -11,40 +11,46 @@
         <span class="header-row">
           <h4>Alerts</h4>
           <cv-button
+            id="new-alert"
             kind="secondary"
             size="small"
             @click.exact="newAlertModalVisible = true"
+            @keydown.enter="newAlertModalVisible = true"
           >New Alert</cv-button>
         </span>
-        <template v-if="!loading && alerts">
-          <cv-inline-notification
-            v-for="(alert, index) in sortedAlerts.slice(0, 2)"
-            :key="index"
-            :title="formatTitle(alert.title, 30)"
-            :sub-title="formatTitle(alert.detail, 50)"
-            action-label="Read More"
-            @close="doClose(index)"
-            @action="$router.push(`/river-detail/${$route.params.id}/news`)"
+        <template v-if="loading">
+          <cv-inline-loading
+            id="cv-inline-loading--alerts"
+            state="loading"
           />
-          <template v-if="!alerts">
+        </template>
+        <template v-else-if="sortedAlerts">
+          <template v-if="sortedAlerts.length > 0">
+            <cv-inline-notification
+              v-for="(alert, index) in sortedAlerts.slice(0, 2)"
+              :key="index"
+              :title="formatTitle(alert.title, 30)"
+              :sub-title="formatTitle(alert.detail, 50)"
+              action-label="Read More"
+              @close="doClose(index)"
+              @action="$router.push(`/river-detail/${$route.params.id}/news`)"
+            />
+          </template>
+          <template v-if="sortedAlerts">
             <p class="pt-spacing-md pb-spacing-md">
               There are no new alerts.
             </p>
           </template>
         </template>
-
-        <template v-if="loading">
-          <div class="pt-spacing-md pb-spacing-md">
-            <cv-inline-loading state="loading" />
-          </div>
-        </template>
-
         <h4 class="mb-spacing-sm">
           News
         </h4>
         <template v-if="articlesLoading">
           <div class="pt-spacing-md pb-spacing-md">
-            <cv-inline-loading state="loading" />
+            <cv-inline-loading
+              id="cv-inline-loading--articles"
+              state="loading"
+            />
           </div>
         </template>
         <template v-else-if="articles && articles.length > 0">
@@ -77,11 +83,12 @@
           </div>
         </template>
         <template v-else>
-          No articles
+          <p>No Articles. Click here to view Regional News.</p>
         </template>
       </div>
     </cv-tile>
     <cv-modal
+      id="new-alert-modal"
       :visible="newAlertModalVisible"
       @modal-shown="$refs.title.$refs.input.focus()"
       @secondary-click="cancelNewAlert"
@@ -173,10 +180,10 @@ export default {
       return this.$route.params.id
     },
     sortedAlerts () {
-      if (this.alerts) {
+      if (this.alerts && this.alerts.length > 0) {
         return this.alerts.sort((a, b) => (a.post_date < b.post_date ? 1 : -1))
       }
-      return null
+      return []
     }
   },
   watch: {
@@ -277,7 +284,7 @@ export default {
     }
   },
   mounted () {
-    if (this.gages) {
+    if (this.gages && this.gages.length > 0) {
       this.formData.gauge_id = this.gages[0].gauge.id
       this.formData.reading = this.gages[0].gauge_reading.toString()
     }
