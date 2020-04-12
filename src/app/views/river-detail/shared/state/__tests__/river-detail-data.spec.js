@@ -1,4 +1,4 @@
-import riverDetailState from '../main-tab/river-detail-data'
+import riverDetailData from '../main-tab/river-detail-data'
 import { fetchRiverDetailData } from '@/app/views/river-detail/shared/services/main-tab.js'
 import flushPromises from 'flush-promises'
 
@@ -12,7 +12,7 @@ const result = {
   }
 }
 
-describe('riverDetailState', () => {
+describe('riverDetailData', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
@@ -20,7 +20,7 @@ describe('riverDetailState', () => {
   it('fetches river data and handles success', async () => {
     fetchRiverDetailData.mockResolvedValueOnce(result)
 
-    await riverDetailState.actions['[RIVER_DETAIL] FETCH_RIVER_DETAIL_DATA']({ commit }, '123')
+    await riverDetailData.actions['[RIVER_DETAIL] FETCH_RIVER_DETAIL_DATA']({ commit }, '123')
 
     await flushPromises()
 
@@ -34,7 +34,7 @@ describe('riverDetailState', () => {
 
     fetchRiverDetailData.mockRejectedValueOnce(error)
 
-    await riverDetailState.actions['[RIVER_DETAIL] FETCH_RIVER_DETAIL_DATA']({ commit }, '123')
+    await riverDetailData.actions['[RIVER_DETAIL] FETCH_RIVER_DETAIL_DATA']({ commit }, '123')
 
     await flushPromises()
 
@@ -43,7 +43,7 @@ describe('riverDetailState', () => {
   })
 
   it('toggles edit mode', async () => {
-    await riverDetailState.actions['[RIVER_DETAIL] SET_EDIT_MODE']({ commit }, true)
+    await riverDetailData.actions['[RIVER_DETAIL] SET_EDIT_MODE']({ commit }, true)
 
     expect(commit).toHaveBeenNthCalledWith(1, '[RIVER_DETAIL] MODE_SET', true)
   })
