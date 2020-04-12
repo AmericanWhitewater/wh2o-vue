@@ -17,7 +17,8 @@ exports[`rapid-icon-bar.vue shows access point icon when poi is access point 1`]
   <ul id="character-icons-wrapper">
     <!---->
     <li id="access-icon"><button type="button" class="cv-tooltip bx--tooltip__trigger bx--tooltip--a11y bx--tooltip--top bx--tooltip--align-center"><span class="bx--assistive-text">Access Point</span>
-        <repeat32-stub></repeat32-stub></button></li>
+        <repeat32-stub></repeat32-stub>
+      </button></li>
     <!---->
     <!---->
     <!---->
@@ -33,7 +34,8 @@ exports[`rapid-icon-bar.vue shows hazard icon when poi is hazard 1`] = `
     <!---->
     <!---->
     <li id="hazard-icon"><button type="button" class="cv-tooltip bx--tooltip__trigger bx--tooltip--a11y bx--tooltip--top bx--tooltip--align-center"><span class="bx--assistive-text">Hazard</span>
-        <warningsquare32-stub></warningsquare32-stub></button></li>
+        <warningsquare32-stub></warningsquare32-stub>
+      </button></li>
     <!---->
     <!---->
     <!---->
@@ -50,7 +52,8 @@ exports[`rapid-icon-bar.vue shows portage icon when poi is portage 1`] = `
     <!---->
     <!---->
     <li id="portage-icon"><button type="button" class="cv-tooltip bx--tooltip__trigger bx--tooltip--a11y bx--tooltip--top bx--tooltip--align-center"><span class="bx--assistive-text">Portage</span>
-        <pedestrian32-stub></pedestrian32-stub></button></li>
+        <pedestrian32-stub></pedestrian32-stub>
+      </button></li>
     <!---->
     <!---->
   </ul>
@@ -61,7 +64,8 @@ exports[`rapid-icon-bar.vue shows put in icon when poi is put in 1`] = `
 <div class="has-icons rapid-icon-bar">
   <ul id="character-icons-wrapper">
     <li id="put-in-icon"><button type="button" class="cv-tooltip bx--tooltip__trigger bx--tooltip--a11y bx--tooltip--top bx--tooltip--align-center"><span class="bx--assistive-text">Put In</span>
-        <login32-stub></login32-stub></button></li>
+        <login32-stub></login32-stub>
+      </button></li>
     <!---->
     <!---->
     <!---->
@@ -102,7 +106,8 @@ exports[`rapid-icon-bar.vue shows take out icon when poi is take out 1`] = `
     <!---->
     <!---->
     <li id="take-out-icon"><button type="button" class="cv-tooltip bx--tooltip__trigger bx--tooltip--a11y bx--tooltip--top bx--tooltip--align-center"><span class="bx--assistive-text">Take Out</span>
-        <logout32-stub></logout32-stub></button></li>
+        <logout32-stub></logout32-stub>
+      </button></li>
   </ul>
 </div>
 `;
@@ -116,7 +121,8 @@ exports[`rapid-icon-bar.vue shows waterfall icon when poi is waterfall 1`] = `
     <!---->
     <!---->
     <li id="waterfall-icon"><button type="button" class="cv-tooltip bx--tooltip__trigger bx--tooltip--a11y bx--tooltip--top bx--tooltip--align-center"><span class="bx--assistive-text">Waterfall / Large Drop</span>
-        <warningsquare32-stub></warningsquare32-stub></button></li>
+        <warningsquare32-stub></warningsquare32-stub>
+      </button></li>
     <!---->
   </ul>
 </div>
