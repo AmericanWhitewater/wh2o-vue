@@ -23,7 +23,7 @@ describe('alertsData', () => {
     jest.clearAllMocks()
   })
 
-  it('fetches river data and handles success', async () => {
+  it('fetches alerts data and handles success', async () => {
     fetchAlertsData.mockResolvedValueOnce(result)
 
     await alertsData.actions['[ALERTS] FETCH_ALERTS_DATA']({ commit }, '123')
@@ -34,7 +34,7 @@ describe('alertsData', () => {
     expect(commit).toHaveBeenNthCalledWith(2, '[ALERTS] DATA_SUCCESS', result.data.reach.posts.data)
   })
 
-  it('fetches river data and handles error', async () => {
+  it('fetches alerts data and handles error', async () => {
     const error = {
       message: 'lorem error'
     }
