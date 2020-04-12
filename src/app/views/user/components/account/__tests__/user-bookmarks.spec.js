@@ -1,30 +1,38 @@
 import UserBookmarks from '../user-bookmarks.vue'
 import { createWrapper } from '@/app/global/services'
 
-const state = {
-  riverDetailState: {
-    bookmarksData: {
-      error: null,
-      data: [],
-      loading: null
+const mockStore = {
+  state: {
+    riverDetailState: {
+      bookmarksData: {
+        error: null,
+        data: [],
+        loading: null
+      }
     }
+  }
+}
+
+const options = {
+  mocks: {
+    $store: mockStore
   }
 }
 
 describe('user-profile.vue', () => {
   it('shows loading block when loading', () => {
-    state.riverDetailState.bookmarksData.loading = true
+    mockStore.state.riverDetailState.bookmarksData.loading = true
 
-    const wrapper = createWrapper(UserBookmarks, state, {})
+    const wrapper = createWrapper(UserBookmarks, options)
 
     expect(wrapper.find('.user-bookmarks')).toMatchSnapshot()
     expect(wrapper.find('.utility-block-loading').exists()).toBe(true)
   })
 
   it('shows search bar when user has no bookmarks', () => {
-    state.riverDetailState.bookmarksData.loading = false
+    mockStore.state.riverDetailState.bookmarksData.loading = false
 
-    const wrapper = createWrapper(UserBookmarks, state, {})
+    const wrapper = createWrapper(UserBookmarks, options)
     expect(wrapper.find('.cv-search').exists()).toBe(true)
   })
 })

@@ -1,28 +1,32 @@
 import NewsTab from '@/app/views/river-detail/news-tab/news-tab.vue'
 import { createWrapper } from '@/app/global/services'
 
-const state = {
-  userState: {
-    userData: {
-      data: null
+const mockStore = {
+  state: {
+    userState: {
+      userData: {
+        data: null
+      }
+    },
+    riverDetailState: {
+      newsTabData: {
+        error: null,
+        data: null,
+        loading: null
+      },
+      alertsData: {
+        error: null,
+        data: null,
+        loading: null
+      }
     }
   },
-  riverDetailState: {
-    newsTabData: {
-      error: null,
-      data: null,
-      loading: null
-    },
-    alertsData: {
-      error: null,
-      data: null,
-      loading: null
-    }
-  }
+  dispatch: jest.fn()
 }
 
 const options = {
   mocks: {
+    $store: mockStore,
     $route: {
       params: {
         id: '123456789'
@@ -33,8 +37,8 @@ const options = {
 
 describe('NewsTab', () => {
   it('shows loading block when articles loading', () => {
-    state.riverDetailState.newsTabData.loading = true
-    const wrapper = createWrapper(NewsTab, state, [], options)
+    mockStore.state.riverDetailState.newsTabData.loading = true
+    const wrapper = createWrapper(NewsTab, options)
 
     expect(wrapper.find('.news-tab')).toMatchSnapshot()
     expect(wrapper.find('.articles-loading').exists()).toBe(true)
@@ -42,9 +46,9 @@ describe('NewsTab', () => {
   })
 
   it('shows error block when articles failed to load', () => {
-    state.riverDetailState.newsTabData.loading = false
-    state.riverDetailState.newsTabData.error = true
-    const wrapper = createWrapper(NewsTab, state, [], options)
+    mockStore.state.riverDetailState.newsTabData.loading = false
+    mockStore.state.riverDetailState.newsTabData.error = true
+    const wrapper = createWrapper(NewsTab, options)
 
     expect(wrapper.find('.news-tab')).toMatchSnapshot()
 
@@ -52,8 +56,8 @@ describe('NewsTab', () => {
     expect(wrapper.find('.articles-error').exists()).toBe(true)
   })
   it('shows loading block when alerts loading', () => {
-    state.riverDetailState.alertsData.loading = true
-    const wrapper = createWrapper(NewsTab, state, [], options)
+    mockStore.state.riverDetailState.alertsData.loading = true
+    const wrapper = createWrapper(NewsTab, options)
 
     expect(wrapper.find('.news-tab')).toMatchSnapshot()
     expect(wrapper.find('.alerts-loading').exists()).toBe(true)
@@ -61,9 +65,9 @@ describe('NewsTab', () => {
   })
 
   it('shows error block when alerts failed to load', () => {
-    state.riverDetailState.alertsData.loading = false
-    state.riverDetailState.alertsData.error = true
-    const wrapper = createWrapper(NewsTab, state, [], options)
+    mockStore.state.riverDetailState.alertsData.loading = false
+    mockStore.state.riverDetailState.alertsData.error = true
+    const wrapper = createWrapper(NewsTab, options)
 
     expect(wrapper.find('.news-tab')).toMatchSnapshot()
 

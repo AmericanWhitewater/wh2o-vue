@@ -1,20 +1,28 @@
 import RapidsSection from '../rapids-section.vue'
 import { createWrapper } from '@/app/global/services'
 
-const state = {
-  riverDetailState: {
-    rapidsData: {
-      error: null,
-      data: null,
-      loading: null
+const mockStore = {
+  state: {
+    riverDetailState: {
+      rapidsData: {
+        error: null,
+        data: null,
+        loading: null
+      }
     }
+  }
+}
+
+const options = {
+  mocks: {
+    $store: mockStore
   }
 }
 
 describe('RapidsSection', () => {
   it('shows loading block when loading', () => {
-    state.riverDetailState.rapidsData.loading = true
-    const wrapper = createWrapper(RapidsSection, state, {})
+    mockStore.state.riverDetailState.rapidsData.loading = true
+    const wrapper = createWrapper(RapidsSection, options)
 
     // expect(wrapper.find('.comments-section')).toMatchSnapshot()
 
@@ -24,9 +32,9 @@ describe('RapidsSection', () => {
   })
 
   it('shows error block when error', () => {
-    state.riverDetailState.rapidsData.loading = false
-    state.riverDetailState.rapidsData.error = true
-    const wrapper = createWrapper(RapidsSection, state, {})
+    mockStore.state.riverDetailState.rapidsData.loading = false
+    mockStore.state.riverDetailState.rapidsData.error = true
+    const wrapper = createWrapper(RapidsSection, options)
 
     // expect(wrapper.find('.comments-section')).toMatchSnapshot()
 

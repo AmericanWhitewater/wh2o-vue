@@ -1,26 +1,35 @@
 import WeatherTab from '@/app/views/river-detail/weather-tab/weather-tab.vue'
 import { createWrapper } from '@/app/global/services'
 
-const state = {
-  riverDetailState: {
-    weatherData: {
-      error: null,
-      data: null,
-      loading: null
-    },
-    riverDetailData: {
-      data: {
-        plat: 'lorem',
-        plon: 'lorem'
+const mockStore = {
+  state: {
+    riverDetailState: {
+      weatherData: {
+        error: null,
+        data: null,
+        loading: null
+      },
+      riverDetailData: {
+        data: {
+          plat: 'lorem',
+          plon: 'lorem'
+        }
       }
     }
+  },
+  dispatch: jest.fn()
+}
+
+const options = {
+  mocks: {
+    $store: mockStore
   }
 }
 
 describe('FlowTab', () => {
-  it('shows loading block when loading', () => {
-    state.riverDetailState.weatherData.loading = true
-    const wrapper = createWrapper(WeatherTab, state, {})
+  it('shows loading block when loading', async () => {
+    mockStore.state.riverDetailState.weatherData.loading = true
+    const wrapper = createWrapper(WeatherTab, options)
 
     wrapper.setData({
       fetchConfig: {
@@ -28,6 +37,8 @@ describe('FlowTab', () => {
         lon: null
       }
     })
+
+    await wrapper.vm.$nextTick()
 
     expect(wrapper.find('.weather-tab')).toMatchSnapshot()
 
@@ -36,10 +47,10 @@ describe('FlowTab', () => {
     expect(wrapper.find('.utility-block-content').exists()).toBe(false)
   })
 
-  it('shows error block when error', () => {
-    state.riverDetailState.weatherData.loading = false
-    state.riverDetailState.weatherData.error = true
-    const wrapper = createWrapper(WeatherTab, state, {})
+  it('shows error block when error', async () => {
+    mockStore.state.riverDetailState.weatherData.loading = false
+    mockStore.state.riverDetailState.weatherData.error = true
+    const wrapper = createWrapper(WeatherTab, options)
 
     wrapper.setData({
       fetchConfig: {
@@ -47,6 +58,8 @@ describe('FlowTab', () => {
         lon: null
       }
     })
+
+    await wrapper.vm.$nextTick()
 
     expect(wrapper.find('.weather-tab')).toMatchSnapshot()
 
