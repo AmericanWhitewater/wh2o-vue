@@ -11,26 +11,36 @@
       <utility-block state="loading" />
     </template>
 
-    <template v-else-if="sortedRapids">
+    <template v-else-if="sortedRapids && !error">
       <div class="">
         <cv-button
+          id="add-rapid"
           class="mr-spacing-sm mb-sm"
           size="small"
           kind="secondary"
           @click.exact="newRapidModalVisible = true"
+          @keydown.enter="newRapidModalVisible = true"
         >
           Add Rapid
         </cv-button>
       </div>
 
-      <div class="bx--row">
-        <rapid-item
-          v-for="(rapid, index) in sortedRapids"
-          :key="index"
-          :rapid="rapid"
-          :first-p-o-i="index === 0 ? true : false"
+      <template v-if="sortedRapids.length > 0">
+        <div class="bx--row">
+          <rapid-item
+            v-for="(rapid, index) in sortedRapids"
+            :key="index"
+            :rapid="rapid"
+            :first-p-o-i="index === 0 ? true : false"
+          />
+        </div>
+      </template>
+      <template v-else>
+        <utility-block
+          state="content"
+          text="No rapids have been added"
         />
-      </div>
+      </template>
     </template>
     <template v-else>
       <utility-block state="error" />
@@ -67,10 +77,10 @@ export default {
       rapids: state => state.riverDetailState.rapidsData.data
     }),
     sortedRapids () {
-      if (this.rapids) {
+      if (this.rapids && this.rapids.length > 0) {
         return this.rapids.sort((a, b) => (a.distance > b.distance ? 1 : -1))
       }
-      return null
+      return []
     }
   },
   methods: {
