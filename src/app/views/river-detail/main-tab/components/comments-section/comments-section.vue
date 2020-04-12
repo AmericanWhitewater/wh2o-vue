@@ -8,10 +8,12 @@
       Comments
     </h2>
     <cv-button
+      id="new-comment"
       kind="secondary"
       size="small"
       class="mb-spacing-lg"
       @click.exact="newCommentModalVisible = true"
+      @keydown.enter="newCommentModalVisible = true"
     >
       New Comment
     </cv-button>
@@ -19,15 +21,23 @@
       <utility-block state="loading" />
     </template>
     <template v-else-if="comments">
-      <div class="comment-wrapper">
-        <comment
-          v-for="(c, i) in sortedComments"
-          :key="i"
-          :comment="c"
-          @comment:delete="loadComments"
-          @comment:edit="loadComments"
+      <template v-if="comments.length > 0">
+        <div class="comment-wrapper">
+          <comment
+            v-for="(c, i) in sortedComments"
+            :key="i"
+            :comment="c"
+            @comment:delete="loadComments"
+            @comment:edit="loadComments"
+          />
+        </div>
+      </template>
+      <template v-else>
+        <utility-block
+          state="content"
+          text="No comments"
         />
-      </div>
+      </template>
     </template>
     <template v-else>
       <utility-block state="error" />
