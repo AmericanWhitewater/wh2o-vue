@@ -1,7 +1,7 @@
 {
   "name": "wh2o-vue",
   "version": "0.1.0",
-  "private": false,
+  "private": true,
   "author": "Drew Althage",
   "scripts": {
     "serve": "vue-cli-service serve",

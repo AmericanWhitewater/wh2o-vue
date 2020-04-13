@@ -24,7 +24,7 @@
       <template v-if="comments.length > 0">
         <div class="comment-wrapper">
           <comment
-            v-for="(c, i) in sortedComments"
+            v-for="(c, i) in comments"
             :key="i"
             :comment="c"
             @comment:delete="loadComments"
@@ -103,12 +103,6 @@ export default {
     }),
     reachId () {
       return this.$route.params.id
-    },
-    sortedComments () {
-      if (this.comments) {
-        return this.comments.sort((a, b) => (a.post_date < b.post_date ? 1 : -1))
-      }
-      return null
     }
   },
   methods: {
