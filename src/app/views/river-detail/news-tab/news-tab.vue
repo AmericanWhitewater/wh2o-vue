@@ -17,7 +17,7 @@
             text="loading alerts"
           />
         </template>
-        <template v-else-if="alerts">
+        <template v-else-if="sortedAlerts.length > 0">
           <div class="bx--row">
             <div
               v-for="(alert, index) in sortedAlerts"
@@ -56,9 +56,9 @@
         </template>
         <template v-else>
           <utility-block
-            class="alerts-error"
-            state="error"
-            text="loading alerts failed"
+            class="alerts-empty"
+            state="content"
+            text="No alerts"
           />
         </template>
       </template>
@@ -88,11 +88,11 @@
               />
             </div>
             <div
-              v-else-if="articles"
+              v-else-if="sortedArticles.length > 0"
             >
               <div class="bx--row">
                 <div
-                  v-for="(article, index) in articles"
+                  v-for="(article, index) in sortedArticles"
                   :key="index"
                   class="bx--col-sm-12 bx--col-md-4 bx--col-lg-8 bx--col-max-4 mb-spacing-lg"
                 >
@@ -109,9 +109,9 @@
               v-else
             >
               <utility-block
-                class="articles-error"
-                state="error"
-                text="loading news failed"
+                class="articles-empty"
+                state="content"
+                text="no articles"
               />
             </div>
           </div>
@@ -149,18 +149,25 @@ export default {
       alerts: state => state.riverDetailState.alertsData.data
     }),
     sortedAlerts () {
-      if (this.alerts) {
+      if (this.alerts && this.alerts.length > 1) {
         return this.alerts.sort((a, b) => (a.post_date < b.post_date ? 1 : -1))
       }
-      return null
+      return []
+    },
+    sortedArticles () {
+      if (this.articles && this.articles.length > 1) {
+        return this.articles.sort((a, b) => (a.post_date < b.post_date ? 1 : -1))
+      }
+      return []
     }
   },
   methods: {
     loadData () {
-      if (!this.articles && !this.articlesError) {
+      if (!this.articles) {
         this.$store.dispatch(newsTabActions.FETCH_NEWS_TAB_DATA, this.$route.params.id)
       }
-      if (!this.alerts && !this.alertsError) {
+
+      if (!this.alerts) {
         this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.$route.params.id)
       }
     }
