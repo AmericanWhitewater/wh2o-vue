@@ -1,10 +1,6 @@
 <template>
   <div class="submodule-two pt-4">
-    <h4>{{ $route.name }}</h4>
-    <hr>
-    <div>Name: {{ $route.name }}</div>
-    <div>Path: {{ $route.path }}</div>
-    <div>Full Path: {{ $route.fullPath }}</div>
+    submodule-two
   </div>
 </template>
 <script>
