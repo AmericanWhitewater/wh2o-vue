@@ -8,209 +8,25 @@
       :class="[{ sticky: sticky }, 'content-area bx--row']"
     >
       <div class="bx--col">
-        <span class="header-row">
-          <h4>Alerts</h4>
-          <cv-button
-            id="new-alert"
-            kind="secondary"
-            size="small"
-            @click.exact="newAlertModalVisible = true"
-            @keydown.enter="newAlertModalVisible = true"
-          >New Alert</cv-button>
-        </span>
-        <template v-if="loading">
-          <cv-inline-loading
-            id="cv-inline-loading--alerts"
-            state="loading"
-          />
-        </template>
-        <template v-else-if="sortedAlerts">
-          <template v-if="sortedAlerts.length > 0">
-            <cv-inline-notification
-              v-for="(alert, index) in sortedAlerts.slice(0, 2)"
-              :key="index"
-              :title="formatTitle(alert.title, 30)"
-              :sub-title="formatTitle(alert.detail, 50)"
-              action-label="Read More"
-              @close="doClose(index)"
-              @action="$router.push(`/river-detail/${$route.params.id}/news`)"
-            />
-          </template>
-          <template v-if="sortedAlerts">
-            <p class="pt-spacing-md pb-spacing-md">
-              There are no new alerts.
-            </p>
-          </template>
-        </template>
-        <h4 class="mb-spacing-sm">
-          News
-        </h4>
-        <template v-if="articlesLoading">
-          <div class="pt-spacing-md pb-spacing-md">
-            <cv-inline-loading
-              id="cv-inline-loading--articles"
-              state="loading"
-            />
-          </div>
-        </template>
-        <template v-else-if="articles && articles.length > 0">
-          <div
-            v-for="(article, i) in articles.slice(0, 2)"
-            :key="i + 3 * 4"
-            class="bx--row mb-spacing-xs sidebar-article"
-            @keydown.enter="$router.push(`/article/${article.id}`)"
-            @click.exact="$router.push(`/article/${article.id}`)"
-          >
-            <div class="bx--col-sm-12 bx--col-md-3">
-              <div
-                class="article-thumb bx--aspect-ratio--1x1"
-                :style="`background-image: url(https://americanwhitewater.org${
-                  article.abstractimage.uri.medium ||
-                  article.abstractimage.uri.thumb
-                })`"
-                :alt="article.title"
-              />
-            </div>
-            <div class="bx--col-sm-12 bx--col-md-5">
-              <div>
-                <h5
-                  class="mb-spacing-2xs"
-                  v-text="$titleCase(article.title)"
-                />
-                <p v-html="article.abstract.slice(0, 50)" />
-              </div>
-            </div>
-          </div>
-        </template>
-        <template v-else>
-          <p>No Articles. Click here to view Regional News.</p>
-        </template>
+        <sidebar-alerts />
+        <sidebar-articles />
       </div>
     </cv-tile>
-    <cv-modal
-      id="new-alert-modal"
-      :visible="newAlertModalVisible"
-      @modal-shown="$refs.title.$refs.input.focus()"
-      @secondary-click="cancelNewAlert"
-      @modal-hidden="newAlertModalVisible = false"
-      @primary-click="submitAlert"
-    >
-      <template slot="title">
-        Create Alert
-      </template>
-      <template slot="content">
-        <cv-text-input
-          ref="title"
-          v-model="formData.title"
-          class="mb-spacing-md"
-          label="Title"
-          :disabled="formPending"
-        />
-        <cv-dropdown
-          v-if="gages"
-          v-model="formData.gauge_id"
-          class="mb-spacing-md"
-          label="Gage"
-        >
-          <cv-dropdown-item
-            v-for="(g, i) in gages"
-            :key="i"
-            :value="g.gauge.id"
-          >
-            {{ g.gauge.name }}
-          </cv-dropdown-item>
-        </cv-dropdown>
-        <cv-text-input
-          v-model="formData.reading"
-          class="mb-spacing-md"
-          label="Flow Level"
-          :disabled="formPending"
-        />
-        <cv-text-area
-          v-model="formData.detail"
-          label="Message"
-          theme="light"
-          class="mb-spacing-md"
-        />
-      </template>
-      <template slot="secondary-button">
-        Cancel
-      </template>
-      <template slot="primary-button">
-        Submit
-      </template>
-    </cv-modal>
   </aside>
 </template>
 <script>
-import { mapState } from 'vuex'
-import { alertsActions, newsTabActions } from '../../../shared/state'
-import { globalAppActions } from '@/app/global/state'
-import { httpClient } from '@/app/global/services'
+import { SidebarAlerts, SidebarArticles } from './components'
+import { alertsActions, newsTabActions } from '@/app/views/river-detail/shared/state'
 export default {
   name: 'side-bar',
+  components: {
+    SidebarAlerts,
+    SidebarArticles
+  },
   data: () => ({
-    formPending: false,
-    formData: {
-      detail: '',
-      post_type: 'WARNING',
-      gauge_id: '',
-      metric_id: '',
-      post_date: '',
-      reach_id: '',
-      reading: '',
-      title: '',
-      user_id: ''
-    },
-    newAlertModalVisible: false,
     sticky: false
   }),
-  computed: {
-    ...mapState({
-      alerts: state => state.riverDetailState.alertsData.data,
-      loading: state => state.riverDetailState.alertsData.loading,
-      error: state => state.riverDetailState.alertsData.error,
-      articlesLoading: state => state.riverDetailState.newsTabData.loading,
-      articlesError: state => state.riverDetailState.newsTabData.error,
-      articles: state => state.riverDetailState.newsTabData.data,
-      gages: state => state.riverDetailState.reachGagesData.data,
-      user: state => state.userState.userData.data
-    }),
-    reachId () {
-      return this.$route.params.id
-    },
-    sortedAlerts () {
-      if (this.alerts && this.alerts.length > 0) {
-        return this.alerts.sort((a, b) => (a.post_date < b.post_date ? 1 : -1))
-      }
-      return []
-    }
-  },
-  watch: {
-    reachId () {
-      this.loadData()
-    },
-    alerts () {
-      this.isSticky()
-    },
-    articles () {
-      this.isSticky()
-    }
-  },
   methods: {
-    formatTitle (title, max) {
-      if (title && title.length > max) {
-        return title.slice(0, max) + '...'
-      }
-      return title
-    },
-    doClose (index) {
-      // eslint-disable-next-line no-console
-      console.log('index :', index)
-    },
-    cancelNewAlert () {
-      this.newAlertModalVisible = false
-    },
     isSticky () {
       if (this.$refs.contentArea.clientHeight > 800) {
         this.sticky = false
@@ -218,75 +34,15 @@ export default {
         this.sticky = true
       }
     },
-    /**
-     * @todo move this to the store.
-     */
-    submitAlert () {
-      this.newAlertModalVisible = false
-
-      const today = new Date()
-
-      // We save the user input in case of an error
-      const data = {
-        id: this.$randomId,
-        post: {
-          user_id: this.user.uid,
-          title: this.formData.title,
-          detail: this.formData.detail,
-          post_date: today.toISOString(),
-          post_type: 'WARNING',
-          reach_id: this.reachId
-        }
-      }
-
-      httpClient
-        .post('/graphql', {
-          query: `
-          mutation ($id:ID!, $post: PostInput!) {
-              post:postUpdate(id: $id, post:$post)  {
-              id
-        }
-        }`,
-          variables: data
-        })
-        .then(r => {
-          if (!r.errors) {
-            this.$store.dispatch(globalAppActions.SEND_TOAST, {
-              title: 'Alert Submitted',
-              kind: 'success',
-              override: true,
-              contrast: false,
-              action: false,
-              autoHide: true
-            })
-            this.$store.dispatch(
-              alertsActions.FETCH_ALERTS_DATA,
-              this.$route.params.id
-            )
-          }
-        })
-        .catch(e => {
-          // eslint-disable-next-line no-console
-          console.log('e :', e)
-        })
-    },
-
     loadData () {
       this.$store.dispatch(
         alertsActions.FETCH_ALERTS_DATA,
         this.$route.params.id
       )
-
       this.$store.dispatch(
         newsTabActions.FETCH_NEWS_TAB_DATA,
         this.$route.params.id
       )
-    }
-  },
-  mounted () {
-    if (this.gages && this.gages.length > 0) {
-      this.formData.gauge_id = this.gages[0].gauge.id
-      this.formData.reading = this.gages[0].gauge_reading.toString()
     }
   }
 }
@@ -296,7 +52,6 @@ export default {
   min-height: 100%;
   .content-area {
     height: auto;
-    // background-color: $ui-03;
     padding: $spacing-sm 0;
     &.sticky {
       position: sticky;
@@ -306,26 +61,7 @@ export default {
       }
     }
   }
-  .header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-}
-.sidebar-article {
-  &:hover {
-    cursor: pointer;
-    h5,
-    p {
-      text-decoration: underline;
-    }
-  }
 
-  .article-thumb {
-    background-position: center center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-color: $ui-03;
-  }
 }
+
 </style>
