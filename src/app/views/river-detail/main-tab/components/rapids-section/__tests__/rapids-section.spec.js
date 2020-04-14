@@ -90,4 +90,10 @@ describe('RapidsSection', () => {
     expect(wrapper.find('.utility-block-error').exists()).toBe(false)
     expect(wrapper.find('.utility-block-content').exists()).toBe(false)
   })
+
+  it('disables the new rapid button while rapids are loading', () => {
+    mockStore.state.riverDetailState.rapidsData.loading = true
+    const wrapper = createWrapper(RapidsSection, options)
+    expect(wrapper.find('#new-rapid').attributes('disabled')).toBe('disabled')
+  })
 })

@@ -7,28 +7,26 @@
     <h2 class="mb-spacing-md">
       Rapids
     </h2>
+    <cv-button
+      id="new-rapid"
+      class="mr-spacing-sm mb-sm"
+      size="small"
+      :disabled="loading"
+      kind="secondary"
+      @click.exact="newRapidModalVisible = true"
+      @keydown.enter="newRapidModalVisible = true"
+    >
+      New Rapid
+    </cv-button>
     <template v-if="loading">
       <utility-block state="loading" />
     </template>
 
-    <template v-else-if="sortedRapids && !error">
-      <div class="">
-        <cv-button
-          id="new-rapid"
-          class="mr-spacing-sm mb-sm"
-          size="small"
-          kind="secondary"
-          @click.exact="newRapidModalVisible = true"
-          @keydown.enter="newRapidModalVisible = true"
-        >
-          New Rapid
-        </cv-button>
-      </div>
-
-      <template v-if="sortedRapids.length > 0">
+    <template v-else-if="rapids && !error">
+      <template v-if="rapids.length > 0">
         <div class="bx--row">
           <rapid-item
-            v-for="(rapid, index) in sortedRapids"
+            v-for="(rapid, index) in rapids"
             :key="index"
             :rapid="rapid"
             :first-p-o-i="index === 0 ? true : false"
@@ -81,13 +79,7 @@ export default {
       loading: state => state.riverDetailState.rapidsData.loading,
       error: state => state.riverDetailState.rapidsData.error,
       rapids: state => state.riverDetailState.rapidsData.data
-    }),
-    sortedRapids () {
-      if (this.rapids && this.rapids.length > 0) {
-        return this.rapids.sort((a, b) => (a.distance > b.distance ? 1 : -1))
-      }
-      return []
-    }
+    })
   },
   methods: {
     loadRapids () {
