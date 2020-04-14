@@ -1,18 +1,19 @@
-import ArticleCard from '../article-card'
+import ConfirmDeleteModal from '../confirm-delete-modal'
 import { createWrapper } from '@/app/global/services'
 
 const options = {
   propsData: {
-    title: 'test'
+    resourceName: 'test',
+    visible: false
   },
   mocks: {
     $router: jest.fn()
   }
 }
 
-describe('ArticleCard', () => {
+describe('ConfirmDeleteModal', () => {
   it('it is a vue instance', () => {
-    const wrapper = createWrapper(ArticleCard, options)
+    const wrapper = createWrapper(ConfirmDeleteModal, options)
     expect(wrapper.isVueInstance()).toBe(true)
   })
 })
