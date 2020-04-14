@@ -41,6 +41,9 @@ const options = {
 }
 
 describe('GalleryTab', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
   it('shows loading block when loading', async () => {
     mockStore.state.riverDetailState.galleryData.loading = true
 
@@ -59,6 +62,7 @@ describe('GalleryTab', () => {
 
   it('shows error block when error', () => {
     mockStore.state.riverDetailState.galleryData.loading = false
+    mockStore.state.riverDetailState.galleryData.data = false
     mockStore.state.riverDetailState.galleryData.error = true
 
     const wrapper = createWrapper(GalleryTab, options)
@@ -68,7 +72,7 @@ describe('GalleryTab', () => {
     expect(wrapper.find('.utility-block-content').exists()).toBe(false)
   })
 
-  it('shows no results block when error', () => {
+  it('shows no results block when there are no photos', () => {
     mockStore.state.riverDetailState.galleryData.loading = false
     mockStore.state.riverDetailState.galleryData.error = true
     mockStore.state.riverDetailState.galleryData.data = []
@@ -78,5 +82,16 @@ describe('GalleryTab', () => {
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
     expect(wrapper.find('.utility-block-error').exists()).toBe(false)
     expect(wrapper.find('.utility-block-content').exists()).toBe(true)
+  })
+
+  it('loads media when media not previously loaded', async () => {
+    // eslint-disable-next-line no-unused-vars
+    const wrapper = createWrapper(GalleryTab, options)
+
+    expect(mockStore.dispatch).toBeCalledTimes(1)
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
+      '[GALLERY] FETCH_GALLERY_DATA',
+      123456789
+    )
   })
 })

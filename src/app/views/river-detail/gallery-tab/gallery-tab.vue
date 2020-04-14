@@ -12,17 +12,19 @@
           <utility-block state="loading" />
         </template>
         <template v-else-if="photos">
-          <vue-picture-swipe
-            v-if="formattedData && formattedData.length > 0"
-            ref="pictureSwipe"
-            :items="formattedData"
-          />
-          <utility-block
-            v-if="!formattedData"
-            state="content"
-            title="No Media"
-            text="if you have media for this reach, please share"
-          />
+          <template v-if="formattedData && formattedData.length > 0">
+            <vue-picture-swipe
+              ref="pictureSwipe"
+              :items="formattedData"
+            />
+          </template>
+          <template v-else>
+            <utility-block
+              state="content"
+              title="No Media"
+              text="if you have media for this reach, please share"
+            />
+          </template>
         </template>
         <template v-else>
           <utility-block state="error" />

@@ -9,7 +9,6 @@
         <h2 class="mb-spacing-md">
           Alerts
         </h2>
-
         <template v-if="alertsLoading">
           <utility-block
             class="alerts-loading"
@@ -17,10 +16,10 @@
             text="loading alerts"
           />
         </template>
-        <template v-else-if="sortedAlerts.length > 0">
+        <template v-else-if="alerts && alerts.length > 0">
           <div class="bx--row">
             <div
-              v-for="(alert, index) in sortedAlerts"
+              v-for="(alert, index) in alerts"
               :key="index"
               class="bx--col-sm-12 bx--col-lg-8 mb-spacing-md"
             >
@@ -88,11 +87,11 @@
               />
             </div>
             <div
-              v-else-if="sortedArticles.length > 0"
+              v-else-if="articles && articles.length > 0"
             >
               <div class="bx--row">
                 <div
-                  v-for="(article, index) in sortedArticles"
+                  v-for="(article, index) in articles"
                   :key="index"
                   class="bx--col-sm-12 bx--col-md-4 bx--col-lg-8 bx--col-max-4 mb-spacing-lg"
                 >
@@ -147,19 +146,7 @@ export default {
       alertsLoading: state => state.riverDetailState.alertsData.loading,
       alertsError: state => state.riverDetailState.alertsData.error,
       alerts: state => state.riverDetailState.alertsData.data
-    }),
-    sortedAlerts () {
-      if (this.alerts && this.alerts.length > 1) {
-        return this.alerts.sort((a, b) => (a.post_date < b.post_date ? 1 : -1))
-      }
-      return []
-    },
-    sortedArticles () {
-      if (this.articles && this.articles.length > 1) {
-        return this.articles.sort((a, b) => (a.post_date < b.post_date ? 1 : -1))
-      }
-      return []
-    }
+    })
   },
   methods: {
     loadData () {

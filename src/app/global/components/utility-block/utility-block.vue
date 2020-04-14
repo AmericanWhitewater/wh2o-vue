@@ -7,7 +7,7 @@
     <template v-if="!blank">
       <h2
         v-if="title"
-        class="utility-block-title mb-spacing-md"
+        class="utility-block-title"
         v-text="title"
       />
       <p
