@@ -1,11 +1,12 @@
 <template>
   <div class="sidebar-alerts mb-spacing-md">
     <span class="header-row">
-      <h4>Alerts</h4>
+      <h4 class="mb-spacing-sm">Alerts</h4>
       <cv-button
         id="new-alert"
         kind="secondary"
         size="small"
+        class="mb-spacing-sm"
         @click.exact="newAlertModalVisible = true"
         @keydown.enter="newAlertModalVisible = true"
       >New Alert</cv-button>

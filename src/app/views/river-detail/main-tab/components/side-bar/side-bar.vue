@@ -1,7 +1,7 @@
 <template>
   <aside
     v-view.once="loadData"
-    class="main-tab-sidebar"
+    class="main-tab-sidebar pb-lg"
   >
     <cv-tile
       ref="contentArea"
