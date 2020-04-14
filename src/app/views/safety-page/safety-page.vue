@@ -139,10 +139,13 @@
       </div>
       <div class="bx--row mb-lg">
         <template v-if="loading && !error">
-          <loading-block />
+          <utility-block state="loading" />
         </template>
         <template v-if="!loading && error">
-          <error-block :text="error" />
+          <utility-block
+            state="error"
+            :text="error"
+          />
         </template>
         <template v-if="!loading && articles">
           <div
@@ -168,8 +171,7 @@ import { mapState } from 'vuex'
 import {
   PageHeader,
   PageDescription,
-  ErrorBlock,
-  LoadingBlock,
+  UtilityBlock,
   ArticleCard
 } from '@/app/global/components'
 import { safetyPageActions } from './shared/state'
@@ -179,8 +181,7 @@ export default {
   components: {
     PageHeader,
     PageDescription,
-    ErrorBlock,
-    LoadingBlock,
+    UtilityBlock,
     ArticleCard
   },
   metaInfo () {

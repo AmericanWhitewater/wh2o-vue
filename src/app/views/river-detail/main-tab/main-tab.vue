@@ -9,7 +9,10 @@
       </template>
       <template #right>
         <template v-if="loading">
-          <loading-block :hide-text="true" />
+          <utility-block
+            state="loading"
+            :hide-text="true"
+          />
         </template>
         <template v-if="!loading && data && token">
           <div class="map-wrapper">
@@ -24,7 +27,7 @@
           </div>
         </template>
         <template v-if="!token">
-          <error-block
+          <utility-block
             title="Disabled"
             text="map is currently unavailable"
           />
@@ -56,7 +59,7 @@ import {
   mapboxAccessToken,
   nwiTileServer
 } from '@/app/environment/environment'
-import { LoadingBlock, ErrorBlock } from '@/app/global/components'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { Layout } from '@/app/global/layout'
 import { NwiMap } from '@/app/views/river-index/components'
 import { checkWindow } from '@/app/global/mixins'
@@ -76,9 +79,8 @@ export default {
     RapidsSection,
     BetaBox,
     CommentsSection,
-    ErrorBlock,
+    UtilityBlock,
     RiverDescription,
-    LoadingBlock,
     Layout,
     NwiMap
   },

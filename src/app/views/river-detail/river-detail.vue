@@ -4,8 +4,9 @@
       name="fade"
       mode="out-in"
     >
-      <error-block
+      <utility-block
         v-if="error && !loading"
+        state="content"
         title="River Detail Unavailable"
         text="Sorry for the inconvenience, our team has been notified."
       />
@@ -178,14 +179,14 @@
 import { mapState, mapGetters } from 'vuex'
 import RiverHeader from './river-header/river-header'
 import { riverDetailActions, reachGagesActions } from './shared/state'
-import { ErrorBlock } from '@/app/global/components'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { checkWindow } from '@/app/global/mixins'
 
 export default {
   name: 'river-detail',
   components: {
     'river-header': RiverHeader,
-    ErrorBlock
+    UtilityBlock
   },
   mixins: [checkWindow],
   metaInfo () {
