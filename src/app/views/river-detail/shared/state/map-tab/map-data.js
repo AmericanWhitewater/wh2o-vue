@@ -1,6 +1,6 @@
 import { reflectKeys } from '@/app/global/services'
 
-import { fetchMapData } from '../../services'
+import { fetchAccessData } from '../../services'
 
 const initialState = {
   loading: false,
@@ -39,14 +39,14 @@ const mutations = {
   }
 }
 
-export const mapActions = reflectKeys(['FETCH_MAP_DATA'], namespacedPrefix)
+export const mapActions = reflectKeys(['FETCH_ACCESS_DATA'], namespacedPrefix)
 
 const actions = {
 
-  async [mapActions.FETCH_MAP_DATA] (context, data) {
+  async [mapActions.FETCH_ACCESS_DATA] (context, data) {
     context.commit(DATA_REQUEST)
 
-    const result = await fetchMapData(data).catch(e => {
+    const result = await fetchAccessData(data).catch(e => {
       context.commit(DATA_ERROR, e)
     })
 

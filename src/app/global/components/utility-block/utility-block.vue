@@ -79,6 +79,9 @@ export default {
     justify-content: center;
     @include carbon--type-style("code-01");
   }
+  .utility-block-text {
+     @include carbon--type-style("code-02");
+  }
 }
 </style>
 <docs>

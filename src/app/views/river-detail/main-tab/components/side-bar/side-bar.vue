@@ -8,8 +8,8 @@
       :class="[{ sticky: sticky }, 'content-area bx--row']"
     >
       <div class="bx--col">
-        <sidebar-alerts />
-        <sidebar-articles />
+        <sidebar-alerts @alerts:change="isSticky" />
+        <sidebar-articles @articles:change="isSticky" />
       </div>
     </cv-tile>
   </aside>
@@ -24,7 +24,7 @@ export default {
     SidebarArticles
   },
   data: () => ({
-    sticky: false
+    sticky: true
   }),
   methods: {
     isSticky () {

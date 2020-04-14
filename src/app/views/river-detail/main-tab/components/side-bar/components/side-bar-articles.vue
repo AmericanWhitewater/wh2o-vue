@@ -1,10 +1,10 @@
 <template>
   <div class="sidebar-articles">
-    <h4 class="mb-spacing-sm">
+    <h4>
       News
     </h4>
     <template v-if="loading">
-      <div class="pt-spacing-md pb-spacing-md">
+      <div class="pb-spacing-md">
         <cv-inline-loading
           id="cv-inline-loading--articles"
           state="loading"
@@ -41,12 +41,13 @@
       </div>
     </template>
     <template v-else>
-      <p>No Articles. Click here to view Regional News.</p>
+      <p class="no-articles-msg">
+        No Articles. Click here to view Regional News.
+      </p>
     </template>
   </div>
 </template>
 <script>
-
 import { mapState } from 'vuex'
 export default {
   name: 'sidebar-articles',
@@ -56,6 +57,11 @@ export default {
       error: state => state.riverDetailState.newsTabData.error,
       articles: state => state.riverDetailState.newsTabData.data
     })
+  },
+  watch: {
+    articles () {
+      this.$emit('articles:change')
+    }
   }
 }
 </script>
@@ -76,6 +82,9 @@ export default {
       background-repeat: no-repeat;
       background-color: $ui-03;
     }
+  }
+  .no-articles-msg {
+     @include carbon--type-style("code-02");
   }
 }
 </style>

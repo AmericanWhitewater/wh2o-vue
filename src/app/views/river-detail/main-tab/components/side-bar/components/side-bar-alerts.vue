@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar-alerts">
+  <div class="sidebar-alerts mb-spacing-md">
     <span class="header-row">
       <h4>Alerts</h4>
       <cv-button
@@ -11,28 +11,23 @@
       >New Alert</cv-button>
     </span>
     <template v-if="loading">
-      <cv-inline-loading
-        id="cv-inline-loading--alerts"
-        state="loading"
+      <cv-inline-loading state="loading" />
+    </template>
+    <template v-else-if="alerts && alerts.length > 0">
+      <cv-inline-notification
+        v-for="(alert, index) in alerts.slice(0, 2)"
+        :key="index"
+        :title="formatTitle(alert.title, 30)"
+        :sub-title="formatTitle(alert.detail, 50)"
+        action-label="Read More"
+        @close="doClose(index)"
+        @action="$router.push(`/river-detail/${$route.params.id}/news`)"
       />
     </template>
-    <template v-else-if="sortedAlerts">
-      <template v-if="sortedAlerts.length > 0">
-        <cv-inline-notification
-          v-for="(alert, index) in sortedAlerts.slice(0, 2)"
-          :key="index"
-          :title="formatTitle(alert.title, 30)"
-          :sub-title="formatTitle(alert.detail, 50)"
-          action-label="Read More"
-          @close="doClose(index)"
-          @action="$router.push(`/river-detail/${$route.params.id}/news`)"
-        />
-      </template>
-      <template v-if="sortedAlerts">
-        <p class="pt-spacing-md pb-spacing-md">
-          There are no new alerts.
-        </p>
-      </template>
+    <template v-else>
+      <p class="no-alerts-msg pb-spacing-md">
+        There are no new alerts.
+      </p>
     </template>
     <cv-modal
       id="new-alert-modal"
@@ -118,13 +113,7 @@ export default {
       error: state => state.riverDetailState.alertsData.error,
       gages: state => state.riverDetailState.reachGagesData.data,
       user: state => state.userState.userData.data
-    }),
-    sortedAlerts () {
-      if (this.alerts && this.alerts.length > 0) {
-        return this.alerts.sort((a, b) => (a.post_date < b.post_date ? 1 : -1))
-      }
-      return []
-    }
+    })
   },
   watch: {
     alerts () {
@@ -203,12 +192,15 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .sidebar-alerts {
   .header-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  .no-alerts-msg {
+     @include carbon--type-style("code-02");
   }
 }
 </style>

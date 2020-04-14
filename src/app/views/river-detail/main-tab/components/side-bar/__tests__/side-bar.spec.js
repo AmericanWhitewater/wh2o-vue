@@ -2,32 +2,6 @@ import SideBar from '../side-bar.vue'
 import { createWrapper } from '@/app/global/services'
 
 const mockStore = {
-  state: {
-    riverDetailState: {
-      alertsData: {
-        data: null,
-        error: null,
-        loading: null
-      },
-      newsTabData: {
-        data: null,
-        error: null,
-        loading: null
-      },
-      reachGagesData: {
-        data: null,
-        error: null,
-        loading: null
-      }
-    },
-    userState: {
-      userData: {
-        data: null,
-        error: null,
-        loading: null
-      }
-    }
-  },
   dispatch: jest.fn()
 }
 
@@ -43,7 +17,8 @@ const options = {
   mocks: {
     $store: mockStore,
     $route: mockRoute
-  }
+  },
+  stubs: ['SidebarAlerts', 'SidebarArticles']
 }
 
 describe('SideBar.vue', () => {

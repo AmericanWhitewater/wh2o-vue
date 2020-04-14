@@ -34,9 +34,14 @@ const mockRoute = {
 const options = {
   mocks: {
     $store: mockStore,
-    $route: mockRoute
+    $route: mockRoute,
+    $titleCase: jest.fn()
   }
 }
+
+const alerts = [
+  { id: 'bY_TrFERilHvbdE4N_-t1', title: 'This is a new alert', detail: 'Yo!!!', post_date: '2020-04-09 00:00:00', revision: 31782, post_type: 'WARNING', gauge: null, user: { uname: 'drewalth', uid: '153461', image: { uri: { thumb: '/resources/images/contacts/thumb/153461-1.jpg', medium: '/resources/images/contacts/medium/153461-1.jpg', big: '/resources/images/contacts/153461-1.jpg' } } } }
+]
 
 describe('SidebarAlerts.vue', () => {
   beforeEach(() => {
@@ -45,9 +50,8 @@ describe('SidebarAlerts.vue', () => {
 
   it('shows empty state text when no alerts', () => {
     const wrapper = createWrapper(SidebarAlerts, options)
-
-    expect(wrapper.findAll('p').at(0).text()).toEqual('There are no new alerts.')
-    expect(wrapper.find('#cv-inline-loading--alerts').exists()).toBe(false)
+    expect(wrapper.find('.bx--inline-loading').exists()).toBe(false)
+    expect(wrapper.find('.no-alerts-msg').exists()).toBe(true)
   })
 
   it('shows spinner for alerts when loading', () => {
@@ -55,7 +59,18 @@ describe('SidebarAlerts.vue', () => {
 
     const wrapper = createWrapper(SidebarAlerts, options)
 
-    expect(wrapper.find('#cv-inline-loading--alerts').exists()).toBe(true)
+    expect(wrapper.find('.bx--inline-loading').exists()).toBe(true)
+    expect(wrapper.find('.no-alerts-msg').exists()).toBe(false)
+  })
+
+  it('shows alerts and hides spinner and empty prompt', () => {
+    mockStore.state.riverDetailState.alertsData.loading = false
+    mockStore.state.riverDetailState.alertsData.data = alerts
+
+    const wrapper = createWrapper(SidebarAlerts, options)
+
+    expect(wrapper.find('.bx--inline-loading').exists()).toBe(false)
+    expect(wrapper.find('.no-alerts-msg').exists()).toBe(false)
   })
 
   it('shows new alert modal when add alert button clicked', async () => {
