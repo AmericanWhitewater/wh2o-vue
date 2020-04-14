@@ -4,6 +4,11 @@
       v-if="sectionTitle"
       v-text="sectionTitle"
     />
+    <label
+      v-if="label"
+      class="bx--label"
+      v-text="label"
+    />
     <div
       v-if="showControlBar"
       class="control-bar"
@@ -126,6 +131,10 @@ export default {
       required: true
     },
     sectionTitle: {
+      type: String,
+      required: false
+    },
+    label: {
       type: String,
       required: false
     }

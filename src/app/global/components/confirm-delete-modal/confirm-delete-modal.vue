@@ -5,8 +5,8 @@
       :primary-button-disabled="!inputValid"
       :visible="visible"
       @primary-click="$emit('delete:confirmed')"
-      @secondary-click="$emit('delete:canceled')"
-      @modal-hide-request="$emit('delete:canceled')"
+      @secondary-click="$emit('delete:cancelled')"
+      @modal-hidden="$emit('delete:cancelled')"
     >
       <template slot="title">
         Confirm Delete

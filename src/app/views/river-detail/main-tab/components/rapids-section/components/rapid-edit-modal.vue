@@ -2,11 +2,13 @@
   <div class="rapid-edit-modal">
     <cv-modal
       :visible="visible"
+      size="large"
       @secondary-click="handleCancel"
       @primary-click="submitForm"
+      @modal-hidden="handleCancel"
     >
       <template slot="title">
-        Edit Rapid
+        {{ modalTitle }}
       </template>
       <template slot="content">
         <cv-text-input
@@ -41,10 +43,11 @@
           class="mb-spacing-md"
           title="Characteristics"
         />
-        <cv-text-area
-          v-model="formData.description"
+        <ContentEditor
+          v-if="renderEditor"
+          :content="initialRapidDescription"
           label="Description"
-          class="mb-spacing-md"
+          @content:updated="descriptionUpdated"
         />
       </template>
       <template slot="secondary-button">
@@ -60,8 +63,12 @@
 import { globalAppActions } from '@/app/global/state'
 import { checkWindow } from '@/app/global/mixins'
 import { mapState } from 'vuex'
+import ContentEditor from '@/app/global/components/content-editor/content-editor'
 export default {
   name: 'rapid-edit-modal',
+  components: {
+    ContentEditor
+  },
   /** @todo revisit adding checkWindow mixin performance considerations */
   mixins: [checkWindow],
   props: {
@@ -71,12 +78,13 @@ export default {
     },
     rapidId: {
       type: String,
-      // for initial inactive state
       required: false
     }
   },
   data: () => ({
+    renderEditor: false,
     formPending: false,
+    initialRapidDescription: '',
     poiCharacteristics: [
       {
         value: 'putin',
@@ -155,10 +163,23 @@ export default {
       rapids: state => state.riverDetailState.rapidsData.data
     }),
     activeRapid () {
-      return this.rapids.find(r => r.id === this.rapidId)
+      if (this.rapidId) {
+        return this.rapids.find(r => r.id === this.rapidId)
+      }
+      return null
+    },
+    modalTitle () {
+      if (this.activeRapid) {
+        return 'Edit Rapid'
+      } else {
+        return 'New Rapid'
+      }
     }
   },
   methods: {
+    descriptionUpdated (description) {
+      this.formData.description = description
+    },
     submitForm () {
       this.$emit('edit:submitted')
 
@@ -179,8 +200,10 @@ export default {
     }
   },
   mounted () {
+    this.renderEditor = true
     if (this.activeRapid) {
       this.formData = Object.assign(this.formData, this.activeRapid)
+      this.initialRapidDescription = this.activeRapid.description
     }
   }
 }

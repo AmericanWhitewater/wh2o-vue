@@ -21,7 +21,7 @@
           @click.exact="newRapidModalVisible = true"
           @keydown.enter="newRapidModalVisible = true"
         >
-          Add Rapid
+          New Rapid
         </cv-button>
       </div>
 
@@ -45,10 +45,14 @@
     <template v-else>
       <utility-block state="error" />
     </template>
+    <rapid-edit-modal
+      :visible="newRapidModalVisible"
+      @edit:cancelled="newRapidModalVisible=false"
+    />
   </section>
 </template>
 <script>
-import { RapidItem } from './components'
+import { RapidItem, RapidEditModal } from './components'
 import { checkWindow } from '@/app/global/mixins'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { mapState } from 'vuex'
@@ -58,10 +62,12 @@ export default {
   name: 'rapids-section',
   components: {
     RapidItem,
-    UtilityBlock
+    UtilityBlock,
+    RapidEditModal
   },
   mixins: [checkWindow],
   data: () => ({
+    newRapidModalVisible: false,
     formData: {
       files: [],
       name: '',

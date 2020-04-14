@@ -112,8 +112,8 @@
         <confirm-delete-modal
           :visible="deleteModalVisible"
           :resource-name="rapid.name"
-          @edit:cancelled="deleteModalVisible = false"
-          @edit:success="deleteModalVisible = false"
+          @delete:cancelled="deleteModalVisible = false"
+          @delete:success="deleteModalVisible = false"
           @delete:confirmed="deleteRapid"
         />
       </template>
