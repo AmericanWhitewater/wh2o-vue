@@ -1,5 +1,5 @@
 <template>
-  <div class="rapid-edit-modal">
+  <div :class="[{'visible':visible},'rapid-edit-modal']">
     <cv-modal
       :visible="visible"
       size="large"

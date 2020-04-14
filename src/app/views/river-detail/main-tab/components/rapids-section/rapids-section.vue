@@ -14,7 +14,7 @@
     <template v-else-if="sortedRapids && !error">
       <div class="">
         <cv-button
-          id="add-rapid"
+          id="new-rapid"
           class="mr-spacing-sm mb-sm"
           size="small"
           kind="secondary"

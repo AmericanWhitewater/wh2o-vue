@@ -137,13 +137,18 @@ export default {
     label: {
       type: String,
       required: false
+    },
+    placeholder: {
+      type: String,
+      default: 'Start typing...',
+      required: false
     }
   },
   data () {
     return {
       updatedContent: '',
       editor: new Editor({
-        content: this.content ? this.content : 'Start typing...',
+        content: this.content || this.placeholder,
         extensions: [
           new BulletList(),
           new Heading({ levels: [3] }),
