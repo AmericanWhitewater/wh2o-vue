@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar-articles">
-    <h4>
+    <h4 class="mb-spacing-sm">
       News
     </h4>
     <template v-if="loading">
@@ -20,17 +20,14 @@
         @click.exact="$router.push(`/article/${article.id}`)"
       >
         <div class="bx--col-sm-12 bx--col-md-3">
-          <div
+          <img
             class="article-thumb bx--aspect-ratio--1x1"
-            :style="`background-image: url(https://americanwhitewater.org${
-              article.abstractimage.uri.medium ||
-              article.abstractimage.uri.thumb
-            })`"
+            :src="articleThumb(article)"
             :alt="article.title"
-          />
+          >
         </div>
         <div class="bx--col-sm-12 bx--col-md-5">
-          <div>
+          <div class="pt-spacing-sm pb-spacing-md">
             <h5
               class="mb-spacing-2xs"
               v-text="$titleCase(article.title)"
@@ -62,6 +59,15 @@ export default {
     articles () {
       this.$emit('articles:change')
     }
+  },
+  methods: {
+    articleThumb (article) {
+      if (article) {
+        const uri = article.image.uri.thumb || article.image.uri.medium || article.image.uri.big
+        return `https://americanwhitewater.org${uri}`
+      }
+      return null
+    }
   }
 }
 </script>
@@ -77,14 +83,14 @@ export default {
     }
 
     .article-thumb {
-      background-position: center center;
-      background-size: cover;
-      background-repeat: no-repeat;
+      object-fit: cover;
+      height: 100%;
+      width:100%;
       background-color: $ui-03;
     }
   }
   .no-articles-msg {
-     @include carbon--type-style("code-02");
+    @include carbon--type-style("code-02");
   }
 }
 </style>
