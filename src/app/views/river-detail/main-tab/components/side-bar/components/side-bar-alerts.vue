@@ -49,20 +49,6 @@
           label="Title"
           :disabled="formPending"
         />
-        <cv-dropdown
-          v-if="gages"
-          v-model="formData.gauge_id"
-          class="mb-spacing-md"
-          label="Gage"
-        >
-          <cv-dropdown-item
-            v-for="(g, i) in gages"
-            :key="i"
-            :value="g.gauge.id"
-          >
-            {{ g.gauge.name }}
-          </cv-dropdown-item>
-        </cv-dropdown>
         <cv-text-input
           v-model="formData.reading"
           class="mb-spacing-md"
@@ -97,11 +83,9 @@ export default {
     formData: {
       detail: '',
       post_type: 'WARNING',
-      gauge_id: '',
       metric_id: '',
       post_date: '',
       reach_id: '',
-      reading: '',
       title: '',
       user_id: ''
     },
@@ -112,7 +96,6 @@ export default {
       alerts: state => state.riverDetailState.alertsData.data,
       loading: state => state.riverDetailState.alertsData.loading,
       error: state => state.riverDetailState.alertsData.error,
-      gages: state => state.riverDetailState.reachGagesData.data,
       user: state => state.userState.userData.data
     })
   },
@@ -140,7 +123,6 @@ export default {
 
       const today = new Date()
 
-      // We save the user input in case of an error
       const data = {
         id: this.$randomId,
         post: {
@@ -157,9 +139,9 @@ export default {
         .post('/graphql', {
           query: `
           mutation ($id:ID!, $post: PostInput!) {
-              post:postUpdate(id: $id, post:$post)  {
-              id
-        }
+            post:postUpdate(id: $id, post:$post)  {
+            id
+          }
         }`,
           variables: data
         })
@@ -184,12 +166,6 @@ export default {
           console.log('e :', e)
         })
     }
-  },
-  mounted () {
-    if (this.gages && this.gages.length > 0) {
-      this.formData.gauge_id = this.gages[0].gauge.id
-      this.formData.reading = this.gages[0].gauge_reading.toString()
-    }
   }
 }
 </script>
@@ -205,6 +181,3 @@ export default {
   }
 }
 </style>
-<docs>
-
-</docs>
