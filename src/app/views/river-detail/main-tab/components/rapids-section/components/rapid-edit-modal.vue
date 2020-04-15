@@ -47,6 +47,7 @@
           v-if="renderEditor"
           :content="initialRapidDescription"
           label="Description"
+          placeholder=" "
           @content:updated="descriptionUpdated"
         />
       </template>
@@ -61,7 +62,7 @@
 </template>
 <script>
 import { globalAppActions } from '@/app/global/state'
-import { checkWindow } from '@/app/global/mixins'
+import { checkWindow, poiClasses } from '@/app/global/mixins'
 import { mapState } from 'vuex'
 import ContentEditor from '@/app/global/components/content-editor/content-editor'
 export default {
@@ -70,7 +71,7 @@ export default {
     ContentEditor
   },
   /** @todo revisit adding checkWindow mixin performance considerations */
-  mixins: [checkWindow],
+  mixins: [checkWindow, poiClasses],
   props: {
     visible: {
       type: Boolean,
@@ -116,38 +117,16 @@ export default {
         value: 'takeout',
         label: 'Take Out',
         name: 'takeout'
-      }
-    ],
-    poiClasses: [
-      {
-        value: 'I',
-        label: 'I',
-        name: 'I'
       },
       {
-        value: 'II',
-        label: 'II',
-        name: 'II'
+        value: 'rapid',
+        label: 'Rapid',
+        name: 'rapid'
       },
       {
-        value: 'III',
-        label: 'III',
-        name: 'III'
-      },
-      {
-        value: 'IV',
-        label: 'IV',
-        name: 'IV'
-      },
-      {
-        value: 'V',
-        label: 'V',
-        name: 'V'
-      },
-      {
-        value: 'V+',
-        label: 'V+',
-        name: 'V+'
+        value: 'other',
+        label: 'Other',
+        name: 'other'
       }
     ],
     formData: {
