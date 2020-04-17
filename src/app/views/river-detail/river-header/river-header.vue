@@ -139,7 +139,7 @@ export default {
       if (this.river && this.river.photo) {
         return {
           url: `https://americanwhitewater.org${this.river.photo.image.uri.big || this.river.photo.image.uri.medium}`,
-          credit: this.river.photo.post.user.uname
+          credit: this.river.photo.post ? this.river.photo.post.user.uname : 'credit'
         }
       }
       return null

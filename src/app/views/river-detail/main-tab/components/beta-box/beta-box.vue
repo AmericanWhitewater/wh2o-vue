@@ -127,7 +127,6 @@ export default {
   overflow-x: scroll;
   position: relative;
   overflow: hidden;
-  z-index: 1;
   .edit-overlay {
     position: absolute;
     top: 0;

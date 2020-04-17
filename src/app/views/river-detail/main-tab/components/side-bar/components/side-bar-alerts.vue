@@ -49,12 +49,6 @@
           label="Title"
           :disabled="formPending"
         />
-        <cv-text-input
-          v-model="formData.reading"
-          class="mb-spacing-md"
-          label="Flow Level"
-          :disabled="formPending"
-        />
         <cv-text-area
           v-model="formData.detail"
           label="Message"

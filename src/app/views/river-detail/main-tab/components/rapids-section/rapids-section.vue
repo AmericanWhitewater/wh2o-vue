@@ -13,8 +13,8 @@
       size="small"
       :disabled="loading"
       kind="secondary"
-      @click.exact="newRapidModalVisible = true"
-      @keydown.enter="newRapidModalVisible = true"
+      @click.exact="openModal"
+      @keydown.enter="openModal"
     >
       New Rapid
     </cv-button>
@@ -55,6 +55,7 @@ import { checkWindow } from '@/app/global/mixins'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { mapState } from 'vuex'
 import { rapidsActions } from '../../../shared/state'
+import { globalAppActions } from '@/app/global/state'
 
 export default {
   name: 'rapids-section',
@@ -78,10 +79,25 @@ export default {
     ...mapState({
       loading: state => state.riverDetailState.rapidsData.loading,
       error: state => state.riverDetailState.rapidsData.error,
-      rapids: state => state.riverDetailState.rapidsData.data
+      rapids: state => state.riverDetailState.rapidsData.data,
+      user: state => state.userState.userData.data
     })
   },
   methods: {
+    openModal () {
+      if (this.user) {
+        this.newRapidModalVisible = true
+      } else {
+        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          title: 'Must Log In',
+          kind: 'error',
+          override: true,
+          contrast: false,
+          action: false,
+          autoHide: true
+        })
+      }
+    },
     loadRapids () {
       this.$store.dispatch(
         rapidsActions.FETCH_RAPIDS_DATA,

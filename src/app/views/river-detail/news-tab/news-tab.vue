@@ -24,31 +24,50 @@
               class="bx--col-sm-12 bx--col-lg-8 mb-spacing-md"
             >
               <cv-tile>
-                <h3
-                  v-if="alert.title"
-                  class="mb-spacing-2xs"
-                  v-text="alert.title"
-                />
-                <h3
-                  v-else
-                  class="mb-spacing-2xs"
-                >
-                  Untitled
-                </h3>
+                <div class="alert-wrapper">
+                  <div class="bx--row">
+                    <div class="bx--col-sm-12 bx--col-md-8 mb-spacing-md">
+                      <h3
+                        v-if="alert.title"
+                        class="mb-spacing-2xs"
+                        v-text="alert.title"
+                      />
+                      <h3
+                        v-else
+                        class="mb-spacing-2xs"
+                      >
+                        Untitled
+                      </h3>
 
-                <h6>
-                  {{ formatDate(alert.post_date,'ll') }}
+                      <h6>
+                        {{ formatDate(alert.post_date, "ll") }}
+                        <template v-if="alert.user">
+                          - {{ alert.user.uname }}
+                        </template>
+                      </h6>
+                    </div>
 
-                  <template v-if="alert.user">
-                    - {{ alert.user.uname }}
-                  </template>
-                </h6>
-                <hr>
-
-                <p
-                  v-if="alert.detail"
-                  v-text="alert.detail"
-                />
+                    <div class="bx--col">
+                      <cv-button
+                        size="small"
+                        kind="secondary"
+                      >
+                        Edit
+                      </cv-button>
+                      <cv-button
+                        size="small"
+                        kind="danger"
+                      >
+                        Delete
+                      </cv-button>
+                    </div>
+                  </div>
+                  <hr>
+                  <p
+                    v-if="alert.detail"
+                    v-text="alert.detail"
+                  />
+                </div>
               </cv-tile>
             </div>
           </div>
@@ -67,9 +86,7 @@
       </template>
     </layout>
 
-    <layout
-      name="layout-full-width"
-    >
+    <layout name="layout-full-width">
       <template #main>
         <section class="map-tab">
           <div class="articles">
@@ -77,18 +94,14 @@
             <h2 class="mb-spacing-sm">
               Articles
             </h2>
-            <div
-              v-if="articlesLoading"
-            >
+            <div v-if="articlesLoading">
               <utility-block
                 class="articles-loading"
                 state="loading"
                 text="loading articles"
               />
             </div>
-            <div
-              v-else-if="articles && articles.length > 0"
-            >
+            <div v-else-if="articles && articles.length > 0">
               <div class="bx--row">
                 <div
                   v-for="(article, index) in articles"
@@ -104,9 +117,7 @@
                 </div>
               </div>
             </div>
-            <div
-              v-else
-            >
+            <div v-else>
               <utility-block
                 class="articles-empty"
                 state="content"
@@ -167,5 +178,15 @@ export default {
 <style lang="scss" scoped>
 .news-tab {
   padding-top: 2rem;
+  .alert-wrapper {
+    min-height:250px;
+    height:auto;
+    position: relative;
+
+    @include carbon--breakpoint('sm') {
+
+    }
+
+  }
 }
 </style>
