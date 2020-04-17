@@ -12,6 +12,7 @@
       kind="secondary"
       size="small"
       class="mb-spacing-lg"
+      :disabled="loading"
       @click.exact="newCommentModalVisible = true"
       @keydown.enter="newCommentModalVisible = true"
     >

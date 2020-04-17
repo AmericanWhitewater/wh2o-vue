@@ -1,4 +1,3 @@
-import { CvModal } from '@carbon/vue'
 import SidebarAlerts from '../components/side-bar-alerts.vue'
 
 import { createWrapper } from '@/app/global/services'
@@ -73,45 +72,45 @@ describe('SidebarAlerts.vue', () => {
     expect(wrapper.find('.no-alerts-msg').exists()).toBe(false)
   })
 
-  it('shows new alert modal when add alert button clicked', async () => {
-    const wrapper = createWrapper(SidebarAlerts, options)
+  // it('shows new alert modal when add alert button clicked', async () => {
+  //   const wrapper = createWrapper(SidebarAlerts, options)
 
-    wrapper.find('#new-alert').trigger('click')
+  //   wrapper.find('#new-alert').trigger('click')
 
-    await wrapper.vm.$nextTick()
+  //   await wrapper.vm.$nextTick()
 
-    expect(wrapper.find('#new-alert-modal').classes()).toContain('is-visible')
-  })
+  //   expect(wrapper.find('#new-alert-modal').classes()).toContain('is-visible')
+  // })
 
-  it('hides modal when cancel button clicked', async () => {
-    const wrapper = createWrapper(SidebarAlerts, options)
+  // it('hides modal when cancel button clicked', async () => {
+  //   const wrapper = createWrapper(SidebarAlerts, options)
 
-    wrapper.setData({
-      newAlertModalVisible: true
-    })
+  //   wrapper.setData({
+  //     newAlertModalVisible: true
+  //   })
 
-    await wrapper.vm.$nextTick()
+  //   await wrapper.vm.$nextTick()
 
-    wrapper.find(CvModal).vm.$emit('secondary-click')
+  //   wrapper.find(CvModal).vm.$emit('secondary-click')
 
-    await wrapper.vm.$nextTick()
+  //   await wrapper.vm.$nextTick()
 
-    expect(wrapper.find('#new-alert-modal').classes()).not.toContain('is-visible')
-  })
+  //   expect(wrapper.find('#new-alert-modal').classes()).not.toContain('is-visible')
+  // })
 
-  it('hides modal when overlay clicked', async () => {
-    const wrapper = createWrapper(SidebarAlerts, options)
+  // it('hides modal when overlay clicked', async () => {
+  //   const wrapper = createWrapper(SidebarAlerts, options)
 
-    wrapper.setData({
-      newAlertModalVisible: true
-    })
+  //   wrapper.setData({
+  //     newAlertModalVisible: true
+  //   })
 
-    await wrapper.vm.$nextTick()
+  //   await wrapper.vm.$nextTick()
 
-    wrapper.find(CvModal).vm.$emit('modal-hidden')
+  //   wrapper.find(CvModal).vm.$emit('modal-hidden')
 
-    await wrapper.vm.$nextTick()
+  //   await wrapper.vm.$nextTick()
 
-    expect(wrapper.find('#new-alert-modal').classes()).not.toContain('is-visible')
-  })
+  //   expect(wrapper.find('#new-alert-modal').classes()).not.toContain('is-visible')
+  // })
 })

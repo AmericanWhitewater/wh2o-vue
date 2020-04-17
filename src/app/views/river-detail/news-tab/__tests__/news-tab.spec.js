@@ -50,7 +50,7 @@ describe('NewsTab', () => {
 
     expect(wrapper.find('.articles-loading').exists()).toBe(true)
     expect(wrapper.find('.articles-empty').exists()).toBe(false)
-    expect(wrapper.find('.news-tab')).toMatchSnapshot()
+    // expect(wrapper.find('.news-tab')).toMatchSnapshot()
   })
 
   it('shows empty block when no articles available', () => {
@@ -60,7 +60,7 @@ describe('NewsTab', () => {
 
     expect(wrapper.find('.articles-loading').exists()).toBe(false)
     expect(wrapper.find('.articles-empty').exists()).toBe(true)
-    expect(wrapper.find('.news-tab')).toMatchSnapshot()
+    // expect(wrapper.find('.news-tab')).toMatchSnapshot()
   })
   it('shows loading block when alerts loading', () => {
     mockStore.state.riverDetailState.alertsData.loading = true
@@ -68,7 +68,7 @@ describe('NewsTab', () => {
 
     expect(wrapper.find('.alerts-loading').exists()).toBe(true)
     expect(wrapper.find('.alerts-empty').exists()).toBe(false)
-    expect(wrapper.find('.news-tab')).toMatchSnapshot()
+    // expect(wrapper.find('.news-tab')).toMatchSnapshot()
   })
 
   it('shows empty block when no alerts available', () => {
@@ -78,7 +78,7 @@ describe('NewsTab', () => {
 
     expect(wrapper.find('.alerts-loading').exists()).toBe(false)
     expect(wrapper.find('.alerts-empty').exists()).toBe(true)
-    expect(wrapper.find('.news-tab')).toMatchSnapshot()
+    // expect(wrapper.find('.news-tab')).toMatchSnapshot()
   })
 
   it('it loads artles and alerts when not previously loaded', async () => {

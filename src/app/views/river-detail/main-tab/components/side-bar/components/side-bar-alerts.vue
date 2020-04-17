@@ -5,9 +5,10 @@
       <cv-button
         id="new-alert"
         kind="secondary"
+        :disabled="loading"
         size="small"
         class="mb-spacing-sm"
-        @click.exact="newAlertModalVisible = true"
+        @click.exact="openModal"
         @keydown.enter="newAlertModalVisible = true"
       >New Alert</cv-button>
     </span>
@@ -99,6 +100,20 @@ export default {
     }
   },
   methods: {
+    openModal () {
+      if (this.user) {
+        this.newAlertModalVisible = true
+      } else {
+        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          title: 'Must Log In',
+          kind: 'error',
+          override: true,
+          contrast: false,
+          action: false,
+          autoHide: true
+        })
+      }
+    },
     doClose (index) {
       // eslint-disable-next-line no-console
       console.log('index :', index)
@@ -133,8 +148,10 @@ export default {
         .post('/graphql', {
           query: `
           mutation ($id:ID!, $post: PostInput!) {
-            post:postUpdate(id: $id, post:$post)  {
+            postUpdate(id: $id, post:$post)  {
             id
+            title
+            detail
           }
         }`,
           variables: data

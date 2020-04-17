@@ -38,7 +38,6 @@
                       >
                         Untitled
                       </h3>
-
                       <h6>
                         {{ formatDate(alert.post_date, "ll") }}
                         <template v-if="alert.user">
@@ -46,17 +45,22 @@
                         </template>
                       </h6>
                     </div>
-
                     <div class="bx--col">
                       <cv-button
+                        v-if="canEdit(alert)"
                         size="small"
                         kind="secondary"
+                        @click.exact="initiateAlertEdit(alert.id)"
+                        @keydown.enter="initiateAlertEdit(alert.id)"
                       >
                         Edit
                       </cv-button>
                       <cv-button
+                        v-if="canEdit(alert)"
                         size="small"
                         kind="danger"
+                        @click.exact="initiateAlertDelete(alert.id)"
+                        @keydown.enter="initiateAlertDelete(alert.id)"
                       >
                         Delete
                       </cv-button>
@@ -79,10 +83,6 @@
             text="No alerts"
           />
         </template>
-      </template>
-
-      <template #sidebar>
-        form
       </template>
     </layout>
 
@@ -128,6 +128,45 @@
         </section>
       </template>
     </layout>
+    <cv-modal
+      id="edit-alert-modal"
+      :visible="editAlertModalVisible"
+      @secondary-click="cancelEditAlert"
+      @modal-hidden="editAlertModalVisible = false"
+      @primary-click="submitAlert"
+    >
+      <template slot="title">
+        Edit Alert
+      </template>
+      <template slot="content">
+        <cv-text-input
+          v-model="formData.post.title"
+          class="mb-spacing-md"
+          label="Title"
+          :disabled="formPending"
+        />
+        <cv-text-area
+          ref="detail"
+          v-model="formData.post.detail"
+          label="Message"
+          theme="light"
+          class="mb-spacing-md"
+        />
+      </template>
+      <template slot="secondary-button">
+        Cancel
+      </template>
+      <template slot="primary-button">
+        Submit
+      </template>
+    </cv-modal>
+    <confirm-delete-modal
+      :visible="deleteModalVisible"
+      :resource-name="deleteTitle"
+      @delete:cancelled="deleteCanecelled"
+      @delete:success="deleteModalVisible = false"
+      @delete:confirmed="deleteAlert"
+    />
   </div>
 </template>
 <script>
@@ -135,18 +174,31 @@ import { mapState } from 'vuex'
 import { newsTabActions, alertsActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { Layout } from '@/app/global/layout'
-import { ArticleCard } from '@/app/global/components'
+import { ArticleCard, ConfirmDeleteModal } from '@/app/global/components'
+import { httpClient } from '@/app/global/services'
+import { globalAppActions } from '@/app/global/state'
 export default {
   name: 'news-tab',
   components: {
     UtilityBlock,
     Layout,
-    ArticleCard
+    ArticleCard,
+    ConfirmDeleteModal
   },
   data: () => ({
-    mapHttpConfig: {
-      lat: null,
-      lon: null
+    formPending: false,
+    editAlertModalVisible: false,
+    deleteModalVisible: false,
+    activeAlertId: '',
+    formData: {
+      id: '',
+      post: {
+        user_id: '',
+        title: '',
+        detail: '',
+        post_type: 'WARNING',
+        reach_id: ''
+      }
     }
   }),
   computed: {
@@ -156,10 +208,136 @@ export default {
       articles: state => state.riverDetailState.newsTabData.data,
       alertsLoading: state => state.riverDetailState.alertsData.loading,
       alertsError: state => state.riverDetailState.alertsData.error,
-      alerts: state => state.riverDetailState.alertsData.data
-    })
+      alerts: state => state.riverDetailState.alertsData.data,
+      user: state => state.userState.userData.data
+    }),
+    activeAlert () {
+      if (this.activeAlertId) {
+        return this.alerts.find(a => a.id === this.activeAlertId)
+      }
+      return null
+    },
+    deleteTitle () {
+      if (this.activeAlert) {
+        return this.activeAlert.title || 'Untitled Alert'
+      }
+      return ''
+    }
   },
   methods: {
+    initiateAlertEdit (alertId) {
+      this.activeAlertId = alertId
+      this.formData.id = alertId
+      this.formData.post.title = this.activeAlert.title
+      this.formData.post.detail = this.activeAlert.detail
+      // if submission successful, then close
+      this.editAlertModalVisible = true
+    },
+    /**
+    * @todo or if admin
+     */
+    canEdit (alert) {
+      if (this.user && alert.user) {
+        return this.user.uid === alert.user.uid
+      }
+      return false
+    },
+    cancelEditAlert () {
+      this.editAlertModalVisible = false
+      // clear form?
+    },
+    submitAlert () {
+      this.editAlertModalVisible = false
+
+      // const today = new Date()
+
+      // const data = {
+      //   id: this.$randomId,
+      //   post: {
+      //     user_id: this.user.uid,
+      //     title: this.formData.title,
+      //     detail: this.formData.detail,
+      //     post_date: today.toISOString(),
+      //     post_type: 'WARNING',
+      //     reach_id: this.reachId
+      //   }
+      // }
+
+      httpClient
+        .post('/graphql', {
+          query: `
+          mutation ($id:ID!, $post: PostInput!) {
+            postUpdate(id: $id, post:$post)  {
+            id
+          }
+        }`,
+          variables: this.formData
+        })
+        .then(r => {
+          if (!r.errors) {
+            this.$store.dispatch(globalAppActions.SEND_TOAST, {
+              title: 'Alert Submitted',
+              kind: 'success',
+              override: true,
+              contrast: false,
+              action: false,
+              autoHide: true
+            })
+            this.$store.dispatch(
+              alertsActions.FETCH_ALERTS_DATA,
+              this.$route.params.id
+            )
+          }
+        })
+        .catch(e => {
+          // eslint-disable-next-line no-console
+          console.log('e :', e)
+        })
+    },
+    initiateAlertDelete (alertId) {
+      this.activeAlertId = alertId
+      this.formData.id = alertId
+      this.deleteModalVisible = true
+    },
+    deleteCanecelled () {
+      this.activeAlertId = null
+      this.deleteModalVisible = false
+    },
+    deleteAlert () {
+      this.deleteModalVisible = false
+      httpClient
+        .post('/graphql', {
+          query: `
+          mutation ($id:ID!) {
+            postDelete(id: $id)  {
+            id
+          }
+        }`,
+          variables: {
+            id: this.formData.id
+          }
+        })
+        .then(r => {
+          if (!r.errors) {
+            this.$store.dispatch(globalAppActions.SEND_TOAST, {
+              title: 'Alert Deleted',
+              kind: 'success',
+              override: true,
+              contrast: false,
+              action: false,
+              autoHide: true
+            })
+            this.$store.dispatch(
+              alertsActions.FETCH_ALERTS_DATA,
+              this.$route.params.id
+            )
+          }
+        })
+        .catch(e => {
+          // eslint-disable-next-line no-console
+          console.log('e :', e)
+        })
+    },
     loadData () {
       if (!this.articles) {
         this.$store.dispatch(newsTabActions.FETCH_NEWS_TAB_DATA, this.$route.params.id)
@@ -179,14 +357,12 @@ export default {
 .news-tab {
   padding-top: 2rem;
   .alert-wrapper {
-    min-height:250px;
-    height:auto;
+    min-height: 250px;
+    height: auto;
     position: relative;
 
-    @include carbon--breakpoint('sm') {
-
+    @include carbon--breakpoint("sm") {
     }
-
   }
 }
 </style>

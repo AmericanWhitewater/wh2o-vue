@@ -3,7 +3,7 @@ import { createWrapper } from '@/app/global/services'
 
 const options = {
   propsData: {
-    name: 'test'
+    name: 'surf'
   }
 }
 
