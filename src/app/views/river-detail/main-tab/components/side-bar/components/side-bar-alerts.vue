@@ -31,59 +31,43 @@
         There are no new alerts.
       </p>
     </template>
-    <cv-modal
-      id="new-alert-modal"
+    <post-update-modal
       :visible="newAlertModalVisible"
-      @modal-shown="$refs.title.$refs.input.focus()"
-      @secondary-click="cancelNewAlert"
-      @modal-hidden="newAlertModalVisible = false"
-      @primary-click="submitAlert"
+      kind="WARNING"
+      title="New Alert"
+      :reach-id="$route.params.id"
+      @update:submitted="newAlertModalVisible = false"
+      @update:success="handleSuccess"
+      @update:cancelled="newAlertModalVisible = false"
     >
-      <template slot="title">
-        Create Alert
-      </template>
-      <template slot="content">
+      <template #form-fields="formData">
         <cv-text-input
           ref="title"
-          v-model="formData.title"
+          v-model="formData.formData.post.title"
           class="mb-spacing-md"
           label="Title"
-          :disabled="formPending"
         />
         <cv-text-area
-          v-model="formData.detail"
+          v-model="formData.formData.post.detail"
           label="Message"
           theme="light"
           class="mb-spacing-md"
         />
       </template>
-      <template slot="secondary-button">
-        Cancel
-      </template>
-      <template slot="primary-button">
-        Submit
-      </template>
-    </cv-modal>
+    </post-update-modal>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
-import { httpClient } from '@/app/global/services'
 import { alertsActions } from '@/app/views/river-detail/shared/state'
 import { globalAppActions } from '@/app/global/state'
+import PostUpdateModal from '@/app/global/components/post-update-modal/post-update-modal'
 export default {
   name: 'sidebar-alerts',
+  components: {
+    PostUpdateModal
+  },
   data: () => ({
-    formPending: false,
-    formData: {
-      detail: '',
-      post_type: 'WARNING',
-      metric_id: '',
-      post_date: '',
-      reach_id: '',
-      title: '',
-      user_id: ''
-    },
     newAlertModalVisible: false
   }),
   computed: {
@@ -124,58 +108,19 @@ export default {
       }
       return this.$titleCase(title)
     },
-    cancelNewAlert () {
-      this.newAlertModalVisible = false
-    },
-    submitAlert () {
-      this.newAlertModalVisible = false
-
-      const today = new Date()
-
-      const data = {
-        id: this.$randomId,
-        post: {
-          user_id: this.user.uid,
-          title: this.formData.title,
-          detail: this.formData.detail,
-          post_date: today.toISOString(),
-          post_type: 'WARNING',
-          reach_id: this.reachId
-        }
-      }
-
-      httpClient
-        .post('/graphql', {
-          query: `
-          mutation ($id:ID!, $post: PostInput!) {
-            postUpdate(id: $id, post:$post)  {
-            id
-            title
-            detail
-          }
-        }`,
-          variables: data
-        })
-        .then(r => {
-          if (!r.errors) {
-            this.$store.dispatch(globalAppActions.SEND_TOAST, {
-              title: 'Alert Submitted',
-              kind: 'success',
-              override: true,
-              contrast: false,
-              action: false,
-              autoHide: true
-            })
-            this.$store.dispatch(
-              alertsActions.FETCH_ALERTS_DATA,
-              this.$route.params.id
-            )
-          }
-        })
-        .catch(e => {
-          // eslint-disable-next-line no-console
-          console.log('e :', e)
-        })
+    handleSuccess () {
+      this.$store.dispatch(
+        alertsActions.FETCH_ALERTS_DATA,
+        this.$route.params.id
+      )
+      this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        title: 'Alert Submitted',
+        kind: 'success',
+        override: true,
+        contrast: false,
+        action: false,
+        autoHide: true
+      })
     }
   }
 }
