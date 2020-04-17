@@ -54,6 +54,11 @@ export default {
       type: String,
       required: false
     },
+    post: {
+      type: Object,
+      required: false,
+      default: () => {}
+    },
     size: {
       type: String,
       required: false,
