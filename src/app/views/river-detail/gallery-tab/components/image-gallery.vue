@@ -34,23 +34,124 @@
         >
       </div>
       <div class="lightbox-sidebar">
-        <header>
-          <cv-button @click.exact="closeLightbox">
+        <header class="mb-md">
+          <aw-logo />
+          <cv-button
+            size="small"
+            kind="tertiary"
+            @click.exact="closeLightbox"
+          >
             Close
           </cv-button>
         </header>
+        <cv-toolbar>
+          <cv-overflow-menu class="bx--toolbar-action">
+            <template slot="trigger">
+              <Download20
+                class="bx--overflow-menu__icon bx--toolbar-filter-icon"
+              />
+            </template>
+          </cv-overflow-menu>
+          <cv-overflow-menu class="bx--toolbar-action">
+            <template slot="trigger">
+              <Maximize16
+                class="bx--overflow-menu__icon bx--toolbar-filter-icon"
+              />
+            </template>
+          </cv-overflow-menu>
+        </cv-toolbar>
+        <hr>
+        <main>
+          <h2
+            v-if="activeImage.title"
+            class="mb-spacing-md"
+            v-text="activeImage.title"
+          />
+          <h2
+            v-else
+            class="mb-spacing-md"
+            v-text="'Untitled'"
+          />
+          <div class="mb-spacing-md">
+            <h6>Photo Date</h6>
+            <div
+              v-if="activeImage.photo_date"
+              v-text="activeImage.photo_date"
+            />
+            <div
+              v-else
+              v-text="'n/a'"
+            />
+          </div>
+          <div class="mb-spacing-md">
+            <h6>Author</h6>
+            <div
+              v-if="activeImage.author"
+              v-text="activeImage.author"
+            />
+            <div
+              v-else
+              v-text="'n/a'"
+            />
+          </div>
+          <div class="mb-spacing-md">
+            <h6>Rapid</h6>
+            <div
+              v-if="activeImage.poi_name"
+              v-text="activeImage.poi_name"
+            />
+            <div
+              v-else
+              v-text="'n/a'"
+            />
+          </div>
+          <div class="mb-spacing-md">
+            <h6>Caption</h6>
+            <p
+              v-if="activeImage.caption"
+              v-text="activeImage.caption"
+            />
+            <p
+              v-else
+              v-text="'n/a'"
+            />
+          </div>
+          <div class="mb-spacing-md">
+            <h6>Description</h6>
+            <div
+              v-if="activeImage.description"
+              v-html="activeImage.description"
+            />
+            <div
+              v-else
+              v-text="'n/a'"
+            />
+          </div>
+          <cv-button-set>
+            <cv-button>Previous</cv-button>
+            <cv-button>Next</cv-button>
+          </cv-button-set>
+        </main>
       </div>
     </div>
   </div>
 </template>
 <script>
-
+import { AwLogo } from '@/app/global/components'
 export default {
   name: 'image-gallery',
+  components: {
+    AwLogo
+  },
   props: {
     images: {
       type: Array,
       required: true,
+      default: () => []
+    },
+    rapids: {
+      type: Array,
+      required: false,
       default: () => []
     }
   },
@@ -123,33 +224,40 @@ export default {
 .image-gallery {
   position: relative;
   .image-thumbnail {
-    width:100%;
+    width: 100%;
     cursor: pointer;
   }
   .lightbox-wrapper {
-    height:100vh;
-    width:100vw;
+    height: 100vh;
+    width: 100vw;
     position: fixed;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     z-index: 5;
-    background-color:rgba(22, 22, 22, 0.98);
+    background-color: rgba(22, 22, 22, 0.98);
     display: flex;
     .lightbox-image-wrapper {
       width: 70%;
       display: flex;
       justify-content: center;
       align-items: center;
-      height:100%;
-      padding:$layout-md;
+      height: 100%;
+      padding: $layout-md;
       img {
         max-height: 100%;
       }
     }
     .lightbox-sidebar {
-      width:30%;
-      background-color:#fff;
-      height:100%;
+      width: 30%;
+      background-color: #fff;
+      height: 100%;
+      padding: $spacing-md;
+      header {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        align-items: center;
+      }
     }
   }
 }
