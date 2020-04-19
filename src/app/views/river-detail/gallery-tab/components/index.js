@@ -1,1 +1,1 @@
-export { default as galleryUploadForm } from './gallery-upload-form'
+export { default as ImageGallery } from './image-gallery.vue'

@@ -7,36 +7,28 @@ const fetchGalleryData = data => {
   return httpClient
     .post(url, {
       query: `
-      {
-        reach(id: ${data}) {
-          photos(first: 20, page: 1) {
-            data {
+      query {
+        posts(first: 50, post_types: JOURNAL, reach_id: "${data}", page: 1, orderBy: {field: REVISION, order: ASC}) {
+          data {
+            id
+            reading
+            post_date
+            photos {
               image {
                 uri {
-                  big
-                  medium
                   thumb
+                  medium
+                  big
                 }
               }
-              post {
-                reading
-                detail
-                user {
-                  uname
-                  uid
-                }
-                title
-              }
-              poi_name
-              poi_id
+              id
+              author
               caption
               description
-              author
               photo_date
-              id
+              poi_name
+              poi_id
               subject
-              url
-              revision
             }
           }
         }
