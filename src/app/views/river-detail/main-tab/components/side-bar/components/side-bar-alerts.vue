@@ -109,6 +109,7 @@ export default {
       return this.$titleCase(title)
     },
     handleSuccess () {
+      this.newAlertModalVisible = false
       this.$store.dispatch(
         alertsActions.FETCH_ALERTS_DATA,
         this.$route.params.id

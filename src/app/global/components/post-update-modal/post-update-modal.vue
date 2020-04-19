@@ -17,12 +17,17 @@
         {{ title }}
       </template>
       <template slot="content">
-        <slot
-          name="form-fields"
-          :formData="formData"
-        >
-          <p>No fields added</p>
-        </slot>
+        <template v-if="formPending">
+          <cv-inline-loading state="loading" />
+        </template>
+        <template v-else>
+          <slot
+            name="form-fields"
+            :formData="formData"
+          >
+            <p>No fields added</p>
+          </slot>
+        </template>
       </template>
       <template slot="secondary-button">
         Cancel
@@ -34,7 +39,7 @@
   </div>
 </template>
 <script>
-import { httpClient } from '@/app/global/services'
+import { postUpdate } from './services/postUpdate'
 export default {
   name: 'post-update-modal',
   props: {
@@ -47,10 +52,6 @@ export default {
       required: true
     },
     reachId: {
-      type: String,
-      required: false
-    },
-    postId: {
       type: String,
       required: false
     },
@@ -85,6 +86,7 @@ export default {
     }
   },
   data: () => ({
+    formPending: false,
     formData: {
       id: null,
       post: {
@@ -102,7 +104,7 @@ export default {
   }),
   computed: {
     userId () {
-      return this.$store.state.userState.userData.data ? this.$store.state.userState.userData.data.uid : null
+      return this.$store.state.userState.userData.data?.uid
     }
   },
   methods: {
@@ -117,40 +119,53 @@ export default {
         this.formData.post.reach_id = this.reachId
       }
 
-      if (this.postId) {
-        this.formData.id = this.postId
+      if (this.post) {
+        this.formData.post.id = this.post.id
+        this.formData.post.title = this.post.title
+        this.formData.post.detail = this.post.detail
       } else {
-        this.formData.id = this.$randomId
+        this.formData.post.id = this.$randomId
       }
     },
-    handleCancel () {
-      this.$emit('update:cancelled')
-    },
-    handleSubmit () {
-      this.$emit('update:submitted')
+    resetForm () {
+      const initialFormData = {
+        id: null,
+        post: {
+          detail: null,
+          gauge_id: null,
+          metric_id: null,
+          post_date: null,
+          post_type: null,
+          reach_id: null,
+          reading: null,
+          title: null,
+          user_id: null
+        }
+      }
 
-      httpClient
-        .post('/graphql', {
-          query: `
-              mutation ($id:ID!, $post: PostInput!) {
-                  postUpdate(id: $id, post:$post)  {
-                  id
-                }
-              }`,
-          variables: this.formData
-        })
-        .then(r => {
-          this.formData.pending = false
-          if (!r.errors) {
-            this.$emit('update:success')
-          } else {
-            this.$emit('update:error', r.errors)
-          }
-        })
-        .catch(e => {
-          this.formData.pending = false
-          this.$emit('update:error', e)
-        })
+      this.formData = Object.assign(this.formData, initialFormData)
+    },
+    handleCancel () {
+      this.$emit('update:cancelled', true)
+    },
+    async handleSubmit () {
+      this.formPending = true
+      this.$emit('update:pending', true)
+
+      try {
+        const result = await postUpdate(this.formData)
+        if (result.data) {
+          this.$emit('update:success', result.data.postUpdate.id)
+          this.resetForm()
+        } else {
+          this.$emit('update:error', result.errors)
+        }
+      } catch (error) {
+        this.$emit('update:error', error)
+      } finally {
+        this.formPending = false
+        this.$emit('update:pending', false)
+      }
     }
   },
   mounted () {

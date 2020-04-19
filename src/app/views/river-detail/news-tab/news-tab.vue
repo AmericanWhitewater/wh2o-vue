@@ -128,38 +128,30 @@
         </section>
       </template>
     </layout>
-    <cv-modal
-      id="edit-alert-modal"
+    <post-update-modal
+      :post="activeAlert"
       :visible="editAlertModalVisible"
-      @secondary-click="cancelEditAlert"
-      @modal-hidden="editAlertModalVisible = false"
-      @primary-click="submitAlert"
+      title="Edit Alert"
+      kind="WARNING"
+      @update:submitted="editAlertModalVisible = false"
+      @update:success="handleEditSuccess"
+      @update:cancelled="editAlertModalVisible = false"
     >
-      <template slot="title">
-        Edit Alert
-      </template>
-      <template slot="content">
+      <template #form-fields="formData">
         <cv-text-input
-          v-model="formData.post.title"
+          ref="title"
+          v-model="formData.formData.post.title"
           class="mb-spacing-md"
           label="Title"
-          :disabled="formPending"
         />
         <cv-text-area
-          ref="detail"
-          v-model="formData.post.detail"
+          v-model="formData.formData.post.detail"
           label="Message"
           theme="light"
           class="mb-spacing-md"
         />
       </template>
-      <template slot="secondary-button">
-        Cancel
-      </template>
-      <template slot="primary-button">
-        Submit
-      </template>
-    </cv-modal>
+    </post-update-modal>
     <confirm-delete-modal
       :visible="deleteModalVisible"
       :resource-name="deleteTitle"
@@ -174,7 +166,7 @@ import { mapState } from 'vuex'
 import { newsTabActions, alertsActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { Layout } from '@/app/global/layout'
-import { ArticleCard, ConfirmDeleteModal } from '@/app/global/components'
+import { ArticleCard, ConfirmDeleteModal, PostUpdateModal } from '@/app/global/components'
 import { httpClient } from '@/app/global/services'
 import { globalAppActions } from '@/app/global/state'
 export default {
@@ -183,7 +175,8 @@ export default {
     UtilityBlock,
     Layout,
     ArticleCard,
-    ConfirmDeleteModal
+    ConfirmDeleteModal,
+    PostUpdateModal
   },
   data: () => ({
     formPending: false,
@@ -246,53 +239,20 @@ export default {
       this.editAlertModalVisible = false
       // clear form?
     },
-    submitAlert () {
+    handleEditSuccess () {
       this.editAlertModalVisible = false
-
-      // const today = new Date()
-
-      // const data = {
-      //   id: this.$randomId,
-      //   post: {
-      //     user_id: this.user.uid,
-      //     title: this.formData.title,
-      //     detail: this.formData.detail,
-      //     post_date: today.toISOString(),
-      //     post_type: 'WARNING',
-      //     reach_id: this.reachId
-      //   }
-      // }
-
-      httpClient
-        .post('/graphql', {
-          query: `
-          mutation ($id:ID!, $post: PostInput!) {
-            postUpdate(id: $id, post:$post)  {
-            id
-          }
-        }`,
-          variables: this.formData
-        })
-        .then(r => {
-          if (!r.errors) {
-            this.$store.dispatch(globalAppActions.SEND_TOAST, {
-              title: 'Alert Submitted',
-              kind: 'success',
-              override: true,
-              contrast: false,
-              action: false,
-              autoHide: true
-            })
-            this.$store.dispatch(
-              alertsActions.FETCH_ALERTS_DATA,
-              this.$route.params.id
-            )
-          }
-        })
-        .catch(e => {
-          // eslint-disable-next-line no-console
-          console.log('e :', e)
-        })
+      this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        title: 'Alert Deleted',
+        kind: 'success',
+        override: true,
+        contrast: false,
+        action: false,
+        autoHide: true
+      })
+      this.$store.dispatch(
+        alertsActions.FETCH_ALERTS_DATA,
+        this.$route.params.id
+      )
     },
     initiateAlertDelete (alertId) {
       this.activeAlertId = alertId
