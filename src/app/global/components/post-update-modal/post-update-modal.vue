@@ -107,26 +107,48 @@ export default {
       return this.$store.state.userState.userData.data?.uid
     }
   },
+  watch: {
+    post () {
+      this.setInitialFormData()
+    }
+  },
   methods: {
+    /**
+     * @description if user is editing a post set the form
+     * data to the exising post's data else user is creating
+     * a new post and fields are blank.
+     */
     setInitialFormData () {
-      const today = new Date()
-
-      this.formData.post.post_date = today.toISOString()
-      this.formData.post.post_type = this.kind
-      this.formData.post.user_id = this.userId
-
       if (this.reachId) {
         this.formData.post.reach_id = this.reachId
       }
 
       if (this.post) {
-        this.formData.post.id = this.post.id
+        /**
+         * @note have to set each key value individually
+         * this.formData.post = Object.assign(this.formData.post, this.post)
+         * does not work
+         */
+
+        this.formData.id = this.post.id
         this.formData.post.title = this.post.title
         this.formData.post.detail = this.post.detail
+        this.formData.post.post_type = this.post.post_type
+        this.formData.post.post_date = this.post.post_date
+        this.formData.post.user_id = this.post.user.uid
       } else {
-        this.formData.post.id = this.$randomId
+        this.formData.id = this.$randomId
+        const today = new Date()
+
+        this.formData.post.post_date = today.toISOString()
+        this.formData.post.post_type = this.kind
+        this.formData.post.user_id = this.userId
       }
     },
+    /**
+       * @description clears the form after post is
+       * successfully submitted
+       */
     resetForm () {
       const initialFormData = {
         id: null,
