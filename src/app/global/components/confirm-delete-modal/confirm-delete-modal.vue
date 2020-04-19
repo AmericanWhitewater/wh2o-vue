@@ -27,7 +27,7 @@
         </template>
 
         <template v-if="kind === 'general'">
-          Are you sure you want to this?
+          Are you sure you want to delete {{ resourceName }}?
         </template>
       </template>
       <template slot="secondary-button">

@@ -133,6 +133,7 @@
       :visible="editAlertModalVisible"
       title="Edit Alert"
       kind="WARNING"
+      :reach-id="$route.params.id"
       @update:submitted="editAlertModalVisible = false"
       @update:success="handleEditSuccess"
       @update:cancelled="editAlertModalVisible = false"
@@ -155,7 +156,7 @@
     <confirm-delete-modal
       :visible="deleteModalVisible"
       :resource-name="deleteTitle"
-      @delete:cancelled="deleteCanecelled"
+      @delete:cancelled="deleteCancelled"
       @delete:success="deleteModalVisible = false"
       @delete:confirmed="deleteAlert"
     />
@@ -179,20 +180,9 @@ export default {
     PostUpdateModal
   },
   data: () => ({
-    formPending: false,
     editAlertModalVisible: false,
     deleteModalVisible: false,
-    activeAlertId: '',
-    formData: {
-      id: '',
-      post: {
-        user_id: '',
-        title: '',
-        detail: '',
-        post_type: 'WARNING',
-        reach_id: ''
-      }
-    }
+    activeAlertId: ''
   }),
   computed: {
     ...mapState({
@@ -211,38 +201,24 @@ export default {
       return null
     },
     deleteTitle () {
-      if (this.activeAlert) {
-        return this.activeAlert.title || 'Untitled Alert'
-      }
-      return ''
+      return this.activeAlert?.title || 'Untitled Alert'
     }
   },
   methods: {
     initiateAlertEdit (alertId) {
       this.activeAlertId = alertId
-      this.formData.id = alertId
-      this.formData.post.title = this.activeAlert.title
-      this.formData.post.detail = this.activeAlert.detail
-      // if submission successful, then close
       this.editAlertModalVisible = true
     },
     /**
     * @todo or if admin
      */
     canEdit (alert) {
-      if (this.user && alert.user) {
-        return this.user.uid === alert.user.uid
-      }
-      return false
-    },
-    cancelEditAlert () {
-      this.editAlertModalVisible = false
-      // clear form?
+      return this.user?.uid === alert.user?.uid
     },
     handleEditSuccess () {
       this.editAlertModalVisible = false
       this.$store.dispatch(globalAppActions.SEND_TOAST, {
-        title: 'Alert Deleted',
+        title: 'Alert Edited',
         kind: 'success',
         override: true,
         contrast: false,
@@ -256,10 +232,9 @@ export default {
     },
     initiateAlertDelete (alertId) {
       this.activeAlertId = alertId
-      this.formData.id = alertId
       this.deleteModalVisible = true
     },
-    deleteCanecelled () {
+    deleteCancelled () {
       this.activeAlertId = null
       this.deleteModalVisible = false
     },
@@ -274,7 +249,7 @@ export default {
           }
         }`,
           variables: {
-            id: this.formData.id
+            id: this.activeAlertId
           }
         })
         .then(r => {
