@@ -25,7 +25,7 @@
             >
               <cv-tile>
                 <div class="alert-wrapper">
-                  <div class="bx--row">
+                  <header class="bx--row">
                     <div class="bx--col-sm-12 bx--col-md-8 mb-spacing-md">
                       <h3
                         v-if="alert.title"
@@ -65,12 +65,20 @@
                         Delete
                       </cv-button>
                     </div>
-                  </div>
+                  </header>
                   <hr>
-                  <p
-                    v-if="alert.detail"
-                    v-text="alert.detail"
-                  />
+                  <main class="alert-detail">
+                    <p
+                      v-if="alert.detail"
+                      v-text="alert.detail"
+                    />
+                    <p v-else>
+                      This alert has no message
+                    </p>
+                  </main>
+                  <!-- <footer>
+                    <cv-button size="small" kind="tertiary" >Share Alert</cv-button>
+                  </footer> -->
                 </div>
               </cv-tile>
             </div>
@@ -167,7 +175,11 @@ import { mapState } from 'vuex'
 import { newsTabActions, alertsActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { Layout } from '@/app/global/layout'
-import { ArticleCard, ConfirmDeleteModal, PostUpdateModal } from '@/app/global/components'
+import {
+  ArticleCard,
+  ConfirmDeleteModal,
+  PostUpdateModal
+} from '@/app/global/components'
 import { httpClient } from '@/app/global/services'
 import { globalAppActions } from '@/app/global/state'
 export default {
@@ -210,7 +222,7 @@ export default {
       this.editAlertModalVisible = true
     },
     /**
-    * @todo or if admin
+     * @todo or if admin
      */
     canEdit (alert) {
       return this.user?.uid === alert.user?.uid
@@ -275,11 +287,17 @@ export default {
     },
     loadData () {
       if (!this.articles) {
-        this.$store.dispatch(newsTabActions.FETCH_NEWS_TAB_DATA, this.$route.params.id)
+        this.$store.dispatch(
+          newsTabActions.FETCH_NEWS_TAB_DATA,
+          this.$route.params.id
+        )
       }
 
       if (!this.alerts) {
-        this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.$route.params.id)
+        this.$store.dispatch(
+          alertsActions.FETCH_ALERTS_DATA,
+          this.$route.params.id
+        )
       }
     }
   },
@@ -295,8 +313,14 @@ export default {
     min-height: 250px;
     height: auto;
     position: relative;
-
-    @include carbon--breakpoint("sm") {
+    .alert-detail {
+      overflow-y: scroll;
+      @include carbon--breakpoint("sm") {
+        max-height: 325px;
+      }
+    }
+    footer {
+      padding-top:1rem;
     }
   }
 }
