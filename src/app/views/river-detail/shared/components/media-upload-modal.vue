@@ -57,7 +57,7 @@ export default {
       type: String,
       required: true,
       validator: val =>
-        ['rapid', 'post', 'gallery', 'reach', 'section_id'].indexOf(val) > -1
+        ['RAPID', 'POST', 'GALLERY', 'REACH'].indexOf(val) > -1
     }
   },
   data: () => ({

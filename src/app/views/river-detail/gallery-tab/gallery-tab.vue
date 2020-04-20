@@ -4,7 +4,7 @@
       <template #sidebar>
         <media-upload-form
           title="Upload Media"
-          section="gallery"
+          section="POST"
         />
       </template>
       <template #main>

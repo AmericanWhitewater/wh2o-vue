@@ -11,7 +11,7 @@
       helper-text="10mb max"
       accepts=".jpg,.png"
       class="mb-spacing-md"
-      :disabled="formPending"
+      :disabled="formPending || !user"
       @change="setFile"
     />
     <cv-text-input
@@ -19,29 +19,44 @@
       class="mb-spacing-md"
       label="Author"
       required
-      :disabled="formPending"
+      :disabled="formPending || !user"
     />
     <cv-text-input
       v-model="formData.photo.subject"
       class="mb-spacing-md"
       label="Subject"
-      :disabled="formPending"
+      :disabled="formPending || !user"
     />
     <cv-text-input
       v-model="formData.photo.caption"
       class="mb-spacing-md"
       label="Caption"
-      :disabled="formPending"
+      :disabled="formPending || !user"
     />
+    <cv-dropdown
+      v-if="rapids && rapids.length"
+      v-model="formData.photo.poi_id"
+      :disabled="formPending || !user"
+      class="mb-spacing-md"
+      label="Rapid"
+    >
+      <cv-dropdown-item
+        v-for="(rapid,index) in rapids"
+        :key="index"
+        :value="rapid.id"
+      >
+        {{ rapid.name }}
+      </cv-dropdown-item>
+    </cv-dropdown>
     <cv-text-area
       v-model="formData.photo.description"
       label="Description"
       :class="{ 'mb-spacing-md': !parentIsModal }"
-      :disabled="formPending"
+      :disabled="formPending || !user"
     />
     <cv-button
       v-if="!parentIsModal"
-      :disabled="formPending"
+      :disabled="formPending || !user"
       @click.exact="sendFile"
       @keydown.enter="sendFile"
     >
@@ -52,6 +67,7 @@
 <script>
 import gql from 'graphql-tag'
 import { globalAppActions } from '@/app/global/state'
+import { rapidsActions } from '@/app/views/river-detail/shared/state'
 export default {
   name: 'media-upload-form',
   props: {
@@ -59,7 +75,7 @@ export default {
       type: String,
       required: true,
       validator: val =>
-        ['rapid', 'post', 'gallery', 'reach', 'section_id'].indexOf(val) > -1
+        ['POST', 'RAPID', 'REACH', 'GALLERY'].indexOf(val) > -1
     },
     primaryClickTimestamp: {
       type: String,
@@ -69,35 +85,34 @@ export default {
     title: {
       type: String,
       required: false
-    },
-    rapids: {
-      type: Array,
-      required: false,
-      default: () => null
     }
   },
   data: () => ({
     formPending: false,
     formData: {
+      id: null,
       fileinput: {
         file: null,
-        section: '',
-        section_id: ''
+        section: null,
+        section_id: null
       },
       photo: {
-        author: '',
-        caption: '',
-        description: '',
-        photo_date: '',
-        poi_id: 0,
-        poi_name: '',
-        post_id: '',
-        subject: ''
+        author: null,
+        caption: null,
+        description: null,
+        photo_date: null,
+        poi_id: null,
+        poi_name: null,
+        post_id: null,
+        subject: null
       }
     }
   }),
 
   computed: {
+    rapids () {
+      return this.$store.state.riverDetailState.rapidsData.data
+    },
     user () {
       return this.$store.state.userState.userData.data
     },
@@ -125,59 +140,30 @@ export default {
      */
     sendFile () {
       this.formPending = true
-
-      const data = {
-        section: 'POST',
-        section_id: this.$randomId,
-        file: this.formData.fileinput.file
-      }
-
-      const photo = this.formData.photo
-
-      photo.photo_date = this.todaysDate()
-
-      if (!photo.id || photo.id <= 0) {
-        photo.id = this.$randomId
-      }
-
-      if (!photo.id || photo.id < 0) {
-        photo.id = this.$randomId
-      }
-
-      const params = {
-        id: photo.id,
-        fileinput: data,
-        photo: photo
-      }
-
-      params.id = photo.id
-      params.photo.post_id = this.$randomId
-
-      delete (params.photo.id)
-
       this.$apollo.mutate({
         mutation: gql`
         mutation sendFile ($id: ID!, $fileinput: PhotoFileInput!, $photo: PhotoInput) {
-          photo: photoFileUpdate(id: $id, fileinput: $fileinput, photo: $photo) {
-            id
-            caption
-            description
-            subject
-            photo_date
-            author
-            poi_name
+          photoFileUpdate(id: $id, fileinput: $fileinput, photo: $photo) {
+            id,
+            caption,
+            post_id,
+            description,
+            subject,
+            photo_date,
+            author,
+            poi_name,
             poi_id
             image {
-              ext
-              uri {
-                thumb
-                medium
-                big
-              }
+                ext,
+                uri {
+                    thumb,
+                    medium,
+                    big
+                }
             }
           }
         }`,
-        variables: params
+        variables: this.formData
       }).then(r => {
         // eslint-disable-next-line no-console
         console.log('r :', r)
@@ -205,9 +191,18 @@ export default {
         })
       })
     },
-    todaysDate () {
+    setInitialFormData () {
       const today = new Date()
-      return today.toISOString()
+
+      this.formData.photo.photo_date = today.toISOString()
+
+      if (this.user && this.user.uname) {
+        this.formData.photo.author = this.user.uname
+      }
+
+      this.formData.id = this.$randomId
+      this.formData.fileinput.section = this.section
+      this.formData.fileinput.section_id = this.$randomId
     },
     resetForm () {
       this.$refs.fileUploader.clear()
@@ -223,12 +218,13 @@ export default {
     }
   },
   created () {
-    if (this.user && this.user.uname) {
-      this.formData.photo.author = this.user.uname
-    }
+    this.$store.dispatch(
+      rapidsActions.FETCH_RAPIDS_DATA,
+      this.$route.params.id
+    )
   },
   mounted () {
-    this.todaysDate()
+    this.setInitialFormData()
   }
 }
 </script>

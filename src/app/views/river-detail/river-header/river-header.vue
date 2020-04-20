@@ -77,7 +77,7 @@
       </div>
       <media-upload-modal
         :visible="uploadModalVisible"
-        section="reach"
+        section="REACH"
         @secondary-click="uploadModalVisible = false"
         @modal-hidden="uploadModalVisible = false"
       />
