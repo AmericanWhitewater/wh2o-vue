@@ -16,7 +16,9 @@
         </template>
         <template v-else-if="photos">
           <template v-if="formattedData && formattedData.length > 0">
-            <image-gallery :images="formattedData" />
+            <image-gallery
+              :images="formattedData"
+            />
           </template>
           <template v-else>
             <utility-block
