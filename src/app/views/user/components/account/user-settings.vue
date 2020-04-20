@@ -1,6 +1,7 @@
 <template>
   <div class="user-settings">
-    <error-block
+    <utility-block
+      state="content"
       title="Settings Unavailable"
       text="Please try again later"
     />
@@ -8,11 +9,11 @@
 </template>
 
 <script>
-import { ErrorBlock } from '@/app/global/components'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 export default {
   name: 'user-settings',
   components: {
-    ErrorBlock
+    UtilityBlock
   }
 }
 </script>

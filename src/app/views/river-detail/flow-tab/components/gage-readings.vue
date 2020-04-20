@@ -27,19 +27,24 @@
         </tbody>
       </table>
     </div>
-    <loading-block v-if="loading" />
-    <error-block v-if="!loading && error" />
+    <utility-block
+      v-if="loading"
+      state="loading"
+    />
+    <utility-block
+      v-if="!loading && error"
+      state="error"
+    />
   </section>
 </template>
 <script>
 import Moment from 'moment'
 import { mapState } from 'vuex'
-import { LoadingBlock, ErrorBlock } from '@/app/global/components'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 export default {
   name: 'gage-readings',
   components: {
-    LoadingBlock,
-    ErrorBlock
+    UtilityBlock
   },
   data: () => ({
     columns: ['Reading', 'Updated']

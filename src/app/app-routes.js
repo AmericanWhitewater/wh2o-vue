@@ -5,7 +5,6 @@ import { appLocalStorage } from '@/app/global/services'
 
 import staticRoutes from './views/static-routes/static-routes'
 import { accidentDatabaseRoutes } from './views/accident-database'
-import { communityRoutes } from './views/community'
 import { newsPageRoutes } from './views/news-page'
 import { riverDetailRoutes } from './views/river-detail'
 import { riverIndexRoutes } from './views/river-index'
@@ -17,7 +16,6 @@ Vue.use(VueRouter)
 
 const routes = [
   ...accidentDatabaseRoutes,
-  ...communityRoutes,
   ...newsPageRoutes,
   ...riverDetailRoutes,
   ...riverIndexRoutes,

@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 
 import { accidentDatabaseState } from './views/accident-database'
 import { appGlobalState } from '@/app/global/state'
-import { communityState } from './views/community'
 import { newsPageState } from './views/news-page'
 import { riverDetailState } from './views/river-detail'
 import { riverIndexState } from './views/river-index'
@@ -20,7 +19,6 @@ export default new Vuex.Store({
   modules: {
     accidentDatabaseState,
     appGlobalState,
-    communityState,
     newsPageState,
     riverDetailState,
     riverIndexState,

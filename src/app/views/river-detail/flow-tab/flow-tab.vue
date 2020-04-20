@@ -53,8 +53,8 @@
             <utility-block
               height="500"
               title="No Gages"
-              state="error"
-              text="This river doesn't have any associated gages"
+              state="content"
+              text="this reach doesn't have any associated gages"
             />
           </template>
         </template>
@@ -115,7 +115,7 @@
           <p class="mb-spacing-md">
             If you know this reach has a gage, you can search from our list of
             preregistered gages or add a new gage to the database. You can also
-            create a virtual gage, { some copy on what that means }...
+            create a virtual gage.
           </p>
           <cv-button size="small">
             Add Gage

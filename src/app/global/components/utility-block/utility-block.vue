@@ -7,7 +7,7 @@
     <template v-if="!blank">
       <h2
         v-if="title"
-        class="utility-block-title mb-spacing-md"
+        class="utility-block-title"
         v-text="title"
       />
       <p
@@ -78,6 +78,9 @@ export default {
   .bx--inline-loading {
     justify-content: center;
     @include carbon--type-style("code-01");
+  }
+  .utility-block-text {
+     @include carbon--type-style("code-02");
   }
 }
 </style>

@@ -4,6 +4,11 @@
       v-if="sectionTitle"
       v-text="sectionTitle"
     />
+    <label
+      v-if="label"
+      class="bx--label"
+      v-text="label"
+    />
     <div
       v-if="showControlBar"
       class="control-bar"
@@ -128,13 +133,22 @@ export default {
     sectionTitle: {
       type: String,
       required: false
+    },
+    label: {
+      type: String,
+      required: false
+    },
+    placeholder: {
+      type: String,
+      default: 'Start typing...',
+      required: false
     }
   },
   data () {
     return {
       updatedContent: '',
       editor: new Editor({
-        content: this.content ? this.content : 'Start typing...',
+        content: this.content || this.placeholder,
         extensions: [
           new BulletList(),
           new Heading({ levels: [3] }),

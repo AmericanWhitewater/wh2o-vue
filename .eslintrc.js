@@ -14,7 +14,7 @@ module.exports = {
     'vue/eqeqeq': 2,
     'vue/html-self-closing': 1,
     'vue/match-component-file-name': 1,
-    'vue/no-boolean-default': 1,
+    'vue/no-boolean-default': 'off',
     'vue/no-restricted-syntax': 2,
     'vue/no-side-effects-in-computed-properties': 1,
     'vue/no-use-v-if-with-v-for': 2,

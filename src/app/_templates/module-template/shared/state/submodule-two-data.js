@@ -1,5 +1,6 @@
 import { reflectKeys } from '@/app/global/services'
-import { fetchData } from '../services'
+import { fetchSubmoduleTwoData } from '../services'
+
 const initialState = {
   data: null,
   error: null,
@@ -46,7 +47,7 @@ const actions = {
   async [submoduleTwoActions.FETCH_SUBMODULE_TWO_DATA] (context, data) {
     context.commit(DATA_REQUEST)
 
-    const result = await fetchData(data).catch(e => {
+    const result = await fetchSubmoduleTwoData(data).catch(e => {
       context.commit(DATA_ERROR, e)
     })
 

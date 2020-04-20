@@ -5,6 +5,7 @@
     <router-view
       :class="[$route.name !== 'home' ? 'interior' : null, 'app-main-content']"
     />
+    <app-cookie-banner />
   </div>
 </template>
 
@@ -12,9 +13,11 @@
 import {
   AppToaster,
   AppNavigation
+  , AppCookieBanner
 } from './global/components'
 import { appLocalStorage } from '@/app/global/services'
 import { userActions } from '@/app/views/user/shared/state'
+
 export default {
   name: 'app',
   metaInfo: {
@@ -22,7 +25,8 @@ export default {
   },
   components: {
     AppNavigation,
-    AppToaster
+    AppToaster,
+    AppCookieBanner
   },
   created () {
     if (appLocalStorage.getItem('wh2o-auth')) {

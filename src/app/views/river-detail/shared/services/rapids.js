@@ -18,12 +18,20 @@ const fetchRapidsData = data => {
             id
             name
             photo {
+              poi_name
+              subject
+              description
+              author
+              caption
+              photo_date
               image {
                 uri {
-                  big
+                  thumb
                   medium
+                  big
                 }
               }
+              id
             }
           }
         }

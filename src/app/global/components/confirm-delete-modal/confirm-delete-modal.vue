@@ -2,27 +2,33 @@
   <div class="confirm-delete-modal">
     <cv-modal
       kind="danger"
-      :primary-button-disabled="!inputValid"
+      :primary-button-disabled="kind === 'strict' && !inputValid"
       :visible="visible"
       @primary-click="$emit('delete:confirmed')"
-      @secondary-click="$emit('delete:canceled')"
-      @modal-hide-request="$emit('delete:canceled')"
+      @secondary-click="$emit('delete:cancelled')"
+      @modal-hidden="$emit('delete:cancelled')"
     >
       <template slot="title">
         Confirm Delete
       </template>
       <template slot="content">
-        <p class="mb-sm">
-          Deleting {{ resourceName }} is a permanent. This action cannot be undone.
-        </p>
-        <div class="confirm-delete-warning-text mb-sm">
-          <h4>{{ resourceName }}</h4>
-        </div>
-        <cv-text-input
-          v-model="confirmDeleteInput"
-          theme="light"
-          label="Type resource title to confirm delete"
-        />
+        <template v-if="kind === 'strict'">
+          <p class="mb-sm">
+            Deleting {{ resourceName }} is a permanent. This action cannot be undone.
+          </p>
+          <div class="confirm-delete-warning-text mb-sm">
+            <h4>{{ resourceName }}</h4>
+          </div>
+          <cv-text-input
+            v-model="confirmDeleteInput"
+            theme="light"
+            label="Type resource title to confirm delete"
+          />
+        </template>
+
+        <template v-if="kind === 'general'">
+          Are you sure you want to delete {{ resourceName }}?
+        </template>
       </template>
       <template slot="secondary-button">
         Cancel
@@ -44,6 +50,12 @@ export default {
     resourceName: {
       type: String,
       required: true
+    },
+    kind: {
+      type: String,
+      required: false,
+      default: 'general',
+      validator: val => ['strict', 'general'].indexOf(val) > -1
     }
   },
   data: () => ({

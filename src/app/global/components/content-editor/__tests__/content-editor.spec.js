@@ -1,6 +1,15 @@
-describe('content-editor.vue', () => {
-  test.todo('Shows props.content when passed')
-  test.todo('Shows props.sectionTitle when passed')
-  test.todo('Makes PUT api call when saved')
-  test.todo('Discards edits and destroys on cancel')
+import ContentEditor from '../content-editor'
+import { createWrapper } from '@/app/global/services'
+
+const options = {
+  propsData: {
+    content: ''
+  }
+}
+
+describe('ContentEditor', () => {
+  it('it is a vue instance', () => {
+    const wrapper = createWrapper(ContentEditor, options)
+    expect(wrapper.isVueInstance()).toBe(true)
+  })
 })

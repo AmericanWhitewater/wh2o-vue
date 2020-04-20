@@ -8,9 +8,8 @@ const fetchCommentsData = data => {
     .post(url, {
       query: `
         query {
-        reach(id: ${data}) {
-            posts(post_type: COMMENT, first: 10, page: 1) {
-            data {
+            posts(reach_id: "${data}", post_types: COMMENT, page: 1, orderBy: {field: REVISION, order: DESC}, first: 10) {
+              data {
                 id
                 title
                 detail
@@ -18,20 +17,20 @@ const fetchCommentsData = data => {
                 revision
                 post_type
                 user {
-                uname
-                uid
-                image {
+                  uname
+                  uid
+                  image {
                     uri {
-                    thumb
-                    medium
-                    big
+                      thumb
+                      medium
+                      big
                     }
+                  }
                 }
-                }
+              }
             }
-            }
-        }
-        }    
+          }
+
     `
     })
     .then(res => res.data)

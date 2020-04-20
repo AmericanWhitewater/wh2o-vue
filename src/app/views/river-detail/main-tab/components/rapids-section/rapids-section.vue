@@ -7,51 +7,66 @@
     <h2 class="mb-spacing-md">
       Rapids
     </h2>
+    <cv-button
+      id="new-rapid"
+      class="mr-spacing-sm mb-sm"
+      size="small"
+      :disabled="loading"
+      kind="secondary"
+      @click.exact="openModal"
+      @keydown.enter="openModal"
+    >
+      New Rapid
+    </cv-button>
     <template v-if="loading">
       <utility-block state="loading" />
     </template>
 
-    <template v-else-if="sortedRapids">
-      <div class="">
-        <cv-button
-          class="mr-spacing-sm mb-sm"
-          size="small"
-          kind="secondary"
-          @click.exact="newRapidModalVisible = true"
-        >
-          Add Rapid
-        </cv-button>
-      </div>
-
-      <div class="bx--row">
-        <rapid-item
-          v-for="(rapid, index) in sortedRapids"
-          :key="index"
-          :rapid="rapid"
-          :first-p-o-i="index === 0 ? true : false"
+    <template v-else-if="rapids && !error">
+      <template v-if="rapids.length > 0">
+        <div class="bx--row">
+          <rapid-item
+            v-for="(rapid, index) in rapids"
+            :key="index"
+            :rapid="rapid"
+            :first-p-o-i="index === 0 ? true : false"
+          />
+        </div>
+      </template>
+      <template v-else>
+        <utility-block
+          state="content"
+          text="No rapids have been added"
         />
-      </div>
+      </template>
     </template>
     <template v-else>
       <utility-block state="error" />
     </template>
+    <rapid-edit-modal
+      :visible="newRapidModalVisible"
+      @edit:cancelled="newRapidModalVisible=false"
+    />
   </section>
 </template>
 <script>
-import { RapidItem } from './components'
+import { RapidItem, RapidEditModal } from './components'
 import { checkWindow } from '@/app/global/mixins'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { mapState } from 'vuex'
 import { rapidsActions } from '../../../shared/state'
+import { globalAppActions } from '@/app/global/state'
 
 export default {
   name: 'rapids-section',
   components: {
     RapidItem,
-    UtilityBlock
+    UtilityBlock,
+    RapidEditModal
   },
   mixins: [checkWindow],
   data: () => ({
+    newRapidModalVisible: false,
     formData: {
       files: [],
       name: '',
@@ -64,16 +79,25 @@ export default {
     ...mapState({
       loading: state => state.riverDetailState.rapidsData.loading,
       error: state => state.riverDetailState.rapidsData.error,
-      rapids: state => state.riverDetailState.rapidsData.data
-    }),
-    sortedRapids () {
-      if (this.rapids) {
-        return this.rapids.sort((a, b) => (a.distance > b.distance ? 1 : -1))
-      }
-      return null
-    }
+      rapids: state => state.riverDetailState.rapidsData.data,
+      user: state => state.userState.userData.data
+    })
   },
   methods: {
+    openModal () {
+      if (this.user) {
+        this.newRapidModalVisible = true
+      } else {
+        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          title: 'Must Log In',
+          kind: 'error',
+          override: true,
+          contrast: false,
+          action: false,
+          autoHide: true
+        })
+      }
+    },
     loadRapids () {
       this.$store.dispatch(
         rapidsActions.FETCH_RAPIDS_DATA,

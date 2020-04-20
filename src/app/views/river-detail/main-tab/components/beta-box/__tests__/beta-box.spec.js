@@ -1,26 +1,34 @@
 import BetaBox from '@/app/views/river-detail/main-tab/components/beta-box/beta-box'
 import { createWrapper } from '@/app/global/services'
 
-const state = {
-  riverDetailState: {
-    riverDetailData: {
-      error: null,
-      data: null,
-      loading: null
-    },
-    appGlobalData: {
-      editMode: null
-    },
-    reachGagesData: {
-      data: null
+const mockStore = {
+  state: {
+    riverDetailState: {
+      riverDetailData: {
+        error: null,
+        data: null,
+        loading: null
+      },
+      appGlobalData: {
+        editMode: null
+      },
+      reachGagesData: {
+        data: null
+      }
     }
+  }
+}
+
+const options = {
+  mocks: {
+    $store: mockStore
   }
 }
 
 describe('FlowTab', () => {
   it('shows loading block when loading', () => {
-    state.riverDetailState.riverDetailData.loading = true
-    const wrapper = createWrapper(BetaBox, state, {})
+    mockStore.state.riverDetailState.riverDetailData.loading = true
+    const wrapper = createWrapper(BetaBox, options)
 
     expect(wrapper.find('.beta-box')).toMatchSnapshot()
 
@@ -31,9 +39,9 @@ describe('FlowTab', () => {
   })
 
   it('shows error block when error', () => {
-    state.riverDetailState.riverDetailData.loading = false
-    state.riverDetailState.riverDetailData.error = true
-    const wrapper = createWrapper(BetaBox, state, {})
+    mockStore.state.riverDetailState.riverDetailData.loading = false
+    mockStore.state.riverDetailState.riverDetailData.error = true
+    const wrapper = createWrapper(BetaBox, options)
 
     expect(wrapper.find('.beta-box')).toMatchSnapshot()
 

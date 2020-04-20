@@ -1,6 +1,7 @@
 <template>
   <div class="user-logout">
-    <loading-block
+    <utility-block
+      state="loading"
       height="200"
       text="Goodbye"
     />
@@ -12,13 +13,13 @@
  * @todo need to reset the entire store when user logs out.
  *
  */
-import { LoadingBlock } from '@/app/global/components'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { userActions } from '@/app/views/user/shared/state'
 import { appLocalStorage } from '@/app/global/services'
 export default {
   name: 'user-logout',
   components: {
-    LoadingBlock
+    UtilityBlock
   },
   created () {
     appLocalStorage.removeItem('wh2o-auth')
@@ -32,8 +33,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.user-logout {
-}
-</style>

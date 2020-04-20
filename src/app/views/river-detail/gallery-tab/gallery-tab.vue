@@ -9,23 +9,31 @@
       </template>
       <template #main>
         <template v-if="loading">
-          <utility-block state="loading" />
+          <utility-block
+            state="loading"
+            class="mb-sm"
+          />
         </template>
         <template v-else-if="photos">
-          <vue-picture-swipe
-            v-if="formattedData && formattedData.length > 0"
-            ref="pictureSwipe"
-            :items="formattedData"
-          />
-          <utility-block
-            v-if="!formattedData"
-            state="content"
-            title="No Media"
-            text="if you have media for this reach, please share"
-          />
+          <template v-if="formattedData && formattedData.length > 0">
+            <image-gallery
+              :images="formattedData"
+            />
+          </template>
+          <template v-else>
+            <utility-block
+              state="content"
+              title="No Media"
+              text="if you have media for this reach, please share"
+              class="mb-sm"
+            />
+          </template>
         </template>
         <template v-else>
-          <utility-block state="error" />
+          <utility-block
+            state="error"
+            class="mb-sm"
+          />
         </template>
       </template>
     </layout>
@@ -35,7 +43,7 @@
 import { mapState } from 'vuex'
 import { galleryActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
-import { MediaUploadForm } from '../shared/components'
+import { MediaUploadForm, ImageGallery } from '../shared/components'
 import { Layout } from '@/app/global/layout'
 /**
  * @todo the gallery needs to be a standalone component
@@ -47,7 +55,8 @@ export default {
   components: {
     UtilityBlock,
     MediaUploadForm,
-    Layout
+    Layout,
+    ImageGallery
   },
   data: () => ({
     formattedData: null
@@ -72,67 +81,22 @@ export default {
     }
   },
   methods: {
-    /**
-     * We need to structure the data so photoswipe will accept
-     * @param {Array<object>} photos accepts query results
-     * @link https://github.com/rap2hpoutre/vue-picture-swipe
-     *
-     */
-    formatData (photos) {
-      if (photos) {
+    formatData (media) {
+      if (media) {
         const data = []
-        const numberOfImages = photos.length
-        for (let i = 0; i < numberOfImages; i++) {
-          const input = {
-            src: null,
-            thumbnail: null,
-            w: null,
-            h: null,
-            title: null
-          }
-          /** big size is priority use thumb as fallback */
-          input.src =
-            'https://americanwhitewater.org' + photos[i].image.uri.big ||
-            photos[i].image.uri.medium ||
-            photos[i].image.uri.thumb
-          /** medium size is priority use thumb as fallback */
-          input.thumbnail =
-            'https://americanwhitewater.org' + photos[i].image.uri.medium ||
-            photos[i].image.uri.thumb
-          /**
-           * image caption
-           * @todo add rapid, reading if available
-           *
-           */
-          input.title = photos[i].post.user
-            ? 'Photo: ' + photos[i].post.user.uname
-            : null
 
-          if (input.src && input.thumbnail) {
-            /**
-             * vue-picture-swipe requires the image dimensions
-             * for the lightbox to work properly.
-             *
-             * to get that info, we create a new Image()
-             * then store the height and width for each
-             *
-             * @todo there may be performance implications
-             * creating new Image() when we get a lot of query results
-             *
-             */
-            const img = new Image()
-            img.onload = () => {
-              input.h = img.height
-              input.w = img.width
-            }
-            img.src = input.src
-            data.push(input)
+        const numberOfImages = media.length
+
+        for (let i = 0; i < numberOfImages; i++) {
+          const numbeOfPostImages = media[i].photos.length
+
+          for (let k = 0; k < numbeOfPostImages; k++) {
+            data.push(media[i].photos[k])
           }
         }
+
         this.formattedData = data
-        return
       }
-      this.formattedData = []
     }
   },
   created () {

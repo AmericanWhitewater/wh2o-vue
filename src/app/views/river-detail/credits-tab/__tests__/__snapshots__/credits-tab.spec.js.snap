@@ -6,7 +6,7 @@ exports[`CreditsTab shows error block when error 1`] = `
     <div class="bx--row">
       <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-16">
         <div id="utility-block" class="utility-block-error" style="height: 350px;">
-          <h2 class="utility-block-title mb-spacing-md">Credits unavailable</h2>
+          <h2 class="utility-block-title">Credits unavailable</h2>
           <!---->
           <div>
             <!---->
