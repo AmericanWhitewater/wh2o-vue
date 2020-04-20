@@ -44,7 +44,7 @@
           title="Characteristics"
         />
         <ContentEditor
-          v-if="renderEditor"
+          v-if="renderEditor && initialRapidDescription"
           :content="initialRapidDescription"
           label="Description"
           placeholder=" "

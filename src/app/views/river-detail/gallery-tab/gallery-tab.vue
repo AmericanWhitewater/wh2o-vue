@@ -43,9 +43,8 @@
 import { mapState } from 'vuex'
 import { galleryActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
-import { MediaUploadForm } from '../shared/components'
+import { MediaUploadForm, ImageGallery } from '../shared/components'
 import { Layout } from '@/app/global/layout'
-import { ImageGallery } from './components'
 /**
  * @todo the gallery needs to be a standalone component
  * which you can pass an array of images to
