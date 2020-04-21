@@ -135,12 +135,14 @@
         <div v-if="images.length > 1">
           <cv-button-set>
             <cv-button
+              id="previous-button"
               :disabled="currentIndex === 0"
               @click.exact="cycleImages('previous')"
             >
               Previous
             </cv-button>
             <cv-button
+              id="next-button"
               :disabled="currentIndex === images.length - 1"
               @click.exact="cycleImages"
             >
@@ -160,6 +162,11 @@ export default {
     AwLogo
   },
   props: {
+    post: {
+      type: Object,
+      default: () => {},
+      required: false
+    },
     images: {
       type: Array,
       required: true,
@@ -233,8 +240,7 @@ export default {
       document.body.classList.remove('bx--body--with-modal-open')
     },
     cycleImages (direction) {
-      const numberOfImages = this.images.length
-      if (numberOfImages > 1) {
+      if (this.images.length > 1) {
         if (direction === 'previous') {
           this.lightbox.activeImage = this.images[this.currentIndex - 1].id
         } else {

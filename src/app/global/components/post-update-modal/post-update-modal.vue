@@ -1,5 +1,5 @@
 <template>
-  <div class="post-update-modal">
+  <div :class="[{'is-visible':visible},'post-update-modal']">
     <cv-modal
       :visible="visible"
       :size="size"
@@ -125,11 +125,8 @@ export default {
 
       if (this.post) {
         /**
-         * @note have to set each key value individually
-         * this.formData.post = Object.assign(this.formData.post, this.post)
-         * does not work
+         * map through post?
          */
-
         this.formData.id = this.post.id
         this.formData.post.title = this.post.title
         this.formData.post.detail = this.post.detail
@@ -169,6 +166,7 @@ export default {
     },
     handleCancel () {
       this.$emit('update:cancelled', true)
+      this.resetForm()
     },
     async handleSubmit () {
       this.formPending = true

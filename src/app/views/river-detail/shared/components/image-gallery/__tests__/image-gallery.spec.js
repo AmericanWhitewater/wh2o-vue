@@ -17,17 +17,54 @@ const options = {
     openLightbox
   },
   propsData: {
-    images: [{
-      image,
-      id: '7578',
-      author: 'Bryan Mills',
-      caption: 'Finish Line',
-      description: 'This rapid is a sweet 10 ft. boof (if you hit it right)',
-      photo_date: null,
-      poi_name: 'Finish Line',
-      poi_id: '107035',
-      subject: 'Adam Griffin'
-    }]
+    images: [
+      {
+        image: {
+          uri: {
+            thumb: '/photos/archive/thumb/8928.jpg',
+            medium: '/photos/archive/medium/8928.jpg',
+            big: '/photos/archive/8928.jpg'
+          }
+        },
+        id: '8928',
+        author: 'Jered Johnson',
+        caption: 'Professor Fullmer and company',
+        description:
+          'The highly educated Shawn Fullmer, contemplates the meaning of life and what exactly is a fuzzy little bunny',
+        photo_date: null,
+        poi_name: 'Fuzzy Little Bunny',
+        poi_id: '102575',
+        subject: 'Fuzzy Little Bunny'
+      },
+      {
+        image: {
+          uri: {
+            thumb: '/photos/archive/thumb/890762.jpg',
+            medium: '/photos/archive/medium/890762.jpg',
+            big: '/photos/archive/890762.jpg'
+          }
+        },
+        id: '890762',
+        author: 'Dave Winston',
+        caption: '',
+        description: '\t\t\r\n\r\n\r\n',
+        photo_date: null,
+        poi_name: 'Warm Up',
+        poi_id: '107028',
+        subject: ''
+      },
+      {
+        image,
+        id: '7578',
+        author: 'Bryan Mills',
+        caption: 'Finish Line',
+        description: 'This rapid is a sweet 10 ft. boof (if you hit it right)',
+        photo_date: null,
+        poi_name: 'Finish Line',
+        poi_id: '107035',
+        subject: 'Adam Griffin'
+      }
+    ]
   }
 }
 
@@ -47,7 +84,7 @@ describe('ImageGallery', () => {
      * make sure clicking the thumbnail makes the call with co
      *
      * */
-    wrapper.findAll('.image-thumbnail').at(0).trigger('click')
+    wrapper.findAll('.image-thumbnail').at(2).trigger('click')
 
     await wrapper.vm.$nextTick()
 
@@ -80,6 +117,45 @@ describe('ImageGallery', () => {
 
     const data = await wrapper.vm.formatURI(image.uri, 'thumb')
 
-    expect(data).toEqual('https://americanwhitewater.org/photos/archive/medium/7578.jpg')
+    expect(data).toEqual(
+      'https://americanwhitewater.org/photos/archive/medium/7578.jpg'
+    )
+  })
+
+  it('disables the previous button when first image is active', async () => {
+    const wrapper = createWrapper(ImageGallery, options)
+
+    wrapper.setData({
+      lightbox: {
+        activeImage: '8928',
+        active: true
+      }
+    })
+
+    await wrapper.vm.$nextTick()
+
+    wrapper.findAll('.image-thumbnail').at(1).trigger('click')
+
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.find('#previous-button').attributes('disabled')).toBe('disabled')
+  })
+  it('disables the next button when last image is active', async () => {
+    const wrapper = createWrapper(ImageGallery, options)
+
+    wrapper.setData({
+      lightbox: {
+        activeImage: '7578',
+        active: true
+      }
+    })
+
+    await wrapper.vm.$nextTick()
+
+    wrapper.findAll('.image-thumbnail').at(1).trigger('click')
+
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.find('#next-button').attributes('disabled')).toBe('disabled')
   })
 })
