@@ -1,22 +1,18 @@
 language: node_js
 node_js:
-  - '8.6.0'
-  - 'node'
+  - '11'
 stages:
-  - lint
-  - test
-  - build
+- lint
+- test
+- build
 jobs:
   include:
     - stage: lint
       script:
-        # Run linter
         - npm run lint
     - stage: test
       script:
-        # Run tests
         - npm run test:unit
     - stage: build
       script:
-        # Build all
         - npm run build
