@@ -1,6 +1,6 @@
 # wh2o-vue
 
-[![Build Status](https://travis-ci.org/AmericanWhitewater/wh2o-vue.svg?branch=master)](https://travis-ci.org/AmericanWhitewater/wh2o-vue)
+[![Build Status](https://travis-ci.org/AmericanWhitewater/wh2o-vue.svg?branch=master)](https://travis-ci.org/AmericanWhitewater/wh2o-vue) [![Coverage Status](https://coveralls.io/repos/github/AmericanWhitewater/wh2o-vue/badge.svg?branch=master)](https://coveralls.io/github/AmericanWhitewater/wh2o-vue?branch=master)
 
 This app is the American Whitewater National Whitewater Index and River Detail SPA.
 
