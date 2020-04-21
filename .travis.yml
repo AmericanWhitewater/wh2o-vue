@@ -12,7 +12,7 @@ jobs:
         - npm run lint
     - stage: test
       script:
-        - npm run test:unit
+        - npm run coveralls
     - stage: build
       script:
         - npm run build
