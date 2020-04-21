@@ -2,8 +2,6 @@
 
 [![Build Status](https://travis-ci.org/AmericanWhitewater/wh2o-vue.svg?branch=master)](https://travis-ci.org/AmericanWhitewater/wh2o-vue)
 
-***
-
 This app is the American Whitewater National Whitewater Index and River Detail SPA.
 
 ## Getting Started
