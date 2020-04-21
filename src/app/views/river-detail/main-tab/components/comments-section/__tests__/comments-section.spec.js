@@ -83,7 +83,7 @@ describe('CommentsSection', () => {
 
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.find('.bx--modal').classes()).toContain('is-visible')
+    expect(wrapper.find('.post-update-modal').classes()).toContain('is-visible')
   })
 
   it('hides modal when new comment is cancelled', async () => {
@@ -93,29 +93,13 @@ describe('CommentsSection', () => {
 
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.find('.bx--modal').classes()).toContain('is-visible')
+    expect(wrapper.find('.post-update-modal').classes()).toContain('is-visible')
 
-    wrapper.vm.cancelNewComment()
-
-    await wrapper.vm.$nextTick()
-
-    expect(wrapper.find('.bx--modal').classes()).not.toContain('is-visible')
-  })
-
-  it('hides modal when new comment is submitted', async () => {
-    const wrapper = createWrapper(CommentsSection, options)
-
-    wrapper.find('#new-comment').trigger('click')
+    wrapper.vm.handleCancel()
 
     await wrapper.vm.$nextTick()
 
-    expect(wrapper.find('.bx--modal').classes()).toContain('is-visible')
-
-    wrapper.vm.submitComment()
-
-    await wrapper.vm.$nextTick()
-
-    expect(wrapper.find('.bx--modal').classes()).not.toContain('is-visible')
+    expect(wrapper.find('.post-update-modal').classes()).not.toContain('is-visible')
   })
 
   it('loads comments when in view', () => {
@@ -137,28 +121,4 @@ describe('CommentsSection', () => {
    * @todo need to refactor so api call is separate module
    *
    */
-  test.todo('makes one api call when new comment submitted and handles data')
-  // it('makes one api call when new comment submitted and handles data', async () => {
-
-  //   const postId = "7KBzeegug0_EmpPUsUJEL"
-
-  //   const response = {
-  //     data: {
-  //       data: {
-  //         post: {
-  //           id: postId
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   httpClient.mockResolvedValueOnce(response)
-
-  //   const wrapper = createWrapper(CommentsSection, options)
-
-  //   await flushPromises()
-
-  //   expect(httpClient.post)
-
-  // })
 })

@@ -12,7 +12,7 @@
       >
         <template
           v-if="usernameError"
-          #invalid-message
+          slot="invalid-message"
         >
           email error
         </template>
@@ -28,7 +28,7 @@
       >
         <template
           v-if="passwordError"
-          #invalid-message
+          slot="invalid-message"
         >
           password error
         </template>
@@ -51,9 +51,10 @@
   </section>
 </template>
 <script>
-import { appLocalStorage, httpClient } from '@/app/global/services'
+import { appLocalStorage } from '@/app/global/services'
 import { globalAppActions } from '@/app/global/state'
-import { userActions } from '../../../shared/state'
+import { userActions } from '../../shared/state'
+import { userLogin } from './services/user-login'
 import {
   clientId,
   clientSecret
@@ -96,9 +97,6 @@ export default {
   watch: {
     user (v) {
       if (v.uid) {
-        /**
-         * @todo add welcome message
-         */
         this.$store.dispatch(globalAppActions.SEND_TOAST, {
           title: 'Welcome back!',
           kind: 'info',
@@ -129,17 +127,20 @@ export default {
       } else {
         this.passwordError = false
       }
-
       if (!this.passwordError && !this.usernameError) {
-        this.formPending = true
-        const input = JSON.stringify(this.formData)
-        const result = await httpClient.post('/oauth/token', input).catch(e => {
-          this.formPending = false
+        try {
+          const input = JSON.stringify(this.formData)
+
+          const result = await userLogin(input)
+
+          if ('access_token' in result) {
+            appLocalStorage.setItem('wh2o-auth', result.access_token)
+            this.$store.dispatch(userActions.FETCH_USER_DATA)
+          }
+        } catch (error) {
           this.formError = true
-        })
-        if (result) {
-          appLocalStorage.setItem('wh2o-auth', result.data.access_token)
-          this.$store.dispatch(userActions.FETCH_USER_DATA)
+        } finally {
+          this.formPending = false
         }
       }
     }

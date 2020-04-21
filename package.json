@@ -13,7 +13,8 @@
     "lint": "vue-cli-service lint --fix",
     "start": "node server/server.js",
     "styleguide": "vue-cli-service styleguidist",
-    "styleguide:build": "vue-cli-service styleguidist:build"
+    "styleguide:build": "vue-cli-service styleguidist:build",
+    "coveralls": "vue-cli-service test:unit --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "dependencies": {
     "@apollo/client": "^3.0.0-beta.41",
@@ -29,6 +30,7 @@
     "apollo-link-http": "^1.5.16",
     "apollo-upload-client": "^13.0.0",
     "axios": "^0.19.2",
+    "carbon-components": "^10.11.1",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.4",
     "emitter-js": "^2.0.2",
@@ -63,6 +65,7 @@
     "@vue/test-utils": "^1.0.0-beta.33",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
+    "coveralls": "^3.0.11",
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",

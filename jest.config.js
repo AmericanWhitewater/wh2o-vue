@@ -8,5 +8,6 @@ module.exports = {
     '!src/**/index.js',
     '!src/**/create-wrapper.js',
     '!src/**/api-constants.js'
-  ]
+  ],
+  coverageReporters: ['lcov', 'text-summary']
 }

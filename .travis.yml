@@ -1,8 +1,18 @@
 language: node_js
 node_js:
-  - 'stable'
-cache:
-  directories:
-    - 'node_modules'
-script:
-  - npm run build
+  - '11'
+stages:
+- lint
+- test
+- build
+jobs:
+  include:
+    - stage: lint
+      script:
+        - npm run lint
+    - stage: test
+      script:
+        - npm run coveralls
+    - stage: build
+      script:
+        - npm run build
