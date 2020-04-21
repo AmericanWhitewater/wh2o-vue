@@ -27,6 +27,7 @@
     "@sentry/integrations": "^5.15.4",
     "@turf/bbox": "^6.0.1",
     "axios": "^0.19.2",
+    "carbon-components": "^10.11.1",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.4",
     "emitter-js": "^2.0.2",
