@@ -4,6 +4,11 @@
 
 This app is the American Whitewater National Whitewater Index and River Detail SPA.
 
+## Prototype
+
+[https://wh2o-vue.herokuapp.com/#/](https://wh2o-vue.herokuapp.com/#/)
+
+
 ## Getting Started
 
 This project requires the main American Whitewater API. Follow instructions in the dockerreadme.md located in the wh2o repo for development setup guidelines.
@@ -23,7 +28,3 @@ We have an existing component library/documentation for custom non-carbon design
 ## Access Tokens
 
 To get access tokens for third party APIs like Mapbox and Darksky, contact an AW dev team member.
-
-## Demo
-
-[https://wh2o-vue.herokuapp.com/#/](https://wh2o-vue.herokuapp.com/#/)
