@@ -121,7 +121,7 @@ export default {
   watch: {
     highlightedFeature (feature) {
       if (feature) {
-        const reachId = feature.reach_id || feature.id
+        const reachId = feature.properties.id
         if (
           this.$refs[`reach-${reachId}`] &&
           this.$refs[`reach-${reachId}`].length > 0
@@ -140,7 +140,7 @@ export default {
     highlightedClass (reachId) {
       if (
         this.highlightedFeature &&
-        reachId === this.highlightedFeature.id
+        reachId === this.highlightedFeature.properties.id
       ) {
         return 'active'
       }
