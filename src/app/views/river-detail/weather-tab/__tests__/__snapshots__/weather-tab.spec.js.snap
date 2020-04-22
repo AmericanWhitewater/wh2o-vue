@@ -4,7 +4,7 @@ exports[`FlowTab shows error block when error 1`] = `
 <div class="bx--grid weather-tab">
   <div class="bx--row">
     <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-16">
-      <div id="utility-block" class="utility-block-error" style="height: 350px;">
+      <div id="utility-block" class="utility-block-error">
         <!---->
         <!---->
         <div>
@@ -34,7 +34,7 @@ exports[`FlowTab shows loading block when loading 1`] = `
 <div class="bx--grid weather-tab">
   <div class="bx--row">
     <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-16">
-      <div id="utility-block" class="utility-block-loading" style="height: 350px;">
+      <div id="utility-block" class="utility-block-loading">
         <!---->
         <!---->
         <div>

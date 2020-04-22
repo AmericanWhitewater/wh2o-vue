@@ -15,18 +15,13 @@ const httpLink = createUploadLink({
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
-  let token = ''
-  try {
-    token = appLocalStorage.getItem('wh2o-auth')
-  } catch (e) {
-    token = ''
-  }
-
+  const token = appLocalStorage.getItem('wh2o-auth')
   // return the headers to the context so httpLink can read them
   return {
     headers: {
       ...headers,
-      Authorization: `Bearer ${token}`
+      Authorization: token ? `Bearer ${token}` : null,
+      Accept: 'application/json, text/plain, */*'
     }
   }
 })

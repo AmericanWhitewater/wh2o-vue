@@ -7,7 +7,6 @@
       <template #main>
         <template v-if="loading && !gages">
           <utility-block
-            height="500"
             state="loading"
             text="loading gages..."
           />
@@ -16,7 +15,6 @@
           <template v-if="gages && gages.length > 0">
             <template v-if="loading">
               <utility-block
-                height="600"
                 state="loading"
                 text="loading readings..."
               />
@@ -36,7 +34,7 @@
                 </template>
                 <template v-else>
                   <utility-block
-                    height="500"
+                    class="mb-sm"
                     state="content"
                     title="No Results"
                     text="please try again"
@@ -51,7 +49,6 @@
           </template>
           <template v-else>
             <utility-block
-              height="500"
               title="No Gages"
               state="content"
               text="this reach doesn't have any associated gages"
@@ -60,7 +57,6 @@
         </template>
         <template v-else>
           <utility-block
-            height="500"
             state="error"
           />
         </template>

@@ -21,7 +21,7 @@
       >
         <div class="bx--col-sm-12 bx--col-md-3">
           <img
-            class="article-thumb bx--aspect-ratio--1x1"
+            class="article-thumb"
             :src="articleThumb(article)"
             :alt="article.title"
           >
@@ -86,7 +86,6 @@ export default {
       object-fit: cover;
       height: 100%;
       width:100%;
-      background-color: $ui-03;
     }
   }
   .no-articles-msg {

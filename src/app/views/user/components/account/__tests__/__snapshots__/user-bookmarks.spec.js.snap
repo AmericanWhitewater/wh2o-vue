@@ -2,7 +2,7 @@
 
 exports[`user-profile.vue shows loading block when loading 1`] = `
 <div class="user-bookmarks">
-  <div id="utility-block" class="utility-block-loading" style="height: 350px;">
+  <div id="utility-block" class="utility-block-loading">
     <!---->
     <!---->
     <div>

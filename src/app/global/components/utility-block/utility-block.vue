@@ -1,7 +1,6 @@
 <template>
   <div
     id="utility-block"
-    :style="`height:${height}px`"
     :class="`utility-block-${state}`"
   >
     <template v-if="!blank">
@@ -39,10 +38,6 @@ export default {
       type: Boolean,
       required: false
     },
-    height: {
-      type: String,
-      default: '350'
-    },
     text: {
       type: String,
       required: false
@@ -69,7 +64,6 @@ export default {
   background-color: $ui-02;
   display: flex;
   width: 100%;
-  min-height: 250px;
   height: 100%;
   padding: $spacing-md;
   align-items: center;
@@ -81,6 +75,10 @@ export default {
   }
   .utility-block-text {
      @include carbon--type-style("code-02");
+  }
+
+  @include carbon--breakpoint('sm') {
+    min-height: 75px;
   }
 }
 </style>
