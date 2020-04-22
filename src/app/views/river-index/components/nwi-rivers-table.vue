@@ -15,30 +15,30 @@
         <template slot="data">
           <cv-data-table-row
             v-for="reach in reaches"
-            :key="reach.id"
-            :ref="`reach-${reach.id}`"
+            :key="reach.properties.id"
+            :ref="`reach-${reach.properties.id}`"
             :class="[
-              friendlyCurrentFlow(reach.condition),
-              highlightedClass(reach.id)
+              friendlyCurrentFlow(reach.properties.condition),
+              highlightedClass(reach.properties.id)
             ]"
             @mouseover.native="debouncedHighlight(reach)"
           >
             <cv-data-table-cell>
               <router-link
-                :to="`/river-detail/${reach.id}/main`"
+                :to="`/river-detail/${reach.properties.id}/main`"
                 class="reach-link"
               >
                 <h3 class="bx--type-zeta">
-                  {{ reach.river }}
+                  {{ reach.properties.river }}
                 </h3>
                 <span class="section bx--type-caption">{{
-                  reach.section
+                  reach.properties.section
                 }}</span>
               </router-link>
             </cv-data-table-cell>
-            <cv-data-table-cell>{{ reach.class }}</cv-data-table-cell>
+            <cv-data-table-cell>{{ reach.properties.class }}</cv-data-table-cell>
             <cv-data-table-cell>
-              {{ friendlyCurrentFlow(reach.condition) }}
+              {{ friendlyCurrentFlow(reach.properties.condition) }}
             </cv-data-table-cell>
             <cv-data-table-cell>
               <zoom-in16
