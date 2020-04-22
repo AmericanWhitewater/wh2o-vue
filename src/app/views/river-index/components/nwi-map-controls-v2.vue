@@ -67,6 +67,7 @@
 <script>
 import { riverSearchHttpConfig, checkWindow } from '@/app/global/mixins'
 import { riverSearchActions } from '@/app/views/river-search/shared/state'
+import { riverIndexActions } from '../shared/state'
 import screenfull from 'screenfull'
 export default {
   name: 'nwi-map-controls-v2',
@@ -82,6 +83,11 @@ export default {
   computed: {
     mobileDevice () {
       return this.windowWidth < this.breakpoints.lg
+    }
+  },
+  watch: {
+    mapStyle (v) {
+      this.$store.dispatch(riverIndexActions.SET_MAP_STYLE, v)
     }
   },
   methods: {
