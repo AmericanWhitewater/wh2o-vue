@@ -117,7 +117,11 @@ export default {
         state.riverIndexState.riverIndexData.highlightedFeature
     }),
     showingSearchResults () {
-      return this.searchResults && this.searchResults.length > 0
+      if (this.searchResults) {
+        return this.searchResults.length > 0
+      } else {
+        return false
+      }
     },
     results () {
       if (this.reachesInViewport && this.reachesInViewport.length > 0) {
