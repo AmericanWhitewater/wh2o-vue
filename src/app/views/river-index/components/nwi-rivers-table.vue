@@ -131,7 +131,7 @@ export default {
           this.$refs[`reach-${reachId}`] &&
           this.$refs[`reach-${reachId}`].length > 0
         ) {
-          scrollIntoView(this.$refs[`reach-${reachId}`][0].$el, {
+          scrollIntoView(this.$refs[`reach-${reachId}`][0], {
             scrollMode: 'if-needed',
             block: 'nearest',
             inline: 'nearest',
