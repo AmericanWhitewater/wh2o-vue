@@ -18,11 +18,14 @@
           <div class="map-wrapper">
             <NwiMap
               height="350"
+              :detail-reach-id="riverId"
               :include-legend="false"
               :has-sidebar="false"
               :mapbox-access-token="token"
               :tileservers="[tileserver]"
               :has-controls="false"
+              :starting-bounds="riverBbox"
+              :source-layers="sourceLayers"
             />
           </div>
         </template>
@@ -87,16 +90,19 @@ export default {
   mixins: [checkWindow],
   data: () => ({
     tileserver: nwiTileServer,
-    token: mapboxAccessToken
+    token: mapboxAccessToken,
+    sourceLayers: ['reach-segments', 'access']
   }),
   computed: {
     ...mapState({
       loading: state => state.riverDetailState.riverDetailData.loading,
       data: state => state.riverDetailState.riverDetailData.data,
-      error: state => state.riverDetailState.riverDetailData.error
+      error: state => state.riverDetailState.riverDetailData.error,
+      riverBbox: state =>
+        state.riverDetailState.riverDetailData.data.bbox
     }),
     riverId () {
-      return this.$route.params.id
+      return parseInt(this.$route.params.id)
     }
   }
 }
