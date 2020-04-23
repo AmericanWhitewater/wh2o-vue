@@ -7,50 +7,55 @@
       <utility-block state="loading" />
     </template>
     <template v-else-if="reaches">
-      <cv-data-table
-        :columns="columns"
-        borderless
-        :row-size="rowSize"
-      >
-        <template slot="data">
-          <cv-data-table-row
-            v-for="reach in reaches"
-            :key="reach.properties.id"
-            :ref="`reach-${reach.properties.id}`"
-            :class="[
-              friendlyCurrentFlow(reach.properties.condition),
-              highlightedClass(reach.properties.id)
-            ]"
-            @mouseover.native="debouncedHighlight(reach)"
-          >
-            <cv-data-table-cell>
-              <router-link
-                :to="`/river-detail/${reach.properties.id}/main`"
-                class="reach-link"
+      <div class="bx--data-table-container">
+        <table class="bx--data-table river-table">
+          <thead>
+            <tr>
+              <th>
+                <strong>Name</strong>
+                <br>Section
+              </th>
+              <th>Class/Grade</th>
+              <th>
+                Flow Reading
+              </th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template v-if="reaches && reaches.length > 0">
+              <tr
+                v-for="reach in reaches"
+                :key="reach.properties.id"
+                :ref="`reach-${reach.properties.id}`"
+                :class="[
+                  highlightedClass(reach.properties.id),
+                ]"
+                @mouseover="debouncedHighlight(reach)"
               >
-                <h3 class="bx--type-zeta">
-                  {{ reach.properties.river }}
-                </h3>
-                <span class="section bx--type-caption">{{
-                  reach.properties.section
-                }}</span>
-              </router-link>
-            </cv-data-table-cell>
-            <cv-data-table-cell>{{ reach.properties.class }}</cv-data-table-cell>
-            <cv-data-table-cell>
-              {{ friendlyCurrentFlow(reach.properties.condition) }}
-            </cv-data-table-cell>
-            <cv-data-table-cell>
-              <zoom-in16
-                class="zoom-button"
-                width="21"
-                height="21"
-                @click="centerReach(reach)"
-              />
-            </cv-data-table-cell>
-          </cv-data-table-row>
-        </template>
-      </cv-data-table>
+                <td
+                  :class="[`${reach.properties.condition}`,, 'river-name-section']"
+                  @click.exact="$router.push(`/river-detail/${reach.properties.id}/main`).catch(()=>{})"
+                >
+                  <strong>{{ reach.properties.river }}</strong>
+                  <br>
+                  {{ reach.properties.section }}
+                </td>
+                <td>{{ reach.properties.class }}</td>
+                <td>{{ friendlyCurrentFlow(reach.properties.condition) }}</td>
+                <td>
+                  <zoom-in16
+                    class="zoom-button"
+                    width="21"
+                    height="21"
+                    @click.exact="centerReach(reach)"
+                  />
+                </td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
     </template>
     <template v-else-if="noReaches">
       <template v-if="showingSearchResults">
@@ -137,6 +142,11 @@ export default {
     }
   },
   methods: {
+    viewRiver (id, tab) {
+      this.$router
+        .push(`/river-detail/${id}/${tab || 'main'}`)
+        .catch(() => {})
+    },
     highlightedClass (reachId) {
       if (
         this.highlightedFeature &&
@@ -204,77 +214,77 @@ export default {
     }
   }
 
-  table.bx--data-table,
-  .bx--data-table-container {
-    min-width: unset;
-  }
+  // table.bx--data-table,
+  // .bx--data-table-container {
+  //   min-width: unset;
+  // }
 
-  .no-reaches-notice {
-    height: 100%;
-    width: 100%;
-    padding: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  // .no-reaches-notice {
+  //   height: 100%;
+  //   width: 100%;
+  //   padding: 1rem;
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  // }
 
-  .zoom-button {
-    cursor: pointer;
-  }
+  // .zoom-button {
+  //   cursor: pointer;
+  // }
 
-  /* matching https://unpkg.com/carbon-components@9.91.4/scss/components/data-table-v2/_data-table-v2-core.scss
-  td:hover directive */
-  tr {
-    td {
-      padding: $spacing-sm;
-    }
+  // /* matching https://unpkg.com/carbon-components@9.91.4/scss/components/data-table-v2/_data-table-v2-core.scss
+  // td:hover directive */
+  // tr {
+  //   td {
+  //     padding: $spacing-sm;
+  //   }
 
-    &.active {
-      td {
-        background-color: rgba($brand-02, 0.1);
-        border-bottom: 1px solid $brand-01;
-        border-top: 1px solid $brand-01;
+  //   &.active {
+  //     td {
+  //       background-color: rgba($brand-02, 0.1);
+  //       border-bottom: 1px solid $brand-01;
+  //       border-top: 1px solid $brand-01;
 
-        &:first-of-type {
-          border-left: 1px solid $brand-01;
-        }
+  //       &:first-of-type {
+  //         border-left: 1px solid $brand-01;
+  //       }
 
-        &:last-of-type {
-          border-right: 1px solid $brand-01;
-        }
-      }
-    }
-  }
+  //       &:last-of-type {
+  //         border-right: 1px solid $brand-01;
+  //       }
+  //     }
+  //   }
+  // }
 
-  .low {
-    background: rgba(255, 134, 132, 0.7);
-  }
-  .high {
-    background: rgba(93, 172, 225, 0.7);
-  }
-  .running {
-    background: rgba(89, 230, 141, 0.7);
-  }
-  .bx--data-table-container,
-  .bx--data-table {
-    overflow-x: unset;
-    min-width: unset;
-    padding: 0;
-  }
-  .bx--table-toolbar {
-    display: none;
-  }
-  a.reach-link {
-    color: $text-01;
-    text-decoration: none;
+  // .low {
+  //   background: rgba(255, 134, 132, 0.7);
+  // }
+  // .high {
+  //   background: rgba(93, 172, 225, 0.7);
+  // }
+  // .running {
+  //   background: rgba(89, 230, 141, 0.7);
+  // }
+  // .bx--data-table-container,
+  // .bx--data-table {
+  //   overflow-x: unset;
+  //   min-width: unset;
+  //   padding: 0;
+  // }
+  // .bx--table-toolbar {
+  //   display: none;
+  // }
+  // a.reach-link {
+  //   color: $text-01;
+  //   text-decoration: none;
 
-    &:hover {
-      text-decoration: underline;
-    }
+  //   &:hover {
+  //     text-decoration: underline;
+  //   }
 
-    .section {
-      text-decoration: none !important;
-    }
-  }
+  //   .section {
+  //     text-decoration: none !important;
+  //   }
+  // }
 }
 </style>
