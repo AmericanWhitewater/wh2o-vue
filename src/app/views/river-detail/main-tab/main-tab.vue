@@ -18,9 +18,8 @@
           <div class="map-wrapper">
             <NwiMap
               height="350"
-              :detail-reach-id="riverId"
+              :detail-reach-id="reachId"
               :include-legend="false"
-              :has-sidebar="false"
               :mapbox-access-token="token"
               :tileservers="[tileserver]"
               :has-controls="false"
@@ -100,7 +99,7 @@ export default {
       data: state => state.riverDetailState.riverDetailData.data,
       error: state => state.riverDetailState.riverDetailData.error
     }),
-    riverId () {
+    reachId () {
       return Number(this.$route.params.id)
     },
     // temporary hack while we wait for bbox!!!

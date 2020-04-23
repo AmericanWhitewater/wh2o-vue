@@ -15,10 +15,7 @@
         @loading="updateLoading"
         @searchResults="updateSearchResults"
       />
-      <div
-        id="nwi-map"
-        :class="{ hasSidebar: hasSidebar }"
-      />
+      <div id="nwi-map" />
       <nwi-map-legend
         v-if="includeLegend"
         :color-by="colorBy"
@@ -85,12 +82,6 @@ export default {
     includeLegend: {
       type: Boolean,
       required: false,
-      default: true
-    },
-    // map component doesn't know if it has a neighboring info panel without this prop;
-    // determines whether or not map width is 100%
-    hasSidebar: {
-      type: Boolean,
       default: true
     },
     // modifies the map style to highlight a single reach identified by ID
@@ -570,14 +561,6 @@ export default {
   #nwi-map {
     height: 100%;
     width: 100%;
-
-    &.hasSidebar {
-      height: 95%;
-
-      @include carbon--breakpoint("lg") {
-        height: 100%;
-      }
-    }
 
     &.river-detail {
        @include carbon--breakpoint("md") {

@@ -9,7 +9,6 @@
           <nwi-map
             :external-loading="loading || searchLoading"
             :feature-to-center="featureToCenter"
-            :has-sidebar="showSidebar"
             :has-controls="false"
             :highlighted-feature="highlightedFeature"
             :mapbox-access-token="mapboxAccessToken"
@@ -77,11 +76,6 @@ export default {
   },
   mixins: [riverSearchHttpConfig, checkWindow],
   props: {
-    showSidebar: {
-      type: Boolean,
-      default: true,
-      required: false
-    },
     showRiversTable: {
       type: Boolean,
       default: true,

@@ -6,12 +6,14 @@
       <template #main>
         <template v-if="token">
           <NwiMap
-
             :include-legend="false"
-            :has-sidebar="false"
             :mapbox-access-token="token"
             :tileservers="[tileserver]"
             :has-controls="false"
+            :detail-reach-id="reachId"
+            :source-layers="sourceLayers"
+            :center="center"
+            :starting-zoom="zoom"
           />
         </template>
         <template v-else>
@@ -38,7 +40,7 @@
         </div>
         <div class="bx--row">
           <div class="bx--col">
-            <div v-html="data.shuttledetails" />
+            <div v-html="riverData.shuttledetails" />
           </div>
         </div>
       </template>
@@ -84,6 +86,13 @@ export default {
     }),
     reachId () {
       return parseInt(this.$route.params.id, 10)
+    },
+    // temporary hack while we wait for bbox!!!
+    center () {
+      return [this.riverData.plon, this.riverData.plat]
+    },
+    zoom () {
+      return 10
     }
   },
   methods: {
