@@ -1,71 +1,76 @@
 <template>
   <div class="river-detail">
-    <template v-if="loading">
-      loading
-    </template>
-    <template v-else-if="data">
-      <div class="bleed">
-        <div class="bx--grid">
-          <div class="bx--row">
-            <div class="bx--col">
-              <header>
-                <h4>{{ data.river }}</h4>
-                <h1>{{ data.section }}</h1>
-              </header>
-            </div>
+    <div class="bleed">
+      <div class="bx--grid">
+        <div class="bx--row">
+          <div class="bx--col">
+            <header v-if="!loading && data">
+              <h4>{{ data.river }}</h4>
+              <h1>{{ data.section }}</h1>
+            </header>
+            <header v-else>
+              <h4>loading</h4>
+            </header>
           </div>
         </div>
       </div>
-      <div class="bx--grid">
-        <div class="bx--row">
-          <aside class="bx--col-sm-4 bx--col-lg-2 bx--col-max-2">
-            <div class="sticky">
-              <div class="button-toolbar">
-                <cv-button kind="ghost">
-                  <component :is="notificationIcon" />
-                </cv-button>
-                <cv-button kind="ghost">
-                  <Favorite20 />
-                </cv-button>
-              </div>
-              <transition-group
-                name="entranceFromTop"
-                tag="ul"
-              >
-                <li
-                  v-for="(tab, index) in tabs"
-                  :key="tab.path"
-                >
-                  <cv-button
-                    ref="tab-button"
-                    :class="activeTabIndex === index ? 'is-active': ''"
-                    kind="ghost"
-                    @click.exact="switchTab(index)"
-                    @keydown.enter="switchTab(index)"
-                  >
-                    {{ tab.label }}
-                  </cv-button>
-                </li>
-              </transition-group>
+    </div>
+    <div class="bx--grid">
+      <div class="bx--row">
+        <aside class="bx--col-sm-4 bx--col-lg-2 bx--col-max-2">
+          <div class="sticky">
+            <div class="button-toolbar">
+              <cv-button kind="ghost">
+                <component :is="notificationIcon" />
+              </cv-button>
+              <cv-button kind="ghost">
+                <Favorite20 />
+              </cv-button>
             </div>
-          </aside>
-          <main class="bx--col-sm-4 bx--col-lg-14 bx--col-max-13 bx--offset-max-1">
+            <transition-group
+              name="entranceFromTop"
+              tag="ul"
+            >
+              <li
+                v-for="(tab, index) in tabs"
+                :key="tab.path"
+              >
+                <cv-button
+                  ref="tab-button"
+                  :class="activeTabIndex === index ? 'is-active': ''"
+                  kind="ghost"
+                  @click.exact="switchTab(index)"
+                  @keydown.enter="switchTab(index)"
+                >
+                  {{ tab.label }}
+                </cv-button>
+              </li>
+            </transition-group>
+          </div>
+        </aside>
+        <main class="bx--col-sm-4 bx--col-lg-14 bx--col-max-13 bx--offset-max-1">
+          <transition
+            :name="transitionName"
+            mode="out-in"
+          >
             <router-view />
-          </main>
-        </div>
+          </transition>
+        </main>
       </div>
-    </template>
-    <template v-else>
-      error
-    </template>
+    </div>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
 import { riverDetailActions, alertsActions } from './shared/state'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 export default {
   name: 'river-detail',
+  components: {
+    UtilityBlock
+  },
   data: () => ({
+    transitionName: 'fade',
     activeTabIndex: 0,
     tabs: [
       {
@@ -124,6 +129,19 @@ export default {
   created () {
     this.$store.dispatch(riverDetailActions.FETCH_RIVER_DETAIL_DATA, this.riverId)
     this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.$route.params.id)
+
+    this.$router.beforeEach((to, from, next) => {
+      let transitionName = to.meta.transitionName || from.meta.transitionName
+      if (transitionName === 'slide') {
+        const toDepth = to.path.split('/').length
+        const fromDepth = from.path.split('/').length
+        transitionName = toDepth < fromDepth ? 'slide-left' : 'slide-right'
+      }
+
+      this.transitionName = transitionName || 'fade'
+
+      next()
+    })
   }
   // mounted() {
   //   console.log('this.$refs :', this.$refs);

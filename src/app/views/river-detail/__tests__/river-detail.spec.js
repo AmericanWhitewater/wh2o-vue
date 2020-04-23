@@ -1,6 +1,10 @@
 import { createWrapper } from '@/app/global/services'
 import RiverDetail from '../river-detail.vue'
 
+const mockRouter = {
+  beforeEach: jest.fn()
+}
+
 const mockStore = {
   state: {
     riverDetailState: {
@@ -18,6 +22,7 @@ const riverId = '1'
 
 const options = {
   mocks: {
+    $router: mockRouter,
     $store: mockStore,
     $route: {
       params: {

@@ -114,7 +114,7 @@
                 <div
                   v-for="(article, index) in articles"
                   :key="index"
-                  class="bx--col-sm-12 bx--col-md-4 bx--col-lg-8 bx--col-max-4 mb-spacing-lg"
+                  class="bx--col-sm-12 bx--col-md-8 bx--col-lg-8 bx--col-max-6 mb-spacing-lg"
                 >
                   <ArticleCard
                     :title="$titleCase(article.title)"

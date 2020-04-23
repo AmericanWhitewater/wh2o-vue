@@ -8,13 +8,15 @@ const riverDetailRoutes = [
     path: '/river-detail/:id',
     name: 'river-detail',
     redirect: '/river-detail/:id/main',
+
     component: () => import('./river-detail.vue'),
     children: [
       {
         path: 'main',
         name: 'main-tab',
         meta: {
-          crumbLabel: 'River Detail'
+          crumbLabel: 'River Detail',
+          transitionName: 'slide'
         },
         component: () => import('./main-tab/main-tab.vue')
       },
@@ -22,7 +24,8 @@ const riverDetailRoutes = [
         path: 'flow',
         name: 'flow-tab',
         meta: {
-          crumbLabel: 'River Detail'
+          crumbLabel: 'River Detail',
+          transitionName: 'slide'
         },
         component: () => import('./flow-tab/flow-tab.vue'),
         children: [
@@ -38,7 +41,8 @@ const riverDetailRoutes = [
         path: 'map',
         name: 'map-tab',
         meta: {
-          crumbLabel: 'River Detail'
+          crumbLabel: 'River Detail',
+          transitionName: 'slide'
         },
         component: () => import('./map-tab/map-tab.vue')
       },
@@ -46,7 +50,8 @@ const riverDetailRoutes = [
         path: 'gallery',
         name: 'gallery-tab',
         meta: {
-          crumbLabel: 'River Detail'
+          crumbLabel: 'River Detail',
+          transitionName: 'slide'
         },
         component: () => import('./gallery-tab/gallery-tab.vue')
       },
@@ -54,7 +59,8 @@ const riverDetailRoutes = [
         path: 'accidents',
         name: 'accidents-tab',
         meta: {
-          crumbLabel: 'River Detail'
+          crumbLabel: 'River Detail',
+          transitionName: 'slide'
         },
         component: () => import('./accidents-tab/accidents-tab.vue')
       },
@@ -62,7 +68,8 @@ const riverDetailRoutes = [
         path: 'credits',
         name: 'credits-tab',
         meta: {
-          crumbLabel: 'River Detail'
+          crumbLabel: 'River Detail',
+          transitionName: 'slide'
         },
         component: () => import('./credits-tab/credits-tab.vue')
       },
@@ -70,7 +77,8 @@ const riverDetailRoutes = [
         path: 'weather',
         name: 'weather-tab',
         meta: {
-          crumbLabel: 'River Detail'
+          crumbLabel: 'River Detail',
+          transitionName: 'slide'
         },
         component: () => import('./weather-tab/weather-tab.vue')
       },
@@ -78,7 +86,8 @@ const riverDetailRoutes = [
         path: 'news',
         name: 'news-tab',
         meta: {
-          crumbLabel: 'River Detail'
+          crumbLabel: 'River Detail',
+          transitionName: 'slide'
         },
         component: () => import('./news-tab/news-tab.vue')
       }

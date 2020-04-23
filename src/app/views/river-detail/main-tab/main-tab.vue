@@ -44,6 +44,24 @@
       }"
     >
       <template #main>
+        <template v-if="loading">
+          <utility-block
+            state="loading"
+            :hide-text="true"
+          />
+        </template>
+        <template v-if="!loading && data">
+          <div class="map-wrapper">
+            <NwiMap
+              height="350"
+              :include-legend="false"
+              :has-sidebar="false"
+              :mapbox-access-token="token"
+              :tileservers="[tileserver]"
+              :has-controls="false"
+            />
+          </div>
+        </template>
         <beta-box />
         <river-description />
         <rapids-section />
@@ -63,6 +81,8 @@ import {
 import { Layout } from '@/app/global/layout'
 import { checkWindow } from '@/app/global/mixins'
 import { mapState } from 'vuex'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
+import { NwiMap } from '@/app/views/river-index/components'
 import {
   SideBar,
   RapidsSection,
@@ -76,10 +96,12 @@ export default {
   components: {
     BetaBox,
     SideBar,
+    NwiMap,
     RapidsSection,
     CommentsSection,
     RiverDescription,
-    Layout
+    Layout,
+    UtilityBlock
   },
   mixins: [checkWindow],
   data: () => ({

@@ -16,9 +16,27 @@
         </template>
         <template v-else-if="photos">
           <template v-if="formattedData && formattedData.length > 0">
-            <image-gallery
-              :images="formattedData"
-            />
+            <div class="bx--tool-bar-wrapper">
+              <cv-toolbar class="nwi-map-controls-v2">
+                <cv-overflow-menu class="bx--toolbar-action">
+                  <template slot="trigger">
+                    <Filter16 class="" />
+                  </template>
+                  <cv-toolbar-title title="Show Rapids" />
+                  <cv-toolbar-option>
+                    <cv-checkbox
+                      name="all"
+                      label="All"
+                      value="all"
+                    />
+                  </cv-toolbar-option>
+                </cv-overflow-menu>
+                <cv-button>
+                  Upload Media
+                </cv-button>
+              </cv-toolbar>
+            </div>
+            <image-gallery :images="formattedData" />
           </template>
           <template v-else>
             <utility-block
@@ -119,6 +137,11 @@ export default {
       width: 350px;
       height: 250px;
     }
+  }
+  .bx--tool-bar-wrapper {
+    width:100%;
+    display: flex;
+    justify-content: flex-end;
   }
 }
 </style>

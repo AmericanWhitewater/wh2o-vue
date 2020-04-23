@@ -67,6 +67,17 @@
       </template>
       <template #sidebar>
         <template v-if="gages && gages.length > 0">
+          <gage-chart
+            :chart-data="chartData"
+            :height="chartHeight"
+            :options="chartConfig"
+          />
+          <gage-chart
+            :chart-data="chartData"
+            :height="chartHeight"
+            :options="chartConfig"
+          />
+
           <div class="flow-stats bx--row mb-spacing-md">
             <div class="bx--col">
               <h6 class="mb-spacing-2xs">
