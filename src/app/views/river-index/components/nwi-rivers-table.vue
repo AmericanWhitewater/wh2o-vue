@@ -1,5 +1,5 @@
 <template>
-  <cv-tile
+  <div
     id="nwi-rivers-table"
     kind="standard"
   >
@@ -7,7 +7,10 @@
       <utility-block state="loading" />
     </template>
     <template v-else-if="reaches">
-      <div class="bx--data-table-container">
+      <div
+        ref="table-container"
+        class="bx--data-table-container river-index"
+      >
         <table class="bx--data-table river-table">
           <thead>
             <tr>
@@ -19,6 +22,7 @@
               <th>
                 Flow Reading
               </th>
+              <th>&nbsp;</th>
               <th>&nbsp;</th>
             </tr>
           </thead>
@@ -74,7 +78,7 @@
     <template v-else>
       Error
     </template>
-  </cv-tile>
+  </div>
 </template>
 
 <script>
@@ -191,18 +195,24 @@ export default {
 
 <style lang="scss">
 #nwi-rivers-table {
-  // background-color: $ui-02;
-  border: none;
-  bottom: 0;
-  right: 0;
-  padding: 0;
+  overflow-x: scroll;
+}
+.bx--data-table-container {
   overflow-y: scroll;
   z-index: 2;
   width: 100%;
   height: 100%;
+   min-height:calc(100vh - 236px);
+   background-color:$ui-02;
 
   @include carbon--breakpoint("md") {
     height: 100%;
+  }
+
+  &.river-index {
+    // @note 211 came from: this.$refs["table-container"].getClientRects()[0].top
+    // may need to add to resize event listener?
+    max-height:calc(100vh - 261px);
   }
   &.river-detail {
     @include carbon--breakpoint("md") {

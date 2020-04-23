@@ -29,6 +29,7 @@
     "core-js": "^3.6.4",
     "emitter-js": "^2.0.2",
     "express": "^4.17.1",
+    "graphql": "^15.0.0",
     "mapbox-gl": "^1.9.0",
     "moment": "^2.24.0",
     "nanoid": "^3.0.2",
