@@ -28,6 +28,7 @@ import ListBulleted16 from '@carbon/icons-vue/es/list--bulleted/16.js'
 import ListNumbered16 from '@carbon/icons-vue/es/list--numbered/16.js'
 import Login32 from '@carbon/icons-vue/es/login/32.js'
 import LogoFacebook24 from '@carbon/icons-vue/es/logo--facebook/24'
+import PaintBrushAlt16 from '@carbon/icons-vue/es/paint-brush--alt/16'
 import LogoLinkedIn24 from '@carbon/icons-vue/es/logo--linkedin/24'
 import Logout32 from '@carbon/icons-vue/es/logout/32.js'
 import Map32 from '@carbon/icons-vue/es/map/32.js'
@@ -86,6 +87,7 @@ export const components = {
   LogoLinkedIn24,
   Logout32,
   Map32,
+  PaintBrushAlt16,
   Maximize16,
   Minimize16,
   Notification20,
