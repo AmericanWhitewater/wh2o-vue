@@ -101,7 +101,7 @@ export default {
       error: state => state.riverDetailState.riverDetailData.error
     }),
     riverId () {
-      return parseInt(this.$route.params.id)
+      return Number(this.$route.params.id)
     },
     // temporary hack while we wait for bbox!!!
     center () {
