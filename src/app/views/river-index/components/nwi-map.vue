@@ -45,6 +45,10 @@ import { Events as topic } from '@/app/global/services'
 import { mapState } from 'vuex'
 import { riverIndexActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
+import {
+  mapboxAccessToken,
+  nwiTileServer
+} from '@/app/environment/environment'
 
 const fitBoundsOptions = {
   padding: 80
@@ -104,14 +108,6 @@ export default {
       type: Object,
       required: false
     },
-    mapboxAccessToken: {
-      type: String,
-      required: true
-    },
-    tileservers: {
-      type: Array,
-      required: true
-    },
     startingZoom: {
       type: Number,
       default: 4
@@ -149,7 +145,8 @@ export default {
       loading: false,
       colorBy: this.initialColorBy,
       baseMap: this.initialBaseMap,
-      searchResults: false
+      searchResults: false,
+      mapboxAccessToken: mapboxAccessToken
     }
   },
   computed: {
@@ -366,7 +363,7 @@ export default {
         this.loading = true
         this.map.addSource('nwi-source', {
           type: 'vector',
-          tiles: this.tileservers,
+          tiles: [nwiTileServer],
           minzoom: 4,
           maxzoom: 14
         })

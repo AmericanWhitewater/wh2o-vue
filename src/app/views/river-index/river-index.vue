@@ -11,9 +11,7 @@
             :feature-to-center="featureToCenter"
             :has-controls="false"
             :highlighted-feature="highlightedFeature"
-            :mapbox-access-token="mapboxAccessToken"
             :source-layers="sourceLayers"
-            :tileservers="[tileserver]"
             center-on-user-location
             id-for-full-screen="national-map-app"
             :include-legend="showLegend"
@@ -57,10 +55,6 @@ import { riverIndexActions } from './shared/state'
 import { riverSearchActions } from '@/app/views/river-search/shared/state'
 import { mapState } from 'vuex'
 import { riverSearchHttpConfig, checkWindow } from '@/app/global/mixins'
-import {
-  mapboxAccessToken,
-  nwiTileServer
-} from '@/app/environment/environment'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 /**
  * @todo beforeDestroy store bbox / zoom level
@@ -94,8 +88,6 @@ export default {
   },
   data: () => ({
     searchTerm: '',
-    mapboxAccessToken: '',
-    tileserver: '',
     river: null,
     featureToCenter: null,
     loading: false,
@@ -183,10 +175,6 @@ export default {
     projectDetailUrl (projectId) {
       return `/content/Project/view/id/${projectId}/`
     }
-  },
-  created () {
-    this.mapboxAccessToken = mapboxAccessToken
-    this.tileserver = nwiTileServer
   }
 }
 </script>

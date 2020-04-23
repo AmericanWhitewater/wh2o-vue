@@ -4,22 +4,14 @@
       name="layout-two-thirds"
     >
       <template #main>
-        <template v-if="token">
+        <template>
           <NwiMap
             :include-legend="false"
-            :mapbox-access-token="token"
-            :tileservers="[tileserver]"
             :has-controls="false"
             :detail-reach-id="reachId"
             :source-layers="sourceLayers"
             :center="center"
             :starting-zoom="zoom"
-          />
-        </template>
-        <template v-else>
-          <utility-block
-            state="error"
-            text="map failed"
           />
         </template>
       </template>
@@ -49,21 +41,14 @@
 </template>
 <script>
 import { Layout } from '@/app/global/layout'
-import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { NwiMap } from '@/app/views/river-index/components'
 import { mapActions } from '../shared/state'
 import { mapState } from 'vuex'
-import {
-  mapboxAccessToken,
-  nwiTileServer
-} from '@/app/environment/environment'
 
 export default {
   name: 'map-tab',
   components: {
-
     Layout,
-    UtilityBlock,
     NwiMap
   },
   data: () => ({
@@ -71,9 +56,7 @@ export default {
     includeLegend: false,
     mapControls: ['baseMap', 'color', 'fullscreen'],
     mockBBox: ['-106.297217', '38.776635', '-105.967627', '38.907397'],
-    sourceLayers: ['reach-segments', 'rapids', 'access'],
-    tileserver: nwiTileServer,
-    token: mapboxAccessToken
+    sourceLayers: ['reach-segments', 'rapids', 'access']
   }),
   computed: {
     ...mapState({
