@@ -1,6 +1,6 @@
 <template>
   <div class="main-tab">
-    <layout
+    <!-- <layout
       name="layout-fifty-fifty"
       class="mb-lg"
     >
@@ -33,9 +33,9 @@
           />
         </template>
       </template>
-    </layout>
+    </layout> -->
     <layout
-      name="layout-two-thirds"
+      name="layout-full-width"
       class="mb-lg"
       :options="{
         sidebar: {
@@ -44,6 +44,7 @@
       }"
     >
       <template #main>
+        <beta-box />
         <river-description />
         <rapids-section />
         <comments-section />
@@ -59,30 +60,26 @@ import {
   mapboxAccessToken,
   nwiTileServer
 } from '@/app/environment/environment'
-import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { Layout } from '@/app/global/layout'
-import { NwiMap } from '@/app/views/river-index/components'
 import { checkWindow } from '@/app/global/mixins'
 import { mapState } from 'vuex'
 import {
   SideBar,
-  BetaBox,
   RapidsSection,
   RiverDescription,
-  CommentsSection
+  CommentsSection,
+  BetaBox
 } from './components'
 
 export default {
   name: 'main-tab',
   components: {
+    BetaBox,
     SideBar,
     RapidsSection,
-    BetaBox,
     CommentsSection,
-    UtilityBlock,
     RiverDescription,
-    Layout,
-    NwiMap
+    Layout
   },
   mixins: [checkWindow],
   data: () => ({

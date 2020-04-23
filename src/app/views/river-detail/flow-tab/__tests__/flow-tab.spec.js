@@ -18,12 +18,18 @@ const mockStore = {
         data: null
       }
     }
-  }
+  },
+  dispatch: jest.fn()
 }
 
 const options = {
   mocks: {
-    $store: mockStore
+    $store: mockStore,
+    $route: {
+      params: {
+        id: '123'
+      }
+    }
   }
 }
 

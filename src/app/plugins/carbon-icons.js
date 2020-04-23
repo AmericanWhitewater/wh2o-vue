@@ -16,6 +16,8 @@ import Email24 from '@carbon/icons-vue/es/email/24.js'
 import Email32 from '@carbon/icons-vue/es/email/32.js'
 import Error20 from '@carbon/icons-vue/es/error/20.js'
 import Filter16 from '@carbon/icons-vue/es/filter/16.js'
+import Favorite20 from '@carbon/icons-vue/es/favorite/20.js'
+import FavoriteFilled20 from '@carbon/icons-vue/es/favorite--filled/20.js'
 import FitToScreen16 from '@carbon/icons-vue/es/fit-to-screen/16.js'
 import FitToScreen32 from '@carbon/icons-vue/es/fit-to-screen/32.js'
 import Grid16 from '@carbon/icons-vue/es/grid/16.js'
@@ -32,6 +34,7 @@ import Map32 from '@carbon/icons-vue/es/map/32.js'
 import Maximize16 from '@carbon/icons-vue/es/maximize/16.js'
 import Minimize16 from '@carbon/icons-vue/es/minimize/16.js'
 import Notification20 from '@carbon/icons-vue/es/notification/20.js'
+import NotificationNew20 from '@carbon/icons-vue/es/notification--new/20.js'
 import Paragraph16 from '@carbon/icons-vue/es/paragraph/16.js'
 import Pedestrian32 from '@carbon/icons-vue/es/pedestrian/32.js'
 import Quotes16 from '@carbon/icons-vue/es/quotes/16.js'
@@ -86,6 +89,9 @@ export const components = {
   Maximize16,
   Minimize16,
   Notification20,
+  Favorite20,
+  FavoriteFilled20,
+  NotificationNew20,
   Paragraph16,
   Pedestrian32,
   Quotes16,

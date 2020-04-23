@@ -4,6 +4,7 @@
       <layout name="layout-two-thirds">
         <template #main>
           <p>{{ description }}</p>
+          <slot />
         </template>
       </layout>
     </div>

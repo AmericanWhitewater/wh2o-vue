@@ -1,6 +1,6 @@
 <template>
   <div class="gallery-tab">
-    <layout name="layout-two-thirds">
+    <layout name="layout-full-width">
       <template #sidebar>
         <media-upload-form
           title="Upload Media"

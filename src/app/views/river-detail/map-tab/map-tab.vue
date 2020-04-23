@@ -1,7 +1,7 @@
 <template>
   <div id="map-tab">
     <layout
-      name="layout-two-thirds"
+      name="layout-full-width"
     >
       <template #main>
         <template v-if="token">
@@ -13,6 +13,24 @@
             :tileservers="[tileserver]"
             :has-controls="false"
           />
+          <div class="bx--row mb-sm">
+            <div class="bx--col">
+              <h4>Latitude</h4>
+              <h3>{{ riverData.plat }}</h3>
+            </div>
+            <div class="bx--col">
+              <h4>Longitude</h4>
+              <h3>{{ riverData.plon }}</h3>
+            </div>
+          </div>
+          <div class="bx--row">
+            <div
+              v-if="data.shuttledetails"
+              class="bx--col"
+            >
+              <div v-html="data.shuttledetails" />
+            </div>
+          </div>
         </template>
         <template v-else>
           <utility-block
@@ -26,7 +44,7 @@
         <h2 class="mb-spacing-md">
           Access
         </h2>
-        <div class="bx--row mb-sm">
+        <!-- <div class="bx--row mb-sm">
           <div class="bx--col">
             <h4>Latitude</h4>
             <h3>{{ riverData.plat }}</h3>
@@ -38,9 +56,9 @@
         </div>
         <div class="bx--row">
           <div class="bx--col">
-            <div v-html="data.shuttledetails" />
+            <div v-if="data?.shuttledetails" v-html="data.shuttledetails" />
           </div>
-        </div>
+        </div> -->
       </template>
     </layout>
   </div>

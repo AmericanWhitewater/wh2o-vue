@@ -35,7 +35,7 @@ const options = {
         id: riverId
       }
     },
-    stubs: ['ArrowRight20', 'ArrowRight20', 'ArticleCard']
+    stubs: ['ArrowRight20', 'ArrowRight20', 'ArticleCard', 'PageDescription']
   }
 }
 
