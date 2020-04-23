@@ -18,11 +18,15 @@
           <div class="map-wrapper">
             <NwiMap
               height="350"
+              :detail-reach-id="riverId"
               :include-legend="false"
               :has-sidebar="false"
               :mapbox-access-token="token"
               :tileservers="[tileserver]"
               :has-controls="false"
+              :source-layers="sourceLayers"
+              :center="center"
+              :starting-zoom="zoom"
             />
           </div>
         </template>
@@ -87,7 +91,8 @@ export default {
   mixins: [checkWindow],
   data: () => ({
     tileserver: nwiTileServer,
-    token: mapboxAccessToken
+    token: mapboxAccessToken,
+    sourceLayers: ['reach-segments', 'access']
   }),
   computed: {
     ...mapState({
@@ -96,7 +101,14 @@ export default {
       error: state => state.riverDetailState.riverDetailData.error
     }),
     riverId () {
-      return this.$route.params.id
+      return parseInt(this.$route.params.id)
+    },
+    // temporary hack while we wait for bbox!!!
+    center () {
+      return [this.data.plon, this.data.plat]
+    },
+    zoom () {
+      return 10
     }
   }
 }
