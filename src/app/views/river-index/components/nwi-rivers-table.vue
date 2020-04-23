@@ -10,6 +10,7 @@
       <div
         ref="table-container"
         class="bx--data-table-container river-index"
+        :style="`max-height:calc(100vh - ${Math.floor(tableTop) + 25 }px)`"
       >
         <table class="bx--data-table river-table">
           <thead>
@@ -111,7 +112,8 @@ export default {
   data: () => ({
     windowWidth: 0,
     mq: Breakpoints,
-    loading: false
+    loading: false,
+    tableTop: null
   }),
   computed: {
     noReaches () {
@@ -183,6 +185,7 @@ export default {
     this.debouncedHighlight = debounce(this.highlightFeature, 200)
   },
   mounted () {
+    this.tableTop = this.$refs['table-container'].getClientRects()[0].top
     this.windowWidth = window.innerWidth
     this.$nextTick(() => {
       window.addEventListener('resize', () => {
@@ -208,11 +211,7 @@ export default {
   }
 
   &.river-index {
-    min-height:calc(100vh - 236px);
    background-color:$ui-02;
-    // @note 211 came from: this.$refs["table-container"].getClientRects()[0].top
-    // may need to add to resize event listener?
-    max-height:calc(100vh - 261px);
   }
   &.river-detail {
     @include carbon--breakpoint("md") {
