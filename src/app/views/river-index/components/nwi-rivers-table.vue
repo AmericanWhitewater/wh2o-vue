@@ -203,15 +203,17 @@ export default {
 .bx--data-table-container {
   overflow-y: scroll;
   z-index: 2;
-  width: 100%;
-  height: 100%;
 
   @include carbon--breakpoint("md") {
     height: 100%;
   }
 
   &.river-index {
-   background-color:$ui-02;
+    min-height:calc(100vh - 236px);
+    background-color:$ui-02;
+    // @note 211 came from: this.$refs["table-container"].getClientRects()[0].top
+    // may need to add to resize event listener?
+    max-height:calc(100vh - 261px);
   }
   &.river-detail {
     @include carbon--breakpoint("md") {
