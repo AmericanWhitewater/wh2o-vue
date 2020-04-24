@@ -74,15 +74,6 @@ const riverDetailRoutes = [
         component: () => import('./credits-tab/credits-tab.vue')
       },
       {
-        path: 'weather',
-        name: 'weather-tab',
-        meta: {
-          crumbLabel: 'River Detail',
-          transitionName: 'slide'
-        },
-        component: () => import('./weather-tab/weather-tab.vue')
-      },
-      {
         path: 'news',
         name: 'news-tab',
         meta: {
