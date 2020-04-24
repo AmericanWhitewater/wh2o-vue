@@ -54,15 +54,19 @@
             :hide-text="true"
           />
         </template>
-        <template v-if="!loading && data">
+        <template v-if="data">
           <div class="map-wrapper">
             <NwiMap
-              height="350"
+              height="400"
+              :detail-reach-id="riverId"
               :include-legend="false"
               :has-sidebar="false"
               :mapbox-access-token="token"
               :tileservers="[tileserver]"
               :has-controls="false"
+              :source-layers="sourceLayers"
+              :center="center"
+              :starting-zoom="zoom"
             />
           </div>
         </template>
@@ -139,7 +143,9 @@ export default {
     height: 400px;
   }
   .map-wrapper {
-    height:350px
+    height:400px;
+    position: relative;
+    z-index: 1;
   }
 }
 </style>

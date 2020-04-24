@@ -204,15 +204,9 @@ export default {
   overflow-y: scroll;
   z-index: 2;
 
-  @include carbon--breakpoint("md") {
-    height: 100%;
-  }
-
   &.river-index {
     min-height:calc(100vh - 236px);
     background-color:$ui-02;
-    // @note 211 came from: this.$refs["table-container"].getClientRects()[0].top
-    // may need to add to resize event listener?
     max-height:calc(100vh - 261px);
   }
   &.river-detail {
@@ -224,78 +218,5 @@ export default {
       width: 24%;
     }
   }
-
-  // table.bx--data-table,
-  // .bx--data-table-container {
-  //   min-width: unset;
-  // }
-
-  // .no-reaches-notice {
-  //   height: 100%;
-  //   width: 100%;
-  //   padding: 1rem;
-  //   display: flex;
-  //   justify-content: center;
-  //   align-items: center;
-  // }
-
-  // .zoom-button {
-  //   cursor: pointer;
-  // }
-
-  // /* matching https://unpkg.com/carbon-components@9.91.4/scss/components/data-table-v2/_data-table-v2-core.scss
-  // td:hover directive */
-  // tr {
-  //   td {
-  //     padding: $spacing-sm;
-  //   }
-
-  //   &.active {
-  //     td {
-  //       background-color: rgba($brand-02, 0.1);
-  //       border-bottom: 1px solid $brand-01;
-  //       border-top: 1px solid $brand-01;
-
-  //       &:first-of-type {
-  //         border-left: 1px solid $brand-01;
-  //       }
-
-  //       &:last-of-type {
-  //         border-right: 1px solid $brand-01;
-  //       }
-  //     }
-  //   }
-  // }
-
-  // .low {
-  //   background: rgba(255, 134, 132, 0.7);
-  // }
-  // .high {
-  //   background: rgba(93, 172, 225, 0.7);
-  // }
-  // .running {
-  //   background: rgba(89, 230, 141, 0.7);
-  // }
-  // .bx--data-table-container,
-  // .bx--data-table {
-  //   overflow-x: unset;
-  //   min-width: unset;
-  //   padding: 0;
-  // }
-  // .bx--table-toolbar {
-  //   display: none;
-  // }
-  // a.reach-link {
-  //   color: $text-01;
-  //   text-decoration: none;
-
-  //   &:hover {
-  //     text-decoration: underline;
-  //   }
-
-  //   .section {
-  //     text-decoration: none !important;
-  //   }
-  // }
 }
 </style>

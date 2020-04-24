@@ -9,7 +9,8 @@
               <h1>{{ data.section }}</h1>
             </header>
             <header v-else>
-              <h4>loading</h4>
+              <cv-skeleton-text />
+              <cv-skeleton-text heading />
             </header>
           </div>
         </div>
@@ -20,14 +21,33 @@
         <aside class="bx--col-sm-4 bx--col-lg-2 bx--col-max-2">
           <div class="sticky">
             <div class="button-toolbar">
-              <cv-button kind="ghost">
-                <component :is="notificationIcon" />
-              </cv-button>
-              <cv-button kind="ghost">
-                <Favorite20 />
-              </cv-button>
+              <div>
+                <cv-button kind="ghost">
+                  <component :is="notificationIcon" />
+                </cv-button>
+                <cv-button kind="ghost">
+                  <Favorite20 />
+                </cv-button>
+              </div>
+              <cv-dropdown
+                v-if="windowWidth < breakpoints.lg"
+                v-model="activeTabIndex"
+                class="tab-dropdown"
+                theme="light"
+                @change="switchTab"
+                @click="$emit('dropdown:open')"
+              >
+                <cv-dropdown-item
+                  v-for="(tab, index) in tabs"
+                  :key="index"
+                  :value="index.toString()"
+                >
+                  {{ tab.label }}
+                </cv-dropdown-item>
+              </cv-dropdown>
             </div>
             <transition-group
+              v-if="windowWidth > breakpoints.lg"
               name="entranceFromTop"
               tag="ul"
             >
@@ -37,7 +57,7 @@
               >
                 <cv-button
                   ref="tab-button"
-                  :class="activeTabIndex === index ? 'is-active': ''"
+                  :class="activeTabIndex === index ? 'is-active' : ''"
                   kind="ghost"
                   @click.exact="switchTab(index)"
                   @keydown.enter="switchTab(index)"
@@ -48,12 +68,16 @@
             </transition-group>
           </div>
         </aside>
-        <main class="bx--col-sm-4 bx--col-lg-14 bx--col-max-13 bx--offset-max-1">
+        <main
+          class="bx--col-sm-4 bx--col-lg-14 bx--col-max-13 bx--offset-max-1"
+        >
           <transition
             :name="transitionName"
             mode="out-in"
           >
-            <router-view />
+            <keep-alive>
+              <router-view />
+            </keep-alive>
           </transition>
         </main>
       </div>
@@ -64,14 +88,16 @@
 import { mapState } from 'vuex'
 import { riverDetailActions, alertsActions } from './shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
+import { checkWindow } from '@/app/global/mixins'
 export default {
   name: 'river-detail',
   components: {
     UtilityBlock
   },
+  mixins: [checkWindow],
   data: () => ({
     transitionName: 'fade',
-    activeTabIndex: 0,
+    activeTabIndex: '0',
     tabs: [
       {
         path: 'main',
@@ -153,16 +179,43 @@ export default {
   .bleed {
     background-color: $ui-02;
     header {
-      padding: $spacing-md 0;
+      padding: $spacing-2xl $spacing-md;
+      h1 {
+        @include carbon--breakpoint("sm") {
+          @include carbon--type-style("productive-heading-03");
+        }
+        @include carbon--breakpoint("md") {
+          @include carbon--type-style("productive-heading-04");
+        }
+      }
+      h4 {
+        @include carbon--breakpoint("sm") {
+          @include carbon--type-style("productive-heading-02");
+          margin-bottom:$spacing-xs;
+        }
+        @include carbon--breakpoint("md") {
+          @include carbon--type-style("productive-heading-03");
+        }
+      }
     }
   }
 
   .button-toolbar {
     border-bottom: 3px solid $ui-04;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .bx--form-item {
+      max-width: 150px;
+      .bx--dropdown {
+        border-bottom: 0;
+      }
+    }
   }
   aside {
     .bx--toolbar {
-      margin:0;
+      margin: 0;
     }
     ul {
       li {
@@ -170,10 +223,9 @@ export default {
           width: 100%;
 
           &.is-active {
-              border-color:$brand-01;
-              box-shadow: inset 0 0 0 2px #537653, inset 0 0 0 3px #f4f7fb;
+            border-color: $brand-01;
+            box-shadow: inset 0 0 0 2px #537653, inset 0 0 0 3px #f4f7fb;
           }
-
         }
       }
     }
