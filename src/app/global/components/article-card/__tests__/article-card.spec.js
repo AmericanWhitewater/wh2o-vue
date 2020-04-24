@@ -1,5 +1,5 @@
 import ArticleCard from '../article-card'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const options = {
   propsData: {

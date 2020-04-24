@@ -1,5 +1,5 @@
 import AppBreadcrumbs from '../app-breadcrumbs'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {

@@ -1,5 +1,5 @@
 import UserBookmarks from '../user-bookmarks.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {

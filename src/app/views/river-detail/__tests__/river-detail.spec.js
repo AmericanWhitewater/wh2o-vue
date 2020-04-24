@@ -1,4 +1,4 @@
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 import RiverDetail from '../river-detail.vue'
 
 const mockRouter = {

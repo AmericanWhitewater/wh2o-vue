@@ -1,5 +1,5 @@
 import SidebarArticles from '../components/side-bar-articles.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {

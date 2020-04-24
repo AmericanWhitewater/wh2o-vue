@@ -22,7 +22,11 @@
           <div class="sticky">
             <div class="button-toolbar">
               <div>
-                <cv-button kind="ghost">
+                <cv-button
+                  kind="ghost"
+                  @click.exact="switchTab(4)"
+                  @keydown.exact="switchTab(4)"
+                >
                   <component :is="notificationIcon" />
                 </cv-button>
                 <cv-button kind="ghost">

@@ -1,5 +1,5 @@
 import PostUpdateModal from '../post-update-modal'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 import { postUpdate } from '../services/postUpdate'
 import flushPromises from 'flush-promises'
 import { CvModal } from '@carbon/vue'

@@ -1,5 +1,5 @@
 import ImageGallery from '../image-gallery.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const openLightbox = jest.fn()
 

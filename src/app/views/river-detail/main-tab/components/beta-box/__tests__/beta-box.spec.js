@@ -1,5 +1,5 @@
 import BetaBox from '@/app/views/river-detail/main-tab/components/beta-box/beta-box'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {

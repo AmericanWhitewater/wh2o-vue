@@ -1,5 +1,5 @@
 import WeatherTab from '@/app/views/river-detail/weather-tab/weather-tab.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {

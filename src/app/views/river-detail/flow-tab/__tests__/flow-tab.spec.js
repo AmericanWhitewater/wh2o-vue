@@ -1,5 +1,5 @@
 import FlowTab from '@/app/views/river-detail/flow-tab/flow-tab.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {

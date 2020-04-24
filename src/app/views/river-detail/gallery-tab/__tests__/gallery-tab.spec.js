@@ -1,5 +1,5 @@
 import GalleryTab from '@/app/views/river-detail/gallery-tab/gallery-tab.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 /**
  *

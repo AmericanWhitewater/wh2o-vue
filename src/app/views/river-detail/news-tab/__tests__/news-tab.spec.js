@@ -1,5 +1,5 @@
 import NewsTab from '@/app/views/river-detail/news-tab/news-tab.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {
