@@ -7,6 +7,11 @@ const mockRouter = {
 
 const mockStore = {
   state: {
+    appGlobalState: {
+      appGlobalData: {
+        editMode: false
+      }
+    },
     riverDetailState: {
       riverDetailData: {
         error: null,

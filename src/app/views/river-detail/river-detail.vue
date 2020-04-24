@@ -35,6 +35,12 @@
                 >
                   <component :is="bookmarked ? 'FavoriteFilled20' : 'Favorite20'" />
                 </cv-button>
+                <cv-button
+                  kind="ghost"
+                  @click.exact="toggleEditMode"
+                >
+                  <component :is="editMode ? 'EditOff20' : 'Edit20'" />
+                </cv-button>
               </div>
               <cv-dropdown
                 v-if="windowWidth < breakpoints.lg"
@@ -144,7 +150,9 @@ export default {
       data: state => state.riverDetailState.riverDetailData.data,
       error: state => state.riverDetailState.riverDetailData.error,
       loading: state => state.riverDetailState.riverDetailData.loading,
-      alerts: state => state.riverDetailState.alertsData.data
+      alerts: state => state.riverDetailState.alertsData.data,
+      editMode: state => state.appGlobalState.appGlobalData.editMode,
+      user: state => state.userState.userData.data
     }),
     riverId () {
       return this.$route.params.id
@@ -157,6 +165,20 @@ export default {
     }
   },
   methods: {
+    toggleEditMode () {
+      if (this.user) {
+        this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, !this.editMode)
+      } else {
+        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          title: 'Must log in to edit',
+          kind: 'error',
+          override: true,
+          contrast: false,
+          action: false,
+          autoHide: true
+        })
+      }
+    },
     switchTab (index) {
       this.activeTabIndex = index
       this.$router.replace(`/river-detail/${this.riverId}/${this.tabs[index].path}`).catch(() => {})
@@ -216,7 +238,12 @@ export default {
   .bleed {
     background-color: $ui-02;
     header {
-      padding: $spacing-2xl $spacing-md;
+      padding: $spacing-lg $spacing-md;
+
+      @include carbon--breakpoint('md') {
+        padding: $spacing-2xl $spacing-md;
+      }
+
       h1 {
         @include carbon--breakpoint("sm") {
           @include carbon--type-style("productive-heading-03");

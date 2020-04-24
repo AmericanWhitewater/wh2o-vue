@@ -12,6 +12,8 @@ import ChartBar32 from '@carbon/icons-vue/es/chart--bar/32.js'
 import ChartLine32 from '@carbon/icons-vue/es/chart--line/32.js'
 import Download20 from '@carbon/icons-vue/es/download/20.js'
 import Email20 from '@carbon/icons-vue/es/email/20.js'
+import Edit20 from '@carbon/icons-vue/es/edit/20.js'
+import EditOff20 from '@carbon/icons-vue/es/edit--off/20.js'
 import Email24 from '@carbon/icons-vue/es/email/24.js'
 import Email32 from '@carbon/icons-vue/es/email/32.js'
 import Error20 from '@carbon/icons-vue/es/error/20.js'
@@ -77,6 +79,8 @@ export const components = {
   FitToScreen32,
   Grid16,
   Help32,
+  Edit20,
+  EditOff20,
   Launch20,
   List16,
   Link16,

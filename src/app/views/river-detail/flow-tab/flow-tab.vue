@@ -16,6 +16,7 @@
           <template v-if="gages && gages.length > 0">
             <template v-if="loading">
               <utility-block
+                class="mb-md"
                 height="600"
                 state="loading"
                 text="loading readings..."
@@ -36,6 +37,7 @@
                 </template>
                 <template v-else>
                   <utility-block
+                    class="mb-md"
                     height="500"
                     state="content"
                     title="No Results"
@@ -51,6 +53,7 @@
           </template>
           <template v-else>
             <utility-block
+              class="mb-md"
               height="500"
               title="No Gages"
               state="content"
@@ -60,6 +63,7 @@
         </template>
         <template v-else>
           <utility-block
+            class="mb-md"
             height="500"
             state="error"
           />
