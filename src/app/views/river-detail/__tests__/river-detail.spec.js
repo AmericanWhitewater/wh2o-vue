@@ -12,6 +12,11 @@ const mockStore = {
         error: null,
         data: null,
         loading: null
+      },
+      alertsData: {
+        error: null,
+        data: null,
+        loading: null
       }
     }
   },

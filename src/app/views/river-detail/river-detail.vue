@@ -19,7 +19,7 @@
     <div class="bx--grid">
       <div class="bx--row">
         <aside class="bx--col-sm-4 bx--col-lg-2 bx--col-max-2">
-          <div class="sticky">
+          <div class="sticky controls-wrapper">
             <div class="button-toolbar">
               <div>
                 <cv-button
@@ -29,8 +29,11 @@
                 >
                   <component :is="notificationIcon" />
                 </cv-button>
-                <cv-button kind="ghost">
-                  <Favorite20 />
+                <cv-button
+                  kind="ghost"
+                  @click.exact="toggleBookmark"
+                >
+                  <component :is="bookmarked ? 'FavoriteFilled20' : 'Favorite20'" />
                 </cv-button>
               </div>
               <cv-dropdown
@@ -90,9 +93,11 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { riverDetailActions, alertsActions } from './shared/state'
+import { riverDetailActions, alertsActions, bookmarksActions } from './shared/state'
+import { globalAppActions } from '@/app/global/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 import { checkWindow } from '@/app/global/mixins'
+import { appLocalStorage } from '@/app/global/services'
 export default {
   name: 'river-detail',
   components: {
@@ -100,6 +105,7 @@ export default {
   },
   mixins: [checkWindow],
   data: () => ({
+    bookmarked: null,
     transitionName: 'fade',
     activeTabIndex: '0',
     tabs: [
@@ -138,7 +144,7 @@ export default {
       data: state => state.riverDetailState.riverDetailData.data,
       error: state => state.riverDetailState.riverDetailData.error,
       loading: state => state.riverDetailState.riverDetailData.loading,
-      alerts: state => state.riverDetailState
+      alerts: state => state.riverDetailState.alertsData.data
     }),
     riverId () {
       return this.$route.params.id
@@ -154,12 +160,39 @@ export default {
     switchTab (index) {
       this.activeTabIndex = index
       this.$router.replace(`/river-detail/${this.riverId}/${this.tabs[index].path}`).catch(() => {})
+    },
+    toggleBookmark () {
+      if (!this.bookmarked) {
+        this.$store.dispatch(bookmarksActions.ADD_BOOKMARK, this.reachId)
+        this.bookmarked = true
+      } else {
+        this.$store.dispatch(bookmarksActions.REMOVE_BOOKMARK, this.reachId)
+        this.bookmarked = false
+      }
+      this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        title: this.bookmarked ? 'Bookmark Added' : 'Bookmark Removed',
+        kind: 'success',
+        contrast: false,
+        action: false,
+        coreAction: true
+      })
+    },
+    checkBookmarks () {
+      const bookmarks = appLocalStorage.getItem('wh2o-bookmarked-rivers')
+      if (bookmarks) {
+        const data = bookmarks.find(b => b === this.reachId)
+        if (data) {
+          this.bookmarked = true
+        }
+      } else {
+        this.bookmarked = false
+      }
     }
   },
   created () {
     this.$store.dispatch(riverDetailActions.FETCH_RIVER_DETAIL_DATA, this.riverId)
     this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.$route.params.id)
-
+    this.checkBookmarks()
     this.$router.beforeEach((to, from, next) => {
       let transitionName = to.meta.transitionName || from.meta.transitionName
       if (transitionName === 'slide') {
@@ -202,6 +235,10 @@ export default {
         }
       }
     }
+  }
+  .controls-wrapper {
+    margin-top:1rem;
+    @include layer('raised')
   }
 
   .button-toolbar {

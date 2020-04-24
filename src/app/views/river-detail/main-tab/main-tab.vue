@@ -55,7 +55,7 @@
           />
         </template>
         <template v-if="data">
-          <div class="map-wrapper">
+          <div class="map-wrapper mb-sm">
             <NwiMap
               height="400"
               :detail-reach-id="riverId"
