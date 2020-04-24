@@ -1,10 +1,8 @@
 <template>
   <div id="map-tab">
-    <layout
-      name="layout-two-thirds"
-    >
-      <template #main>
-        <template>
+    <div class="bx--grid">
+      <div class="bx--row">
+        <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-12 bx--col-max-12">
           <NwiMap
             :include-legend="false"
             :has-controls="false"
@@ -12,43 +10,28 @@
             :source-layers="sourceLayers"
             :center="center"
             :starting-zoom="zoom"
+            @clickFeature="clickFeature"
           />
-        </template>
-      </template>
-      <template #sidebar>
-        <hr>
-        <h2 class="mb-spacing-md">
-          Access
-        </h2>
-        <div class="bx--row mb-sm">
-          <div class="bx--col">
-            <h4>Latitude</h4>
-            <h3>{{ riverData.plat }}</h3>
-          </div>
-          <div class="bx--col">
-            <h4>Longitude</h4>
-            <h3>{{ riverData.plon }}</h3>
-          </div>
         </div>
-        <div class="bx--row">
-          <div class="bx--col">
-            <div v-html="riverData.shuttledetails" />
-          </div>
+        <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-4 bx--col-max-4">
+          <info-panel
+            :feature="detailFeature"
+          />
         </div>
-      </template>
-    </layout>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import { Layout } from '@/app/global/layout'
 import { NwiMap } from '@/app/views/river-index/components'
 import { mapActions } from '../shared/state'
 import { mapState } from 'vuex'
+import { InfoPanel } from './components'
 
 export default {
   name: 'map-tab',
   components: {
-    Layout,
+    InfoPanel,
     NwiMap
   },
   data: () => ({
