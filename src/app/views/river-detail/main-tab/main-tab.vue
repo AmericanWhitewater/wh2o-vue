@@ -22,8 +22,7 @@
               :include-legend="false"
               :has-controls="false"
               :source-layers="sourceLayers"
-              :center="center"
-              :starting-zoom="zoom"
+              :starting-bounds="startingBounds"
             />
           </div>
         </template>
@@ -62,6 +61,8 @@ import {
   RiverDescription,
   CommentsSection
 } from './components'
+import bbox from '@turf/bbox'
+import { lineString } from '@turf/helpers'
 
 export default {
   name: 'main-tab',
@@ -88,12 +89,10 @@ export default {
     reachId () {
       return Number(this.$route.params.id)
     },
-    // temporary hack while we wait for bbox!!!
-    center () {
-      return [this.data.plon, this.data.plat]
-    },
-    zoom () {
-      return 10
+    startingBounds () {
+      // TODO: get graphql API to return a linestring or geojson instead of this text
+      const geom = this.data.geom.split(',').map(d => d.split(' '))
+      return bbox(lineString(geom))
     }
   }
 }
