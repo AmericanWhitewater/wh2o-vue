@@ -5,12 +5,16 @@
         <div class="bx--row">
           <div class="bx--col">
             <header v-if="!loading && data">
-              <h4>{{ data.river }}</h4>
-              <h1>{{ data.section }}</h1>
+              <div>
+                <h4>{{ data.river }}</h4>
+                <h1>{{ data.section }}</h1>
+              </div>
             </header>
             <header v-else>
-              <cv-skeleton-text />
-              <cv-skeleton-text heading />
+              <div>
+                <cv-skeleton-text />
+                <cv-skeleton-text heading />
+              </div>
             </header>
           </div>
         </div>
@@ -23,6 +27,7 @@
             <div class="button-toolbar">
               <div>
                 <cv-button
+
                   kind="ghost"
                   @click.exact="switchTab(4)"
                   @keydown.exact="switchTab(4)"
@@ -30,12 +35,14 @@
                   <component :is="notificationIcon" />
                 </cv-button>
                 <cv-button
+
                   kind="ghost"
                   @click.exact="toggleBookmark"
                 >
                   <component :is="bookmarked ? 'FavoriteFilled20' : 'Favorite20'" />
                 </cv-button>
                 <cv-button
+
                   kind="ghost"
                   @click.exact="toggleEditMode"
                 >
@@ -228,9 +235,6 @@ export default {
       next()
     })
   }
-  // mounted() {
-  //   console.log('this.$refs :', this.$refs);
-  // }
 }
 </script>
 <style lang="scss">
@@ -238,11 +242,10 @@ export default {
   .bleed {
     background-color: $ui-02;
     header {
-      padding: $spacing-lg $spacing-md;
-
-      @include carbon--breakpoint('md') {
-        padding: $spacing-2xl $spacing-md;
-      }
+      padding: $spacing-sm $spacing-md;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
       h1 {
         @include carbon--breakpoint("sm") {
@@ -275,7 +278,7 @@ export default {
     justify-content: space-between;
 
     .bx--form-item {
-      max-width: 150px;
+      max-width: 139px;
       .bx--dropdown {
         border-bottom: 0;
       }
@@ -292,7 +295,7 @@ export default {
 
           &.is-active {
             border-color: $brand-01;
-            box-shadow: inset 0 0 0 2px #537653, inset 0 0 0 3px #f4f7fb;
+            box-shadow: inset 4px 0 0 0 #537653;
           }
         }
       }
