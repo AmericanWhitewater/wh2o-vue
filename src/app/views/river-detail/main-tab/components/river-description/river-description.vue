@@ -15,7 +15,7 @@
       <template v-if="!editMode">
         <template v-if="sanitizedDescription">
           <div
-            v-if="!descriptionExpanded"
+            v-if="!descriptionExpanded && sanitizedDescription.length > 2000"
             ref="description"
             class="description-content"
             v-html="sanitizedDescription.slice(0, 2000) + '...'"
@@ -26,7 +26,14 @@
             class="description-content"
             v-html="sanitizedDescription"
           />
-          <cv-button @click.exact="descriptionExpanded = !descriptionExpanded">
+          <cv-button
+            v-if="sanitizedDescription.length > 2000"
+            class="mt-spacing-md"
+            size="small"
+            kind="tertiary"
+            @click.exact="descriptionExpanded = !descriptionExpanded"
+            @keydown.enter="descriptionExpanded = !descriptionExpanded"
+          >
             {{ descriptionExpanded ? 'Show Less' : 'Show More' }}
           </cv-button>
         </template>
