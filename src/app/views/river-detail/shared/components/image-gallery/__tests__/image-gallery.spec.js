@@ -12,7 +12,7 @@ const image = {
 }
 
 const options = {
-  stubs: ['Download20', 'Maximize16'],
+  stubs: ['Download20', 'Maximize16', 'transition'],
   methods: {
     openLightbox
   },

@@ -22,8 +22,14 @@ const mockStore = {
         error: null,
         data: null,
         loading: null
+      },
+      rapidsData: {
+        data: null
       }
     }
+  },
+  getters: {
+    media: null
   },
   dispatch: jest.fn()
 }
@@ -60,18 +66,6 @@ describe('GalleryTab', () => {
     expect(wrapper.find('.utility-block-content').exists()).toBe(false)
   })
 
-  it('shows error block when error', () => {
-    mockStore.state.riverDetailState.galleryData.loading = false
-    mockStore.state.riverDetailState.galleryData.data = false
-    mockStore.state.riverDetailState.galleryData.error = true
-
-    const wrapper = createWrapper(GalleryTab, options)
-
-    expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
-    expect(wrapper.find('.utility-block-error').exists()).toBe(true)
-    expect(wrapper.find('.utility-block-content').exists()).toBe(false)
-  })
-
   it('shows no results block when there are no photos', () => {
     mockStore.state.riverDetailState.galleryData.loading = false
     mockStore.state.riverDetailState.galleryData.error = true
@@ -88,10 +82,14 @@ describe('GalleryTab', () => {
     // eslint-disable-next-line no-unused-vars
     const wrapper = createWrapper(GalleryTab, options)
 
-    expect(mockStore.dispatch).toBeCalledTimes(1)
+    expect(mockStore.dispatch).toBeCalledTimes(2)
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
       '[GALLERY] FETCH_GALLERY_DATA',
-      123456789
+      {
+        page: 1,
+        per_page: 10,
+        reach_id: '123456789'
+      }
     )
   })
 })

@@ -40,14 +40,6 @@
       :class="{ 'mb-spacing-md': !parentIsModal }"
       :disabled="formPending"
     />
-    <cv-button
-      v-if="!parentIsModal"
-      :disabled="formPending"
-      @click.exact="submitForm"
-      @keydown.enter="submitForm"
-    >
-      Submit
-    </cv-button>
   </div>
 </template>
 <script>
@@ -59,7 +51,7 @@ export default {
       type: String,
       required: true,
       validator: val =>
-        ['rapid', 'post', 'gallery', 'reach', 'section_id'].indexOf(val) > -1
+        ['RAPID', 'POST', 'GALLERY', 'REACH'].indexOf(val) > -1
     },
     primaryClickTimestamp: {
       type: String,
@@ -110,7 +102,7 @@ export default {
   },
   watch: {
     primaryClickTimestamp () {
-      this.formSubmit()
+      this.submitForm()
     }
   },
   methods: {
