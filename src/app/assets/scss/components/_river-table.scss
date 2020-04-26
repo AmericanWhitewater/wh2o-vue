@@ -5,6 +5,7 @@
 &.content-height {
     height: $content-height;
     max-height: 685px;
+    overflow: scroll;
 }
   }
   .bx--data-table {
@@ -26,6 +27,14 @@
         }
       }
     }
+
+    .river-name-section {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 
 
 

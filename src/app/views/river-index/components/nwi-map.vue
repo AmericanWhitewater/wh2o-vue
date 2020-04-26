@@ -550,7 +550,7 @@ export default {
 <style lang="scss">
 #nwi-map-container {
   min-width: 100%;
-  height: calc(100vh - 75px);
+  height: calc(100vh - 100px);
   width: 100%;
   position: relative;
 
