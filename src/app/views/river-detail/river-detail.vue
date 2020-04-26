@@ -64,7 +64,7 @@
               </cv-dropdown>
             </div>
             <transition-group
-              v-if="windowWidth > breakpoints.lg"
+              v-if="windowWidth >= breakpoints.lg"
               name="entranceFromTop"
               tag="ul"
             >
