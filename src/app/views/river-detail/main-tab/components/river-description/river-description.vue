@@ -209,7 +209,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 main {
   p {
     margin-bottom: 1.25rem;

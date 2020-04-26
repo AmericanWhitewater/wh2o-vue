@@ -9,6 +9,15 @@
         <h2 class="mb-spacing-md">
           Alerts
         </h2>
+        <cv-button
+          class="mb-spacing-md"
+          size="small"
+          :disabled="alertsLoading"
+          @click.exact="initiatePostUpdate()"
+          @keydown.enter="initiatePostUpdate()"
+        >
+          New Alert
+        </cv-button>
         <template v-if="alertsLoading">
           <utility-block
             class="alerts-loading"
@@ -50,8 +59,8 @@
                         v-if="canEdit(alert)"
                         size="small"
                         kind="secondary"
-                        @click.exact="initiateAlertEdit(alert.id)"
-                        @keydown.enter="initiateAlertEdit(alert.id)"
+                        @click.exact="initiatePostUpdate(alert.id)"
+                        @keydown.enter="initiatePostUpdate(alert.id)"
                       >
                         Edit
                       </cv-button>
@@ -138,13 +147,13 @@
     </layout>
     <post-update-modal
       :post="activeAlert"
-      :visible="editAlertModalVisible"
-      title="Edit Alert"
+      :visible="postUpdateModalVisible"
+      :title="updateModalTitle"
       kind="WARNING"
       :reach-id="$route.params.id"
-      @update:submitted="editAlertModalVisible = false"
-      @update:success="handleEditSuccess"
-      @update:cancelled="editAlertModalVisible = false"
+      @update:submitted="postUpdateModalVisible = false"
+      @update:success="handleUpdateSuccess"
+      @update:cancelled="postUpdateModalVisible = false"
     >
       <template #form-fields="formData">
         <cv-text-input
@@ -192,7 +201,9 @@ export default {
     PostUpdateModal
   },
   data: () => ({
-    editAlertModalVisible: false,
+    updateModalTitle: 'New Alert',
+    successToastTitle: 'Alert Submitted',
+    postUpdateModalVisible: false,
     deleteModalVisible: false,
     activeAlertId: ''
   }),
@@ -217,9 +228,13 @@ export default {
     }
   },
   methods: {
-    initiateAlertEdit (alertId) {
-      this.activeAlertId = alertId
-      this.editAlertModalVisible = true
+    initiatePostUpdate (alertId) {
+      if (this.user) {
+        this.updateModalTitle = alertId ? 'Edit Alert' : 'New Alert'
+        this.successToastTitle = alertId ? 'Alert Revised' : 'Alert Submitted'
+        this.activeAlertId = alertId || null
+        this.postUpdateModalVisible = true
+      }
     },
     /**
      * @todo or if admin
@@ -227,10 +242,10 @@ export default {
     canEdit (alert) {
       return this.user?.uid === alert.user?.uid
     },
-    handleEditSuccess () {
-      this.editAlertModalVisible = false
+    handleUpdateSuccess () {
+      this.postUpdateModalVisible = false
       this.$store.dispatch(globalAppActions.SEND_TOAST, {
-        title: 'Alert Edited',
+        title: this.successToastTitle,
         kind: 'success',
         override: true,
         contrast: false,

@@ -48,6 +48,15 @@
         <template v-if="data">
           <div class="map-wrapper mb-sm">
             <NwiMap
+              height="350"
+              :detail-reach-id="reachId"
+              :include-legend="false"
+              :has-controls="false"
+              :source-layers="sourceLayers"
+              :center="center"
+              :starting-zoom="zoom"
+            />
+            <!-- <NwiMap
               height="400"
               :detail-reach-id="riverId"
               :include-legend="false"
@@ -58,7 +67,7 @@
               :source-layers="sourceLayers"
               :center="center"
               :starting-zoom="zoom"
-            />
+            /> -->
           </div>
         </template>
         <beta-box />

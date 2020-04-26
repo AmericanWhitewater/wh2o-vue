@@ -9,7 +9,12 @@
           />
         </template>
         <template v-else-if="credits">
-          results
+          <div class="bx--row mb-md">
+            <div class="bx--col">
+              <h5>Revision Date: {{ formatDate(credits.revision, 'll') }}</h5>
+              <h3>Revision Comment: {{ credits.revision_comment }}</h3>
+            </div>
+          </div>
         </template>
         <template v-else>
           <utility-block
@@ -33,24 +38,22 @@ export default {
     UtilityBlock,
     Layout
   },
-  data: () => ({
-    creditsHttpConfig: 'let there be error'
-  }),
   computed: {
     ...mapState({
       loading: state => state.riverDetailState.creditsData.loading,
       error: state => state.riverDetailState.creditsData.error,
-      credits: state => state.riverDetailState.creditsData.credits
-    })
+      credits: state => state.riverDetailState.creditsData.data
+    }),
+    reachId () {
+      return this.$route.params.id
+    }
   },
   methods: {
     loadData () {
-      if (!this.data && !this.error) {
-        this.$store.dispatch(
-          creditsActions.FETCH_CREDITS_DATA,
-          this.creditsHttpConfig
-        )
-      }
+      this.$store.dispatch(
+        creditsActions.FETCH_CREDITS_DATA,
+        this.reachId
+      )
     }
   },
   created () {

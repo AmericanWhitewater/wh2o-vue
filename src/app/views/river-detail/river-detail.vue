@@ -22,31 +22,28 @@
     </div>
     <div class="bx--grid">
       <div class="bx--row">
-        <aside class="bx--col-sm-4 bx--col-lg-2 bx--col-max-2">
+        <aside class="bx--col-sm-4 bx--col-lg-3 bx--col-max-2">
           <div class="sticky controls-wrapper">
             <div class="button-toolbar">
-              <div>
+              <div class="button-wrapper">
                 <cv-button
-
-                  kind="ghost"
-                  @click.exact="switchTab(4)"
-                  @keydown.exact="switchTab(4)"
-                >
-                  <component :is="notificationIcon" />
-                </cv-button>
-                <cv-button
-
                   kind="ghost"
                   @click.exact="toggleBookmark"
                 >
                   <component :is="bookmarked ? 'FavoriteFilled20' : 'Favorite20'" />
                 </cv-button>
                 <cv-button
-
                   kind="ghost"
                   @click.exact="toggleEditMode"
                 >
                   <component :is="editMode ? 'EditOff20' : 'Edit20'" />
+                </cv-button>
+                <cv-button
+                  kind="ghost"
+                  @click.exact="switchTab(4)"
+                  @keydown.exact="switchTab(4)"
+                >
+                  <component :is="notificationIcon" />
                 </cv-button>
               </div>
               <cv-dropdown
@@ -77,7 +74,7 @@
               >
                 <cv-button
                   ref="tab-button"
-                  :class="activeTabIndex === index ? 'is-active' : ''"
+                  :class="activeTabIndex === index.toString() ? 'is-active' : ''"
                   kind="ghost"
                   @click.exact="switchTab(index)"
                   @keydown.enter="switchTab(index)"
@@ -89,7 +86,7 @@
           </div>
         </aside>
         <main
-          class="bx--col-sm-4 bx--col-lg-14 bx--col-max-13 bx--offset-max-1"
+          class="bx--col-sm-4 bx--col-lg-13 bx--col-max-13 bx--offset-max-1"
         >
           <transition
             :name="transitionName"
@@ -187,7 +184,7 @@ export default {
       }
     },
     switchTab (index) {
-      this.activeTabIndex = index
+      this.activeTabIndex = index.toString()
       this.$router.replace(`/river-detail/${this.riverId}/${this.tabs[index].path}`).catch(() => {})
     },
     toggleBookmark () {
@@ -219,9 +216,14 @@ export default {
     }
   },
   created () {
+    this.switchTab(0)
+
     this.$store.dispatch(riverDetailActions.FETCH_RIVER_DETAIL_DATA, this.riverId)
+
     this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.$route.params.id)
+
     this.checkBookmarks()
+
     this.$router.beforeEach((to, from, next) => {
       let transitionName = to.meta.transitionName || from.meta.transitionName
       if (transitionName === 'slide') {
@@ -277,6 +279,17 @@ export default {
     align-items: center;
     justify-content: space-between;
 
+   @include carbon--breakpoint('lg') {
+      .button-wrapper {
+      display: flex;
+      width:100%;
+      justify-content: space-evenly;
+      .bx--btn {
+        flex-grow: 1;
+        justify-content: center;
+      }
+    }
+   }
     .bx--form-item {
       max-width: 139px;
       .bx--dropdown {
