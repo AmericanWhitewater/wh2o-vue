@@ -15,10 +15,7 @@
         @loading="updateLoading"
         @searchResults="updateSearchResults"
       />
-      <div
-        id="nwi-map"
-        :class="{ hasSidebar: hasSidebar }"
-      />
+      <div id="nwi-map" />
       <nwi-map-legend
         v-if="includeLegend"
         :color-by="colorBy"
@@ -48,6 +45,10 @@ import { Events as topic } from '@/app/global/services'
 import { mapState } from 'vuex'
 import { riverIndexActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
+import {
+  mapboxAccessToken,
+  nwiTileServer
+} from '@/app/environment/environment'
 
 const fitBoundsOptions = {
   padding: 80
@@ -87,12 +88,6 @@ export default {
       required: false,
       default: true
     },
-    // map component doesn't know if it has a neighboring info panel without this prop;
-    // determines whether or not map width is 100%
-    hasSidebar: {
-      type: Boolean,
-      default: true
-    },
     // modifies the map style to highlight a single reach identified by ID
     detailReachId: {
       type: Number,
@@ -112,14 +107,6 @@ export default {
     featureToCenter: {
       type: Object,
       required: false
-    },
-    mapboxAccessToken: {
-      type: String,
-      required: true
-    },
-    tileservers: {
-      type: Array,
-      required: true
     },
     startingZoom: {
       type: Number,
@@ -158,7 +145,8 @@ export default {
       loading: false,
       colorBy: this.initialColorBy,
       baseMap: this.initialBaseMap,
-      searchResults: false
+      searchResults: false,
+      mapboxAccessToken: mapboxAccessToken
     }
   },
   computed: {
@@ -375,7 +363,7 @@ export default {
         this.loading = true
         this.map.addSource('nwi-source', {
           type: 'vector',
-          tiles: this.tileservers,
+          tiles: [nwiTileServer],
           minzoom: 4,
           maxzoom: 14
         })
@@ -570,14 +558,6 @@ export default {
   #nwi-map {
     height: 100%;
     width: 100%;
-
-    &.hasSidebar {
-      height: 95%;
-
-      @include carbon--breakpoint("lg") {
-        height: 100%;
-      }
-    }
 
     &.river-detail {
        @include carbon--breakpoint("md") {

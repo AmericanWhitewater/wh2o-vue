@@ -14,23 +14,18 @@
             :hide-text="true"
           />
         </template>
-        <template v-if="!loading && data && token">
+        <template v-if="!loading && data">
           <div class="map-wrapper">
             <NwiMap
               height="350"
+              :detail-reach-id="reachId"
               :include-legend="false"
-              :has-sidebar="false"
-              :mapbox-access-token="token"
-              :tileservers="[tileserver]"
               :has-controls="false"
+              :source-layers="sourceLayers"
+              :center="center"
+              :starting-zoom="zoom"
             />
           </div>
-        </template>
-        <template v-if="!token">
-          <utility-block
-            title="Disabled"
-            text="map is currently unavailable"
-          />
         </template>
       </template>
     </layout>
@@ -55,10 +50,6 @@
   </div>
 </template>
 <script>
-import {
-  mapboxAccessToken,
-  nwiTileServer
-} from '@/app/environment/environment'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { Layout } from '@/app/global/layout'
 import { NwiMap } from '@/app/views/river-index/components'
@@ -86,8 +77,7 @@ export default {
   },
   mixins: [checkWindow],
   data: () => ({
-    tileserver: nwiTileServer,
-    token: mapboxAccessToken
+    sourceLayers: ['reach-segments', 'access']
   }),
   computed: {
     ...mapState({
@@ -95,8 +85,15 @@ export default {
       data: state => state.riverDetailState.riverDetailData.data,
       error: state => state.riverDetailState.riverDetailData.error
     }),
-    riverId () {
-      return this.$route.params.id
+    reachId () {
+      return Number(this.$route.params.id)
+    },
+    // temporary hack while we wait for bbox!!!
+    center () {
+      return [this.data.plon, this.data.plat]
+    },
+    zoom () {
+      return 10
     }
   }
 }
