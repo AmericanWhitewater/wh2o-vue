@@ -14,7 +14,6 @@
               <div class="toolbar-wrapper">
                 <cv-button
                   size="small"
-
                   @click.exact="mediaUploadModalVisible = true"
                   @keydown.enter="mediaUploadModalVisible = true"
                 >
@@ -34,7 +33,6 @@
               </div>
             </div>
           </div>
-
           <div class="bx--row">
             <div class="bx--col">
               <image-gallery :images="media" />
@@ -69,11 +67,6 @@ import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { MediaUploadModal, ImageGallery } from '../shared/components'
 import { Layout } from '@/app/global/layout'
 import { rapidsActions, galleryActions } from '@/app/views/river-detail/shared/state'
-/**
- * @todo the gallery needs to be a standalone component
- * which you can pass an array of images to
- *
- */
 export default {
   name: 'gallery-tab',
   components: {
@@ -84,7 +77,6 @@ export default {
   },
   data: () => ({
     selectedRapids: [],
-    formattedData: null,
     mediaUploadModalVisible: false
   }),
 
@@ -97,9 +89,6 @@ export default {
       rapids: state => state.riverDetailState.rapidsData.data
     }),
     ...mapGetters(['media']),
-    riverId () {
-      return Number(this.$route.params.id)
-    },
     multiSelectOptions () {
       if (this.rapids) {
         return this.rapids.map(rapid => {
@@ -114,8 +103,11 @@ export default {
     }
   },
   watch: {
-    rapids (val) {
-      this.formatMultiSelectModel(val)
+    rapids: {
+      immediate: true,
+      handler (val) {
+        this.formatMultiSelectModel(val)
+      }
     }
   },
   methods: {
@@ -123,7 +115,7 @@ export default {
       this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.$route.params.id)
     },
     formatMultiSelectModel (rapids) {
-      this.selectedRapids = rapids.map(r => r.id)
+      this.selectedRapids = rapids ? rapids.map(r => r.id) : null
     },
     loadMedia (val) {
       const data = {

@@ -1,75 +1,22 @@
 <template>
   <div class="main-tab">
-    <!-- <layout
-      name="layout-fifty-fifty"
-      class="mb-lg"
-    >
-      <template #left>
-        <beta-box />
-      </template>
-      <template #right>
-        <template v-if="loading">
-          <utility-block
-            state="loading"
-            :hide-text="true"
-          />
-        </template>
-        <template v-if="!loading && data">
-          <div class="map-wrapper">
-            <NwiMap
-              height="350"
-              :detail-reach-id="reachId"
-              :include-legend="false"
-              :has-controls="false"
-              :source-layers="sourceLayers"
-              :center="center"
-              :starting-zoom="zoom"
-            />
-          </div>
-        </template>
-      </template>
-    </layout> -->
     <layout
       name="layout-full-width"
       class="mb-lg"
-      :options="{
-        sidebar: {
-          left: windowWidth < breakpoints.lg
-        }
-      }"
     >
       <template #main>
-        <template v-if="loading">
-          <utility-block
-            state="loading"
-            :hide-text="true"
+        <div class="map-wrapper mb-sm">
+          <NwiMap
+            v-if="data"
+            height="400"
+            :detail-reach-id="reachId"
+            :include-legend="false"
+            :has-controls="false"
+            :source-layers="sourceLayers"
+            :center="center"
+            :starting-zoom="zoom"
           />
-        </template>
-        <template v-if="data">
-          <div class="map-wrapper mb-sm">
-            <NwiMap
-              height="350"
-              :detail-reach-id="reachId"
-              :include-legend="false"
-              :has-controls="false"
-              :source-layers="sourceLayers"
-              :center="center"
-              :starting-zoom="zoom"
-            />
-            <!-- <NwiMap
-              height="400"
-              :detail-reach-id="riverId"
-              :include-legend="false"
-              :has-sidebar="false"
-              :mapbox-access-token="token"
-              :tileservers="[tileserver]"
-              :has-controls="false"
-              :source-layers="sourceLayers"
-              :center="center"
-              :starting-zoom="zoom"
-            /> -->
-          </div>
-        </template>
+        </div>
         <beta-box />
         <river-description />
         <rapids-section />
@@ -83,9 +30,7 @@
 </template>
 <script>
 import { Layout } from '@/app/global/layout'
-import { checkWindow } from '@/app/global/mixins'
 import { mapState } from 'vuex'
-import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { NwiMap } from '@/app/views/river-index/components'
 import {
   SideBar,
@@ -104,10 +49,8 @@ export default {
     RapidsSection,
     CommentsSection,
     RiverDescription,
-    Layout,
-    UtilityBlock
+    Layout
   },
-  mixins: [checkWindow],
   data: () => ({
     sourceLayers: ['reach-segments', 'access']
   }),
@@ -122,7 +65,7 @@ export default {
     },
     // temporary hack while we wait for bbox!!!
     center () {
-      return [this.data.plon, this.data.plat]
+      return [this.data?.plon, this.data?.plat]
     },
     zoom () {
       return 10

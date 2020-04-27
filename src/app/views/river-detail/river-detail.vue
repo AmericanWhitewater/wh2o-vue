@@ -9,6 +9,13 @@
                 <h4>{{ data.river }}</h4>
                 <h1>{{ data.section }}</h1>
               </div>
+              <div>
+                <span class="accent-wrapper">
+                  <label class="accent">
+                    ID – {{ data.id }}
+                  </label>
+                </span>
+              </div>
             </header>
             <header v-else>
               <div>
@@ -74,7 +81,8 @@
               >
                 <cv-button
                   ref="tab-button"
-                  :class="activeTabIndex === index.toString() ? 'is-active' : ''"
+                  :class="[index === 0 ? 'no-border-top' : '', activeTabIndex === index.toString() ? 'is-active' : '']"
+
                   kind="ghost"
                   @click.exact="switchTab(index)"
                   @keydown.enter="switchTab(index)"
@@ -167,8 +175,12 @@ export default {
       }
       return 'Notification20'
     }
+
   },
   methods: {
+    buttonClasses (index) {
+
+    },
     toggleEditMode () {
       if (this.user) {
         this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, !this.editMode)
@@ -241,6 +253,22 @@ export default {
 </script>
 <style lang="scss">
 .river-detail {
+  .accent-wrapper {
+    position: relative;
+
+    display: none;
+
+    @include carbon--breakpoint('lg') {
+      display: block;
+    }
+
+    .accent {
+      // position: absolute;
+      @include carbon--type-style('code-02');
+      width:100%;
+      transform: rotate(90deg);
+    }
+  }
   .bleed {
     background-color: $ui-02;
     header {
@@ -310,6 +338,9 @@ export default {
             border-color: $brand-01;
             box-shadow: inset 4px 0 0 0 #537653;
           }
+          &.no-border-top {
+              border-top:0;
+            }
         }
       }
     }

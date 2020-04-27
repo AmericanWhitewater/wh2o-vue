@@ -10,6 +10,7 @@ const fetchRiverDetailData = data => {
       {
         reach(id: ${data}) {
           avggradient
+          id
           class
           description
           edited
