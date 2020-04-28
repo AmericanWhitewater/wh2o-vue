@@ -10,11 +10,18 @@
                 <h1>{{ data.section }}</h1>
               </div>
               <div>
-                <span class="accent-wrapper">
-                  <label class="accent">
-                    ID – {{ data.id }}
-                  </label>
-                </span>
+                <cv-interactive-tooltip>
+                  <template slot="label">
+                    <span class="accent-wrapper">
+                      <label class="accent">
+                        ID – {{ data.id }}
+                      </label>
+                    </span>
+                  </template>
+                  <template slot="content">
+                    <div />
+                  </template>
+                </cv-interactive-tooltip>
               </div>
             </header>
             <header v-else>

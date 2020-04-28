@@ -2,6 +2,7 @@
   <div>
     <app-toaster />
     <app-navigation />
+    <app-breadcrumbs />
     <transition :name="transitionName">
       <router-view
         :class="[$route.name !== 'home' ? 'interior' : null, 'app-main-content']"
@@ -14,8 +15,8 @@
 <script>
 import {
   AppToaster,
-  AppNavigation
-  , AppCookieBanner
+  AppNavigation,
+  AppBreadcrumbs, AppCookieBanner
 } from './global/components'
 import { appLocalStorage } from '@/app/global/services'
 import { userActions } from '@/app/views/user/shared/state'
@@ -26,6 +27,7 @@ export default {
   },
   components: {
     AppNavigation,
+    AppBreadcrumbs,
     AppToaster,
     AppCookieBanner
   },
