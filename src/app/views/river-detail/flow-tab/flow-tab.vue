@@ -259,7 +259,7 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.riverId)
+    this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.$route.params.id)
   }
 }
 </script>

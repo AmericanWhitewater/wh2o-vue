@@ -220,7 +220,7 @@ export default {
       this.formData.timeEnd = Math.floor(moment(new Date()).unix())
     },
     fetchMetrics () {
-      this.$store.dispatch(metricsActions.FETCH_GAGE_METRICS)
+      this.$store.dispatch(metricsActions.FETCH_GAGE_METRICS, this.$route.params.id)
     },
     async fetchReadings () {
       await this.setTimeScale()

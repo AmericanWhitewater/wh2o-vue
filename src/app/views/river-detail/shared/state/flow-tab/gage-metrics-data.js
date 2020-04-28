@@ -50,15 +50,15 @@ export const metricsActions = reflectKeys(
  */
 const actions = {
   /** fetch gage readings */
-  async [metricsActions.FETCH_GAGE_METRICS] (context, authCred) {
+  async [metricsActions.FETCH_GAGE_METRICS] (context, data) {
     context.commit(DATA_REQUEST)
 
-    const result = await fetchGaugeMetrics(authCred).catch(e => {
+    const result = await fetchGaugeMetrics(data).catch(e => {
       context.commit(DATA_ERROR, e)
     })
 
     if (result) {
-      context.commit(DATA_SUCCESS, result)
+      context.commit(DATA_SUCCESS, result.data.getGaugeInformationForReachID.metrics)
     }
 
     return result

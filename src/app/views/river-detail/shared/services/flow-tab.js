@@ -21,21 +21,16 @@ const fetchGaugeSourceInfo = id => {
   return httpClient.get(url).then(res => res.data)
 }
 
-const fetchGaugeMetrics = () => {
-  const url = apiConstants.gauge.base + apiConstants.gauge.metrics
-
-  return httpClient.get(url).then(res => res.data)
-}
 const fetchGages = data => {
-  const url = `${apiConstants.graphql}`
   return httpClient
-    .post(url, {
+    .post('/graphql', {
       query: `
       {
         getGaugeInformationForReachID(id: ${data}) {
           gauges {
               rc,
               gauge_reading,
+              gauge_metric,
               range_comment,
               class,
               excluded,
@@ -53,6 +48,26 @@ const fetchGages = data => {
               adjusted_reach_class
           }
       }
+        }
+    
+    `
+    })
+    .then(res => res.data)
+}
+const fetchGaugeMetrics = data => {
+  return httpClient
+    .post('/graphql', {
+      query: `
+      {
+        getGaugeInformationForReachID(id: ${data}) {
+            metrics {
+              name
+              unit
+              format
+              id
+              shortkey
+            }
+          }
         }
     
     `

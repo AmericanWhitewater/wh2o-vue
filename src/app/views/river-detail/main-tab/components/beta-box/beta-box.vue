@@ -33,7 +33,7 @@
           <tr>
             <td>Flow Range</td>
             <td v-if="gages && gages.length">
-              {{ `${gages[0].rmin} - ${gages[0].rmax}` }}
+              {{ formatFlowRange(gages[0].rmin, gages[0].rmax) }}
             </td>
             <td v-else>
               n/a
@@ -49,6 +49,16 @@
 
             <td v-if="gages && gages.length">
               {{ gages[0].last_gauge_reading }}
+              {{ formatMetric(gages[0].gauge_metric) }}
+              <cv-tag
+                v-if="gages[0].adjusted_reach_class"
+                :label="gages[0].adjusted_reach_class"
+              />
+              <cv-tag
+                v-if="formatTag(gages[0])"
+                :kind="formatTag(gages[0]).kind"
+                :label="formatTag(gages[0]).label"
+              />
             </td>
             <td v-else>
               n/a
@@ -108,10 +118,44 @@ export default {
       river: state => state.riverDetailState.riverDetailData.data,
       error: state => state.riverDetailState.riverDetailData.error,
       editMode: state => state.appGlobalState.appGlobalData.editMode,
-      gages: state => state.riverDetailState.reachGagesData.data
+      gages: state => state.riverDetailState.reachGagesData.data,
+      metrics: state => state.riverDetailState.gageMetricsData.data
     })
   },
   methods: {
+    formatFlowRange (min, max) {
+      if (min && max) {
+        return `${min} – ${max}`
+      }
+      return 'n/a'
+    },
+    formatMetric (metricId) {
+      if (this.metrics) {
+        return this.metrics.find(m => m.id === metricId.toString())?.unit
+      }
+      return null
+    },
+    formatTag (gage) {
+      if (gage.rmin && gage.rmax && gage.last_gauge_reading) {
+        if (gage.last_gauge_reading < gage.rmin) {
+          return ({
+            kind: 'red',
+            label: 'Below Recommended'
+          })
+        } else if (gage.last_gauge_reading > gage.rmax) {
+          return ({
+            kind: 'blue',
+            label: 'Above Recommended'
+          })
+        } else {
+          return ({
+            kind: 'green',
+            label: 'Runnable'
+          })
+        }
+      }
+      return null
+    },
     formatDate (input) {
       return Moment(input, 'MMM Do YY').format('ll')
     },
