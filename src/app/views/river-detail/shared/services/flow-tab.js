@@ -24,33 +24,31 @@ const fetchGaugeSourceInfo = id => {
 const fetchGages = data => {
   return httpClient
     .post('/graphql', {
-      query: `
-      {
+      query: `{
         getGaugeInformationForReachID(id: ${data}) {
           gauges {
-              rc,
-              gauge_reading,
-              gauge_metric,
-              range_comment,
-              class,
-              excluded,
-              url,
-              rmin,
-              rmax,
+              rc
+              epoch
+              gauge_reading
+              gauge_metric
+              range_comment
+              class
+              excluded
+              url
+              rmin
+              rmax
               gauge {
-                  name,
+                  name
                   id
               }
-              updated,
-              last_gauge_reading,
-              last_gauge_updated,
-              gauge_perfect,
+              updated
+              last_gauge_reading
+              last_gauge_updated
+              gauge_perfect
               adjusted_reach_class
+            }
           }
-      }
-        }
-    
-    `
+        }`
     })
     .then(res => res.data)
 }

@@ -1,7 +1,15 @@
-export function humanReadable (milliseconds, message) {
-  // TIP: to find current time in milliseconds, use:
-  // var  current_time_milliseconds = new Date().getTime();
+/**
+ * Use to convert timestamps like: flow_reading_last_update
+ * in the beta-box.vue component
+ *
+ * @param {number} milliseconds
+ * @param {*} message
+ *
+ * TIP: to find current time in milliseconds, use:
+ * var  current_time_milliseconds = new Date().getTime();
+ */
 
+export function humanReadable (milliseconds, message) {
   function numberEnding (number) {
     return (number > 1) ? 's' : ''
   }
