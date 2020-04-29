@@ -3,7 +3,8 @@ const riverSearchRoutes = [
     path: '/river-search',
     name: 'river-search',
     meta: {
-      crumbLabel: 'Search'
+      crumbLabel: 'Search',
+      transitionName: 'slide'
     },
     component: () => import('./river-search.vue')
   }

@@ -1,4 +1,4 @@
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 import RapidIconBar from '../components/rapid-icon-bar.vue'
 
 const mockStore = {

@@ -1,5 +1,5 @@
 import AccidentsTab from '@/app/views/river-detail/accidents-tab/accidents-tab.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {

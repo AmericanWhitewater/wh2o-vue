@@ -1,5 +1,5 @@
 import UserLogin from '../user-login.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 import flushPromises from 'flush-promises'
 import { userLogin } from '../services/user-login'
 

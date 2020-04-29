@@ -1,5 +1,5 @@
 import ImageGallery from '../image-gallery.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const openLightbox = jest.fn()
 
@@ -12,7 +12,7 @@ const image = {
 }
 
 const options = {
-  stubs: ['Download20', 'Maximize16'],
+  stubs: ['Download20', 'Maximize16', 'transition'],
   methods: {
     openLightbox
   },

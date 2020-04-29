@@ -19,8 +19,8 @@ img {
     @include carbon--breakpoint('sm') {
       padding-top: $mobile-nav-height;
     }
-    @include carbon--breakpoint('lg') {
-      padding-top: $desktop-nav-height;
-    }
+    // @include carbon--breakpoint('lg') {
+    //   padding-top: $desktop-nav-height;
+    // }
   }
 }

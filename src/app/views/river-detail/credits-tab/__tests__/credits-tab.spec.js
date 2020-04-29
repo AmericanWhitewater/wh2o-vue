@@ -1,5 +1,11 @@
 import CreditsTab from '@/app/views/river-detail/credits-tab/credits-tab.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
+
+const mockRoute = {
+  params: {
+    id: '123'
+  }
+}
 
 const mockStore = {
   state: {
@@ -21,6 +27,7 @@ const mockStore = {
 
 const options = {
   mocks: {
+    $route: mockRoute,
     $store: mockStore
   }
 }

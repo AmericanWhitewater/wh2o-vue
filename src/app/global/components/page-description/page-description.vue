@@ -4,6 +4,7 @@
       <layout name="layout-two-thirds">
         <template #main>
           <p>{{ description }}</p>
+          <slot />
         </template>
       </layout>
     </div>
@@ -32,6 +33,7 @@ export default {
   display: flex;
   align-items: center;
   p {
+    margin-bottom: $spacing-md;
     @include carbon--type-style("expressive-heading-03");
   }
 }

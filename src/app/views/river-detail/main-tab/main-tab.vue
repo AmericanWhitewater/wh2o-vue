@@ -1,44 +1,23 @@
 <template>
   <div class="main-tab">
     <layout
-      name="layout-fifty-fifty"
+      name="layout-full-width"
       class="mb-lg"
-    >
-      <template #left>
-        <beta-box />
-      </template>
-      <template #right>
-        <template v-if="loading">
-          <utility-block
-            state="loading"
-            :hide-text="true"
-          />
-        </template>
-        <template v-if="!loading && data">
-          <div class="map-wrapper">
-            <NwiMap
-              height="350"
-              :detail-reach-id="reachId"
-              :include-legend="false"
-              :has-controls="false"
-              :source-layers="sourceLayers"
-              :center="center"
-              :starting-zoom="zoom"
-            />
-          </div>
-        </template>
-      </template>
-    </layout>
-    <layout
-      name="layout-two-thirds"
-      class="mb-lg"
-      :options="{
-        sidebar: {
-          left: windowWidth < breakpoints.lg
-        }
-      }"
     >
       <template #main>
+        <div class="map-wrapper mb-sm">
+          <NwiMap
+            v-if="data"
+            height="400"
+            :detail-reach-id="reachId"
+            :include-legend="false"
+            :has-controls="false"
+            :source-layers="sourceLayers"
+            :center="center"
+            :starting-zoom="zoom"
+          />
+        </div>
+        <beta-box />
         <river-description />
         <rapids-section />
         <comments-section />
@@ -50,32 +29,28 @@
   </div>
 </template>
 <script>
-import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { Layout } from '@/app/global/layout'
-import { NwiMap } from '@/app/views/river-index/components'
-import { checkWindow } from '@/app/global/mixins'
 import { mapState } from 'vuex'
+import { NwiMap } from '@/app/views/river-index/components'
 import {
   SideBar,
-  BetaBox,
   RapidsSection,
   RiverDescription,
-  CommentsSection
+  CommentsSection,
+  BetaBox
 } from './components'
 
 export default {
   name: 'main-tab',
   components: {
-    SideBar,
-    RapidsSection,
     BetaBox,
+    SideBar,
+    NwiMap,
+    RapidsSection,
     CommentsSection,
-    UtilityBlock,
     RiverDescription,
-    Layout,
-    NwiMap
+    Layout
   },
-  mixins: [checkWindow],
   data: () => ({
     sourceLayers: ['reach-segments', 'access']
   }),
@@ -90,7 +65,7 @@ export default {
     },
     // temporary hack while we wait for bbox!!!
     center () {
-      return [this.data.plon, this.data.plat]
+      return [this.data?.plon, this.data?.plat]
     },
     zoom () {
       return 10
@@ -105,7 +80,9 @@ export default {
     height: 400px;
   }
   .map-wrapper {
-    height:350px
+    height:400px;
+    position: relative;
+    z-index: 1;
   }
 }
 </style>

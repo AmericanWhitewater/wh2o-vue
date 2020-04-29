@@ -1,5 +1,5 @@
 import FlowTab from '@/app/views/river-detail/flow-tab/flow-tab.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {
@@ -18,12 +18,18 @@ const mockStore = {
         data: null
       }
     }
-  }
+  },
+  dispatch: jest.fn()
 }
 
 const options = {
   mocks: {
-    $store: mockStore
+    $store: mockStore,
+    $route: {
+      params: {
+        id: '123'
+      }
+    }
   }
 }
 

@@ -1,4 +1,4 @@
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 import BetaBoxEditModal from '../components/beta-box-edit-modal'
 
 const mockStore = {

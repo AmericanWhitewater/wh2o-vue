@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { logger } from '@/app/global/services/app-logger/app-logger'
+import { logger } from '@/app/global/services/app-logger'
 import { environment } from '@/app/environment/environment'
 
 /**

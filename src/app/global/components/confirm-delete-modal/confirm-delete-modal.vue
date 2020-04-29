@@ -1,6 +1,7 @@
 <template>
   <div class="confirm-delete-modal">
     <cv-modal
+      size="small"
       kind="danger"
       :primary-button-disabled="kind === 'strict' && !inputValid"
       :visible="visible"

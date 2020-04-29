@@ -16,6 +16,7 @@
           <template v-if="gages && gages.length > 0">
             <template v-if="loading">
               <utility-block
+                class="mb-md"
                 height="600"
                 state="loading"
                 text="loading readings..."
@@ -36,6 +37,7 @@
                 </template>
                 <template v-else>
                   <utility-block
+                    class="mb-md"
                     height="500"
                     state="content"
                     title="No Results"
@@ -51,6 +53,7 @@
           </template>
           <template v-else>
             <utility-block
+              class="mb-md"
               height="500"
               title="No Gages"
               state="content"
@@ -60,6 +63,7 @@
         </template>
         <template v-else>
           <utility-block
+            class="mb-md"
             height="500"
             state="error"
           />
@@ -132,7 +136,7 @@ import { GageChart, GageReadings, GageChartControls } from './components'
 import { GageChartConfig } from './utils/gage-chart-config'
 import { Layout } from '@/app/global/layout'
 import { mapState } from 'vuex'
-import { readingsActions } from '../shared/state'
+import { readingsActions, reachGagesActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { checkWindow } from '@/app/global/mixins'
 
@@ -170,6 +174,9 @@ export default {
       gagesLoading: state => state.riverDetailState.reachGagesData.loading,
       gagesError: state => state.riverDetailState.reachGagesData.error
     }),
+    riverId () {
+      return this.$route.params.id
+    },
     /**
      * vue-chartjs requires data to be formatted this way
      * @reference https://vue-chartjs.org/guide/#example
@@ -219,10 +226,10 @@ export default {
       return null
     },
     chartSize () {
-      if (this.windowWidth > this.breakpoints.md) {
+      if (this.windowWidth > this.$options.breakpoints.md) {
         return null
       } else {
-        return 'position:relative;width:' + this.breakpoints.sm * 2 + 'px'
+        return 'position:relative;width:' + this.$options.breakpoints.sm * 2 + 'px'
       }
     }
   },
@@ -250,6 +257,9 @@ export default {
         this.chartConfig.scales.xAxes[0].time.unit = format
       }
     }
+  },
+  created () {
+    this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.$route.params.id)
   }
 }
 </script>

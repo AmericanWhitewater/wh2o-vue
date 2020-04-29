@@ -51,7 +51,7 @@ export default {
   }),
   computed: {
     mobileDevice () {
-      return this.windowWidth < this.breakpoints.lg
+      return this.windowWidth < this.$options.breakpoints.lg
     }
   },
   watch: {

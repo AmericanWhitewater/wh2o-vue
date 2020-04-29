@@ -9,11 +9,11 @@
           <div class="bx--col-sm-12 bx--col-md-15 bx--col-lg-15 info-section">
             <div class="outside">
               <div class="inside">
-                <template v-if="windowWidth > breakpoints.md">
+                <template v-if="windowWidth > $options.breakpoints.md">
                   <h4>{{ name }}</h4>
                   <h1>{{ section }}</h1>
                 </template>
-                <template v-if="windowWidth < breakpoints.md">
+                <template v-if="windowWidth < $options.breakpoints.md">
                   <h6>{{ name }}</h6>
                   <h3>{{ section }}</h3>
                 </template>

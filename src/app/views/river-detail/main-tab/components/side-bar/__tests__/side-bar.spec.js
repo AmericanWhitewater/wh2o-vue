@@ -1,5 +1,5 @@
 import SideBar from '../side-bar.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const mockStore = {
   dispatch: jest.fn()
