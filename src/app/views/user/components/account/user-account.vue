@@ -12,7 +12,7 @@
               <div
                 class="bx--col-sm-4 bx--col-md-2 bx--col-lg-3"
               >
-                <template v-if="windowWidth > breakpoints.md">
+                <template v-if="windowWidth > $options.breakpoints.md">
                   <ul class="bg-ui-01 sticky">
                     <li
                       v-for="(item, index) in tabs"

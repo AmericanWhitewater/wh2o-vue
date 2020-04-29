@@ -82,6 +82,8 @@ describe('GalleryTab', () => {
     // eslint-disable-next-line no-unused-vars
     const wrapper = createWrapper(GalleryTab, options)
 
+    await wrapper.vm.$nextTick()
+
     expect(mockStore.dispatch).toBeCalledTimes(2)
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
       '[GALLERY] FETCH_GALLERY_DATA',

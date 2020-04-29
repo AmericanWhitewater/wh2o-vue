@@ -54,7 +54,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import { riverIndexActions } from './shared/state'
 import { riverSearchActions } from '@/app/views/river-search/shared/state'
 import { mapState } from 'vuex'
-import { riverSearchHttpConfig, checkWindow } from '@/app/global/mixins'
+import { riverSearchHttpConfig } from '@/app/global/mixins'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 /**
  * @todo beforeDestroy store bbox / zoom level
@@ -68,7 +68,7 @@ export default {
     UtilityBlock,
     NwiMapControlsV2
   },
-  mixins: [riverSearchHttpConfig, checkWindow],
+  mixins: [riverSearchHttpConfig],
   props: {
     showRiversTable: {
       type: Boolean,

@@ -118,7 +118,7 @@
                 text="loading articles"
               />
             </div>
-            <div v-else-if="articles && articles.length > 0">
+            <div v-else-if="articles">
               <div class="bx--row">
                 <div
                   v-for="(article, index) in articles"
@@ -128,6 +128,7 @@
                   <ArticleCard
                     :title="$titleCase(article.title)"
                     :article-class="article.id"
+                    :article-id="article.id"
                     :author="article.author"
                     :read-time="estReadingTime(article.contents)"
                   />

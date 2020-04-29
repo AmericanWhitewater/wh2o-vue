@@ -35,7 +35,7 @@ const mutations = {
   },
 
   [DATA_RESET] (state) {
-    Object.assign(state, ...initialState)
+    Object.assign(state, initialState)
   }
 }
 
@@ -57,8 +57,6 @@ const actions = {
         context.commit(DATA_SUCCESS, result.data.getRiverArticles.articles)
       }
     }
-
-    return result
   }
 }
 

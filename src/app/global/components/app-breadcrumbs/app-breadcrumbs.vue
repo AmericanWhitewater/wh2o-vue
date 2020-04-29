@@ -167,7 +167,7 @@ export default {
     getLabel (label) {
       if (label === 'River Detail') {
         const currentRiver = `${this.riverName} - ${this.riverSection}`
-        if (this.windowWidth < this.breakpoints.lg) {
+        if (this.windowWidth < this.$options.breakpoints.lg) {
           return `${currentRiver.slice(0, 20)}...`
         }
         return currentRiver

@@ -61,7 +61,7 @@
                 </cv-button>
               </div>
               <cv-dropdown
-                v-if="windowWidth < breakpoints.lg"
+                v-if="windowWidth < $options.breakpoints.lg"
                 v-model="activeTabIndex"
                 class="tab-dropdown"
                 theme="light"
@@ -78,7 +78,7 @@
               </cv-dropdown>
             </div>
             <transition-group
-              v-if="windowWidth >= breakpoints.lg"
+              v-if="windowWidth >= $options.breakpoints.lg"
               name="entranceFromTop"
               tag="ul"
             >
