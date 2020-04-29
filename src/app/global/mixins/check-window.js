@@ -3,7 +3,7 @@
  *
  */
 
-import Breakpoints from '../services/breakpoints/breakpoints'
+import Breakpoints from '../services/breakpoints'
 
 export const checkWindow = {
   data: () => ({

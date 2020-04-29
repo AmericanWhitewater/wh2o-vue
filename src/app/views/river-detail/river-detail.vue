@@ -69,7 +69,7 @@
                 @click="$emit('dropdown:open')"
               >
                 <cv-dropdown-item
-                  v-for="(tab, index) in tabs"
+                  v-for="(tab, index) in $options.tabs"
                   :key="index"
                   :value="index.toString()"
                 >
@@ -83,7 +83,7 @@
               tag="ul"
             >
               <li
-                v-for="(tab, index) in tabs"
+                v-for="(tab, index) in $options.tabs"
                 :key="tab.path"
               >
                 <cv-button
@@ -118,7 +118,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { riverDetailActions, alertsActions, bookmarksActions } from './shared/state'
+import { riverDetailActions, alertsActions, bookmarksActions, reachGagesActions, metricsActions } from './shared/state'
 import { globalAppActions } from '@/app/global/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 import { checkWindow } from '@/app/global/mixins'
@@ -132,38 +132,38 @@ export default {
   data: () => ({
     bookmarked: null,
     transitionName: 'fade',
-    activeTabIndex: '0',
-    tabs: [
-      {
-        path: 'main',
-        label: 'General'
-      },
-      {
-        path: 'flow',
-        label: 'Flow'
-      },
-      {
-        path: 'map',
-        label: 'Map'
-      },
-      {
-        path: 'gallery',
-        label: 'Gallery'
-      },
-      {
-        path: 'news',
-        label: 'News'
-      },
-      {
-        path: 'accidents',
-        label: 'Accidents'
-      },
-      {
-        path: 'credits',
-        label: 'Contributors'
-      }
-    ]
+    activeTabIndex: '0'
   }),
+  tabs: [
+    {
+      path: 'main',
+      label: 'General'
+    },
+    {
+      path: 'flow',
+      label: 'Flow'
+    },
+    {
+      path: 'map',
+      label: 'Map'
+    },
+    {
+      path: 'gallery',
+      label: 'Gallery'
+    },
+    {
+      path: 'news',
+      label: 'News'
+    },
+    {
+      path: 'accidents',
+      label: 'Accidents'
+    },
+    {
+      path: 'credits',
+      label: 'Contributors'
+    }
+  ],
   computed: {
     ...mapState({
       data: state => state.riverDetailState.riverDetailData.data,
@@ -185,9 +185,6 @@ export default {
 
   },
   methods: {
-    buttonClasses (index) {
-
-    },
     toggleEditMode () {
       if (this.user) {
         this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, !this.editMode)
@@ -204,7 +201,7 @@ export default {
     },
     switchTab (index) {
       this.activeTabIndex = index.toString()
-      this.$router.replace(`/river-detail/${this.riverId}/${this.tabs[index].path}`).catch(() => {})
+      this.$router.replace(`/river-detail/${this.$route.params.id}/${this.$options.tabs[index].path}`).catch(() => {})
     },
     toggleBookmark () {
       if (!this.bookmarked) {
@@ -237,9 +234,10 @@ export default {
   created () {
     this.switchTab(0)
 
-    this.$store.dispatch(riverDetailActions.FETCH_RIVER_DETAIL_DATA, this.riverId)
-
+    this.$store.dispatch(riverDetailActions.FETCH_RIVER_DETAIL_DATA, this.$route.params.id)
+    this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.$route.params.id)
     this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.$route.params.id)
+    this.$store.dispatch(metricsActions.FETCH_GAGE_METRICS, this.$route.params.id)
 
     this.checkBookmarks()
 

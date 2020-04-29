@@ -43,7 +43,7 @@
             <td>
               Flow Rate
               <template v-if="gages && gages.length">
-                as of {{ gages[0].last_gauge_updated }}
+                as of {{ formatTime(gages[0].last_gauge_updated) }}
               </template>
             </td>
 
@@ -52,6 +52,7 @@
               {{ formatMetric(gages[0].gauge_metric) }}
               <cv-tag
                 v-if="gages[0].adjusted_reach_class"
+                kind="cool-gray"
                 :label="gages[0].adjusted_reach_class"
               />
               <cv-tag
@@ -88,6 +89,7 @@
 <script>
 import { mapState } from 'vuex'
 import Moment from 'moment'
+import { humanReadable } from '@/app/global/services/human-readable'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { BetaBoxEditModal } from './components'
 /**
@@ -123,6 +125,9 @@ export default {
     })
   },
   methods: {
+    formatTime (input) {
+      return humanReadable(input)
+    },
     formatFlowRange (min, max) {
       if (min && max) {
         return `${min} – ${max}`
