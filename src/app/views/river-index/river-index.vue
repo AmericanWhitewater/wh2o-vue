@@ -27,19 +27,13 @@
           <template v-if="loading || searchLoading">
             <UtilityBlock state="loading" />
           </template>
-          <template v-else-if="results">
+          <template v-else>
             <nwi-rivers-table
               :highlighted-feature="highlightedFeature"
               :reaches="results"
               :showing-search-results="showingSearchResults"
               @centerReach="centerFeature"
               @highlightFeature="changeHighlightedFeature"
-            />
-          </template>
-          <template v-else>
-            <UtilityBlock
-              state="error"
-              text="Map Error. Try search."
             />
           </template>
         </div>
@@ -118,7 +112,7 @@ export default {
         return this.searchResults
       }
 
-      return null
+      return []
     }
   },
   methods: {

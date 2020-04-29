@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm"
-  >
+  <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm">
     <cv-tile
       kind="standard"
       cv-type="standard"
@@ -9,9 +7,7 @@
       <div class="top-bar">
         <div class="title mb-spacing-xs">
           <h4 class="mb-spacing-xs">
-            <a :href="reachURL">
-              {{ reach.river }} - {{ reach.section }}
-            </a>
+            <a :href="reachURL">{{ reach.river }} - {{ reach.section }}</a>
           </h4>
           <span
             v-if="reach.class"
