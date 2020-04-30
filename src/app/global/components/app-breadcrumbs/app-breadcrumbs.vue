@@ -221,6 +221,10 @@ export default {
   height: 100% !important;
 }
 
+.bx--link {
+  cursor: pointer !important;
+}
+
 .bx--breadcrumb {
   display: flex !important;
 }
