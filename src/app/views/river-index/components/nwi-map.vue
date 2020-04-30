@@ -71,11 +71,6 @@ export default {
       required: false,
       default: true
     },
-    // visually highlights a feature on the map
-    highlightedFeature: {
-      type: Object,
-      required: false
-    },
     // display loading spinner because of events from other components
     externalLoading: {
       type: Boolean,
@@ -151,7 +146,8 @@ export default {
     ...mapState({
       mapStyle: state => state.riverIndexState.riverIndexData.mapStyle,
       searchResults: state => state.riverSearchState.riverSearchData.data,
-      searchTerm: state => state.riverSearchState.riverSearchData.searchTerm
+      searchTerm: state => state.riverSearchState.riverSearchData.searchTerm,
+      mouseoveredFeature: state => state.riverIndexState.riverIndexData.mouseoveredFeature
     }),
     baseMapUrl () {
       if (this.baseMap === 'topo') {
@@ -183,14 +179,14 @@ export default {
         this.baseMap = v
       }
     },
-    // visually highlights a given feature on the map
-    highlightedFeature (newVal) {
+    // visually highlights a mosued over feature on the map
+    mouseoveredFeature (feature) {
       // TODO: consider refactoring this to use feature state (it might be faster)
-      if (newVal) {
+      if (feature) {
         this.map.setFilter('activeReachSegmentCasing', [
           '==',
           ['get', 'id'],
-          newVal.properties.id
+          feature.properties.id
         ])
       } else {
         // hide 'active-reach-segment-casing' layer
@@ -287,15 +283,14 @@ export default {
     },
     mouseenterFeature (event) {
       this.map.getCanvas().style.cursor = 'pointer'
-      this.debouncedEmitHighlight(event.features[0])
+      this.debouncedMouseoverFeature(event.features[0])
     },
     mouseleaveFeature () {
       this.map.getCanvas().style.cursor = ''
-      this.debouncedEmitHighlight(null)
+      this.debouncedMouseoverFeature(null)
     },
-    emitHighlight (reach) {
-      this.$store.dispatch(riverIndexActions.HIGHLIGHT_FEATURE, reach)
-      this.$emit('highlightFeature', reach)
+    mouseoverFeature (feature) {
+      this.$store.dispatch(riverIndexActions.MOUSEOVER_FEATURE, feature)
     },
     updateMapColorScheme (newScheme) {
       const colors = Object.values(NwiMapStyles.colorSchemes[newScheme])
@@ -531,7 +526,7 @@ export default {
     },
     initMap () {
       this.map = null
-      this.debouncedEmitHighlight = debounce(this.emitHighlight, 200, {
+      this.debouncedMouseoverFeature = debounce(this.mouseoverFeature, 200, {
         leading: false,
         trailing: true
       })
