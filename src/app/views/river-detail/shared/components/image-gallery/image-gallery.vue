@@ -6,7 +6,7 @@
           <div
             v-for="(image, index) in images"
             :key="index"
-            class="bx--col-sm-12 bx--col-md-4 mb-spacing-lg"
+            class="bx--col-sm-12 bx--col-md-4 bx--col-lg-4 bx--col-max-4 mb-spacing-lg"
           >
             <img
               :src="formatURI(image.image.uri, 'thumb')"
@@ -21,137 +21,141 @@
         </template>
       </div>
     </div>
-
-    <div
-      v-if="activeImage"
-      class="lightbox-wrapper"
+    <transition
+      name="fade"
+      mode="out-in"
     >
-      <div class="lightbox-image-wrapper">
-        <img
-          class="active-image"
-          :src="formatURI(activeImage.image.uri)"
-          :alt="formatAltText(activeImage)"
-        >
-      </div>
-      <div class="lightbox-sidebar">
-        <div>
-          <header class="mb-md">
-            <aw-logo />
-            <cv-button
-              id="close-button"
-              size="small"
-              kind="tertiary"
-              @click.exact="closeLightbox"
-            >
-              Close
-            </cv-button>
-          </header>
-          <cv-toolbar>
-            <cv-overflow-menu class="bx--toolbar-action">
-              <template slot="trigger">
-                <Download20
-                  class="bx--overflow-menu__icon bx--toolbar-filter-icon"
-                />
-              </template>
-            </cv-overflow-menu>
-            <cv-overflow-menu class="bx--toolbar-action">
-              <template slot="trigger">
-                <Maximize16
-                  class="bx--overflow-menu__icon bx--toolbar-filter-icon"
-                />
-              </template>
-            </cv-overflow-menu>
-          </cv-toolbar>
-          <hr>
-          <main>
-            <h2
-              v-if="activeImage.title"
-              class="mb-spacing-md"
-              v-text="activeImage.title"
-            />
-            <h2
-              v-else
-              class="mb-spacing-md"
-              v-text="'Untitled'"
-            />
-            <div class="mb-spacing-md">
-              <h6>Photo Date</h6>
-              <div
-                v-if="activeImage.photo_date"
-                v-text="activeImage.photo_date"
-              />
-              <div
-                v-else
-                v-text="'n/a'"
-              />
-            </div>
-            <div class="mb-spacing-md">
-              <h6>Author</h6>
-              <div
-                v-if="activeImage.author"
-                v-text="activeImage.author"
-              />
-              <div
-                v-else
-                v-text="'n/a'"
-              />
-            </div>
-            <div class="mb-spacing-md">
-              <h6>Rapid</h6>
-              <div
-                v-if="activeImage.poi_name"
-                v-text="activeImage.poi_name"
-              />
-              <div
-                v-else
-                v-text="'n/a'"
-              />
-            </div>
-            <div class="mb-spacing-md">
-              <h6>Caption</h6>
-              <p
-                v-if="activeImage.caption"
-                v-text="activeImage.caption"
-              />
-              <p
-                v-else
-                v-text="'n/a'"
-              />
-            </div>
-            <div class="mb-spacing-md">
-              <h6>Description</h6>
-              <div
-                v-if="activeImage.description"
-                class="active-image-description"
-                v-html="activeImage.description"
-              />
-              <div
-                v-else
-                v-text="'n/a'"
-              />
-            </div>
-          </main>
+      <div
+        v-if="activeImage"
+        class="lightbox-wrapper"
+      >
+        <div class="lightbox-image-wrapper">
+          <img
+            class="active-image"
+            :src="formatURI(activeImage.image.uri)"
+            :alt="formatAltText(activeImage)"
+          >
         </div>
-        <div v-if="images.length > 1">
-          <cv-button-set>
-            <cv-button
-              id="previous-button"
-              :disabled="currentIndex === 0"
-              @click.exact="cycleImages('previous')"
-            >
-              Previous
-            </cv-button>
-            <cv-button
-              id="next-button"
-              :disabled="currentIndex === images.length - 1"
-              @click.exact="cycleImages"
-            >
-              Next
-            </cv-button>
-          </cv-button-set>
+        <div class="lightbox-sidebar">
+          <div>
+            <header class="mb-md">
+              <aw-logo />
+              <cv-button
+                id="close-button"
+                size="small"
+                kind="tertiary"
+                @click.exact="closeLightbox"
+              >
+                Close
+              </cv-button>
+            </header>
+            <cv-toolbar>
+              <cv-overflow-menu class="bx--toolbar-action">
+                <template slot="trigger">
+                  <Download20
+                    class="bx--overflow-menu__icon bx--toolbar-filter-icon"
+                  />
+                </template>
+              </cv-overflow-menu>
+              <cv-overflow-menu class="bx--toolbar-action">
+                <template slot="trigger">
+                  <Maximize16
+                    class="bx--overflow-menu__icon bx--toolbar-filter-icon"
+                  />
+                </template>
+              </cv-overflow-menu>
+            </cv-toolbar>
+            <hr>
+            <main>
+              <h2
+                v-if="activeImage.title"
+                class="mb-spacing-md"
+                v-text="activeImage.title"
+              />
+              <h2
+                v-else
+                class="mb-spacing-md"
+                v-text="'Untitled'"
+              />
+              <div class="mb-spacing-md">
+                <h6>Photo Date</h6>
+                <div
+                  v-if="activeImage.photo_date"
+                  v-text="activeImage.photo_date"
+                />
+                <div
+                  v-else
+                  v-text="'n/a'"
+                />
+              </div>
+              <div class="mb-spacing-md">
+                <h6>Author</h6>
+                <div
+                  v-if="activeImage.author"
+                  v-text="activeImage.author"
+                />
+                <div
+                  v-else
+                  v-text="'n/a'"
+                />
+              </div>
+              <div class="mb-spacing-md">
+                <h6>Rapid</h6>
+                <div
+                  v-if="activeImage.poi_name"
+                  v-text="activeImage.poi_name"
+                />
+                <div
+                  v-else
+                  v-text="'n/a'"
+                />
+              </div>
+              <div class="mb-spacing-md">
+                <h6>Caption</h6>
+                <p
+                  v-if="activeImage.caption"
+                  v-text="activeImage.caption"
+                />
+                <p
+                  v-else
+                  v-text="'n/a'"
+                />
+              </div>
+              <div class="mb-spacing-md">
+                <h6>Description</h6>
+                <div
+                  v-if="activeImage.description"
+                  class="active-image-description"
+                  v-html="activeImage.description"
+                />
+                <div
+                  v-else
+                  v-text="'n/a'"
+                />
+              </div>
+            </main>
+          </div>
+          <div v-if="images.length > 1">
+            <cv-button-set>
+              <cv-button
+                id="previous-button"
+                :disabled="currentIndex === 0"
+                @click.exact="cycleImages('previous')"
+              >
+                Previous
+              </cv-button>
+              <cv-button
+                id="next-button"
+                :disabled="currentIndex === images.length - 1"
+                @click.exact="cycleImages"
+              >
+                Next
+              </cv-button>
+            </cv-button-set>
+          </div>
         </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 <script>

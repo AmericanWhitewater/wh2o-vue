@@ -1,6 +1,6 @@
 <template>
   <div class="accidents-tab">
-    <layout :name="!loading && !error ? 'layout-two-thirds' : 'layout-full-width'">
+    <layout name="layout-full-width">
       <template #main>
         <template v-if="loading">
           <utility-block
@@ -10,6 +10,16 @@
           />
         </template>
         <template v-else-if="accidents">
+          <page-description
+            description="If someone gets hurt on a river, or you read about a whitewater-related injury, please report it to American Whitewater. Don't worry about multiple submissions from other witnesses, as our safety editors will turn multiple witness reports into a single unified accident report."
+          >
+            <cv-button
+              kind="secondary"
+              size="small"
+            >
+              Submit Report
+            </cv-button>
+          </page-description>
           <div
             class="bx--data-table-container mb-lg"
           >
@@ -92,15 +102,15 @@
 <script>
 import { mapState } from 'vuex'
 import { accidentsActions } from '../shared/state'
-import { accidentDetailActions } from '@/app/views/accident-database/shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { Layout } from '@/app/global/layout'
-
+import { PageDescription } from '@/app/global/components'
 export default {
   name: 'accidents-tab',
   components: {
     UtilityBlock,
-    Layout
+    Layout,
+    PageDescription
   },
   computed: {
     ...mapState({
@@ -122,11 +132,7 @@ export default {
       }
     },
     viewAccident (accidentId) {
-      this.$store.dispatch(
-        accidentDetailActions.GET_ACCIDENT_DETAIL_DATA,
-        this.riverId
-      )
-      this.$router.push(`/accident-database/accident-detail/${accidentId}`).catch(() => {})
+      return null
     }
   },
   created () {

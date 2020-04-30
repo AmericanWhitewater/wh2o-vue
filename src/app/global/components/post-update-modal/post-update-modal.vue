@@ -132,7 +132,7 @@ export default {
         this.formData.post.detail = this.post.detail
         this.formData.post.post_type = this.post.post_type
         this.formData.post.post_date = this.post.post_date
-        this.formData.post.user_id = this.post.user.uid
+        this.formData.post.user_id = this.post.user?.uid
       } else {
         this.formData.id = this.$randomId
         const today = new Date()

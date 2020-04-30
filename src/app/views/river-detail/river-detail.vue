@@ -1,432 +1,354 @@
 <template>
-  <section class="river-detail">
-    <transition
-      name="fade"
-      mode="out-in"
-    >
-      <utility-block
-        v-if="error && !loading"
-        state="content"
-        title="River Detail Unavailable"
-        text="Sorry for the inconvenience, our team has been notified."
-      />
-    </transition>
-    <transition
-      name="fade"
-      mode="out-in"
-    >
-      <cv-loading
-        v-if="loading && !error"
-        small
-        overlay
-      />
-    </transition>
-    <template v-if="!loading && river">
-      <div class="river-detail-content">
-        <river-header
-          :name="river.river"
-          :section="river.section"
-          :background-image="bgImage"
-        />
-        <div class="bx--grid">
-          <div class="tabs-wrapper">
-            <cv-overflow-menu>
-              <!-- <cv-overflow-menu-item v-if="userIsAdmin">
-              Link Resources
-            </cv-overflow-menu-item> -->
-              <cv-overflow-menu-item @click.exact="reachShareModalVisible = true">
-                Share Reach
-              </cv-overflow-menu-item>
-            <!-- <cv-overflow-menu-item
-              v-if="userIsAdmin"
-              @click.exact="reachDeleteModalVisible = true"
-            >
-              Remove from Index
-            </cv-overflow-menu-item> -->
-            </cv-overflow-menu>
-            <cv-tabs
-              aria-label="navigation tab label"
-              :no-default-to-first="windowWidth > breakpoints.md"
-              @tab-selected="switchTab($event)"
-            >
-              <cv-tab
-                v-for="(tab, index) in tabs"
-                :id="'tab-' + index + 1"
-                :key="tab"
-                :label="tab"
-              />
-            </cv-tabs>
+  <div class="river-detail">
+    <div class="bleed">
+      <div class="bx--grid">
+        <div class="bx--row">
+          <div class="bx--col">
+            <header v-if="!loading && data">
+              <div>
+                <h4>{{ data.river }}</h4>
+                <h1>{{ data.section }}</h1>
+              </div>
+              <div>
+                <cv-interactive-tooltip>
+                  <template slot="label">
+                    <span class="accent-wrapper">
+                      <label class="accent">
+                        ID – {{ data.id }}
+                      </label>
+                    </span>
+                  </template>
+                  <template slot="content">
+                    <div />
+                  </template>
+                </cv-interactive-tooltip>
+              </div>
+            </header>
+            <header v-else>
+              <div>
+                <cv-skeleton-text />
+                <cv-skeleton-text heading />
+              </div>
+            </header>
           </div>
         </div>
-        <keep-alive>
-          <router-view />
-        </keep-alive>
-        <cv-modal
-          :visible="reachDeleteModalVisible"
-          kind="danger"
-          size="small"
-          :primary-button-disabled="deleteReachPrimaryButtonDisabled"
-          auto-hide-off
-          @modal-hidden="reachDeleteConfirmInput = null"
-          @primary-click="deleteReach"
-          @secondary-click="reachDeleteModalVisible = false"
-          @modal-hide-request="reachDeleteModalVisible = false"
-        >
-          <template slot="title">
-            Confirm Delete
-          </template>
-          <template slot="content">
-            <p class="mb-sm">
-              Deleting {{ river.river + river.section }} will permanently remove
-              the reach from the river index. This cannot be undone.
-            </p>
-            <div class="confirm-delete-warning-text mb-sm">
-              <h4>{{ river.river + " " + river.section }}</h4>
-            </div>
-            <cv-text-input
-              v-model="reachDeleteConfirmInput"
-              theme="light"
-              label="Type reach name and section to confirm"
-            />
-          </template>
-          <template slot="secondary-button">
-            Cancel
-          </template>
-          <template slot="primary-button">
-            Delete
-          </template>
-        </cv-modal>
-        <cv-modal
-          :visible="reachShareModalVisible"
-          auto-hide-off
-          @modal-hidden="reachShareModalVisible = false"
-          @primary-click="reachShareModalVisible = false"
-          @secondary-click="reachShareModalVisible = false"
-          @modal-hide-request="reachShareModalVisible = false"
-        >
-          <template slot="title">
-            Share
-          </template>
-          <template slot="content">
-            <div class="mb-spacing-md">
-              <cv-code-snippet class="bg-ui-02">
-                {{ `https://wh2o-vue.herokuapp.com/#/river-detail/${riverId}/main` }}
-              </cv-code-snippet>
-            </div>
-            <social-sharing
-              :url="shareMeta.url"
-              :title="shareMeta.title"
-              :description="shareMeta.description"
-              :quote="shareMeta.quote"
-              :hashtags="shareMeta.hashtags"
-              twitter-user="AmerWhitewater"
-              inline-template
-            >
-              <div>
-                <network network="facebook">
-                  <cv-button
-                    kind="tertiary"
-                    class="mb-spacing-md mr-spacing-sm"
-                    size="small"
-                  >
-                    Facebook
-                  </cv-button>
-                </network>
-                <network network="twitter">
-                  <cv-button
-                    kind="tertiary"
-                    class="mb-spacing-md mr-spacing-sm"
-                    size="small"
-                  >
-                    Twitter
-                  </cv-button>
-                </network>
-                <network network="linkedin">
-                  <cv-button
-                    kind="tertiary"
-                    class="mb-spacing-md mr-spacing-sm"
-                    size="small"
-                  >
-                    LinkedIn
-                  </cv-button>
-                </network>
-                <network network="email">
-                  <cv-button
-                    kind="tertiary"
-                    class="mb-spacing-md mr-spacing-sm"
-                    size="small"
-                  >
-                    Email
-                  </cv-button>
-                </network>
-              </div>
-            </social-sharing>
-          </template>
-          <template slot="primary-button">
-            Close
-          </template>
-        </cv-modal>
       </div>
-    </template>
-  </section>
+    </div>
+    <div class="bx--grid">
+      <div class="bx--row">
+        <aside class="bx--col-sm-4 bx--col-lg-3 bx--col-max-2">
+          <div class="sticky controls-wrapper">
+            <div class="button-toolbar">
+              <div class="button-wrapper">
+                <cv-button
+                  kind="ghost"
+                  @click.exact="toggleBookmark"
+                >
+                  <component :is="bookmarked ? 'FavoriteFilled20' : 'Favorite20'" />
+                </cv-button>
+                <cv-button
+                  kind="ghost"
+                  @click.exact="toggleEditMode"
+                >
+                  <component :is="editMode ? 'EditOff20' : 'Edit20'" />
+                </cv-button>
+                <cv-button
+                  kind="ghost"
+                  @click.exact="switchTab(4)"
+                  @keydown.exact="switchTab(4)"
+                >
+                  <component :is="notificationIcon" />
+                </cv-button>
+              </div>
+              <cv-dropdown
+                v-if="windowWidth < $options.breakpoints.lg"
+                v-model="activeTabIndex"
+                class="tab-dropdown"
+                theme="light"
+                @change="switchTab"
+                @click="$emit('dropdown:open')"
+              >
+                <cv-dropdown-item
+                  v-for="(tab, index) in $options.tabs"
+                  :key="index"
+                  :value="index.toString()"
+                >
+                  {{ tab.label }}
+                </cv-dropdown-item>
+              </cv-dropdown>
+            </div>
+            <transition-group
+              v-if="windowWidth >= $options.breakpoints.lg"
+              name="entranceFromTop"
+              tag="ul"
+            >
+              <li
+                v-for="(tab, index) in $options.tabs"
+                :key="tab.path"
+              >
+                <cv-button
+                  ref="tab-button"
+                  :class="[index === 0 ? 'no-border-top' : '', activeTabIndex === index.toString() ? 'is-active' : '']"
+
+                  kind="ghost"
+                  @click.exact="switchTab(index)"
+                  @keydown.enter="switchTab(index)"
+                >
+                  {{ tab.label }}
+                </cv-button>
+              </li>
+            </transition-group>
+          </div>
+        </aside>
+        <main
+          class="bx--col-sm-4 bx--col-lg-13 bx--col-max-13 bx--offset-max-1"
+        >
+          <transition
+            :name="transitionName"
+            mode="out-in"
+          >
+            <keep-alive>
+              <router-view />
+            </keep-alive>
+          </transition>
+        </main>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
-/**
- * @todo each river detail component should be responsible for handling
- * loading state. Then we can use skeleton text/elements
- *
- */
-import { mapState, mapGetters } from 'vuex'
-import RiverHeader from './river-header/river-header'
-import { riverDetailActions, reachGagesActions } from './shared/state'
-import UtilityBlock from '@/app/global/components/utility-block/utility-block'
+import { mapState } from 'vuex'
+import { riverDetailActions, alertsActions, bookmarksActions, reachGagesActions, metricsActions } from './shared/state'
+import { globalAppActions } from '@/app/global/state'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 import { checkWindow } from '@/app/global/mixins'
-
+import { appLocalStorage } from '@/app/global/services'
 export default {
   name: 'river-detail',
   components: {
-    'river-header': RiverHeader,
     UtilityBlock
   },
   mixins: [checkWindow],
-  metaInfo () {
-    return {
-      title: this.riverTitle,
-      titleTemplate: '%s | American Whitewater'
-    }
-  },
   data: () => ({
-    reachShareModalVisible: false,
-    reachDeleteModalVisible: false,
-    reachDeleteConfirmInput: null,
-    selected: 'main',
-    prevRoute: null,
-    tabs: [
-      'Main',
-      'Flow',
-      'Weather',
-      'Map',
-      'Gallery',
-      'News',
-      'Accidents',
-      'Credits'
-    ]
+    bookmarked: null,
+    transitionName: 'fade',
+    activeTabIndex: '0'
   }),
+  tabs: [
+    {
+      path: 'main',
+      label: 'General'
+    },
+    {
+      path: 'flow',
+      label: 'Flow'
+    },
+    {
+      path: 'map',
+      label: 'Map'
+    },
+    {
+      path: 'gallery',
+      label: 'Gallery'
+    },
+    {
+      path: 'news',
+      label: 'News'
+    },
+    {
+      path: 'accidents',
+      label: 'Accidents'
+    },
+    {
+      path: 'credits',
+      label: 'Contributors'
+    }
+  ],
   computed: {
     ...mapState({
-      river: state => state.riverDetailState.riverDetailData.data,
-      loading: state => state.riverDetailState.riverDetailData.loading,
+      data: state => state.riverDetailState.riverDetailData.data,
       error: state => state.riverDetailState.riverDetailData.error,
-      editMode: state => state.riverDetailState.riverDetailData.mode,
-      media: state => state.riverDetailState.galleryData.data
+      loading: state => state.riverDetailState.riverDetailData.loading,
+      alerts: state => state.riverDetailState.alertsData.data,
+      editMode: state => state.appGlobalState.appGlobalData.editMode,
+      user: state => state.userState.userData.data
     }),
-    ...mapGetters(['userIsAdmin']),
-    shareMeta () {
-      if (this.river) {
-        const description = this.formatShareDescription(this.river.description)
-        const url = `https://wh2o-vue.herokuapp.com/#/river-detail/${this.river.id}`
-        const title = this.river.river
-        /**
-         * @temp until we can get quote + hashtag wired to db
-         */
-        const quote = description
-        const hashtags = 'whitewater,river,conservation'
-        return {
-          title,
-          url,
-          description,
-          quote,
-          hashtags
-        }
-      }
-      return null
-    },
     riverId () {
       return this.$route.params.id
     },
-    riverTitle () {
-      if (this.river) {
-        return this.river.river
+    notificationIcon () {
+      if (this.alerts && this.alerts.length) {
+        return 'NotificationNew20'
       }
-      if (this.loading) {
-        return 'Loading...'
-      }
-
-      if (this.error) {
-        return 'Error'
-      }
-      return null
-    },
-    bgImage () {
-      // if (this.media) {
-      //   const img = this.media[Math.floor(Math.random() * this.media.length)]
-      //   return `https://prerelease.americanwhitewater.org${img.url}`
-      // }
-      return null
-    },
-    deleteConfirmInput01 () {
-      if (this.river) {
-        const input = this.river.river + ' ' + this.river.section
-        return input.replace(/\s+/g, '-').toLowerCase()
-      }
-
-      return null
-    },
-    deleteConfirmInput02 () {
-      if (this.reachDeleteConfirmInput) {
-        return this.reachDeleteConfirmInput.replace(/\s+/g, '-').toLowerCase()
-      }
-
-      return null
-    },
-
-    deleteReachPrimaryButtonDisabled () {
-      if (this.deleteConfirmInput01 === this.deleteConfirmInput02) {
-        return false
-      }
-      return true
+      return 'Notification20'
     }
-  },
-  watch: {
-    riverId () {
-      this.$store.dispatch(riverDetailActions.FETCH_RIVER_DETAIL_DATA, this.riverId)
-      this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.riverId)
-    },
-    river (data) {
-      if (data) {
-        const riverDescription = this.$sanitize(data.description, {
-          allowedTags: [],
-          allowedAttributes: {}
-        })
 
-        document
-          .getElementById('meta-description')
-          .setAttribute('content', riverDescription.slice(0, 150))
-      }
-    }
   },
   methods: {
-    /**
-     * remove html from article abstract
-     */
-    formatShareDescription (description) {
-      if (description) {
-        const shareDescription = this.$sanitize(description, {
-          allowedTags: [],
-          allowedAttributes: {}
+    toggleEditMode () {
+      if (this.user) {
+        this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, !this.editMode)
+      } else {
+        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          title: 'Must log in to edit',
+          kind: 'error',
+          override: true,
+          contrast: false,
+          action: false,
+          autoHide: true
         })
-
-        return shareDescription.slice(0, 150) + '...'
       }
-      return 'Check this out on American Whitewater.'
-    },
-    deleteReach () {
-      /* eslint-disable-next-line no-console */
-      console.log('perform this action')
     },
     switchTab (index) {
-      /**
-       * cv-tabs emits indexof tab on click, use that to push to the correct tab
-       * use $router.replace to avoid making log into history
-       */
-      if (this.riverId) {
-        this.$router
-          .replace(
-            `/river-detail/${this.riverId}/${this.tabs[index].toLowerCase()}`
-          )
-          .catch(() => {})
-      }
+      this.activeTabIndex = index.toString()
+      this.$router.replace(`/river-detail/${this.$route.params.id}/${this.$options.tabs[index].path}`).catch(() => {})
     },
-    /**
-     * @temp
-     */
-    resetStores () {
-      this.$store.dispatch(riverDetailActions.INITIAL_STATE)
+    toggleBookmark () {
+      if (!this.bookmarked) {
+        this.$store.dispatch(bookmarksActions.ADD_BOOKMARK, this.reachId)
+        this.bookmarked = true
+      } else {
+        this.$store.dispatch(bookmarksActions.REMOVE_BOOKMARK, this.reachId)
+        this.bookmarked = false
+      }
+      this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        title: this.bookmarked ? 'Bookmark Added' : 'Bookmark Removed',
+        kind: 'success',
+        contrast: false,
+        action: false,
+        coreAction: true
+      })
+    },
+    checkBookmarks () {
+      const bookmarks = appLocalStorage.getItem('wh2o-bookmarked-rivers')
+      if (bookmarks) {
+        const data = bookmarks.find(b => b === this.reachId)
+        if (data) {
+          this.bookmarked = true
+        }
+      } else {
+        this.bookmarked = false
+      }
     }
   },
   created () {
-    this.$store.dispatch(riverDetailActions.FETCH_RIVER_DETAIL_DATA, this.riverId)
-    this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.riverId)
-  },
-  beforeRouteLeave (to, from, next) {
-    if (this.editMode) {
-      // use as a check for unsaved changes
-      confirm("you're leaving in edit mode!!!!").then(val => {
-        if (val) {
-          next()
-        } else {
-          next(false)
-        }
-      })
-      this.$store.dispatch(riverDetailActions.SET_EDIT_MODE, false)
-    }
-    document
-      .getElementById('meta-description')
-      .setAttribute('content', 'default description')
-    next()
+    this.switchTab(0)
+
+    this.$store.dispatch(riverDetailActions.FETCH_RIVER_DETAIL_DATA, this.$route.params.id)
+    this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.$route.params.id)
+    this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.$route.params.id)
+    this.$store.dispatch(metricsActions.FETCH_GAGE_METRICS, this.$route.params.id)
+
+    this.checkBookmarks()
+
+    this.$router.beforeEach((to, from, next) => {
+      let transitionName = to.meta.transitionName || from.meta.transitionName
+      if (transitionName === 'slide') {
+        const toDepth = to.path.split('/').length
+        const fromDepth = from.path.split('/').length
+        transitionName = toDepth < fromDepth ? 'slide-left' : 'slide-right'
+      }
+
+      this.transitionName = transitionName || 'fade'
+
+      next()
+    })
   }
 }
 </script>
-
 <style lang="scss">
 .river-detail {
-  margin-bottom: $layout-xl;
-  .tabs-wrapper {
-    background-color: $ui-02;
-    border-bottom: 1px solid #8897a2;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .cv-tabs {
-      width: 100%;
-    }
-    .bx--tabs {
-      display: flex;
-      justify-content: flex-end;
-      text-align: center;
-      border-bottom: 3px solid $ui-03;
-      width: auto;
+  .accent-wrapper {
+    position: relative;
 
-      .bx--tabs__nav,
-      .bx--tabs-trigger {
-        box-shadow: none;
-        -webkit-box-shadow: none;
-        border-bottom: 1px solid transparent;
-        width: auto;
-        @include carbon--breakpoint("md") {
-          width: auto;
-          box-shadow: none;
-          -webkit-box-shadow: none;
+    display: none;
+
+    @include carbon--breakpoint('lg') {
+      display: block;
+    }
+
+    .accent {
+      // position: absolute;
+      @include carbon--type-style('code-02');
+      width:100%;
+      transform: rotate(90deg);
+    }
+  }
+  .bleed {
+    background-color: $ui-02;
+    header {
+      padding: $spacing-sm $spacing-md;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h1 {
+        @include carbon--breakpoint("sm") {
+          @include carbon--type-style("productive-heading-03");
         }
-        &:focus {
-          outline-offset: 0;
+        @include carbon--breakpoint("md") {
+          @include carbon--type-style("productive-heading-04");
+        }
+      }
+      h4 {
+        @include carbon--breakpoint("sm") {
+          @include carbon--type-style("productive-heading-02");
+          margin-bottom:$spacing-xs;
+        }
+        @include carbon--breakpoint("md") {
+          @include carbon--type-style("productive-heading-03");
         }
       }
     }
   }
-  a.bx--tabs__nav-link {
-    width: 6rem;
-    &:focus {
-      width: 6rem;
+  .controls-wrapper {
+    margin-top:1rem;
+    @include layer('raised')
+  }
+
+  .button-toolbar {
+    border-bottom: 3px solid $ui-04;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+   @include carbon--breakpoint('lg') {
+      .button-wrapper {
+      display: flex;
+      width:100%;
+      justify-content: space-evenly;
+      .bx--btn {
+        flex-grow: 1;
+        justify-content: center;
+      }
     }
-    @media (min-width: 42rem) {
-      border-bottom: 0;
+   }
+    .bx--form-item {
+      max-width: 139px;
+      .bx--dropdown {
+        border-bottom: 0;
+      }
     }
   }
-  .bx--tabs-trigger-text {
-    margin-right: 1rem;
+  aside {
+    .bx--toolbar {
+      margin: 0;
+    }
+    ul {
+      li {
+        .bx--btn--ghost {
+          width: 100%;
+
+          &.is-active {
+            border-color: $brand-01;
+            box-shadow: inset 4px 0 0 0 #537653;
+          }
+          &.no-border-top {
+              border-top:0;
+            }
+        }
+      }
+    }
   }
-}
-
-.river-detail .tabs-wrapper .bx--tabs {
-  border-bottom: 0;
-}
-
-.confirm-delete-warning-text {
-  background-color: rgba($danger, 0.25);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 3rem;
 }
 </style>

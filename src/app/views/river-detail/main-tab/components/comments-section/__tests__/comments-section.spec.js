@@ -1,5 +1,5 @@
 import CommentsSection from '../comments-section.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 // import flushPromises from 'flush-promises'
 // import { httpClient } from '@/app/global/services/http-client/http-client'
 

@@ -12,8 +12,7 @@ import {
   newsTabData,
   rapidsData,
   reachGagesData,
-  riverDetailData,
-  weatherData
+  riverDetailData
 } from './shared/state'
 
 export default {
@@ -31,7 +30,6 @@ export default {
     newsTabData,
     rapidsData,
     reachGagesData,
-    riverDetailData,
-    weatherData
+    riverDetailData
   }
 }

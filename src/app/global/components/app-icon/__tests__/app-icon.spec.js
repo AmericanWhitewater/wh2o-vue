@@ -1,5 +1,5 @@
 import AppIcon from '../app-icon'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const options = {
   propsData: {

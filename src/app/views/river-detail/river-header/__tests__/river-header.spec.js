@@ -1,5 +1,5 @@
 // import RiverHeader from '@/app/views/river-detail/river-header/river-header.vue'
-// import { createWrapper } from '@/app/global/services'
+// import { createWrapper } from '@/utils'
 
 // const state = {
 //   // userState: {

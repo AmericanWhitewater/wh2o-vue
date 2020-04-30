@@ -3,11 +3,12 @@
     <div
       class="bx--article-card bx--tile bx--tile--clickable"
       @click.exact="readArticle"
+      @keydown.enter="readArticle"
     >
       <div class="bx--article-card__img" />
       <div
         :class="[
-          windowWidth > breakpoints.lg
+          windowWidth > $options.breakpoints.lg
             ? 'bx--aspect-ratio--2x1'
             : 'bx--aspect-ratio--4x3',
           'bx--aspect-ratio'
@@ -48,24 +49,8 @@
             </div>
           </div>
           <div class="bx--article-card__icon--action">
-            <Launch20
-              v-if="actionIcon === 'launch' && !disabled"
-              aria-label="Open"
-            />
-            <ArrowRight20
-              v-if="actionIcon === 'arrowRight' && !disabled"
-              aria-label="Open"
-            />
-            <Download20
-              v-if="actionIcon === 'download' && !disabled"
-              aria-label="Open"
-            />
-            <Email20
-              v-if="actionIcon === 'download' && !disabled"
-              aria-label="Open"
-            />
-            <Error20
-              v-if="actionIcon === 'disabled' || disabled"
+            <component
+              :is="actionIcon"
               aria-label="Open"
             />
           </div>
@@ -112,7 +97,7 @@ export default {
     },
     articleId: {
       type: Number,
-      required: false
+      required: true
     },
     readTime: {
       type: String,
@@ -121,7 +106,8 @@ export default {
     actionIcon: {
       type: String,
       required: false,
-      default: 'arrowRight'
+      default: 'ArrowRight20',
+      validator: val => ['Launch20', 'ArrowRight20', 'Download20', 'Email20', 'Error20'].indexOf(val) > -1
     },
     river: {
       type: Boolean,
@@ -141,13 +127,13 @@ export default {
         path = `/article/${this.articleId}`
       }
 
-      this.$router.push(path)
+      this.$router.push(path).catch(() => {})
     },
     formatTitle (title) {
-      if (this.windowWidth > this.breakpoints.lg && title.length > 41) {
+      if (this.windowWidth > this.$options.breakpoints.lg && title.length > 41) {
         return title.slice(0, 41) + '...'
       }
-      if (this.windowWidth < this.breakpoints.md && title.length > 41) {
+      if (this.windowWidth < this.$options.breakpoints.md && title.length > 41) {
         return title.slice(0, 100) + '...'
       }
       return title

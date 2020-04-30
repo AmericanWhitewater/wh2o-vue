@@ -3,13 +3,13 @@
  *
  */
 
-import Breakpoints from '../services/breakpoints/breakpoints'
+import Breakpoints from '../services/breakpoints'
 
 export const checkWindow = {
   data: () => ({
-    breakpoints: Breakpoints,
     windowWidth: 0
   }),
+  breakpoints: null,
   methods: {
     updateStoredWindowWidth () {
       this.windowWidth = window.innerWidth
@@ -17,10 +17,12 @@ export const checkWindow = {
   },
   mounted () {
     this.windowWidth = window.innerWidth
-
     this.$nextTick(() => {
       window.addEventListener('resize', this.updateStoredWindowWidth)
     })
+  },
+  created () {
+    this.$options.breakpoints = Breakpoints
   },
   beforeDestroy () {
     window.removeEventListener('resize', this.updateStoredWindowWidth)
