@@ -15,6 +15,7 @@ const fetchAccessData = data => {
             permiturl
             shuttledetails
             zipcode
+            geom
           }
 
     }
