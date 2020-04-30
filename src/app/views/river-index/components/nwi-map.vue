@@ -422,15 +422,20 @@ export default {
     },
     filterNonDetailReachFeatures () {
       if (this.detailReachId) {
-        // for now, just filter out access as that one is the frustrating one
-        // because of overlap with the detail reach access points
-        if (this.mapLayers.includes('access')) {
-          this.map.setFilter('access', [
-            '==',
-            ['get', 'reach_id'],
-            this.detailReachId
-          ])
-        }
+        this.mapLayers.forEach(mapLayer => {
+          if (['access', 'rapids'].includes(mapLayer)) {
+            // access and rapids use `reach_id` instead of `id`
+            this.map.setFilter(mapLayer, [
+              '==',
+              ['get', 'reach_id'],
+              this.detailReachId
+            ])
+          } else if (['projects', 'projectIcons'].includes(mapLayer)) {
+            // projects aren't relevant here, can keep displaying, everything else is reach-specific
+          } else {
+            this.map.setFilter(mapLayer, ['==', ['get', 'id'], this.detailReachId])
+          }
+        })
       }
     },
     // preprocesses NwiMapStyles.js paint properties to de-emphasize (through opacity)
