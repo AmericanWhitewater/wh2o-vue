@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="bx--row pb-md"
+      class="bx--row"
     >
       <div class="bx--col bx--col-md-7 bx--col-lg-8">
         <cv-file-uploader
