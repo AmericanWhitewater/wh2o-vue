@@ -19,7 +19,6 @@
             @changeReachesInViewport="changeReachesInViewport"
             @clickFeature="clickFeature"
             @highlightFeature="changeHighlightedFeature"
-            @searchResults="updateSearchResults"
           />
         </div>
         <div class="bx--col-sm-12 bx--col-md-8 bx--col-lg-4 bx--col-max-6">
@@ -46,7 +45,6 @@
 import { NwiRiversTable, NwiMap, NwiMapControlsV2 } from './components'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { riverIndexActions } from './shared/state'
-import { riverSearchActions } from '@/app/views/river-search/shared/state'
 import { mapState } from 'vuex'
 import { riverSearchHttpConfig, checkWindow } from '@/app/global/mixins'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
@@ -81,7 +79,6 @@ export default {
     }
   },
   data: () => ({
-    searchTerm: '',
     river: null,
     featureToCenter: null,
     loading: false,
@@ -91,34 +88,27 @@ export default {
     ...mapState({
       searchResults: state => state.riverSearchState.riverSearchData.data,
       searchLoading: state => state.riverSearchState.riverSearchData.loading,
+      searchTerm: state => state.riverSearchState.riverSearchData.searchTerm,
       reachesInViewport: state => state.riverIndexState.riverIndexData.data,
       error: state => state.riverIndexState.riverIndexData.error,
       highlightedFeature: state =>
         state.riverIndexState.riverIndexData.highlightedFeature
     }),
     showingSearchResults () {
-      if (this.searchResults) {
-        return this.searchResults.length > 0
-      } else {
-        return false
-      }
+      // true if searchResults is set AND searchTerm is present
+      return Boolean(this.searchResults && this.searchTerm)
     },
     results () {
       if (this.reachesInViewport && this.reachesInViewport.length > 0) {
+        if (this.searchResults && this.searchTerm) {
+          return this.reachesInViewport.filter(reach => this.searchResults.map(r => r.id).includes(reach.properties.id))
+        }
         return this.reachesInViewport
       }
-
-      if (this.searchResults && this.searchResults.length > 0) {
-        return this.searchResults
-      }
-
       return []
     }
   },
   methods: {
-    updateSearchResults (newVal) {
-      this.searchResults = newVal
-    },
     changeHighlightedFeature (feature) {
       this.$store.dispatch(riverIndexActions.HIGHLIGHT_FEATURE, feature)
       // this.highlightedFeature = feature
@@ -137,37 +127,12 @@ export default {
       ) {
         if (this.$route.name === 'river-index') {
           this.$router.push(`/river-detail/${feature.properties.id}/main`)
-        } else {
-          window.location.href = this.reachDetailUrl(feature.properties.id)
         }
       } else if (feature.sourceLayer === 'projects') {
         if (this.$route.name === 'river-index') {
           this.$router.push(`/project-detail/${feature.properties.id}`)
-        } else {
-          // projects have weird URLs -- if shortname is present, that's used in the URL, otherwise ID
-          // thought they might be interchangeable but I tested it and they are not
-          window.location.href = this.projectDetailUrl(
-            feature.properties.shortname || feature.properties.id
-          )
         }
       }
-    },
-    searchRiver () {
-      this.$store.dispatch(riverSearchActions.FETCH_RIVER_SEARCH_DATA, {
-        river: this.searchTerm
-      })
-      /**
-       * @todo figure out how to dynamically set scroll position
-       * transition to search page is jarring, search results obscured
-       */
-      this.searchTerm = ''
-      this.$router.push('/river-search').catch(() => {})
-    },
-    reachDetailUrl (reachId) {
-      return `/content/River/detail/id/${reachId}/`
-    },
-    projectDetailUrl (projectId) {
-      return `/content/Project/view/id/${projectId}/`
     }
   }
 }
