@@ -10,7 +10,6 @@
             :external-loading="loading || searchLoading"
             :feature-to-center="featureToCenter"
             :has-controls="false"
-            :highlighted-feature="highlightedFeature"
             :source-layers="sourceLayers"
             center-on-user-location
             id-for-full-screen="national-map-app"
@@ -18,7 +17,6 @@
             @centeredFeature="centerFeature"
             @changeReachesInViewport="changeReachesInViewport"
             @clickFeature="clickFeature"
-            @highlightFeature="changeHighlightedFeature"
           />
         </div>
         <div class="bx--col-sm-12 bx--col-md-8 bx--col-lg-4 bx--col-max-6">
@@ -28,11 +26,9 @@
           </template>
           <template v-else>
             <nwi-rivers-table
-              :highlighted-feature="highlightedFeature"
               :reaches="results"
               :showing-search-results="showingSearchResults"
               @centerReach="centerFeature"
-              @highlightFeature="changeHighlightedFeature"
             />
           </template>
         </div>
@@ -90,9 +86,7 @@ export default {
       searchLoading: state => state.riverSearchState.riverSearchData.loading,
       searchTerm: state => state.riverSearchState.riverSearchData.searchTerm,
       reachesInViewport: state => state.riverIndexState.riverIndexData.data,
-      error: state => state.riverIndexState.riverIndexData.error,
-      highlightedFeature: state =>
-        state.riverIndexState.riverIndexData.highlightedFeature
+      error: state => state.riverIndexState.riverIndexData.error
     }),
     showingSearchResults () {
       // true if searchResults is set AND searchTerm is present
@@ -109,10 +103,6 @@ export default {
     }
   },
   methods: {
-    changeHighlightedFeature (feature) {
-      this.$store.dispatch(riverIndexActions.HIGHLIGHT_FEATURE, feature)
-      // this.highlightedFeature = feature
-    },
     changeReachesInViewport (newReaches) {
       this.$store.dispatch(riverIndexActions.LOAD_REACHES, newReaches)
     },
