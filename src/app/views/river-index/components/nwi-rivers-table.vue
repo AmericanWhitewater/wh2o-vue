@@ -6,7 +6,7 @@
     <template v-if="loading">
       <utility-block state="loading" />
     </template>
-    <template v-else-if="reaches">
+    <template v-else-if="reaches && reaches.length > 0">
       <div
         ref="table-container"
         class="bx--data-table-container river-index"
@@ -198,7 +198,6 @@ export default {
 
 <style lang="scss">
 #nwi-rivers-table {
-  overflow-x: scroll;
 }
 .bx--data-table-container {
   overflow-y: scroll;
