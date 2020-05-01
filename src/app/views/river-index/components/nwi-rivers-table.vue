@@ -6,7 +6,7 @@
     <template v-if="loading">
       <utility-block state="loading" />
     </template>
-    <template v-else-if="reaches">
+    <template v-else-if="reaches && reaches.length > 0">
       <div
         ref="table-container"
         class="bx--data-table-container river-index"
@@ -33,10 +33,9 @@
                 v-for="reach in reaches"
                 :key="reach.properties.id"
                 :ref="`reach-${reach.properties.id}`"
-                :class="[
-                  highlightedClass(reach.properties.id),
-                ]"
-                @mouseover="debouncedHighlight(reach)"
+                :class="{ active: mouseoveredFeature && reach.properties.id === mouseoveredFeature.properties.id}"
+                @mouseover="debouncedMouseover(reach)"
+                @mouseleave="debouncedMouseover()"
               >
                 <td
                   :class="[`${reach.properties.condition}`,, 'river-name-section']"
@@ -87,6 +86,8 @@ import debounce from 'lodash.debounce'
 import ZoomIn16 from '@carbon/icons-vue/lib/zoom--in/16'
 import scrollIntoView from 'scroll-into-view-if-needed'
 import { Breakpoints } from '@/app/global/services'
+import { mapState } from 'vuex'
+import { riverIndexActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 export default {
   name: 'nwi-rivers-table',
@@ -98,11 +99,6 @@ export default {
     reaches: {
       type: Array,
       required: true
-    },
-    highlightedFeature: {
-      type: Object,
-      required: false,
-      default: null
     },
     showingSearchResults: {
       type: Boolean,
@@ -116,6 +112,9 @@ export default {
     tableTop: null
   }),
   computed: {
+    ...mapState({
+      mouseoveredFeature: state => state.riverIndexState.riverIndexData.mouseoveredFeature
+    }),
     noReaches () {
       return this.reaches && this.reaches.length === 0
     },
@@ -127,10 +126,19 @@ export default {
         return 'compact'
       }
       return 'standard'
+    },
+    mouseoveredClass (reachId) {
+      if (
+        this.mouseoveredFeature &&
+        reachId === this.mouseoveredFeature.properties.id
+      ) {
+        return 'active'
+      }
+      return ''
     }
   },
   watch: {
-    highlightedFeature (feature) {
+    mouseoveredFeature (feature) {
       if (feature) {
         const reachId = feature.properties.id
         if (
@@ -153,17 +161,9 @@ export default {
         .push(`/river-detail/${id}/${tab || 'main'}`)
         .catch(() => {})
     },
-    highlightedClass (reachId) {
-      if (
-        this.highlightedFeature &&
-        reachId === this.highlightedFeature.properties.id
-      ) {
-        return 'active'
-      }
-      return ''
-    },
-    highlightFeature (reach) {
-      this.$emit('highlightFeature', reach)
+
+    mouseoverFeature (feature) {
+      this.$store.dispatch(riverIndexActions.MOUSEOVER_FEATURE, feature)
     },
     centerReach (reach) {
       this.$emit('centerReach', reach)
@@ -182,7 +182,7 @@ export default {
     }
   },
   created () {
-    this.debouncedHighlight = debounce(this.highlightFeature, 200)
+    this.debouncedMouseover = debounce(this.mouseoverFeature, 200)
   },
   mounted () {
     this.tableTop = this.$refs['table-container'].getClientRects()[0].top
@@ -197,12 +197,19 @@ export default {
 </script>
 
 <style lang="scss">
-#nwi-rivers-table {
-  overflow-x: scroll;
-}
 .bx--data-table-container {
   overflow-y: scroll;
   z-index: 2;
+
+  // this is mimicking :hover behaviour that already exists
+  .bx--data-table tbody tr.active {
+    td {
+      background: #e5e5e5;
+      &:nth-child(1) {
+        border-left-width: 1.5rem;
+      }
+    }
+  }
 
   &.river-index {
     min-height:calc(100vh - 236px);

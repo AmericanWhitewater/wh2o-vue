@@ -13,7 +13,6 @@
         @baseMap="updateBaseMap"
         @colorBy="updateColorBy"
         @loading="updateLoading"
-        @searchResults="updateSearchResults"
       />
       <div id="nwi-map" />
       <nwi-map-legend
@@ -71,11 +70,6 @@ export default {
       type: Boolean,
       required: false,
       default: true
-    },
-    // visually highlights a feature on the map
-    highlightedFeature: {
-      type: Object,
-      required: false
     },
     // display loading spinner because of events from other components
     externalLoading: {
@@ -145,13 +139,15 @@ export default {
       loading: false,
       colorBy: this.initialColorBy,
       baseMap: this.initialBaseMap,
-      searchResults: false,
       mapboxAccessToken: mapboxAccessToken
     }
   },
   computed: {
     ...mapState({
-      mapStyle: state => state.riverIndexState.riverIndexData.mapStyle
+      mapStyle: state => state.riverIndexState.riverIndexData.mapStyle,
+      searchResults: state => state.riverSearchState.riverSearchData.data,
+      searchTerm: state => state.riverSearchState.riverSearchData.searchTerm,
+      mouseoveredFeature: state => state.riverIndexState.riverIndexData.mouseoveredFeature
     }),
     baseMapUrl () {
       if (this.baseMap === 'topo') {
@@ -166,10 +162,15 @@ export default {
     // parses out the layers we're adding to the map from NwiMapStyles / sourceLayers prop
     mapLayers () {
       const { sourceLayers } = NwiMapStyles
-
-      return Object.keys(sourceLayers)
+      return this.sourceLayers
         .map(source => Object.keys(sourceLayers[source]))
         .flat()
+    },
+    searchResultIds () {
+      if (this.searchResults) {
+        return this.searchResults.map(r => r.id)
+      }
+      return []
     }
   },
   watch: {
@@ -178,14 +179,14 @@ export default {
         this.baseMap = v
       }
     },
-    // visually highlights a given feature on the map
-    highlightedFeature (newVal) {
+    // visually highlights a mosued over feature on the map
+    mouseoveredFeature (feature) {
       // TODO: consider refactoring this to use feature state (it might be faster)
-      if (newVal) {
+      if (feature) {
         this.map.setFilter('activeReachSegmentCasing', [
           '==',
           ['get', 'id'],
-          newVal.properties.id
+          feature.properties.id
         ])
       } else {
         // hide 'active-reach-segment-casing' layer
@@ -220,9 +221,30 @@ export default {
         this.map.fitBounds(bounds, fitBoundsOptions)
         this.$emit('centeredFeature')
       }
+    },
+    // any time search results change, apply filters
+    searchResultIds (resultIds) {
+      this.applySearchResultFilters()
     }
   },
   methods: {
+    applySearchResultFilters () {
+      // this feels a bit complicated. Basically:
+      // -- only reach layers that are affected by search need to be filtered here
+      // -- we can only call setFilter on layers that exist on the map
+      // -- so we iterate through layers that exist on the map and apply filter IF they match
+      //    layersNeedingFiltering
+      const layersNeedingFiltering = ['reachSegments', 'reachClass', 'reachSegmentLabels']
+      this.mapLayers.forEach(mapLayer => {
+        if (layersNeedingFiltering.includes(mapLayer)) {
+          if (this.searchResultIds && this.searchTerm) {
+            this.map.setFilter(mapLayer, ['in', 'id', ...this.searchResultIds])
+          } else {
+            this.map.setFilter(mapLayer, null)
+          }
+        }
+      })
+    },
     // can be used to make tweaks to the mapbox base styles after loading
     modifyMapboxBaseStyle () {
       if (this.map.getLayer('satellite')) {
@@ -241,18 +263,6 @@ export default {
     },
     updateLoading (loading) {
       this.loading = loading
-    },
-    // if searchResults is not false, filter map to only display those results
-    updateSearchResults (resultIds) {
-      if (resultIds) {
-        this.map.setFilter('reachSegments', ['in', 'id', ...resultIds])
-        this.searchResults = resultIds
-      } else {
-        this.map.setFilter('reachSegments', null)
-        this.searchResults = false
-      }
-      // need to send this up another level so it can be used in the rivers table
-      this.$emit('searchResults', this.searchResults)
     },
     updateBaseMap (newVal) {
       this.baseMap = newVal
@@ -273,15 +283,14 @@ export default {
     },
     mouseenterFeature (event) {
       this.map.getCanvas().style.cursor = 'pointer'
-      this.debouncedEmitHighlight(event.features[0])
+      this.debouncedMouseoverFeature(event.features[0])
     },
     mouseleaveFeature () {
       this.map.getCanvas().style.cursor = ''
-      this.debouncedEmitHighlight(null)
+      this.debouncedMouseoverFeature(null)
     },
-    emitHighlight (reach) {
-      this.$store.dispatch(riverIndexActions.HIGHLIGHT_FEATURE, reach)
-      this.$emit('highlightFeature', reach)
+    mouseoverFeature (feature) {
+      this.$store.dispatch(riverIndexActions.MOUSEOVER_FEATURE, feature)
     },
     updateMapColorScheme (newScheme) {
       const colors = Object.values(NwiMapStyles.colorSchemes[newScheme])
@@ -333,11 +342,10 @@ export default {
     // this method notifies upstream components of what reaches are visible in
     // the current viewport
     updateReachesInViewport () {
-      let reaches
       // can have multiple responses for a given reach because of tiling,
       // so need to make array unique
       const uniq = {}
-      reaches = this.map
+      const reaches = this.map
         .queryRenderedFeatures({ layers: ['reachSegments'] })
         // eslint-disable-next-line
         .filter(
@@ -345,11 +353,7 @@ export default {
         )
       // because the map events aren't exactly synchronous, we improve usability by
       // including a search filter here
-      if (this.searchResults) {
-        reaches = reaches.filter(reach =>
-          this.searchResults.includes(reach.properties.id)
-        )
-      }
+      this.applySearchResultFilters()
 
       // only show river sidebar if there's a reasonable number of rivers
       if (reaches.length <= 300) {
@@ -369,6 +373,7 @@ export default {
         })
         const { sourceLayers } = NwiMapStyles
         // iterating through the sourceLayers specified by prop this.sourceLayers
+        // can't use this.mapLayers because we need the sourceLayers to access props
         this.sourceLayers.forEach(sourceLayer => {
           Object.keys(sourceLayers[sourceLayer]).forEach(mapLayer => {
             const zoomAttributes = {
@@ -412,15 +417,20 @@ export default {
     },
     filterNonDetailReachFeatures () {
       if (this.detailReachId) {
-        // for now, just filter out access as that one is the frustrating one
-        // because of overlap with the detail reach access points
-        if (this.mapLayers.includes('access')) {
-          this.map.setFilter('access', [
-            '==',
-            ['get', 'reach_id'],
-            this.detailReachId
-          ])
-        }
+        this.mapLayers.forEach(mapLayer => {
+          if (['access', 'rapids'].includes(mapLayer)) {
+            // access and rapids use `reach_id` instead of `id`
+            this.map.setFilter(mapLayer, [
+              '==',
+              ['get', 'reach_id'],
+              this.detailReachId
+            ])
+          } else if (['projects', 'projectIcons'].includes(mapLayer)) {
+            // projects aren't relevant here, can keep displaying, everything else is reach-specific
+          } else {
+            this.map.setFilter(mapLayer, ['==', ['get', 'id'], this.detailReachId])
+          }
+        })
       }
     },
     // preprocesses NwiMapStyles.js paint properties to de-emphasize (through opacity)
@@ -516,7 +526,7 @@ export default {
     },
     initMap () {
       this.map = null
-      this.debouncedEmitHighlight = debounce(this.emitHighlight, 200, {
+      this.debouncedMouseoverFeature = debounce(this.mouseoverFeature, 200, {
         leading: false,
         trailing: true
       })

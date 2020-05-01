@@ -121,19 +121,6 @@ export default {
       this.refreshing = true
       window.location.reload()
     })
-  },
-  mounted () {
-    /**
-     * proof of concept
-     */
-    this.$store.dispatch(globalAppActions.SEND_TOAST, {
-      title: 'Legislative Emergency',
-      href: '/news',
-      label: 'help now',
-      kind: 'warning',
-      contrast: false,
-      action: true
-    })
   }
 }
 </script>

@@ -8,8 +8,7 @@
             :has-controls="false"
             :detail-reach-id="reachId"
             :source-layers="sourceLayers"
-            :center="center"
-            :starting-zoom="zoom"
+            :starting-bounds="startingBounds"
             @clickFeature="clickFeature"
           />
         </div>
@@ -27,6 +26,8 @@ import { NwiMap } from '@/app/views/river-index/components'
 import { mapActions } from '../shared/state'
 import { mapState } from 'vuex'
 import { InfoPanel } from './components'
+import bbox from '@turf/bbox'
+import { lineString } from '@turf/helpers'
 
 export default {
   name: 'map-tab',
@@ -53,12 +54,10 @@ export default {
     reachId () {
       return parseInt(this.$route.params.id, 10)
     },
-    // temporary hack while we wait for bbox!!!
-    center () {
-      return [this.riverData.plon, this.riverData.plat]
-    },
-    zoom () {
-      return 10
+    startingBounds () {
+      // TODO: get graphql API to return a linestring or geojson instead of this text
+      const geom = this.riverData.geom.split(',').map(d => d.split(' '))
+      return bbox(lineString(geom))
     }
   },
   methods: {

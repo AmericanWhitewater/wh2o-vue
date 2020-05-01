@@ -19,6 +19,7 @@ const fetchRiverDetailData = data => {
           maxgradient
           plat
           plon
+          geom
           photo {
             id
             post {
