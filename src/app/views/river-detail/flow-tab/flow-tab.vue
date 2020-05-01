@@ -27,10 +27,9 @@
                 <template v-if="readings.length > 0">
                   <div style="max-width:100%;overflow-x:scroll">
                     <div :style="chartSize">
-                      <gage-chart
-                        :chart-data="chartData"
-                        :height="chartHeight"
-                        :options="chartConfig"
+                      <FlowChart
+                        :gages="gages"
+                        :readings="readings"
                       />
                     </div>
                   </div>
@@ -131,8 +130,7 @@
 </template>
 
 <script>
-import moment from 'moment'
-import { GageChart, GageReadings, GageChartControls } from './components'
+import { FlowChart, GageReadings, GageChartControls } from './components'
 import { GageChartConfig } from './utils/gage-chart-config'
 import { Layout } from '@/app/global/layout'
 import { mapState } from 'vuex'
@@ -147,7 +145,7 @@ import { checkWindow } from '@/app/global/mixins'
 export default {
   name: 'flow-tab',
   components: {
-    GageChart,
+    FlowChart,
     GageChartControls,
     GageReadings,
     Layout,
@@ -182,28 +180,42 @@ export default {
      * @reference https://vue-chartjs.org/guide/#example
      *
      */
-    chartData () {
-      const data = this.readings
-      if (data) {
-        const formattedData = {
-          labels: [],
-          datasets: [
-            {
-              label: 'label',
-              data: []
-            }
-          ]
-        }
-        for (let i = 0; i < data.length; i++) {
-          formattedData.datasets[0].data.push(Math.floor(data[i].reading))
-          formattedData.labels.push(
-            moment(data[i].updated).format(this.selectedTimespan)
-          )
-        }
-        return formattedData
-      }
-      return null
-    },
+    // chartData () {
+    //   const data = this.readings
+    // if (data) {
+    //   const formattedData = {
+    //     labels: [],
+    //     datasets: [
+    //       {
+    //         label: 'label',
+    //         data: []
+    //       }
+    //     ]
+    //   }
+    //   for (let i = 0; i < data.length; i++) {
+    //     formattedData.datasets[0].data.push(Math.floor(data[i].reading))
+    //     formattedData.labels.push(
+    //       moment(data[i].updated).format(this.selectedTimespan)
+    //     )
+    //   }
+    //   return formattedData
+
+    // datasets: [{
+    //         label: 'Gage Reading',
+    //         borderColor: 'rgba(21, 41, 52, 1)',
+    //         // backgroundColor: 'rgba(60, 86, 110, .3)',
+    //         fill: false,
+    //         data: readings
+    //       }]
+
+    //       if(this.readings) {
+    //         return this.readings.forEach(reading => {
+    //           return Math.floor(reading)
+    //         })
+    //       }
+
+    //   return null
+    // },
     /**
      * @todo calculate trending +/-
      */
