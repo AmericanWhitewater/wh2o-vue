@@ -12,12 +12,9 @@ const options = {
 }
 
 describe('flow-chart.vue', () => {
-  it('it builds on load and rebuilds chart when readings provided change', async () => {
+  it('it builds on load', async () => {
     const wrapper = createWrapper(FlowChart, options)
-    wrapper.setProps({
-      readings: []
-    })
     await wrapper.vm.$nextTick()
-    expect(buildChart).toBeCalledTimes(2)
+    expect(buildChart).toBeCalledTimes(1)
   })
 })

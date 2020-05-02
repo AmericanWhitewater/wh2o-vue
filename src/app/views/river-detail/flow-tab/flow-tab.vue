@@ -175,50 +175,6 @@ export default {
     riverId () {
       return this.$route.params.id
     },
-    /**
-     * vue-chartjs requires data to be formatted this way
-     * @reference https://vue-chartjs.org/guide/#example
-     *
-     */
-    // chartData () {
-    //   const data = this.readings
-    // if (data) {
-    //   const formattedData = {
-    //     labels: [],
-    //     datasets: [
-    //       {
-    //         label: 'label',
-    //         data: []
-    //       }
-    //     ]
-    //   }
-    //   for (let i = 0; i < data.length; i++) {
-    //     formattedData.datasets[0].data.push(Math.floor(data[i].reading))
-    //     formattedData.labels.push(
-    //       moment(data[i].updated).format(this.selectedTimespan)
-    //     )
-    //   }
-    //   return formattedData
-
-    // datasets: [{
-    //         label: 'Gage Reading',
-    //         borderColor: 'rgba(21, 41, 52, 1)',
-    //         // backgroundColor: 'rgba(60, 86, 110, .3)',
-    //         fill: false,
-    //         data: readings
-    //       }]
-
-    //       if(this.readings) {
-    //         return this.readings.forEach(reading => {
-    //           return Math.floor(reading)
-    //         })
-    //       }
-
-    //   return null
-    // },
-    /**
-     * @todo calculate trending +/-
-     */
     flowStats () {
       if (this.readings && this.readings.length > 0) {
         const readings = []

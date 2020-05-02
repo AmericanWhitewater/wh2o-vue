@@ -6,8 +6,10 @@
 <script>
 import moment from 'moment'
 import { buildChart } from './build-chart'
+import { checkWindow } from '@/app/global/mixins'
 export default {
   name: 'flow-chart',
+  mixins: [checkWindow],
   props: {
     gages: {
       type: Array,
@@ -31,25 +33,31 @@ export default {
   data: () => ({
     timeStart: null,
     resolution: null,
-    timeEnd: null
+    timeEnd: null,
+    backgroundRange: false
   }),
   computed: {
     chartLabels () {
-      return this.readings.map(reading => reading.updated)
+      return this.readings.map(reading => moment(reading.updated).format('lll'))
+    },
+    activeGage () {
+      return this.gages.find(gage => Number(gage.gauge.id) === this.readings[0].gauge_id)
     },
     formattedReadings () {
-      return this.readings.map(reading => reading.reading)
-    }
-  },
-  watch: {
-    readings (val) {
-      this.renderChart(val)
+      return this.readings.map(reading => Math.floor(reading.reading))
+    },
+    chartAspectRatio () {
+      if (this.windowWidth >= this.$options.breakpoints.md) {
+        return 1.777777777777778 // 16:9
+      } else {
+        return 1.333333333333333 // 4:3
+      }
     }
   },
   methods: {
     setTimeScale (timeScale) {
       let start
-      // this.resolution = 60 * 60 * 24;
+      this.resolution = 60 * 60 * 24
       switch (timeScale) {
         case 'year':
           this.resolution = 60 * 60 * 730
@@ -86,7 +94,7 @@ export default {
         },
         elements: {
           line: {
-            tension: 0, // disables bezier curves
+            tension: 0,
             borderWidth: 2,
             color: '#152935'
           },
@@ -101,14 +109,14 @@ export default {
           padding: 0
         },
         responsive: true,
-        // aspectRatio:this._getAspectRatio(),
+        aspectRatio: 1.777777777777778,
         animation: {
-          duration: 0 // general animation time
+          duration: 0
         },
         hover: {
-          animationDuration: 0 // duration of animations when hovering an item
+          animationDuration: 0
         },
-        responsiveAnimationDuration: 0, // animation duration after a resize
+        responsiveAnimationDuration: 0,
         tooltips: {
           backgroundColor: '#ffffff',
           bodyFontColor: '#152934',
@@ -133,19 +141,8 @@ export default {
         },
         scales: {
           xAxes: [{
-            type: 'time',
             display: true,
             distribution: 'series',
-            // ticks: {
-            //   unit: this.timeScales,
-            //   displayFormats: {
-            //     day: 'h:mm a',
-            //     week: 'll',
-            //     month: 'll',
-            //     year: 'MMM YYYY'
-            //   },
-            //   min: 0
-            // },
             gridLines: {
               color: 'rgba(90, 104, 114, 0.2)',
               borderDash: [4, 4]
@@ -163,10 +160,10 @@ export default {
               autoSkip: false,
               maxRotation: 45,
               minRotation: 45,
-              // labelOffset: 20,
+              labelOffset: 20,
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
-              fontSize: 13
-              // min: moment(this.timeStart)
+              fontSize: 13,
+              min: moment(this.timeStart).format('ll')
             }
           }],
           yAxes: [{
@@ -195,7 +192,19 @@ export default {
 
       }
 
-      if (readings && this.formattedReadings) {
+      if (this.formattedReadings && this.activeGage) {
+        if (this.activeGage?.rmin && this.activeGage?.rmax) {
+          opts.graphRange = {
+            min: Number(this.activeGage.rmin),
+            max: Number(this.activeGage.rmax),
+            colors: {
+              low: '#FF8785',
+              running: '#59E78D',
+              high: '#68DFE9'
+            }
+          }
+        }
+
         buildChart(ctx, this.chartLabels, this.formattedReadings, opts)
       }
     }
