@@ -7,7 +7,6 @@
       <template #main>
         <template v-if="loading && !gages">
           <utility-block
-            height="500"
             state="loading"
             text="loading gages..."
           />
@@ -17,104 +16,85 @@
             <template v-if="loading">
               <utility-block
                 class="mb-md"
-                height="600"
                 state="loading"
                 text="loading readings..."
               />
             </template>
-            <template v-else-if="readings">
-              <template v-if="viewMode === 'chart'">
-                <template v-if="readings.length > 0">
-                  <div style="max-width:100%;overflow-x:scroll">
-                    <div :style="chartSize">
-                      <FlowChart
-                        class="mb-lg"
-                        :gages="gages"
-                        :readings="readings"
-                      />
-                      <LevelLegend />
-                    </div>
+            <template v-if="viewMode === 'chart'">
+              <template v-if="readings && readings.length > 0 && !loading">
+                <div style="max-width: 100%; overflow-x: scroll;">
+                  <div :style="chartSize">
+                    <FlowChart
+                      class="mb-lg"
+                      :gages="gages"
+                      :readings="readings"
+                    />
                   </div>
-                </template>
-                <template v-else>
-                  <utility-block
-                    class="mb-md"
-                    height="500"
-                    state="content"
-                    title="No Results"
-                    text="please try again"
-                  />
-                </template>
+                </div>
               </template>
               <template v-else>
-                <GageReadings />
+                <utility-block
+                  class="mb-md"
+                  state="content"
+                  title="No Results"
+                  text="please try again"
+                />
               </template>
             </template>
-            <template v-else />
+            <template v-else>
+              <GageReadings />
+            </template>
+            <flow-stats
+              v-if="readings"
+              :readings="readings"
+              :loading="loading"
+            />
+            <GageChartControls
+              @viewModeChange="viewMode = $event"
+              @timescaleChange="setTimescale"
+              @gage-change="setActiveGageId"
+            />
           </template>
           <template v-else>
             <utility-block
               class="mb-md"
-              height="500"
               title="No Gages"
               state="content"
               text="this reach doesn't have any associated gages"
-            />
+            >
+              <cv-button>Add Gage</cv-button>
+            </utility-block>
           </template>
         </template>
         <template v-else>
           <utility-block
             class="mb-md"
-            height="500"
             state="error"
           />
         </template>
       </template>
       <template #sidebar>
-        <template v-if="gages && gages.length > 0">
-          <div class="flow-stats bx--row mb-spacing-md">
-            <div class="bx--col">
-              <h6 class="mb-spacing-2xs">
-                Avg
-              </h6>
-              <h3 v-if="!loading">
-                {{ flowStats ? flowStats.avg : "n/a" }}
-              </h3>
-              <cv-skeleton-text
-                v-if="loading"
-                headline
-              />
-            </div>
-            <div class="bx--col">
-              <h6 class="mb-spacing-2xs">
-                High
-              </h6>
-              <h3 v-if="!loading">
-                {{ flowStats ? flowStats.max : "n/a" }}
-              </h3>
-              <cv-skeleton-text
-                v-if="loading"
-                headline
-              />
-            </div>
-            <div class="bx--col">
-              <h6 class="mb-spacing-2xs">
-                Low
-              </h6>
-              <h3 v-if="!loading">
-                {{ flowStats ? flowStats.min : "n/a" }}
-              </h3>
-              <cv-skeleton-text
-                v-if="loading"
-                headline
-              />
-            </div>
-          </div>
-          <GageChartControls
-            @viewModeChange="viewMode = $event"
-            @timescaleChange="setTimescale"
-            @gage-change="setActiveGageId"
+        <template v-if="activeGage">
+          <h4
+            class="mb-spacing-sm"
+            v-text="$titleCase(activeGage.gauge.name)"
           />
+          <cv-button-set class="mb-spacing-md">
+            <cv-button
+              kind="tertiary"
+              size="small"
+            >
+              Gage Detail
+            </cv-button>
+
+            <cv-button
+              kind="tertiary"
+              size="small"
+            >
+              Gage Source
+            </cv-button>
+          </cv-button-set>
+          <level-legend />
         </template>
         <template v-else>
           <hr>
@@ -174,7 +154,7 @@
 </template>
 
 <script>
-import { FlowChart, GageReadings, GageChartControls, LevelLegend } from './components'
+import { FlowChart, GageReadings, GageChartControls, LevelLegend, FlowStats } from './components'
 import { GageChartConfig } from './utils/gage-chart-config'
 import { Layout } from '@/app/global/layout'
 import { mapState } from 'vuex'
@@ -194,7 +174,8 @@ export default {
     GageReadings,
     Layout,
     UtilityBlock,
-    LevelLegend
+    LevelLegend,
+    FlowStats
   },
   mixins: [GageChartConfig, checkWindow],
   data: () => ({
@@ -220,24 +201,6 @@ export default {
     }),
     riverId () {
       return this.$route.params.id
-    },
-    flowStats () {
-      if (this.readings && this.readings.length > 0) {
-        const readings = []
-        let readingsSum = 0
-
-        for (let i = 0; i < this.readings.length; i++) {
-          readings.push(parseInt(this.readings[i].reading, 10))
-          readingsSum = readingsSum + parseInt(this.readings[i].reading, 10)
-        }
-
-        return {
-          min: Math.min(...readings),
-          max: Math.max(...readings),
-          avg: Math.floor(readingsSum / this.readings.length)
-        }
-      }
-      return null
     },
     chartSize () {
       if (this.windowWidth > this.$options.breakpoints.md) {
@@ -294,7 +257,7 @@ export default {
     background-color: $ui-03;
   }
   .gage-description {
-    @include carbon--type-style('body-long-02')
+    @include carbon--type-style("body-long-02");
   }
 }
 </style>

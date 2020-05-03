@@ -5,7 +5,7 @@
         v-if="gages"
         v-model="formData.gauge_id"
         :placeholder="$titleCase(formData.gauge_name)"
-        :label="gages.length === 1 ? 'Gage' : 'Gages'"
+        label="Selected Gage"
         class="mb-spacing-md"
         :disabled="gages.length === 1"
         @change="fetchReadings"
@@ -21,7 +21,7 @@
 
       <cv-dropdown
         v-model="formData.timeScale"
-        label="Timespan"
+        label="Data Timespan"
         :disabled="loading"
         class="mb-spacing-md"
         @change="fetchReadings"
@@ -43,7 +43,7 @@
       <cv-dropdown
         v-if="availableMetrics"
         v-model="formData.metric_id"
-        label="Metric"
+        label="Data Metric"
         :disabled="availableMetrics.length === 1"
         class="mb-spacing-md"
         @change="fetchReadings"
