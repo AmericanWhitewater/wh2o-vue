@@ -10,6 +10,7 @@ export { default as ConfirmDeleteModal } from './confirm-delete-modal/confirm-de
 export { default as EditModeToggle } from './edit-mode-toggle/edit-mode-toggle.vue'
 export { default as FeatureCard } from './feature-card/feature-card.vue'
 export { default as LoadingOverlay } from './loading-overlay/loading-overlay.vue'
+export { default as PageBanner } from './page-banner/page-banner.vue'
 export { default as PageDescription } from './page-description/page-description.vue'
 export { default as PageHeader } from './page-header/page-header.vue'
 export { default as PostUpdateModal } from './post-update-modal/post-update-modal'

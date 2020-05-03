@@ -5,30 +5,18 @@ const fetchGageDetailData = data => {
     query: `
     query {
       gauge(id: "${data}") {
-        enabled
-        huc
-        updates {
-          write_sequence
-          updated
-          obs_time
-          obs_ref
-          obs_reading
-          obs_id
-          obs_data
-          metric_id
-          lobs_time
-          lobs_reading
-          lobs_id
-          last_journal_date
-          gd_ref
-        }
-        timezone
-        state
-        source_id
-        source
-        name
-        loc
-        id
+          enabled
+          huc
+          updates {
+            updated
+            obs_reading
+            metric_id
+          }
+          timezone
+          state
+          source
+          name
+          loc
       }
     }`
   }).then(res => res.data)
