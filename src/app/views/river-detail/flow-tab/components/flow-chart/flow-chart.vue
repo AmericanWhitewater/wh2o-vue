@@ -30,15 +30,13 @@ export default {
       required: true
     }
   },
-  data: () => ({
-    timeStart: null,
-    resolution: null,
-    timeEnd: null,
-    backgroundRange: false
-  }),
   computed: {
+    metrics () {
+      return this.$store.state.riverDetailState.gageMetricsData.data
+    },
     chartLabels () {
-      return this.readings.map(reading => moment(reading.updated).format('lll'))
+      const data = this.readings.map(reading => moment(Number(reading.updated)).format('LT'))
+      return data
     },
     activeGage () {
       return this.gages.find(gage => Number(gage.gauge.id) === this.readings[0].gauge_id)
@@ -55,40 +53,45 @@ export default {
     }
   },
   methods: {
-    setTimeScale (timeScale) {
+    getYMax () {
+      return Math.max(...this.formattedReadings) * 1.25
+    },
+    getChartMetric () {
+      return this.metrics.find(m => m.id === this.readings[0].metric.toString()).unit
+    },
+    getTimeScale (timeScale) {
       let start
-      this.resolution = 60 * 60 * 24
       switch (timeScale) {
         case 'year':
-          this.resolution = 60 * 60 * 730
-          this.timeScale = 'year'
           start = moment().subtract(1, 'years').unix()
           break
+
         case 'month':
-          this.timeScale = 'month'
-          this.resolution = 60 * 60 * 24
           start = moment().subtract(1, 'month').unix()
           break
 
         case 'week':
-          this.timeScale = 'week'
-          this.resolution = 60 * 60 * 12
           start = moment().subtract(1, 'weeks').unix()
           break
+
         case 'day':
+
+          start = moment().subtract(1, 'days').unix()
+          break
+
         default:
-          this.resolution = 1
-          this.timeScale = 'day'
           start = moment().subtract(1, 'days').unix()
           break
       }
-      this.timeStart = Math.floor(start)
-      this.timeEnd = Math.floor(moment().unix())
+      return {
+        timeStart: Math.floor(start),
+        timeEnd: Math.floor(moment().unix())
+      }
     },
     renderChart (readings) {
       const ctx = this.$refs.chartCanvas.getContext('2d')
 
-      const opts = {
+      const chartOptions = {
         legend: {
           display: false
         },
@@ -109,14 +112,7 @@ export default {
           padding: 0
         },
         responsive: true,
-        aspectRatio: 1.777777777777778,
-        animation: {
-          duration: 0
-        },
-        hover: {
-          animationDuration: 0
-        },
-        responsiveAnimationDuration: 0,
+        aspectRatio: this.chartAspectRatio,
         tooltips: {
           backgroundColor: '#ffffff',
           bodyFontColor: '#152934',
@@ -149,7 +145,7 @@ export default {
             },
             scaleLabel: {
               display: true,
-              labelString: 'Timespan',
+              labelString: 'Timescale',
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
               fontSize: 14
             },
@@ -163,13 +159,20 @@ export default {
               labelOffset: 20,
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
               fontSize: 13,
-              min: moment(this.timeStart).format('ll')
+              unit: this.timeScales,
+              displayFormats: {
+                day: 'MM/DD h:mm A',
+                week: 'MM/DD h:mm A',
+                month: 'MM/DD',
+                year: 'MM/DD/YYYY'
+              },
+              min: this.getTimeScale(this.readings).timeStart
             }
           }],
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Metric [ ]',
+              labelString: `Metric [ ${this.getChartMetric()} ]`,
               bounds: 'data',
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
               fontSize: 14
@@ -180,12 +183,12 @@ export default {
             },
             ticks: {
               beginAtZero: true,
-              // suggestedMax: yMax,
-              fontFamily: "'IBM Plex Sans' , 'sans-serif'"
-
+              suggestedMax: this.getYMax(),
+              fontFamily: "'IBM Plex Sans' , 'sans-serif'",
+              fontSize: 14
             },
             beforeBuildTicks: axis => {
-              opts.scales.yAxes[0].ticks.min = 100
+              chartOptions.scales.yAxes[0].ticks.min = 100
             }
           }]
         }
@@ -194,22 +197,23 @@ export default {
 
       if (this.formattedReadings && this.activeGage) {
         if (this.activeGage?.rmin && this.activeGage?.rmax) {
-          opts.graphRange = {
+          chartOptions.graphRange = {
             min: Number(this.activeGage.rmin),
             max: Number(this.activeGage.rmax),
             colors: {
-              low: '#FF8785',
-              running: '#59E78D',
-              high: '#68DFE9'
+              low: '#ffc3c2',
+              running: '#9bf1bb',
+              high: '#a4ecf2'
             }
           }
         }
 
-        buildChart(ctx, this.chartLabels, this.formattedReadings, opts)
+        buildChart(ctx, this.chartLabels, this.formattedReadings, chartOptions)
       }
     }
   },
   mounted () {
+    this.getChartMetric()
     this.renderChart(this.readings)
   }
 }

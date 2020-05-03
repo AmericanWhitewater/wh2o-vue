@@ -209,6 +209,7 @@ export default {
             .unix()
           break
         default:
+          this.$emit('timescaleChange', 'h:mm a')
           this.formData.timeScale = 'day'
           this.formData.resolution = 1
           start = moment()
@@ -223,6 +224,7 @@ export default {
       this.$store.dispatch(metricsActions.FETCH_GAGE_METRICS, this.$route.params.id)
     },
     async fetchReadings () {
+      this.$emit('gage-change', this.formData.gauge_id)
       await this.setTimeScale()
       this.$store.dispatch(
         readingsActions.FETCH_GAGE_READINGS_DATA,

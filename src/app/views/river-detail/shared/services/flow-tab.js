@@ -27,14 +27,14 @@ const fetchGages = data => {
       query: `{
         getGaugeInformationForReachID(id: ${data}) {
           gauges {
-              rc
-              epoch
+              # rc
+              # epoch
               gauge_reading
               gauge_metric
+              gauge_comment
               range_comment
               class
               excluded
-              url
               rmin
               rmax
               gauge {

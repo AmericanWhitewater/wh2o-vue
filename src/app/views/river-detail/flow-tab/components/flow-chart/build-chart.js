@@ -10,7 +10,10 @@ export function buildChart (context, labels, readings, options) {
       labels,
       datasets: [{
         data: readings,
-        borderWidth: 1
+        borderWidth: 2,
+        label: 'Gage Reading',
+        fill: false,
+        borderColor: 'rgba(60, 86, 110, 1)'
       }]
     },
     options

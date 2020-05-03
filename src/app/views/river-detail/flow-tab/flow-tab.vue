@@ -28,9 +28,11 @@
                   <div style="max-width:100%;overflow-x:scroll">
                     <div :style="chartSize">
                       <FlowChart
+                        class="mb-lg"
                         :gages="gages"
                         :readings="readings"
                       />
+                      <LevelLegend />
                     </div>
                   </div>
                 </template>
@@ -111,6 +113,7 @@
           <GageChartControls
             @viewModeChange="viewMode = $event"
             @timescaleChange="setTimescale"
+            @gage-change="setActiveGageId"
           />
         </template>
         <template v-else>
@@ -126,11 +129,52 @@
         </template>
       </template>
     </layout>
+    <layout
+      name="layout-two-thirds"
+      class="mb-lg"
+    >
+      <template #main>
+        <div class="mb-lg">
+          <hr>
+          <h2 class="mb-spacing-md">
+            Flow Range Description
+          </h2>
+          <div
+            v-if="activeGage && activeGage.range_comment"
+            class="gage-description"
+            v-html="activeGage.range_comment"
+          />
+          <div
+            v-else
+            class="gage-description"
+          >
+            This gage does not have a description for the current flow range.
+          </div>
+        </div>
+        <div class="mb-lg">
+          <hr>
+          <h2 class="mb-spacing-md">
+            Gage Description
+          </h2>
+          <div
+            v-if="activeGage && activeGage.gauge_comment"
+            class="gage-description"
+            v-html="activeGage.gauge_comment"
+          />
+          <div
+            v-else
+            class="gage-description"
+          >
+            This gage does not have a description.
+          </div>
+        </div>
+      </template>
+    </layout>
   </div>
 </template>
 
 <script>
-import { FlowChart, GageReadings, GageChartControls } from './components'
+import { FlowChart, GageReadings, GageChartControls, LevelLegend } from './components'
 import { GageChartConfig } from './utils/gage-chart-config'
 import { Layout } from '@/app/global/layout'
 import { mapState } from 'vuex'
@@ -149,10 +193,12 @@ export default {
     GageChartControls,
     GageReadings,
     Layout,
-    UtilityBlock
+    UtilityBlock,
+    LevelLegend
   },
   mixins: [GageChartConfig, checkWindow],
   data: () => ({
+    activeGageId: '',
     /**
      * default timespan to day format
      */
@@ -199,6 +245,9 @@ export default {
       } else {
         return 'position:relative;width:' + this.$options.breakpoints.sm * 2 + 'px'
       }
+    },
+    activeGage () {
+      return this.gages?.find(g => g.gauge.id === this.activeGageId)
     }
   },
   watch: {
@@ -211,6 +260,9 @@ export default {
     }
   },
   methods: {
+    setActiveGageId (id) {
+      this.activeGageId = id
+    },
     fetchReadings () {
       this.$store.dispatch(readingsActions.FETCH_GAGE_READINGS_DATA)
     },
@@ -235,16 +287,14 @@ export default {
 <style lang="scss" scoped>
 .flow-tab {
   padding-top: $spacing-xl;
-  h2 {
-    cursor: pointer;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
+
   canvas {
     height: 350px;
     width: 100%;
     background-color: $ui-03;
+  }
+  .gage-description {
+    @include carbon--type-style('body-long-02')
   }
 }
 </style>
