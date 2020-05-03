@@ -79,21 +79,15 @@
             class="mb-spacing-sm"
             v-text="$titleCase(activeGage.gauge.name)"
           />
-          <cv-button-set class="mb-spacing-md">
-            <cv-button
-              kind="tertiary"
-              size="small"
-            >
-              Gage Detail
-            </cv-button>
-
-            <cv-button
-              kind="tertiary"
-              size="small"
-            >
-              Gage Source
-            </cv-button>
-          </cv-button-set>
+          <cv-button
+            class="mb-spacing-md"
+            kind="tertiary"
+            size="small"
+            @click.exact="$router.push(`/gage-detail/${activeGage.gauge.id}`)"
+            @keydown.enter="$router.push(`/gage-detail/${activeGage.gauge.id}`)"
+          >
+            Gage Detail
+          </cv-button>
           <level-legend />
         </template>
         <template v-else>
