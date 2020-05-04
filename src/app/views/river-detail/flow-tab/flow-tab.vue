@@ -5,76 +5,104 @@
       class="mb-lg"
     >
       <template #main>
-        <template v-if="loading && !gages">
+        <template v-if="gagesLoading">
           <utility-block
+            class="mb-lg"
             state="loading"
             text="loading gages..."
           />
         </template>
-        <template v-else-if="gages">
-          <template v-if="gages && gages.length > 0">
-            <template v-if="loading">
-              <utility-block
-                class="mb-md"
-                state="loading"
-                text="loading readings..."
-              />
-            </template>
-            <template v-if="viewMode === 'chart'">
-              <template v-if="readings && readings.length > 0 && !loading">
-                <div style="max-width: 100%; overflow-x: scroll;">
-                  <div :style="chartSize">
-                    <FlowChart
-                      class="mb-lg"
-                      :gages="gages"
-                      :readings="readings"
-                    />
-                  </div>
-                </div>
-              </template>
-              <template v-else>
-                <utility-block
+        <template v-else-if="gages && gages.length">
+          <template v-if="loading">
+            <utility-block
+              class="mb-lg"
+              state="loading"
+              text="loading readings..."
+            />
+          </template>
+          <template v-else-if="readings && readings.length">
+            <div
+              v-if="viewMode === 'chart'"
+              style="max-width: 100%; overflow-x: scroll;"
+              class="mb-spacing-sm"
+            >
+              <div :style="chartSize">
+                <flow-chart
+                  :gages="gages"
+                  :readings="readings"
                   class="mb-md"
-                  state="content"
-                  title="No Results"
-                  text="please try again"
                 />
-              </template>
-            </template>
-            <template v-else>
-              <GageReadings />
-            </template>
-            <flow-stats
-              v-if="readings"
-              :readings="readings"
-              :loading="loading"
-            />
-            <GageChartControls
-              @viewModeChange="viewMode = $event"
-              @timescaleChange="setTimescale"
-              @gage-change="setActiveGageId"
-            />
+                <flow-stats
+                  :readings="readings"
+                  :loading="loading"
+                />
+              </div>
+            </div>
+            <div v-else>
+              <gage-readings />
+            </div>
           </template>
           <template v-else>
             <utility-block
-              class="mb-md"
-              title="No Gages"
+              class="mb-lg"
               state="content"
-              text="this reach doesn't have any associated gages"
-            >
-              <cv-button>Add Gage</cv-button>
-            </utility-block>
+              title="No results"
+              text="no gage readings for your chosen parameters, please try again"
+            />
           </template>
+          <GageChartControls
+            @viewModeChange="viewMode = $event"
+            @timescaleChange="setTimescale"
+            @gage-change="setActiveGageId"
+          />
+          <div class="mb-lg">
+            <hr>
+            <h2 class="mb-spacing-md">
+              Flow Range Description
+            </h2>
+            <div
+              v-if="activeGage && activeGage.range_comment"
+              class="gage-description"
+              v-html="activeGage.range_comment"
+            />
+            <div
+              v-else
+              class="gage-description"
+            >
+              This gage does not have a description for the current flow range.
+            </div>
+          </div>
+          <div class="mb-lg">
+            <hr>
+            <h2 class="mb-spacing-md">
+              Gage Description
+            </h2>
+            <div
+              v-if="activeGage && activeGage.gauge_comment"
+              class="gage-description"
+              v-html="activeGage.gauge_comment"
+            />
+            <div
+              v-else
+              class="gage-description"
+            >
+              This gage does not have a description.
+            </div>
+          </div>
         </template>
         <template v-else>
           <utility-block
-            class="mb-md"
-            state="error"
+            state="content"
+            title="No Gages"
+            text="this reach doesn't have any associated gages"
           />
         </template>
       </template>
       <template #sidebar>
-        <template v-if="activeGage">
+        <template v-if="gagesLoading">
+          <cv-skeleton-text headline />
+        </template>
+        <template v-else-if="activeGage">
           <h4
             class="mb-spacing-sm"
             v-text="$titleCase(activeGage.gauge.name)"
@@ -91,57 +119,8 @@
           <level-legend />
         </template>
         <template v-else>
-          <hr>
-          <p class="mb-spacing-md">
-            If you know this reach has a gage, you can search from our list of
-            preregistered gages or add a new gage to the database. You can also
-            create a virtual gage.
-          </p>
-          <cv-button size="small">
-            Add Gage
-          </cv-button>
+          error
         </template>
-      </template>
-    </layout>
-    <layout
-      name="layout-two-thirds"
-      class="mb-lg"
-    >
-      <template #main>
-        <div class="mb-lg">
-          <hr>
-          <h2 class="mb-spacing-md">
-            Flow Range Description
-          </h2>
-          <div
-            v-if="activeGage && activeGage.range_comment"
-            class="gage-description"
-            v-html="activeGage.range_comment"
-          />
-          <div
-            v-else
-            class="gage-description"
-          >
-            This gage does not have a description for the current flow range.
-          </div>
-        </div>
-        <div class="mb-lg">
-          <hr>
-          <h2 class="mb-spacing-md">
-            Gage Description
-          </h2>
-          <div
-            v-if="activeGage && activeGage.gauge_comment"
-            class="gage-description"
-            v-html="activeGage.gauge_comment"
-          />
-          <div
-            v-else
-            class="gage-description"
-          >
-            This gage does not have a description.
-          </div>
-        </div>
       </template>
     </layout>
   </div>
@@ -185,7 +164,6 @@ export default {
   }),
   computed: {
     ...mapState({
-      user: state => state.userState.userData.data,
       readings: state => state.riverDetailState.gageReadingsData.data,
       loading: state => state.riverDetailState.gageReadingsData.loading,
       error: state => state.riverDetailState.gageReadingsData.error,
@@ -204,7 +182,7 @@ export default {
       }
     },
     activeGage () {
-      return this.gages?.find(g => g.gauge.id === this.activeGageId)
+      return this.gages.find(g => g.gauge.id === this.activeGageId)
     }
   },
   watch: {

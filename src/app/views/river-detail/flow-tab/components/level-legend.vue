@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <div class="level-legend">
     <h6 class="mb-spacing-sm">
       Level Legend
@@ -61,36 +61,34 @@ export default {
 </script>
 <style lang="scss" scoped>
 .level-legend {
+  ul {
+    li {
+      margin-bottom: $spacing-xs;
 
-        ul {
-            li {
-                margin-bottom: $spacing-xs;
+      .above-recommended {
+        fill: $flow-high;
+      }
+      .high-runnable {
+        fill: lighten($flow-medium, 15%);
+      }
+      .runnable {
+        fill: $flow-medium;
+      }
+      .low-runnable {
+        fill: darken($flow-medium, 15%);
+      }
+      .below-recommended {
+        fill: $flow-low;
+      }
+      svg {
+        vertical-align: top;
+        margin-right: 8px;
+      }
 
-                .above-recommended {
-                    fill: $flow-high;
-                }
-                .high-runnable {
-                    fill: lighten($flow-medium, 15%);
-                }
-                .runnable {
-                    fill: $flow-medium;
-                }
-                .low-runnable {
-                    fill: darken($flow-medium, 15%)
-                }
-                .below-recommended {
-                    fill: $flow-low;
-                }
-                svg {
-                    vertical-align: top;
-                    margin-right: 8px;
-                }
-
-                &:nth-child(5) {
-                    margin-bottom: $spacing-md;
-
-                }
-            }
-        }
+      &:nth-child(5) {
+        margin-bottom: $spacing-md;
+      }
     }
+  }
+}
 </style>
