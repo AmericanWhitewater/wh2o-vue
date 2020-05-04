@@ -166,9 +166,6 @@ export default {
       gagesLoading: state => state.riverDetailState.reachGagesData.loading,
       gagesError: state => state.riverDetailState.reachGagesData.error
     }),
-    riverId () {
-      return this.$route.params.id
-    },
     chartSize () {
       if (this.windowWidth > this.$options.breakpoints.md) {
         return null
@@ -181,9 +178,6 @@ export default {
     }
   },
   watch: {
-    selectedTimespan () {
-      this.fetchReadings()
-    },
     error (val) {
       if (val) {
         this.$store.dispatch(globalAppActions.SEND_TOAST, {
