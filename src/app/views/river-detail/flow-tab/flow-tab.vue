@@ -52,7 +52,7 @@
           </template>
           <GageChartControls
             @viewModeChange="viewMode = $event"
-            @timescaleChange="setTimescale"
+
             @gage-change="setActiveGageId"
           />
           <div class="mb-lg">
@@ -131,9 +131,10 @@ import { FlowChart, GageReadings, GageChartControls, LevelLegend, FlowStats } fr
 import { GageChartConfig } from './utils/gage-chart-config'
 import { Layout } from '@/app/global/layout'
 import { mapState } from 'vuex'
-import { readingsActions, reachGagesActions } from '../shared/state'
+import { reachGagesActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { checkWindow } from '@/app/global/mixins'
+import { globalAppActions } from '@/app/global/state'
 
 /**
  * @todo this component is getting pretty wild. consider composition API.
@@ -153,13 +154,7 @@ export default {
   mixins: [GageChartConfig, checkWindow],
   data: () => ({
     activeGageId: '',
-    /**
-     * default timespan to day format
-     */
     selectedTimespan: 'h:mm a',
-    /**
-     * default view = chart
-     */
     viewMode: 'chart'
   }),
   computed: {
@@ -186,31 +181,29 @@ export default {
     }
   },
   watch: {
-    /**
-     * @description If the user changes selected timespan, refresh chart data
-     *
-     */
     selectedTimespan () {
       this.fetchReadings()
+    },
+    error (val) {
+      if (val) {
+        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          title: 'Failed to load readings',
+          kind: 'error'
+        })
+      }
+    },
+    gagesError (val) {
+      if (val) {
+        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          title: 'Failed to load readings',
+          kind: 'error'
+        })
+      }
     }
   },
   methods: {
     setActiveGageId (id) {
       this.activeGageId = id
-    },
-    fetchReadings () {
-      this.$store.dispatch(readingsActions.FETCH_GAGE_READINGS_DATA)
-    },
-    /**
-     * Sets the timescale for the chart x-axis. Called on GageChartControls $emit('timescaleChange', format).
-     * @param {string} format receives date format required by chartjs and moment so flow chart knows to rerender
-     *
-     */
-    setTimescale (format) {
-      if (format && this.chartConfig.scales.xAxes[0].time) {
-        this.selectedTimespan = format
-        this.chartConfig.scales.xAxes[0].time.unit = format
-      }
     }
   },
   created () {
