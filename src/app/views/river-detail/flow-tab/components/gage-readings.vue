@@ -1,5 +1,5 @@
 <template>
-  <section class="mt-3">
+  <section class="mt-3 mb-lg">
     <div
       v-if="!loading && data"
       class="bx--data-table-container"
@@ -21,7 +21,7 @@
             :key="`${rowIndex}`"
             :value="`${rowIndex}`"
           >
-            <td v-text="`${Math.floor(r.reading)} [${r.metric}]`" />
+            <td v-text="`${Math.floor(r.reading)} [${metric}]`" />
             <td>{{ formatDate(r.updated) }}</td>
           </tr>
         </tbody>
@@ -53,10 +53,15 @@ export default {
     ...mapState({
       data: state => state.riverDetailState.gageReadingsData.data,
       loading: state => state.riverDetailState.gageReadingsData.loading,
-      error: state => state.riverDetailState.gageReadingsData.error
-    })
+      error: state => state.riverDetailState.gageReadingsData.error,
+      metrics: state => state.riverDetailState.gageMetricsData.data
+    }),
+    metric () {
+      return this?.metrics.find(m => m.id === this.data[0].metric.toString()).unit
+    }
   },
   methods: {
+
     formatDate (date) {
       return Moment(date).format('llll')
     }

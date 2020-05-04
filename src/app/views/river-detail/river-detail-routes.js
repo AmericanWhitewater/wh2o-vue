@@ -27,15 +27,7 @@ const riverDetailRoutes = [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('./flow-tab/flow-tab.vue'),
-        children: [
-          {
-            path: 'gage-detail/:gageID',
-            name: 'gage-detail',
-            props: { default: true, gageDetail: true },
-            component: () => import('./flow-tab/components/gage-detail.vue')
-          }
-        ]
+        component: () => import('./flow-tab/flow-tab.vue')
       },
       {
         path: 'map',

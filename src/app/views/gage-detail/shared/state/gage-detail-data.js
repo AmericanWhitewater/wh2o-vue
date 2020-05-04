@@ -1,18 +1,13 @@
-/**
- * @todo this file feels clunky. consider refactoring gage / flow tab vuex modules
- *
- */
-
 import { reflectKeys } from '@/app/global/services'
-import { fetchGages } from '../../services'
+import { fetchGageDetailData } from '../services'
 
 const initialState = {
-  loading: false,
-  data: [],
-  error: null
+  data: null,
+  error: null,
+  loading: false
 }
 
-const namespacedPrefix = '[REACH_GAGES]'
+const namespacedPrefix = '[GAGE_DETAIL]'
 
 const mutationTypes = reflectKeys(
   ['DATA_SUCCESS', 'DATA_REQUEST', 'DATA_ERROR', 'DATA_RESET'],
@@ -22,9 +17,8 @@ const mutationTypes = reflectKeys(
 const { DATA_ERROR, DATA_REQUEST, DATA_RESET, DATA_SUCCESS } = mutationTypes
 
 const mutations = {
-
   [DATA_REQUEST] (state) {
-    Object.assign(state, { loading: true, error: null, data: null })
+    Object.assign(state, { loading: true, error: null })
   },
 
   [DATA_SUCCESS] (state, payload) {
@@ -40,26 +34,25 @@ const mutations = {
   },
 
   [DATA_RESET] (state) {
-    Object.assign(state, ...initialState)
+    Object.assign(state, initialState)
   }
 }
 
-export const reachGagesActions = reflectKeys(
-  ['FETCH_GAGES'],
+export const gageDetailActions = reflectKeys(
+  ['FETCH_GAGE_DATA'],
   namespacedPrefix
 )
 
 const actions = {
-
-  async [reachGagesActions.FETCH_GAGES] (context, data) {
+  async [gageDetailActions.FETCH_GAGE_DATA] (context, data) {
     context.commit(DATA_REQUEST)
 
-    const result = await fetchGages(data).catch(e => {
+    const result = await fetchGageDetailData(data).catch(e => {
       context.commit(DATA_ERROR, e)
     })
 
     if (result) {
-      context.commit(DATA_SUCCESS, result.data.getGaugeInformationForReachID.gauges)
+      context.commit(DATA_SUCCESS, result.data.gauge)
     }
 
     return result

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import { appGlobalState } from '@/app/global/state'
+import { gageDetailState } from './views/gage-detail'
 import { newsPageState } from './views/news-page'
 import { riverDetailState } from './views/river-detail'
 import { riverIndexState } from './views/river-index'
@@ -16,6 +17,7 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     appGlobalState,
+    gageDetailState,
     newsPageState,
     riverDetailState,
     riverIndexState,

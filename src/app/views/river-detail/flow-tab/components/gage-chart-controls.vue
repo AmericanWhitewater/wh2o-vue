@@ -5,7 +5,7 @@
         v-if="gages"
         v-model="formData.gauge_id"
         :placeholder="$titleCase(formData.gauge_name)"
-        :label="gages.length === 1 ? 'Gage' : 'Gages'"
+        label="Selected Gage"
         class="mb-spacing-md"
         :disabled="gages.length === 1"
         @change="fetchReadings"
@@ -21,7 +21,7 @@
 
       <cv-dropdown
         v-model="formData.timeScale"
-        label="Timespan"
+        label="Data Timespan"
         :disabled="loading"
         class="mb-spacing-md"
         @change="fetchReadings"
@@ -43,7 +43,7 @@
       <cv-dropdown
         v-if="availableMetrics"
         v-model="formData.metric_id"
-        label="Metric"
+        label="Data Metric"
         :disabled="availableMetrics.length === 1"
         class="mb-spacing-md"
         @change="fetchReadings"
@@ -209,6 +209,7 @@ export default {
             .unix()
           break
         default:
+          this.$emit('timescaleChange', 'h:mm a')
           this.formData.timeScale = 'day'
           this.formData.resolution = 1
           start = moment()
@@ -223,6 +224,7 @@ export default {
       this.$store.dispatch(metricsActions.FETCH_GAGE_METRICS, this.$route.params.id)
     },
     async fetchReadings () {
+      this.$emit('gage-change', this.formData.gauge_id)
       await this.setTimeScale()
       this.$store.dispatch(
         readingsActions.FETCH_GAGE_READINGS_DATA,
