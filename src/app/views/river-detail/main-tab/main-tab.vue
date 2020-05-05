@@ -6,15 +6,14 @@
     >
       <template #main>
         <div class="map-wrapper mb-sm">
-          <NwiMap
+          <nwi-map
             v-if="data"
             height="400"
             :detail-reach-id="reachId"
             :include-legend="false"
             :has-controls="false"
             :source-layers="sourceLayers"
-            :center="center"
-            :starting-zoom="zoom"
+            :starting-bounds="startingBounds"
           />
         </div>
         <beta-box />
