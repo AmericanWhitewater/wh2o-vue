@@ -72,7 +72,7 @@
 </template>
 <script>
 import { httpClient } from '@/app/global/services'
-import TermsOfService from '@/app/views/static-routes/legal/terms-of-service'
+import TermsOfService from '@/app/views/static-routes/terms-of-service'
 export default {
   name: 'user-register',
   components: {
