@@ -1,9 +1,12 @@
 import CommentsSection from '../comments-section.vue'
 import { createWrapper } from '@/utils'
-// import flushPromises from 'flush-promises'
-// import { httpClient } from '@/app/global/services/http-client/http-client'
+import PostUpdateModal from '@/app/global/components/post-update-modal/post-update-modal'
 
-// jest.mock('@/app/global/services/http-client/http-client')
+const mockUser = {
+  uid: '123',
+  uname: 'foo',
+  uemail: 'bar@aol.com'
+}
 
 const mockStore = {
   state: {
@@ -16,11 +19,7 @@ const mockStore = {
     },
     userState: {
       userData: {
-        data: {
-          uid: '123',
-          uname: 'foo',
-          uemail: 'bar@aol.com'
-        }
+        data: null
       }
     }
   },
@@ -76,6 +75,46 @@ describe('CommentsSection', () => {
     expect(wrapper.find('.utility-block-content').exists()).toBe(true)
   })
 
+  it('sends login prompt if user not logged in and new comment button clicked', async () => {
+    const wrapper = createWrapper(CommentsSection, options)
+
+    wrapper.find('#new-comment').trigger('click')
+
+    await wrapper.vm.$nextTick()
+
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1, '[APP_GLOBAL] SEND_TOAST', { kind: 'info', title: 'Please Log In' })
+  })
+
+  it('sends comment added toast when comment successfully edited', async () => {
+    mockStore.state.userState.userData.data = mockUser
+
+    const wrapper = createWrapper(CommentsSection, options)
+
+    wrapper.find(PostUpdateModal).vm.$emit('update:success')
+
+    await wrapper.vm.$nextTick()
+
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(2, '[APP_GLOBAL] SEND_TOAST', { kind: 'success', title: 'Comment Added' })
+  })
+
+  it('sends comment edited toast when comment successfully edited', async () => {
+    const post = { id: '101250363', title: null, detail: 'how is there absolutely zero beta on this run?', post_date: '2013-06-27 00:00:00', revision: 23592, post_type: 'COMMENT', user: { uname: 'circuitmonkey', uid: '151431', image: { uri: { thumb: null, medium: null, big: '/resources/images/contacts/151431.jpg' } } } }
+
+    mockStore.state.userState.userData.data = mockUser
+
+    const wrapper = createWrapper(CommentsSection, options)
+
+    wrapper.vm.editComment(post)
+
+    await wrapper.vm.$nextTick()
+
+    wrapper.find(PostUpdateModal).vm.$emit('update:success')
+
+    await wrapper.vm.$nextTick()
+
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(2, '[APP_GLOBAL] SEND_TOAST', { kind: 'success', title: 'Comment Edited' })
+  })
+
   it('shows modal when new comment is initiated', async () => {
     const wrapper = createWrapper(CommentsSection, options)
 
@@ -117,8 +156,17 @@ describe('CommentsSection', () => {
     )
   })
 
-  /**
-   * @todo need to refactor so api call is separate module
-   *
-   */
+  it('handles successful submission and re-fetches comments', async () => {
+    const wrapper = createWrapper(CommentsSection, options)
+
+    wrapper.find(PostUpdateModal).vm.$emit('update:success')
+
+    await wrapper.vm.$nextTick()
+
+    expect(mockStore.dispatch).toBeCalledTimes(2)
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(2, '[APP_GLOBAL] SEND_TOAST', {
+      kind: 'success',
+      title: 'Comment Added'
+    })
+  })
 })

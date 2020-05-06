@@ -116,11 +116,7 @@ export default {
       )
       this.$store.dispatch(globalAppActions.SEND_TOAST, {
         title: 'Alert Submitted',
-        kind: 'success',
-        override: true,
-        contrast: false,
-        action: false,
-        autoHide: true
+        kind: 'success'
       })
     }
   }
