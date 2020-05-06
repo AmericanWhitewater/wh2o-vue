@@ -13,8 +13,8 @@
       size="small"
       class="mb-spacing-lg"
       :disabled="loading"
-      @click.exact="postUpdateModalVisible = true"
-      @keydown.enter="postUpdateModalVisible = true"
+      @click.exact="openModal"
+      @keydown.enter="openModal"
     >
       New Comment
     </cv-button>
@@ -40,7 +40,7 @@
         />
       </template>
     </template>
-    <template v-else>
+    <template v-else-if="error">
       <utility-block state="error" />
     </template>
     <post-update-modal
@@ -84,11 +84,6 @@ export default {
     postUpdateModalVisible: false,
     formData: {
       detail: ''
-    },
-    layoutOptions: {
-      sidebar: {
-        left: true
-      }
     }
   }),
   computed: {
@@ -97,31 +92,25 @@ export default {
       loading: state => state.riverDetailState.commentsData.loading,
       error: state => state.riverDetailState.commentsData.error,
       user: state => state.userState.userData.data
-    }),
-    reachId () {
-      return this.$route.params.id
-    }
+    })
   },
   methods: {
-    editComment (post) {
-      if (post) {
+    openModal () {
+      if (!this.user) {
+        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          title: 'Please Log In',
+          kind: 'info'
+        })
+      } else {
         this.postUpdateModalVisible = true
-        this.activeEditComment = post
       }
     },
+    editComment (post) {
+      this.postUpdateModalVisible = true
+      this.activeEditComment = post
+    },
     loadComments () {
-      this.$store.dispatch(commentsActions.FETCH_COMMENTS_DATA, this.reachId)
-    },
-    profilePreview (userid) {
-      return userid
-    },
-    formatInitials (userName) {
-      // helper to get the first and last initials for comment
-      const splitName = userName.split(' ')
-      const firstInitial = splitName[0].charAt(0)
-      const lastInitial = splitName[splitName.length - 1].charAt(0)
-      const initials = firstInitial + lastInitial
-      return initials
+      this.$store.dispatch(commentsActions.FETCH_COMMENTS_DATA, this.$route.params.id)
     },
     handleCancel () {
       this.postUpdateModalVisible = false
@@ -131,12 +120,8 @@ export default {
       this.loadComments()
       this.postUpdateModalVisible = false
       this.$store.dispatch(globalAppActions.SEND_TOAST, {
-        title: this.post ? 'Comment Edited' : 'Comment Added',
-        kind: 'success',
-        override: true,
-        contrast: false,
-        action: false,
-        autoHide: true
+        title: this.activeEditComment ? 'Comment Edited' : 'Comment Added',
+        kind: 'success'
       })
     }
   }
