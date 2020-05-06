@@ -66,7 +66,7 @@ export default {
     },
     startingBounds () {
       // TODO: get graphql API to return a linestring or geojson instead of this text
-      const geom = this.data.geom.split(',').map(d => d.split(' '))
+      const geom = this.data?.geom?.split(',').map(d => d.split(' '))
       return bbox(lineString(geom))
     }
   }

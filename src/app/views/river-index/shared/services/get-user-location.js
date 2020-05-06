@@ -1,8 +1,5 @@
-// import { httpClient } from "@/app/global/services";
 
-// import { apiConstants } from "../../config";
-
-const getUserLocation = () => {
+export function getUserLocation () {
   function showPosition (position) {
     const location = {
       longitude: position.coords.longitude,
@@ -13,11 +10,7 @@ const getUserLocation = () => {
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition)
-
-    // console.log('Geo Location request triggered')
     alert(navigator.geolocation.getCurrentPosition(showPosition))
     return navigator.geolocation.getCurrentPosition(showPosition)
   }
 }
-
-export { getUserLocation }
