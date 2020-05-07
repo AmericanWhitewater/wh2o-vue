@@ -10,7 +10,7 @@
       <div
         ref="table-container"
         class="bx--data-table-container river-index"
-        :style="`max-height:calc(100vh - ${Math.floor(tableTop) + 25 }px)`"
+        :style="getTableHeight()"
       >
         <table class="bx--data-table river-table">
           <thead>
@@ -156,6 +156,9 @@ export default {
     }
   },
   methods: {
+    getTableHeight () {
+      return `max-height:calc(100vh - ${Math.floor(this.tableTop)}px)`
+    },
     viewRiver (id, tab) {
       this.$router
         .push(`/river-detail/${id}/${tab || 'main'}`)
@@ -185,7 +188,7 @@ export default {
     this.debouncedMouseover = debounce(this.mouseoverFeature, 200)
   },
   mounted () {
-    this.tableTop = this.$refs['table-container'].getClientRects()[0].top
+    this.tableTop = this.$refs['table-container']?.getClientRects()[0].top
     this.windowWidth = window.innerWidth
     this.$nextTick(() => {
       window.addEventListener('resize', () => {
