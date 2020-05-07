@@ -1,11 +1,6 @@
 <template>
   <div>
     <cv-toolbar class="nwi-map-controls-v2">
-      <cv-search
-        v-model="riverSearchHttpConfig.river"
-        size="small"
-        @keydown.enter="fetchRivers"
-      />
       <cv-overflow-menu class="bx--toolbar-action">
         <template slot="trigger">
           <PaintBrushAlt16 class="" />
@@ -29,31 +24,32 @@
         </cv-toolbar-option>
       </cv-overflow-menu>
       <cv-button
-        v-if="!mobileDevice"
+        id="fullscreen-trigger"
         kind="ghost"
-        @click.exact="toggleFullscreen"
+        @click.exact="toggleFullscreen()"
+        @keydown.enter="toggleFullscreen()"
       >
         <Maximize16 />
       </cv-button>
+      <cv-search
+        v-model="riverSearchHttpConfig.river"
+        size="small"
+        @keydown.enter="fetchRivers"
+      />
     </cv-toolbar>
   </div>
 </template>
 <script>
-import { riverSearchHttpConfig, checkWindow } from '@/app/global/mixins'
+import { riverSearchHttpConfig } from '@/app/global/mixins'
 import { riverSearchActions } from '@/app/views/river-search/shared/state'
 import { riverIndexActions } from '../shared/state'
 import screenfull from 'screenfull'
 export default {
   name: 'nwi-map-controls-v2',
-  mixins: [riverSearchHttpConfig, checkWindow],
+  mixins: [riverSearchHttpConfig],
   data: () => ({
     mapStyle: 'topo'
   }),
-  computed: {
-    mobileDevice () {
-      return this.windowWidth < this.$options.breakpoints.lg
-    }
-  },
   watch: {
     mapStyle (v) {
       this.$store.dispatch(riverIndexActions.SET_MAP_STYLE, v)
@@ -79,3 +75,11 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+#fullscreen-trigger{
+  display:none;
+  @include carbon--breakpoint('sm') {
+    display: block;
+  }
+}
+</style>
