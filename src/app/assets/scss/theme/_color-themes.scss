@@ -112,9 +112,9 @@ $themes: (
 }
 
 body {
-    &.dark {
-        @include themed() {
-            background-color: t($ui-01)
-        }
+  &.dark {
+    @include themed() {
+      background-color: t($ui-01)
     }
+  }
 }
