@@ -46,8 +46,8 @@ export default {
 .nwi-legend {
   background-color: #fff;
   border-radius: 3px;
-  top: 10px; // make space for toolbar on top
-  left: 10px;
+  top: 0.5rem;
+  left: 0.5rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   position: absolute;

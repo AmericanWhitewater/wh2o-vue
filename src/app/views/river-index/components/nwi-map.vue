@@ -11,6 +11,11 @@
       />
       <nwi-basemap-toggle
         v-if="!hideBasemapToggle"
+        :offset-right="!hideFullscreenToggle"
+      />
+      <nwi-fullscreen-toggle
+        v-if="!hideFullscreenToggle"
+        :id-for-fullscreen="idForFullscreen"
       />
       <cv-loading
         v-if="loading"
@@ -33,6 +38,8 @@ import debounce from 'lodash.debounce'
 import NwiMapStyles from './nwi-map-styles.js'
 import NwiMapLegend from './nwi-map-legend.vue'
 import NwiBasemapToggle from './nwi-basemap-toggle.vue'
+import NwiFullscreenToggle from './nwi-fullscreen-toggle.vue'
+
 import { Events as topic } from '@/app/global/services'
 import { mapState } from 'vuex'
 import { riverIndexActions } from '../shared/state'
@@ -51,7 +58,8 @@ export default {
   components: {
     NwiMapLegend,
     UtilityBlock,
-    NwiBasemapToggle
+    NwiBasemapToggle,
+    NwiFullscreenToggle
   },
   props: {
     height: {
@@ -112,7 +120,7 @@ export default {
       type: Array,
       default: () => ['reach-segments']
     },
-    idForFullScreen: {
+    idForFullscreen: {
       type: String,
       required: false
     },
@@ -145,6 +153,9 @@ export default {
       } else {
         return 'mapbox://styles/mapbox/outdoors-v11'
       }
+    },
+    hideFullscreenToggle () {
+      return Boolean(this.idForFullscreen) && this.idForFullscreen.length > 0
     },
     // parses out the layers we're adding to the map from NwiMapStyles / sourceLayers prop
     mapLayers () {

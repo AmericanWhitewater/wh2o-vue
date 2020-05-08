@@ -1,5 +1,8 @@
 <template>
-  <div class="nwi-basemap-toggle">
+  <div
+    class="nwi-basemap-toggle"
+    :style="getToggleOffset"
+  >
     <cv-dropdown
       v-model="baseMap"
     >
@@ -19,13 +22,28 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'nwi-basemap-toggle',
+  props: {
+    // allows offsetting for the fullscreen control if present
+    offsetRight: {
+      type: Boolean,
+      required: false,
+      default: true
+    }
+  },
   data: () => ({
     baseMap: 'topo'
   }),
   computed: {
     ...mapState({
       mapStyle: state => state.riverIndexState.riverIndexData.mapStyle
-    })
+    }),
+    getToggleOffset () {
+      if (this.offsetRight) {
+        return 'right: calc(0.5rem + 42px);'
+      } else {
+        return 'right: 0.5rem;'
+      }
+    }
   },
   watch: {
     baseMap (v) {
@@ -46,13 +64,17 @@ export default {
 .nwi-basemap-toggle {
   background-color: #fff;
   border-radius: 3px;
-  top: 10px; // make space for toolbar on top
-  right: 10px;
+  top: 0.5rem;
+  right: 0.5rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   width: 7rem;
   position: absolute;
   z-index: 1;
   display: block;
+
+  .bx--dropdown {
+    border-radius: 3px;
+  }
 
   button.bx--dropdown-text {
     cursor: pointer;
