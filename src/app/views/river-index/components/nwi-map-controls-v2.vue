@@ -31,22 +31,23 @@
       >
         <Maximize16 />
       </cv-button>
-      <cv-search
-        v-model="riverSearchHttpConfig.river"
+      <search-bar
         size="small"
-        @keydown.enter="fetchRivers"
+        @search:submitted="fetchRivers"
       />
     </cv-toolbar>
   </div>
 </template>
 <script>
-import { riverSearchHttpConfig } from '@/app/global/mixins'
 import { riverSearchActions } from '@/app/views/river-search/shared/state'
 import { riverIndexActions } from '../shared/state'
 import screenfull from 'screenfull'
+import SearchBar from '@/app/global/components/search-bar/search-bar.vue'
 export default {
   name: 'nwi-map-controls-v2',
-  mixins: [riverSearchHttpConfig],
+  components: {
+    SearchBar
+  },
   data: () => ({
     mapStyle: 'topo'
   }),
@@ -66,10 +67,10 @@ export default {
       }
       screenfull.toggle(document.getElementById('fullscreen-target'))
     },
-    fetchRivers () {
+    fetchRivers (term) {
       this.$store.dispatch(
         riverSearchActions.FETCH_RIVER_SEARCH_DATA,
-        this.riverSearchHttpConfig
+        term
       )
     }
   }

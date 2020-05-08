@@ -14,6 +14,7 @@ export { default as PageDescription } from './page-description/page-description.
 export { default as PageHeader } from './page-header/page-header.vue'
 export { default as PostUpdateModal } from './post-update-modal/post-update-modal'
 export { default as ResourceCard } from './resource-card/resource-card.vue'
+export { default as SearchBar } from './search-bar/search-bar.vue'
 export { default as UserAvatar } from './user-avatar/user-avatar.vue'
 export { default as UtilityBlock } from './utility-block/utility-block.vue'
 export { default as icon } from './app-icon/app-icon.vue'
