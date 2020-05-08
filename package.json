@@ -12,8 +12,6 @@
     "snapshot:update": " vue-cli-service test:unit --updateSnapshot",
     "lint": "vue-cli-service lint --fix",
     "start": "node server/server.js",
-    "styleguide": "vue-cli-service styleguidist",
-    "styleguide:build": "vue-cli-service styleguidist:build",
     "coveralls": "vue-cli-service test:unit --coverage && cat ./coverage/lcov.info | coveralls"
   },
   "dependencies": {
@@ -78,7 +76,6 @@
     "sass-loader": "^8.0.2",
     "vue-apollo": "^3.0.0-beta.11",
     "vue-cli-plugin-apollo": "^0.21.3",
-    "vue-cli-plugin-styleguidist": "^4.15.0",
     "vue-template-compiler": "^2.6.11",
     "yorkie": "^2.0.0"
   },

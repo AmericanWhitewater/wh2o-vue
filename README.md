@@ -29,12 +29,6 @@ App will viewable at
 http://localhost:8080/
 ```
 
-## Local Component Style Guide
-
-Not currently being maintained.
-
-We have an existing component library/documentation for custom non-carbon design system components built using vue-styleguidist. To view the library and documentation, cd to `wh2o-web` root, then run `npm run styleguide`. This command brings up the guide at [http://localhost:6060/](http://localhost:6060/). Ports may need to be adjusted to avoid conflicts.
-
 ## Built With
 
 * [IBM Carbon Design System](https://www.carbondesignsystem.com/)
