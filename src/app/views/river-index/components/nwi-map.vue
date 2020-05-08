@@ -4,20 +4,13 @@
     :style="height ? `height:${height}px`:''"
   >
     <template v-if="mapboxAccessToken">
-      <nwi-map-controls
-        v-if="hasControls"
-        :base-map="baseMap"
-        :color-by="colorBy"
-        :id-for-full-screen="idForFullScreen"
-        :map-controls="mapControls"
-        @baseMap="updateBaseMap"
-        @colorBy="updateColorBy"
-        @loading="updateLoading"
-      />
       <div id="nwi-map" />
       <nwi-map-legend
         v-if="includeLegend"
         :color-by="colorBy"
+      />
+      <nwi-basemap-toggle
+        v-if="!hideBasemapToggle"
       />
       <cv-loading
         v-if="loading"
@@ -39,7 +32,7 @@ import bbox from '@turf/bbox'
 import debounce from 'lodash.debounce'
 import NwiMapStyles from './nwi-map-styles.js'
 import NwiMapLegend from './nwi-map-legend.vue'
-import NwiMapControls from './nwi-map-controls.vue'
+import NwiBasemapToggle from './nwi-basemap-toggle.vue'
 import { Events as topic } from '@/app/global/services'
 import { mapState } from 'vuex'
 import { riverIndexActions } from '../shared/state'
@@ -57,19 +50,13 @@ export default {
   name: 'nwi-map',
   components: {
     NwiMapLegend,
-    NwiMapControls,
-    UtilityBlock
+    UtilityBlock,
+    NwiBasemapToggle
   },
   props: {
     height: {
       type: String,
       required: false
-    },
-    // toggles controls
-    hasControls: {
-      type: Boolean,
-      required: false,
-      default: true
     },
     // display loading spinner because of events from other components
     externalLoading: {
@@ -82,6 +69,12 @@ export default {
       required: false,
       default: true
     },
+    // hide basemap toggle (satellite/topo)
+    hideBasemapToggle: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     // modifies the map style to highlight a single reach identified by ID
     detailReachId: {
       type: Number,
@@ -91,11 +84,6 @@ export default {
     initialColorBy: {
       type: String,
       default: 'difficulty'
-    },
-    // defines the basemap (satellite or outdoors)
-    initialBaseMap: {
-      type: String,
-      default: 'topo'
     },
     // if present, causes the map to zoom to the geometry of this feature
     featureToCenter: {
@@ -138,7 +126,6 @@ export default {
     return {
       loading: false,
       colorBy: this.initialColorBy,
-      baseMap: this.initialBaseMap,
       mapboxAccessToken: mapboxAccessToken
     }
   },
@@ -150,9 +137,9 @@ export default {
       mouseoveredFeature: state => state.riverIndexState.riverIndexData.mouseoveredFeature
     }),
     baseMapUrl () {
-      if (this.baseMap === 'topo') {
+      if (this.mapStyle === 'topo') {
         return 'mapbox://styles/mapbox/outdoors-v11'
-      } else if (this.baseMap === 'satellite') {
+      } else if (this.mapStyle === 'satellite') {
         // custom version of `satellite-v8` that includes icons that already exist in `outdoors-v11`
         return 'mapbox://styles/americanwhitewater/ck1h4j4hm2bts1cpueefclrrn'
       } else {
@@ -176,7 +163,7 @@ export default {
   watch: {
     mapStyle (v) {
       if (v !== 'graphic') {
-        this.baseMap = v
+        this.map.setStyle(this.baseMapUrl)
       }
     },
     // visually highlights a mosued over feature on the map
@@ -199,9 +186,6 @@ export default {
       if (this.loading === oldVal) {
         this.loading = newVal
       }
-    },
-    baseMap (newVal) {
-      this.map.setStyle(this.baseMapUrl)
     },
     colorBy (newVal) {
       this.updateMapColorScheme(newVal)
@@ -263,9 +247,6 @@ export default {
     },
     updateLoading (loading) {
       this.loading = loading
-    },
-    updateBaseMap (newVal) {
-      this.baseMap = newVal
     },
     updateColorBy (newVal) {
       this.colorBy = newVal
