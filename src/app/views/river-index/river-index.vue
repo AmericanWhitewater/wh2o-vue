@@ -134,14 +134,6 @@ export default {
   width: 100%;
   position: relative;
 
-  @include carbon--breakpoint("sm") {
-    height: 95vh;
-  }
-
-  @include carbon--breakpoint("lg") {
-    height: 80vh;
-    overflow: hidden;
-  }
 }
 #fullscreen-target {
   background-color: #fff;

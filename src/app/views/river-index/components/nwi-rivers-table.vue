@@ -10,7 +10,7 @@
       <div
         ref="table-container"
         class="bx--data-table-container river-index"
-        :style="`max-height:calc(100vh - ${Math.floor(tableTop) + 25 }px)`"
+        :style="getTableHeight()"
       >
         <table class="bx--data-table river-table">
           <thead>
@@ -38,7 +38,7 @@
                 @mouseleave="debouncedMouseover()"
               >
                 <td
-                  :class="[`${reach.properties.condition}`,, 'river-name-section']"
+                  :class="[`${reach.properties.condition}`, 'river-name-section']"
                   @click.exact="$router.push(`/river-detail/${reach.properties.id}/main`).catch(()=>{})"
                 >
                   <strong>{{ reach.properties.river }}</strong>
@@ -108,13 +108,13 @@ export default {
   data: () => ({
     windowWidth: 0,
     mq: Breakpoints,
-    loading: false,
-    tableTop: null
+    loading: false
   }),
   computed: {
     ...mapState({
       mouseoveredFeature: state => state.riverIndexState.riverIndexData.mouseoveredFeature
     }),
+
     noReaches () {
       return this.reaches && this.reaches.length === 0
     },
@@ -156,12 +156,14 @@ export default {
     }
   },
   methods: {
+    getTableHeight () {
+      return `max-height:calc(100vh - ${this.$refs['table-container']?.getClientRects()[0].top}px)`
+    },
     viewRiver (id, tab) {
       this.$router
         .push(`/river-detail/${id}/${tab || 'main'}`)
         .catch(() => {})
     },
-
     mouseoverFeature (feature) {
       this.$store.dispatch(riverIndexActions.MOUSEOVER_FEATURE, feature)
     },
@@ -185,7 +187,6 @@ export default {
     this.debouncedMouseover = debounce(this.mouseoverFeature, 200)
   },
   mounted () {
-    this.tableTop = this.$refs['table-container'].getClientRects()[0].top
     this.windowWidth = window.innerWidth
     this.$nextTick(() => {
       window.addEventListener('resize', () => {
@@ -212,9 +213,8 @@ export default {
   }
 
   &.river-index {
-    min-height:calc(100vh - 236px);
+
     background-color:$ui-02;
-    max-height:calc(100vh - 261px);
   }
   &.river-detail {
     @include carbon--breakpoint("md") {
