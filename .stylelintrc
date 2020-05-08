@@ -1,0 +1,27 @@
+{
+  "plugins": [
+    "stylelint-scss",
+    "stylelint-order"
+  ],
+  "rules": {
+    "block-no-empty": null,
+    "color-no-invalid-hex": true,
+    "declaration-colon-space-after": "always",
+    "indentation": 2,
+    "max-empty-lines": 1,
+    "order/properties-alphabetical-order": true,
+    "unit-whitelist": [
+      "px",
+      "%",
+      "s",
+      "deg",
+      "vh",
+      "vw",
+      "pt",
+      "ms",
+      "rem",
+      "fr",
+      "em"
+    ]
+  }
+}
