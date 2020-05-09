@@ -1,5 +1,8 @@
 <template>
-  <div class="app-breadcrumbs-wrapper">
+  <div
+    v-show="!isRiverIndex"
+    class="app-breadcrumbs-wrapper"
+  >
     <layout name="layout-full-width">
       <template #main>
         <template v-if="loading">
@@ -85,12 +88,14 @@
                 </cv-breadcrumb-item>
               </template>
             </cv-breadcrumb>
-            <cv-tag
-              v-if="$route.name === 'river-index' && riverIndexData"
-              kind="blue"
-              :label="`Rivers Found: ${riverIndexData.length}`"
-              :disabled="false"
-            />
+            <a href="#nwi-rivers-table">
+              <cv-tag
+                v-if="$route.name === 'river-index' && riverIndexData"
+                kind="blue"
+                :label="`Rivers Found: ${riverIndexData.length}`"
+                :disabled="false"
+              />
+            </a>
           </div>
         </template>
       </template>
@@ -143,6 +148,9 @@ export default {
         return this.river.section
       }
       return null
+    },
+    isRiverIndex () {
+      return this.$route.name === 'river-index'
     }
   },
   watch: {
