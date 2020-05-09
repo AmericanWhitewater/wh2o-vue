@@ -14,6 +14,7 @@
             :has-controls="false"
             :source-layers="sourceLayers"
             :starting-bounds="startingBounds"
+            hide-result-counter
           />
         </div>
         <beta-box />

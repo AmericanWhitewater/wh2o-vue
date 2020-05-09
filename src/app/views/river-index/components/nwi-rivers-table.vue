@@ -157,7 +157,11 @@ export default {
   },
   methods: {
     getTableHeight () {
-      return `max-height:calc(100vh - ${this.$refs['table-container']?.getClientRects()[0].top}px)`
+      if (this.windowWidth > this.mq.lg) {
+        return `max-height:calc(100vh - ${this.$refs['table-container']?.getClientRects()[0].top}px)`
+      }
+
+      return 'max-height:100vh'
     },
     viewRiver (id, tab) {
       this.$router

@@ -9,6 +9,7 @@
             :detail-reach-id="reachId"
             :source-layers="sourceLayers"
             :starting-bounds="startingBounds"
+            hide-result-counter
             @clickFeature="clickFeature"
           />
         </div>
