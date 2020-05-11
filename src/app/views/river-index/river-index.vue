@@ -5,7 +5,7 @@
         id="fullscreen-target"
         class="bx--row"
       >
-        <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-12 bx--col-max-10">
+        <div class="bx--col-sm-16 bx--col-lg-10">
           <nwi-map
             :external-loading="loading || searchLoading"
             :feature-to-center="featureToCenter"
@@ -19,7 +19,7 @@
             @clickFeature="clickFeature"
           />
         </div>
-        <div class="bx--col-sm-12 bx--col-md-8 bx--col-lg-4 bx--col-max-6">
+        <div class="bx--col-sm-16 bx--col-lg-6">
           <NwiMapControlsV2 />
           <template v-if="loading || searchLoading">
             <UtilityBlock state="loading" />
