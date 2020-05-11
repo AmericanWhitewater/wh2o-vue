@@ -88,14 +88,6 @@
                 </cv-breadcrumb-item>
               </template>
             </cv-breadcrumb>
-            <a href="#nwi-rivers-table">
-              <cv-tag
-                v-if="$route.name === 'river-index' && riverIndexData"
-                kind="blue"
-                :label="`Rivers Found: ${riverIndexData.length}`"
-                :disabled="false"
-              />
-            </a>
           </div>
         </template>
       </template>
@@ -104,7 +96,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import { Layout } from '@/app/global/layout'
 import { checkWindow } from '@/app/global/mixins'
 /**
@@ -128,12 +119,12 @@ export default {
     crumbs: []
   }),
   computed: {
-    ...mapState({
-      river: state => state.riverDetailState.riverDetailData.data,
-      loading: state => state.riverDetailState.riverDetailData.loading,
-      searchResults: state => state.riverSearchState.riverSearchData.data,
-      riverIndexData: state => state.riverIndexState.riverIndexData.data
-    }),
+    river () {
+      return this.$store.state.riverDetailState.riverDetailData.data
+    },
+    loading () {
+      return this.$store.state.riverDetailState.riverDetailData.loading
+    },
     currentPage () {
       return this.$route
     },
@@ -197,11 +188,9 @@ export default {
   top: $mobile-nav-height;
   z-index: 2;
   position: relative;
-  display: flex;
   padding: $spacing-sm 0;
-  justify-content: space-between;
   max-width: 100%;
-  // overflow-x: scroll;
+
   &.home {
     visibility: hidden;
   }
