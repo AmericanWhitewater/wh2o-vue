@@ -129,24 +129,21 @@ export default {
       return this.$route
     },
     riverName () {
-      if (this.river) {
-        return this.river.river
-      }
-      return null
+      return this.river?.river || null
     },
     riverSection () {
-      if (this.river) {
-        return this.river.section
-      }
-      return null
+      return this.river?.section || null
     },
     isRiverIndex () {
       return this.$route.name === 'river-index'
     }
   },
   watch: {
-    currentPage () {
-      this.setCrumbs()
+    currentPage: {
+      immediate: true,
+      handler () {
+        this.setCrumbs()
+      }
     }
   },
   methods: {
@@ -173,9 +170,6 @@ export default {
       }
       return label
     }
-  },
-  created () {
-    this.setCrumbs()
   }
 }
 </script>
