@@ -15,7 +15,7 @@
       />
       <nwi-fullscreen-toggle
         v-if="!hideFullscreenToggle"
-        :id-for-fullscreen="idForFullscreen"
+        :fullscreen-target="fullscreenTarget"
       />
       <nwi-result-counter
         v-if="!hideResultCounter"
@@ -129,7 +129,7 @@ export default {
       type: Array,
       default: () => ['reach-segments']
     },
-    idForFullscreen: {
+    fullscreenTarget: {
       type: String,
       required: false
     },
