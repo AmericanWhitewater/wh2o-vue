@@ -1,24 +1,13 @@
 import { httpClient } from '@/app/global/services'
 
-import { apiConstants } from '../config'
-
 const fetchCreditsData = data => {
-  const url = `${apiConstants.graphql}`
   return httpClient
-    .post(url, {
+    .post('/graphql', {
       query: `
       query {
         reach(id:${data}){
-          revisions(first:20, page:1){
-            data {
-              id,
-                rellevel,
-                status,
-                factors{
-                    factor
-                }
-            }
-        }
+          revision_comment
+          revision
       }
     }
     

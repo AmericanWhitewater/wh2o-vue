@@ -3,6 +3,9 @@ import Moment from 'moment'
 
 Vue.mixin({
   methods: {
-    formatDate: (date, format) => Moment(date).format(format)
+    formatDate: (date, format) => {
+      const timestamp = Date.parse(date)
+      return Moment(timestamp).format(format || 'll')
+    }
   }
 })

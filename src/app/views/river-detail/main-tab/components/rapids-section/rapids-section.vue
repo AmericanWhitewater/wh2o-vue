@@ -51,10 +51,9 @@
 </template>
 <script>
 import { RapidItem, RapidEditModal } from './components'
-import { checkWindow } from '@/app/global/mixins'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { mapState } from 'vuex'
-import { rapidsActions } from '../../../shared/state'
+import { rapidsActions } from '@/app/views/river-detail/shared/state'
 import { globalAppActions } from '@/app/global/state'
 
 export default {
@@ -64,7 +63,6 @@ export default {
     UtilityBlock,
     RapidEditModal
   },
-  mixins: [checkWindow],
   data: () => ({
     newRapidModalVisible: false,
     formData: {

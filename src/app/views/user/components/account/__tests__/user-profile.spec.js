@@ -1,5 +1,5 @@
 import UserProfile from '../user-profile.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {

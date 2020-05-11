@@ -20,7 +20,7 @@
           />
           <span
             class="rapid-meta"
-            v-text="`Distance: ${rapid.distance}`"
+            v-text="`Distance: ${rapid.distance} mi`"
           />
         </div>
         <rapid-icon-bar
@@ -33,7 +33,7 @@
       <template>
         <div
           v-if="!uploadFormVisible"
-          class="bx--row pb-md"
+          class="bx--row"
         >
           <div class="bx--col-sm-12 bx--col-lg-5">
             <div class="outside">

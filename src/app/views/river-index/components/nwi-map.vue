@@ -4,24 +4,18 @@
     :style="height ? `height:${height}px`:''"
   >
     <template v-if="mapboxAccessToken">
-      <nwi-map-controls
-        v-if="hasControls"
-        :base-map="baseMap"
-        :color-by="colorBy"
-        :id-for-full-screen="idForFullScreen"
-        :map-controls="mapControls"
-        @baseMap="updateBaseMap"
-        @colorBy="updateColorBy"
-        @loading="updateLoading"
-        @searchResults="updateSearchResults"
-      />
-      <div
-        id="nwi-map"
-        :class="{ hasSidebar: hasSidebar }"
-      />
+      <div id="nwi-map" />
       <nwi-map-legend
         v-if="includeLegend"
         :color-by="colorBy"
+      />
+      <nwi-basemap-toggle
+        v-if="!hideBasemapToggle"
+        :offset-right="!hideFullscreenToggle"
+      />
+      <nwi-fullscreen-toggle
+        v-if="!hideFullscreenToggle"
+        :id-for-fullscreen="idForFullscreen"
       />
       <cv-loading
         v-if="loading"
@@ -43,11 +37,17 @@ import bbox from '@turf/bbox'
 import debounce from 'lodash.debounce'
 import NwiMapStyles from './nwi-map-styles.js'
 import NwiMapLegend from './nwi-map-legend.vue'
-import NwiMapControls from './nwi-map-controls.vue'
+import NwiBasemapToggle from './nwi-basemap-toggle.vue'
+import NwiFullscreenToggle from './nwi-fullscreen-toggle.vue'
+
 import { Events as topic } from '@/app/global/services'
 import { mapState } from 'vuex'
 import { riverIndexActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
+import {
+  mapboxAccessToken,
+  nwiTileServer
+} from '@/app/environment/environment'
 
 const fitBoundsOptions = {
   padding: 80
@@ -57,23 +57,13 @@ export default {
   name: 'nwi-map',
   components: {
     NwiMapLegend,
-    NwiMapControls,
-    UtilityBlock
+    UtilityBlock,
+    NwiBasemapToggle,
+    NwiFullscreenToggle
   },
   props: {
     height: {
       type: String,
-      required: false
-    },
-    // toggles controls
-    hasControls: {
-      type: Boolean,
-      required: false,
-      default: true
-    },
-    // visually highlights a feature on the map
-    highlightedFeature: {
-      type: Object,
       required: false
     },
     // display loading spinner because of events from other components
@@ -87,11 +77,11 @@ export default {
       required: false,
       default: true
     },
-    // map component doesn't know if it has a neighboring info panel without this prop;
-    // determines whether or not map width is 100%
-    hasSidebar: {
+    // hide basemap toggle (satellite/topo)
+    hideBasemapToggle: {
       type: Boolean,
-      default: true
+      required: false,
+      default: false
     },
     // modifies the map style to highlight a single reach identified by ID
     detailReachId: {
@@ -103,23 +93,10 @@ export default {
       type: String,
       default: 'difficulty'
     },
-    // defines the basemap (satellite or outdoors)
-    initialBaseMap: {
-      type: String,
-      default: 'topo'
-    },
     // if present, causes the map to zoom to the geometry of this feature
     featureToCenter: {
       type: Object,
       required: false
-    },
-    mapboxAccessToken: {
-      type: String,
-      required: true
-    },
-    tileservers: {
-      type: Array,
-      required: true
     },
     startingZoom: {
       type: Number,
@@ -143,7 +120,7 @@ export default {
       type: Array,
       default: () => ['reach-segments']
     },
-    idForFullScreen: {
+    idForFullscreen: {
       type: String,
       required: false
     },
@@ -157,47 +134,57 @@ export default {
     return {
       loading: false,
       colorBy: this.initialColorBy,
-      baseMap: this.initialBaseMap,
-      searchResults: false
+      mapboxAccessToken: mapboxAccessToken
     }
   },
   computed: {
     ...mapState({
-      mapStyle: state => state.riverIndexState.riverIndexData.mapStyle
+      mapStyle: state => state.riverIndexState.riverIndexData.mapStyle,
+      searchResults: state => state.riverSearchState.riverSearchData.data,
+      searchTerm: state => state.riverSearchState.riverSearchData.searchTerm,
+      mouseoveredFeature: state => state.riverIndexState.riverIndexData.mouseoveredFeature
     }),
     baseMapUrl () {
-      if (this.baseMap === 'topo') {
+      if (this.mapStyle === 'topo') {
         return 'mapbox://styles/mapbox/outdoors-v11'
-      } else if (this.baseMap === 'satellite') {
+      } else if (this.mapStyle === 'satellite') {
         // custom version of `satellite-v8` that includes icons that already exist in `outdoors-v11`
         return 'mapbox://styles/americanwhitewater/ck1h4j4hm2bts1cpueefclrrn'
       } else {
         return 'mapbox://styles/mapbox/outdoors-v11'
       }
     },
+    hideFullscreenToggle () {
+      return Boolean(this.idForFullscreen) && this.idForFullscreen.length > 0
+    },
     // parses out the layers we're adding to the map from NwiMapStyles / sourceLayers prop
     mapLayers () {
       const { sourceLayers } = NwiMapStyles
-
-      return Object.keys(sourceLayers)
+      return this.sourceLayers
         .map(source => Object.keys(sourceLayers[source]))
         .flat()
+    },
+    searchResultIds () {
+      if (this.searchResults) {
+        return this.searchResults.map(r => r.id)
+      }
+      return []
     }
   },
   watch: {
     mapStyle (v) {
       if (v !== 'graphic') {
-        this.baseMap = v
+        this.map.setStyle(this.baseMapUrl)
       }
     },
-    // visually highlights a given feature on the map
-    highlightedFeature (newVal) {
+    // visually highlights a mosued over feature on the map
+    mouseoveredFeature (feature) {
       // TODO: consider refactoring this to use feature state (it might be faster)
-      if (newVal) {
+      if (feature) {
         this.map.setFilter('activeReachSegmentCasing', [
           '==',
           ['get', 'id'],
-          newVal.properties.id
+          feature.properties.id
         ])
       } else {
         // hide 'active-reach-segment-casing' layer
@@ -210,9 +197,6 @@ export default {
       if (this.loading === oldVal) {
         this.loading = newVal
       }
-    },
-    baseMap (newVal) {
-      this.map.setStyle(this.baseMapUrl)
     },
     colorBy (newVal) {
       this.updateMapColorScheme(newVal)
@@ -232,9 +216,30 @@ export default {
         this.map.fitBounds(bounds, fitBoundsOptions)
         this.$emit('centeredFeature')
       }
+    },
+    // any time search results change, apply filters
+    searchResultIds (resultIds) {
+      this.applySearchResultFilters()
     }
   },
   methods: {
+    applySearchResultFilters () {
+      // this feels a bit complicated. Basically:
+      // -- only reach layers that are affected by search need to be filtered here
+      // -- we can only call setFilter on layers that exist on the map
+      // -- so we iterate through layers that exist on the map and apply filter IF they match
+      //    layersNeedingFiltering
+      const layersNeedingFiltering = ['reachSegments', 'reachClass', 'reachSegmentLabels']
+      this.mapLayers.forEach(mapLayer => {
+        if (layersNeedingFiltering.includes(mapLayer)) {
+          if (this.searchResultIds && this.searchTerm) {
+            this.map.setFilter(mapLayer, ['in', 'id', ...this.searchResultIds])
+          } else {
+            this.map.setFilter(mapLayer, null)
+          }
+        }
+      })
+    },
     // can be used to make tweaks to the mapbox base styles after loading
     modifyMapboxBaseStyle () {
       if (this.map.getLayer('satellite')) {
@@ -254,21 +259,6 @@ export default {
     updateLoading (loading) {
       this.loading = loading
     },
-    // if searchResults is not false, filter map to only display those results
-    updateSearchResults (resultIds) {
-      if (resultIds) {
-        this.map.setFilter('reachSegments', ['in', 'id', ...resultIds])
-        this.searchResults = resultIds
-      } else {
-        this.map.setFilter('reachSegments', null)
-        this.searchResults = false
-      }
-      // need to send this up another level so it can be used in the rivers table
-      this.$emit('searchResults', this.searchResults)
-    },
-    updateBaseMap (newVal) {
-      this.baseMap = newVal
-    },
     updateColorBy (newVal) {
       this.colorBy = newVal
     },
@@ -285,15 +275,14 @@ export default {
     },
     mouseenterFeature (event) {
       this.map.getCanvas().style.cursor = 'pointer'
-      this.debouncedEmitHighlight(event.features[0])
+      this.debouncedMouseoverFeature(event.features[0])
     },
     mouseleaveFeature () {
       this.map.getCanvas().style.cursor = ''
-      this.debouncedEmitHighlight(null)
+      this.debouncedMouseoverFeature(null)
     },
-    emitHighlight (reach) {
-      this.$store.dispatch(riverIndexActions.HIGHLIGHT_FEATURE, reach)
-      this.$emit('highlightFeature', reach)
+    mouseoverFeature (feature) {
+      this.$store.dispatch(riverIndexActions.MOUSEOVER_FEATURE, feature)
     },
     updateMapColorScheme (newScheme) {
       const colors = Object.values(NwiMapStyles.colorSchemes[newScheme])
@@ -345,11 +334,10 @@ export default {
     // this method notifies upstream components of what reaches are visible in
     // the current viewport
     updateReachesInViewport () {
-      let reaches
       // can have multiple responses for a given reach because of tiling,
       // so need to make array unique
       const uniq = {}
-      reaches = this.map
+      const reaches = this.map
         .queryRenderedFeatures({ layers: ['reachSegments'] })
         // eslint-disable-next-line
         .filter(
@@ -357,11 +345,7 @@ export default {
         )
       // because the map events aren't exactly synchronous, we improve usability by
       // including a search filter here
-      if (this.searchResults) {
-        reaches = reaches.filter(reach =>
-          this.searchResults.includes(reach.properties.id)
-        )
-      }
+      this.applySearchResultFilters()
 
       // only show river sidebar if there's a reasonable number of rivers
       if (reaches.length <= 300) {
@@ -375,12 +359,13 @@ export default {
         this.loading = true
         this.map.addSource('nwi-source', {
           type: 'vector',
-          tiles: this.tileservers,
+          tiles: [nwiTileServer],
           minzoom: 4,
           maxzoom: 14
         })
         const { sourceLayers } = NwiMapStyles
         // iterating through the sourceLayers specified by prop this.sourceLayers
+        // can't use this.mapLayers because we need the sourceLayers to access props
         this.sourceLayers.forEach(sourceLayer => {
           Object.keys(sourceLayers[sourceLayer]).forEach(mapLayer => {
             const zoomAttributes = {
@@ -424,15 +409,20 @@ export default {
     },
     filterNonDetailReachFeatures () {
       if (this.detailReachId) {
-        // for now, just filter out access as that one is the frustrating one
-        // because of overlap with the detail reach access points
-        if (this.mapLayers.includes('access')) {
-          this.map.setFilter('access', [
-            '==',
-            ['get', 'reach_id'],
-            this.detailReachId
-          ])
-        }
+        this.mapLayers.forEach(mapLayer => {
+          if (['access', 'rapids'].includes(mapLayer)) {
+            // access and rapids use `reach_id` instead of `id`
+            this.map.setFilter(mapLayer, [
+              '==',
+              ['get', 'reach_id'],
+              this.detailReachId
+            ])
+          } else if (['projects', 'projectIcons'].includes(mapLayer)) {
+            // projects aren't relevant here, can keep displaying, everything else is reach-specific
+          } else {
+            this.map.setFilter(mapLayer, ['==', ['get', 'id'], this.detailReachId])
+          }
+        })
       }
     },
     // preprocesses NwiMapStyles.js paint properties to de-emphasize (through opacity)
@@ -528,7 +518,7 @@ export default {
     },
     initMap () {
       this.map = null
-      this.debouncedEmitHighlight = debounce(this.emitHighlight, 200, {
+      this.debouncedMouseoverFeature = debounce(this.mouseoverFeature, 200, {
         leading: false,
         trailing: true
       })
@@ -562,7 +552,7 @@ export default {
 <style lang="scss">
 #nwi-map-container {
   min-width: 100%;
-  height: calc(100vh - 75px);
+  height: calc(100vh - 100px);
   width: 100%;
   position: relative;
 
@@ -570,14 +560,6 @@ export default {
   #nwi-map {
     height: 100%;
     width: 100%;
-
-    &.hasSidebar {
-      height: 95%;
-
-      @include carbon--breakpoint("lg") {
-        height: 100%;
-      }
-    }
 
     &.river-detail {
        @include carbon--breakpoint("md") {

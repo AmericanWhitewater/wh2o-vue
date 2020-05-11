@@ -1,5 +1,5 @@
 import ConfirmDeleteModal from '../confirm-delete-modal'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const options = {
   propsData: {

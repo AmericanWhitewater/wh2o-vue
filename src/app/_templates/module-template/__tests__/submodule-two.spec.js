@@ -1,4 +1,4 @@
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 import SubmoduleTwo from '../submodule-two/submodule-two'
 
 const mockStore = {

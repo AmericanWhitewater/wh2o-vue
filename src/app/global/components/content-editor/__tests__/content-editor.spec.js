@@ -1,5 +1,5 @@
 import ContentEditor from '../content-editor'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const options = {
   propsData: {

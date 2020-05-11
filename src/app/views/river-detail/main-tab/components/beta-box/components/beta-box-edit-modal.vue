@@ -35,7 +35,7 @@
         step=".01"
         :max="4132"
         :min="0"
-        :mobile="windowWidth <= breakpoints.md"
+        :mobile="windowWidth <= $options.breakpoints.md"
         :disabled="formPending"
       />
       <cv-number-input
@@ -45,7 +45,7 @@
         step=".01"
         :max="4132"
         :min="0"
-        :mobile="windowWidth <= breakpoints.md"
+        :mobile="windowWidth <= $options.breakpoints.md"
         :disabled="formPending"
       />
       <cv-number-input
@@ -55,7 +55,7 @@
         step=".01"
         :max="4132"
         :min="0"
-        :mobile="windowWidth <= breakpoints.md"
+        :mobile="windowWidth <= $options.breakpoints.md"
         :disabled="formPending"
       />
     </template>

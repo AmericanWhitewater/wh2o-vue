@@ -1,6 +1,6 @@
 /* eslint-disable import/export */
 export * from './apollo-client'
-export * from './carbon-icons'
+export * from './composition-api'
 export * from './exception-handler'
 export * from './network-status'
 export * from './random-id'

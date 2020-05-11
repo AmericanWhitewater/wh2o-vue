@@ -1,59 +1,65 @@
 .bx--data-table-container {
-    overflow-x: scroll;
+  overflow-x: scroll;
    
 
-&.content-height {
+  &.content-height {
     height: $content-height;
     max-height: 685px;
-}
+    overflow: scroll;
   }
-  .bx--data-table {
-    min-width: 700px;
-    position: relative;
+}
+.bx--data-table {
+  min-width: 700px;
+  position: relative;
   
-    th {
-      position: sticky;
-      top: -5px;
-    }
+  th {
+    position: sticky;
+    top: -5px;
+  }
   
-    th,
-    td {
-      vertical-align: middle;
-      span {
-        &:hover {
-          text-decoration: underline;
-          cursor: pointer;
-        }
+  th,
+  td {
+    vertical-align: middle;
+    span {
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
       }
     }
+  }
 
+  .river-name-section {
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 
-
-&.river-table {
+  &.river-table {
     tbody {
-        tr,
-        td {
-          @include ease;
-          &:nth-child(1) {
+      tr,
+      td {
+        @include ease;
+        &:nth-child(1) {
             
-            &[class*="low"],
-            &.low {
-              @include flow-border($flow-low);
-            }
-            &[class*="med"],
-            &.med {
-              @include flow-border($flow-medium);
-            }
-            &[class*="hi"],
-            &.hi {
-              @include flow-border($flow-high);
-            }
-            &[class*="unk"],
-            &.unk {
-              @include flow-border($ui-03);
-            }
+          &[class*="low"],
+          &.low {
+            @include flow-border($flow-low);
+          }
+          &[class*="med"],
+          &.med {
+            @include flow-border($flow-medium);
+          }
+          &[class*="hi"],
+          &.hi {
+            @include flow-border($flow-high);
+          }
+          &[class*="unk"],
+          &.unk {
+            @include flow-border($ui-03);
           }
         }
       }
-}
+    }
   }
+}

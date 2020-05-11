@@ -1,4 +1,4 @@
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 import AppCookieBanner from '../app-cookie-banner'
 
 const options = {

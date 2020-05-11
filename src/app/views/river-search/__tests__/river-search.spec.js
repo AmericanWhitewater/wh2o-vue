@@ -1,5 +1,5 @@
 import RiverSearch from '../river-search.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {

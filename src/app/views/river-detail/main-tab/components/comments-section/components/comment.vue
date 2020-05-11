@@ -1,9 +1,9 @@
 <template>
   <div
-    class="mb-md comment"
+    class="mb-sm comment"
   >
     <div class="bx--row">
-      <div class="bx--col-sm-1 bx--col-md-1">
+      <div class="bx--col-sm-12 bx--col-md-1">
         <user-avatar
           :image-u-r-i="formatURI(comment.user.image.uri.big)"
           :username="comment.user.uname"
@@ -40,7 +40,7 @@
       </div>
     </div>
     <div class="bx--row">
-      <div class="bx--col-sm-4 bx--offset-md-1">
+      <div class="bx--col bx--offset-md-1 ">
         <div
           class="detail"
           v-html="comment.detail"
@@ -141,3 +141,18 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.comment {
+  padding: $spacing-md;
+  &:hover {
+    @include layer("raised");
+  }
+
+  .detail {
+    @include carbon--type-style("body-long-02");
+  }
+  .date {
+    @include carbon--type-style("label-01");
+  }
+}
+</style>

@@ -5,7 +5,8 @@ const riverIndexRoutes = [
     path: '/river-index',
     name: 'river-index',
     meta: {
-      crumbLabel: 'River Index'
+      crumbLabel: 'River Index',
+      transitionName: 'slide'
     },
     component: RiverIndex
   }

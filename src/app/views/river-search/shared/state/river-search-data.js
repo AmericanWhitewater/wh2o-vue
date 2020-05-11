@@ -54,10 +54,15 @@ const actions = {
     context.commit(DATA_REQUEST)
     context.commit(SEARCH_TERM, data.river)
 
-    const result = await fetchRiverSearchData(data).catch(e => {
-      context.commit(DATA_ERROR, e)
-    })
-
+    // if no search query, don't search, just return an empty array
+    let result
+    if (Object.values(data).reduce((accumulator, currentValue) => (Boolean(currentValue || accumulator)))) {
+      result = await fetchRiverSearchData(data).catch(e => {
+        context.commit(DATA_ERROR, e)
+      })
+    } else {
+      result = []
+    }
     if (result) {
       context.commit(DATA_SUCCESS, result.data)
     }

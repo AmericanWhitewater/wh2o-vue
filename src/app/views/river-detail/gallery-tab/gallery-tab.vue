@@ -1,12 +1,6 @@
 <template>
   <div class="gallery-tab">
-    <layout name="layout-two-thirds">
-      <template #sidebar>
-        <media-upload-form
-          title="Upload Media"
-          section="POST"
-        />
-      </template>
+    <layout name="layout-full-width">
       <template #main>
         <template v-if="loading">
           <utility-block
@@ -14,98 +8,140 @@
             class="mb-sm"
           />
         </template>
-        <template v-else-if="photos">
-          <template v-if="formattedData && formattedData.length > 0">
-            <image-gallery
-              :images="formattedData"
-            />
-          </template>
-          <template v-else>
-            <utility-block
-              state="content"
-              title="No Media"
-              text="if you have media for this reach, please share"
-              class="mb-sm"
-            />
-          </template>
+        <template v-else-if="media">
+          <div class="bx--row">
+            <div class="bx--col">
+              <div class="toolbar-wrapper">
+                <cv-button
+                  size="small"
+                  @click.exact="mediaUploadModalVisible = true"
+                  @keydown.enter="mediaUploadModalVisible = true"
+                >
+                  Upload Media
+                </cv-button>
+                <cv-multi-select
+                  v-if="multiSelectOptions"
+                  v-model="selectedRapids"
+                  auto-filter
+                  filterable
+                  label="Selected Rapids"
+                  inline
+                  :initial-value="multiSelectOptions"
+                  :options="multiSelectOptions"
+                  selection-feedback="top-after-reopen"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="bx--row">
+            <div class="bx--col">
+              <image-gallery :images="media" />
+            </div>
+          </div>
+          <div class="bx--row">
+            <div class="bx--col">
+              <cv-pagination :number-of-items="pagination.total" />
+            </div>
+          </div>
         </template>
         <template v-else>
           <utility-block
-            state="error"
+            state="content"
+            title="No Media"
+            text="if you have media for this reach, please share"
             class="mb-sm"
           />
         </template>
       </template>
     </layout>
+    <media-upload-modal
+      :visible="mediaUploadModalVisible"
+      section="GALLERY"
+      @upload:cancelled="mediaUploadModalVisible = false"
+    />
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import { galleryActions } from '../shared/state'
+import { mapState, mapGetters } from 'vuex'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
-import { MediaUploadForm, ImageGallery } from '../shared/components'
+import { MediaUploadModal, ImageGallery } from '../shared/components'
 import { Layout } from '@/app/global/layout'
-/**
- * @todo the gallery needs to be a standalone component
- * which you can pass an array of images to
- *
- */
+import { rapidsActions, galleryActions } from '@/app/views/river-detail/shared/state'
 export default {
   name: 'gallery-tab',
   components: {
     UtilityBlock,
-    MediaUploadForm,
+    MediaUploadModal,
     Layout,
     ImageGallery
   },
   data: () => ({
-    formattedData: null
+    selectedRapids: [],
+    mediaUploadModalVisible: false
   }),
 
   computed: {
     ...mapState({
       loading: state => state.riverDetailState.galleryData.loading,
       error: state => state.riverDetailState.galleryData.error,
-      photos: state => state.riverDetailState.galleryData.data
+      photos: state => state.riverDetailState.galleryData.data?.data,
+      pagination: state => state.riverDetailState.galleryData.pagination,
+      rapids: state => state.riverDetailState.rapidsData.data
     }),
-    riverId () {
-      return parseInt(this.$route.params.id, 10)
-    },
-    stateTest () {
-      return this.$store.state.riverDetailState.galleryData
+    ...mapGetters(['media']),
+    multiSelectOptions () {
+      if (this.rapids) {
+        return this.rapids.map(rapid => {
+          return {
+            name: rapid.name,
+            label: rapid.name,
+            value: rapid.id
+          }
+        })
+      }
+      return null
     }
   },
   watch: {
-    photos (val) {
-      this.formatData(val)
-    }
-  },
-  methods: {
-    formatData (media) {
-      if (media) {
-        const data = []
-
-        const numberOfImages = media.length
-
-        for (let i = 0; i < numberOfImages; i++) {
-          const numbeOfPostImages = media[i].photos.length
-
-          for (let k = 0; k < numbeOfPostImages; k++) {
-            data.push(media[i].photos[k])
-          }
-        }
-
-        this.formattedData = data
+    rapids: {
+      immediate: true,
+      handler (val) {
+        this.formatMultiSelectModel(val)
       }
     }
   },
+  methods: {
+    loadRapids () {
+      this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.$route.params.id)
+    },
+    formatMultiSelectModel (rapids) {
+      this.selectedRapids = rapids ? rapids.map(r => r.id) : null
+    },
+    loadMedia (val) {
+      const data = {
+        reach_id: this.$route.params.id,
+        per_page: val ? val.length : 10,
+        page: val ? val.page : 1
+      }
+      this.$store.dispatch(galleryActions.FETCH_GALLERY_DATA, data)
+    }
+  },
   created () {
-    this.$store.dispatch(galleryActions.FETCH_GALLERY_DATA, this.riverId)
+    this.loadMedia()
+    if (!this.rapids) {
+      this.loadRapids()
+    }
   }
 }
 </script>
 <style lang="scss">
 .gallery-tab {
+  .toolbar-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    margin-bottom: $layout-sm;
+  }
   padding-top: 2rem;
   // give the photoswipe thumbnails some style
   img[itemprop="thumbnail"] {

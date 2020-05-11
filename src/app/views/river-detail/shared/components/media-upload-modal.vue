@@ -2,10 +2,10 @@
   <cv-modal
     size="small"
     :visible="visible"
-    @primary-click="primaryClick"
-    @secondary-click="$emit('secondary-click')"
+    @primary-click="handleSubmit"
+    @secondary-click="handleCancel"
     @modal-shown="$emit('modal-shown')"
-    @modal-hidden="$emit('modal-hidden')"
+    @modal-hidden="handleCancel"
   >
     <template slot="label">
       <template v-if="label">
@@ -33,6 +33,13 @@
   </cv-modal>
 </template>
 <script>
+/**
+ *
+ * @note could potentially merge media-upload-form into
+ * this component if we're not using the form outside
+ * of modal
+ *
+ */
 import MediaUploadForm from './media-upload-form.vue'
 export default {
   name: 'media-upload-modal',
@@ -58,15 +65,27 @@ export default {
       required: true,
       validator: val =>
         ['RAPID', 'POST', 'GALLERY', 'REACH'].indexOf(val) > -1
+    },
+    rapids: {
+      type: Array,
+      required: false,
+      default: () => null
     }
   },
   data: () => ({
     primaryClickTimestamp: null
   }),
   methods: {
-    primaryClick () {
-      this.$emit('primary-click', Date.now())
+    handleSubmit () {
+      this.$emit('upload:submitted')
+      /**
+       * child component has watcher on primaryClickTimestamp, when
+       * changes, submits form.
+       */
       this.primaryClickTimestamp = Date.now()
+    },
+    handleCancel () {
+      this.$emit('upload:cancelled')
     }
   }
 }

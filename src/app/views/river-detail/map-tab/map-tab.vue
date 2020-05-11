@@ -1,67 +1,38 @@
 <template>
   <div id="map-tab">
-    <layout
-      name="layout-two-thirds"
-    >
-      <template #main>
-        <template v-if="token">
+    <div class="bx--grid">
+      <div class="bx--row">
+        <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-12 bx--col-max-12">
           <NwiMap
-
             :include-legend="false"
-            :has-sidebar="false"
-            :mapbox-access-token="token"
-            :tileservers="[tileserver]"
             :has-controls="false"
+            :detail-reach-id="reachId"
+            :source-layers="sourceLayers"
+            :starting-bounds="startingBounds"
+            @clickFeature="clickFeature"
           />
-        </template>
-        <template v-else>
-          <utility-block
-            state="error"
-            text="map failed"
+        </div>
+        <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-4 bx--col-max-4">
+          <info-panel
+            :feature="detailFeature"
           />
-        </template>
-      </template>
-      <template #sidebar>
-        <hr>
-        <h2 class="mb-spacing-md">
-          Access
-        </h2>
-        <div class="bx--row mb-sm">
-          <div class="bx--col">
-            <h4>Latitude</h4>
-            <h3>{{ riverData.plat }}</h3>
-          </div>
-          <div class="bx--col">
-            <h4>Longitude</h4>
-            <h3>{{ riverData.plon }}</h3>
-          </div>
         </div>
-        <div class="bx--row">
-          <div class="bx--col">
-            <div v-html="data.shuttledetails" />
-          </div>
-        </div>
-      </template>
-    </layout>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import { Layout } from '@/app/global/layout'
-import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { NwiMap } from '@/app/views/river-index/components'
 import { mapActions } from '../shared/state'
 import { mapState } from 'vuex'
-import {
-  mapboxAccessToken,
-  nwiTileServer
-} from '@/app/environment/environment'
+import { InfoPanel } from './components'
+import bbox from '@turf/bbox'
+import { lineString } from '@turf/helpers'
 
 export default {
   name: 'map-tab',
   components: {
-
-    Layout,
-    UtilityBlock,
+    InfoPanel,
     NwiMap
   },
   data: () => ({
@@ -69,9 +40,7 @@ export default {
     includeLegend: false,
     mapControls: ['baseMap', 'color', 'fullscreen'],
     mockBBox: ['-106.297217', '38.776635', '-105.967627', '38.907397'],
-    sourceLayers: ['reach-segments', 'rapids', 'access'],
-    tileserver: nwiTileServer,
-    token: mapboxAccessToken
+    sourceLayers: ['reach-segments', 'rapids', 'access']
   }),
   computed: {
     ...mapState({
@@ -84,6 +53,11 @@ export default {
     }),
     reachId () {
       return parseInt(this.$route.params.id, 10)
+    },
+    startingBounds () {
+      // TODO: get graphql API to return a linestring or geojson instead of this text
+      const geom = this.riverData.geom.split(',').map(d => d.split(' '))
+      return bbox(lineString(geom))
     }
   },
   methods: {
