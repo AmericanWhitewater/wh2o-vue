@@ -13,7 +13,7 @@ This app is an interactive whitewater river map and guide which provides flow da
 
 ## Contributing
 
-Looking to give back to the paddling community? Look no further! For intructions on how to start
+Looking to give back to the paddling community? Look no further! For instructions on how to start
 contributing to the project, consult our [contribution guidelines](./CONTRIBUTING.md).
 
 ## Built With

@@ -15,7 +15,10 @@
       />
       <nwi-fullscreen-toggle
         v-if="!hideFullscreenToggle"
-        :id-for-fullscreen="idForFullscreen"
+        :fullscreen-target="fullscreenTarget"
+      />
+      <nwi-result-counter
+        v-if="!hideResultCounter"
       />
       <cv-loading
         v-if="loading"
@@ -39,7 +42,7 @@ import NwiMapStyles from './nwi-map-styles.js'
 import NwiMapLegend from './nwi-map-legend.vue'
 import NwiBasemapToggle from './nwi-basemap-toggle.vue'
 import NwiFullscreenToggle from './nwi-fullscreen-toggle.vue'
-
+import NwiResultCounter from './nwi-result-counter.vue'
 import { Events as topic } from '@/app/global/services'
 import { mapState } from 'vuex'
 import { riverIndexActions } from '../shared/state'
@@ -59,7 +62,8 @@ export default {
     NwiMapLegend,
     UtilityBlock,
     NwiBasemapToggle,
-    NwiFullscreenToggle
+    NwiFullscreenToggle,
+    NwiResultCounter
   },
   props: {
     height: {
@@ -79,6 +83,11 @@ export default {
     },
     // hide basemap toggle (satellite/topo)
     hideBasemapToggle: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    hideResultCounter: {
       type: Boolean,
       required: false,
       default: false
@@ -120,7 +129,7 @@ export default {
       type: Array,
       default: () => ['reach-segments']
     },
-    idForFullscreen: {
+    fullscreenTarget: {
       type: String,
       required: false
     },
@@ -552,9 +561,16 @@ export default {
 <style lang="scss">
 #nwi-map-container {
   min-width: 100%;
-  height: calc(100vh - 100px);
+
   width: 100%;
   position: relative;
+
+  @include carbon--breakpoint('sm') {
+    height: calc(100vh - 114px);
+  }
+  @include carbon--breakpoint('md') {
+  height: calc(100vh - 55px);
+  }
 
   canvas,
   #nwi-map {

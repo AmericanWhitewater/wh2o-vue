@@ -10,25 +10,14 @@ const mockStore = {
           section: 'bar'
         }
       }
-    },
-    riverSearchState: {
-      riverSearchData: {
-        data: null
-      }
-    },
-    riverIndexState: {
-      riverIndexData: {
-        data: null
-      }
     }
-  },
-  dispatch: jest.fn()
+  }
 }
 
 const mockRoute = {
-  name: 'test',
+  name: 'river-index',
   meta: {
-    crumbLabel: 'Test'
+    crumbLabel: 'Test Crumb'
   }
 }
 
@@ -41,8 +30,17 @@ const options = {
 }
 
 describe('AppBreadcrumbs', () => {
-  it('it is a vue instance', () => {
+  it('is hidden when on river-index route', () => {
     const wrapper = createWrapper(AppBreadcrumbs, options)
-    expect(wrapper.isVueInstance()).toBe(true)
+
+    expect(wrapper.find('.app-breadcrumbs-wrapper').attributes('style')).toBe('display: none;')
+  })
+
+  it('is visible on non-river-index routes', () => {
+    mockRoute.name = 'river-detail'
+
+    const wrapper = createWrapper(AppBreadcrumbs, options)
+
+    expect(wrapper.find('.app-breadcrumbs-wrapper').attributes('style')).toBeFalsy()
   })
 })
