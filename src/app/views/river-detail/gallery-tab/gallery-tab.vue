@@ -40,7 +40,10 @@
           </div>
           <div class="bx--row">
             <div class="bx--col">
-              <cv-pagination :number-of-items="pagination.total" />
+              <cv-pagination
+                :number-of-items="pagination.total"
+                @change="handlePaginationChange"
+              />
             </div>
           </div>
         </template>
@@ -111,6 +114,10 @@ export default {
     }
   },
   methods: {
+    handlePaginationChange (val) {
+      // eslint-disable-next-line no-console
+      console.log('val :>> ', val)
+    },
     loadRapids () {
       this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.$route.params.id)
     },

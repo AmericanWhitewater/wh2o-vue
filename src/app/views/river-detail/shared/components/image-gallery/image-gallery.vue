@@ -17,7 +17,10 @@
           </div>
         </template>
         <template v-else>
-          No images
+          <utility-block
+            state="content"
+            :text="emptyStateText"
+          />
         </template>
       </div>
     </div>
@@ -160,12 +163,19 @@
 </template>
 <script>
 import { AwLogo } from '@/app/global/components'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 export default {
   name: 'image-gallery',
   components: {
-    AwLogo
+    AwLogo,
+    UtilityBlock
   },
   props: {
+    emptyStateText: {
+      type: String,
+      required: false,
+      default: 'No Images'
+    },
     post: {
       type: Object,
       default: () => {},
