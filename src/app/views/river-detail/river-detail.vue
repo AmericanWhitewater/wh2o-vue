@@ -173,7 +173,7 @@ export default {
       editMode: state => state.appGlobalState.appGlobalData.editMode,
       user: state => state.userState.userData.data
     }),
-    riverId () {
+    reachId () {
       return this.$route.params.id
     },
     notificationIcon () {
