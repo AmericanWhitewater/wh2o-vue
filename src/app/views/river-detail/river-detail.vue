@@ -41,14 +41,18 @@
             <div class="button-toolbar">
               <div class="button-wrapper">
                 <cv-button
+                  id="bookmark-toggle"
                   kind="ghost"
                   @click.exact="toggleBookmark"
+                  @keydown.enter="toggleBookmark"
                 >
                   <component :is="bookmarked ? 'FavoriteFilled20' : 'Favorite20'" />
                 </cv-button>
                 <cv-button
+                  id="edit-mode-toggle"
                   kind="ghost"
                   @click.exact="toggleEditMode"
+                  @keydown.enter="toggleEditMode"
                 >
                   <component :is="editMode ? 'EditOff20' : 'Edit20'" />
                 </cv-button>
@@ -87,9 +91,7 @@
                 :key="tab.path"
               >
                 <cv-button
-                  ref="tab-button"
                   :class="[index === 0 ? 'no-border-top' : '', activeTabIndex === index.toString() ? 'is-active' : '']"
-
                   kind="ghost"
                   @click.exact="switchTab(index)"
                   @keydown.enter="switchTab(index)"
@@ -130,7 +132,7 @@ export default {
   },
   mixins: [checkWindow],
   data: () => ({
-    bookmarked: null,
+    bookmarked: false,
     transitionName: 'fade',
     activeTabIndex: '0'
   }),
@@ -167,7 +169,6 @@ export default {
   computed: {
     ...mapState({
       data: state => state.riverDetailState.riverDetailData.data,
-      error: state => state.riverDetailState.riverDetailData.error,
       loading: state => state.riverDetailState.riverDetailData.loading,
       alerts: state => state.riverDetailState.alertsData.data,
       editMode: state => state.appGlobalState.appGlobalData.editMode,
@@ -182,7 +183,6 @@ export default {
       }
       return 'Notification20'
     }
-
   },
   methods: {
     toggleEditMode () {
@@ -191,17 +191,15 @@ export default {
       } else {
         this.$store.dispatch(globalAppActions.SEND_TOAST, {
           title: 'Must log in to edit',
-          kind: 'error',
-          override: true,
-          contrast: false,
-          action: false,
-          autoHide: true
+          kind: 'error'
         })
       }
     },
     switchTab (index) {
-      this.activeTabIndex = index.toString()
-      this.$router.replace(`/river-detail/${this.$route.params.id}/${this.$options.tabs[index].path}`)
+      if (index !== this.activeTabIndex) {
+        this.activeTabIndex = index.toString()
+        this.$router.replace(`/river-detail/${this.$route.params.id}/${this.$options.tabs[index].path}`)
+      }
     },
     toggleBookmark () {
       if (!this.bookmarked) {
@@ -213,10 +211,7 @@ export default {
       }
       this.$store.dispatch(globalAppActions.SEND_TOAST, {
         title: this.bookmarked ? 'Bookmark Added' : 'Bookmark Removed',
-        kind: 'success',
-        contrast: false,
-        action: false,
-        coreAction: true
+        kind: 'success'
       })
     },
     checkBookmarks () {
@@ -232,8 +227,6 @@ export default {
     }
   },
   created () {
-    this.switchTab(0)
-
     this.$store.dispatch(riverDetailActions.FETCH_RIVER_DETAIL_DATA, this.$route.params.id)
     this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.$route.params.id)
     this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.$route.params.id)
