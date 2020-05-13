@@ -201,7 +201,7 @@ export default {
     },
     switchTab (index) {
       this.activeTabIndex = index.toString()
-      this.$router.replace(`/river-detail/${this.$route.params.id}/${this.$options.tabs[index].path}`).catch(() => {})
+      this.$router.replace(`/river-detail/${this.$route.params.id}/${this.$options.tabs[index].path}`)
     },
     toggleBookmark () {
       if (!this.bookmarked) {

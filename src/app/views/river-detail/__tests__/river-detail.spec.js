@@ -1,100 +1,60 @@
-test.todo('fix all this shit')
+import { createWrapper } from '@/utils'
+import RiverDetail from '../river-detail.vue'
 
-// import { createWrapper } from '@/utils'
-// import RiverDetail from '../river-detail.vue'
+const mockRoute = {
+  params: {
+    id: '123'
+  }
+}
 
-// const mockRouter = {
-//   beforeEach: jest.fn(),
-//   replace: jest.fn()
-// }
+const mockRouter = {
+  replace: jest.fn(() => { }),
+  beforeEach: jest.fn()
+}
 
-// const mockStore = {
-//   state: {
-//     appGlobalState: {
-//       appGlobalData: {
-//         editMode: false
-//       }
-//     },
-//     riverDetailState: {
-//       riverDetailData: {
-//         error: null,
-//         data: null,
-//         loading: null
-//       },
-//       alertsData: {
-//         error: null,
-//         data: null,
-//         loading: null
-//       }
-//     }
-//   },
-//   dispatch: jest.fn()
-// }
+const mockStore = {
+  state: {
+    riverDetailState: {
+      riverDetailData: {
+        data: null,
+        error: false,
+        loading: false
+      },
+      alertsData: {
+        data: null
+      }
+    },
+    appGlobalState: {
+      appGlobalData: {
+        editMode: false
+      }
+    },
+    userState: {
+      userData: {
+        data: null
+      }
+    }
+  },
+  dispatch: jest.fn()
+}
 
-// const riverId = '1'
+const options = {
+  mocks: {
+    $store: mockStore,
+    $router: mockRouter,
+    $route: mockRoute
+  },
+  stubs: ['router-view']
+}
 
-// const options = {
-//   mocks: {
-//     $router: mockRouter,
-//     $store: mockStore,
-//     $route: {
-//       params: {
-//         id: riverId
-//       }
-//     }
-//   }
-// }
+describe('river-detail.vue', () => {
+  it('loads data on initial load', () => {
+    // eslint-disable-next-line no-unused-vars
+    const wrapper = createWrapper(RiverDetail, options)
 
-// describe('river-detail.vue', () => {
-//   beforeEach(() => {
-//     jest.clearAllMocks()
-//   })
-
-//   it('is a vue component', () => {
-//     const wrapper = createWrapper(RiverDetail, options)
-
-//     expect(wrapper.isVueInstance()).toBe(true)
-//   })
-//   // it('shows loading overlay when loading', () => {
-//   //   mockStore.state.riverDetailState.riverDetailData.loading = true
-//   //   const wrapper = createWrapper(RiverDetail, options)
-//   //   expect(wrapper.find('.bx--loading-overlay').exists()).toBe(true)
-//   //   expect(wrapper.find('.river-detail-content').exists()).toBe(false)
-//   // })
-
-//   // it('fetches river detail data and loads gages on created hook', () => {
-//   //   // eslint-disable-next-line no-unused-vars
-//   //   const wrapper = createWrapper(RiverDetail, options)
-
-//   //   expect(mockStore.dispatch).toBeCalledTimes(2)
-
-//   //   expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
-//   //     '[RIVER_DETAIL] FETCH_RIVER_DETAIL_DATA', riverId
-//   //   )
-//   //   expect(mockStore.dispatch).toHaveBeenNthCalledWith(2,
-//   //     '[REACH_GAGES] FETCH_GAGES', riverId
-//   //   )
-//   // })
-
-//   // it('fetches river detail data and loads gages on when active river changes', async () => {
-//   //   const wrapper = createWrapper(RiverDetail, options)
-
-//   //   expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
-//   //     '[RIVER_DETAIL] FETCH_RIVER_DETAIL_DATA', '1'
-//   //   )
-//   //   expect(mockStore.dispatch).toHaveBeenNthCalledWith(2,
-//   //     '[REACH_GAGES] FETCH_GAGES', '1'
-//   //   )
-
-//   //   options.mocks.$route.params.id = '2'
-
-//   //   await wrapper.vm.$nextTick()
-
-//   //   expect(mockStore.dispatch).toHaveBeenNthCalledWith(3,
-//   //     '[RIVER_DETAIL] FETCH_RIVER_DETAIL_DATA', '2'
-//   //   )
-//   //   expect(mockStore.dispatch).toHaveBeenNthCalledWith(4,
-//   //     '[REACH_GAGES] FETCH_GAGES', '2'
-//   //   )
-//   // })
-// })
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1, '[RIVER_DETAIL] FETCH_RIVER_DETAIL_DATA', '123')
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(2, '[REACH_GAGES] FETCH_GAGES', '123')
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(3, '[ALERTS] FETCH_ALERTS_DATA', '123')
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(4, '[GAGE_METRICS] FETCH_GAGE_METRICS', '123')
+  })
+})
