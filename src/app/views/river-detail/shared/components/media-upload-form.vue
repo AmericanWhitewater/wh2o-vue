@@ -70,7 +70,7 @@ export default {
         ['RAPID', 'POST', 'GALLERY', 'REACH'].indexOf(val) > -1
     },
     primaryClickTimestamp: {
-      type: String,
+      type: Number,
       required: false,
       default: null
     },
@@ -130,7 +130,7 @@ export default {
      * added to the create call?
      *
      */
-    sendFile () {
+    submitForm () {
       this.formPending = true
       this.$apollo.mutate({
         mutation: gql`

@@ -5,7 +5,10 @@
       class="mb-lg"
     >
       <template #main>
-        <div class="map-wrapper mb-sm">
+        <div
+          id="map-wrapper"
+          class="mb-sm"
+        >
           <nwi-map
             v-if="data"
             height="400"
@@ -14,6 +17,8 @@
             :has-controls="false"
             :source-layers="sourceLayers"
             :starting-bounds="startingBounds"
+            fullscreen-target="map-wrapper"
+            hide-result-counter
           />
         </div>
         <beta-box />
@@ -78,7 +83,7 @@ export default {
   .bx--skeleton__heading {
     height: 400px;
   }
-  .map-wrapper {
+  #map-wrapper {
     height:400px;
     position: relative;
     z-index: 1;

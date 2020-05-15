@@ -20,10 +20,6 @@
                 <br>Section
               </th>
               <th>Class/Grade</th>
-              <th>
-                Flow Reading
-              </th>
-              <th>&nbsp;</th>
               <th>&nbsp;</th>
             </tr>
           </thead>
@@ -46,7 +42,6 @@
                   {{ reach.properties.section }}
                 </td>
                 <td>{{ reach.properties.class }}</td>
-                <td>{{ friendlyCurrentFlow(reach.properties.condition) }}</td>
                 <td>
                   <zoom-in16
                     class="zoom-button"
@@ -157,7 +152,11 @@ export default {
   },
   methods: {
     getTableHeight () {
-      return `max-height:calc(100vh - ${this.$refs['table-container']?.getClientRects()[0].top}px)`
+      if (this.windowWidth > this.mq.lg) {
+        return `max-height:calc(100vh - ${this.$refs['table-container']?.getClientRects()[0].top}px)`
+      }
+
+      return 'max-height:100vh'
     },
     viewRiver (id, tab) {
       this.$router
@@ -212,10 +211,16 @@ export default {
     }
   }
 
-  &.river-index {
+  td {
+    svg {
+      cursor: pointer;
+    }
+  }
 
+  &.river-index {
     background-color:$ui-02;
   }
+
   &.river-detail {
     @include carbon--breakpoint("md") {
       width: 32%;

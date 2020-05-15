@@ -1,5 +1,8 @@
 <template>
-  <div class="app-breadcrumbs-wrapper">
+  <div
+    v-show="!isRiverIndex"
+    class="app-breadcrumbs-wrapper"
+  >
     <layout name="layout-full-width">
       <template #main>
         <template v-if="loading">
@@ -85,12 +88,6 @@
                 </cv-breadcrumb-item>
               </template>
             </cv-breadcrumb>
-            <cv-tag
-              v-if="$route.name === 'river-index' && riverIndexData"
-              kind="blue"
-              :label="`Rivers Found: ${riverIndexData.length}`"
-              :disabled="false"
-            />
           </div>
         </template>
       </template>
@@ -99,7 +96,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import { Layout } from '@/app/global/layout'
 import { checkWindow } from '@/app/global/mixins'
 /**
@@ -123,31 +119,31 @@ export default {
     crumbs: []
   }),
   computed: {
-    ...mapState({
-      river: state => state.riverDetailState.riverDetailData.data,
-      loading: state => state.riverDetailState.riverDetailData.loading,
-      searchResults: state => state.riverSearchState.riverSearchData.data,
-      riverIndexData: state => state.riverIndexState.riverIndexData.data
-    }),
+    river () {
+      return this.$store.state.riverDetailState.riverDetailData.data
+    },
+    loading () {
+      return this.$store.state.riverDetailState.riverDetailData.loading
+    },
     currentPage () {
       return this.$route
     },
     riverName () {
-      if (this.river) {
-        return this.river.river
-      }
-      return null
+      return this.river?.river || null
     },
     riverSection () {
-      if (this.river) {
-        return this.river.section
-      }
-      return null
+      return this.river?.section || null
+    },
+    isRiverIndex () {
+      return this.$route.name === 'river-index'
     }
   },
   watch: {
-    currentPage () {
-      this.setCrumbs()
+    currentPage: {
+      immediate: true,
+      handler () {
+        this.setCrumbs()
+      }
     }
   },
   methods: {
@@ -174,9 +170,6 @@ export default {
       }
       return label
     }
-  },
-  created () {
-    this.setCrumbs()
   }
 }
 </script>
@@ -189,11 +182,9 @@ export default {
   top: $mobile-nav-height;
   z-index: 2;
   position: relative;
-  display: flex;
   padding: $spacing-sm 0;
-  justify-content: space-between;
   max-width: 100%;
-  // overflow-x: scroll;
+
   &.home {
     visibility: hidden;
   }

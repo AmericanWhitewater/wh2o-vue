@@ -1,6 +1,6 @@
 .bx--data-table-container {
   overflow-x: scroll;
-   
+  min-width: unset;
 
   &.content-height {
     height: $content-height;
@@ -8,15 +8,14 @@
     overflow: scroll;
   }
 }
-.bx--data-table {
-  min-width: 700px;
+.bx--data-table.river-table {
   position: relative;
-  
+
   th {
     position: sticky;
     top: -5px;
   }
-  
+
   th,
   td {
     vertical-align: middle;
@@ -41,7 +40,6 @@
       td {
         @include ease;
         &:nth-child(1) {
-            
           &[class*="low"],
           &.low {
             @include flow-border($flow-low);

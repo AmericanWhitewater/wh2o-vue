@@ -39,7 +39,7 @@ export default {
     }),
     getToggleOffset () {
       if (this.offsetRight) {
-        return 'right: calc(0.5rem + 42px);'
+        return 'right: calc(0.5rem + 50px);'
       } else {
         return 'right: 0.5rem;'
       }

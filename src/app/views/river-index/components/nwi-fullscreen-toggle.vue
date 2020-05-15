@@ -6,7 +6,7 @@
       @click.exact="toggleFullscreen()"
       @keydown.enter="toggleFullscreen()"
     >
-      <Maximize16 />
+      <component :is="fullscreenIcon" />
     </cv-button>
   </div>
 </template>
@@ -16,6 +16,16 @@ import screenfull from 'screenfull'
 
 export default {
   name: 'nwi-fullscreen-toggle',
+  props: {
+    fullscreenTarget: {
+      type: String,
+      required: true
+    }
+  },
+  data: () => ({
+    fullscreen: false,
+    fullscreenIcon: 'Maximize16'
+  }),
   methods: {
     toggleFullscreen () {
       if (this.fullscreen) {
@@ -25,7 +35,7 @@ export default {
         this.fullscreen = true
         this.fullscreenIcon = 'Minimize16'
       }
-      screenfull.toggle(document.getElementById('fullscreen-target'))
+      screenfull.toggle(document.getElementById(this.fullscreenTarget))
     }
   }
 }

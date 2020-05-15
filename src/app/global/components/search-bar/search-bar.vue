@@ -33,5 +33,6 @@ export default {
 <style lang="scss" scoped>
 .search-bar {
   display: flex;
+  width:100%;
 }
 </style>

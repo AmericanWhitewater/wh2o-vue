@@ -1,100 +1,138 @@
-test.todo('fix all this shit')
+import { createWrapper } from '@/utils'
+import RiverDetail from '../river-detail.vue'
 
-// import { createWrapper } from '@/utils'
-// import RiverDetail from '../river-detail.vue'
+const mockAlerts = [{ id: '100955924', title: null, detail: 'A landowner around the #5 rapid has had some problems with his property being trashed up and property being destroyed (trees cut, fences torn down).  In addition both he and his family have had some nasty encounters with various people (including boaters).  While there is a small parking area near the bridge, it appears that there is no direct public access from the road to the river around the #5 rapid (including around the bridge).  The land owner appears to be simply asking that people respect his property and not to access the river from the road without direct permission!', post_date: '2009-07-11 00:00:00', revision: 24892, post_type: 'WARNING', user: null }]
 
-// const mockRouter = {
-//   beforeEach: jest.fn(),
-//   replace: jest.fn()
-// }
+const mockUser = {
+  uname: 'shrigPaddleBro',
+  uid: '123456789'
+}
 
-// const mockStore = {
-//   state: {
-//     appGlobalState: {
-//       appGlobalData: {
-//         editMode: false
-//       }
-//     },
-//     riverDetailState: {
-//       riverDetailData: {
-//         error: null,
-//         data: null,
-//         loading: null
-//       },
-//       alertsData: {
-//         error: null,
-//         data: null,
-//         loading: null
-//       }
-//     }
-//   },
-//   dispatch: jest.fn()
-// }
+const mockRoute = {
+  params: {
+    id: '123'
+  }
+}
 
-// const riverId = '1'
+const mockRouter = {
+  replace: jest.fn(() => { }),
+  beforeEach: jest.fn()
+}
 
-// const options = {
-//   mocks: {
-//     $router: mockRouter,
-//     $store: mockStore,
-//     $route: {
-//       params: {
-//         id: riverId
-//       }
-//     }
-//   }
-// }
+const mockStore = {
+  state: {
+    riverDetailState: {
+      riverDetailData: {
+        data: null,
+        error: false,
+        loading: false
+      },
+      alertsData: {
+        data: null
+      }
+    },
+    appGlobalState: {
+      appGlobalData: {
+        editMode: false
+      }
+    },
+    userState: {
+      userData: {
+        data: null
+      }
+    }
+  },
+  dispatch: jest.fn()
+}
 
-// describe('river-detail.vue', () => {
-//   beforeEach(() => {
-//     jest.clearAllMocks()
-//   })
+const options = {
+  mocks: {
+    $store: mockStore,
+    $router: mockRouter,
+    $route: mockRoute
+  },
+  stubs: ['router-view', 'EditOff20', 'Notification20', 'NotificationNew20', 'Favorite20', 'Edit20']
+}
 
-//   it('is a vue component', () => {
-//     const wrapper = createWrapper(RiverDetail, options)
+describe('river-detail.vue', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
 
-//     expect(wrapper.isVueInstance()).toBe(true)
-//   })
-//   // it('shows loading overlay when loading', () => {
-//   //   mockStore.state.riverDetailState.riverDetailData.loading = true
-//   //   const wrapper = createWrapper(RiverDetail, options)
-//   //   expect(wrapper.find('.bx--loading-overlay').exists()).toBe(true)
-//   //   expect(wrapper.find('.river-detail-content').exists()).toBe(false)
-//   // })
+  it('loads data on initial load', () => {
+    // eslint-disable-next-line no-unused-vars
+    const wrapper = createWrapper(RiverDetail, options)
 
-//   // it('fetches river detail data and loads gages on created hook', () => {
-//   //   // eslint-disable-next-line no-unused-vars
-//   //   const wrapper = createWrapper(RiverDetail, options)
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1, '[RIVER_DETAIL] FETCH_RIVER_DETAIL_DATA', '123')
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(2, '[REACH_GAGES] FETCH_GAGES', '123')
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(3, '[ALERTS] FETCH_ALERTS_DATA', '123')
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(4, '[GAGE_METRICS] FETCH_GAGE_METRICS', '123')
+  })
 
-//   //   expect(mockStore.dispatch).toBeCalledTimes(2)
+  it('displays login prompt / toast when user attempts to edit when not logged in', async () => {
+    const wrapper = createWrapper(RiverDetail, options)
 
-//   //   expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
-//   //     '[RIVER_DETAIL] FETCH_RIVER_DETAIL_DATA', riverId
-//   //   )
-//   //   expect(mockStore.dispatch).toHaveBeenNthCalledWith(2,
-//   //     '[REACH_GAGES] FETCH_GAGES', riverId
-//   //   )
-//   // })
+    await wrapper.find('#edit-mode-toggle').trigger('click')
 
-//   // it('fetches river detail data and loads gages on when active river changes', async () => {
-//   //   const wrapper = createWrapper(RiverDetail, options)
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(5, '[APP_GLOBAL] SEND_TOAST', { kind: 'error', title: 'Must log in to edit' })
+  })
 
-//   //   expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
-//   //     '[RIVER_DETAIL] FETCH_RIVER_DETAIL_DATA', '1'
-//   //   )
-//   //   expect(mockStore.dispatch).toHaveBeenNthCalledWith(2,
-//   //     '[REACH_GAGES] FETCH_GAGES', '1'
-//   //   )
+  it('enables edit mode when user logged in and edit mode disabled', async () => {
+    mockStore.state.userState.userData.data = mockUser
 
-//   //   options.mocks.$route.params.id = '2'
+    const wrapper = createWrapper(RiverDetail, options)
 
-//   //   await wrapper.vm.$nextTick()
+    await wrapper.find('#edit-mode-toggle').trigger('keydown.enter')
 
-//   //   expect(mockStore.dispatch).toHaveBeenNthCalledWith(3,
-//   //     '[RIVER_DETAIL] FETCH_RIVER_DETAIL_DATA', '2'
-//   //   )
-//   //   expect(mockStore.dispatch).toHaveBeenNthCalledWith(4,
-//   //     '[REACH_GAGES] FETCH_GAGES', '2'
-//   //   )
-//   // })
-// })
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(5, '[APP_GLOBAL] TOGGLE_EDIT_MODE', true)
+  })
+
+  it('disables edit mode when user logged in and edit mode enabled', async () => {
+    mockStore.state.appGlobalState.appGlobalData.editMode = true
+
+    const wrapper = createWrapper(RiverDetail, options)
+
+    await wrapper.find('#edit-mode-toggle').trigger('click')
+
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(5, '[APP_GLOBAL] TOGGLE_EDIT_MODE', false)
+  })
+
+  it('shows no new notifications icon when reach has alerts', () => {
+    const wrapper = createWrapper(RiverDetail, options)
+
+    expect(wrapper.find('.button-wrapper notificationnew20-stub').exists()).toBe(false)
+    expect(wrapper.find('.button-wrapper notification20-stub').exists()).toBe(true)
+  })
+  it('shows new notification icon when reach has alerts', () => {
+    mockStore.state.riverDetailState.alertsData.data = mockAlerts
+
+    const wrapper = createWrapper(RiverDetail, options)
+
+    expect(wrapper.find('.button-wrapper notificationnew20-stub').exists()).toBe(true)
+    expect(wrapper.find('.button-wrapper notification20-stub').exists()).toBe(false)
+  })
+
+  it('bookmarks reach when not previously bookmarked and notifies user', async () => {
+    const wrapper = createWrapper(RiverDetail, options)
+
+    await wrapper.find('#bookmark-toggle').trigger('click')
+
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(5, '[BOOKMARKS] ADD_BOOKMARK', '123')
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(6, '[APP_GLOBAL] SEND_TOAST', { kind: 'success', title: 'Bookmark Added' })
+  })
+
+  it('removes bookmarked reach and notifies user', async () => {
+    const wrapper = createWrapper(RiverDetail, options)
+
+    wrapper.setData({
+      bookmarked: true
+    })
+
+    await wrapper.vm.$nextTick()
+
+    await wrapper.find('#bookmark-toggle').trigger('click')
+
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(5, '[BOOKMARKS] REMOVE_BOOKMARK', '123')
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(6, '[APP_GLOBAL] SEND_TOAST', { kind: 'success', title: 'Bookmark Removed' })
+  })
+})
