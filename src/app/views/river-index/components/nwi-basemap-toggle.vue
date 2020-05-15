@@ -18,8 +18,6 @@
 
 <script>
 import { riverIndexActions } from '../shared/state'
-import { mapState } from 'vuex'
-
 export default {
   name: 'nwi-basemap-toggle',
   props: {
@@ -34,9 +32,6 @@ export default {
     baseMap: 'topo'
   }),
   computed: {
-    ...mapState({
-      mapStyle: state => state.riverIndexState.riverIndexData.mapStyle
-    }),
     getToggleOffset () {
       if (this.offsetRight) {
         return 'right: calc(0.5rem + 50px);'
@@ -46,14 +41,10 @@ export default {
     }
   },
   watch: {
-    baseMap (v) {
-      this.$store.dispatch(riverIndexActions.SET_MAP_STYLE, v)
-    },
-    // ensures control is synced with state on first load
-    mapStyle: {
+    baseMap: {
       immediate: true,
       handler (v) {
-        this.baseMap = v
+        this.$store.dispatch(riverIndexActions.SET_MAP_STYLE, v)
       }
     }
   }
