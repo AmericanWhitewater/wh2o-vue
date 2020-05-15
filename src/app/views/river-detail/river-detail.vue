@@ -184,6 +184,11 @@ export default {
       return 'Notification20'
     }
   },
+  watch: {
+    activeTabIndex (v) {
+      this.$router.replace(`/river-detail/${this.$route.params.id}/${this.$options.tabs[Number(v)].path}`)
+    }
+  },
   methods: {
     toggleEditMode () {
       if (this.user) {
