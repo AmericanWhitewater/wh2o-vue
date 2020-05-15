@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="[{'form-visible':uploadFormVisible}, 'rapid-item, bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm']"
+    :class="[{'form-visible':uploadFormVisible}, 'rapid-item bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm']"
   >
     <cv-tile
       v-if="rapid"
@@ -58,7 +58,7 @@
                   Add Media
                 </cv-button>
                 <cv-button
-                  v-if="sanitizedDescription.length > characterLimit"
+                  v-if="sanitizedDescription && sanitizedDescription.length > characterLimit"
                   size="small"
                   kind="tertiary"
                   class="mb-spacing-lg"
@@ -71,13 +71,13 @@
           </div>
           <div class="bx--col-sm-12 bx--col-lg-11">
             <template v-if="sanitizedDescription">
-              <template v-if="sanitizedDescription.length > characterLimit">
+              <template v-if="sanitizedDescription && sanitizedDescription.length > characterLimit">
                 <div
                   class="description"
                   v-html="sanitizedDescription.slice(0, characterLimit) + '...'"
                 />
                 <div
-                  v-if="readMoreActive"
+                  v-if="sanitizedDescription && readMoreActive"
                   v-html="sanitizedDescription.slice(characterLimit, sanitizedDescription.length * 2)"
                 />
               </template>
@@ -183,9 +183,6 @@ export default {
     }
   },
   methods: {
-    uploadMedia () {
-      return 'upload media'
-    },
     cancelUpload () {
       this.showConfirmation = false
       this.uploadFormVisible = false

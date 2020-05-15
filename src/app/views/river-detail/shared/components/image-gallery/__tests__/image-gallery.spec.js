@@ -1,6 +1,10 @@
 import ImageGallery from '../image-gallery.vue'
 import { createWrapper } from '@/utils'
 
+jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+  Map: () => ({})
+}))
+
 const openLightbox = jest.fn()
 
 const image = {

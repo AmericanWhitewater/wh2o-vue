@@ -18,6 +18,13 @@
           data-modal-primary-focus
           :disabled="formPending"
         />
+        <label class="bx--label mb-spacing-xs">Location</label>
+        <nwi-map
+          height="350"
+          :include-legend="false"
+          class="mb-spacing-md"
+        />
+        <!-- remove this field if we can calculate value from dropped pin -->
         <cv-number-input
           v-model="formData.distance"
           class="mb-spacing-md"
@@ -63,12 +70,13 @@
 <script>
 import { globalAppActions } from '@/app/global/state'
 import { checkWindow, poiClasses } from '@/app/global/mixins'
-import { mapState } from 'vuex'
 import ContentEditor from '@/app/global/components/content-editor/content-editor'
+import NwiMap from '@/app/views/river-index/components/nwi-map.vue'
 export default {
   name: 'rapid-edit-modal',
   components: {
-    ContentEditor
+    ContentEditor,
+    NwiMap
   },
   /** @todo revisit adding checkWindow mixin performance considerations */
   mixins: [checkWindow, poiClasses],
@@ -138,21 +146,14 @@ export default {
     }
   }),
   computed: {
-    ...mapState({
-      rapids: state => state.riverDetailState.rapidsData.data
-    }),
+    rapids () {
+      return this.$store.state.riverDetailState.rapidsData.data
+    },
     activeRapid () {
-      if (this.rapidId) {
-        return this.rapids.find(r => r.id === this.rapidId)
-      }
-      return null
+      return this.rapidId ? this.rapids.find(r => r.id === this.rapidId) : null
     },
     modalTitle () {
-      if (this.activeRapid) {
-        return 'Edit Rapid'
-      } else {
-        return 'New Rapid'
-      }
+      return this.activeRapid ? 'Edit Rapid' : 'New Rapid'
     }
   },
   methods: {

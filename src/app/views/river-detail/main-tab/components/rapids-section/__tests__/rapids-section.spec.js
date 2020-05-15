@@ -1,6 +1,10 @@
 import RapidsSection from '../rapids-section.vue'
 import { createWrapper } from '@/utils'
 
+jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+  Map: () => ({})
+}))
+
 const mockStore = {
   state: {
     riverDetailState: {
@@ -28,7 +32,7 @@ const options = {
     $sanitize: jest.fn(),
     $replaceText: jest.fn()
   },
-  stubs: ['rapid-item']
+  stubs: ['rapid-item', 'nwi-map']
 }
 describe('RapidsSection', () => {
   beforeEach(() => {

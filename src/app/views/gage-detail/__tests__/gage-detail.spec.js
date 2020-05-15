@@ -1,6 +1,10 @@
 import { createWrapper } from '@/utils'
 import GageDetail from '../gage-detail'
 
+jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+  Map: () => ({})
+}))
+
 const mockRoute = {
   params: {
     gageId: '123'

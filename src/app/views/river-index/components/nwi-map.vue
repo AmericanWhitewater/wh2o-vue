@@ -72,25 +72,25 @@ export default {
     },
     // display loading spinner because of events from other components
     externalLoading: {
-      type: Boolean,
-      default: false
+      type: Boolean
     },
     // render legend
     includeLegend: {
       type: Boolean,
       required: false,
+      /**
+       * @note vue defaults to false, consider refactoring
+       */
       default: true
     },
     // hide basemap toggle (satellite/topo)
     hideBasemapToggle: {
       type: Boolean,
-      required: false,
-      default: false
+      required: false
     },
     hideResultCounter: {
       type: Boolean,
-      required: false,
-      default: false
+      required: false
     },
     // modifies the map style to highlight a single reach identified by ID
     detailReachId: {
@@ -164,7 +164,7 @@ export default {
       }
     },
     hideFullscreenToggle () {
-      return Boolean(this.idForFullscreen) && this.idForFullscreen.length > 0
+      return !this.fullscreenTarget
     },
     // parses out the layers we're adding to the map from NwiMapStyles / sourceLayers prop
     mapLayers () {
@@ -576,7 +576,7 @@ export default {
   #nwi-map {
     height: 100%;
     width: 100%;
-
+    background-color:$ui-03;
     &.river-detail {
        @include carbon--breakpoint("md") {
         width: 68%;
