@@ -1,5 +1,5 @@
 <template>
-  <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm">
+  <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm reach-detail">
     <cv-tile
       kind="standard"
       cv-type="standard"

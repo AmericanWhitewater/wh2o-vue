@@ -21,9 +21,9 @@ const options = {
 }
 
 describe('AppFooter', () => {
-  it('it is a vue instance', () => {
+  it('exists', () => {
     const wrapper = createWrapper(AppFooter, options)
 
-    expect(wrapper.isVueInstance()).toBe(true)
+    expect(wrapper.find('.app-footer').exists()).toBe(true)
   })
 })

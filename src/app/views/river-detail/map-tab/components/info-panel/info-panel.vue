@@ -1,7 +1,7 @@
 <template>
   <div
-    id="nwi-info-panel"
     v-view.once="loadRapids"
+    class="info-panel"
   >
     <UtilityBlock
       v-if="noFeature"
@@ -97,7 +97,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-#nwi-info-panel {
+.info-panel {
   background: rgba(255, 255, 255, 0.7);
 
   .no-feature-notice {
