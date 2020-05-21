@@ -20,7 +20,7 @@
             class="mb-md"
           />
         </div>
-        <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-4 bx--col-max-4">
+        <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-4 bx--col-max-4">
           <info-panel
             :feature="detailFeature"
           />
