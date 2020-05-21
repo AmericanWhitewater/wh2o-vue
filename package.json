@@ -28,7 +28,7 @@
     "axios": "^0.19.2",
     "carbon-components": "^10.11.2",
     "chart.js": "^2.9.3",
-    "core-js": "^3.6.4",
+    "core-js": "^3.6.5",
     "emitter-js": "^2.0.2",
     "express": "^4.17.1",
     "graphql": "^15.0.0",
