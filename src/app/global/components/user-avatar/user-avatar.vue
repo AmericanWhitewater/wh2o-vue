@@ -21,7 +21,7 @@ export default {
     },
     username: {
       type: String,
-      required: false
+      required: true
     },
     theme: {
       type: String,

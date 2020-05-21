@@ -1,4 +1,3 @@
-import { AppPageNotFound } from '@/app/global/components'
 
 const staticRoutes = [
   {
@@ -19,7 +18,7 @@ const staticRoutes = [
     meta: {
       crumbLabel: '404'
     },
-    component: AppPageNotFound
+    component: () => import('./page-not-found')
   }
 ]
 
