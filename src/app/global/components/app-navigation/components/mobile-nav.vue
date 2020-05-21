@@ -4,7 +4,6 @@
       <div class="bx--row">
         <div
           :class="[
-            { home: homePage },
             { 'drawer-open': drawerOpen },
             'bx--col content-area'
           ]"
@@ -164,12 +163,6 @@ export default {
   computed: {
     user () {
       return this.$store.state.userState.userData.data
-    },
-    homePage () {
-      if (this.$route.name === 'Home') {
-        return true
-      }
-      return false
     }
   },
   methods: {

@@ -1,7 +1,7 @@
 
 <template>
   <div
-    class="bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm"
+    class="bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm access-detail"
   >
     <cv-tile
       kind="standard"

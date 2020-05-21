@@ -8,8 +8,8 @@ const options = {
 }
 
 describe('AppFooter', () => {
-  it('it is a vue instance', () => {
+  it('exists', () => {
     const wrapper = createWrapper(AppIcon, options)
-    expect(wrapper.isVueInstance()).toBe(true)
+    expect(wrapper.find('.app-icon').exists()).toBe(true)
   })
 })
