@@ -1,6 +1,6 @@
 .bx--data-table-container {
-  overflow-x: scroll;
   min-width: unset;
+  overflow-x: scroll;
 
   &.content-height {
     height: $content-height;
@@ -8,6 +8,7 @@
     overflow: scroll;
   }
 }
+
 .bx--data-table.river-table {
   position: relative;
 
@@ -19,7 +20,9 @@
   th,
   td {
     vertical-align: middle;
+
     span {
+
       &:hover {
         cursor: pointer;
         text-decoration: underline;
@@ -29,31 +32,44 @@
 
   .river-name-section {
     cursor: pointer;
+
     &:hover {
       text-decoration: underline;
     }
   }
 
   &.river-table {
+
     tbody {
+
       tr,
       td {
+
         @include ease;
+
         &:nth-child(1) {
+
           &[class*="low"],
           &.low {
+
             @include flow-border($flow-low);
           }
+
           &[class*="med"],
           &.med {
+
             @include flow-border($flow-medium);
           }
+
           &[class*="hi"],
           &.hi {
+
             @include flow-border($flow-high);
           }
+
           &[class*="unk"],
           &.unk {
+
             @include flow-border($ui-03);
           }
         }

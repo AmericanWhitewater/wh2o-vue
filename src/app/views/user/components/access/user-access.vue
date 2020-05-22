@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-topo">
+  <div class="user-access bg-topo">
     <div class="bx--grid app-users pt-lg">
       <div class="bx--row">
         <div class="bx--col-md-4 bx--offset-md-2 bx--col-lg-5 bx--offset-lg-5">

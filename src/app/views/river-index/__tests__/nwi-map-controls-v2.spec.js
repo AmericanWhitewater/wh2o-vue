@@ -18,7 +18,7 @@ describe('nwi-map-controls-v2.vue', () => {
   it('dispatches search query when emitted from search bar', async () => {
     const wrapper = createWrapper(NwiMapControlsV2, options)
 
-    wrapper.find(SearchBar).vm.$emit('search:submitted', 'gore crik')
+    wrapper.findComponent(SearchBar).vm.$emit('search:submitted', 'gore crik')
 
     await wrapper.vm.$nextTick()
 

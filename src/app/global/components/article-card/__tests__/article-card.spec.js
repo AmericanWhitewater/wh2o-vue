@@ -2,7 +2,8 @@ import ArticleCard from '../article-card'
 import { createWrapper } from '@/utils'
 
 const router = {
-  push: jest.fn()
+  push: jest.fn(),
+  catch: jest.fn()
 }
 
 const options = {
