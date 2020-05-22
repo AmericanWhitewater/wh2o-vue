@@ -19,9 +19,8 @@
           :disabled="formPending"
         />
         <label class="bx--label mb-spacing-xs">Location</label>
-        <nwi-map
+        <nwi-map-editor
           height="350"
-          :include-legend="false"
           class="mb-spacing-md"
         />
         <!-- remove this field if we can calculate value from dropped pin -->
@@ -71,12 +70,12 @@
 import { globalAppActions } from '@/app/global/state'
 import { checkWindow, poiClasses } from '@/app/global/mixins'
 import ContentEditor from '@/app/global/components/content-editor/content-editor'
-import NwiMap from '@/app/views/river-index/components/nwi-map.vue'
+import NwiMapEditor from './nwi-map-editor.vue'
 export default {
   name: 'rapid-edit-modal',
   components: {
     ContentEditor,
-    NwiMap
+    NwiMapEditor
   },
   /** @todo revisit adding checkWindow mixin performance considerations */
   mixins: [checkWindow, poiClasses],
