@@ -17,6 +17,7 @@ const fetchRapidsData = data => {
             distance
             id
             name
+            rloc
             photo {
               poi_name
               subject

@@ -13,6 +13,10 @@ const mockStore = {
         data: null,
         loading: null
       }
+    },
+    riverIndexState: {
+      riverIndexData: {
+      }
     }
   },
   dispatch: jest.fn()
@@ -32,7 +36,7 @@ const options = {
     $sanitize: jest.fn(),
     $replaceText: jest.fn()
   },
-  stubs: ['rapid-item', 'nwi-map']
+  stubs: ['rapid-item', 'nwi-map-editor']
 }
 describe('RapidsSection', () => {
   beforeEach(() => {
