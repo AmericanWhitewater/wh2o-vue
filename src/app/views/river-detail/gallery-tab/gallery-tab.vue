@@ -42,6 +42,7 @@
             <div class="bx--col">
               <table-pagination
                 :number-of-items="pagination.total"
+                :page="pagination.currentPage"
                 :pagination="pagination"
                 @change="loadMedia"
               />

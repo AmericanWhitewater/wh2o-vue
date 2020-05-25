@@ -4,6 +4,7 @@ module.exports = {
   verbose: false,
   collectCoverageFrom: [
     'src/**/*.{js,vue}',
+    '!src/**/*-routes.{js,vue}',
     '!src/js/main.js',
     '!src/**/index.js',
     '!src/**/create-wrapper.js',
