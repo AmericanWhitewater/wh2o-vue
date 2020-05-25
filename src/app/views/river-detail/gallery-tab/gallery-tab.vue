@@ -40,7 +40,12 @@
           </div>
           <div class="bx--row">
             <div class="bx--col">
-              <cv-pagination :number-of-items="pagination.total" />
+              <table-pagination
+                :number-of-items="pagination.total"
+                :page="pagination.currentPage"
+                :pagination="pagination"
+                @change="loadMedia"
+              />
             </div>
           </div>
         </template>
@@ -66,6 +71,7 @@ import { mapState, mapGetters } from 'vuex'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { MediaUploadModal, ImageGallery } from '../shared/components'
 import { Layout } from '@/app/global/layout'
+import { TablePagination } from '@/app/global/components'
 import { rapidsActions, galleryActions } from '@/app/views/river-detail/shared/state'
 export default {
   name: 'gallery-tab',
@@ -73,7 +79,8 @@ export default {
     UtilityBlock,
     MediaUploadModal,
     Layout,
-    ImageGallery
+    ImageGallery,
+    TablePagination
   },
   data: () => ({
     selectedRapids: [],
@@ -111,6 +118,10 @@ export default {
     }
   },
   methods: {
+    handlePaginationChange (val) {
+      // eslint-disable-next-line no-console
+      console.log('val :>> ', val)
+    },
     loadRapids () {
       this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.$route.params.id)
     },
