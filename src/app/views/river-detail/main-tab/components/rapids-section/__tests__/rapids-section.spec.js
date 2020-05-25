@@ -8,6 +8,11 @@ jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
 const mockStore = {
   state: {
     riverDetailState: {
+      riverDetailData: {
+        data: {
+          geom: null
+        }
+      },
       rapidsData: {
         error: null,
         data: null,
@@ -16,6 +21,10 @@ const mockStore = {
     },
     riverIndexState: {
       riverIndexData: {
+      }
+    },
+    appGlobalState: {
+      appGlobalData: {
       }
     }
   },
@@ -101,6 +110,7 @@ describe('RapidsSection', () => {
 
   it('disables the new rapid button while rapids are loading', () => {
     mockStore.state.riverDetailState.rapidsData.loading = true
+    mockStore.state.appGlobalState.appGlobalData.editMode = true
     const wrapper = createWrapper(RapidsSection, options)
     expect(wrapper.find('#new-rapid').attributes('disabled')).toBe('disabled')
   })

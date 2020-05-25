@@ -104,12 +104,14 @@
           @cancel="uploadFormVisible = false"
         />
         <rapid-edit-modal
+          v-if="editModalVisible"
           :visible="editModalVisible"
           :rapid-id="rapid.id"
           @edit:cancelled="editModalVisible = false"
           @edit:success="editModalVisible = false"
         />
         <confirm-delete-modal
+          v-if="deleteModalVisible"
           :visible="deleteModalVisible"
           :resource-name="rapid.name"
           @delete:cancelled="deleteModalVisible = false"

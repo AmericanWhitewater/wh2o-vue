@@ -30,12 +30,13 @@ export default {
     height: {
       type: String,
       required: false
+    },
+    geom: {
+      type: Object,
+      required: false
     }
   },
   computed: {
-    activeReach () {
-      return this.$store.state.riverDetailState.rapidsData.data
-    },
     baseMapUrl () {
       if (this.mapStyle === 'topo') {
         return 'mapbox://styles/mapbox/outdoors-v11'
@@ -66,8 +67,18 @@ export default {
     mapStyle (v) {
       this.map.setStyle(this.baseMapUrl)
     },
-    startingBounds (v) {
-      this.map.fitBounds(v, { padding: 80 })
+    // this ensures that if the lat/lng fields are changed
+    // manually by the user, the marker updates accordingly
+    geom: {
+      deep: true,
+      immediate: true,
+      handler (newVal, oldVal) {
+        if (this.pointOfInterest &&
+            newVal.coordinates[0] !== oldVal.coordinates[0] &&
+            newVal.coordinates[1] !== oldVal.coordinates[1]) {
+          this.pointOfInterest.setLngLat([newVal.coordinates[0], newVal.coordinates[1]])
+        }
+      }
     }
   },
   methods: {
@@ -76,13 +87,32 @@ export default {
       const mapProps = {
         container: 'nwi-map-editor',
         style: this.baseMapUrl,
-        trackUserLocation: true
+        bounds: this.startingBounds,
+        fitBoundsOptions: { padding: 80 }
       }
 
       this.map = new mapboxgl.Map(mapProps)
 
       this.map.on('styledata', this.loadReach)
-      this.map.on('load', this.loadReach)
+      this.map.on('load', () => {
+        this.loadReach()
+        if (this.geom && this.geom.coordinates && this.geom.coordinates.length === 2) {
+          this.renderPOI()
+        }
+      })
+    },
+    fitMapToReachGeom () {
+      this.map.fitBounds(this.startingBounds, { padding: 80 })
+    },
+    renderPOI () {
+      this.pointOfInterest = new mapboxgl.Marker({
+        draggable: true
+      })
+        .setLngLat([this.geom.coordinates[0], this.geom.coordinates[1]])
+        .addTo(this.map)
+      this.pointOfInterest.on('dragend', () => {
+        this.$emit('poiMoved', this.pointOfInterest.getLngLat())
+      })
     },
     loadReach () {
       if (this.reachGeom) {
@@ -109,6 +139,7 @@ export default {
             }
           })
         }
+        this.fitMapToReachGeom()
       }
     }
   },
