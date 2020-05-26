@@ -19,7 +19,7 @@ export default {
   props: {
     fullscreenTarget: {
       type: String,
-      required: true
+      required: false
     }
   },
   data: () => ({
