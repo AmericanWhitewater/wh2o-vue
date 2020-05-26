@@ -7,6 +7,16 @@
     <nwi-basemap-toggle
       :offset-right="false"
     />
+    <div
+      v-if="reachGeom"
+      id="snap-mode-control"
+    >
+      <cv-checkbox
+        v-model="snapMode"
+        value="Snap Mode"
+        label="Snap When Dragging"
+      />
+    </div>
   </div>
 </template>
 
@@ -14,12 +24,13 @@
 import mapboxgl from 'mapbox-gl'
 import NwiBasemapToggle from '@/app/views/river-index/components/nwi-basemap-toggle.vue'
 import { mapState } from 'vuex'
-import { lineString } from '@turf/helpers'
-import bbox from '@turf/bbox'
-
 import {
   mapboxAccessToken
 } from '@/app/environment/environment'
+
+import { lineString, point } from '@turf/helpers'
+import bbox from '@turf/bbox'
+import nearestPointOnLine from '@turf/nearest-point-on-line'
 
 export default {
   name: 'nwi-map-editor',
@@ -36,6 +47,11 @@ export default {
       required: false
     }
   },
+  data: () => ({
+    // TODO: we may want to default snapMode on or off depending
+    // on whether the point is *already* snapped to the line
+    snapMode: true
+  }),
   computed: {
     baseMapUrl () {
       if (this.mapStyle === 'topo') {
@@ -73,15 +89,34 @@ export default {
       deep: true,
       immediate: true,
       handler (newVal, oldVal) {
-        if (this.pointOfInterest &&
-            newVal.coordinates[0] !== oldVal.coordinates[0] &&
-            newVal.coordinates[1] !== oldVal.coordinates[1]) {
-          this.pointOfInterest.setLngLat([newVal.coordinates[0], newVal.coordinates[1]])
+        if (this.pointOfInterest) {
+          const oldCoords = this.pointOfInterest.getLngLat()
+          if (oldCoords.lng !== newVal.coordinates[0] || oldCoords.lat !== newVal.coordinates[1]) {
+            this.pointOfInterest.setLngLat([newVal.coordinates[0], newVal.coordinates[1]])
+            // ensure it snaps if the coords have been changed upstream
+            if (this.snapMode) {
+              this.snapPOIToReach()
+            }
+          }
         }
+      }
+    },
+    snapMode: {
+      handler (v) {
+        this.conditionallyBindSnapHandler()
       }
     }
   },
   methods: {
+    conditionallyBindSnapHandler () {
+      if (this.pointOfInterest) {
+        if (this.snapMode) {
+          this.pointOfInterest.on('drag', this.snapPOIToReach)
+        } else {
+          this.pointOfInterest.off('drag', this.snapPOIToReach)
+        }
+      }
+    },
     mountMap () {
       mapboxgl.accessToken = mapboxAccessToken
       const mapProps = {
@@ -101,8 +136,8 @@ export default {
         }
       })
     },
-    fitMapToReachGeom () {
-      this.map.fitBounds(this.startingBounds, { padding: 80 })
+    emitPOILocation () {
+      this.$emit('poiMoved', this.pointOfInterest.getLngLat())
     },
     renderPOI () {
       this.pointOfInterest = new mapboxgl.Marker({
@@ -110,9 +145,8 @@ export default {
       })
         .setLngLat([this.geom.coordinates[0], this.geom.coordinates[1]])
         .addTo(this.map)
-      this.pointOfInterest.on('dragend', () => {
-        this.$emit('poiMoved', this.pointOfInterest.getLngLat())
-      })
+      this.pointOfInterest.on('dragend', this.emitPOILocation)
+      this.conditionallyBindSnapHandler()
     },
     loadReach () {
       if (this.reachGeom) {
@@ -139,8 +173,14 @@ export default {
             }
           })
         }
-        this.fitMapToReachGeom()
       }
+    },
+    snapPOIToReach () {
+      const coords = this.pointOfInterest.getLngLat()
+      const origPoint = point([coords.lng, coords.lat])
+      const newPoint = nearestPointOnLine(this.reachGeom, origPoint, { units: 'miles' })
+      this.pointOfInterest.setLngLat([newPoint.geometry.coordinates[0], newPoint.geometry.coordinates[1]])
+      this.emitPOILocation()
     }
   },
   mounted () {
@@ -163,5 +203,16 @@ export default {
   height: 100%;
   width: 100%;
   background-color:$ui-03;
+}
+#snap-mode-control {
+  background-color: #fff;
+  border-radius: 3px;
+  top: 0.5rem;
+  left: 0.5rem;
+  padding: 5px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  z-index: 1;
+  display: block;
 }
 </style>
