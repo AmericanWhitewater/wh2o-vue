@@ -18,6 +18,14 @@
           data-modal-primary-focus
           :disabled="formPending"
         />
+        <label class="bx--label mb-spacing-xs">Location</label>
+        <nwi-map-editor
+          height="350"
+          class="mb-spacing-md"
+          :geom="formData.geom"
+          @poiMoved="updateFormDataGeom"
+        />
+        <!-- remove this field if we can calculate value from dropped pin -->
         <cv-number-input
           v-model="formData.distance"
           class="mb-spacing-md"
@@ -26,6 +34,24 @@
           :max="4132"
           :min="0"
           :mobile="windowWidth <= $options.breakpoints.md"
+          :disabled="formPending"
+        />
+        <cv-number-input
+          v-model="formData.geom.coordinates[1]"
+          class="mb-spacing-md"
+          label="Lat"
+          :max="90"
+          :min="-90"
+          step=".0000001"
+          :disabled="formPending"
+        />
+        <cv-number-input
+          v-model="formData.geom.coordinates[0]"
+          class="mb-spacing-md"
+          label="Lng"
+          :max="180"
+          :min="-180"
+          step=".0000001"
           :disabled="formPending"
         />
         <cv-combo-box
@@ -37,12 +63,14 @@
           :options="poiClasses"
           :disabled="formPending"
         />
-        <cv-multi-select
+        <!-- temporarily commented out bc the carbon component is broken
+             and it keeps throwing errors !-->
+        <!-- <cv-multi-select
           v-model="formData.character"
           theme="light"
           :options="poiCharacteristics"
           title="Characteristics"
-        />
+        /> -->
         <ContentEditor
           v-if="renderEditor && initialRapidDescription"
           :content="initialRapidDescription"
@@ -63,12 +91,19 @@
 <script>
 import { globalAppActions } from '@/app/global/state'
 import { checkWindow, poiClasses } from '@/app/global/mixins'
-import { mapState } from 'vuex'
 import ContentEditor from '@/app/global/components/content-editor/content-editor'
+import NwiMapEditor from './nwi-map-editor.vue'
+
+import { lineString } from '@turf/helpers'
+import along from '@turf/along'
+import wkx from 'wkx'
+import { Buffer } from 'buffer'
+
 export default {
   name: 'rapid-edit-modal',
   components: {
-    ContentEditor
+    ContentEditor,
+    NwiMapEditor
   },
   /** @todo revisit adding checkWindow mixin performance considerations */
   mixins: [checkWindow, poiClasses],
@@ -134,25 +169,24 @@ export default {
       class: '',
       distance: 0,
       description: '',
-      character: []
+      character: [],
+      geom: { coordinates: [], type: 'point' }
     }
   }),
   computed: {
-    ...mapState({
-      rapids: state => state.riverDetailState.rapidsData.data
-    }),
+    rapids () {
+      return this.$store.state.riverDetailState.rapidsData.data
+    },
     activeRapid () {
-      if (this.rapidId) {
-        return this.rapids.find(r => r.id === this.rapidId)
-      }
-      return null
+      return this.rapidId ? this.rapids.find(r => r.id === this.rapidId) : null
     },
     modalTitle () {
-      if (this.activeRapid) {
-        return 'Edit Rapid'
-      } else {
-        return 'New Rapid'
-      }
+      return this.activeRapid ? 'Edit Rapid' : 'New Rapid'
+    },
+    reachGeom () {
+      // TODO: get graphql API to return a linestring or geojson instead of this text
+      const geom = this.$store.state.riverDetailState.riverDetailData.data.geom?.split(',').map(d => d.split(' '))
+      return geom ? lineString(geom) : null
     }
   },
   methods: {
@@ -174,15 +208,39 @@ export default {
         })
       })
     },
+    updateFormDataGeom (newCoords) {
+      this.formData.geom.coordinates = [newCoords.lng, newCoords.lat]
+      this.updateDistance()
+    },
+    updateDistance () {
+      // placeholder to update `formData.distance` by calculating it
+    },
     handleCancel () {
       this.$emit('edit:cancelled')
+    },
+    // TODO: get graphql to return something more usable than WKB.
+    getGeomFromWKB (wkb) {
+      if (wkb) {
+        const buffer = Buffer.from(wkb, 'hex')
+        const pointGeom = wkx.Geometry.parse(buffer).toGeoJSON()
+        return pointGeom
+      } else {
+        return {}
+      }
     }
   },
   mounted () {
     this.renderEditor = true
     if (this.activeRapid) {
       this.formData = Object.assign(this.formData, this.activeRapid)
+      // parse rloc into coords
+      this.formData.geom = this.getGeomFromWKB(this.activeRapid.rloc)
       this.initialRapidDescription = this.activeRapid.description
+    } else {
+      // generate a point on the reach geom to be moved around
+      if (this.reachGeom) {
+        this.formData.geom = along(this.reachGeom, 0, {}).geometry
+      }
     }
   }
 }

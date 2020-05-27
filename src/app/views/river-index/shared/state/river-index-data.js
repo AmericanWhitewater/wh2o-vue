@@ -5,7 +5,7 @@ const initialState = {
   data: null,
   error: null,
   userLocation: null,
-  mapStyle: 'topo',
+  mapStyle: null,
   fullscreen: null,
   mapPosition: null,
   mouseoveredFeature: null

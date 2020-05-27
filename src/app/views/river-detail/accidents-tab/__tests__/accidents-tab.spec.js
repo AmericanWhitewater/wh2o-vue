@@ -1,6 +1,10 @@
 import AccidentsTab from '@/app/views/river-detail/accidents-tab/accidents-tab.vue'
 import { createWrapper } from '@/utils'
 
+jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+  Map: () => ({})
+}))
+
 const mockStore = {
   state: {
     riverDetailState: {

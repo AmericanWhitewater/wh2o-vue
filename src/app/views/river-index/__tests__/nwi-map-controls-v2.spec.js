@@ -2,6 +2,10 @@ import { createWrapper } from '@/utils'
 import NwiMapControlsV2 from '@/app/views/river-index/components/nwi-map-controls-v2.vue'
 import { SearchBar } from '@/app/global/components'
 
+jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+  Map: () => ({})
+}))
+
 const mockStore = {
   dispatch: jest.fn()
 }

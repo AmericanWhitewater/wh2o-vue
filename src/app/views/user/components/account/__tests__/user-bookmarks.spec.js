@@ -1,6 +1,10 @@
 import UserBookmarks from '../user-bookmarks.vue'
 import { createWrapper } from '@/utils'
 
+jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+  Map: () => ({})
+}))
+
 const mockStore = {
   state: {
     riverDetailState: {

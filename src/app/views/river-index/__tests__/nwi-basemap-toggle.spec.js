@@ -5,7 +5,7 @@ const mockStore = {
   state: {
     riverIndexState: {
       riverIndexData: {
-        mapStyle: 'topo'
+        mapStyle: 'satellite'
       }
     }
   },
@@ -23,12 +23,12 @@ describe('nwi-basemap-toggle.vue', () => {
     const wrapper = createWrapper(NwiBasemapToggle, options)
 
     wrapper.setData({
-      baseMap: 'satellite'
+      baseMap: 'topo'
     })
 
     await wrapper.vm.$nextTick()
 
     expect(mockStore.dispatch).toBeCalledTimes(1)
-    expect(mockStore.dispatch).toBeCalledWith('[RIVER_INDEX] SET_MAP_STYLE', 'satellite')
+    expect(mockStore.dispatch).toBeCalledWith('[RIVER_INDEX] SET_MAP_STYLE', 'topo')
   })
 })
