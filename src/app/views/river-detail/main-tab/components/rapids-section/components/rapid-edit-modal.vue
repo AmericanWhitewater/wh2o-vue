@@ -231,16 +231,21 @@ export default {
   },
   mounted () {
     this.renderEditor = true
+    let distance
     if (this.activeRapid) {
       this.formData = Object.assign(this.formData, this.activeRapid)
-      // parse rloc into coords
-      this.formData.geom = this.getGeomFromWKB(this.activeRapid.rloc)
-      this.initialRapidDescription = this.activeRapid.description
-    } else {
-      // generate a point on the reach geom to be moved around
-      if (this.reachGeom) {
-        this.formData.geom = along(this.reachGeom, 0, {}).geometry
+      if (this.activeRapid.rloc) {
+        // parse rloc into coords
+        this.formData.geom = this.getGeomFromWKB(this.activeRapid.rloc)
       }
+      distance = this.activeRapid.distance
+      this.initialRapidDescription = this.activeRapid.description
+    }
+    if (!this.formData.geom.coordinates) {
+      // if distance is present, use it to calculate the point
+      // otherwise, create a point anywhere on the line
+      const distanceAlong = distance || 0
+      this.formData.geom = along(this.reachGeom, distanceAlong, { units: 'miles' }).geometry
     }
   }
 }
