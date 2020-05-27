@@ -10,7 +10,7 @@
           class="mb-sm"
         >
           <nwi-map
-            v-if="data"
+            v-if="startingBounds"
             height="400"
             :detail-reach-id="reachId"
             :include-legend="false"
@@ -19,6 +19,11 @@
             :starting-bounds="startingBounds"
             fullscreen-target="map-wrapper"
             hide-result-counter
+          />
+          <utility-block
+            v-if="!startingBounds"
+            state="error"
+            text="failed to load map"
           />
         </div>
         <beta-box />
@@ -33,6 +38,7 @@
   </div>
 </template>
 <script>
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { Layout } from '@/app/global/layout'
 import { mapState } from 'vuex'
 import { NwiMap } from '@/app/views/river-index/components'
@@ -50,6 +56,7 @@ export default {
   name: 'main-tab',
   components: {
     BetaBox,
+    UtilityBlock,
     SideBar,
     NwiMap,
     RapidsSection,
@@ -72,7 +79,7 @@ export default {
     startingBounds () {
       // TODO: get graphql API to return a linestring or geojson instead of this text
       const geom = this.data?.geom?.split(',').map(d => d.split(' '))
-      return bbox(lineString(geom))
+      return geom ? bbox(lineString(geom)) : null
     }
   }
 }

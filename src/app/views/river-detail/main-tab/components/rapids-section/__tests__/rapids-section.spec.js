@@ -1,13 +1,30 @@
 import RapidsSection from '../rapids-section.vue'
 import { createWrapper } from '@/utils'
 
+jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+  Map: () => ({})
+}))
+
 const mockStore = {
   state: {
     riverDetailState: {
+      riverDetailData: {
+        data: {
+          geom: null
+        }
+      },
       rapidsData: {
         error: null,
         data: null,
         loading: null
+      }
+    },
+    riverIndexState: {
+      riverIndexData: {
+      }
+    },
+    appGlobalState: {
+      appGlobalData: {
       }
     }
   },
@@ -28,7 +45,7 @@ const options = {
     $sanitize: jest.fn(),
     $replaceText: jest.fn()
   },
-  stubs: ['rapid-item']
+  stubs: ['rapid-item', 'nwi-map-editor']
 }
 describe('RapidsSection', () => {
   beforeEach(() => {
@@ -93,6 +110,7 @@ describe('RapidsSection', () => {
 
   it('disables the new rapid button while rapids are loading', () => {
     mockStore.state.riverDetailState.rapidsData.loading = true
+    mockStore.state.appGlobalState.appGlobalData.editMode = true
     const wrapper = createWrapper(RapidsSection, options)
     expect(wrapper.find('#new-rapid').attributes('disabled')).toBe('disabled')
   })

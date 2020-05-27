@@ -1,5 +1,5 @@
 <template>
-  <div :class="[{ home: homePage }, 'app-header']">
+  <div class="app-navigation">
     <template v-if="windowWidth <= $options.breakpoints.lg">
       <mobile-nav
         :nav-items="navItems"
@@ -19,7 +19,6 @@
 import DesktopNav from './components/desktop-nav'
 import MobileNav from './components/mobile-nav'
 import { navItems, checkWindow } from '@/app/global/mixins'
-import { mapState } from 'vuex'
 
 /**
  * @displayName App Navigation
@@ -33,37 +32,20 @@ export default {
   },
   mixins: [checkWindow, navItems],
   computed: {
-    ...mapState({
-      offline: state => state.appGlobalState.appGlobalData.offline
-    }),
-    homePage () {
-      if (this.$route.name === 'home') {
-        return true
-      }
-      return false
+    offline () {
+      return this.$store.state.appGlobalState.appGlobalData.offline
     }
   }
 }
 </script>
 
 <style lang="scss">
-.app-header {
+.app-navigation {
   @include layer("raised");
   border-bottom: 1px solid $ui-03;
   background-color: $ui-01;
   position: fixed;
   width: 100vw;
-  z-index: 3;
-  &.home {
-    background-color: rgba($ui-01, 0.05);
-    box-shadow: none;
-  }
+  z-index: 3
 }
 </style>
-<docs>
-
-```js
-<app-navigation />
-```
-
-</docs>

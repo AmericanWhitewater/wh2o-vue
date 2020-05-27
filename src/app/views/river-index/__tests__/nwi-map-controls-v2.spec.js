@@ -2,6 +2,10 @@ import { createWrapper } from '@/utils'
 import NwiMapControlsV2 from '@/app/views/river-index/components/nwi-map-controls-v2.vue'
 import { SearchBar } from '@/app/global/components'
 
+jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+  Map: () => ({})
+}))
+
 const mockStore = {
   dispatch: jest.fn()
 }
@@ -18,7 +22,7 @@ describe('nwi-map-controls-v2.vue', () => {
   it('dispatches search query when emitted from search bar', async () => {
     const wrapper = createWrapper(NwiMapControlsV2, options)
 
-    wrapper.find(SearchBar).vm.$emit('search:submitted', 'gore crik')
+    wrapper.findComponent(SearchBar).vm.$emit('search:submitted', 'gore crik')
 
     await wrapper.vm.$nextTick()
 

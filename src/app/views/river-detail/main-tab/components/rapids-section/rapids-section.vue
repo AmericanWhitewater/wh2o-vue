@@ -8,6 +8,7 @@
       Rapids
     </h2>
     <cv-button
+      v-if="editMode"
       id="new-rapid"
       class="mr-spacing-sm mb-sm"
       size="small"
@@ -44,6 +45,7 @@
       <utility-block state="error" />
     </template>
     <rapid-edit-modal
+      v-if="editMode"
       :visible="newRapidModalVisible"
       @edit:cancelled="newRapidModalVisible=false"
     />
@@ -70,7 +72,8 @@ export default {
       name: '',
       distance: '',
       class: '',
-      description: ''
+      description: '',
+      geom: {}
     }
   }),
   computed: {
@@ -78,7 +81,8 @@ export default {
       loading: state => state.riverDetailState.rapidsData.loading,
       error: state => state.riverDetailState.rapidsData.error,
       rapids: state => state.riverDetailState.rapidsData.data,
-      user: state => state.userState.userData.data
+      user: state => state.userState.userData.data,
+      editMode: state => state.appGlobalState.appGlobalData.editMode
     })
   },
   methods: {

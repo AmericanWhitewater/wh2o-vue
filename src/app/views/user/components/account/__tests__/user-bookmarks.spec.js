@@ -1,6 +1,10 @@
 import UserBookmarks from '../user-bookmarks.vue'
 import { createWrapper } from '@/utils'
 
+jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+  Map: () => ({})
+}))
+
 const mockStore = {
   state: {
     riverDetailState: {
@@ -24,8 +28,6 @@ describe('user-profile.vue', () => {
     mockStore.state.riverDetailState.bookmarksData.loading = true
 
     const wrapper = createWrapper(UserBookmarks, options)
-
-    expect(wrapper.find('.user-bookmarks')).toMatchSnapshot()
     expect(wrapper.find('.utility-block-loading').exists()).toBe(true)
   })
 

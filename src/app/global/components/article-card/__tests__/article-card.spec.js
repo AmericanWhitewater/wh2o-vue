@@ -1,8 +1,13 @@
 import ArticleCard from '../article-card'
 import { createWrapper } from '@/utils'
 
+jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+  Map: () => ({})
+}))
+
 const router = {
-  push: jest.fn()
+  push: jest.fn(),
+  catch: jest.fn()
 }
 
 const options = {

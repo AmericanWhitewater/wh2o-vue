@@ -14,7 +14,9 @@ img {
 
 .app-main-content {
   background-color: $ui-background;
+
   &.interior {
+
     @include carbon--breakpoint('sm') {
       padding-top: $mobile-nav-height;
     }

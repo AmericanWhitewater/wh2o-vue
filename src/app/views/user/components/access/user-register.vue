@@ -1,5 +1,5 @@
 <template>
-  <div class="register">
+  <div class="user-register">
     <cv-text-input
       v-model="formData.name"
       class="mb-spacing-sm"
@@ -153,7 +153,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.register {
+.user-register {
   h2,
   p {
     margin-bottom: 1.25rem;

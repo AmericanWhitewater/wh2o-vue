@@ -4,6 +4,7 @@
       <div class="bx--row">
         <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-12 bx--col-max-12">
           <NwiMap
+            v-if="startingBounds"
             :include-legend="false"
             :has-controls="false"
             :detail-reach-id="reachId"
@@ -12,8 +13,14 @@
             hide-result-counter
             @clickFeature="clickFeature"
           />
+          <utility-block
+            v-if="!startingBounds"
+            text="failed to load map"
+            state="error"
+            class="mb-md"
+          />
         </div>
-        <div class="bx--col-sm-12 bx--col-md-4 bx--col-lg-4 bx--col-max-4">
+        <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-4 bx--col-max-4">
           <info-panel
             :feature="detailFeature"
           />
@@ -29,12 +36,14 @@ import { mapState } from 'vuex'
 import { InfoPanel } from './components'
 import bbox from '@turf/bbox'
 import { lineString } from '@turf/helpers'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 
 export default {
   name: 'map-tab',
   components: {
     InfoPanel,
-    NwiMap
+    NwiMap,
+    UtilityBlock
   },
   data: () => ({
     detailFeature: null,
@@ -57,8 +66,8 @@ export default {
     },
     startingBounds () {
       // TODO: get graphql API to return a linestring or geojson instead of this text
-      const geom = this.riverData.geom.split(',').map(d => d.split(' '))
-      return bbox(lineString(geom))
+      const geom = this.riverData?.geom?.split(',').map(d => d.split(' '))
+      return geom ? bbox(lineString(geom)) : null
     }
   },
   methods: {

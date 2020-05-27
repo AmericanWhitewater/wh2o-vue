@@ -8,8 +8,8 @@ const options = {
 }
 
 describe('ContentEditor', () => {
-  it('it is a vue instance', () => {
+  it('exists', () => {
     const wrapper = createWrapper(ContentEditor, options)
-    expect(wrapper.isVueInstance()).toBe(true)
+    expect(wrapper.find('.content-editor').exists()).toBe(true)
   })
 })

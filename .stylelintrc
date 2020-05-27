@@ -4,6 +4,16 @@
     "stylelint-order"
   ],
   "rules": {
+   "at-rule-no-unknown": [
+     true,
+     {
+       "ignoreAtRules": ["/^else/", "/^include/", "/^mixin/", "/^each/", "/^function/", "/^return/", "/^if/", "/^error/"]
+     }
+   ],
+    "at-rule-empty-line-before": "always",
+    "selector-list-comma-newline-after": "always",
+    "selector-pseudo-element-colon-notation": "double",
+    "rule-empty-line-before" : "always",
     "block-no-empty": null,
     "color-no-invalid-hex": true,
     "declaration-colon-space-after": "always",
