@@ -1,6 +1,10 @@
 import { createWrapper } from '@/utils'
 import ArticleDetail from '../components/article-detail.vue'
 
+jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+  Map: () => ({})
+}))
+
 const mockStore = {
   state: {
     newsPageState: {
