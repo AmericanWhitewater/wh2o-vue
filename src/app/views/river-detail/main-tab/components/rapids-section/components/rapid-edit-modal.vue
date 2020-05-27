@@ -241,7 +241,7 @@ export default {
       distance = this.activeRapid.distance
       this.initialRapidDescription = this.activeRapid.description
     }
-    if (!this.formData.geom.coordinates) {
+    if (!this.formData.geom.coordinates.length && this.reachGeom) {
       // if distance is present, use it to calculate the point
       // otherwise, create a point anywhere on the line
       const distanceAlong = distance || 0
