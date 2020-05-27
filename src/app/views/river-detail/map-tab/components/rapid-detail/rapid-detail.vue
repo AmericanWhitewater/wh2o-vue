@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm"
+    class="bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm rapid-detail"
   >
     <!-- TODO: can we reuse the `rapid-item.vue` component from the main tab? It doesn't quite work out of the box !-->
     <cv-tile

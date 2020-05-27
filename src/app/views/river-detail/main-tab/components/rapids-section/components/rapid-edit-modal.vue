@@ -67,8 +67,8 @@
              and it keeps throwing errors !-->
         <!-- <cv-multi-select
           v-model="formData.character"
+          theme="light"
           :options="poiCharacteristics"
-          class="mb-spacing-md"
           title="Characteristics"
         /> -->
         <ContentEditor

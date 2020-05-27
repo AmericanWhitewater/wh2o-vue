@@ -36,8 +36,8 @@ const options = {
 }
 
 describe('BetaBoxEditModal', () => {
-  it('is a vue component', () => {
+  it('exists', () => {
     const wrapper = createWrapper(BetaBoxEditModal, options)
-    expect(wrapper.isVueInstance()).toBe(true)
+    expect(wrapper.find('.beta-box-edit-modal').exists()).toBe(true)
   })
 })

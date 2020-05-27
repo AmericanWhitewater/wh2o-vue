@@ -36,9 +36,9 @@ const options = {
 }
 
 describe('gage-chart-controls.vue', () => {
-  it('is a vue component', () => {
+  it('exists', () => {
     const wrapper = createWrapper(GageChartControls, options)
 
-    expect(wrapper.isVueInstance()).toBe(true)
+    expect(wrapper.find('.gage-chart-controls').exists()).toBe(true)
   })
 })

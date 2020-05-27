@@ -8,29 +8,31 @@ import ArrowRight20 from '@carbon/icons-vue/es/arrow--right/20.js'
 import ArrowRight32 from '@carbon/icons-vue/es/arrow--right/32.js'
 import Bullhorn32 from '@carbon/icons-vue/es/bullhorn/32.js'
 import CameraAction24 from '@carbon/icons-vue/es/camera--action/24.js'
+import CaretLeft16 from '@carbon/icons-vue/es/caret--left/16'
+import CaretRight16 from '@carbon/icons-vue/es/caret--right/16'
 import ChartBar32 from '@carbon/icons-vue/es/chart--bar/32.js'
 import ChartLine32 from '@carbon/icons-vue/es/chart--line/32.js'
 import Download20 from '@carbon/icons-vue/es/download/20.js'
-import Email20 from '@carbon/icons-vue/es/email/20.js'
 import Edit20 from '@carbon/icons-vue/es/edit/20.js'
 import EditOff20 from '@carbon/icons-vue/es/edit--off/20.js'
+import Email20 from '@carbon/icons-vue/es/email/20.js'
 import Email24 from '@carbon/icons-vue/es/email/24.js'
 import Email32 from '@carbon/icons-vue/es/email/32.js'
 import Error20 from '@carbon/icons-vue/es/error/20.js'
-import Filter16 from '@carbon/icons-vue/es/filter/16.js'
 import Favorite20 from '@carbon/icons-vue/es/favorite/20.js'
 import FavoriteFilled20 from '@carbon/icons-vue/es/favorite--filled/20.js'
+import Filter16 from '@carbon/icons-vue/es/filter/16.js'
 import FitToScreen16 from '@carbon/icons-vue/es/fit-to-screen/16.js'
 import FitToScreen32 from '@carbon/icons-vue/es/fit-to-screen/32.js'
 import Grid16 from '@carbon/icons-vue/es/grid/16.js'
 import Help32 from '@carbon/icons-vue/es/help/32.js'
 import Launch20 from '@carbon/icons-vue/es/launch/20.js'
+import Link16 from '@carbon/icons-vue/es/link/16.js'
 import List16 from '@carbon/icons-vue/es/list/16.js'
 import ListBulleted16 from '@carbon/icons-vue/es/list--bulleted/16.js'
 import ListNumbered16 from '@carbon/icons-vue/es/list--numbered/16.js'
 import Login32 from '@carbon/icons-vue/es/login/32.js'
 import LogoFacebook24 from '@carbon/icons-vue/es/logo--facebook/24'
-import PaintBrushAlt16 from '@carbon/icons-vue/es/paint-brush--alt/16'
 import LogoLinkedIn24 from '@carbon/icons-vue/es/logo--linkedin/24'
 import Logout32 from '@carbon/icons-vue/es/logout/32.js'
 import Map32 from '@carbon/icons-vue/es/map/32.js'
@@ -38,6 +40,7 @@ import Maximize16 from '@carbon/icons-vue/es/maximize/16.js'
 import Minimize16 from '@carbon/icons-vue/es/minimize/16.js'
 import Notification20 from '@carbon/icons-vue/es/notification/20.js'
 import NotificationNew20 from '@carbon/icons-vue/es/notification--new/20.js'
+import PaintBrushAlt16 from '@carbon/icons-vue/es/paint-brush--alt/16'
 import Paragraph16 from '@carbon/icons-vue/es/paragraph/16.js'
 import Pedestrian32 from '@carbon/icons-vue/es/pedestrian/32.js'
 import Quotes16 from '@carbon/icons-vue/es/quotes/16.js'
@@ -47,7 +50,6 @@ import Settings32 from '@carbon/icons-vue/es/settings/32.js'
 import TextBold16 from '@carbon/icons-vue/es/text--bold/16.js'
 import TextItalic16 from '@carbon/icons-vue/es/text--italic/16.js'
 import TextUnderline16 from '@carbon/icons-vue/es/text--underline/16.js'
-import Link16 from '@carbon/icons-vue/es/link/16.js'
 import Undo16 from '@carbon/icons-vue/es/undo/16.js'
 import Upload24 from '@carbon/icons-vue/es/upload/24.js'
 import UserAvatar16 from '@carbon/icons-vue/es/user--avatar/16.js'
@@ -67,23 +69,27 @@ export const components = {
   ArrowRight32,
   Bullhorn32,
   CameraAction24,
+  CaretLeft16,
+  CaretRight16,
   ChartBar32,
   ChartLine32,
   Download20,
+  Edit20,
+  EditOff20,
   Email20,
   Email24,
   Email32,
   Error20,
+  Favorite20,
+  FavoriteFilled20,
   Filter16,
   FitToScreen16,
   FitToScreen32,
   Grid16,
   Help32,
-  Edit20,
-  EditOff20,
   Launch20,
-  List16,
   Link16,
+  List16,
   ListBulleted16,
   ListNumbered16,
   Login32,
@@ -91,13 +97,11 @@ export const components = {
   LogoLinkedIn24,
   Logout32,
   Map32,
-  PaintBrushAlt16,
   Maximize16,
   Minimize16,
   Notification20,
-  Favorite20,
-  FavoriteFilled20,
   NotificationNew20,
+  PaintBrushAlt16,
   Paragraph16,
   Pedestrian32,
   Quotes16,

@@ -506,12 +506,9 @@ export default {
       this.map.on('styledata', this.loadAWMapData)
       this.map.on('styledata', this.modifyMapboxBaseStyle)
 
-      // unfortunately this has to hook onto 'data' because we can't queue it directly after search
-      // results are called because of the poorly designed and async nature of map filtering and
-      // queryRenderedFeatures...which means it gets called a lot more than it needs to, hence the
-      // debouncing and slightly clunky UX
+      // TODO: if/when search starts working, we may need to figure out
+      // how to trigger `debouncedUpdateReachesInViewport` on search complete
       this.map.on('moveend', this.debouncedUpdateReachesInViewport)
-      this.map.on('data', this.debouncedUpdateReachesInViewport)
 
       // ensures that when map is rendered in a tab, it sizes properly when the tab is opened
       topic.subscribe('tab-changed', () => {

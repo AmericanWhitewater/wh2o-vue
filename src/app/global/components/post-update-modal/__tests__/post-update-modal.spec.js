@@ -50,7 +50,7 @@ describe('PostUpdateModal', () => {
 
     const wrapper = createWrapper(PostUpdateModal, options)
 
-    wrapper.find(CvModal).vm.$emit('primary-click')
+    wrapper.findComponent(CvModal).vm.$emit('primary-click')
 
     await flushPromises()
 
@@ -64,7 +64,7 @@ describe('PostUpdateModal', () => {
   it('emits cancel event when modal cancel button clicked', async () => {
     const wrapper = createWrapper(PostUpdateModal, options)
 
-    wrapper.find(CvModal).vm.$emit('secondary-click')
+    wrapper.findComponent(CvModal).vm.$emit('secondary-click')
 
     await wrapper.vm.$nextTick()
 
@@ -74,7 +74,7 @@ describe('PostUpdateModal', () => {
   it('emits cancel event when modal hidden', async () => {
     const wrapper = createWrapper(PostUpdateModal, options)
 
-    wrapper.find(CvModal).vm.$emit('modal-hidden')
+    wrapper.findComponent(CvModal).vm.$emit('modal-hidden')
 
     await wrapper.vm.$nextTick()
 

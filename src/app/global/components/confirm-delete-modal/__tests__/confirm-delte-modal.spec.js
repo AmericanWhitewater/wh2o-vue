@@ -12,8 +12,8 @@ const options = {
 }
 
 describe('ConfirmDeleteModal', () => {
-  it('it is a vue instance', () => {
+  it('exists', () => {
     const wrapper = createWrapper(ConfirmDeleteModal, options)
-    expect(wrapper.isVueInstance()).toBe(true)
+    expect(wrapper.find('.confirm-delete-modal').exists()).toBe(true)
   })
 })
