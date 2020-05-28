@@ -41,7 +41,7 @@
       label="Rapid"
     >
       <cv-dropdown-item
-        v-for="(rapid,index) in rapids"
+        v-for="(rapid, index) in rapids"
         :key="index"
         :value="rapid.id"
       >
@@ -57,9 +57,8 @@
   </div>
 </template>
 <script>
-import gql from 'graphql-tag'
+import { httpClient } from '@/app/global/services'
 import { globalAppActions } from '@/app/global/state'
-import { rapidsActions } from '@/app/views/river-detail/shared/state'
 export default {
   name: 'media-upload-form',
   props: {
@@ -81,6 +80,9 @@ export default {
   },
   data: () => ({
     formPending: false,
+    /**
+     * @todo break up nested objs. We dont need all that reactivity
+     */
     formData: {
       id: null,
       fileinput: {
@@ -93,9 +95,9 @@ export default {
         caption: null,
         description: null,
         photo_date: null,
-        poi_id: null,
+        poi_id: 0,
         poi_name: null,
-        post_id: null,
+        post_id: '0',
         subject: null
       }
     }
@@ -130,32 +132,16 @@ export default {
      * added to the create call?
      *
      */
-    submitForm () {
+    async submitForm () {
       this.formPending = true
-      this.$apollo.mutate({
-        mutation: gql`
-        mutation sendFile ($id: ID!, $fileinput: PhotoFileInput!, $photo: PhotoInput) {
-          photoFileUpdate(id: $id, fileinput: $fileinput, photo: $photo) {
-            id,
-            caption,
-            post_id,
-            description,
-            subject,
-            photo_date,
-            author,
-            poi_name,
-            poi_id
-            image {
-                ext,
-                uri {
-                    thumb,
-                    medium,
-                    big
-                }
-            }
-          }
-        }`,
-        variables: this.formData
+      await httpClient.post('/graphql', {
+        operationName: null,
+        query: 'mutation ($id: ID!,$fileinput:PhotoFileInput!, $photo: PhotoInput) {photo: photoFileUpdate(id: $id, fileinput: $fileinput, photo: $photo) {    id    caption    post_id    description    subject    photo_date    author    poi_name    poi_id    image {      ext      uri {        thumb        medium        big   }        }    }}',
+        variables: {
+          fileinput: this.formData.fileinput,
+          id: this.formData.id,
+          photo: this.formData.photo
+        }
       }).then(r => {
         // eslint-disable-next-line no-console
         console.log('r :', r)
@@ -210,10 +196,12 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch(
-      rapidsActions.FETCH_RAPIDS_DATA,
-      this.$route.params.id
-    )
+    this.formData.id = this.$randomId
+    this.formData.fileinput.section = this.section
+    this.formData.fileinput.section_id = this.$randomId
+    if (this.user && this.user.uname) {
+      this.formData.photo.author = this.user.uname
+    }
   },
   mounted () {
     this.setInitialFormData()

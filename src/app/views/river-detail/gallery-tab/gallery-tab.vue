@@ -61,7 +61,7 @@
     </layout>
     <media-upload-modal
       :visible="mediaUploadModalVisible"
-      section="GALLERY"
+      section="POST"
       @upload:cancelled="mediaUploadModalVisible = false"
     />
   </div>
