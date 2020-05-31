@@ -14,6 +14,7 @@
               <div class="toolbar-wrapper">
                 <cv-button
                   size="small"
+                  :disabled="!user"
                   @click.exact="mediaUploadModalVisible = true"
                   @keydown.enter="mediaUploadModalVisible = true"
                 >
@@ -93,7 +94,8 @@ export default {
       error: state => state.riverDetailState.galleryData.error,
       photos: state => state.riverDetailState.galleryData.data?.data,
       pagination: state => state.riverDetailState.galleryData.pagination,
-      rapids: state => state.riverDetailState.rapidsData.data
+      rapids: state => state.riverDetailState.rapidsData.data,
+      user: state => state.userState.userData.data
     }),
     ...mapGetters(['media']),
     multiSelectOptions () {
