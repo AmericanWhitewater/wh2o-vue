@@ -1,12 +1,16 @@
 <template>
   <div class="river-detail">
-    <utility-block v-if="loading" height="400" state="loading" />
+    <utility-block
+      v-if="loading"
+      height="400"
+      state="loading"
+    />
     <page-banner
       v-if="!loading && data"
       :title="data.river"
       :subtitle="data.section"
       :geom="data.geom"
-      :reachId="$route.params.id"
+      :reach-id="$route.params.id"
       map
     />
     <div class="bleed">
@@ -14,10 +18,33 @@
         <div class="bx--row">
           <div class="bx--col">
             <header v-if="!loading && data">
-              
+              <div>
                 <h4 v-text="data.river" />
-                <h1 v-text="data.section" />
-              
+                <h1
+                  class="mb-spacing-md"
+                  v-text="data.section"
+                />
+                <cv-breadcrumb no-trailing-slash>
+                  <cv-breadcrumb-item>
+                    <cv-link to="/river-index">
+                      River Index
+                    </cv-link>
+                  </cv-breadcrumb-item>
+                  <cv-breadcrumb-item>
+                    <cv-link href="#0">
+                      River Id: {{ data.id }}
+                    </cv-link>
+                  </cv-breadcrumb-item>
+                </cv-breadcrumb>
+              </div>
+              <div v-if="data.photo">
+                <img
+                  class="reach--photo"
+                  :src="`https://americanwhitewater.org/${data.photo.image.uri.big}`"
+                  @click.exact="switchTab(3)"
+                  @keydown.exact="switchTab(3)"
+                >
+              </div>
             </header>
             <header v-else>
               <div>
@@ -83,7 +110,10 @@
               name="entranceFromTop"
               tag="ul"
             >
-              <li v-for="(tab, index) in $options.tabs" :key="tab.path">
+              <li
+                v-for="(tab, index) in $options.tabs"
+                :key="tab.path"
+              >
                 <cv-button
                   :class="[
                     index === 0 ? 'no-border-top' : '',
@@ -102,7 +132,10 @@
         <main
           class="bx--col-sm-4 bx--col-lg-13 bx--col-max-13 bx--offset-max-1"
         >
-          <transition :name="transitionName" mode="out-in">
+          <transition
+            :name="transitionName"
+            mode="out-in"
+          >
             <keep-alive>
               <router-view />
             </keep-alive>
@@ -117,7 +150,7 @@ import { mapState } from 'vuex'
 import { riverDetailActions, alertsActions, bookmarksActions, reachGagesActions, metricsActions } from './shared/state'
 import { globalAppActions } from '@/app/global/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
-import PageBanner from "@/app/global/components/page-banner/page-banner"
+import PageBanner from '@/app/global/components/page-banner/page-banner'
 import { checkWindow } from '@/app/global/mixins'
 import { appLocalStorage } from '@/app/global/services'
 export default {
@@ -252,6 +285,11 @@ export default {
 </script>
 <style lang="scss">
 .river-detail {
+  .reach--photo {
+    max-height: 150px;
+    cursor: pointer;
+  }
+
   .accent-wrapper {
     position: relative;
     display: none;
@@ -267,15 +305,18 @@ export default {
     }
   }
   .bleed {
-  
     header {
-      padding: $spacing-lg 0;
+      padding: $spacing-lg $spacing-md;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
       h1 {
         @include carbon--breakpoint("sm") {
           @include carbon--type-style("productive-heading-03");
         }
         @include carbon--breakpoint("md") {
+
           @include carbon--type-style("productive-heading-04");
         }
       }

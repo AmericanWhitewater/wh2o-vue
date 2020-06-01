@@ -3,16 +3,16 @@
     <template v-if="map">
       <div class="map-wrapper">
         <nwi-map
-        v-if="startingBounds"
-        height="400"
-        :detail-reach-id="Number(reachId)"
-        :include-legend="false"
-        :has-controls="false"
-        :source-layers="$options.sourceLayers"
-        :starting-bounds="startingBounds"
-        fullscreen-target="map-wrapper"
-        hide-result-counter
-      />
+          v-if="startingBounds"
+          height="400"
+          :detail-reach-id="Number(reachId)"
+          :include-legend="false"
+          :has-controls="false"
+          :source-layers="$options.sourceLayers"
+          :starting-bounds="startingBounds"
+          fullscreen-target="map-wrapper"
+          hide-result-counter
+        />
       </div>
     </template>
 
@@ -33,6 +33,9 @@ import { lineString } from '@turf/helpers'
 import NwiMap from '@/app/views/river-index/components/nwi-map.vue'
 export default {
   name: 'page-banner',
+  components: {
+    'nwi-map': NwiMap
+  },
   props: {
     title: {
       type: String,
@@ -51,7 +54,7 @@ export default {
       required: false
     },
     reachId: {
-      type:String,
+      type: String,
       required: false
     },
     loading: {
@@ -59,16 +62,13 @@ export default {
       required: false
     }
   },
-  components: {
-      'nwi-map':NwiMap
-    },
-  sourceLayers: ['reach-segments', 'access'] ,
+  sourceLayers: ['reach-segments', 'access'],
   computed: {
     startingBounds () {
       // TODO: get graphql API to return a linestring or geojson instead of this text
-      if(this.geom) {
+      if (this.geom) {
         const bounds = this.geom.split(',').map(d => d.split(' '))
-      return bbox(lineString(bounds))
+        return bbox(lineString(bounds))
       }
       return null
     }
