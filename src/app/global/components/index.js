@@ -1,4 +1,3 @@
-export { default as AppBreadcrumbs } from './app-breadcrumbs/app-breadcrumbs.vue'
 export { default as AppCookieBanner } from './app-cookie-banner/app-cookie-banner'
 export { default as AppFooter } from './app-footer/app-footer.vue'
 export { default as AppNavigation } from './app-navigation/app-navigation.vue'

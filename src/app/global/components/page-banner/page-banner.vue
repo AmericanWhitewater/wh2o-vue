@@ -53,8 +53,11 @@ export default {
     reachId: {
       type:String,
       required: false
+    },
+    loading: {
+      type: Boolean,
+      required: false
     }
-    
   },
   components: {
       'nwi-map':NwiMap

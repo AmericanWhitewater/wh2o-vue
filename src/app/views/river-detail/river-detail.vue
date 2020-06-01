@@ -1,5 +1,6 @@
 <template>
   <div class="river-detail">
+    <utility-block v-if="loading" height="400" state="loading" />
     <page-banner
       v-if="!loading && data"
       :title="data.river"
