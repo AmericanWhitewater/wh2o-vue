@@ -25,8 +25,6 @@ import {
   CommentsSection,
   BetaBox
 } from './components'
-import bbox from '@turf/bbox'
-import { lineString } from '@turf/helpers'
 
 export default {
   name: 'main-tab',
