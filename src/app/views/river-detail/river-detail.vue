@@ -1,28 +1,22 @@
 <template>
   <div class="river-detail">
+    <page-banner
+      v-if="!loading && data"
+      :title="data.river"
+      :subtitle="data.section"
+      :geom="data.geom"
+      :reachId="$route.params.id"
+      map
+    />
     <div class="bleed">
       <div class="bx--grid">
         <div class="bx--row">
           <div class="bx--col">
             <header v-if="!loading && data">
-              <div>
-                <h4>{{ data.river }}</h4>
-                <h1>{{ data.section }}</h1>
-              </div>
-              <div>
-                <cv-interactive-tooltip>
-                  <template slot="label">
-                    <span class="accent-wrapper">
-                      <label class="accent">
-                        ID – {{ data.id }}
-                      </label>
-                    </span>
-                  </template>
-                  <template slot="content">
-                    <div />
-                  </template>
-                </cv-interactive-tooltip>
-              </div>
+              
+                <h4 v-text="data.river" />
+                <h1 v-text="data.section" />
+              
             </header>
             <header v-else>
               <div>
@@ -46,7 +40,9 @@
                   @click.exact="toggleBookmark"
                   @keydown.enter="toggleBookmark"
                 >
-                  <component :is="bookmarked ? 'FavoriteFilled20' : 'Favorite20'" />
+                  <component
+                    :is="bookmarked ? 'FavoriteFilled20' : 'Favorite20'"
+                  />
                 </cv-button>
                 <cv-button
                   id="edit-mode-toggle"
@@ -86,12 +82,12 @@
               name="entranceFromTop"
               tag="ul"
             >
-              <li
-                v-for="(tab, index) in $options.tabs"
-                :key="tab.path"
-              >
+              <li v-for="(tab, index) in $options.tabs" :key="tab.path">
                 <cv-button
-                  :class="[index === 0 ? 'no-border-top' : '', activeTabIndex === index.toString() ? 'is-active' : '']"
+                  :class="[
+                    index === 0 ? 'no-border-top' : '',
+                    activeTabIndex === index.toString() ? 'is-active' : '',
+                  ]"
                   kind="ghost"
                   @click.exact="switchTab(index)"
                   @keydown.enter="switchTab(index)"
@@ -105,10 +101,7 @@
         <main
           class="bx--col-sm-4 bx--col-lg-13 bx--col-max-13 bx--offset-max-1"
         >
-          <transition
-            :name="transitionName"
-            mode="out-in"
-          >
+          <transition :name="transitionName" mode="out-in">
             <keep-alive>
               <router-view />
             </keep-alive>
@@ -123,12 +116,14 @@ import { mapState } from 'vuex'
 import { riverDetailActions, alertsActions, bookmarksActions, reachGagesActions, metricsActions } from './shared/state'
 import { globalAppActions } from '@/app/global/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
+import PageBanner from "@/app/global/components/page-banner/page-banner"
 import { checkWindow } from '@/app/global/mixins'
 import { appLocalStorage } from '@/app/global/services'
 export default {
   name: 'river-detail',
   components: {
-    UtilityBlock
+    UtilityBlock,
+    PageBanner
   },
   mixins: [checkWindow],
   data: () => ({
@@ -258,27 +253,22 @@ export default {
 .river-detail {
   .accent-wrapper {
     position: relative;
-
     display: none;
 
-    @include carbon--breakpoint('lg') {
+    @include carbon--breakpoint("lg") {
       display: block;
     }
 
     .accent {
-      // position: absolute;
-      @include carbon--type-style('code-02');
-      width:100%;
+      @include carbon--type-style("code-02");
+      width: 100%;
       transform: rotate(90deg);
     }
   }
   .bleed {
-    background-color: $ui-02;
+  
     header {
-      padding: $spacing-sm $spacing-md;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      padding: $spacing-lg 0;
 
       h1 {
         @include carbon--breakpoint("sm") {
@@ -291,7 +281,7 @@ export default {
       h4 {
         @include carbon--breakpoint("sm") {
           @include carbon--type-style("productive-heading-02");
-          margin-bottom:$spacing-xs;
+          margin-bottom: $spacing-xs;
         }
         @include carbon--breakpoint("md") {
           @include carbon--type-style("productive-heading-03");
@@ -300,8 +290,8 @@ export default {
     }
   }
   .controls-wrapper {
-    margin-top:1rem;
-    @include layer('raised')
+    margin-top: 1rem;
+    @include layer("raised");
   }
 
   .button-toolbar {
@@ -310,17 +300,17 @@ export default {
     align-items: center;
     justify-content: space-between;
 
-   @include carbon--breakpoint('lg') {
+    @include carbon--breakpoint("lg") {
       .button-wrapper {
-      display: flex;
-      width:100%;
-      justify-content: space-evenly;
-      .bx--btn {
-        flex-grow: 1;
-        justify-content: center;
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+        .bx--btn {
+          flex-grow: 1;
+          justify-content: center;
+        }
       }
     }
-   }
     .bx--form-item {
       max-width: 139px;
       .bx--dropdown {
@@ -342,8 +332,8 @@ export default {
             box-shadow: inset 4px 0 0 0 #537653;
           }
           &.no-border-top {
-              border-top:0;
-            }
+            border-top: 0;
+          }
         }
       }
     }
