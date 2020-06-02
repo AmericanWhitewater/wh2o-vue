@@ -17,7 +17,14 @@
       <div class="bx--grid">
         <div class="bx--row">
           <div class="bx--col">
-            <header v-if="!loading && data">
+            <header v-if="loading">
+              <div>
+                <cv-skeleton-text />
+                <cv-skeleton-text heading />
+                <cv-breadcrumb-skeleton no-trailing-slash />
+              </div>
+            </header>
+            <header v-else-if="data">
               <div>
                 <h4 v-text="data.river" />
                 <h1
@@ -44,12 +51,6 @@
                   @click.exact="switchTab(3)"
                   @keydown.exact="switchTab(3)"
                 >
-              </div>
-            </header>
-            <header v-else>
-              <div>
-                <cv-skeleton-text />
-                <cv-skeleton-text heading />
               </div>
             </header>
           </div>
@@ -316,7 +317,6 @@ export default {
           @include carbon--type-style("productive-heading-03");
         }
         @include carbon--breakpoint("md") {
-
           @include carbon--type-style("productive-heading-04");
         }
       }
