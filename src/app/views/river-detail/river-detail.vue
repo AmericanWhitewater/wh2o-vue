@@ -4,21 +4,6 @@
       <div class="bx--grid">
         <div class="bx--row">
           <div class="bx--col">
-            <utility-block
-              v-if="loading"
-              height="400"
-              state="loading"
-              theme="dark"
-              hide-text
-            />
-            <page-banner
-              v-if="!loading && data"
-              :title="data.river"
-              :subtitle="data.section"
-              :geom="data.geom"
-              :reach-id="$route.params.id"
-              map
-            />
             <header
               v-if="loading"
               class="bx--tile"
@@ -69,6 +54,21 @@
                 >
               </div>
             </header>
+            <utility-block
+              v-if="loading"
+              height="400"
+              state="loading"
+              theme="dark"
+              hide-text
+            />
+            <page-banner
+              v-if="!loading && data"
+              :title="data.river"
+              :subtitle="data.section"
+              :geom="data.geom"
+              :reach-id="$route.params.id"
+              map
+            />
           </div>
         </div>
       </div>
@@ -303,7 +303,10 @@ export default {
 <style lang="scss">
 .river-detail {
   .reach--photo {
-    max-height: 150px;
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    object-position: center;
     cursor: pointer;
   }
 
@@ -323,7 +326,7 @@ export default {
   }
   .bleed {
     header {
-      padding: $spacing-lg $spacing-md;
+      padding: $spacing-lg;
       display: flex;
       justify-content: space-between;
       align-items: center;
