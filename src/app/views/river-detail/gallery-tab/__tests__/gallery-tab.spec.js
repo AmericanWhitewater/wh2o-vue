@@ -88,7 +88,7 @@ describe('GalleryTab', () => {
 
     await wrapper.vm.$nextTick()
 
-    expect(mockStore.dispatch).toBeCalledTimes(2)
+    expect(mockStore.dispatch).toBeCalledTimes(1)
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
       '[GALLERY] FETCH_GALLERY_DATA',
       {

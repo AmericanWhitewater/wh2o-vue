@@ -1,30 +1,46 @@
 <template>
   <div class="river-detail">
-    <utility-block
-      v-if="loading"
-      height="400"
-      state="loading"
-    />
-    <page-banner
-      v-if="!loading && data"
-      :title="data.river"
-      :subtitle="data.section"
-      :geom="data.geom"
-      :reach-id="$route.params.id"
-      map
-    />
     <div class="bleed">
       <div class="bx--grid">
         <div class="bx--row">
           <div class="bx--col">
-            <header v-if="loading">
+            <utility-block
+              v-if="loading"
+              height="400"
+              state="loading"
+              theme="dark"
+              hide-text
+            />
+            <page-banner
+              v-if="!loading && data"
+              :title="data.river"
+              :subtitle="data.section"
+              :geom="data.geom"
+              :reach-id="$route.params.id"
+              map
+            />
+            <header
+              v-if="loading"
+              class="bx--tile"
+            >
               <div>
                 <cv-skeleton-text />
                 <cv-skeleton-text heading />
                 <cv-breadcrumb-skeleton no-trailing-slash />
               </div>
+              <div style="min-width:100px">
+                <utility-block
+                  state="content"
+                  height="150"
+                  theme="dark"
+                  hide-text
+                />
+              </div>
             </header>
-            <header v-else-if="data">
+            <header
+              v-else-if="data"
+              class="bx--tile"
+            >
               <div>
                 <h4 v-text="data.river" />
                 <h1
