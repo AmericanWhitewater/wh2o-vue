@@ -4,30 +4,69 @@
       <div class="bx--grid">
         <div class="bx--row">
           <div class="bx--col">
-            <header v-if="!loading && data">
-              <div>
-                <h4>{{ data.river }}</h4>
-                <h1>{{ data.section }}</h1>
-              </div>
-              <div>
-                <cv-interactive-tooltip>
-                  <template slot="label">
-                    <span class="accent-wrapper">
-                      <label class="accent">
-                        ID – {{ data.id }}
-                      </label>
-                    </span>
-                  </template>
-                  <template slot="content">
-                    <div />
-                  </template>
-                </cv-interactive-tooltip>
-              </div>
-            </header>
-            <header v-else>
+            <utility-block
+              v-if="loading"
+              height="400"
+              state="loading"
+              theme="dark"
+              hide-text
+            />
+            <page-banner
+              v-if="!loading && data"
+              :title="data.river"
+              :subtitle="data.section"
+              :geom="data.geom"
+              :reach-id="$route.params.id"
+              map
+            />
+            <header
+              v-if="loading"
+              class="bx--tile"
+            >
               <div>
                 <cv-skeleton-text />
                 <cv-skeleton-text heading />
+                <cv-breadcrumb-skeleton no-trailing-slash />
+              </div>
+              <div style="min-width:100px">
+                <utility-block
+                  state="content"
+                  height="150"
+                  theme="dark"
+                  hide-text
+                />
+              </div>
+            </header>
+            <header
+              v-else-if="data"
+              class="bx--tile"
+            >
+              <div>
+                <h4 v-text="data.river" />
+                <h1
+                  class="mb-spacing-md"
+                  v-text="data.section"
+                />
+                <cv-breadcrumb no-trailing-slash>
+                  <cv-breadcrumb-item>
+                    <cv-link to="/river-index">
+                      River Index
+                    </cv-link>
+                  </cv-breadcrumb-item>
+                  <cv-breadcrumb-item>
+                    <cv-link href="#0">
+                      River Id: {{ data.id }}
+                    </cv-link>
+                  </cv-breadcrumb-item>
+                </cv-breadcrumb>
+              </div>
+              <div v-if="data.photo">
+                <img
+                  class="reach--photo"
+                  :src="`https://americanwhitewater.org/${data.photo.image.uri.big}`"
+                  @click.exact="switchTab(3)"
+                  @keydown.exact="switchTab(3)"
+                >
               </div>
             </header>
           </div>
@@ -46,7 +85,9 @@
                   @click.exact="toggleBookmark"
                   @keydown.enter="toggleBookmark"
                 >
-                  <component :is="bookmarked ? 'FavoriteFilled20' : 'Favorite20'" />
+                  <component
+                    :is="bookmarked ? 'FavoriteFilled20' : 'Favorite20'"
+                  />
                 </cv-button>
                 <cv-button
                   id="edit-mode-toggle"
@@ -91,7 +132,10 @@
                 :key="tab.path"
               >
                 <cv-button
-                  :class="[index === 0 ? 'no-border-top' : '', activeTabIndex === index.toString() ? 'is-active' : '']"
+                  :class="[
+                    index === 0 ? 'no-border-top' : '',
+                    activeTabIndex === index.toString() ? 'is-active' : '',
+                  ]"
                   kind="ghost"
                   @click.exact="switchTab(index)"
                   @keydown.enter="switchTab(index)"
@@ -123,12 +167,14 @@ import { mapState } from 'vuex'
 import { riverDetailActions, alertsActions, bookmarksActions, reachGagesActions, metricsActions } from './shared/state'
 import { globalAppActions } from '@/app/global/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
+import PageBanner from '@/app/global/components/page-banner/page-banner'
 import { checkWindow } from '@/app/global/mixins'
 import { appLocalStorage } from '@/app/global/services'
 export default {
   name: 'river-detail',
   components: {
-    UtilityBlock
+    UtilityBlock,
+    PageBanner
   },
   mixins: [checkWindow],
   data: () => ({
@@ -256,26 +302,28 @@ export default {
 </script>
 <style lang="scss">
 .river-detail {
+  .reach--photo {
+    max-height: 150px;
+    cursor: pointer;
+  }
+
   .accent-wrapper {
     position: relative;
-
     display: none;
 
-    @include carbon--breakpoint('lg') {
+    @include carbon--breakpoint("lg") {
       display: block;
     }
 
     .accent {
-      // position: absolute;
-      @include carbon--type-style('code-02');
-      width:100%;
+      @include carbon--type-style("code-02");
+      width: 100%;
       transform: rotate(90deg);
     }
   }
   .bleed {
-    background-color: $ui-02;
     header {
-      padding: $spacing-sm $spacing-md;
+      padding: $spacing-lg $spacing-md;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -291,7 +339,7 @@ export default {
       h4 {
         @include carbon--breakpoint("sm") {
           @include carbon--type-style("productive-heading-02");
-          margin-bottom:$spacing-xs;
+          margin-bottom: $spacing-xs;
         }
         @include carbon--breakpoint("md") {
           @include carbon--type-style("productive-heading-03");
@@ -300,8 +348,8 @@ export default {
     }
   }
   .controls-wrapper {
-    margin-top:1rem;
-    @include layer('raised')
+    margin-top: 1rem;
+    @include layer("raised");
   }
 
   .button-toolbar {
@@ -310,17 +358,17 @@ export default {
     align-items: center;
     justify-content: space-between;
 
-   @include carbon--breakpoint('lg') {
+    @include carbon--breakpoint("lg") {
       .button-wrapper {
-      display: flex;
-      width:100%;
-      justify-content: space-evenly;
-      .bx--btn {
-        flex-grow: 1;
-        justify-content: center;
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+        .bx--btn {
+          flex-grow: 1;
+          justify-content: center;
+        }
       }
     }
-   }
     .bx--form-item {
       max-width: 139px;
       .bx--dropdown {
@@ -342,8 +390,8 @@ export default {
             box-shadow: inset 4px 0 0 0 #537653;
           }
           &.no-border-top {
-              border-top:0;
-            }
+            border-top: 0;
+          }
         }
       }
     }

@@ -5,7 +5,7 @@ exports[`AccidentsTab shows error block when error 1`] = `
   <div class="bx--grid">
     <div class="bx--row">
       <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-16">
-        <div id="utility-block" class="utility-block-error" style="height: 350px;">
+        <div id="utility-block" class="utility-block-error light" style="height: 350px;">
           <!---->
           <!---->
           <div>
@@ -37,7 +37,7 @@ exports[`AccidentsTab shows loading block when loading 1`] = `
   <div class="bx--grid">
     <div class="bx--row">
       <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-16">
-        <div id="utility-block" class="utility-block-loading" style="height: 350px;">
+        <div id="utility-block" class="utility-block-loading light" style="height: 350px;">
           <!---->
           <!---->
           <div>
