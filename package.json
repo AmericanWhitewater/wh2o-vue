@@ -19,9 +19,7 @@
   "dependencies": {
     "@carbon/grid": "^10.10.2",
     "@carbon/icons-vue": "^10.11.0",
-    "@carbon/vue": "^2.25.0",
-    "@sentry/browser": "^5.15.5",
-    "@sentry/integrations": "^5.15.5",
+    "@carbon/vue": "^2.27.0",
     "@turf/along": "^6.0.1",
     "@turf/bbox": "^6.0.1",
     "@turf/helpers": "^6.1.4",
@@ -55,6 +53,8 @@
     "wkx": "^0.5.0"
   },
   "devDependencies": {
+    "@sentry/browser": "^5.16.0",
+    "@sentry/integrations": "^5.16.0",
     "@vue/cli-plugin-babel": "^4.2.3",
     "@vue/cli-plugin-eslint": "^4.3.1",
     "@vue/cli-plugin-pwa": "^4.2.3",
@@ -80,7 +80,7 @@
     "prettier": "^2.0.5",
     "sass-loader": "^8.0.2",
     "stylelint": "^13.3.3",
-    "stylelint-order": "^4.0.0",
+    "stylelint-order": "^4.1.0",
     "stylelint-scss": "^3.17.2",
     "vue-apollo": "^3.0.0-beta.11",
     "vue-cli-plugin-apollo": "^0.21.3",
