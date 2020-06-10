@@ -235,14 +235,6 @@ export default {
       return 'Notification20'
     }
   },
-  watch: {
-    activeTabIndex (v) {
-      const path = `/river-detail/${this.$route.params.id}/${this.$options.tabs[Number(v)].path}`
-      if (this.$route.path !== path) {
-        this.$router.replace(path)
-      }
-    }
-  },
   methods: {
     toggleEditMode () {
       if (this.user) {
@@ -308,6 +300,14 @@ export default {
 
       next()
     })
+
+    // set activeTabIndex to match route that the page initialized on
+    if (this.$route.name) {
+      const tabName = this.$route.name.replace('-tab', '')
+      const tabIndex = this.$options.tabs.findIndex(ele => (ele.path === tabName))
+
+      this.activeTabIndex = tabIndex.toString()
+    }
   }
 }
 </script>
