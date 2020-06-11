@@ -61,14 +61,19 @@
               theme="dark"
               hide-text
             />
-            <page-banner
-              v-if="!loading && data"
-              :title="data.river"
-              :subtitle="data.section"
-              :geom="data.geom"
-              :reach-id="$route.params.id"
-              map
-            />
+            <transition
+              :name="transitionName"
+              mode="out-in"
+            >
+              <page-banner
+                v-if="activeTabIndex !== '2' && !loading && data"
+                :title="data.river"
+                :subtitle="data.section"
+                :geom="data.geom"
+                :reach-id="$route.params.id"
+                map
+              />
+            </transition>
           </div>
         </div>
       </div>
@@ -230,11 +235,6 @@ export default {
       return 'Notification20'
     }
   },
-  watch: {
-    activeTabIndex (v) {
-      this.$router.replace(`/river-detail/${this.$route.params.id}/${this.$options.tabs[Number(v)].path}`)
-    }
-  },
   methods: {
     toggleEditMode () {
       if (this.user) {
@@ -249,7 +249,10 @@ export default {
     switchTab (index) {
       if (index !== this.activeTabIndex) {
         this.activeTabIndex = index.toString()
-        this.$router.replace(`/river-detail/${this.$route.params.id}/${this.$options.tabs[index].path}`)
+        const path = `/river-detail/${this.$route.params.id}/${this.$options.tabs[index].path}`
+        if (this.$route.path !== path) {
+          this.$router.replace(`/river-detail/${this.$route.params.id}/${this.$options.tabs[index].path}`)
+        }
       }
     },
     toggleBookmark () {
@@ -297,6 +300,14 @@ export default {
 
       next()
     })
+
+    // set activeTabIndex to match route that the page initialized on
+    if (this.$route.name) {
+      const tabName = this.$route.name.replace('-tab', '')
+      const tabIndex = this.$options.tabs.findIndex(ele => (ele.path === tabName))
+
+      this.activeTabIndex = tabIndex.toString()
+    }
   }
 }
 </script>
