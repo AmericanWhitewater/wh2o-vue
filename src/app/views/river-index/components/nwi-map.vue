@@ -4,7 +4,10 @@
     :style="height ? `height:${height}px`:''"
   >
     <template v-if="mapboxAccessToken">
-      <div id="nwi-map" />
+      <div
+        :id="mapContainerId"
+        class="nwi-map"
+      />
       <nwi-map-legend
         v-if="includeLegend"
         :color-by="colorBy"
@@ -136,6 +139,11 @@ export default {
     mapControls: {
       type: Array,
       required: false
+    },
+    mapContainerId: {
+      type: String,
+      required: false,
+      default: 'nwi-map'
     }
   },
   data () {
@@ -497,7 +505,7 @@ export default {
     mountMap () {
       mapboxgl.accessToken = this.mapboxAccessToken
       const mapProps = {
-        container: 'nwi-map',
+        container: this.mapContainerId,
         style: this.baseMapUrl,
         trackUserLocation: true
       }
@@ -578,7 +586,7 @@ export default {
   }
 
   canvas,
-  #nwi-map {
+  .nwi-map {
     height: 100%;
     width: 100%;
     background-color:$ui-03;
