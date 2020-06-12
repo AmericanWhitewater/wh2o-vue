@@ -7,7 +7,11 @@
       <div class="top-bar">
         <div class="title mb-spacing-xs">
           <h4 class="mb-spacing-xs">
-            <a :href="reachURL">{{ reach.river }} - {{ reach.section }}</a>
+            <router-link
+              :to="{ name: 'river-detail', params: { id: reach.id }}"
+            >
+              {{ reach.river }} - {{ reach.section }}
+            </router-link>
           </h4>
           <span
             v-if="reach.class"
@@ -42,11 +46,6 @@ export default {
     reach: {
       type: Object,
       required: true
-    }
-  },
-  computed: {
-    reachURL () {
-      return `/#/river-detail/${this.reach.id}/main`
     }
   }
 }
