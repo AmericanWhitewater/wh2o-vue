@@ -227,6 +227,8 @@ export default {
     },
     detailReachId (newReach) {
       this.adjustMapForDetailReach()
+      // this has to be re-called since we're changing paint props again
+      this.updateMapColorScheme(this.colorBy)
     },
     startingBounds (newBounds) {
       this.map.fitBounds(newBounds, fitBoundsOptions)
@@ -398,14 +400,15 @@ export default {
             })
           })
         })
-        // hide 'active-reach-segment-casing' layer
-        this.map.setFilter('activeReachSegmentCasing', ['all', false])
-
-        this.updateMapColorScheme(this.colorBy)
 
         if (this.detailReachId) {
           this.adjustMapForDetailReach()
         }
+
+        // hide 'active-reach-segment-casing' layer
+        this.map.setFilter('activeReachSegmentCasing', ['all', false])
+
+        this.updateMapColorScheme(this.colorBy)
 
         this.mapLayers.forEach(layer => {
           this.attachMouseEvents(layer)
