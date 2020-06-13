@@ -1,6 +1,10 @@
 import { createWrapper } from '@/utils'
 import RiverDetail from '../river-detail.vue'
 
+jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+  Map: () => ({})
+}))
+
 const mockAlerts = [{ id: '100955924', title: null, detail: 'A landowner around the #5 rapid has had some problems with his property being trashed up and property being destroyed (trees cut, fences torn down).  In addition both he and his family have had some nasty encounters with various people (including boaters).  While there is a small parking area near the bridge, it appears that there is no direct public access from the road to the river around the #5 rapid (including around the bridge).  The land owner appears to be simply asking that people respect his property and not to access the river from the road without direct permission!', post_date: '2009-07-11 00:00:00', revision: 24892, post_type: 'WARNING', user: null }]
 
 const mockUser = {

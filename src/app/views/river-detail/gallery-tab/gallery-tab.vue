@@ -20,17 +20,6 @@
                 >
                   Upload Media
                 </cv-button>
-                <cv-multi-select
-                  v-if="multiSelectOptions"
-                  v-model="selectedRapids"
-                  auto-filter
-                  filterable
-                  label="Selected Rapids"
-                  inline
-                  :initial-value="multiSelectOptions"
-                  :options="multiSelectOptions"
-                  selection-feedback="top-after-reopen"
-                />
               </div>
             </div>
           </div>
@@ -97,27 +86,7 @@ export default {
       rapids: state => state.riverDetailState.rapidsData.data,
       user: state => state.userState.userData.data
     }),
-    ...mapGetters(['media']),
-    multiSelectOptions () {
-      if (this.rapids) {
-        return this.rapids.map(rapid => {
-          return {
-            name: rapid.name,
-            label: rapid.name,
-            value: rapid.id
-          }
-        })
-      }
-      return null
-    }
-  },
-  watch: {
-    rapids: {
-      immediate: true,
-      handler (val) {
-        this.formatMultiSelectModel(val)
-      }
-    }
+    ...mapGetters(['media'])
   },
   methods: {
     handlePaginationChange (val) {
@@ -141,9 +110,6 @@ export default {
   },
   created () {
     this.loadMedia()
-    if (!this.rapids) {
-      this.loadRapids()
-    }
   }
 }
 </script>
