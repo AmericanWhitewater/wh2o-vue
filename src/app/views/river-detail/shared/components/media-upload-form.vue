@@ -124,7 +124,9 @@ export default {
   },
   methods: {
     setFile (input) {
-      this.formData.fileinput.file = input[0].file
+      if (input && input.length) {
+        this.formData.fileinput.file = input[0].file
+      }
     },
     /**
      * @todo clear form after file upload started but make copy incase error
@@ -142,10 +144,7 @@ export default {
           id: this.formData.id,
           photo: this.formData.photo
         }
-      }).then(r => {
-        // eslint-disable-next-line no-console
-        console.log('r :', r)
-        this.resetForm()
+      }).then(res => {
         this.formPending = false
         this.$store.dispatch(globalAppActions.SEND_TOAST, {
           title: 'Upload Successful',
@@ -155,9 +154,9 @@ export default {
           action: false,
           autoHide: true
         })
-      }).catch(e => {
-        // eslint-disable-next-line no-console
-        console.log('e :', e)
+      }).catch(err => {
+        /* eslint-disable no-console */
+        console.log('err :>> ', err)
         this.formPending = false
         this.$store.dispatch(globalAppActions.SEND_TOAST, {
           title: 'Upload Failed',
@@ -181,18 +180,6 @@ export default {
       this.formData.id = this.$randomId
       this.formData.fileinput.section = this.section
       this.formData.fileinput.section_id = this.$randomId
-    },
-    resetForm () {
-      this.$refs.fileUploader.clear()
-
-      for (const i in this.formData) {
-        // eslint-disable-next-line no-prototype-builtins
-        if (this.formData.hasOwnProperty(i)) {
-          Object.keys(this.formData[i]).forEach((key, index) => {
-            this.formData[i][key] = null
-          })
-        }
-      }
     }
   },
   created () {

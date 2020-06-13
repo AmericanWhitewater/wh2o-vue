@@ -43,6 +43,10 @@ export default {
       type: String,
       required: false
     },
+    height: {
+      type: String,
+      required: false
+    },
     title: {
       type: String,
       required: false
