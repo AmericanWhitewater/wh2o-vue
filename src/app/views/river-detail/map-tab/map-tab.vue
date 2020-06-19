@@ -49,7 +49,6 @@ export default {
     detailFeature: null,
     includeLegend: false,
     mapControls: ['baseMap', 'color', 'fullscreen'],
-    mockBBox: ['-106.297217', '38.776635', '-105.967627', '38.907397'],
     sourceLayers: ['reach-segments', 'rapids', 'access']
   }),
   computed: {

@@ -4,7 +4,10 @@
     :style="height ? `height:${height}px`:''"
   >
     <template v-if="mapboxAccessToken">
-      <div id="nwi-map" />
+      <div
+        :id="mapContainerId"
+        class="nwi-map"
+      />
       <nwi-map-legend
         v-if="includeLegend"
         :color-by="colorBy"
@@ -43,7 +46,6 @@ import NwiMapLegend from './nwi-map-legend.vue'
 import NwiBasemapToggle from './nwi-basemap-toggle.vue'
 import NwiFullscreenToggle from './nwi-fullscreen-toggle.vue'
 import NwiResultCounter from './nwi-result-counter.vue'
-import { Events as topic } from '@/app/global/services'
 import { mapState } from 'vuex'
 import { riverIndexActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
@@ -137,6 +139,11 @@ export default {
     mapControls: {
       type: Array,
       required: false
+    },
+    mapContainerId: {
+      type: String,
+      required: false,
+      default: 'nwi-map'
     }
   },
   data () {
@@ -225,6 +232,14 @@ export default {
         this.map.fitBounds(bounds, fitBoundsOptions)
         this.$emit('centeredFeature')
       }
+    },
+    detailReachId (newReach) {
+      this.adjustMapForDetailReach()
+      // this has to be re-called since we're changing paint props again
+      this.updateMapColorScheme(this.colorBy)
+    },
+    startingBounds (newBounds) {
+      this.map.fitBounds(newBounds, fitBoundsOptions)
     },
     // any time search results change, apply filters
     searchResultIds (resultIds) {
@@ -382,30 +397,24 @@ export default {
               maxzoom: sourceLayers[sourceLayer][mapLayer].maxzoom || 22
             }
 
-            // if this.detailReachId is set, we need to modify the opacity styling from NwiMapStyles.js
-            // to de-emphasize other reaches, so we're pre-processing the "paint" object
-            const paintProps = this.processPaintPropsForEmphasis(
-              mapLayer,
-              sourceLayers[sourceLayer][mapLayer].paint
-            )
-
             this.map.addLayer({
               id: mapLayer,
               source: 'nwi-source',
               'source-layer': sourceLayer,
               type: sourceLayers[sourceLayer][mapLayer].type,
-              paint: paintProps,
+              paint: sourceLayers[sourceLayer][mapLayer].paint,
               layout: sourceLayers[sourceLayer][mapLayer].layout,
               ...zoomAttributes
             })
           })
         })
-        // hide 'active-reach-segment-casing' layer
-        this.map.setFilter('activeReachSegmentCasing', ['all', false])
 
         if (this.detailReachId) {
-          this.filterNonDetailReachFeatures()
+          this.adjustMapForDetailReach()
         }
+
+        // hide 'active-reach-segment-casing' layer
+        this.map.setFilter('activeReachSegmentCasing', ['all', false])
 
         this.updateMapColorScheme(this.colorBy)
 
@@ -437,7 +446,7 @@ export default {
     // preprocesses NwiMapStyles.js paint properties to de-emphasize (through opacity)
     // other reaches if this.detailReachId is set
     // need to pass layer in here because 'reach-segments' is different from the rest
-    processPaintPropsForEmphasis (layer, paint) {
+    processPaintPropsForDetailReach (layer, paint) {
       if (!this.detailReachId) {
         return paint
       } else {
@@ -472,12 +481,32 @@ export default {
         return newPaint
       }
     },
+    adjustMapForDetailReach () {
+      this.filterNonDetailReachFeatures()
+
+      const { sourceLayers } = NwiMapStyles
+
+      this.sourceLayers.forEach(sourceLayer => {
+        Object.keys(sourceLayers[sourceLayer]).forEach(mapLayer => {
+          const paintProps = this.processPaintPropsForDetailReach(
+            mapLayer,
+            sourceLayers[sourceLayer][mapLayer].paint
+          )
+          Object.keys(paintProps).forEach(propKey => {
+            this.map.setPaintProperty(
+              mapLayer,
+              propKey,
+              paintProps[propKey]
+            )
+          })
+        })
+      })
+    },
     mountMap () {
       mapboxgl.accessToken = this.mapboxAccessToken
       const mapProps = {
-        container: 'nwi-map',
+        container: this.mapContainerId,
         style: this.baseMapUrl,
-        // hash: true
         trackUserLocation: true
       }
       if (this.startingBounds) {
@@ -487,7 +516,6 @@ export default {
         mapProps.center = this.center
         mapProps.zoom = this.startingZoom
       }
-
       this.map = new mapboxgl.Map(mapProps)
 
       if (this.centerOnUserLocation && 'geolocation' in navigator) {
@@ -509,18 +537,6 @@ export default {
       // TODO: if/when search starts working, we may need to figure out
       // how to trigger `debouncedUpdateReachesInViewport` on search complete
       this.map.on('moveend', this.debouncedUpdateReachesInViewport)
-
-      // ensures that when map is rendered in a tab, it sizes properly when the tab is opened
-      topic.subscribe('tab-changed', () => {
-      // TODO: only call this if the tab was the map tab?
-        if (this.$route.name === 'map-tab') {
-          this.map.resize()
-        }
-        // if map was initialized with bounds, re-fit because it needs to be called when map is visible
-        if (this.startingBounds) {
-          this.map.fitBounds(this.startingBounds, fitBoundsOptions)
-        }
-      })
     },
     initMap () {
       this.map = null
@@ -570,7 +586,7 @@ export default {
   }
 
   canvas,
-  #nwi-map {
+  .nwi-map {
     height: 100%;
     width: 100%;
     background-color:$ui-03;

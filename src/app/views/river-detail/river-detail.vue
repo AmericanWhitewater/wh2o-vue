@@ -49,8 +49,8 @@
                 <img
                   class="reach--photo"
                   :src="`https://americanwhitewater.org/${data.photo.image.uri.big}`"
-                  @click.exact="switchTab(3)"
-                  @keydown.exact="switchTab(3)"
+                  @click.exact="switchTab('gallery')"
+                  @keydown.exact="switchTab('gallery')"
                 >
               </div>
             </header>
@@ -66,7 +66,7 @@
               mode="out-in"
             >
               <page-banner
-                v-if="activeTabIndex !== '2' && !loading && data"
+                v-if="activeTabKey !== 'map' && !loading && data"
                 :title="data.river"
                 :subtitle="data.section"
                 :geom="data.geom"
@@ -104,26 +104,26 @@
                 </cv-button>
                 <cv-button
                   kind="ghost"
-                  @click.exact="switchTab(4)"
-                  @keydown.exact="switchTab(4)"
+                  @click.exact="switchTab('news')"
+                  @keydown.exact="switchTab('news')"
                 >
                   <component :is="notificationIcon" />
                 </cv-button>
               </div>
               <cv-dropdown
                 v-if="windowWidth < $options.breakpoints.lg"
-                v-model="activeTabIndex"
+                v-model="activeTabKey"
                 class="tab-dropdown"
                 theme="light"
                 @change="switchTab"
                 @click="$emit('dropdown:open')"
               >
                 <cv-dropdown-item
-                  v-for="(tab, index) in $options.tabs"
-                  :key="index"
-                  :value="index.toString()"
+                  v-for="(label, path) in $options.tabs"
+                  :key="path"
+                  :value="path"
                 >
-                  {{ tab.label }}
+                  {{ label }}
                 </cv-dropdown-item>
               </cv-dropdown>
             </div>
@@ -133,19 +133,19 @@
               tag="ul"
             >
               <li
-                v-for="(tab, index) in $options.tabs"
-                :key="tab.path"
+                v-for="(label, path) in $options.tabs"
+                :key="path"
               >
                 <cv-button
                   :class="[
-                    index === 0 ? 'no-border-top' : '',
-                    activeTabIndex === index.toString() ? 'is-active' : '',
+                    path === 'main' ? 'no-border-top' : '',
+                    activeTabKey === path ? 'is-active' : '',
                   ]"
                   kind="ghost"
-                  @click.exact="switchTab(index)"
-                  @keydown.enter="switchTab(index)"
+                  @click.exact="switchTab(path)"
+                  @keydown.enter="switchTab(path)"
                 >
-                  {{ tab.label }}
+                  {{ label }}
                 </cv-button>
               </li>
             </transition-group>
@@ -184,39 +184,17 @@ export default {
   mixins: [checkWindow],
   data: () => ({
     bookmarked: false,
-    transitionName: 'fade',
-    activeTabIndex: '0'
+    transitionName: 'fade'
   }),
-  tabs: [
-    {
-      path: 'main',
-      label: 'General'
-    },
-    {
-      path: 'flow',
-      label: 'Flow'
-    },
-    {
-      path: 'map',
-      label: 'Map'
-    },
-    {
-      path: 'gallery',
-      label: 'Gallery'
-    },
-    {
-      path: 'news',
-      label: 'News'
-    },
-    {
-      path: 'accidents',
-      label: 'Accidents'
-    },
-    {
-      path: 'credits',
-      label: 'Contributors'
-    }
-  ],
+  tabs: {
+    main: 'General',
+    flow: 'Flow',
+    map: 'Map',
+    gallery: 'Gallery',
+    news: 'News',
+    accidents: 'Accidents',
+    credits: 'Contributors'
+  },
   computed: {
     ...mapState({
       data: state => state.riverDetailState.riverDetailData.data,
@@ -233,9 +211,26 @@ export default {
         return 'NotificationNew20'
       }
       return 'Notification20'
+    },
+    activeTabKey () {
+      if (this.$route.name) {
+        return this.$route.name.replace('-tab', '')
+      }
+      return ''
+    }
+  },
+  watch: {
+    reachId (newId) {
+      this.loadReachData()
     }
   },
   methods: {
+    loadReachData () {
+      this.$store.dispatch(riverDetailActions.FETCH_RIVER_DETAIL_DATA, this.reachId)
+      this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.reachId)
+      this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.reachId)
+      this.$store.dispatch(metricsActions.FETCH_GAGE_METRICS, this.reachId)
+    },
     toggleEditMode () {
       if (this.user) {
         this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, !this.editMode)
@@ -246,12 +241,11 @@ export default {
         })
       }
     },
-    switchTab (index) {
-      if (index !== this.activeTabIndex) {
-        this.activeTabIndex = index.toString()
-        const path = `/river-detail/${this.$route.params.id}/${this.$options.tabs[index].path}`
+    switchTab (key) {
+      if (key !== this.activeTabKey) {
+        const path = `/river-detail/${this.$route.params.id}/${key}`
         if (this.$route.path !== path) {
-          this.$router.replace(`/river-detail/${this.$route.params.id}/${this.$options.tabs[index].path}`)
+          this.$router.replace(path)
         }
       }
     },
@@ -281,13 +275,8 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch(riverDetailActions.FETCH_RIVER_DETAIL_DATA, this.$route.params.id)
-    this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.$route.params.id)
-    this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.$route.params.id)
-    this.$store.dispatch(metricsActions.FETCH_GAGE_METRICS, this.$route.params.id)
-
+    this.loadReachData()
     this.checkBookmarks()
-
     this.$router.beforeEach((to, from, next) => {
       let transitionName = to.meta.transitionName || from.meta.transitionName
       if (transitionName === 'slide') {
@@ -300,14 +289,6 @@ export default {
 
       next()
     })
-
-    // set activeTabIndex to match route that the page initialized on
-    if (this.$route.name) {
-      const tabName = this.$route.name.replace('-tab', '')
-      const tabIndex = this.$options.tabs.findIndex(ele => (ele.path === tabName))
-
-      this.activeTabIndex = tabIndex.toString()
-    }
   }
 }
 </script>
