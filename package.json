@@ -14,7 +14,9 @@
     "lint:js": "eslint './src/**/*.js' './src/**/*.vue' --fix",
     "lint:scss": "stylelint './src/**/*.{scss, vue}' --syntax scss --fix",
     "start": "node server/server.js",
-    "coveralls": "vue-cli-service test:unit --coverage && cat ./coverage/lcov.info | coveralls"
+    "coveralls": "vue-cli-service test:unit --coverage && cat ./coverage/lcov.info | coveralls",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "dependencies": {
     "@carbon/grid": "^10.10.2",
@@ -85,7 +87,8 @@
     "vue-apollo": "^3.0.0-beta.11",
     "vue-cli-plugin-apollo": "^0.21.3",
     "vue-template-compiler": "^2.6.11",
-    "yorkie": "^2.0.0"
+    "yorkie": "^2.0.0",
+    "vuepress": "^1.5.1"
   },
   "postcss": {
     "plugins": {
