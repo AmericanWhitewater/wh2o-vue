@@ -14,7 +14,6 @@
             center-on-user-location
             id-for-full-screen="national-map-app"
             :include-legend="showLegend"
-            map-container-id="nwi-map-index"
             @centeredFeature="centerFeature"
             @changeReachesInViewport="changeReachesInViewport"
             @clickFeature="clickFeature"
