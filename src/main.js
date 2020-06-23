@@ -17,8 +17,20 @@ Vue.config.productionTip = false
 Vue.use(CarbonComponents)
 Vue.use(VueMeta)
 
+/**
+ * attempting the use shadow DOM
+ */
+
+let mountPoint
+
+if (process.env.NODE_ENV === 'production') {
+  mountPoint = document.querySelector('#wh2o-vue-host').shadowRoot.querySelector('#wh2o-vue')
+} else {
+  mountPoint = '#wh2o-vue'
+}
+
 export const wh2o = new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount('#wh2o-vue')
+}).$mount(mountPoint)
