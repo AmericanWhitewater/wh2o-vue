@@ -17,13 +17,22 @@ const fetchRapidsData = data => {
             distance
             id
             name
+            rloc
             photo {
+              poi_name
+              subject
+              description
+              author
+              caption
+              photo_date
               image {
                 uri {
-                  big
+                  thumb
                   medium
+                  big
                 }
               }
+              id
             }
           }
         }

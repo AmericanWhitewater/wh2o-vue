@@ -1,5 +1,5 @@
 <template>
-  <main class="mb-xl">
+  <main class="mb-xl pt-md">
     <hr>
     <h2 class="mb-spacing-md">
       River Description
@@ -15,23 +15,39 @@
       <template v-if="!editMode">
         <template v-if="sanitizedDescription">
           <div
+            v-if="!descriptionExpanded && sanitizedDescription.length > 2000"
+            ref="description"
+            class="description-content"
+            v-html="sanitizedDescription.slice(0, 2000) + '...'"
+          />
+          <div
+            v-else
             ref="description"
             class="description-content"
             v-html="sanitizedDescription"
           />
+          <cv-button
+            v-if="sanitizedDescription.length > 2000"
+            class="mt-spacing-md"
+            size="small"
+            kind="tertiary"
+            @click.exact="descriptionExpanded = !descriptionExpanded"
+            @keydown.enter="descriptionExpanded = !descriptionExpanded"
+          >
+            {{ descriptionExpanded ? 'Show Less' : 'Show More' }}
+          </cv-button>
         </template>
         <template v-else>
-          <p class="mb-2">
-            This reach does not have a description. If you know about this
-            reach, please tell us about it!
-          </p>
-          <cv-button
-            kind="tertiary"
-            size="small"
-            @click="toggleEditMode"
-          >
-            Add Description
-          </cv-button>
+          <PageDescription description="This reach does not have a description. If you know about this reach, please tell us about it!">
+            <cv-button
+              kind="tertiary"
+              size="small"
+              @click.exact="toggleEditMode"
+              @keydown.enter="toggleEditMode"
+            >
+              Add Description
+            </cv-button>
+          </PageDescription>
         </template>
       </template>
       <template v-else>
@@ -67,10 +83,12 @@ import { mapState } from 'vuex'
 import ContentEditor from '@/app/global/components/content-editor/content-editor.vue'
 import { globalAppActions } from '@/app/global/state'
 import { httpClient } from '@/app/global/services'
+import PageDescription from '@/app/global/components/page-description/page-description'
 export default {
   name: 'river-description',
   components: {
-    'content-editor': ContentEditor
+    'content-editor': ContentEditor,
+    PageDescription
   },
   data: () => ({
     updatePending: false,
@@ -79,7 +97,8 @@ export default {
     updatedDescription: null,
     formData: {
       description: 'lorem ipsum.'
-    }
+    },
+    descriptionExpanded: false
   }),
   computed: {
     ...mapState({
@@ -197,7 +216,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 main {
   p {
     margin-bottom: 1.25rem;
@@ -213,5 +232,16 @@ main {
   @include carbon--breakpoint("lg") {
     padding-right: $spacing-xl;
   }
+  @include carbon--breakpoint("max") {
+    max-width: 80%;
+  }
 }
+</style>
+
+<style lang="scss" scoped>
+
+p {
+  @include carbon--type-style('expressive-heading-03')
+}
+
 </style>

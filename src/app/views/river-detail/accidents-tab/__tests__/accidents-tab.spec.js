@@ -1,18 +1,26 @@
 import AccidentsTab from '@/app/views/river-detail/accidents-tab/accidents-tab.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
-const state = {
-  riverDetailState: {
-    accidentsData: {
-      error: null,
-      data: null,
-      loading: null
+jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+  Map: () => ({})
+}))
+
+const mockStore = {
+  state: {
+    riverDetailState: {
+      accidentsData: {
+        error: null,
+        data: null,
+        loading: null
+      }
     }
-  }
+  },
+  dispatch: jest.fn()
 }
 
 const options = {
   mocks: {
+    $store: mockStore,
     $route: {
       params: {
         id: '123456789'
@@ -23,8 +31,8 @@ const options = {
 
 describe('AccidentsTab', () => {
   it('shows loading block when loading', () => {
-    state.riverDetailState.accidentsData.loading = true
-    const wrapper = createWrapper(AccidentsTab, state, [], options)
+    mockStore.state.riverDetailState.accidentsData.loading = true
+    const wrapper = createWrapper(AccidentsTab, options)
 
     expect(wrapper.find('.accidents-tab')).toMatchSnapshot()
 
@@ -34,9 +42,9 @@ describe('AccidentsTab', () => {
   })
 
   it('shows error block when error', () => {
-    state.riverDetailState.accidentsData.loading = false
-    state.riverDetailState.accidentsData.error = true
-    const wrapper = createWrapper(AccidentsTab, state, [], options)
+    mockStore.state.riverDetailState.accidentsData.loading = false
+    mockStore.state.riverDetailState.accidentsData.error = true
+    const wrapper = createWrapper(AccidentsTab, options)
 
     expect(wrapper.find('.accidents-tab')).toMatchSnapshot()
 

@@ -1,25 +1,41 @@
 import CreditsTab from '@/app/views/river-detail/credits-tab/credits-tab.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
-const state = {
-  userState: {
-    userData: {
-      data: null
+const mockRoute = {
+  params: {
+    id: '123'
+  }
+}
+
+const mockStore = {
+  state: {
+    userState: {
+      userData: {
+        data: null
+      }
+    },
+    riverDetailState: {
+      creditsData: {
+        error: null,
+        data: null,
+        loading: null
+      }
     }
   },
-  riverDetailState: {
-    creditsData: {
-      error: null,
-      data: null,
-      loading: null
-    }
+  dispatch: jest.fn()
+}
+
+const options = {
+  mocks: {
+    $route: mockRoute,
+    $store: mockStore
   }
 }
 
 describe('CreditsTab', () => {
   it('shows loading block when loading', () => {
-    state.riverDetailState.creditsData.loading = true
-    const wrapper = createWrapper(CreditsTab, state, {})
+    mockStore.state.riverDetailState.creditsData.loading = true
+    const wrapper = createWrapper(CreditsTab, options)
 
     expect(wrapper.find('.credits-tab')).toMatchSnapshot()
 
@@ -29,9 +45,9 @@ describe('CreditsTab', () => {
   })
 
   it('shows error block when error', () => {
-    state.riverDetailState.creditsData.loading = false
-    state.riverDetailState.creditsData.error = true
-    const wrapper = createWrapper(CreditsTab, state, {})
+    mockStore.state.riverDetailState.creditsData.loading = false
+    mockStore.state.riverDetailState.creditsData.error = true
+    const wrapper = createWrapper(CreditsTab, options)
 
     expect(wrapper.find('.credits-tab')).toMatchSnapshot()
 

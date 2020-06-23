@@ -32,7 +32,7 @@ const {
   MODE_SET
 } = mutationTypes
 
-const mutations = {
+export const mutations = {
 
   [DATA_REQUEST] (state) {
     Object.assign(state, { loading: true, error: null })

@@ -10,6 +10,7 @@ const fetchRiverDetailData = data => {
       {
         reach(id: ${data}) {
           avggradient
+          id
           class
           description
           edited
@@ -18,6 +19,7 @@ const fetchRiverDetailData = data => {
           maxgradient
           plat
           plon
+          geom
           photo {
             id
             post {

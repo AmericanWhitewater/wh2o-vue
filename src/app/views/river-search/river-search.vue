@@ -308,12 +308,6 @@ export default {
 }
 </script>
 <style lang="scss">
-.river-name-section {
-  cursor: pointer;
-  &:hover {
-    text-decoration: underline;
-  }
-}
 .search-col {
   input {
     height: 40px !important;

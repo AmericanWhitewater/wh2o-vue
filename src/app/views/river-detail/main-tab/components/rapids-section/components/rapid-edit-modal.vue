@@ -1,12 +1,14 @@
 <template>
-  <div class="rapid-edit-modal">
+  <div :class="[{'visible':visible},'rapid-edit-modal']">
     <cv-modal
       :visible="visible"
+      size="large"
       @secondary-click="handleCancel"
       @primary-click="submitForm"
+      @modal-hidden="handleCancel"
     >
       <template slot="title">
-        Edit Rapid
+        {{ modalTitle }}
       </template>
       <template slot="content">
         <cv-text-input
@@ -16,6 +18,14 @@
           data-modal-primary-focus
           :disabled="formPending"
         />
+        <label class="bx--label mb-spacing-xs">Location</label>
+        <nwi-map-editor
+          height="350"
+          class="mb-spacing-md"
+          :geom="formData.geom"
+          @poiMoved="updateFormDataGeom"
+        />
+        <!-- remove this field if we can calculate value from dropped pin -->
         <cv-number-input
           v-model="formData.distance"
           class="mb-spacing-md"
@@ -23,7 +33,25 @@
           step=".01"
           :max="4132"
           :min="0"
-          :mobile="windowWidth <= breakpoints.md"
+          :mobile="windowWidth <= $options.breakpoints.md"
+          :disabled="formPending"
+        />
+        <cv-number-input
+          v-model="formData.geom.coordinates[1]"
+          class="mb-spacing-md"
+          label="Lat"
+          :max="90"
+          :min="-90"
+          step=".0000001"
+          :disabled="formPending"
+        />
+        <cv-number-input
+          v-model="formData.geom.coordinates[0]"
+          class="mb-spacing-md"
+          label="Lng"
+          :max="180"
+          :min="-180"
+          step=".0000001"
           :disabled="formPending"
         />
         <cv-combo-box
@@ -35,16 +63,20 @@
           :options="poiClasses"
           :disabled="formPending"
         />
-        <cv-multi-select
+        <!-- temporarily commented out bc the carbon component is broken
+             and it keeps throwing errors !-->
+        <!-- <cv-multi-select
           v-model="formData.character"
+          theme="light"
           :options="poiCharacteristics"
-          class="mb-spacing-md"
           title="Characteristics"
-        />
-        <cv-text-area
-          v-model="formData.description"
+        /> -->
+        <ContentEditor
+          v-if="renderEditor && initialRapidDescription"
+          :content="initialRapidDescription"
           label="Description"
-          class="mb-spacing-md"
+          placeholder=" "
+          @content:updated="descriptionUpdated"
         />
       </template>
       <template slot="secondary-button">
@@ -58,12 +90,23 @@
 </template>
 <script>
 import { globalAppActions } from '@/app/global/state'
-import { checkWindow } from '@/app/global/mixins'
-import { mapState } from 'vuex'
+import { checkWindow, poiClasses } from '@/app/global/mixins'
+import ContentEditor from '@/app/global/components/content-editor/content-editor'
+import NwiMapEditor from './nwi-map-editor.vue'
+
+import { lineString } from '@turf/helpers'
+import along from '@turf/along'
+import wkx from 'wkx'
+import { Buffer } from 'buffer'
+
 export default {
   name: 'rapid-edit-modal',
+  components: {
+    ContentEditor,
+    NwiMapEditor
+  },
   /** @todo revisit adding checkWindow mixin performance considerations */
-  mixins: [checkWindow],
+  mixins: [checkWindow, poiClasses],
   props: {
     visible: {
       type: Boolean,
@@ -71,12 +114,13 @@ export default {
     },
     rapidId: {
       type: String,
-      // for initial inactive state
       required: false
     }
   },
   data: () => ({
+    renderEditor: false,
     formPending: false,
+    initialRapidDescription: '',
     poiCharacteristics: [
       {
         value: 'putin',
@@ -108,38 +152,16 @@ export default {
         value: 'takeout',
         label: 'Take Out',
         name: 'takeout'
-      }
-    ],
-    poiClasses: [
-      {
-        value: 'I',
-        label: 'I',
-        name: 'I'
       },
       {
-        value: 'II',
-        label: 'II',
-        name: 'II'
+        value: 'rapid',
+        label: 'Rapid',
+        name: 'rapid'
       },
       {
-        value: 'III',
-        label: 'III',
-        name: 'III'
-      },
-      {
-        value: 'IV',
-        label: 'IV',
-        name: 'IV'
-      },
-      {
-        value: 'V',
-        label: 'V',
-        name: 'V'
-      },
-      {
-        value: 'V+',
-        label: 'V+',
-        name: 'V+'
+        value: 'other',
+        label: 'Other',
+        name: 'other'
       }
     ],
     formData: {
@@ -147,18 +169,30 @@ export default {
       class: '',
       distance: 0,
       description: '',
-      character: []
+      character: [],
+      geom: { coordinates: [], type: 'point' }
     }
   }),
   computed: {
-    ...mapState({
-      rapids: state => state.riverDetailState.rapidsData.data
-    }),
+    rapids () {
+      return this.$store.state.riverDetailState.rapidsData.data
+    },
     activeRapid () {
-      return this.rapids.find(r => r.id === this.rapidId)
+      return this.rapidId ? this.rapids.find(r => r.id === this.rapidId) : null
+    },
+    modalTitle () {
+      return this.activeRapid ? 'Edit Rapid' : 'New Rapid'
+    },
+    reachGeom () {
+      // TODO: get graphql API to return a linestring or geojson instead of this text
+      const geom = this.$store.state.riverDetailState.riverDetailData.data.geom?.split(',').map(d => d.split(' '))
+      return geom ? lineString(geom) : null
     }
   },
   methods: {
+    descriptionUpdated (description) {
+      this.formData.description = description
+    },
     submitForm () {
       this.$emit('edit:submitted')
 
@@ -174,13 +208,44 @@ export default {
         })
       })
     },
+    updateFormDataGeom (newCoords) {
+      this.formData.geom.coordinates = [newCoords.lng, newCoords.lat]
+      this.updateDistance()
+    },
+    updateDistance () {
+      // placeholder to update `formData.distance` by calculating it
+    },
     handleCancel () {
       this.$emit('edit:cancelled')
+    },
+    // TODO: get graphql to return something more usable than WKB.
+    getGeomFromWKB (wkb) {
+      if (wkb) {
+        const buffer = Buffer.from(wkb, 'hex')
+        const pointGeom = wkx.Geometry.parse(buffer).toGeoJSON()
+        return pointGeom
+      } else {
+        return {}
+      }
     }
   },
   mounted () {
+    this.renderEditor = true
+    let distance
     if (this.activeRapid) {
       this.formData = Object.assign(this.formData, this.activeRapid)
+      if (this.activeRapid.rloc) {
+        // parse rloc into coords
+        this.formData.geom = this.getGeomFromWKB(this.activeRapid.rloc)
+      }
+      distance = this.activeRapid.distance
+      this.initialRapidDescription = this.activeRapid.description
+    }
+    if (!this.formData.geom.coordinates.length && this.reachGeom) {
+      // if distance is present, use it to calculate the point
+      // otherwise, create a point anywhere on the line
+      const distanceAlong = distance || 0
+      this.formData.geom = along(this.reachGeom, distanceAlong, { units: 'miles' }).geometry
     }
   }
 }

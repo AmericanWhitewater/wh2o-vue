@@ -4,7 +4,6 @@
       <div class="bx--row">
         <div
           :class="[
-            { home: homePage },
             { 'drawer-open': drawerOpen },
             'bx--col content-area'
           ]"
@@ -131,14 +130,12 @@
 </template>
 <script>
 import AwLogo from '@/app/global/components/logo-library/aw-logo'
-import { checkWindow } from '@/app/global/mixins'
 import { riverSearchActions } from '@/app/views/river-search/shared/state'
 export default {
   name: 'mobile-nav',
   components: {
     'aw-logo': AwLogo
   },
-  mixins: [checkWindow],
   props: {
     offline: {
       type: Boolean,
@@ -166,12 +163,6 @@ export default {
   computed: {
     user () {
       return this.$store.state.userState.userData.data
-    },
-    homePage () {
-      if (this.$route.name === 'Home') {
-        return true
-      }
-      return false
     }
   },
   methods: {

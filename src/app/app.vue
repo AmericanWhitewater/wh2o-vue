@@ -2,9 +2,11 @@
   <div class="wh2o-vue">
     <app-toaster />
     <app-navigation v-if="!hideNavigation" />
-    <router-view
-      :class="[{'laravel-deploy': hideNavigation }, $route.name !== 'home' ? 'interior' : null, 'app-main-content']"
-    />
+    <transition :name="transitionName">
+      <router-view
+        :class="[{'laravel-deploy': hideNavigation }, $route.name !== 'home' ? 'interior' : null, 'app-main-content']"
+      />
+    </transition>
     <app-cookie-banner />
   </div>
 </template>
@@ -27,7 +29,8 @@ export default {
     AppCookieBanner
   },
   data: () => ({
-    hideNavigation: false
+    hideNavigation: false,
+    transitionName: 'fade'
   }),
   metaInfo: {
     title: 'American Whitewater'
@@ -45,10 +48,28 @@ export default {
   }
 }
 </script>
-<style lang="scss">
 
-.wh2o-vue {
-  @import '@/app/assets/scss/app.scss';
+ <style lang="scss">
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active {
+  // transition-duration: 0.5s;
+  transition-property: height, opacity, transform;
+  // transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
+  @include ease();
+  overflow: hidden;
 }
 
+.slide-left-enter,
+.slide-right-leave-active {
+  opacity: 0;
+  transform: translate(2em, 0);
+}
+
+.slide-left-leave-active,
+.slide-right-enter {
+  opacity: 0;
+  transform: translate(-2em, 0);
+}
 </style>

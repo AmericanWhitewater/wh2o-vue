@@ -1,5 +1,5 @@
 <template>
-  <div class="register">
+  <div class="user-register">
     <cv-text-input
       v-model="formData.name"
       class="mb-spacing-sm"
@@ -72,7 +72,7 @@
 </template>
 <script>
 import { httpClient } from '@/app/global/services'
-import TermsOfService from '@/app/views/static-routes/legal/terms-of-service'
+import TermsOfService from '@/app/views/static-routes/terms-of-service'
 export default {
   name: 'user-register',
   components: {
@@ -153,7 +153,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.register {
+.user-register {
   h2,
   p {
     margin-bottom: 1.25rem;

@@ -1,8 +1,12 @@
-.slide-fade-enter-active, .slide-fade-leave-active {
-    @include ease(0.6s)
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+
+  @include ease(0.6s)
   }
-  .slide-fade-enter, .slide-fade-leave-to
+
+.slide-fade-enter,
+.slide-fade-leave-to
   /* .slide-fade-leave-active below version 2.1.8 */ {
-    transform: translateX(100%);
-    opacity: 0;
-  }
+  opacity: 0;
+  transform: translateX(100%);
+}

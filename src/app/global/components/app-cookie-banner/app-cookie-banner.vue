@@ -15,6 +15,7 @@
             </div>
 
             <cv-button
+              id="close"
               size="small"
               kind="tertiary"
               @click.exact="dismissWarning"

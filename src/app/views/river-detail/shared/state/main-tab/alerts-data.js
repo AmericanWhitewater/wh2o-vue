@@ -51,7 +51,7 @@ const actions = {
     })
 
     if (result) {
-      context.commit(DATA_SUCCESS, result.data.reach.posts.data)
+      context.commit(DATA_SUCCESS, result.data.posts.data)
     }
 
     return result

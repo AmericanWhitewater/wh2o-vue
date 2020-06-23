@@ -1,76 +1,55 @@
 <template>
   <div id="map-tab">
-    <layout
-      :name="!loading && !error ? 'layout-two-thirds' : 'layout-full-width'"
-    >
-      <template #main>
-        <loading-block
-          v-if="loading"
-          text="Loading Map..."
-        />
-        <error-block
-          v-if="!loading && error"
-          title="Map unavailable"
-          text="please try again later"
-        />
-        <!-- <nwi-map
-          v-if="!loading && !error"
-          :source-layers="sourceLayers"
-          :tileservers="tileservers"
-          :detail-reach-id="reachId"
-          :mapbox-access-token="token"
-          id-for-full-screen="map-tab"
-          :include-legend="includeLegend"
-          :map-controls="mapControls"
-          @clickFeature="clickFeature"
-        /> -->
-
-        <NwiMap
-          v-if="!loading && !error && token"
-          :include-legend="false"
-          :has-sidebar="false"
-          :mapbox-access-token="token"
-          :tileservers="[tileserver]"
-          :has-controls="false"
-        />
-      </template>
-      <template #sidebar>
-        map sidebar
-      </template>
-    </layout>
+    <div class="bx--grid">
+      <div class="bx--row">
+        <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-12 bx--col-max-12">
+          <NwiMap
+            v-if="startingBounds"
+            :include-legend="false"
+            :has-controls="false"
+            :detail-reach-id="reachId"
+            :source-layers="sourceLayers"
+            :starting-bounds="startingBounds"
+            hide-result-counter
+            @clickFeature="clickFeature"
+          />
+          <utility-block
+            v-if="!startingBounds"
+            text="failed to load map"
+            state="error"
+            class="mb-md"
+          />
+        </div>
+        <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-4 bx--col-max-4">
+          <info-panel
+            :feature="detailFeature"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import { Layout } from '@/app/global/layout'
-import { LoadingBlock, ErrorBlock } from '@/app/global/components'
 import { NwiMap } from '@/app/views/river-index/components'
 import { mapActions } from '../shared/state'
 import { mapState } from 'vuex'
-import {
-  mapboxAccessToken,
-  nwiTileServer
-} from '@/app/environment/environment'
+import { InfoPanel } from './components'
+import bbox from '@turf/bbox'
+import { lineString } from '@turf/helpers'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 
 export default {
   name: 'map-tab',
   components: {
-    ErrorBlock,
-    Layout,
-    LoadingBlock,
-    NwiMap
+    InfoPanel,
+    NwiMap,
+    UtilityBlock
   },
   data: () => ({
     detailFeature: null,
     includeLegend: false,
     mapControls: ['baseMap', 'color', 'fullscreen'],
-    mockBBox: ['-106.297217', '38.776635', '-105.967627', '38.907397'],
-    sourceLayers: ['reach-segments', 'rapids', 'access'],
-    tileserver: nwiTileServer,
-    token: mapboxAccessToken,
-    mapHttpConfig: {
-      lat: null,
-      lon: null
-    }
+    sourceLayers: ['reach-segments', 'rapids', 'access']
   }),
   computed: {
     ...mapState({
@@ -78,29 +57,30 @@ export default {
       error: state => state.riverDetailState.mapData.error,
       data: state => state.riverDetailState.mapData.data,
       riverLoading: state => state.riverDetailState.riverDetailData.loading,
-      riverError: state => state.riverDetailState.mapData.error,
-      riverData: state => state.riverDetailState.mapData.data
+      riverError: state => state.riverDetailState.riverDetailData.error,
+      riverData: state => state.riverDetailState.riverDetailData.data
     }),
     reachId () {
       return parseInt(this.$route.params.id, 10)
-    }
-  },
-  watch: {
-    riverData () {
-      this.mapHttpConfig.lat = this.riverData.plat
-      this.mapHttpConfig.lon = this.riverData.plon
-      this.loadData()
+    },
+    startingBounds () {
+      // TODO: get graphql API to return a linestring or geojson instead of this text
+      const geom = this.riverData?.geom?.split(',').map(d => d.split(' '))
+      return geom ? bbox(lineString(geom)) : null
     }
   },
   methods: {
     loadData () {
-      if (!this.data && !this.error) {
-        this.$store.dispatch(mapActions.FETCH_MAP_DATA, this.mapHttpConfig)
+      if (!this.data) {
+        this.$store.dispatch(mapActions.FETCH_ACCESS_DATA, this.reachId)
       }
     },
     clickFeature (feature) {
       this.detailFeature = feature
     }
+  },
+  created () {
+    this.loadData()
   }
 }
 </script>

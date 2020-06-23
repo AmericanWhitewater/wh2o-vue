@@ -4,25 +4,21 @@ import VueRouter from 'vue-router'
 import { appLocalStorage } from '@/app/global/services'
 
 import staticRoutes from './views/static-routes/static-routes'
-import { accidentDatabaseRoutes } from './views/accident-database'
-import { communityRoutes } from './views/community'
+import { gageDetailRoutes } from './views/gage-detail'
 import { newsPageRoutes } from './views/news-page'
 import { riverDetailRoutes } from './views/river-detail'
 import { riverIndexRoutes } from './views/river-index'
 import { riverSearchRoutes } from './views/river-search'
-import { safetyPageRoutes } from './views/safety-page'
 import { userRoutes } from './views/user'
 
 Vue.use(VueRouter)
 
 const routes = [
-  ...accidentDatabaseRoutes,
-  ...communityRoutes,
+  ...gageDetailRoutes,
   ...newsPageRoutes,
   ...riverDetailRoutes,
   ...riverIndexRoutes,
   ...riverSearchRoutes,
-  ...safetyPageRoutes,
   ...staticRoutes,
   ...userRoutes
 ]
@@ -45,7 +41,7 @@ const router = new VueRouter({
        * where it is. better UX when switching between river-detail tabs.
        *
        */
-      const riverDetailRouteNames = ['flow-tab', 'main-tab', 'map-tab', 'gallery-tab', 'accidents-tab', 'credits-tab', 'weather-tab', 'news-tab']
+      const riverDetailRouteNames = ['flow-tab', 'main-tab', 'map-tab', 'gallery-tab', 'accidents-tab', 'credits-tab', 'news-tab']
       if (riverDetailRouteNames.indexOf(to.name) !== -1 && riverDetailRouteNames.indexOf(from.name) !== -1) {
         return
       }

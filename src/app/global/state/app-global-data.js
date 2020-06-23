@@ -1,4 +1,4 @@
-import { reflectKeys, appLocalStorage, Breakpoints } from '../services'
+import { reflectKeys, Breakpoints } from '../services'
 
 const initialState = {
   loading: false,
@@ -19,32 +19,6 @@ const initialState = {
  *
  */
 
-const checkIfViewed = (newToast) => {
-  const viewedToasts = appLocalStorage.getItem('viewedToasts')
-
-  if (newToast.coreAction || newToast.kind === 'error') {
-    return newToast
-  }
-
-  if (!viewedToasts) {
-    appLocalStorage.setItem('viewedToasts', [newToast])
-
-    return newToast
-  } else {
-    const toastViewed = viewedToasts.find(t => t.title === newToast.title)
-
-    if (!toastViewed || newToast.label === 'Install' || newToast.override) {
-      const data = viewedToasts
-      data.push(newToast)
-      appLocalStorage.setItem('viewedToasts', data)
-
-      return newToast
-    }
-
-    return null
-  }
-}
-
 const namespacedPrefix = '[APP_GLOBAL]'
 
 const mutationTypes = reflectKeys(
@@ -64,9 +38,7 @@ const mutations = {
   },
 
   [NEW_TOAST] (state, payload) {
-    if (checkIfViewed(payload)) {
-      state.toasts.push(payload)
-    }
+    state.toasts.push(payload)
   },
 
   [CLOSE_TOAST] (state, payload) {

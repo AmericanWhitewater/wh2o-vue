@@ -1,6 +1,7 @@
 .fade-enter-active,
 .fade-leave-active {
- @include ease;
+
+  @include ease;
 }
 
 .fade-enter,

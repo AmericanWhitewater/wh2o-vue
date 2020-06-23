@@ -1,20 +1,28 @@
 import UserProfile from '../user-profile.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
-const state = {
-  userState: {
-    userData: {
-      error: null,
-      data: null,
-      loading: null
+const mockStore = {
+  state: {
+    userState: {
+      userData: {
+        error: null,
+        data: null,
+        loading: null
+      }
     }
+  }
+}
+
+const options = {
+  mocks: {
+    $store: mockStore
   }
 }
 
 describe('user-profile.vue', () => {
   it('shows loading block when loading', () => {
-    state.userState.userData.loading = true
-    const wrapper = createWrapper(UserProfile, state, {})
+    mockStore.state.userState.userData.loading = true
+    const wrapper = createWrapper(UserProfile, options)
 
     expect(wrapper.find('.utility-block-loading').exists()).toBe(true)
     expect(wrapper.find('.utility-block-error').exists()).toBe(false)
@@ -22,9 +30,9 @@ describe('user-profile.vue', () => {
   })
 
   it('shows error block when error', () => {
-    state.userState.userData.loading = false
-    state.userState.userData.error = true
-    const wrapper = createWrapper(UserProfile, state, {})
+    mockStore.state.userState.userData.loading = false
+    mockStore.state.userState.userData.error = true
+    const wrapper = createWrapper(UserProfile, options)
 
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
     expect(wrapper.find('.utility-block-error').exists()).toBe(true)

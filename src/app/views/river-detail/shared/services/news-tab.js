@@ -11,12 +11,12 @@ const fetchNewsTabData = data => {
             getRiverArticles(id: ${data}) {
                 articles {
                 abstract
-                abstractimage {
-                    uri {
-                    big
-                    medium
+                  image {
+                  uri {
                     thumb
-                    }
+                    medium
+                    big
+                  }
                 }
                 author
                 posted

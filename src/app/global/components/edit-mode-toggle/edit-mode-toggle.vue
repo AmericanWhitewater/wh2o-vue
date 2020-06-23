@@ -2,6 +2,7 @@
   <div
     class="edit-mode-toggle ml-spacing-sm"
     @click.exact="toggleEditMode"
+    @keydown.enter="toggleEditMode"
   >
     <span>Edit mode</span>
     <cv-toggle

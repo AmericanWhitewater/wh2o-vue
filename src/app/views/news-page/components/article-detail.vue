@@ -142,7 +142,6 @@ export default {
       article: state => state.newsPageState.articleData.data,
       loading: state => state.newsPageState.articleData.loading,
       error: state => state.newsPageState.articleData.error,
-      featuredMedia: state => state.newsPageState.articleData.featuredMedia,
       frontPageNews: state => state.newsPageState.newsData.frontPageNews,
       relatedLoading: state => state.newsPageState.newsData.loading,
       relatedError: state => state.newsPageState.newsData.error

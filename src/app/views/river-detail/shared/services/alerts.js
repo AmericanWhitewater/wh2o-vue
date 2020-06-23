@@ -4,34 +4,29 @@ const fetchAlertsData = data => {
   return httpClient
     .post('/graphql', {
       query: `
-      query {
-        reach(id:${data}){
-            posts(post_type: WARNING, first:10, page:1) {
-                data {
-                    id,
-                    title,
-                    detail,
-                    post_date,
-                    revision,
-                    post_type,
-                    gauge {
-                      name
+        query {
+            posts(reach_id: "${data}", post_types: WARNING, page: 1, orderBy: {field: REVISION, order: DESC}, first: 10) {
+              data {
+                id
+                title
+                detail
+                post_date
+                revision
+                post_type
+                user {
+                  uname
+                  uid
+                  image {
+                    uri {
+                      thumb
+                      medium
+                      big
                     }
-                    user {
-                        uname,
-                        uid,
-                        image {
-                            uri{
-                                thumb,
-                                medium,
-                                big
-                            }
-                        }
-                    }
+                  }
                 }
+              }
             }
-            }
-        }
+          }
     
     `
     })

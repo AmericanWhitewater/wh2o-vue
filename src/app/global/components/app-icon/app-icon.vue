@@ -1,5 +1,5 @@
 <template>
-  <span class="">
+  <span class="app-icon">
     <template v-if="tip">
       <cv-tooltip :tip="tip">
         <i
@@ -53,7 +53,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

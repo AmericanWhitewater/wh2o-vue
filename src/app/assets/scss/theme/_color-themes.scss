@@ -89,9 +89,11 @@ $themes: (
 );
 
 @mixin themed() {
+
   @each $theme, $map in $themes {
     .theme--#{$theme} & {
       $theme-map: () !global;
+
       @each $key, $submap in $map {
         $value: map-get(map-get($themes, $theme), "#{$key}");
         $theme-map: map-merge(
@@ -108,13 +110,16 @@ $themes: (
 }
 
 @function t($key) {
+
   @return map-get($theme-map, $key);
 }
 
 body {
-    &.dark {
-        @include themed() {
-            background-color: t($ui-01)
-        }
+
+  &.dark {
+
+    @include themed() {
+      background-color: t($ui-01)
     }
+  }
 }

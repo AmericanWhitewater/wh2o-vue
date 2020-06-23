@@ -1,16 +1,23 @@
 import { httpClient } from '@/app/global/services'
 
-import { apiConstants } from '../config'
-
-const fetchMapData = data => {
-  const url = `${apiConstants.graphql}`
+const fetchAccessData = data => {
   return httpClient
-    .post(url, {
+    .post('/graphql', {
       query: `
       query {
-        reachmap(box:${data}) {
-          
-        }
+        
+          reach(id: "${data}") {
+            direction_default
+            custom_destination
+            county
+            permitid
+            permitinfo
+            permiturl
+            shuttledetails
+            zipcode
+            geom
+          }
+
     }
     
     `
@@ -18,4 +25,4 @@ const fetchMapData = data => {
     .then(res => res.data)
 }
 
-export { fetchMapData }
+export { fetchAccessData }

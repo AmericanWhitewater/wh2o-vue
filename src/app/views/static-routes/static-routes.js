@@ -1,16 +1,8 @@
-import { AppPageNotFound } from '@/app/global/components'
-
-import Home from './home-page/home-page.vue'
 
 const staticRoutes = [
   {
     path: '/',
-    redirect: '/river-index',
-    name: 'home',
-    meta: {
-      crumbLabel: 'Home'
-    },
-    component: Home
+    redirect: '/river-index'
   },
   {
     path: '/terms-of-service',
@@ -18,7 +10,7 @@ const staticRoutes = [
     meta: {
       crumbLabel: 'Terms of Service'
     },
-    component: () => import('./legal/terms-of-service')
+    component: () => import('./terms-of-service')
   },
   {
     path: '*',
@@ -26,7 +18,7 @@ const staticRoutes = [
     meta: {
       crumbLabel: '404'
     },
-    component: AppPageNotFound
+    component: () => import('./page-not-found')
   }
 ]
 

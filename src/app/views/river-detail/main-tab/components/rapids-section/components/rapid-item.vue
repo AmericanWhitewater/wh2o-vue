@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="[{'form-visible':uploadFormVisible}, 'rapid-item, bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm']"
+    :class="[{'form-visible':uploadFormVisible}, 'rapid-item bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm']"
   >
     <cv-tile
       v-if="rapid"
@@ -20,7 +20,7 @@
           />
           <span
             class="rapid-meta"
-            v-text="`Distance: ${rapid.distance}`"
+            v-text="`Distance: ${rapid.distance} mi`"
           />
         </div>
         <rapid-icon-bar
@@ -33,7 +33,7 @@
       <template>
         <div
           v-if="!uploadFormVisible"
-          class="bx--row pb-md"
+          class="bx--row"
         >
           <div class="bx--col-sm-12 bx--col-lg-5">
             <div class="outside">
@@ -58,7 +58,7 @@
                   Add Media
                 </cv-button>
                 <cv-button
-                  v-if="sanitizedDescription.length > characterLimit"
+                  v-if="sanitizedDescription && sanitizedDescription.length > characterLimit"
                   size="small"
                   kind="tertiary"
                   class="mb-spacing-lg"
@@ -71,13 +71,13 @@
           </div>
           <div class="bx--col-sm-12 bx--col-lg-11">
             <template v-if="sanitizedDescription">
-              <template v-if="sanitizedDescription.length > characterLimit">
+              <template v-if="sanitizedDescription && sanitizedDescription.length > characterLimit">
                 <div
                   class="description"
                   v-html="sanitizedDescription.slice(0, characterLimit) + '...'"
                 />
                 <div
-                  v-if="readMoreActive"
+                  v-if="sanitizedDescription && readMoreActive"
                   v-html="sanitizedDescription.slice(characterLimit, sanitizedDescription.length * 2)"
                 />
               </template>
@@ -104,16 +104,18 @@
           @cancel="uploadFormVisible = false"
         />
         <rapid-edit-modal
+          v-if="editModalVisible"
           :visible="editModalVisible"
           :rapid-id="rapid.id"
           @edit:cancelled="editModalVisible = false"
           @edit:success="editModalVisible = false"
         />
         <confirm-delete-modal
+          v-if="deleteModalVisible"
           :visible="deleteModalVisible"
           :resource-name="rapid.name"
-          @edit:cancelled="deleteModalVisible = false"
-          @edit:success="deleteModalVisible = false"
+          @delete:cancelled="deleteModalVisible = false"
+          @delete:success="deleteModalVisible = false"
           @delete:confirmed="deleteRapid"
         />
       </template>
@@ -183,9 +185,6 @@ export default {
     }
   },
   methods: {
-    uploadMedia () {
-      return 'upload media'
-    },
     cancelUpload () {
       this.showConfirmation = false
       this.uploadFormVisible = false

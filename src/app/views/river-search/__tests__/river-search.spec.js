@@ -1,22 +1,30 @@
 import RiverSearch from '../river-search.vue'
-import { createWrapper } from '@/app/global/services'
+import { createWrapper } from '@/utils'
 
-const state = {
-  riverSearchState: {
-    riverSearchData: {
-      error: null,
-      data: null,
-      loading: null,
-      searchTerm: null
+const mockStore = {
+  state: {
+    riverSearchState: {
+      riverSearchData: {
+        error: null,
+        data: null,
+        loading: null,
+        searchTerm: null
+      }
     }
+  }
+}
+
+const options = {
+  mocks: {
+    $store: mockStore
   }
 }
 
 describe('RiverSearch', () => {
   it('shows loading block when loading', () => {
-    state.riverSearchState.riverSearchData.loading = true
+    mockStore.state.riverSearchState.riverSearchData.loading = true
 
-    const wrapper = createWrapper(RiverSearch, state, {})
+    const wrapper = createWrapper(RiverSearch, options)
 
     expect(wrapper.find('.utility-block-loading').exists()).toBe(true)
     expect(wrapper.find('.utility-block-error').exists()).toBe(false)
@@ -24,11 +32,11 @@ describe('RiverSearch', () => {
   })
 
   it('shows error block when error', () => {
-    state.riverSearchState.riverSearchData.loading = false
+    mockStore.state.riverSearchState.riverSearchData.loading = false
 
-    state.riverSearchState.riverSearchData.error = true
+    mockStore.state.riverSearchState.riverSearchData.error = true
 
-    const wrapper = createWrapper(RiverSearch, state, {})
+    const wrapper = createWrapper(RiverSearch, options)
 
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
     expect(wrapper.find('.utility-block-error').exists()).toBe(true)

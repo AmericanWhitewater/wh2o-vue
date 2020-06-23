@@ -1,4 +1,8 @@
 .sticky {
+
+  @include carbon--breakpoint('lg') {
     position: sticky;
-    top:100px;
+    top: 100px;
+
   }
+}

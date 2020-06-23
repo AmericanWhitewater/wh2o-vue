@@ -1,11 +1,8 @@
 import { httpClient } from '@/app/global/services'
 
-import { apiConstants } from '../config'
-
 const fetchAccidentsData = data => {
-  const url = `${apiConstants.graphql}`
   return httpClient
-    .post(url, {
+    .post('/graphql', {
       query: `
       query {
         reach(id: ${data}) {
@@ -21,10 +18,7 @@ const fetchAccidentsData = data => {
             }
           }
         }
-      }
-      
-    
-    `
+      }`
     })
     .then(res => res.data)
 }
