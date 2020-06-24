@@ -45,9 +45,34 @@ const fetchRiverDetailData = data => {
     .then(res => res.data)
 }
 
+const updateRiverDetailGeom = data => {
+  return httpClient
+    .post(apiConstants.graphql, {
+      query: `
+        mutation ($id:ID!, $reach: ReachInput!) {
+          reachUpdate(id: $id, reach: $reach) {
+            geom,
+            ploc,
+            tloc
+          }
+        }
+      `,
+      variables: {
+        id: data.id,
+        reach: {
+          geom: data.geom,
+          ploc: data.ploc,
+          tloc: data.tloc
+        }
+      }
+    }).then(response => {
+      return response.data
+    })
+}
+
 const updateBetaBox = data => {
   const url = `/rapid/${data.id}`
   return httpClient.patch(url, data)
 }
 
-export { fetchRiverDetailData, updateBetaBox }
+export { fetchRiverDetailData, updateBetaBox, updateRiverDetailGeom }

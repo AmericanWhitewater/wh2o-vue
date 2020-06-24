@@ -27,10 +27,10 @@
 <script>
 import { mapState } from 'vuex'
 
-import { globalAppActions } from '@/app/global/state'
 import { checkWindow } from '@/app/global/mixins'
 import GeometryEditor from './components/geometry-editor.vue'
 import { lineString } from '@turf/helpers'
+import { riverDetailActions } from '../../state'
 
 export default {
   name: 'geometry-edit-modal',
@@ -64,17 +64,11 @@ export default {
     },
     submitForm () {
       this.$emit('edit:submitted')
-
-      setTimeout(() => {
-        this.$emit('edit:success')
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
-          title: 'Geometry edited',
-          kind: 'success',
-          override: true,
-          contrast: false,
-          action: false,
-          autoHide: true
-        })
+      this.$parent.editGeometryModalVisible = false
+      this.$store.dispatch(riverDetailActions.UPDATE_RIVER_DETAIL_GEOM, {
+        geom: this.geom.geometry,
+        ploc: this.geom.geometry.coordinates[0],
+        tloc: this.geom.geometry.coordinates.slice(-1)[0]
       })
     },
     handleCancel () {
