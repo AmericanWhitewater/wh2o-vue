@@ -5,7 +5,7 @@
   >
     <template v-if="mapboxAccessToken">
       <div
-        :id="mapContainerId"
+        ref="mapContainer"
         class="nwi-map"
       />
       <nwi-map-legend
@@ -505,7 +505,7 @@ export default {
     mountMap () {
       mapboxgl.accessToken = this.mapboxAccessToken
       const mapProps = {
-        container: this.mapContainerId,
+        container: this.$refs.mapContainer,
         style: this.baseMapUrl,
         trackUserLocation: true
       }
