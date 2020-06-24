@@ -100,16 +100,23 @@ export default {
   },
   methods: {
     getNhdLines () {
-      return this.map
-        .queryRenderedFeatures({ layers: ['nhd-lines'] })
-        .filter(x => (
-          x.geometry.type === 'LineString'
-          // thought I could limit our linestrings here but this leaves out some important
-          // data segments, maybe revisit?
-          //            [46000, 46003, 46006, 46007].includes(x.properties.fcode)
-        ))
+      const cacheKey = this.map.getBounds().toString()
+      if (this.linesCache[cacheKey] == null) {
+        this.linesCache = {}
+
+        const lines = this.map
+          .queryRenderedFeatures({ layers: ['nhd-lines'] })
+          .filter(x => (
+            x.geometry.type === 'LineString'
+            // thought I could limit our linestrings here but this leaves out some important
+            // data segments, maybe revisit?
+            //            [46000, 46003, 46006, 46007].includes(x.properties.fcode)
+          ))
+        this.linesCache[cacheKey] = lines
+      }
+      return this.linesCache[cacheKey]
     },
-    generateNhdGraph () {
+    getNhdGraph () {
       const graphCacheKey = this.map.getBounds().toString()
       if (this.graphCache[graphCacheKey] == null) {
         this.graphCache = {}
@@ -131,7 +138,7 @@ export default {
       return this.graphCache[graphCacheKey]
     },
     calculateGeom () {
-      const graph = this.generateNhdGraph()
+      const graph = this.getNhdGraph()
       const lines = this.getNhdLines()
       // turf has a bug with nearestPointOnLine:
       // https://github.com/Turfjs/turf/issues/1726
@@ -213,6 +220,7 @@ export default {
     }
     this.currentGeom = this.reachGeom
     this.graphCache = {}
+    this.linesCache = {}
   }
 }
 </script>
