@@ -27,6 +27,8 @@ import {
 } from '@/app/environment/environment'
 
 import bbox from '@turf/bbox'
+import bboxPolygon from '@turf/bbox-polygon'
+import booleanPointInPolygon from '@turf/boolean-point-in-polygon'
 import along from '@turf/along'
 import geoLength from '@turf/length'
 import lineIntersect from '@turf/line-intersect'
@@ -140,31 +142,76 @@ export default {
     calculateGeom () {
       const graph = this.getNhdGraph()
       const lines = this.getNhdLines()
+      const reachStart = this.draw.get('reachStart')
+      const reachEnd = this.draw.get('reachEnd')
+
+      // if the start and finish are not both visible in the current viewport,
+      // we need to operate differently, so detect that here:
+      const mapBbox = bboxPolygon(this.map.getBounds().toArray().flat())
+      const intersection = lineIntersect(this.currentGeom, mapBbox)
+
+      let newSegmentStart
+      let newSegmentEnd
+      let whichPointIsOutside
+      let intersectionPoint
+      // geom intersects viewport!
+      if (intersection.features.length) {
+        intersectionPoint = intersection.features[0]
+        // determine whether reachStart or reachEnd is in the viewport
+        if (booleanPointInPolygon(reachStart, mapBbox)) {
+          whichPointIsOutside = 'end'
+          newSegmentStart = reachStart
+          newSegmentEnd = intersectionPoint
+        } else {
+          whichPointIsOutside = 'start'
+          newSegmentStart = intersectionPoint
+          newSegmentEnd = reachEnd
+        }
+      } else {
+        newSegmentStart = reachStart
+        newSegmentEnd = reachEnd
+      }
+
+      // use the segment start/end to generate a new path between those segments
       // turf has a bug with nearestPointOnLine:
       // https://github.com/Turfjs/turf/issues/1726
       // so we're working around it by checking distance from line
       // with a very small threshhold
-      const reachStart = this.draw.get('reachStart')
       const putinSegment = lines.find(x =>
-        (pointToLineDistance(reachStart, x) < 0.01)
+        (pointToLineDistance(newSegmentStart, x) < 0.01)
       )
-      const reachEnd = this.draw.get('reachEnd')
       const takeoutSegment = lines.find(x =>
-        (pointToLineDistance(reachEnd, x) < 0.01)
+        (pointToLineDistance(newSegmentEnd, x) < 0.01)
       )
       const shortestPath = graph.shortestPath(
         putinSegment.id.toString(),
         takeoutSegment.id.toString()
       )
-
       const coords = []
       shortestPath.forEach(x => {
         const l = lines.find(l => (l.id.toString() === x))
         coords.push(...l.geometry.coordinates)
       })
       const initialLine = lineString(coords)
-      const slicedLine = lineSlice(reachStart, reachEnd, initialLine)
-      this.currentGeom = slicedLine
+      const slicedLine = lineSlice(newSegmentStart, newSegmentEnd, initialLine)
+
+      let newGeom
+
+      // if the segment extends beyond the viewport, merge it with the original geom, sliced at the viewport overlap
+      if (whichPointIsOutside) {
+        let fullCoords
+        if (whichPointIsOutside === 'end') {
+          const originalSegment = lineSlice(intersectionPoint, reachEnd, this.currentGeom)
+          fullCoords = [...slicedLine.geometry.coordinates, ...originalSegment.geometry.coordinates]
+        } else {
+          const originalSegment = lineSlice(reachStart, intersectionPoint, this.currentGeom)
+          fullCoords = [...originalSegment.geometry.coordinates, ...slicedLine.geometry.coordinates]
+        }
+        newGeom = lineString(fullCoords)
+      } else {
+        newGeom = slicedLine
+      }
+      this.currentGeom = newGeom
     },
     mountMap () {
       mapboxgl.accessToken = mapboxAccessToken
