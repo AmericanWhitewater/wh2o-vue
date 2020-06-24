@@ -1,5 +1,11 @@
 <template>
   <section class="mb-xl">
+    <p>
+      The dotted lines represent the National Hydrography Dataset (NHD), a USGS dataset or rivers and streams
+      in the United States. To modify the reach, click on either endpoint to "activate" it, then click it
+      again and drag to move elsewhere on the NHD. A new "geometry" (line) will be generated when you finish
+      moving the point.
+    </p>
     <div
       id="nhd-editor-container"
       style="height: 500px;"
@@ -83,6 +89,10 @@ export default {
     getNhdLines () {
       return this.map
         .queryRenderedFeatures({ layers: ['nhd-lines'] })
+        .filter(x => (
+          x.geometry.type === 'LineString' &&
+            [46000, 46003, 46006, 46007].includes(x.properties.fcode)
+        ))
     },
     generateNhdGraph () {
       const graph = new Graph()
@@ -136,7 +146,8 @@ export default {
         container: 'nhd-editor',
         style: this.baseMapUrl,
         bounds: this.startingBounds,
-        fitBoundsOptions: { padding: 80 }
+        fitBoundsOptions: { padding: 80 },
+        minZoom: 12
       }
       this.map = new mapboxgl.Map(mapProps)
 
