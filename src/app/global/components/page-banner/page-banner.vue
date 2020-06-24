@@ -13,6 +13,7 @@
           fullscreen-target="map-wrapper"
           hide-result-counter
         />
+        <slot />
       </div>
     </template>
 
@@ -77,6 +78,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .page-banner {
+  position: relative;
   header {
     padding: $spacing-sm $spacing-md;
     display: flex;
@@ -100,6 +102,19 @@ export default {
         @include carbon--type-style("productive-heading-03");
       }
     }
+  }
+  .edit-overlay {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    background-color: rgba($ui-02, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .map-wrapper {
     width: 100%;

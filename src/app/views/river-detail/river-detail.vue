@@ -72,8 +72,21 @@
                 :geom="data.geom"
                 :reach-id="$route.params.id"
                 map
-              />
+              >
+                <div
+                  v-if="editMode"
+                  class="edit-overlay"
+                  @click="editGeometryModalVisible = true"
+                >
+                  <h3>Edit Reach Geometry</h3>
+                </div>
+              </page-banner>
             </transition>
+            <geometry-edit-modal
+              v-if="editMode"
+              :visible="editGeometryModalVisible"
+              @edit:cancelled="editGeometryModalVisible=false"
+            />
           </div>
         </div>
       </div>
@@ -173,16 +186,19 @@ import { riverDetailActions, alertsActions, bookmarksActions, reachGagesActions,
 import { globalAppActions } from '@/app/global/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 import PageBanner from '@/app/global/components/page-banner/page-banner'
+import GeometryEditModal from './shared/components/geometry-edit-modal/geometry-edit-modal'
 import { checkWindow } from '@/app/global/mixins'
 import { appLocalStorage } from '@/app/global/services'
 export default {
   name: 'river-detail',
   components: {
     UtilityBlock,
-    PageBanner
+    PageBanner,
+    GeometryEditModal
   },
   mixins: [checkWindow],
   data: () => ({
+    editGeometryModalVisible: false,
     bookmarked: false,
     transitionName: 'fade'
   }),
