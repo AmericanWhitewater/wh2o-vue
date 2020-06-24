@@ -46,6 +46,9 @@ export default {
   components: {
     NwiBasemapToggle
   },
+  data: () => ({
+    currentGeom: null
+  }),
   computed: {
     baseMapUrl () {
       if (this.mapStyle === 'topo') {
@@ -83,6 +86,16 @@ export default {
   watch: {
     mapStyle (v) {
       this.map.setStyle(this.baseMapUrl)
+    },
+    currentGeom (v, old) {
+      if (v !== old) {
+        this.draw.delete('reachGeom')
+        this.draw.add({
+          id: 'reachGeom',
+          ...v
+        })
+        this.$emit('updatedGeom', v)
+      }
     }
   },
   methods: {
@@ -138,7 +151,8 @@ export default {
         coords.push(...l.geometry.coordinates)
       })
       const initialLine = lineString(coords)
-      return lineSlice(reachStart, reachEnd, initialLine)
+      const slicedLine = lineSlice(reachStart, reachEnd, initialLine)
+      this.currentGeom = slicedLine
     },
     mountMap () {
       mapboxgl.accessToken = mapboxAccessToken
@@ -168,12 +182,7 @@ export default {
       this.map.on('load', () => { this.initializeDraw() })
 
       this.map.on('draw.update', (e) => {
-        this.draw.delete('reachGeom')
-        const newGeom = this.calculateGeom()
-        this.draw.add({
-          id: 'reachGeom',
-          ...newGeom
-        })
+        this.calculateGeom()
       })
     },
     initializeDraw () {
@@ -197,6 +206,7 @@ export default {
     if (mapboxAccessToken) {
       this.mountMap()
     }
+    this.currentGeom = this.reachGeom
   }
 }
 </script>

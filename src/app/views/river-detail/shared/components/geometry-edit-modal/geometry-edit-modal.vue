@@ -11,7 +11,9 @@
         Edit Reach Geometry
       </template>
       <template slot="content">
-        <geometry-editor />
+        <geometry-editor
+          @updatedGeom="updateReachGeom"
+        />
       </template>
       <template slot="secondary-button">
         Cancel
@@ -23,9 +25,12 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
+
 import { globalAppActions } from '@/app/global/state'
 import { checkWindow } from '@/app/global/mixins'
 import GeometryEditor from './components/geometry-editor.vue'
+import { lineString } from '@turf/helpers'
 
 export default {
   name: 'geometry-edit-modal',
@@ -41,19 +46,29 @@ export default {
     }
   },
   data: () => ({
-    renderEditor: false,
-    formPending: false
+    geom: null
   }),
   computed: {
+    ...mapState({
+      data: state => state.riverDetailState.riverDetailData.data
+    }),
+    reachGeom () {
+      // TODO: get graphql API to return a linestring or geojson instead of this text
+      const geom = this.data?.geom?.split(',').map(d => d.split(' ').map(e => parseFloat(e)))
+      return geom ? lineString(geom, {}, { id: 'reachGeom' }) : null
+    }
   },
   methods: {
+    updateReachGeom (newGeom) {
+      this.geom = newGeom
+    },
     submitForm () {
       this.$emit('edit:submitted')
 
       setTimeout(() => {
         this.$emit('edit:success')
         this.$store.dispatch(globalAppActions.SEND_TOAST, {
-          title: 'Rapid Edited',
+          title: 'Geometry edited',
           kind: 'success',
           override: true,
           contrast: false,
@@ -67,6 +82,7 @@ export default {
     }
   },
   mounted () {
+    this.geom = this.reachGeom
   }
 }
 </script>
