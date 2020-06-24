@@ -1,7 +1,7 @@
 <template>
   <section class="mb-xl">
     <p>
-      The dotted lines represent the National Hydrography Dataset (NHD), a USGS dataset or rivers and streams
+      The dotted lines represent the National Hydrography Dataset (NHD), a USGS dataset of rivers and streams
       in the United States. To modify the reach, click on either endpoint to "activate" it, then click it
       again and drag to move elsewhere on the NHD. A new "geometry" (line) will be generated when you finish
       moving the point.
