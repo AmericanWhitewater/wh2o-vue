@@ -103,27 +103,32 @@ export default {
       return this.map
         .queryRenderedFeatures({ layers: ['nhd-lines'] })
         .filter(x => (
-          x.geometry.type === 'LineString' &&
-            [46000, 46003, 46006, 46007].includes(x.properties.fcode)
+          x.geometry.type === 'LineString'
+          // thought I could limit our linestrings here but this leaves out some important
+          // data segments, maybe revisit?
+          //            [46000, 46003, 46006, 46007].includes(x.properties.fcode)
         ))
     },
     generateNhdGraph () {
-      const graph = new Graph()
-      const lines = this.getNhdLines()
-      lines.forEach(x => {
-        graph.addNode(x.id.toString())
-        // iterate through the other lines and define edges
-        lines.forEach(y => {
-          if (y.id === x.id) {
-            return
-          }
-          graph.addNode(y.id.toString())
-          if (lineIntersect(x, y).features.length) {
-            graph.addEdge(x.id.toString(), y.id.toString())
-          }
+      const graphCacheKey = this.map.getBounds().toString()
+      if (this.graphCache[graphCacheKey] == null) {
+        this.graphCache = {}
+
+        const graph = new Graph()
+        const lines = this.getNhdLines()
+        lines.forEach((x) => { graph.addNode(x.id.toString()) })
+
+        lines.forEach((x, index) => {
+          lines.slice(index + 1).forEach(y => {
+            if (x !== y && lineIntersect(x, y).features.length) {
+              graph.addEdge(x.id.toString(), y.id.toString())
+              graph.addEdge(y.id.toString(), x.id.toString())
+            }
+          })
         })
-      })
-      return graph
+        this.graphCache[graphCacheKey] = graph
+      }
+      return this.graphCache[graphCacheKey]
     },
     calculateGeom () {
       const graph = this.generateNhdGraph()
@@ -207,6 +212,7 @@ export default {
       this.mountMap()
     }
     this.currentGeom = this.reachGeom
+    this.graphCache = {}
   }
 }
 </script>
