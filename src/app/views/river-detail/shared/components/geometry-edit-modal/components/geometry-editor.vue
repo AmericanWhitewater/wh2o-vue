@@ -54,12 +54,11 @@ export default {
   computed: {
     baseMapUrl () {
       if (this.mapStyle === 'topo') {
-        return 'mapbox://styles/americanwhitewater/ck1se2yqi57ey1do8v1ewdbtr'
+        return 'mapbox://styles/americanwhitewater/ckbv35azb12w51initt7y2adv'
       } else if (this.mapStyle === 'satellite') {
-        // custom version of `satellite-v8` that includes icons that already exist in `outdoors-v11`
-        return 'mapbox://styles/americanwhitewater/ck1sdz9bp05tz1cmvi2xilge9'
+        return 'mapbox://styles/americanwhitewater/ckbv3rzya136r1ioalj7qemof'
       } else {
-        return 'mapbox://styles/americanwhitewater/ck1se2yqi57ey1do8v1ewdbtr'
+        return 'mapbox://styles/americanwhitewater/ckbv35azb12w51initt7y2adv'
       }
     },
     reachGeom () {
@@ -107,7 +106,7 @@ export default {
         this.linesCache = {}
 
         const lines = this.map
-          .queryRenderedFeatures({ layers: ['nhd-lines'] })
+          .queryRenderedFeatures({ layers: ['nhdflowline'] })
           .filter(x => (
             x.geometry.type === 'LineString'
             // thought I could limit our linestrings here but this leaves out some important
@@ -220,7 +219,7 @@ export default {
         style: this.baseMapUrl,
         bounds: this.startingBounds,
         fitBoundsOptions: { padding: 80 },
-        minZoom: 12
+        minZoom: 11
       }
       this.map = new mapboxgl.Map(mapProps)
 
@@ -231,7 +230,7 @@ export default {
           SnapMode: {
             ...SnapMode,
             config: {
-              layers: ['nhd-lines']
+              layers: ['nhdflowline']
             }
           }
         }
