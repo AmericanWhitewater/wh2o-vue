@@ -1,10 +1,19 @@
 <template>
   <section>
-    <p>
+    <h5 class="mode-name">
+      Editing in {{ mapEditMode }} Mode
+    </h5>
+    <p v-if="mapEditMode === 'automatic'">
       The dotted lines represent the National Hydrography Dataset (NHD), a USGS dataset of rivers and streams
       in the United States. To modify the reach, click on either endpoint to "activate" it, then click it
-      again and drag to move elsewhere on the NHD. A new "geometry" (line) will be generated when you finish
-      moving the point.
+      again and drag to move elsewhere on the NHD. The points will automatically "snap" to the nearest flowline
+      in the NHD as you drag. A new "geometry" (line) will be generated when you finish moving the point.
+      It isn't saved until you click "Submit" below.
+    </p>
+    <p v-if="mapEditMode === 'manual'">
+      Manual mode allows you to modify the line segment by hand. Click on the line segment to activate editing.
+      A series of vertices will appear along the line. Click on one, then click again and drag to modify the line.
+      Note: if you go back to automatic mode and modify the reach again, your changes will be overwritten.
     </p>
     <cv-inline-notification
       v-if="tooZoomedOut && !noticeHidden"
@@ -17,6 +26,16 @@
       id="nhd-editor-container"
       style="height: 400px;"
     >
+      <div class="nhd-editor-mode-switcher">
+        <cv-dropdown v-model="mapEditMode">
+          <cv-dropdown-item value="automatic">
+            Automatic
+          </cv-dropdown-item>
+          <cv-dropdown-item value="manual">
+            Manual
+          </cv-dropdown-item>
+        </cv-dropdown>
+      </div>
       <div id="nhd-editor" />
       <nwi-basemap-toggle
         :offset-right="false"
@@ -36,12 +55,10 @@ import {
 import bbox from '@turf/bbox'
 import bboxPolygon from '@turf/bbox-polygon'
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon'
-import along from '@turf/along'
-import geoLength from '@turf/length'
 import lineIntersect from '@turf/line-intersect'
 import lineSlice from '@turf/line-slice'
 import pointToLineDistance from '@turf/point-to-line-distance'
-import { lineString } from '@turf/helpers'
+import { lineString, point } from '@turf/helpers'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 
 import Graph from 'graph-data-structure'
@@ -51,6 +68,11 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 import SnapMode from '../utils/SnapMode'
 import StaticMode from '@mapbox/mapbox-gl-draw-static-mode'
 
+const defaultMapModes = {
+  automatic: 'SnapMode',
+  manual: 'simple_select'
+}
+
 export default {
   name: 'geometry-editor',
   components: {
@@ -59,7 +81,8 @@ export default {
   data: () => ({
     currentGeom: null,
     tooZoomedOut: false,
-    noticeHidden: false
+    noticeHidden: false,
+    mapEditMode: 'automatic'
   }),
   computed: {
     baseMapUrl () {
@@ -77,11 +100,12 @@ export default {
       return geom ? lineString(geom, {}, { id: 'reachGeom' }) : null
     },
     reachStart () {
-      return along(this.reachGeom, 0)
+      const geom = this.currentGeom || this.reachGeom
+      return point(geom.geometry.coordinates[0])
     },
     reachEnd () {
-      const reachLength = geoLength(this.reachGeom)
-      return along(this.reachGeom, reachLength)
+      const geom = this.currentGeom || this.reachGeom
+      return point(geom.geometry.coordinates.slice(-1)[0])
     },
     ...mapState({
       mapStyle: state => state.riverIndexState.riverIndexData.mapStyle,
@@ -100,20 +124,21 @@ export default {
     },
     currentGeom (v, old) {
       if (v !== old) {
-        this.draw.delete('reachGeom')
-        this.draw.add({
-          id: 'reachGeom',
-          ...v
-        })
         this.$emit('updatedGeom', v)
       }
     },
+    // turns off editing when user is too zoomed out
     tooZoomedOut (v) {
       if (v) {
+        // deactivate editing
         this.draw.changeMode('StaticMode')
       } else {
-        this.draw.changeMode('SnapMode')
+        // switch back to currently active mode
+        this.setMapEditingMode(this.mapEditMode)
       }
+    },
+    mapEditMode (v) {
+      this.setMapEditingMode(v)
     }
   },
   methods: {
@@ -227,7 +252,16 @@ export default {
       } else {
         newGeom = slicedLine
       }
-      this.currentGeom = newGeom
+      return newGeom
+    },
+    setMapEditingMode (mode) {
+      // if we're too zoomed out, editing mode is StaticMode
+      // and we should keep it that way
+      if (!this.tooZoomedOut) {
+        this.draw.changeMode(defaultMapModes[mode])
+      }
+
+      this.renderDrawFeatures()
     },
     mountMap () {
       mapboxgl.accessToken = mapboxAccessToken
@@ -242,9 +276,10 @@ export default {
 
       this.draw = new MapboxDraw({
         displayControlsDefault: false,
-        defaultMode: 'SnapMode',
+        defaultMode: defaultMapModes[this.mapEditMode],
         modes: {
           StaticMode,
+          ...MapboxDraw.modes,
           SnapMode: {
             ...SnapMode,
             config: {
@@ -255,7 +290,7 @@ export default {
       })
       this.map.addControl(this.draw, 'top-left')
 
-      this.map.on('load', () => { this.initializeDraw() })
+      this.map.on('load', () => { this.renderDrawFeatures() })
 
       this.map.on('zoomend', () => {
         const zoom = this.map.getZoom()
@@ -271,26 +306,44 @@ export default {
       })
 
       this.map.on('draw.update', (e) => {
-        this.calculateGeom()
+        if (this.mapEditMode === 'automatic') {
+          // calculate the new line "automatically"
+          this.currentGeom = this.calculateGeom()
+          // render the new line
+          this.draw.delete('reachGeom')
+          this.draw.add({
+            id: 'reachGeom',
+            ...this.currentGeom
+          })
+        } else {
+          // get the new geom from draw, where it was set
+          this.currentGeom = this.draw.get('reachGeom')
+        }
       })
     },
-    initializeDraw () {
-      this.tooZoomedOut = this.map.getZoom()
-
-      if (this.reachGeom) {
-        this.draw.add({
+    renderDrawFeatures () {
+      if (!this.reachGeom) {
+        return
+      }
+      const features = []
+      // endpoints don't get rendered in "manual" mode
+      if (this.mapEditMode === 'automatic') {
+        features.push({
           id: 'reachStart',
           ...this.reachStart
-        })
-        this.draw.add({
+        }, {
           id: 'reachEnd',
           ...this.reachEnd
         })
-        this.draw.add({
-          id: 'reachGeom',
-          ...this.reachGeom
-        })
       }
+      features.push({
+        id: 'reachGeom',
+        ...this.currentGeom
+      })
+      this.draw.set({
+        type: 'FeatureCollection',
+        features: features
+      })
     }
   },
   mounted () {
@@ -305,11 +358,34 @@ export default {
 </script>
 
 <style lang="scss">
+h5.mode-name {
+  text-transform: capitalize;
+}
 #nhd-editor-container {
   min-width: 100%;
 
   width: 100%;
   position: relative;
+
+  .nhd-editor-mode-switcher {
+    background-color: #fff;
+    border-radius: 3px;
+    top: 0.5rem;
+    left: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    width: 10rem;
+    position: absolute;
+    z-index: 1;
+    display: block;
+
+    .bx--dropdown {
+      border-radius: 3px;
+    }
+
+    button.bx--dropdown-text {
+      cursor: pointer;
+    }
+  }
 }
 #nhd-editor {
   height: 100%;
