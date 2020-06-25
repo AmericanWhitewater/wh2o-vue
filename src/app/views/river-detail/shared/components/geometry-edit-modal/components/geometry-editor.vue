@@ -1,14 +1,21 @@
 <template>
-  <section class="mb-xl">
+  <section>
     <p>
       The dotted lines represent the National Hydrography Dataset (NHD), a USGS dataset of rivers and streams
       in the United States. To modify the reach, click on either endpoint to "activate" it, then click it
       again and drag to move elsewhere on the NHD. A new "geometry" (line) will be generated when you finish
       moving the point.
     </p>
+    <cv-inline-notification
+      v-if="tooZoomedOut && !noticeHidden"
+      kind="warning"
+      title="Zoom in to edit"
+      sub-title="Since the editor snaps to a very dense dataset (the National Hydrography Dataset), you can only edit it meaningfully at closer zoom levels. Zoom in to enable editing."
+      @close="noticeHidden = true"
+    />
     <div
       id="nhd-editor-container"
-      style="height: 500px;"
+      style="height: 400px;"
     >
       <div id="nhd-editor" />
       <nwi-basemap-toggle
@@ -42,6 +49,7 @@ import Graph from 'graph-data-structure'
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
 import SnapMode from '../utils/SnapMode'
+import StaticMode from '@mapbox/mapbox-gl-draw-static-mode'
 
 export default {
   name: 'geometry-editor',
@@ -49,7 +57,9 @@ export default {
     NwiBasemapToggle
   },
   data: () => ({
-    currentGeom: null
+    currentGeom: null,
+    tooZoomedOut: false,
+    noticeHidden: false
   }),
   computed: {
     baseMapUrl () {
@@ -96,6 +106,13 @@ export default {
           ...v
         })
         this.$emit('updatedGeom', v)
+      }
+    },
+    tooZoomedOut (v) {
+      if (v) {
+        this.draw.changeMode('StaticMode')
+      } else {
+        this.draw.changeMode('SnapMode')
       }
     }
   },
@@ -219,7 +236,7 @@ export default {
         style: this.baseMapUrl,
         bounds: this.startingBounds,
         fitBoundsOptions: { padding: 80 },
-        minZoom: 11
+        minZoom: 8
       }
       this.map = new mapboxgl.Map(mapProps)
 
@@ -227,6 +244,7 @@ export default {
         displayControlsDefault: false,
         defaultMode: 'SnapMode',
         modes: {
+          StaticMode,
           SnapMode: {
             ...SnapMode,
             config: {
@@ -239,11 +257,26 @@ export default {
 
       this.map.on('load', () => { this.initializeDraw() })
 
+      this.map.on('zoomend', () => {
+        const zoom = this.map.getZoom()
+        // we can't support NHD calculations when too zoomed out computationally
+        // plus, you can't really accurately "snap" to the NHD when you aren't zoomed
+        // in enough to see it. So at low zooms, put the map in static mode and display
+        // a notice
+        if (zoom < 11) {
+          this.tooZoomedOut = true
+        } else {
+          this.tooZoomedOut = false
+        }
+      })
+
       this.map.on('draw.update', (e) => {
         this.calculateGeom()
       })
     },
     initializeDraw () {
+      this.tooZoomedOut = this.map.getZoom()
+
       if (this.reachGeom) {
         this.draw.add({
           id: 'reachStart',
