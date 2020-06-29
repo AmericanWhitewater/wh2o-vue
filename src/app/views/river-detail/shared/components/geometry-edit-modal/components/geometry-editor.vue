@@ -150,10 +150,10 @@ export default {
         const lines = this.map
           .queryRenderedFeatures({ layers: ['nhdflowline'] })
           .filter(x => (
-            x.geometry.type === 'LineString'
-            // thought I could limit our linestrings here but this leaves out some important
-            // data segments, maybe revisit?
-            //            [46000, 46003, 46006, 46007].includes(x.properties.fcode)
+            x.geometry.type === 'LineString' &&
+            // this is mostly taken from Seth's code, we may want to revisit?
+            // ideally improves speed by excluding some NHD flowlines from graph
+            ![31800, 33601, 33603, 34300, 34305, 34306, 36400, 40300, 40307, 40308, 40309, 44500, 46100, 48400, 48500, 56800].includes(x.properties.fcode)
           ))
         this.linesCache[cacheKey] = lines
       }
@@ -290,20 +290,12 @@ export default {
       })
       this.map.addControl(this.draw, 'top-left')
 
-      this.map.on('load', () => { this.renderDrawFeatures() })
-
-      this.map.on('zoomend', () => {
-        const zoom = this.map.getZoom()
-        // we can't support NHD calculations when too zoomed out computationally
-        // plus, you can't really accurately "snap" to the NHD when you aren't zoomed
-        // in enough to see it. So at low zooms, put the map in static mode and display
-        // a notice
-        if (zoom < 11) {
-          this.tooZoomedOut = true
-        } else {
-          this.tooZoomedOut = false
-        }
+      this.map.on('load', () => {
+        this.renderDrawFeatures()
+        this.setTooZoomedOut()
       })
+
+      this.map.on('zoomend', this.setTooZoomedOut)
 
       this.map.on('draw.update', (e) => {
         if (this.mapEditMode === 'automatic') {
@@ -320,6 +312,18 @@ export default {
           this.currentGeom = this.draw.get('reachGeom')
         }
       })
+    },
+    setTooZoomedOut () {
+      const zoom = this.map.getZoom()
+      // we can't support NHD calculations when too zoomed out computationally
+      // plus, you can't really accurately "snap" to the NHD when you aren't zoomed
+      // in enough to see it. So at low zooms, put the map in static mode and display
+      // a notice
+      if (zoom < 11) {
+        this.tooZoomedOut = true
+      } else {
+        this.tooZoomedOut = false
+      }
     },
     renderDrawFeatures () {
       if (!this.reachGeom) {
