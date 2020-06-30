@@ -83,6 +83,7 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 import SnapMode from '../utils/SnapMode'
 import SnapDrawPointMode from '../utils/SnapDrawPointMode'
 import StaticMode from '@mapbox/mapbox-gl-draw-static-mode'
+import DrawStyles from '../utils/DrawStyles'
 
 const defaultMapModes = {
   editing: {
@@ -313,6 +314,7 @@ export default {
       this.draw = new MapboxDraw({
         displayControlsDefault: false,
         defaultMode: defaultMapModes[this.geometryMode][this.mapEditMode],
+        styles: DrawStyles,
         modes: {
           StaticMode,
           ...MapboxDraw.modes,
