@@ -69,6 +69,7 @@ import {
 import bbox from '@turf/bbox'
 import bboxPolygon from '@turf/bbox-polygon'
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon'
+import booleanPointOnLine from '@turf/boolean-point-on-line'
 import lineIntersect from '@turf/line-intersect'
 import lineSlice from '@turf/line-slice'
 import pointToLineDistance from '@turf/point-to-line-distance'
@@ -203,7 +204,9 @@ export default {
 
         lines.forEach((x, index) => {
           lines.slice(index + 1).forEach(y => {
-            if (x !== y && lineIntersect(x, y).features.length) {
+            if (x !== y &&
+                (booleanPointOnLine(y.geometry.coordinates[0], x) ||
+                 booleanPointOnLine(y.geometry.coordinates.slice(-1)[0], x))) {
               graph.addEdge(x.id.toString(), y.id.toString())
               graph.addEdge(y.id.toString(), x.id.toString())
             }
