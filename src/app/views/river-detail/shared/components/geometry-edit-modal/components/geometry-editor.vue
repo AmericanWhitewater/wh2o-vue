@@ -3,18 +3,32 @@
     <h5 class="mode-name">
       Editing in {{ mapEditMode }} Mode
     </h5>
-    <p v-if="mapEditMode === 'automatic'">
-      The dotted lines represent the National Hydrography Dataset (NHD), a USGS dataset of rivers and streams
-      in the United States. To modify the reach, click on either endpoint to "activate" it, then click it
-      again and drag to move elsewhere on the NHD. The points will automatically "snap" to the nearest flowline
-      in the NHD as you drag. A new "geometry" (line) will be generated when you finish moving the point.
-      It isn't saved until you click "Submit" below.
-    </p>
-    <p v-if="mapEditMode === 'manual'">
-      Manual mode allows you to modify the line segment by hand. Click on the line segment to activate editing.
-      A series of vertices will appear along the line. Click on one, then click again and drag to modify the line.
-      Note: if you go back to automatic mode and modify the reach again, your changes will be overwritten.
-    </p>
+    <template v-if="geometryMode === 'creating'">
+      <p v-if="mapEditMode ==='automatic'">
+        Click on the map to create the start and end points of your reach. When you click, your selection will
+        automatically snap to the National Hydrography Dataset (NHD), a USGS dataset of rivers and streams. Once
+        you've defined two points, the map will automatically calculate a path between the two.
+      </p>
+      <p v-if="mapEditMode ==='manual'">
+        Click on the map to start defining a line segment. You can keep adding new vertices by clicking in new places
+        or you can "complete" your line by clicking a second time on the last vertex you created. The dotted pink
+        lines represent the USGS National Hydrography Dataset (NHD), a USGS dataset of rivers and streams.
+      </p>
+    </template>
+    <template v-else>
+      <p v-if="mapEditMode === 'automatic'">
+        The dotted lines represent the National Hydrography Dataset (NHD), a USGS dataset of rivers and streams
+        in the United States. To modify the reach, click on either endpoint to "activate" it, then click it
+        again and drag to move elsewhere on the NHD. The points will automatically "snap" to the nearest flowline
+        in the NHD as you drag. A new "geometry" (line) will be generated when you finish moving the point.
+        It isn't saved until you click "Submit" below.
+      </p>
+      <p v-if="mapEditMode === 'manual'">
+        Manual mode allows you to modify the line segment by hand. Click on the line segment to activate editing.
+        A series of vertices will appear along the line. Click on one, then click again and drag to modify the line.
+        Note: if you go back to automatic mode and modify the reach again, your changes will be overwritten.
+      </p>
+    </template>
     <cv-inline-notification
       v-if="tooZoomedOut && !noticeHidden"
       kind="warning"
@@ -66,11 +80,18 @@ import Graph from 'graph-data-structure'
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
 import SnapMode from '../utils/SnapMode'
+import SnapDrawPointMode from '../utils/SnapDrawPointMode'
 import StaticMode from '@mapbox/mapbox-gl-draw-static-mode'
 
 const defaultMapModes = {
-  automatic: 'SnapMode',
-  manual: 'simple_select'
+  editing: {
+    automatic: 'SnapMode',
+    manual: 'simple_select'
+  },
+  creating: {
+    automatic: 'SnapDrawPointMode',
+    manual: 'draw_line_string'
+  }
 }
 
 export default {
@@ -101,11 +122,11 @@ export default {
     },
     reachStart () {
       const geom = this.currentGeom || this.reachGeom
-      return point(geom.geometry.coordinates[0])
+      return geom ? point(geom.geometry.coordinates[0]) : null
     },
     reachEnd () {
       const geom = this.currentGeom || this.reachGeom
-      return point(geom.geometry.coordinates.slice(-1)[0])
+      return geom ? point(geom.geometry.coordinates.slice(-1)[0]) : null
     },
     ...mapState({
       mapStyle: state => state.riverIndexState.riverIndexData.mapStyle,
@@ -116,6 +137,15 @@ export default {
         return bbox(this.reachGeom)
       }
       return null
+    },
+    // determines whether we need to add elements to the map
+    // or edit ones that already exist
+    geometryMode () {
+      if (this.currentGeom || this.reachGeom) {
+        return 'editing'
+      } else {
+        return 'creating'
+      }
     }
   },
   watch: {
@@ -136,6 +166,9 @@ export default {
         // switch back to currently active mode
         this.setMapEditingMode(this.mapEditMode)
       }
+    },
+    geometryMode (v) {
+      this.setMapEditingMode(this.mapEditMode)
     },
     mapEditMode (v) {
       this.setMapEditingMode(v)
@@ -258,7 +291,7 @@ export default {
       // if we're too zoomed out, editing mode is StaticMode
       // and we should keep it that way
       if (!this.tooZoomedOut) {
-        this.draw.changeMode(defaultMapModes[mode])
+        this.draw.changeMode(defaultMapModes[this.geometryMode][mode])
       }
 
       this.renderDrawFeatures()
@@ -270,16 +303,22 @@ export default {
         style: this.baseMapUrl,
         bounds: this.startingBounds,
         fitBoundsOptions: { padding: 80 },
-        minZoom: 8
+        minZoom: 5
       }
       this.map = new mapboxgl.Map(mapProps)
 
       this.draw = new MapboxDraw({
         displayControlsDefault: false,
-        defaultMode: defaultMapModes[this.mapEditMode],
+        defaultMode: defaultMapModes[this.geometryMode][this.mapEditMode],
         modes: {
           StaticMode,
           ...MapboxDraw.modes,
+          SnapDrawPointMode: {
+            ...SnapDrawPointMode,
+            config: {
+              layers: ['nhdflowline']
+            }
+          },
           SnapMode: {
             ...SnapMode,
             config: {
@@ -312,6 +351,47 @@ export default {
           this.currentGeom = this.draw.get('reachGeom')
         }
       })
+
+      // for creating a new reach (or adding geom to one that doesn't have it)
+      this.map.on('draw.create', (e) => {
+        if (this.mapEditMode === 'manual') {
+          const newReach = e.features[0]
+          // need to copy to new feature with 'reachGeom' id to function with
+          // existing logic
+          this.draw.delete(newReach.id)
+          newReach.id = 'reachGeom'
+          this.draw.add(newReach)
+          this.currentGeom = newReach
+        } else { // automatic
+          // in automatic mode, user is prompted to create two points (snapped to NHD)
+          // then calculateGeom() is called
+          const newPoint = e.features[0]
+          this.draw.delete(newPoint.id)
+
+          if (!this.draw.get('reachStart')) {
+            newPoint.id = 'reachStart'
+          } else if (!this.draw.get('reachEnd')) {
+            newPoint.id = 'reachEnd'
+          } else {
+            return
+          }
+          this.draw.add(newPoint)
+
+          if (this.draw.get('reachStart') && this.draw.get('reachEnd')) {
+            // add straight line from start to finish to facilitate geom calculation
+            this.currentGeom = lineString([
+              this.draw.get('reachStart').geometry.coordinates,
+              this.draw.get('reachEnd').geometry.coordinates], {}, { id: 'reachGeom' })
+
+            this.currentGeom = this.calculateGeom()
+            // render the new line
+            this.draw.add({
+              id: 'reachGeom',
+              ...this.currentGeom
+            })
+          }
+        }
+      })
     },
     setTooZoomedOut () {
       const zoom = this.map.getZoom()
@@ -326,7 +406,7 @@ export default {
       }
     },
     renderDrawFeatures () {
-      if (!this.reachGeom) {
+      if (!this.currentGeom) {
         return
       }
       const features = []
