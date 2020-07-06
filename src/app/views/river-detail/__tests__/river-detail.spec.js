@@ -35,6 +35,11 @@ const mockStore = {
         data: null
       }
     },
+    riverIndexState: {
+      riverIndexData: {
+        mapStyle: 'satellite'
+      }
+    },
     appGlobalState: {
       appGlobalData: {
         editMode: false
@@ -55,7 +60,7 @@ const options = {
     $router: mockRouter,
     $route: mockRoute
   },
-  stubs: ['router-view', 'EditOff20', 'Notification20', 'NotificationNew20', 'Favorite20', 'Edit20']
+  stubs: ['router-view', 'EditOff20', 'Notification20', 'NotificationNew20', 'Favorite20', 'Edit20', 'geometry-editor']
 }
 
 describe('river-detail.vue', () => {
