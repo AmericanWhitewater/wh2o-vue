@@ -94,10 +94,10 @@ import { checkWindow, poiClasses } from '@/app/global/mixins'
 import ContentEditor from '@/app/global/components/content-editor/content-editor'
 import NwiMapEditor from './nwi-map-editor.vue'
 
-import { lineString } from '@turf/helpers'
+import { lineString, point } from '@turf/helpers'
+import lineSlice from '@turf/line-slice'
+import geoLength from '@turf/length'
 import along from '@turf/along'
-import wkx from 'wkx'
-import { Buffer } from 'buffer'
 
 export default {
   name: 'rapid-edit-modal',
@@ -185,7 +185,7 @@ export default {
     },
     reachGeom () {
       // TODO: get graphql API to return a linestring or geojson instead of this text
-      const geom = this.$store.state.riverDetailState.riverDetailData.data.geom?.split(',').map(d => d.split(' '))
+      const geom = this.$store.state.riverDetailState.riverDetailData.data.geom?.split(',').map(d => d.split(' ').map(y => parseFloat(y)))
       return geom ? lineString(geom) : null
     }
   },
@@ -213,20 +213,15 @@ export default {
       this.updateDistance()
     },
     updateDistance () {
-      // placeholder to update `formData.distance` by calculating it
+      const segment = lineSlice(
+        point(this.reachGeom.geometry.coordinates[0]),
+        point(this.formData.geom.coordinates),
+        this.reachGeom)
+      this.formData.distance = geoLength(segment, { units: 'miles' }).toFixed(2)
+      // this.formData.distance = geoLength([0], { units: 'miles' })
     },
     handleCancel () {
       this.$emit('edit:cancelled')
-    },
-    // TODO: get graphql to return something more usable than WKB.
-    getGeomFromWKB (wkb) {
-      if (wkb) {
-        const buffer = Buffer.from(wkb, 'hex')
-        const pointGeom = wkx.Geometry.parse(buffer).toGeoJSON()
-        return pointGeom
-      } else {
-        return {}
-      }
     }
   },
   mounted () {
@@ -235,8 +230,8 @@ export default {
     if (this.activeRapid) {
       this.formData = Object.assign(this.formData, this.activeRapid)
       if (this.activeRapid.rloc) {
-        // parse rloc into coords
-        this.formData.geom = this.getGeomFromWKB(this.activeRapid.rloc)
+        const coords = this.activeRapid.rloc.split(' ').map(x => parseFloat(x))
+        this.formData.geom = point(coords).geometry
       }
       distance = this.activeRapid.distance
       this.initialRapidDescription = this.activeRapid.description
