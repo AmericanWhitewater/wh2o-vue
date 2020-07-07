@@ -72,8 +72,8 @@
           title="Characteristics"
         /> -->
         <ContentEditor
-          v-if="renderEditor && initialRapidDescription"
-          :content="initialRapidDescription"
+          v-if="renderEditor"
+          :content="formData.description"
           label="Description"
           placeholder=" "
           @content:updated="descriptionUpdated"
@@ -120,8 +120,8 @@ export default {
   },
   data: () => ({
     renderEditor: false,
+
     formPending: false,
-    initialRapidDescription: '',
     poiCharacteristics: [
       {
         value: 'putin',
@@ -234,7 +234,6 @@ export default {
     }
   },
   mounted () {
-    this.renderEditor = true
     let distance
     if (this.activeRapid) {
       this.formData = Object.assign(this.formData, this.activeRapid)
@@ -243,8 +242,8 @@ export default {
         this.formData.geom = point(coords).geometry
       }
       distance = this.activeRapid.distance
-      this.initialRapidDescription = this.activeRapid.description
     }
+    this.renderEditor = true
     if (!this.formData.geom.coordinates.length && this.reachGeom) {
       // if distance is present, use it to calculate the point
       // otherwise, create a point anywhere on the line
