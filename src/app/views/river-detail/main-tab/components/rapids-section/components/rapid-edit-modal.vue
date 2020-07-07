@@ -90,6 +90,7 @@
 </template>
 <script>
 import { globalAppActions } from '@/app/global/state'
+import { rapidsActions } from '../../../../shared/state'
 import { checkWindow, poiClasses } from '@/app/global/mixins'
 import ContentEditor from '@/app/global/components/content-editor/content-editor'
 import NwiMapEditor from './nwi-map-editor.vue'
@@ -195,6 +196,15 @@ export default {
     },
     submitForm () {
       this.$emit('edit:submitted')
+      // different actions for *new* POI vs. updated POI
+      if (this.activeRapid.id) {
+        this.$store.dispatch(rapidsActions.UPDATE_RAPID, {
+          id: this.activeRapid.id,
+          ...this.formData
+        })
+      } else {
+        // console.log("it's a new rapid!")
+      }
 
       setTimeout(() => {
         this.$emit('edit:success')
@@ -218,7 +228,6 @@ export default {
         point(this.formData.geom.coordinates),
         this.reachGeom)
       this.formData.distance = geoLength(segment, { units: 'miles' }).toFixed(2)
-      // this.formData.distance = geoLength([0], { units: 'miles' })
     },
     handleCancel () {
       this.$emit('edit:cancelled')

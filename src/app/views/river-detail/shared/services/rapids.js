@@ -48,8 +48,34 @@ const createRapid = data => {
 }
 
 const updateRapid = data => {
-  const url = `/rapid/${data.id}`
-  return httpClient.patch(url, data)
+  return httpClient.post(apiConstants.graphql, {
+    query: `
+      mutation ($id:ID!, $poi: POIInput!) {
+        poiUpdate(id: $id, poi: $poi) {
+          id,
+          name,
+          rloc,
+          description,
+          difficulty,
+          distance,
+          character
+        }
+      }
+    `,
+    variables: {
+      id: data.id,
+      poi: {
+        name: data.name,
+        rloc: data.rloc,
+        description: data.description,
+        difficulty: data.difficulty,
+        distance: data.distance,
+        character: []
+      }
+    }
+  }).then(response => {
+    return response.data
+  })
 }
 
 const deleteRapid = data => {

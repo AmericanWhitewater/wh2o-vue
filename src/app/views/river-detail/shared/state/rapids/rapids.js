@@ -1,6 +1,6 @@
 import { reflectKeys } from '@/app/global/services'
 
-import { fetchRapidsData } from '../../services'
+import { fetchRapidsData, updateRapid } from '../../services'
 
 /** Initial state */
 const initialState = {
@@ -16,11 +16,11 @@ const namespacedPrefix = '[RAPIDS]'
  * Mutation types
  */
 const mutationTypes = reflectKeys(
-  ['DATA_SUCCESS', 'DATA_REQUEST', 'DATA_ERROR', 'DATA_RESET'],
+  ['DATA_SUCCESS', 'DATA_REQUEST', 'DATA_ERROR', 'DATA_RESET', 'UPDATE_REQUEST', 'UPDATE_SUCCESS'],
   namespacedPrefix
 )
 
-const { DATA_ERROR, DATA_REQUEST, DATA_RESET, DATA_SUCCESS } = mutationTypes
+const { DATA_ERROR, DATA_REQUEST, DATA_RESET, DATA_SUCCESS, UPDATE_REQUEST, UPDATE_SUCCESS } = mutationTypes
 
 /**
  *  mutations
@@ -44,12 +44,21 @@ const mutations = {
 
   [DATA_RESET] (state) {
     Object.assign(state, ...initialState)
+  },
+
+  [UPDATE_REQUEST] (state) {
+  },
+
+  [UPDATE_SUCCESS] (state, payload) {
+    const updatedReach = payload.poiUpdate
+    const existingRapid = state.data.find(r => r.id === updatedReach.id)
+    Object.assign(existingRapid, { ...updatedReach })
   }
 }
 
 /** Actions types constants */
 export const rapidsActions = reflectKeys(
-  ['FETCH_RAPIDS_DATA', 'INITIAL_STATE'],
+  ['FETCH_RAPIDS_DATA', 'UPDATE_RAPID', 'INITIAL_STATE'],
   namespacedPrefix
 )
 
@@ -61,7 +70,8 @@ const actions = {
     })
 
     if (!result.errors) {
-      context.commit(DATA_SUCCESS, result.data.reach.pois)
+      const sortedPois = result.data.reach.pois.sort((a, b) => a.distance - b.distance)
+      context.commit(DATA_SUCCESS, sortedPois)
     } else {
       context.commit(DATA_ERROR, 'error')
     }
@@ -70,6 +80,23 @@ const actions = {
   },
   async [rapidsActions.INITIAL_STATE] (context, data) {
     context.commit(DATA_RESET)
+  },
+  async [rapidsActions.UPDATE_RAPID] (context, data) {
+    context.commit(UPDATE_REQUEST)
+
+    const payload = {
+      rloc: `${data.rloc[0]} ${data.rloc[1]}`,
+      ...data
+    }
+    const result = await updateRapid(payload).catch(e => {
+      context.commit(DATA_ERROR, e)
+    })
+
+    if (!result.errors) {
+      context.commit(UPDATE_SUCCESS, result.data)
+    } else {
+      context.commit(DATA_ERROR, 'error')
+    }
   }
 }
 
