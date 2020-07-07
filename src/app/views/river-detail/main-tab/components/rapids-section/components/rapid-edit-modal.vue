@@ -1,7 +1,7 @@
 <template>
-  <div :class="[{'visible':visible},'rapid-edit-modal']">
+  <div class="rapid-edit-modal">
     <cv-modal
-      :visible="visible"
+      :visible="rapidModalVisible"
       size="large"
       @secondary-click="handleCancel"
       @primary-click="submitForm"
@@ -109,7 +109,7 @@ export default {
   /** @todo revisit adding checkWindow mixin performance considerations */
   mixins: [checkWindow, poiClasses],
   props: {
-    visible: {
+    rapidModalVisible: {
       type: Boolean,
       required: true
     },

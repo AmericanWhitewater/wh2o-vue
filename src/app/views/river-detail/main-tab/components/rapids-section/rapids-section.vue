@@ -31,6 +31,7 @@
             :key="index"
             :rapid="rapid"
             :first-p-o-i="index === 0 ? true : false"
+            @rapid:edit="triggerEdit"
           />
         </div>
       </template>
@@ -46,8 +47,11 @@
     </template>
     <rapid-edit-modal
       v-if="editMode"
-      :visible="newRapidModalVisible"
-      @edit:cancelled="newRapidModalVisible=false"
+      :key="currentlyEditingRapidId"
+      :rapid-id="currentlyEditingRapidId"
+      :rapid-modal-visible="rapidModalVisible"
+      @edit:cancelled="closeModal"
+      @edit:success="closeModal"
     />
   </section>
 </template>
@@ -66,7 +70,8 @@ export default {
     RapidEditModal
   },
   data: () => ({
-    newRapidModalVisible: false,
+    rapidModalVisible: false,
+    currentlyEditingRapidId: null,
     formData: {
       files: [],
       name: '',
@@ -86,9 +91,13 @@ export default {
     })
   },
   methods: {
+    triggerEdit (rapidId) {
+      this.currentlyEditingRapidId = rapidId
+      this.rapidModalVisible = true
+    },
     openModal () {
       if (this.user) {
-        this.newRapidModalVisible = true
+        this.rapidModalVisible = true
       } else {
         this.$store.dispatch(globalAppActions.SEND_TOAST, {
           title: 'Must Log In',
@@ -99,6 +108,14 @@ export default {
           autoHide: true
         })
       }
+    },
+    closeModal () {
+      this.rapidModalVisible = false
+      // ensure that actual modal hide() lifecycle completes
+      // basically, if the key changes too quickly, the modal hide()
+      // action doesn't complete so this class "bx--body--with-modal-open"
+      // doesn't get removed from the body *which prevents scrolling*
+      this.$nextTick(() => { this.currentlyEditingRapidId = null })
     },
     loadRapids () {
       this.$store.dispatch(
