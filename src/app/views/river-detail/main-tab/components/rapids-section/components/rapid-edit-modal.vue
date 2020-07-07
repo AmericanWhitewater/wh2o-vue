@@ -89,6 +89,7 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 import { globalAppActions } from '@/app/global/state'
 import { rapidsActions } from '../../../../shared/state'
 import { checkWindow, poiClasses } from '@/app/global/mixins'
@@ -175,9 +176,10 @@ export default {
     }
   }),
   computed: {
-    rapids () {
-      return this.$store.state.riverDetailState.rapidsData.data
-    },
+    ...mapState({
+      river: state => state.riverDetailState.riverDetailData.data,
+      rapids: state => state.riverDetailState.rapidsData.data
+    }),
     activeRapid () {
       return this.rapidId ? this.rapids.find(r => r.id === this.rapidId) : null
     },
@@ -186,7 +188,7 @@ export default {
     },
     reachGeom () {
       // TODO: get graphql API to return a linestring or geojson instead of this text
-      const geom = this.$store.state.riverDetailState.riverDetailData.data.geom?.split(',').map(d => d.split(' ').map(y => parseFloat(y)))
+      const geom = this.river.geom?.split(',').map(d => d.split(' ').map(y => parseFloat(y)))
       return geom ? lineString(geom) : null
     }
   },
@@ -197,13 +199,17 @@ export default {
     submitForm () {
       this.$emit('edit:submitted')
       // different actions for *new* POI vs. updated POI
-      if (this.activeRapid.id) {
+      if (this.activeRapid) {
         this.$store.dispatch(rapidsActions.UPDATE_RAPID, {
           id: this.activeRapid.id,
           ...this.formData
         })
-      } else {
-        // console.log("it's a new rapid!")
+      } else { // creating a new rapid
+        this.$store.dispatch(rapidsActions.CREATE_RAPID, {
+          id: this.$randomId,
+          reach_id: this.river.id,
+          ...this.formData
+        })
       }
 
       setTimeout(() => {
