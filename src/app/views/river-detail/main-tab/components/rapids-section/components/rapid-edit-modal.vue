@@ -55,7 +55,7 @@
           :disabled="formPending"
         />
         <cv-combo-box
-          v-model="formData.class"
+          v-model="formData.difficulty"
           class="mb-spacing-md"
           title="Class"
           auto-filter
@@ -167,7 +167,7 @@ export default {
     ],
     formData: {
       name: '',
-      class: '',
+      difficulty: '',
       distance: 0,
       description: '',
       character: [],
