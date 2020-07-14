@@ -70,6 +70,8 @@ const createRapid = data => {
         approximate: false // change this if approximate is added to form
       }
     }
+  }).then(response => {
+    return response.data.data.poiUpdate
   })
 }
 
@@ -100,7 +102,7 @@ const updateRapid = data => {
       }
     }
   }).then(response => {
-    return response.data
+    return response.data.data.poiUpdate
   })
 }
 

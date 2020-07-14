@@ -109,7 +109,7 @@
           :resource-name="rapid.name"
           @delete:cancelled="deleteModalVisible = false"
           @delete:success="deleteModalVisible = false"
-          @delete:confirmed="deleteRapid"
+          @delete:confirmed="deleteRapid(rapid)"
         />
       </template>
     </cv-tile>
@@ -119,6 +119,7 @@
 import RapidIconBar from './rapid-icon-bar'
 import RapidMediaUploader from './rapid-media-uploader'
 import ConfirmDeleteModal from '@/app/global/components/confirm-delete-modal/confirm-delete-modal.vue'
+import { rapidsActions } from '../../../../shared/state'
 export default {
   name: 'rapids-item',
   components: {
@@ -182,9 +183,11 @@ export default {
       this.showConfirmation = false
       this.uploadFormVisible = false
     },
-    deleteRapid () {
+    deleteRapid (rapid) {
       this.deleteModalVisible = false
-      this.$emit('woo... rapid deleted')
+      this.$store.dispatch(rapidsActions.DELETE_RAPID, {
+        id: rapid.id
+      })
     }
   },
   created () {

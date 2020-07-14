@@ -198,24 +198,27 @@ export default {
     },
     submitForm () {
       this.$emit('edit:submitted')
+      let message
       // different actions for *new* POI vs. updated POI
       if (this.activeRapid) {
         this.$store.dispatch(rapidsActions.UPDATE_RAPID, {
           id: this.activeRapid.id,
           ...this.formData
         })
+        message = 'Rapid Edited'
       } else { // creating a new rapid
         this.$store.dispatch(rapidsActions.CREATE_RAPID, {
           id: this.$randomId,
           reach_id: this.river.id,
           ...this.formData
         })
+        message = 'Rapid Created'
       }
 
       setTimeout(() => {
         this.$emit('edit:success')
         this.$store.dispatch(globalAppActions.SEND_TOAST, {
-          title: 'Rapid Edited',
+          title: message,
           kind: 'success',
           override: true,
           contrast: false,
