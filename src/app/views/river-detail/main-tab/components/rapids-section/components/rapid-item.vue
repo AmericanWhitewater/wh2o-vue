@@ -25,7 +25,7 @@
         </div>
         <rapid-icon-bar
           :character="rapid.character"
-          @rapid:edit="editModalVisible = true"
+          @rapid:edit="triggerEdit"
           @rapid:delete="deleteModalVisible = true"
         />
       </div>
@@ -103,20 +103,13 @@
           :rapid-id="rapid.id"
           @cancel="uploadFormVisible = false"
         />
-        <rapid-edit-modal
-          v-if="editModalVisible"
-          :visible="editModalVisible"
-          :rapid-id="rapid.id"
-          @edit:cancelled="editModalVisible = false"
-          @edit:success="editModalVisible = false"
-        />
         <confirm-delete-modal
           v-if="deleteModalVisible"
           :visible="deleteModalVisible"
           :resource-name="rapid.name"
           @delete:cancelled="deleteModalVisible = false"
           @delete:success="deleteModalVisible = false"
-          @delete:confirmed="deleteRapid"
+          @delete:confirmed="deleteRapid(rapid)"
         />
       </template>
     </cv-tile>
@@ -125,14 +118,13 @@
 <script>
 import RapidIconBar from './rapid-icon-bar'
 import RapidMediaUploader from './rapid-media-uploader'
-import RapidEditModal from './rapid-edit-modal'
 import ConfirmDeleteModal from '@/app/global/components/confirm-delete-modal/confirm-delete-modal.vue'
+import { rapidsActions } from '../../../../shared/state'
 export default {
   name: 'rapids-item',
   components: {
     RapidIconBar,
     RapidMediaUploader,
-    RapidEditModal,
     ConfirmDeleteModal
   },
   props: {
@@ -149,7 +141,6 @@ export default {
     }
   },
   data: () => ({
-    editModalVisible: false,
     deleteModalVisible: false,
     uploadFormVisible: false,
     showConfirmation: false,
@@ -185,13 +176,18 @@ export default {
     }
   },
   methods: {
+    triggerEdit () {
+      this.$emit('rapid:edit', this.rapid.id)
+    },
     cancelUpload () {
       this.showConfirmation = false
       this.uploadFormVisible = false
     },
-    deleteRapid () {
+    deleteRapid (rapid) {
       this.deleteModalVisible = false
-      this.$emit('woo... rapid deleted')
+      this.$store.dispatch(rapidsActions.DELETE_RAPID, {
+        id: rapid.id
+      })
     }
   },
   created () {
