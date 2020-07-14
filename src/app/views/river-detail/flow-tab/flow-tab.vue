@@ -205,18 +205,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.flow-tab {
-  padding-top: $spacing-xl;
-
-  canvas {
-    height: 350px;
-    width: 100%;
-    background-color: $ui-03;
-  }
-  .gage-description {
-    @include carbon--type-style("body-long-02");
-  }
-}
-</style>

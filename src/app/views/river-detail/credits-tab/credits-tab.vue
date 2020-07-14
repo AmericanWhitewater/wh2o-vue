@@ -61,8 +61,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.credits-tab {
-  padding-top: 2rem;
-}
-</style>

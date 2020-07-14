@@ -1,0 +1,55 @@
+.rapid-item {
+  &.form-visible {
+    outline: 3px solid $brand-01;
+  }
+  .bx--tile {
+    margin: $spacing-md 0;
+    .upload-prompt {
+      width: 100%;
+      display: block;
+    }
+    .thumbnail {
+      width: 100%;
+      min-height: 250px;
+      max-height: 250px;
+      margin-bottom: 1rem;
+      img {
+        object-fit: cover;
+        height: 250px;
+        width: 100%;
+        background-color: $ui-05;
+      }
+    }
+  }
+
+  .bx--tile--is-expanded {
+    .bx--tile-content {
+      .bx--tile-content__below-the-fold {
+        border-top: solid 1px $ui-03;
+        margin-top: $spacing-sm;
+        padding-bottom: $spacing-lg;
+        padding-top: 1rem;
+      }
+    }
+  }
+
+  .bx--tile--expandable:hover {
+    background-color: darken($ui-02, 0.05);
+  }
+}
+
+.rapid-meta {
+  @include carbon--type-style("code-01");
+}
+
+.description {
+  @include carbon--type-style("body-long-02");
+}
+
+.top-bar {
+  @include carbon--breakpoint("lg") {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

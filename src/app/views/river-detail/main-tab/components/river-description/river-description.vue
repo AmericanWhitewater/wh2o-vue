@@ -216,32 +216,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-main {
-  p {
-    margin-bottom: 1.25rem;
-  }
-}
-
-.description-content {
-  @include carbon--type-style("body-long-02");
-  p {
-    margin-bottom: 1.25rem;
-  }
-
-  @include carbon--breakpoint("lg") {
-    padding-right: $spacing-xl;
-  }
-  @include carbon--breakpoint("max") {
-    max-width: 80%;
-  }
-}
-</style>
-
-<style lang="scss" scoped>
-
-p {
-  @include carbon--type-style('expressive-heading-03')
-}
-
-</style>
