@@ -55,6 +55,17 @@ module.exports = {
     appleMobileWebAppStatusBarStyle: 'black'
   },
 
+  // resolves a bug with rbush-knn dependency
+  // https://github.com/mourner/rbush-knn/issues/18
+  configureWebpack: {
+    resolve: {
+      alias: {
+        // eslint-disable-next-line no-path-concat
+        tinyqueue: __dirname + '/node_modules/tinyqueue/tinyqueue.js'
+      }
+    }
+  },
+
   /**
    * A function that will receive an instance of ChainableConfig powered by webpack-chain.
    * Allows for more fine-grained modification of the internal webpack config.

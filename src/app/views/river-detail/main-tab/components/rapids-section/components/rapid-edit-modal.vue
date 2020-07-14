@@ -1,7 +1,7 @@
 <template>
-  <div :class="[{'visible':visible},'rapid-edit-modal']">
+  <div class="rapid-edit-modal">
     <cv-modal
-      :visible="visible"
+      :visible="rapidModalVisible"
       size="large"
       @secondary-click="handleCancel"
       @primary-click="submitForm"
@@ -55,7 +55,7 @@
           :disabled="formPending"
         />
         <cv-combo-box
-          v-model="formData.class"
+          v-model="formData.difficulty"
           class="mb-spacing-md"
           title="Class"
           auto-filter
@@ -72,8 +72,8 @@
           title="Characteristics"
         /> -->
         <ContentEditor
-          v-if="renderEditor && initialRapidDescription"
-          :content="initialRapidDescription"
+          v-if="renderEditor"
+          :content="formData.description"
           label="Description"
           placeholder=" "
           @content:updated="descriptionUpdated"
@@ -89,15 +89,17 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 import { globalAppActions } from '@/app/global/state'
+import { rapidsActions } from '../../../../shared/state'
 import { checkWindow, poiClasses } from '@/app/global/mixins'
 import ContentEditor from '@/app/global/components/content-editor/content-editor'
 import NwiMapEditor from './nwi-map-editor.vue'
 
-import { lineString } from '@turf/helpers'
+import { lineString, point } from '@turf/helpers'
+import lineSlice from '@turf/line-slice'
+import geoLength from '@turf/length'
 import along from '@turf/along'
-import wkx from 'wkx'
-import { Buffer } from 'buffer'
 
 export default {
   name: 'rapid-edit-modal',
@@ -108,7 +110,7 @@ export default {
   /** @todo revisit adding checkWindow mixin performance considerations */
   mixins: [checkWindow, poiClasses],
   props: {
-    visible: {
+    rapidModalVisible: {
       type: Boolean,
       required: true
     },
@@ -119,8 +121,8 @@ export default {
   },
   data: () => ({
     renderEditor: false,
+
     formPending: false,
-    initialRapidDescription: '',
     poiCharacteristics: [
       {
         value: 'putin',
@@ -166,7 +168,7 @@ export default {
     ],
     formData: {
       name: '',
-      class: '',
+      difficulty: '',
       distance: 0,
       description: '',
       character: [],
@@ -174,9 +176,10 @@ export default {
     }
   }),
   computed: {
-    rapids () {
-      return this.$store.state.riverDetailState.rapidsData.data
-    },
+    ...mapState({
+      river: state => state.riverDetailState.riverDetailData.data,
+      rapids: state => state.riverDetailState.rapidsData.data
+    }),
     activeRapid () {
       return this.rapidId ? this.rapids.find(r => r.id === this.rapidId) : null
     },
@@ -185,7 +188,7 @@ export default {
     },
     reachGeom () {
       // TODO: get graphql API to return a linestring or geojson instead of this text
-      const geom = this.$store.state.riverDetailState.riverDetailData.data.geom?.split(',').map(d => d.split(' '))
+      const geom = this.river.geom?.split(',').map(d => d.split(' ').map(y => parseFloat(y)))
       return geom ? lineString(geom) : null
     }
   },
@@ -195,11 +198,27 @@ export default {
     },
     submitForm () {
       this.$emit('edit:submitted')
+      let message
+      // different actions for *new* POI vs. updated POI
+      if (this.activeRapid) {
+        this.$store.dispatch(rapidsActions.UPDATE_RAPID, {
+          id: this.activeRapid.id,
+          ...this.formData
+        })
+        message = 'Rapid Edited'
+      } else { // creating a new rapid
+        this.$store.dispatch(rapidsActions.CREATE_RAPID, {
+          id: this.$randomId,
+          reach_id: this.river.id,
+          ...this.formData
+        })
+        message = 'Rapid Created'
+      }
 
       setTimeout(() => {
         this.$emit('edit:success')
         this.$store.dispatch(globalAppActions.SEND_TOAST, {
-          title: 'Rapid Edited',
+          title: message,
           kind: 'success',
           override: true,
           contrast: false,
@@ -213,34 +232,27 @@ export default {
       this.updateDistance()
     },
     updateDistance () {
-      // placeholder to update `formData.distance` by calculating it
+      const segment = lineSlice(
+        point(this.reachGeom.geometry.coordinates[0]),
+        point(this.formData.geom.coordinates),
+        this.reachGeom)
+      this.formData.distance = geoLength(segment, { units: 'miles' }).toFixed(2)
     },
     handleCancel () {
       this.$emit('edit:cancelled')
-    },
-    // TODO: get graphql to return something more usable than WKB.
-    getGeomFromWKB (wkb) {
-      if (wkb) {
-        const buffer = Buffer.from(wkb, 'hex')
-        const pointGeom = wkx.Geometry.parse(buffer).toGeoJSON()
-        return pointGeom
-      } else {
-        return {}
-      }
     }
   },
   mounted () {
-    this.renderEditor = true
     let distance
     if (this.activeRapid) {
       this.formData = Object.assign(this.formData, this.activeRapid)
       if (this.activeRapid.rloc) {
-        // parse rloc into coords
-        this.formData.geom = this.getGeomFromWKB(this.activeRapid.rloc)
+        const coords = this.activeRapid.rloc.split(' ').map(x => parseFloat(x))
+        this.formData.geom = point(coords).geometry
       }
       distance = this.activeRapid.distance
-      this.initialRapidDescription = this.activeRapid.description
     }
+    this.renderEditor = true
     if (!this.formData.geom.coordinates.length && this.reachGeom) {
       // if distance is present, use it to calculate the point
       // otherwise, create a point anywhere on the line

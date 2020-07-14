@@ -27,6 +27,7 @@ import { mapState } from 'vuex'
 import {
   mapboxAccessToken
 } from '@/app/environment/environment'
+import debounce from 'lodash.debounce'
 
 import { lineString, point } from '@turf/helpers'
 import bbox from '@turf/bbox'
@@ -145,7 +146,7 @@ export default {
       })
         .setLngLat([this.geom.coordinates[0], this.geom.coordinates[1]])
         .addTo(this.map)
-      this.pointOfInterest.on('dragend', this.emitPOILocation)
+      this.pointOfInterest.on('dragend', this.debouncedEmitPOILocation)
       this.conditionallyBindSnapHandler()
     },
     loadReach () {
@@ -180,12 +181,17 @@ export default {
       const origPoint = point([coords.lng, coords.lat])
       const newPoint = nearestPointOnLine(this.reachGeom, origPoint, { units: 'miles' })
       this.pointOfInterest.setLngLat([newPoint.geometry.coordinates[0], newPoint.geometry.coordinates[1]])
-      this.emitPOILocation()
+      this.debouncedEmitPOILocation()
     }
   },
   mounted () {
     if (mapboxAccessToken) {
       this.mountMap()
+
+      this.debouncedEmitPOILocation = debounce(this.emitPOILocation, 200, {
+        leading: false,
+        trailing: true
+      })
     }
   }
 }
