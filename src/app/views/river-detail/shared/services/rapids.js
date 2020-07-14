@@ -106,9 +106,21 @@ const updateRapid = data => {
   })
 }
 
-const deleteRapid = data => {
-  const url = `/rapid/${data.id}`
-  return httpClient.delete(url, data)
+const deleteRapid = id => {
+  return httpClient.post(apiConstants.graphql, {
+    query: `
+      mutation ($id:ID!) {
+        poiDelete(id: $id) {
+          id
+        }
+      }
+    `,
+    variables: {
+      id: id
+    }
+  }).then(response => {
+    return response.data.data.poiDelete
+  })
 }
 
 export { fetchRapidsData, createRapid, updateRapid, deleteRapid }
