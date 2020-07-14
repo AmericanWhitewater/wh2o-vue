@@ -4,7 +4,6 @@
   canvas {
     height: 350px;
     width: 100%;
-    background-color: $ui-03;
   }
   .gage-description {
     @include carbon--type-style("body-long-02");

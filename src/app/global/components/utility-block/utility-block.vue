@@ -71,37 +71,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-#utility-block {
-  display: flex;
-  width: 100%;
-  min-height: 100px;
-  height: 100%;
-  padding: $spacing-md;
-  align-items: center;
-  justify-content: center;
-  flex-flow: column nowrap;
-
-  &.dark {
-    background-color: $ui-03;
-  }
-  &.light {
-    background-color: $ui-02;
-  }
-
-  .bx--inline-loading {
-    justify-content: center;
-    @include carbon--type-style("code-01");
-  }
-  .utility-block-text {
-    @include carbon--type-style("code-02");
-  }
-}
-</style>
-<docs>
-
-```js
-<utility-block />
-```
-
-</docs>
