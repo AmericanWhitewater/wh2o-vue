@@ -20,3 +20,7 @@ contributing to the project, consult our [contribution guidelines](./CONTRIBUTIN
 
 * [IBM Carbon Design System](https://www.carbondesignsystem.com/)
 * [Mapbox](https://www.mapbox.com/)
+
+## Other Projects
+
+- [wh2o-api](https://bit.ly/2OqBA2g)

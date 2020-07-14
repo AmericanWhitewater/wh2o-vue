@@ -1,0 +1,121 @@
+.bx--article-card .bx--tile {
+  background: $ui-background;
+  height: 100%;
+  padding: 0;
+  position: relative;
+  transition: background $duration--fast-01;
+  text-decoration: none;
+  margin-bottom: $spacing-05;
+  z-index: 1;
+}
+
+.bx--article-card:hover .bx--tile {
+  background: $hover-ui;
+}
+
+.bx--article-card__tile {
+  z-index: 1;
+  padding: $spacing-05 25% $spacing-05 $spacing-05;
+}
+
+.bx--article-card__title {
+  @include carbon--type-style("productive-heading-03");
+  text-decoration: none;
+  color: $text-01;
+}
+
+.bx--article-card__subtitle {
+  @include carbon--type-style("heading-01");
+  font-weight: 400;
+  text-decoration: none;
+  color: $text-01;
+}
+
+.bx--article-card__info {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  padding: 0;
+  color: $text-02;
+  display: flex;
+}
+
+.bx--article-card__info p {
+  @include carbon--type-style("caption-01");
+  margin: 0;
+}
+
+.bx--article-card__img .gatsby-resp-image-wrapper {
+  margin-bottom: 0;
+}
+
+.bx--article-card__icon--action {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  width: 20px;
+  height: 20px;
+}
+
+.bx--article-card__icon--action svg {
+  fill: $icon-01;
+}
+
+// Dark
+.bx--article-card--dark .bx--tile {
+  background: $carbon--gray-90; //$ui-background for gray 90 theme
+}
+
+.bx--article-card--dark:hover .bx--tile {
+  background: $carbon--gray-80; //$hover-ui for gray 90 theme
+}
+
+.bx--article-card--dark .bx--article-card__title,
+.bx--article-card--dark .bx--article-card__subtitle {
+  color: $text-04;
+}
+
+.bx--article-card--dark .bx--article-card__info {
+  color: $carbon--gray-30; //$text-02 for gray 90 theme
+}
+
+.bx--article-card--dark .bx--article-card__icon--action svg {
+  fill: $carbon--gray-10; //$icon-01 for grsay 90 theme
+}
+
+// Disabled
+.bx--article-card--disabled {
+  cursor: not-allowed;
+}
+
+.bx--article-card--disabled .bx--tile:hover {
+  background: $ui-background;
+  cursor: not-allowed;
+}
+
+.bx--article-card--disabled .bx--article-card__title,
+.bx--article-card--disabled .bx--article-card__subtitle,
+.bx--article-card--disabled .bx--article-card__info {
+  color: $disabled-03;
+}
+
+.bx--article-card--disabled .bx--article-card__icon--action svg {
+  fill: $disabled-02;
+}
+
+// Disabled dark
+.bx--article-card--disabled.bx--article-card--dark .bx--tile:hover {
+  background: $carbon--gray-90; //$ui-background for gray 90 theme
+}
+
+.bx--article-card--disabled.bx--article-card--dark .bx--article-card__title,
+.bx--article-card--disabled.bx--article-card--dark .bx--article-card__subtitle,
+.bx--article-card--disabled.bx--article-card--dark .bx--article-card__info {
+  color: $carbon--gray-50; //$disabled-03 for gray 90
+}
+
+.bx--article-card--disabled.bx--article-card--dark
+  .bx--article-card__icon--action
+  svg {
+  fill: $carbon--gray-70; //$disabled-02 for gray 90
+}

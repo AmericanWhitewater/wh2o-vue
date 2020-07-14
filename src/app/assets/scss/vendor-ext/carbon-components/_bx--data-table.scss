@@ -14,4 +14,10 @@
       vertical-align: middle;
     }
   }
+
+  th {
+    &:first-of-type {
+      padding-left:1rem;
+    }
+  }
 }
