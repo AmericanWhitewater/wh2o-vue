@@ -21,10 +21,20 @@
     "@carbon/grid": "^10.10.2",
     "@carbon/icons-vue": "^10.11.0",
     "@carbon/vue": "^2.27.0",
+    "@mapbox/mapbox-gl-draw": "^1.1.2",
+    "@mapbox/mapbox-gl-draw-static-mode": "^1.0.1",
     "@turf/along": "^6.0.1",
     "@turf/bbox": "^6.0.1",
+    "@turf/bbox-polygon": "^6.0.1",
+    "@turf/boolean-point-in-polygon": "^6.0.1",
+    "@turf/boolean-point-on-line": "^6.0.1",
     "@turf/helpers": "^6.1.4",
+    "@turf/length": "^6.0.2",
+    "@turf/line-intersect": "^6.0.2",
+    "@turf/line-slice": "^5.1.5",
     "@turf/nearest-point-on-line": "^6.0.2",
+    "@turf/point-to-line-distance": "^6.0.0",
+    "@turf/polygon-to-line": "^6.0.3",
     "@vue/composition-api": "^0.5.0",
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-client": "^2.6.8",
@@ -37,10 +47,13 @@
     "core-js": "^3.6.5",
     "emitter-js": "^2.0.2",
     "express": "^4.17.1",
-    "graphql": "^14.6.0",
+    "geojson-rbush": "^3.1.2",
+    "graph-data-structure": "^1.12.0",
+    "graphql": "^15.0.0",
     "mapbox-gl": "^1.10.0",
     "moment": "^2.26.0",
     "nanoid": "^3.1.7",
+    "rbush-knn": "^3.0.1",
     "register-service-worker": "^1.7.1",
     "screenfull": "^5.0.2",
     "scroll-into-view-if-needed": "^2.2.24",
@@ -104,7 +117,7 @@
     "not ie <= 8"
   ],
   "engines": {
-    "node": "10.x"
+    "node": "12.x"
   },
   "gitHooks": {
     "pre-commit": "lint-staged && npm run test:unit"

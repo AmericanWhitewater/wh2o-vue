@@ -8,7 +8,9 @@
 
 import { reflectKeys } from '@/app/global/services'
 
-import { fetchRiverDetailData } from '../../services'
+import { fetchRiverDetailData, updateRiverDetailGeom } from '../../services'
+
+import wkx from 'wkx'
 
 const initialState = {
   loading: false,
@@ -20,7 +22,7 @@ const initialState = {
 const namespacedPrefix = '[RIVER_DETAIL]'
 
 const mutationTypes = reflectKeys(
-  ['DATA_SUCCESS', 'DATA_REQUEST', 'DATA_ERROR', 'DATA_RESET', 'MODE_SET'],
+  ['DATA_SUCCESS', 'DATA_REQUEST', 'DATA_ERROR', 'DATA_RESET', 'MODE_SET', 'GEOM_UPDATE_REQUEST', 'GEOM_UPDATE_SUCCESS', 'GEOM_UDPATE_ERROR'],
   namespacedPrefix
 )
 
@@ -29,7 +31,10 @@ const {
   DATA_REQUEST,
   DATA_RESET,
   DATA_SUCCESS,
-  MODE_SET
+  MODE_SET,
+  GEOM_UPDATE_REQUEST,
+  GEOM_UPDATE_SUCCESS,
+  GEOM_UPDATE_ERROR
 } = mutationTypes
 
 export const mutations = {
@@ -56,11 +61,29 @@ export const mutations = {
 
   [MODE_SET] (state, payload) {
     Object.assign(state, { mode: payload })
+  },
+
+  [GEOM_UPDATE_REQUEST] (state) {
+    Object.assign(state, { loading: true, error: null })
+  },
+
+  [GEOM_UPDATE_SUCCESS] (state, payload) {
+    state.loading = false
+    Object.assign(state.data, {
+      ...payload
+    })
+  },
+
+  [GEOM_UPDATE_ERROR] (state, payload) {
+    Object.assign(state, {
+      error: payload || true,
+      loading: false
+    })
   }
 }
 
 export const riverDetailActions = reflectKeys(
-  ['FETCH_RIVER_DETAIL_DATA', 'SET_EDIT_MODE', 'INITIAL_STATE'],
+  ['FETCH_RIVER_DETAIL_DATA', 'UPDATE_RIVER_DETAIL_GEOM', 'SET_EDIT_MODE', 'INITIAL_STATE'],
   namespacedPrefix
 )
 
@@ -78,6 +101,28 @@ const actions = {
     }
 
     return result
+  },
+
+  async [riverDetailActions.UPDATE_RIVER_DETAIL_GEOM] (context, geomData) {
+    context.commit(GEOM_UPDATE_REQUEST)
+
+    const payloadData = {
+      geom: wkx.Geometry.parseGeoJSON(geomData.geom).toWkt(),
+      ploc: `${geomData.ploc[0]} ${geomData.ploc[1]}`,
+      tloc: `${geomData.tloc[0]} ${geomData.tloc[1]}`
+    }
+    const result = await updateRiverDetailGeom({
+      id: context.state.data.id,
+      ...payloadData
+    }).catch(e => {
+      context.commit(GEOM_UPDATE_ERROR, e)
+    })
+
+    if (result.data.errors) {
+      context.commit(GEOM_UPDATE_ERROR, result.data.errors)
+    } else {
+      context.commit(GEOM_UPDATE_SUCCESS, result.data.reachUpdate)
+    }
   },
 
   async [riverDetailActions.SET_EDIT_MODE] (context, data) {

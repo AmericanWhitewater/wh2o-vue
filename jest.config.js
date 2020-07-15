@@ -10,5 +10,8 @@ module.exports = {
     '!src/**/create-wrapper.js',
     '!src/**/api-constants.js'
   ],
-  coverageReporters: ['lcov', 'text-summary']
+  coverageReporters: ['lcov', 'text-summary'],
+  moduleNameMapper: {
+    '^.+\\.(css)$': '<rootDir>/src/utils/unit-test-helpers/CSSStub.js'
+  }
 }
