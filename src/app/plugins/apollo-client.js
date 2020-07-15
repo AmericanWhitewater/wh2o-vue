@@ -1,16 +1,12 @@
-import { ApolloClient } from '@apollo/client/core'
-import { createUploadLink } from 'apollo-upload-client'
-import { InMemoryCache } from '@apollo/client/cache/'
+import { ApolloClient } from 'apollo-client'
+import { createHttpLink } from 'apollo-link-http'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
 import { appLocalStorage } from '@/app/global/services'
-
-import Vue from 'vue'
 import VueApollo from 'vue-apollo'
 
-Vue.use(VueApollo)
-
-const httpLink = createUploadLink({
-  uri: process.env.VUE_APP_GRAPHQL_HTTP || 'http://localhost:8080/graphql'
+const httpLink = createHttpLink({
+  uri: process.env.VUE_APP_GRAPHQL_HTTP || 'http://localhost:3000/graphql'
 })
 
 const authLink = setContext((_, { headers }) => {
@@ -31,8 +27,8 @@ const apolloClient = new ApolloClient({
   cache: new InMemoryCache()
 })
 
-const ApolloProvider = new VueApollo({
+const apolloProvider = new VueApollo({
   defaultClient: apolloClient
 })
 
-export default ApolloProvider
+export default apolloProvider

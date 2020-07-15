@@ -1,10 +1,6 @@
 <template>
   <div class="media-upload-form">
-    <h2
-      v-if="title"
-      class="mb-spacing-md"
-      v-text="title"
-    />
+    <h2 v-if="title" class="mb-spacing-md" v-text="title" />
     <cv-file-uploader
       ref="fileUploader"
       data-modal-primary-focus
@@ -57,8 +53,11 @@
   </div>
 </template>
 <script>
-import { httpClient } from '@/app/global/services'
+import { httpClient, appLocalStorage } from '@/app/global/services'
 import { globalAppActions } from '@/app/global/state'
+
+import gql from 'graphql-tag'
+import axios from 'axios'
 export default {
   name: 'media-upload-form',
   props: {
@@ -136,15 +135,120 @@ export default {
      */
     async submitForm () {
       this.formPending = true
+
+      /**
+       * method one: vue apollo
+       *
+       * files referenced in wh2o project:
+       *
+       * resources/assets/js/aw/models/post/lib/repository.ts
+       * resources/assets/js/aw/models/post/gql/photo-update.gql.js
+       *
+       * @returns "Internal Server Error"
+       *
+       */
+      // this.$apollo.mutate({
+      //   mutation: gql`mutation ($id:ID!, $photo: PhotoInput!) {
+      //     photo:photoUpdate(id: $id, photo:$photo)
+      //     {
+      //       id,
+      //       caption,
+      //       post_id,
+      //       description,
+      //       subject,
+      //       photo_date,
+      //       author,
+      //       poi_name,
+      //       poi_id
+      //       image {
+      //           ext,
+      //           uri {
+      //               thumb,
+      //               medium,
+      //               big
+      //           }
+      //       }
+      //     }
+      //   }`,
+      //   variables: {
+      //     fileinput: this.formData.fileinput,
+      //     id: this.formData.id,
+      //     photo: this.formData.photo
+      //   }
+      // }).then(result => {
+      //   console.log(result)
+      // }).catch(err => {
+      //   console.log(err)
+      // })
+
+      /**
+       * Method Two: HTTP
+       *
+       * @returns Could not find a valid map, be sure to conform to GraphQL multipart request specification:
+       */
+      // const token = appLocalStorage.getItem('wh2o-auth')
+      // const config = {
+      //   baseURL: 'https://beta.americanwhitewater.org',
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data' // boundary should be auto added?
+      //   }
+      // }
+
+      // if(token) {
+      //   config.headers.Authorization = token
+      // }
+
+      // await axios.post('https://beta.americanwhitewater.org/graphql', {
+      //   operationName: 'sendFile',
+      //   query: 'mutation ($id: ID!,$fileinput:PhotoFileInput!, $photo: PhotoInput) { photo: photoFileUpdate(id: $id, fileinput: $fileinput, photo: $photo) {    id    caption    post_id    description    subject    photo_date    author    poi_name    poi_id    image {      ext      uri {        thumb        medium        big   }        }    }}',
+      //   variables: {
+      //     fileinput: this.formData.fileinput,
+      //     id: this.formData.id,
+      //     photo: this.formData.photo
+      //   }
+      // }, config).then(res => {
+      //   this.formPending = false
+      //   this.$store.dispatch(globalAppActions.SEND_TOAST, {
+      //     title: 'Upload Successful',
+      //     kind: 'success',
+      //     override: true,
+      //     contrast: false,
+      //     action: false,
+      //     autoHide: true
+      //   })
+      // }).catch(err => {
+      //   /* eslint-disable no-console */
+      //   console.log('err :>> ', err)
+      //   this.formPending = false
+      //   this.$store.dispatch(globalAppActions.SEND_TOAST, {
+      //     title: 'Upload Failed',
+      //     kind: 'error',
+      //     override: true,
+      //     contrast: false,
+      //     action: false,
+      //     autoHide: true
+      //   })
+      // })
+
+    /**
+     * Method Three: HTTP 
+     * 
+     * this one uses httpClient.
+     * 
+     * @returns "Variable "$fileinput" got invalid value {"file":[],"section":"POST","section_id":"EIFHtlmddRFtPTaXw3T2Z"}; Expected type Upload at value.file; Could not get uploaded file, be sure to conform to GraphQL multipart request specification: https://github.com/jaydenseric/graphql-multipart-request-spec Instead got: []"
+     * 
+     */
+
       await httpClient.post('/graphql', {
         operationName: null,
-        query: 'mutation ($id: ID!,$fileinput:PhotoFileInput!, $photo: PhotoInput) {photo: photoFileUpdate(id: $id, fileinput: $fileinput, photo: $photo) {    id    caption    post_id    description    subject    photo_date    author    poi_name    poi_id    image {      ext      uri {        thumb        medium        big   }        }    }}',
+        query: 'mutation ($id: ID!,$fileinput:PhotoFileInput!, $photo: PhotoInput) { photo: photoFileUpdate(id: $id, fileinput: $fileinput, photo: $photo) {    id    caption    post_id    description    subject    photo_date    author    poi_name    poi_id    image {      ext      uri {        thumb        medium        big   }        }    }}',
         variables: {
           fileinput: this.formData.fileinput,
           id: this.formData.id,
           photo: this.formData.photo
         }
       }).then(res => {
+        console.log('res :>> ', res);
         this.formPending = false
         this.$store.dispatch(globalAppActions.SEND_TOAST, {
           title: 'Upload Successful',
@@ -167,6 +271,9 @@ export default {
           autoHide: true
         })
       })
+
+
+
     },
     setInitialFormData () {
       const today = new Date()

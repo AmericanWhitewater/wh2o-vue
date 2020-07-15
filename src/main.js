@@ -6,21 +6,25 @@ import './app/assets/scss/app.scss'
 import './app/plugins'
 import './app/filters'
 import './registerServiceWorker'
-import ApolloProvider from './app/plugins/apollo-client'
+
+import apolloProvider from './app/plugins/apollo-client'
 
 import App from './app/app.vue'
 import router from './app/app-routes'
 import store from './app/app-state'
+
+import VueApollo from 'vue-apollo'
 
 Vue.config.devtools = process.env.NODE_ENV === 'development'
 Vue.config.productionTip = false
 
 Vue.use(CarbonComponents)
 Vue.use(VueMeta)
+Vue.use(VueApollo)
 
 export const wh2o = new Vue({
   router,
   store,
-  apolloProvider: ApolloProvider,
+  apolloProvider,
   render: h => h(App)
 }).$mount('#app')
