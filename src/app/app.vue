@@ -17,7 +17,6 @@ import {
   AppNavigation,
   AppCookieBanner
 } from './global/components'
-import { appLocalStorage } from '@/app/global/services'
 import { userActions } from '@/app/views/user/shared/state'
 import { laravelDeploy } from '@/app/environment/environment'
 
@@ -42,9 +41,7 @@ export default {
      */
     this.hideNavigation = !!laravelDeploy
 
-    if (appLocalStorage.getItem('wh2o-auth')) {
-      this.$store.dispatch(userActions.FETCH_USER_DATA)
-    }
+    this.$store.dispatch(userActions.FETCH_USER_DATA)
   }
 }
 </script>
