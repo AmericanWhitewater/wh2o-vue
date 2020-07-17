@@ -53,6 +53,17 @@ const actions = {
     })
 
     if (result) {
+      /**
+       * The app uses laravel session authorization.
+       * If no user is logged in, the API still returns data
+       * to the me request.
+       *
+       * If the guest uid, "0", is returned then do not commit the data
+       * to the store.
+       *
+       */
+      if (Number(result.data.me.uid) === 0) return
+
       context.commit(DATA_SUCCESS, result.data.me)
     }
 
