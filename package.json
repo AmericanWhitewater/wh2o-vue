@@ -7,6 +7,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:modern": "vue-cli-service build --modern",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
     "test:unit": "vue-cli-service test:unit",
     "test:coverage": "vue-cli-service test:unit --coverage",
     "snapshot:update": " vue-cli-service test:unit --updateSnapshot",
@@ -34,7 +36,6 @@
     "@turf/nearest-point-on-line": "^6.0.2",
     "@turf/point-to-line-distance": "^6.0.0",
     "@turf/polygon-to-line": "^6.0.3",
-    "@vue/composition-api": "^0.5.0",
     "axios": "^0.19.2",
     "carbon-components": "^10.11.2",
     "chart.js": "^2.9.3",
@@ -98,6 +99,7 @@
     "vue-apollo": "^3.0.0-beta.11",
     "vue-cli-plugin-apollo": "^0.21.3",
     "vue-template-compiler": "^2.6.11",
+    "vuepress": "^1.5.2",
     "yorkie": "^2.0.0"
   },
   "postcss": {

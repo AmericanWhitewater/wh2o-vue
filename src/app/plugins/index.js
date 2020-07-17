@@ -1,5 +1,4 @@
 /* eslint-disable import/export */
-export * from './composition-api'
 export * from './exception-handler'
 export * from './sentry'
 export * from './carbon-icons'
