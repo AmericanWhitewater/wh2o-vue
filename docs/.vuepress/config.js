@@ -38,12 +38,42 @@ module.exports = {
         ]
       },
       {
-        title: 'Authorization',
-        path: '/authorization/'
+        title: 'Views',
+        path: '/views/',
+        children: [
+          {
+            title: 'Gage Detail',
+            path: '/views/gage-detail.md'
+          },
+          {
+            title: 'News Page',
+            path: '/views/news-page.md'
+          },
+          {
+            title: 'River Detail',
+            path: '/views/river-detail.md'
+          },
+          {
+            title: 'River Index',
+            path: '/views/river-index.md'
+          },
+          {
+            title: 'River Search',
+            path: '/views/river-search.md'
+          },
+          {
+            title: 'Static Routes',
+            path: '/views/static-routes.md'
+          },
+          {
+            title: 'User',
+            path: '/views/user.md'
+          }
+        ]
       },
       {
-        title: 'Endpoints',
-        path: '/endpoints/'
+        title: 'Plugins',
+        path: '/plugins/'
       }
     ],
     plugins: ['@vuepress/active-header-links']
