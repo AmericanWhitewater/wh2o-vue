@@ -82,6 +82,24 @@ module.exports = {
       {
         title: 'Plugins',
         path: '/plugins/'
+      },
+      {
+        title: 'State Management',
+        path: '/state/'
+      },
+      {
+        title: 'Testing',
+        path: '/testing/',
+        children: [
+          {
+            title: 'Unit',
+            path: '/testing/unit.md'
+          },
+          {
+            title: 'E2E',
+            path: '/testing/e2e.md'
+          }
+        ]
       }
     ],
     plugins: ['@vuepress/active-header-links']
