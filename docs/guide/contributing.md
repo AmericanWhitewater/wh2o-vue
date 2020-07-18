@@ -26,7 +26,7 @@ installed:
     [`nvm`](https://github.com/nvm-sh/nvm) to help manage different versions of
     Node.js [nvm](https://github.com/nvm-sh/nvm/blob/master/README.md) as your
     version manager for Node.
-- Git
+- [Git](https://git-scm.com/)
 
 You'll also need a code editor to make changes to wh2o-api. There are many to
 choose from but some popular options are
@@ -40,7 +40,7 @@ With that all in place, you're ready to start contributing!
 ### 1. Fork the repo:
 
 Go to
-[Wh2o-vue's repository on GitHub](https://github.com/AmericanWhitewater/wh2o-api)
+[Wh2o-vue's repository on GitHub](https://github.com/AmericanWhitewater/wh2o-vue)
 and click the `Fork` button in the top-right corner. This will create a copy
 repo of wh2o-api associated with your account.
 
@@ -127,7 +127,7 @@ http://localhost:8000 to see the changes happen on the fly.
 ### 7. Make a pull request
 
 **Note:** Before you make a pull request,
-[search](https://github.com/Americanwhitewater/wh2o-api/issues) the issues to see if a
+[search](https://github.com/AmericanWhitewater/wh2o-vue/issues) the issues to see if a
 similar issue has already been submitted. If a similar issue has been submitted,
 assign yourself, or ask to be assigned to the issue by posting a comment. If the
 issue does not exist, please make a new issue. Issues give us context about what
@@ -161,7 +161,7 @@ git push -u origin { YOUR_BRANCH_NAME }
 ```
 
 In your browser, navigate to
-[AmericanWhitewater/wh2o-api](https://github.com/AmericanWhitewater/wh2o-api)
+[AmericanWhitewater/wh2o-api](https://github.com/AmericanWhitewater/wh2o-vue)
 and click the button that reads `Compare & pull request`
 
 Write a title and description then click `Create pull request`
@@ -218,7 +218,7 @@ Here are some contribution quick tips:
 ### What projects can I contribute to?
 
 - [`wh2o-vue`](https://github.com/AmericanWhitewater/wh2o-vue)
-- [`wh2o-api`](https://github.com/AmericanWhitewater/wh2o-api)
+- [`wh2o-api`](https://github.com/AmericanWhitewater/wh2o-vue)
 - [`aw-ios`](https://github.com/AmericanWhitewater/aw-ios)
 - [`aw-android`](https://github.com/AmericanWhitewater/aw-android)
 - [`nwi-data-tool`](https://github.com/AmericanWhitewater/nwi-data-tool)

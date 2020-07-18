@@ -1,6 +1,6 @@
 module.exports = {
   title: 'wh2o-vue',
-  description: 'A frontend for the American Whitewater API build with Vue.js',
+  description: 'Interactive map and guide for whitewater rivers in North America',
   themeConfig: {
     logo: '/aw-logo-small.png',
     lastUpdated: 'Last updated',
@@ -16,9 +16,17 @@ module.exports = {
       {
         text: 'Guides',
         link: '/guide/'
+      },
+      {
+        text: 'Demo',
+        link: 'https://wh2o-vue.herokuapp.com/'
       }
     ],
     sidebar: [
+      {
+        title: 'Introduction',
+        path: '/introduction/'
+      },
       {
         title: 'Guides',
         path: '/guide/',
@@ -32,7 +40,7 @@ module.exports = {
             path: '/guide/contributing.md'
           },
           {
-            title: 'Generate Docs',
+            title: 'Writing Docs',
             path: '/guide/generate-docs.md'
           }
         ]
