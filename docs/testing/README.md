@@ -1,4 +1,5 @@
 # Testing
 
-- [Unit](/testing/unit.md)
-- [E2E](/testing/e2e.md)
+Information on how to write and update tests.
+
+- [Unit Testing](/testing/unit.md)

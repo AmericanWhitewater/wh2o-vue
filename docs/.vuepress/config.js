@@ -95,10 +95,10 @@ module.exports = {
             title: 'Unit',
             path: '/testing/unit.md'
           },
-          {
-            title: 'E2E',
-            path: '/testing/e2e.md'
-          }
+          // {
+          //   title: 'E2E',
+          //   path: '/testing/e2e.md'
+          // }
         ]
       }
     ],
