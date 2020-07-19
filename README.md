@@ -6,17 +6,11 @@ American Whitewater is a national non-profit and is the primary advocate for the
 
 This app is an interactive whitewater river map and guide which provides flow data, descriptions, safety information, and more for the ~6000 rivers in the American Whitewater database.
 
-## Prototype
+## Documentation
+
+For notes and guides visit the [documentation site](https://bit.ly/397uVn5).
+
+## Demo
 
 [https://wh2o-vue.herokuapp.com/#/](https://wh2o-vue.herokuapp.com/#/)
 
-
-## Contributing
-
-Looking to give back to the paddling community? Look no further! For instructions on how to start
-contributing to the project, consult our [contribution guidelines](./CONTRIBUTING.md).
-
-## Built With
-
-* [IBM Carbon Design System](https://www.carbondesignsystem.com/)
-* [Mapbox](https://www.mapbox.com/)
