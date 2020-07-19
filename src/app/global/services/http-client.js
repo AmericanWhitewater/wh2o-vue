@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { appLocalStorage } from '@/app/global/services'
-import { apiBaseUrl } from '@/app/environment/environment'
+import { apiBaseUrl } from '@/app/environment'
 
 const config = {
   baseURL: apiBaseUrl,

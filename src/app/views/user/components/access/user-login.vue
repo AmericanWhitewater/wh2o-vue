@@ -58,7 +58,7 @@ import { userLogin } from './services/user-login'
 import {
   clientId,
   clientSecret
-} from '@/app/environment/environment'
+} from '@/app/environment'
 /**
  * @displayName User Login
  */

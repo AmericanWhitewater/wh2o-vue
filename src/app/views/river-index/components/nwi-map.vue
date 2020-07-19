@@ -52,7 +52,7 @@ import UtilityBlock from '@/app/global/components/utility-block/utility-block.vu
 import {
   mapboxAccessToken,
   nwiTileServer
-} from '@/app/environment/environment'
+} from '@/app/environment'
 
 const fitBoundsOptions = {
   padding: 80

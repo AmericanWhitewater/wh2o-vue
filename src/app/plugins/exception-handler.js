@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { logger } from '@/app/global/services/app-logger'
-import { environment } from '@/app/environment/environment'
+import { environment } from '@/app/environment'
 
 /**
  * @note only use this handler during development to avoid conflict with sentry
