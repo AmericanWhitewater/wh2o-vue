@@ -58,6 +58,7 @@
 </template>
 <script>
 import gql from 'graphql-tag'
+import { postUpdate } from '@/app/global/components/post-update-modal/services/postUpdate.js'
 export default {
   name: 'media-upload-form',
   props: {
@@ -79,9 +80,6 @@ export default {
   },
   data: () => ({
     formPending: false,
-    /**
-     * @todo break up nested objs. We dont need all that reactivity
-     */
     formData: {
       id: null,
       fileinput: {
@@ -98,6 +96,14 @@ export default {
         poi_name: null,
         post_id: '0',
         subject: null
+      }
+    },
+    postFormData: {
+      id: null,
+      post: {
+        reach_id: null,
+        post_type: 'PHOTO_POST',
+        post_date: null
       }
     }
   }),
@@ -118,18 +124,19 @@ export default {
   },
   watch: {
     primaryClickTimestamp () {
-      this.submitForm()
+      this.submitPost()
     }
   },
   methods: {
     setFile (input) {
       if (input && input.length) {
         this.formData.fileinput.file = input[0].file
+        this.uploadFile()
       }
     },
-    async submitForm () {
+    async uploadFile () {
       this.formPending = true
-      this.$apollo.mutate({
+      await this.$apollo.mutate({
         mutation: gql`mutation ($fileinput: PhotoFileInput!, $id:ID!, $photo: PhotoInput!) {
           photo: photoFileUpdate(fileinput: $fileinput, id: $id, photo:$photo)
           {
@@ -158,12 +165,22 @@ export default {
           photo: this.formData.photo
         }
       }).then(result => {
-        /* eslint-disable-next-line no-console */
-        console.log(result)
+        this.postFormData.id = result.data.photo.post_id
+        this.postFormData.post.post_date = result.data.photo.photo_date
+        this.postFormData.post.reach_id = this.$route.params.id
       }).catch(err => {
         /* eslint-disable-next-line no-console */
         console.log(err)
       })
+      this.formPending = false
+    },
+    async submitPost () {
+      try {
+        await postUpdate(this.postFormData)
+      } catch (error) {
+        /* eslint-disable-next-line no-console */
+        console.log('error :>> ', error)
+      }
     },
     setInitialFormData () {
       const today = new Date()

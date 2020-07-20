@@ -122,7 +122,7 @@ describe('ImageGallery', () => {
     const data = await wrapper.vm.formatURI(image.uri, 'thumb')
 
     expect(data).toEqual(
-      'https://americanwhitewater.org/photos/archive/medium/7578.jpg'
+      'https://beta.americanwhitewater.org/photos/archive/medium/7578.jpg'
     )
   })
 
