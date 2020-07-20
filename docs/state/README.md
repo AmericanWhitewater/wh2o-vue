@@ -2,9 +2,11 @@
 
 `src/app/app-state.js`
 
-We use [Vuex](https://vuex.vuejs.org/) for managing the applications state. Each Vuex submodule is broken down mostly on a per-view basis into tier two states, and each of them with their own modules. 
+We use [Vuex](https://vuex.vuejs.org/) for managing the applications state. Each Vuex submodule is broken down mostly on a per-view basis into tier two states, and each of them with their own modules.
 
 ```js
+// src/app/app-state.js
+
 export default new Vuex.Store({
   state: {},
   mutations: {},
@@ -19,28 +21,70 @@ export default new Vuex.Store({
     userState
   }
 })
-
 ```
 
-Each module shares core state model, mutations and actions. All are easily extendible for things like pagination. State should 
+For example, the following are submodules of riverDetailState:
 
 ```js
-// @/app/\_templates/module-template/shared/state/module-data.js
+// src/app/views/river-detail/river-detail-state.js
 
-import { reflectKeys } from '@/app/global/services'
-import { fetchModuleData } from '../services'
+export default {
+  modules: {
+    accidentsData,
+    alertsData,
+    bookmarksData,
+    commentsData,
+    creditsData,
+    gageMetricsData,
+    gageReadingsData,
+    gageSourceData,
+    galleryData,
+    mapData,
+    newsTabData,
+    rapidsData,
+    reachGagesData,
+    riverDetailData
+  }
+}
+```
 
+## Model
+
+Each Vuex submodule shares the same core state model of data, error, and loading. A mutation should only modify state. Directly changing the state is considered bad practice.
+
+```js
 const initialState = {
   data: null,
   error: null,
   loading: false
 }
+```
 
-/**
- * prefix each mutation with the module name
- * for more granular history in vue devtools.
- *
- */
+Then in our component templates, we can easily provide the user with operation feedback. Here's what a piece of the template could look like for loading an array of images.
+
+```vue
+<template v-if="loading">
+  loading images
+</template>
+<template v-else-if="data">
+  <div v-if="data.length">
+    <img v-for="(img, index) in data" :key="index" :src="img.src" />
+  </div>
+  <div v-else>
+    no images
+  </div>
+</template>
+<template v-else>
+  error
+  <template></template
+></template>
+```
+
+## Mutations
+
+```js
+// @/app/_templates/module-template/shared/state/module-data.js
+
 const namespacedPrefix = '[MODULE]'
 
 const mutationTypes = reflectKeys(
@@ -71,16 +115,20 @@ const mutations = {
     Object.assign(state, ...initialState)
   }
 }
+```
 
+## Actions
+
+```js
 export const moduleActions = reflectKeys(
   ['FETCH_MODULE_DATA'],
   namespacedPrefix
 )
 
 /**
- * 
+ *
  * All API calls are made with Vuex actions
- * 
+ *
  */
 
 const actions = {
@@ -98,15 +146,9 @@ const actions = {
     return result
   }
 }
-
-export default {
-  mutations,
-  actions,
-  state: initialState
-}
 ```
 
-Then in the component you can access the state in the computed property and dispatch actions.
+Then in the component, we can access the state in the computed property and dispatch actions.
 
 ```js
 computed: {
@@ -120,3 +162,9 @@ created () {
   this.$store.dispatch(moduleActions.FETCH_MODULE_DATA)
 }
 ```
+
+## Considerations 
+
+This is not the most DRY strategy. @drewalth has put together a proof-of-concept for a more straight forward Vuex store. Consider refactoring when appropriate.
+
+- [`drewalth/vuex-store-poc`](https://github.com/drewalth/vuex-store-poc)
