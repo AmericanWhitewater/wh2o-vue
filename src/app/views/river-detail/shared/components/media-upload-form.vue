@@ -127,17 +127,11 @@ export default {
         this.formData.fileinput.file = input[0].file
       }
     },
-    /**
-     * @todo clear form after file upload started but make copy incase error
-     * @note how is upload getting linked to user and to reach? Shouldnt those be
-     * added to the create call?
-     *
-     */
     async submitForm () {
       this.formPending = true
       this.$apollo.mutate({
-        mutation: gql`mutation ($id:ID!, $photo: PhotoInput!) {
-          photo:photoUpdate(id: $id, photo:$photo)
+        mutation: gql`mutation ($fileinput: PhotoFileInput!, $id:ID!, $photo: PhotoInput!) {
+          photo: photoFileUpdate(fileinput: $fileinput, id: $id, photo:$photo)
           {
             id,
             caption,
