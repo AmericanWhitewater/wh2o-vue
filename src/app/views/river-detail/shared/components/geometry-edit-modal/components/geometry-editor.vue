@@ -64,7 +64,7 @@ import mapboxgl from 'mapbox-gl'
 import { mapState } from 'vuex'
 import {
   mapboxAccessToken
-} from '@/app/environment/environment'
+} from '@/app/environment'
 
 import bbox from '@turf/bbox'
 import bboxPolygon from '@turf/bbox-polygon'

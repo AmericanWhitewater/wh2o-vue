@@ -39,11 +39,11 @@ export default {
       type: Boolean,
       required: false
     },
-    height: {
-      type: String,
-      default: '350'
-    },
     text: {
+      type: String,
+      required: false
+    },
+    height: {
       type: String,
       required: false
     },
@@ -96,12 +96,9 @@ export default {
   .utility-block-text {
     @include carbon--type-style("code-02");
   }
+
+  @include carbon--breakpoint('sm') {
+    min-height: 350px;
+  }
 }
 </style>
-<docs>
-
-```js
-<utility-block />
-```
-
-</docs>

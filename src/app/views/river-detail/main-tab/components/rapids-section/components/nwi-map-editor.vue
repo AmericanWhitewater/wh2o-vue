@@ -26,7 +26,7 @@ import NwiBasemapToggle from '@/app/views/river-index/components/nwi-basemap-tog
 import { mapState } from 'vuex'
 import {
   mapboxAccessToken
-} from '@/app/environment/environment'
+} from '@/app/environment'
 import debounce from 'lodash.debounce'
 
 import { lineString, point } from '@turf/helpers'
