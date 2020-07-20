@@ -98,14 +98,7 @@ export default {
   }
 
   @include carbon--breakpoint('sm') {
-    min-height: 75px;
+    min-height: 350px;
   }
 }
 </style>
-<docs>
-
-```js
-<utility-block />
-```
-
-</docs>
