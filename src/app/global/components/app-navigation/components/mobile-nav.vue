@@ -8,12 +8,16 @@
             'bx--col content-area'
           ]"
         >
-          <span @click.exact="resetRouter">
+          <span
+            id="logo-wrapper"
+            @click.exact="resetRouter"
+          >
             <aw-logo />
           </span>
           <div>
             <cv-tooltip
               v-if="offline"
+              id="offline-indicator"
               tip="Network Disconnected"
               direction="bottom"
             >
@@ -69,7 +73,7 @@
           >
             <cv-button
               v-if="searchTerm.length > 0"
-              class="mb-spacing-md"
+              class="mb-spacing-md search-submit"
               size="small"
               kind="secondary"
               @click.exact="searchRiver"
@@ -79,18 +83,18 @@
           </transition>
           <cv-button
             kind="ghost"
-            class="mb-spacing-xs"
+            class="mb-spacing-xs map-button"
             @click.exact="viewRoute('/river-index')"
             v-text="'Map'"
           />
           <cv-button
-            class="mb-spacing-xs"
+            class="mb-spacing-xs news-button"
             kind="ghost"
             @click.exact="viewRoute('/news')"
             v-text="'News'"
           />
           <cv-button
-            class="mb-spacing-xs"
+            class="mb-spacing-xs river-search-button"
             kind="ghost"
             @click.exact="viewRoute('/river-search')"
             v-text="'Search'"
@@ -106,12 +110,14 @@
           />
           <cv-button
             v-if="!user"
+            id="login-button"
             kind="primary"
             @click.exact="viewRoute('/user/access/login')"
             v-text="'Login'"
           />
           <cv-button
             v-else
+            id="logout-button"
             kind="tertiary"
             @click.exact="viewRoute('/user/access/logout')"
             v-text="'Logout'"
@@ -140,25 +146,11 @@ export default {
     offline: {
       type: Boolean,
       required: true
-    },
-    navItems: {
-      type: Array,
-      default: () => null
     }
   },
   data: () => ({
     drawerOpen: false,
-    searchTerm: '',
-    topBarItems: [
-      {
-        path: '/user/access/login',
-        title: 'Login'
-      },
-      {
-        path: '/river-search',
-        title: 'River Search'
-      }
-    ]
+    searchTerm: ''
   }),
   computed: {
     user () {
