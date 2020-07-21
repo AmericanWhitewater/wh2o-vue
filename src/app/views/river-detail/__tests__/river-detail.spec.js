@@ -60,7 +60,7 @@ const options = {
     $router: mockRouter,
     $route: mockRoute
   },
-  stubs: ['router-view', 'EditOff20', 'Notification20', 'NotificationNew20', 'Favorite20', 'Edit20', 'geometry-editor']
+  stubs: ['router-view', 'EditOff20', 'Notification20', 'NotificationNew20', 'Favorite20', 'Edit20', 'geometry-editor', 'FavoriteFilled20']
 }
 
 describe('river-detail.vue', () => {

@@ -6,7 +6,8 @@ const options = {
     reach: {
       id: '123'
     }
-  }
+  },
+  stubs: ['router-link']
 }
 
 describe('reach-detail.vue', () => {
