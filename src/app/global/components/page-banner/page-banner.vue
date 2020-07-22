@@ -2,17 +2,25 @@
   <div class="page-banner">
     <template v-if="map">
       <div class="map-wrapper">
-        <nwi-map
-          v-if="startingBounds"
-          height="400"
-          :detail-reach-id="Number(reachId)"
-          :include-legend="false"
-          :has-controls="false"
-          :source-layers="$options.sourceLayers"
-          :starting-bounds="startingBounds"
-          fullscreen-target="map-wrapper"
-          hide-result-counter
-        />
+        <template v-if="startingBounds">
+          <nwi-map
+            height="400"
+            :detail-reach-id="Number(reachId)"
+            :include-legend="false"
+            :has-controls="false"
+            :source-layers="$options.sourceLayers"
+            :starting-bounds="startingBounds"
+            fullscreen-target="map-wrapper"
+            hide-result-counter
+          />
+        </template>
+        <template v-else>
+          <utility-block
+            text="Reach Map Unavailable"
+            state="content"
+            theme="dark"
+          />
+        </template>
         <slot />
       </div>
     </template>
@@ -32,10 +40,12 @@
 import bbox from '@turf/bbox'
 import { lineString } from '@turf/helpers'
 import NwiMap from '@/app/views/river-index/components/nwi-map.vue'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 export default {
   name: 'page-banner',
   components: {
-    'nwi-map': NwiMap
+    'nwi-map': NwiMap,
+    UtilityBlock
   },
   props: {
     title: {
