@@ -5,7 +5,10 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.{js,vue}',
     '!src/**/*-routes.{js,vue}',
-    '!src/js/main.js',
+    '!src/main.js',
+    '!src/sw.js',
+    '!src/app/plugins/**/*.js',
+    '!src/registerServiceWorker.js',
     '!src/**/index.js',
     '!src/**/create-wrapper.js',
     '!src/**/api-constants.js'
