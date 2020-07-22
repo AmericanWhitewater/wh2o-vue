@@ -6,8 +6,12 @@ jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
 }))
 
 const router = {
-  push: jest.fn(),
-  catch: jest.fn()
+  push: jest.fn(() => {
+    return {
+      catch: jest.fn()
+    }
+  })
+
 }
 
 const options = {

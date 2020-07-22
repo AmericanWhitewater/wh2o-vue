@@ -5,10 +5,16 @@ const mockStore = {
   dispatch: jest.fn()
 }
 
+const mockRoute = {
+  name: 'bookmarks'
+}
+
 const options = {
   mocks: {
-    $store: mockStore
-  }
+    $store: mockStore,
+    $route: mockRoute
+  },
+  stubs: ['router-view']
 }
 
 describe('user-account.vue', () => {

@@ -47,7 +47,7 @@ const options = {
       }
     }
   },
-  stubs: ['media-upload-form']
+  stubs: ['media-upload-form', 'media-upload-modal', 'table-pagination', 'image-gallery']
 }
 
 describe('GalleryTab', () => {
@@ -82,14 +82,12 @@ describe('GalleryTab', () => {
     expect(wrapper.find('.utility-block-content').exists()).toBe(true)
   })
 
-  it('loads media when media not previously loaded', async () => {
+  it('should load media and rapids not previously loaded', () => {
     // eslint-disable-next-line no-unused-vars
     const wrapper = createWrapper(GalleryTab, options)
 
-    await wrapper.vm.$nextTick()
-
-    expect(mockStore.dispatch).toBeCalledTimes(1)
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
+    expect(mockStore.dispatch).toBeCalledTimes(2)
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(2,
       '[GALLERY] FETCH_GALLERY_DATA',
       {
         page: 1,
@@ -97,5 +95,7 @@ describe('GalleryTab', () => {
         reach_id: '123456789'
       }
     )
+
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1, '[RAPIDS] FETCH_RAPIDS_DATA', '123456789')
   })
 })

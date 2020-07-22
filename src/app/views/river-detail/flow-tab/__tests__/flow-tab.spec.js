@@ -103,7 +103,7 @@ describe('FlowTab', () => {
 
   it('sets active gage', async () => {
     const wrapper = createWrapper(FlowTab, options)
-    const controls = wrapper.find(GageChartControls)
+    const controls = wrapper.findComponent(GageChartControls)
 
     controls.vm.$emit('gage-change', '4139')
 

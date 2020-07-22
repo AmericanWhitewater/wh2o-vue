@@ -90,7 +90,7 @@ describe('CommentsSection', () => {
 
     const wrapper = createWrapper(CommentsSection, options)
 
-    wrapper.find(PostUpdateModal).vm.$emit('update:success')
+    wrapper.findComponent(PostUpdateModal).vm.$emit('update:success')
 
     await wrapper.vm.$nextTick()
 
@@ -108,7 +108,7 @@ describe('CommentsSection', () => {
 
     await wrapper.vm.$nextTick()
 
-    wrapper.find(PostUpdateModal).vm.$emit('update:success')
+    wrapper.findComponent(PostUpdateModal).vm.$emit('update:success')
 
     await wrapper.vm.$nextTick()
 
@@ -159,7 +159,7 @@ describe('CommentsSection', () => {
   it('handles successful submission and re-fetches comments', async () => {
     const wrapper = createWrapper(CommentsSection, options)
 
-    wrapper.find(PostUpdateModal).vm.$emit('update:success')
+    wrapper.findComponent(PostUpdateModal).vm.$emit('update:success')
 
     await wrapper.vm.$nextTick()
 

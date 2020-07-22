@@ -21,6 +21,7 @@
             <h4>{{ resourceName }}</h4>
           </div>
           <cv-text-input
+            id="user-input-field"
             v-model="confirmDeleteInput"
             theme="light"
             label="Type resource title to confirm delete"
