@@ -7,8 +7,6 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:modern": "vue-cli-service build --modern",
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
     "test:unit": "vue-cli-service test:unit",
     "test:coverage": "vue-cli-service test:unit --coverage",
     "snapshot:update": " vue-cli-service test:unit --updateSnapshot",
@@ -104,7 +102,6 @@
     "vue-apollo": "^3.0.3",
     "vue-cli-plugin-apollo": "^0.21.3",
     "vue-template-compiler": "^2.6.11",
-    "vuepress": "^1.5.2",
     "yorkie": "^2.0.0"
   },
   "postcss": {
