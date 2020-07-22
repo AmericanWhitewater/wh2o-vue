@@ -5,6 +5,8 @@
  */
 
 module.exports = {
+  publicPath: process.env.VUE_APP_BASE_URL,
+
   /**
    * disables lint on save which disrupts workflow.
    * linting reserved for pre-commit git hook.
