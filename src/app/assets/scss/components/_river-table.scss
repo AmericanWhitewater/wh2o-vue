@@ -47,6 +47,9 @@
 
         @include ease;
 
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+
         &:nth-child(1) {
 
           &[class*="low"],
