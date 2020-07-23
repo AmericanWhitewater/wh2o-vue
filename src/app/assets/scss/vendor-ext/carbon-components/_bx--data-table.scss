@@ -14,4 +14,12 @@
       vertical-align: middle;
     }
   }
+
+  thead {
+    th {
+      &:first-of-type {
+        padding-left:1.25rem;
+      }
+    }
+  }
 }

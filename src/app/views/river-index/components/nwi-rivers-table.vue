@@ -213,7 +213,6 @@ export default {
   // this is mimicking :hover behaviour that already exists
   .bx--data-table tbody tr.active {
     td {
-      background: #e5e5e5;
       &:nth-child(1) {
         border-left-width: 1.5rem;
       }
