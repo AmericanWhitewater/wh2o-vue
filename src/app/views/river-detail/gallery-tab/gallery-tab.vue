@@ -52,7 +52,9 @@
     <media-upload-modal
       :visible="mediaUploadModalVisible"
       section="POST"
-      @upload:cancelled="mediaUploadModalVisible = false"
+      @form:cancelled="mediaUploadModalVisible = false"
+      @form:success="mediaUploadModalVisible = false"
+      @form:error="mediaUploadModalVisible = false"
     />
   </div>
 </template>

@@ -35,6 +35,7 @@ const riverId = '123456789'
 
 const options = {
   mocks: {
+    $randomId: jest.fn(() => '123'),
     $titleCase: jest.fn(),
     $store: mockStore,
     $route: {

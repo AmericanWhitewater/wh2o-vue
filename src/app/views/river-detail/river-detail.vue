@@ -13,14 +13,6 @@
                 <cv-skeleton-text heading />
                 <cv-breadcrumb-skeleton no-trailing-slash />
               </div>
-              <div style="min-width:100px">
-                <utility-block
-                  state="content"
-                  height="150"
-                  theme="dark"
-                  hide-text
-                />
-              </div>
             </header>
             <header
               v-else-if="data"

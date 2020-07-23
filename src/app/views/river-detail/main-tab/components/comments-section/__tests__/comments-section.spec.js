@@ -30,6 +30,7 @@ const reachId = '123'
 
 const options = {
   mocks: {
+    $randomId: jest.fn(() => '123'),
     $store: mockStore,
     $route: {
       params: {
