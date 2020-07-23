@@ -86,7 +86,7 @@ export default {
       /**
        * linter requires this to take an argument?
        */
-      return this.$randomId
+      return this.$randomId()
     },
     handleClose (index, title) {
       this.$store.dispatch(globalAppActions.CLOSE_TOAST, index)

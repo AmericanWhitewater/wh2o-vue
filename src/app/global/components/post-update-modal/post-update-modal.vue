@@ -134,7 +134,7 @@ export default {
         this.formData.post.post_date = this.post.post_date
         this.formData.post.user_id = this.post.user?.uid
       } else {
-        this.formData.id = this.$randomId
+        this.formData.id = this.$randomId()
         const today = new Date()
 
         this.formData.post.post_date = today.toISOString()

@@ -208,7 +208,7 @@ export default {
         message = 'Rapid Edited'
       } else { // creating a new rapid
         this.$store.dispatch(rapidsActions.CREATE_RAPID, {
-          id: this.$randomId,
+          id: this.$randomId(),
           reach_id: this.river.id,
           ...this.formData
         })

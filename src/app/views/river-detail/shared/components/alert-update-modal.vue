@@ -52,7 +52,7 @@ export default {
   },
   data: () => ({
     formData: {
-      id: this.$randomId,
+      id: this.$randomId(),
       post: {
         user_id: null,
         detail: null,

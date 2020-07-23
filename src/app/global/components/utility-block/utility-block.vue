@@ -12,7 +12,7 @@
       />
       <p
         v-if="text && state === 'content'"
-        class="utility-block-text mb-spacing-md"
+        class="utility-block-text"
         v-text="text"
       />
     </template>
