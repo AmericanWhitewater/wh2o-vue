@@ -66,7 +66,7 @@ const createRapid = data => {
         description: data.description,
         difficulty: data.difficulty,
         distance: data.distance,
-        character: [],
+        character: data.character || [],
         approximate: false // change this if approximate is added to form
       }
     }
@@ -98,7 +98,7 @@ const updateRapid = data => {
         description: data.description,
         difficulty: data.difficulty,
         distance: data.distance,
-        character: []
+        character: data.character
       }
     }
   }).then(response => {
