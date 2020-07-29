@@ -12,6 +12,7 @@ import apolloProvider from './app/plugins/apollo-client'
 import App from './app/app.vue'
 import router from './app/app-routes'
 import store from './app/app-state'
+import { laravelDeploy } from './app/environment'
 
 import VueApollo from 'vue-apollo'
 
@@ -28,10 +29,15 @@ Vue.use(VueApollo)
 
 let mountPoint
 
-if (process.env.NODE_ENV === 'production') {
-  mountPoint = document.querySelector('#wh2o-vue-host').shadowRoot.querySelector('#wh2o-vue')
+// if it's in laravel
+if (laravelDeploy) {
+  if (process.env.NODE_ENV === 'production') {
+    mountPoint = document.querySelector('#wh2o-vue-host').shadowRoot.querySelector('#wh2o-vue')
+  } else {
+    mountPoint = '#wh2o-vue'
+  }
 } else {
-  mountPoint = '#wh2o-vue'
+  mountPoint = '#app'
 }
 
 export const wh2o = new Vue({

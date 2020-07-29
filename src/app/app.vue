@@ -18,7 +18,7 @@ import {
   AppCookieBanner
 } from './global/components'
 import { userActions } from '@/app/views/user/shared/state'
-import { laravelDeploy } from '@/app/environment/environment'
+import { laravelDeploy } from '@/app/environment'
 
 export default {
   name: 'app',
