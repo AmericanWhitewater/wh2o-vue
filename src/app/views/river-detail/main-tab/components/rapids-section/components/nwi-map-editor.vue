@@ -3,7 +3,10 @@
     id="nwi-map-editor-container"
     :style="height ? `height:${height}px`:''"
   >
-    <div id="nwi-map-editor" />
+    <div
+      id="nwi-map-editor"
+      ref="nwiMapEditor"
+    />
     <nwi-basemap-toggle
       :offset-right="false"
     />
@@ -121,7 +124,7 @@ export default {
     mountMap () {
       mapboxgl.accessToken = mapboxAccessToken
       const mapProps = {
-        container: 'nwi-map-editor',
+        container: this.$refs.nwiMapEditor,
         style: this.baseMapUrl,
         bounds: this.startingBounds,
         fitBoundsOptions: { padding: 80 }
