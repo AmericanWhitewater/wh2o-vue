@@ -19,7 +19,7 @@
                 <strong>Name</strong>
                 <br>Section
               </th>
-              <th>Class/Grade</th>
+              <th>Level</th>
               <th>&nbsp;</th>
             </tr>
           </thead>
@@ -37,11 +37,11 @@
                   :class="[`${reach.properties.condition}`, 'river-name-section']"
                   @click.exact="$router.push(`/river-detail/${reach.properties.id}/main`).catch(()=>{})"
                 >
-                  <strong>{{ reach.properties.river }}</strong>
+                  <strong>{{ displayReachTitle(reach) }}</strong>
                   <br>
                   {{ reach.properties.section }}
                 </td>
-                <td>{{ reach.properties.class }}</td>
+                <td>{{ displayGaugeReading(reach) }}</td>
                 <td>
                   <zoom-in16
                     class="zoom-button"
@@ -158,6 +158,15 @@ export default {
 
       return 'max-height:100vh'
     },
+    displayReachTitle (reach) {
+      return [reach.properties.river, reach.properties.class].join(' - ')
+    },
+    displayGaugeReading (reach) {
+      if (reach.properties.gage_0_reading) {
+        return [parseFloat(reach.properties.gage_0_reading.toFixed(2)), reach.properties.gage_0_unit].join(' ')
+      }
+      return ''
+    },
     viewRiver (id, tab) {
       this.$router
         .push(`/river-detail/${id}/${tab || 'main'}`)
@@ -204,7 +213,6 @@ export default {
   // this is mimicking :hover behaviour that already exists
   .bx--data-table tbody tr.active {
     td {
-      background: #e5e5e5;
       &:nth-child(1) {
         border-left-width: 1.5rem;
       }

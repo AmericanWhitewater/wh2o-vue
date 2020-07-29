@@ -8,7 +8,8 @@ const mockRoute = {
 const options = {
   mocks: {
     $route: mockRoute
-  }
+  },
+  stubs: ['router-link', 'router-view']
 }
 
 describe('user-access.vue', () => {

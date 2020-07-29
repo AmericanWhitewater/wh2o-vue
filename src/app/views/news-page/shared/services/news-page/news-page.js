@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { httpClient } from '@/app/global/services'
-import { cmsBaseUrl } from '@/app/environment/environment'
+import { cmsBaseUrl } from '@/app/environment'
 import { apiConstants } from '../../config'
 const getArticleDetail = id => {
   const url = `/content/Article/view/articleid/${id}/.json`

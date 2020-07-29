@@ -50,7 +50,10 @@
           </cv-dropdown-item>
         </cv-dropdown>
       </div>
-      <div id="nhd-editor" />
+      <div
+        id="nhd-editor"
+        ref="nhdEditor"
+      />
       <nwi-basemap-toggle
         :offset-right="false"
       />
@@ -64,7 +67,7 @@ import mapboxgl from 'mapbox-gl'
 import { mapState } from 'vuex'
 import {
   mapboxAccessToken
-} from '@/app/environment/environment'
+} from '@/app/environment'
 
 import bbox from '@turf/bbox'
 import bboxPolygon from '@turf/bbox-polygon'
@@ -303,7 +306,7 @@ export default {
     mountMap () {
       mapboxgl.accessToken = mapboxAccessToken
       const mapProps = {
-        container: 'nhd-editor',
+        container: this.$refs.nhdEditor,
         style: this.baseMapUrl,
         bounds: this.startingBounds,
         fitBoundsOptions: { padding: 80 },

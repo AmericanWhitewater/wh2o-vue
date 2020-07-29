@@ -217,13 +217,13 @@ export default {
     formatURI (image, thumb) {
       if (thumb) {
         return (
-          'https://americanwhitewater.org' + image.thumb ||
+          'https://beta.americanwhitewater.org' + image.thumb ||
           image.medium ||
           image.big
         )
       }
       return (
-        'https://americanwhitewater.org' + image.big ||
+        'https://beta.americanwhitewater.org' + image.big ||
         image.medium ||
         image.thumb
       )

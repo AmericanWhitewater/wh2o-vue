@@ -31,10 +31,10 @@ module.exports = {
     'vue/v-on-style': 2,
     'vue/valid-template-root': 2,
     'vue/valid-v-for': 2,
-    'no-new': 1,
+    'no-new': 'off',
     'vue/name-property-casing': [2, 'kebab-case'],
     camelcase: 'off',
-    radix: 1,
+    radix: 'off',
     'vue/order-in-components': [
       2,
       {

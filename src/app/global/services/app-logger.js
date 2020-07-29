@@ -1,5 +1,5 @@
 /* eslint no-console: ["off"] */
-import { environment } from '@/app/environment/environment'
+import { environment } from '@/app/environment'
 
 /**
  * @description Logger class

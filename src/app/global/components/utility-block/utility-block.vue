@@ -12,7 +12,7 @@
       />
       <p
         v-if="text && state === 'content'"
-        class="utility-block-text mb-spacing-md"
+        class="utility-block-text"
         v-text="text"
       />
     </template>
@@ -39,11 +39,11 @@ export default {
       type: Boolean,
       required: false
     },
-    height: {
-      type: String,
-      default: '350'
-    },
     text: {
+      type: String,
+      required: false
+    },
+    height: {
       type: String,
       required: false
     },
@@ -71,3 +71,34 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+#utility-block {
+  display: flex;
+  width: 100%;
+  min-height: 100px;
+  height: 100%;
+  padding: $spacing-md;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column nowrap;
+
+  &.dark {
+    background-color: $ui-03;
+  }
+  &.light {
+    background-color: $ui-02;
+  }
+
+  .bx--inline-loading {
+    justify-content: center;
+    @include carbon--type-style("code-01");
+  }
+  .utility-block-text {
+    @include carbon--type-style("code-02");
+  }
+
+  @include carbon--breakpoint('sm') {
+    min-height: 350px;
+  }
+}
+</style>

@@ -32,6 +32,7 @@ const mockRoute = {
 
 const options = {
   mocks: {
+    $randomId: jest.fn(() => '123'),
     $store: mockStore,
     $route: mockRoute,
     $titleCase: jest.fn()

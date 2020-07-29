@@ -8,4 +8,6 @@ import { nanoid } from 'nanoid'
  *
  */
 
-Vue.prototype.$randomId = nanoid(21, '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
+Vue.prototype.$randomId = function () {
+  return nanoid(21, '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
+}

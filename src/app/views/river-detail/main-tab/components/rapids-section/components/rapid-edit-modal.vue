@@ -63,14 +63,12 @@
           :options="poiClasses"
           :disabled="formPending"
         />
-        <!-- temporarily commented out bc the carbon component is broken
-             and it keeps throwing errors !-->
-        <!-- <cv-multi-select
+        <cv-multi-select
           v-model="formData.character"
           theme="light"
           :options="poiCharacteristics"
           title="Characteristics"
-        /> -->
+        />
         <ContentEditor
           v-if="renderEditor"
           :content="formData.description"
@@ -208,7 +206,7 @@ export default {
         message = 'Rapid Edited'
       } else { // creating a new rapid
         this.$store.dispatch(rapidsActions.CREATE_RAPID, {
-          id: this.$randomId,
+          id: this.$randomId(),
           reach_id: this.river.id,
           ...this.formData
         })

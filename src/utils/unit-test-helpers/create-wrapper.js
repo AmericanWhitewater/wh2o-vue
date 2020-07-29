@@ -14,10 +14,7 @@ const view = () => {
 /**
  * factory func for fresh unit tests
  * @param {object} component vue component to test
- * @param {object} stateConfig per test vuex state config
- * @param {object} routeConfig per test route config
- *
- * @todo add stubs as an argument
+ * @param {object} options per test config
  *
  */
 const createWrapper = (component, options = {}) => {

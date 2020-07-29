@@ -6,7 +6,7 @@ American Whitewater is a national non-profit and is the primary advocate for the
 
 This app is an interactive whitewater river map and guide which provides flow data, descriptions, safety information, and more for the ~6000 rivers in the American Whitewater database.
 
-## Prototype
+## Demo
 
 [https://wh2o-vue.herokuapp.com/#/](https://wh2o-vue.herokuapp.com/#/)
 

@@ -3,11 +3,9 @@
 }
 
 .bx--data-table {
-
   thead,
   tbody,
   tfoot {
-
     tr,
     td,
     th {
@@ -15,9 +13,11 @@
     }
   }
 
-  th {
-    &:first-of-type {
-      padding-left:1rem;
+  thead {
+    th {
+      &:first-of-type {
+        padding-left: 1.25rem;
+      }
     }
   }
 }

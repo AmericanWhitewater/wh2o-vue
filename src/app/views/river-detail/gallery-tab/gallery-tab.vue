@@ -14,6 +14,7 @@
               <div class="toolbar-wrapper">
                 <cv-button
                   size="small"
+                  :disabled="!user"
                   @click.exact="mediaUploadModalVisible = true"
                   @keydown.enter="mediaUploadModalVisible = true"
                 >
@@ -50,8 +51,10 @@
     </layout>
     <media-upload-modal
       :visible="mediaUploadModalVisible"
-      section="GALLERY"
-      @upload:cancelled="mediaUploadModalVisible = false"
+      section="POST"
+      @form:cancelled="mediaUploadModalVisible = false"
+      @form:success="mediaUploadModalVisible = false"
+      @form:error="mediaUploadModalVisible = false"
     />
   </div>
 </template>
@@ -75,30 +78,38 @@ export default {
     selectedRapids: [],
     mediaUploadModalVisible: false
   }),
-
   computed: {
     ...mapState({
       loading: state => state.riverDetailState.galleryData.loading,
       error: state => state.riverDetailState.galleryData.error,
       photos: state => state.riverDetailState.galleryData.data?.data,
-      pagination: state => state.riverDetailState.galleryData.pagination
+      pagination: state => state.riverDetailState.galleryData.pagination,
+      rapids: state => state.riverDetailState.rapidsData.data,
+      user: state => state.userState.userData.data
     }),
-    ...mapGetters(['media'])
+    ...mapGetters(['media']),
+    route () {
+      return this.$route.params.id
+    }
+  },
+  watch: {
+    route: {
+      immediate: true,
+      handler: function (val) {
+        this.loadRapids(val)
+      }
+    }
   },
   methods: {
-    handlePaginationChange (val) {
-      // eslint-disable-next-line no-console
-      console.log('val :>> ', val)
-    },
-    loadRapids () {
-      this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.$route.params.id)
+    loadRapids (routeId) {
+      this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, routeId)
     },
     formatMultiSelectModel (rapids) {
       this.selectedRapids = rapids ? rapids.map(r => r.id) : null
     },
     loadMedia (val) {
       const data = {
-        reach_id: this.$route.params.id,
+        reach_id: this.route,
         per_page: val ? val.length : 10,
         page: val ? val.page : 1
       }

@@ -13,14 +13,6 @@
                 <cv-skeleton-text heading />
                 <cv-breadcrumb-skeleton no-trailing-slash />
               </div>
-              <div style="min-width:100px">
-                <utility-block
-                  state="content"
-                  height="150"
-                  theme="dark"
-                  hide-text
-                />
-              </div>
             </header>
             <header
               v-else-if="data"
@@ -140,10 +132,8 @@
                 </cv-dropdown-item>
               </cv-dropdown>
             </div>
-            <transition-group
+            <ul
               v-if="windowWidth >= $options.breakpoints.lg"
-              name="entranceFromTop"
-              tag="ul"
             >
               <li
                 v-for="(label, path) in $options.tabs"
@@ -161,7 +151,7 @@
                   {{ label }}
                 </cv-button>
               </li>
-            </transition-group>
+            </ul>
           </div>
         </aside>
         <main

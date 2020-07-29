@@ -3,8 +3,9 @@ import { createWrapper } from '@/utils'
 
 const options = {
   propsData: {
-    resourceName: 'test',
-    visible: false
+    resourceName: 'Lorem Resource Name',
+    visible: false,
+    kind: 'strict'
   },
   mocks: {
     $router: jest.fn()
@@ -12,8 +13,11 @@ const options = {
 }
 
 describe('ConfirmDeleteModal', () => {
-  it('exists', () => {
+  it('should disable primary click button if user input invalid', async () => {
     const wrapper = createWrapper(ConfirmDeleteModal, options)
-    expect(wrapper.find('.confirm-delete-modal').exists()).toBe(true)
+
+    await wrapper.find('#user-input-field').setValue('Lorem Resource')
+
+    expect(wrapper.find('.bx--btn--danger').attributes('disabled')).toBe('disabled')
   })
 })

@@ -5,45 +5,70 @@
       class="mb-spacing-md"
       v-text="title"
     />
+    <template v-if="previewUrls.length">
+      <img
+        v-for="(item, k) in previewUrls"
+        :key="k"
+        :src="`https://beta.americanwhitewater.org${item}`"
+        class="mb-spacing-sm"
+      >
+    </template>
     <cv-file-uploader
+      v-if="!previewUrls.length"
       ref="fileUploader"
       data-modal-primary-focus
       helper-text="10mb max"
       accepts=".jpg,.png"
       class="mb-spacing-md"
-      :disabled="formPending"
+      :disabled="formPending || !user"
       @change="setFile"
     />
     <cv-text-input
       v-model="formData.photo.author"
       class="mb-spacing-md"
       label="Author"
-      placeholder="label"
       required
-      :disabled="formPending"
+      :disabled="formPending || !user"
     />
     <cv-text-input
       v-model="formData.photo.subject"
       class="mb-spacing-md"
       label="Subject"
-      :disabled="formPending"
+      :disabled="formPending || !user"
     />
     <cv-text-input
       v-model="formData.photo.caption"
       class="mb-spacing-md"
       label="Caption"
-      :disabled="formPending"
+      :disabled="formPending || !user"
     />
+    <cv-dropdown
+      v-if="rapids && rapids.length"
+      v-model="formData.photo.poi_id"
+      :disabled="formPending || !user"
+      class="mb-spacing-md"
+      label="Rapid"
+    >
+      <cv-dropdown-item
+        v-for="(rapid, index) in rapids"
+        :key="index"
+        :value="rapid.id"
+      >
+        {{ rapid.name }}
+      </cv-dropdown-item>
+    </cv-dropdown>
     <cv-text-area
       v-model="formData.photo.description"
       label="Description"
       :class="{ 'mb-spacing-md': !parentIsModal }"
-      :disabled="formPending"
+      :disabled="formPending || !user"
     />
   </div>
 </template>
 <script>
-import { httpClient } from '@/app/global/services'
+import gql from 'graphql-tag'
+import { postUpdate } from '@/app/global/components/post-update-modal/services/postUpdate.js'
+import { globalAppActions } from '@/app/global/state'
 export default {
   name: 'media-upload-form',
   props: {
@@ -54,42 +79,50 @@ export default {
         ['RAPID', 'POST', 'GALLERY', 'REACH'].indexOf(val) > -1
     },
     primaryClickTimestamp: {
-      type: String,
+      type: Number,
       required: false,
       default: null
     },
     title: {
       type: String,
       required: false
-    },
-    rapids: {
-      type: Array,
-      required: false,
-      default: () => null
     }
   },
   data: () => ({
     formPending: false,
     formData: {
+      id: null,
       fileinput: {
         file: null,
-        section: '',
-        section_id: ''
+        section: null,
+        section_id: null
       },
       photo: {
-        author: '',
-        caption: '',
-        description: '',
-        photo_date: '',
-        poi_id: '',
-        poi_name: '',
-        post_id: '',
-        subject: ''
+        author: null,
+        caption: null,
+        description: null,
+        photo_date: null,
+        poi_id: '0',
+        poi_name: null,
+        post_id: '0',
+        subject: null
       }
-    }
+    },
+    postFormData: {
+      id: null,
+      post: {
+        reach_id: null,
+        post_type: 'PHOTO_POST',
+        post_date: null
+      }
+    },
+    previewUrls: []
   }),
 
   computed: {
+    rapids () {
+      return this.$store.state.riverDetailState.rapidsData.data
+    },
     user () {
       return this.$store.state.userState.userData.data
     },
@@ -102,64 +135,98 @@ export default {
   },
   watch: {
     primaryClickTimestamp () {
-      this.submitForm()
+      this.submitPost()
     }
   },
   methods: {
-    async submitForm () {
-      this.formPending = true
-      await httpClient.post('/graphql', {
-        query: `
-          mutation($file: Upload!) {
-            photoFileCreate(
-              fileinput: {
-                file: $file,
-                section: ${this.section.toUpperCase()},
-                section_id: "${0}"
-              },
-              photo: {
-                author: "${this.formData.photo.author}",
-                caption: "${this.formData.photo.caption}",
-                subject: "${this.formData.photo.subject}",
-                description: "${this.formData.photo.description}",
-                photo_date: "${this.todaysDate()}",
-                poi_id: "${this.formData.photo.poi_id}",
-                post_id: "${this.formData.photo.post_id}",
-                poi_name: "${this.formData.photo.poi_name}"
-              }
-            ) {
-              id
-            }
-          }`,
-        variables: {
-          file: this.formData.fileinput.file
-        }
-      }).then(r => {
-        this.formPending = false
-        // eslint-disable-next-line no-console
-        console.log('r :', r)
-      }).catch(e => {
-        this.formPending = false
-        // eslint-disable-next-line no-console
-        console.log('e :', e)
-      })
-    },
     setFile (input) {
-      /** single file upload for now... */
-      this.formData.fileinput.file = input[0].file
+      if (input && input.length) {
+        this.formData.fileinput.file = input[0].file
+        this.uploadFile()
+      }
     },
-    todaysDate () {
+    async uploadFile () {
+      this.formPending = true
+      await this.$apollo.mutate({
+        mutation: gql`mutation ($fileinput: PhotoFileInput!, $id:ID!, $photo: PhotoInput!) {
+          photo: photoFileUpdate(fileinput: $fileinput, id: $id, photo:$photo)
+          {
+            id,
+            caption,
+            post_id,
+            description,
+            subject,
+            photo_date,
+            author,
+            poi_name,
+            poi_id
+            image {
+                ext,
+                uri {
+                    thumb,
+                    medium,
+                    big
+                }
+            }
+          }
+        }`,
+        variables: {
+          fileinput: this.formData.fileinput,
+          id: this.formData.id,
+          photo: this.formData.photo
+        }
+      }).then(result => {
+        this.postFormData.id = result.data.photo.post_id
+        this.postFormData.post.post_date = result.data.photo.photo_date
+        this.postFormData.post.reach_id = this.$route.params.id
+        this.previewUrls.push(result.data.photo.image.uri.big)
+      }).catch(err => {
+        /* eslint-disable-next-line no-console */
+        console.log(err)
+        this.$emit('form:error')
+        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          title: 'Upload Failed',
+          kind: 'error'
+        })
+      })
+      this.formPending = false
+    },
+    async submitPost () {
+      this.formPending = true
+      try {
+        await postUpdate(this.postFormData)
+        this.$emit('form:success')
+        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          title: 'Media Uploaded',
+          kind: 'success'
+        })
+      } catch (error) {
+        /* eslint-disable-next-line no-console */
+        console.log('error :>> ', error)
+        this.$emit('form:error')
+        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          title: 'Upload Failed',
+          kind: 'error'
+        })
+      } finally {
+        this.formPending = false
+      }
+    },
+    setInitialFormData () {
       const today = new Date()
-      return today.toISOString()
+      this.formData.photo.photo_date = today.toISOString()
+
+      if (this.user && this.user.uname) {
+        this.formData.photo.author = this.user.uname
+      }
+
+      this.formData.id = this.$randomId()
+      this.formData.fileinput.section = this.section
+      this.formData.fileinput.section_id = this.$randomId()
     }
   },
   created () {
-    if (this.user && this.user.uname) {
-      this.formData.photo.author = this.user.uname
-    }
-  },
-  mounted () {
-    this.todaysDate()
+    this.setInitialFormData()
   }
 }
 </script>

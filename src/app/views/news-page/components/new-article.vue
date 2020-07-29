@@ -55,7 +55,7 @@ export default {
     ContentEditor
   },
   data: () => ({
-    articleCopy: null,
+    articleCopy: '',
     cancelDialogVisible: false
   })
 }
