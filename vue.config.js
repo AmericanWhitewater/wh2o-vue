@@ -4,6 +4,8 @@
  *
  */
 
+const path = require('path')
+
 module.exports = {
   filenameHashing: false,
   /**
@@ -54,13 +56,6 @@ module.exports = {
     },
     appleMobileWebAppStatusBarStyle: 'black'
   },
-
-  /**
-   * A function that will receive an instance of ChainableConfig powered by webpack-chain.
-   * Allows for more fine-grained modification of the internal webpack config.
-   * @reference https://cli.vuejs.org/guide/webpack.html#chaining-advanced
-   *
-   */
   chainWebpack: config => {
     config.module
       .rule('file')
@@ -68,25 +63,12 @@ module.exports = {
       .use('file-loader')
       .loader('file-loader')
       .end()
-  },
 
+    config.resolve.alias.set('tinyqueue', path.join(__dirname, '/node_modules/tinyqueue/tinyqueue.js'))
+  },
   configureWebpack: config => {
-    if (process.env.NODE_ENV === 'production') {
-      config.optimization = {
-        minimize: true
-      }
-    } else {
-      config.optimization = {
-        minimize: false
-      }
-    }
-    // resolves a bug with rbush-knn dependency
-    // https://github.com/mourner/rbush-knn/issues/18
-    config.resolve = {
-      alias: {
-        // eslint-disable-next-line no-path-concat
-        tinyqueue: __dirname + '/node_modules/tinyqueue/tinyqueue.js'
-      }
+    config.optimization = {
+      minimize: process.env.NODE_ENV === 'production'
     }
   },
   publicPath: process.env.VUE_APP_BASE_URL || '/'
