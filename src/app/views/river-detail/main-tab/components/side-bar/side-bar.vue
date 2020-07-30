@@ -47,21 +47,3 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-.main-tab-sidebar {
-  min-height: 100%;
-  .content-area {
-    height: auto;
-    padding: $spacing-sm 0;
-    &.sticky {
-      position: sticky;
-      top: 50px;
-      @include carbon--breakpoint("lg") {
-        top: 75px;
-      }
-    }
-  }
-
-}
-
-</style>

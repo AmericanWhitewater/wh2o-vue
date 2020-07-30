@@ -71,28 +71,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.sidebar-articles {
-  .sidebar-article {
-    &:hover {
-      cursor: pointer;
-      h5,
-      p {
-        text-decoration: underline;
-      }
-    }
-
-    .article-thumb {
-      object-fit: cover;
-      height: 100%;
-      width:100%;
-    }
-  }
-  .no-articles-msg {
-    @include carbon--type-style("code-02");
-  }
-}
-</style>
-<docs>
-
-</docs>

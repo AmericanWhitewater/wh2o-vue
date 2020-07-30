@@ -1,0 +1,11 @@
+.flow-tab {
+  padding-top: $spacing-xl;
+
+  canvas {
+    height: 350px;
+    width: 100%;
+  }
+  .gage-description {
+    @include carbon--type-style("body-long-02");
+  }
+}

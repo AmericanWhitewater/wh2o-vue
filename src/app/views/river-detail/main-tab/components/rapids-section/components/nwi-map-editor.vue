@@ -200,28 +200,3 @@ export default {
 }
 
 </script>
-
-<style lang="scss">
-#nwi-map-editor-container {
-  min-width: 100%;
-
-  width: 100%;
-  position: relative;
-}
-#nwi-map-editor {
-  height: 100%;
-  width: 100%;
-  background-color:$ui-03;
-}
-#snap-mode-control {
-  background-color: #fff;
-  border-radius: 3px;
-  top: 0.5rem;
-  left: 0.5rem;
-  padding: 5px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  z-index: 1;
-  display: block;
-}
-</style>

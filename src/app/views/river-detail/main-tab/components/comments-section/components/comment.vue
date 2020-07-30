@@ -141,18 +141,3 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-.comment {
-  padding: $spacing-md;
-  &:hover {
-    @include layer("raised");
-  }
-
-  .detail {
-    @include carbon--type-style("body-long-02");
-  }
-  .date {
-    @include carbon--type-style("label-01");
-  }
-}
-</style>

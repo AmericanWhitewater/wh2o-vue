@@ -122,15 +122,3 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-.sidebar-alerts {
-  .header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .no-alerts-msg {
-     @include carbon--type-style("code-02");
-  }
-}
-</style>

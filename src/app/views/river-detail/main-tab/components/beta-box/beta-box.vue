@@ -6,7 +6,7 @@
           <td>Difficulty</td>
           <td class="river-class">
             <template v-if="!loading">
-              {{ river && river.class ? river.class : 'n/a' }}
+              {{ river && river.class ? river.class : "n/a" }}
             </template>
             <template v-else>
               <cv-skeleton-text />
@@ -20,7 +20,7 @@
               <cv-skeleton-text />
             </template>
             <template v-else>
-              {{ river && river.length ? river.length + ' mi' : 'n/a' }}
+              {{ river && river.length ? river.length + " mi" : "n/a" }}
             </template>
           </td>
         </tr>
@@ -28,7 +28,9 @@
           <td>Avg Gradient</td>
           <td class="river-avggradient">
             <template v-if="!loading">
-              {{ river && river.avggradient ? river.avggradient + ' fpm' : 'n/a' }}
+              {{
+                river && river.avggradient ? river.avggradient + " fpm" : "n/a"
+              }}
             </template>
             <template v-else>
               <cv-skeleton-text />
@@ -42,7 +44,11 @@
               v-if="gages && gages.length"
               class="river-gages"
             >
-              {{ gages[0].gauge && gages[0].gauge.name ? $titleCase(gages[0].gauge.name) : 'n/a' }}
+              {{
+                gages[0].gauge && gages[0].gauge.name
+                  ? $titleCase(gages[0].gauge.name)
+                  : "n/a"
+              }}
             </td>
             <td
               v-else
@@ -124,7 +130,9 @@
           <td>Reach Info Last Updated</td>
           <td class="river-last-edited">
             <template v-if="!loading">
-              {{ river && river.edited ? formatDate(river.edited, 'LL') : 'n/a' }}
+              {{
+                river && river.edited ? formatDate(river.edited, "LL") : "n/a"
+              }}
             </template>
             <template v-else>
               <cv-skeleton-text />
@@ -210,34 +218,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.beta-box {
-  max-width: 100%;
-  overflow-x: scroll;
-  position: relative;
-  overflow: hidden;
-  .edit-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    z-index: 2;
-    background-color: rgba($ui-02, 0.75);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
-td {
-  vertical-align: middle;
-  background-color: transparent;
-}
-tr {
-  @include ease;
-  &:hover,
-  &:focus {
-    background-color: $ui-02;
-  }
-}
-</style>

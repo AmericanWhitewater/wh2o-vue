@@ -9,6 +9,7 @@
  */
 
 const {
+  VUE_APP_LARAVEL_DEPLOY,
   VUE_APP_WP_API_URL,
   VUE_APP_NWI_TILE_SERVER,
   VUE_APP_MAPBOX_ACCESS_TOKEN,
@@ -27,6 +28,7 @@ const clientSecret = VUE_APP_CLIENT_SECRET
 const mapboxAccessToken = VUE_APP_MAPBOX_ACCESS_TOKEN
 const nwiTileServer = VUE_APP_NWI_TILE_SERVER
 const cmsBaseUrl = VUE_APP_WP_API_URL
+const laravelDeploy = VUE_APP_LARAVEL_DEPLOY
 
 export {
   environment,
@@ -36,5 +38,6 @@ export {
   nwiTileServer,
   cmsBaseUrl,
   clientId,
-  clientSecret
+  clientSecret,
+  laravelDeploy
 }

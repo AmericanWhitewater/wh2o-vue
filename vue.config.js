@@ -4,7 +4,10 @@
  *
  */
 
+const path = require('path')
+
 module.exports = {
+  filenameHashing: false,
   /**
    * disables lint on save which disrupts workflow.
    * linting reserved for pre-commit git hook.
@@ -53,24 +56,6 @@ module.exports = {
     },
     appleMobileWebAppStatusBarStyle: 'black'
   },
-
-  // resolves a bug with rbush-knn dependency
-  // https://github.com/mourner/rbush-knn/issues/18
-  configureWebpack: {
-    resolve: {
-      alias: {
-        // eslint-disable-next-line no-path-concat
-        tinyqueue: __dirname + '/node_modules/tinyqueue/tinyqueue.js'
-      }
-    }
-  },
-
-  /**
-   * A function that will receive an instance of ChainableConfig powered by webpack-chain.
-   * Allows for more fine-grained modification of the internal webpack config.
-   * @reference https://cli.vuejs.org/guide/webpack.html#chaining-advanced
-   *
-   */
   chainWebpack: config => {
     config.module
       .rule('file')
@@ -78,6 +63,13 @@ module.exports = {
       .use('file-loader')
       .loader('file-loader')
       .end()
+
+    config.resolve.alias.set('tinyqueue', path.join(__dirname, '/node_modules/tinyqueue/tinyqueue.js'))
   },
-  productionSourceMap: false
+  configureWebpack: config => {
+    config.optimization = {
+      minimize: process.env.NODE_ENV === 'production'
+    }
+  },
+  publicPath: process.env.VUE_APP_BASE_URL || '/'
 }

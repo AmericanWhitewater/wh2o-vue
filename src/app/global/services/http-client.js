@@ -22,7 +22,9 @@ const httpClient = axios.create(config)
 const authInterceptor = config => {
   const token = appLocalStorage.getItem('wh2o-auth')
 
-  config.headers.Authorization = `Bearer ${token}`
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
 
   return config
 }

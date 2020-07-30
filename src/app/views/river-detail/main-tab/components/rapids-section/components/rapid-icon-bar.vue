@@ -140,23 +140,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.rapid-icon-bar {
-  display: flex;
-  align-items: center;
-  &.has-icons {
-    @include carbon--breakpoint("sm") {
-      margin: $spacing-md 0;
-    }
-  }
-  ul {
-    &.edit-mode {
-      margin-right: $spacing-md;
-    }
-    li {
-      display: inline;
-      margin-left: 0.5rem;
-    }
-  }
-}
-</style>

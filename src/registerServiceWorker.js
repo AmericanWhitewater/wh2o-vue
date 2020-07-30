@@ -5,7 +5,7 @@ import store from './app/app-state'
 import { globalAppActions } from './app/global/state'
 
 if (
-  process.env.NODE_ENV !== 'development' && navigator.serviceWorker
+  !process.env.VUE_APP_LARAVEL_DEPLOY && process.env.NODE_ENV !== 'development' && navigator.serviceWorker
 ) {
   register(`${process.env.BASE_URL}service-worker.js`, {
     ready () {

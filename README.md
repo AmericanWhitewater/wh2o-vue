@@ -10,3 +10,17 @@ This app is an interactive whitewater river map and guide which provides flow da
 
 [https://wh2o-vue.herokuapp.com/#/](https://wh2o-vue.herokuapp.com/#/)
 
+
+## Contributing
+
+Looking to give back to the paddling community? Look no further! For instructions on how to start
+contributing to the project, consult our [contribution guidelines](./CONTRIBUTING.md).
+
+## Built With
+
+* [IBM Carbon Design System](https://www.carbondesignsystem.com/)
+* [Mapbox](https://www.mapbox.com/)
+
+## Other Projects
+
+- [wh2o-api](https://bit.ly/2OqBA2g)

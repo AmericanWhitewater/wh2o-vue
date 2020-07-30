@@ -230,13 +230,6 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.media-upload-form {
-  .bx--modal .bx--text-input {
-    background-color: #f4f7fb;
-  }
-}
-</style>
 <docs>
 
 ## note

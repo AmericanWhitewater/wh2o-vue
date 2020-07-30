@@ -140,8 +140,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.accidents-tab {
-  padding-top: 2rem;
-}
-</style>
