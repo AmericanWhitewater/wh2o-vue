@@ -23,13 +23,15 @@ Vue.use(CarbonComponents)
 Vue.use(VueMeta)
 Vue.use(VueApollo)
 
-/**
- * attempting the use shadow DOM
- */
-
 let mountPoint
 
-// if it's in laravel
+/**
+ * determines where to mount the vue app.
+ *
+ * If we're mounting inside the production laravel app
+ * use the shadow DOM, if not, the normal #app
+ *
+ */
 if (laravelDeploy) {
   if (process.env.NODE_ENV === 'production') {
     mountPoint = document.querySelector('#wh2o-vue-host').shadowRoot.querySelector('#wh2o-vue')
