@@ -10,7 +10,6 @@
       <div
         ref="table-container"
         class="bx--data-table-container river-index"
-        :style="getTableHeight()"
       >
         <table class="bx--data-table river-table">
           <thead>
@@ -151,13 +150,6 @@ export default {
     }
   },
   methods: {
-    getTableHeight () {
-      if (this.windowWidth > this.mq.lg) {
-        return `max-height:calc(100vh - ${this.$refs['table-container']?.getClientRects()[0].top}px)`
-      }
-
-      return 'max-height:100vh'
-    },
     displayReachTitle (reach) {
       return [reach.properties.river, reach.properties.class].join(' - ')
     },

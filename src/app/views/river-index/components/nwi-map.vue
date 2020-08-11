@@ -1,7 +1,7 @@
 <template>
   <div
     id="nwi-map-container"
-    :style="height ? `height:${height}px`:''"
+    :style="`height:${containerHeight};`"
   >
     <template v-if="mapboxAccessToken">
       <div
@@ -155,6 +155,13 @@ export default {
       searchTerm: state => state.riverSearchState.riverSearchData.searchTerm,
       mouseoveredFeature: state => state.riverIndexState.riverIndexData.mouseoveredFeature
     }),
+    containerHeight () {
+      if (this.height) {
+        return `${this.height}px`
+      } else {
+        return 'calc(100vh - 125px)'
+      }
+    },
     baseMapUrl () {
       if (this.mapStyle === 'topo') {
         return 'mapbox://styles/mapbox/outdoors-v11'
@@ -569,16 +576,8 @@ export default {
 <style lang="scss">
 #nwi-map-container {
   min-width: 100%;
-
   width: 100%;
   position: relative;
-
-  @include carbon--breakpoint('sm') {
-    height: calc(100vh - 114px);
-  }
-  @include carbon--breakpoint('md') {
-  height: calc(100vh - 55px);
-  }
 
   canvas,
   .nwi-map {
