@@ -1,15 +1,15 @@
 <template>
   <div
-    class="nwi-basemap-toggle"
+    class="nwi-color-by-toggle"
   >
     <cv-dropdown
-      v-model="baseMap"
+      v-model="colorBy"
     >
-      <cv-dropdown-item value="topo">
-        Topo
+      <cv-dropdown-item value="difficulty">
+        Difficulty
       </cv-dropdown-item>
-      <cv-dropdown-item value="satellite">
-        Satellite
+      <cv-dropdown-item value="currentFlow">
+        Flow
       </cv-dropdown-item>
     </cv-dropdown>
   </div>
@@ -17,15 +17,16 @@
 
 <script>
 import { riverIndexActions } from '../shared/state'
+
 export default {
-  name: 'nwi-basemap-toggle',
+  name: 'nwi-color-by-toggle',
   computed: {
-    baseMap: {
+    colorBy: {
       get () {
-        return this.$store.state.riverIndexState.riverIndexData.mapStyle
+        return this.$store.state.riverIndexState.riverIndexData.mapColorBy
       },
       set (value) {
-        this.$store.dispatch(riverIndexActions.SET_MAP_STYLE, value)
+        this.$store.dispatch(riverIndexActions.SET_MAP_COLOR_BY, value)
       }
     }
   }
@@ -33,13 +34,13 @@ export default {
 </script>
 
 <style lang="scss">
-.nwi-basemap-toggle {
+.nwi-color-by-toggle {
   background-color: #fff;
   border-radius: 3px;
   top: 0.5rem;
   right: 0.5rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  width: 7rem;
+  width: 8rem;
   position: absolute;
   z-index: 1;
   display: block;

@@ -12,12 +12,8 @@
         v-if="includeLegend"
         :color-by="colorBy"
       />
-      <nwi-basemap-toggle
-        v-if="!hideBasemapToggle"
-        :offset-right="!hideFullscreenToggle"
-      />
-      <nwi-fullscreen-toggle
-        v-if="!hideFullscreenToggle"
+      <nwi-map-controls
+        :map-controls="mapControls"
         :fullscreen-target="fullscreenTarget"
       />
       <nwi-result-counter
@@ -41,11 +37,12 @@
 import mapboxgl from 'mapbox-gl'
 import bbox from '@turf/bbox'
 import debounce from 'lodash.debounce'
-import NwiMapStyles from './nwi-map-styles.js'
-import NwiMapLegend from './nwi-map-legend.vue'
-import NwiBasemapToggle from './nwi-basemap-toggle.vue'
-import NwiFullscreenToggle from './nwi-fullscreen-toggle.vue'
-import NwiResultCounter from './nwi-result-counter.vue'
+import {
+  NwiMapStyles,
+  NwiMapLegend,
+  NwiMapControls,
+  NwiResultCounter
+} from '.'
 import { mapState } from 'vuex'
 import { riverIndexActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
@@ -63,8 +60,7 @@ export default {
   components: {
     NwiMapLegend,
     UtilityBlock,
-    NwiBasemapToggle,
-    NwiFullscreenToggle,
+    NwiMapControls,
     NwiResultCounter
   },
   props: {
@@ -138,19 +134,19 @@ export default {
     // passes list of desired toolbar controls into the NwiMapControls component
     mapControls: {
       type: Array,
-      required: false
+      default: () => ['baseMap', 'colorBy', 'fullscreen']
     }
   },
   data () {
     return {
       loading: false,
-      colorBy: this.initialColorBy,
       mapboxAccessToken: mapboxAccessToken
     }
   },
   computed: {
     ...mapState({
       mapStyle: state => state.riverIndexState.riverIndexData.mapStyle,
+      colorBy: state => state.riverIndexState.riverIndexData.mapColorBy,
       searchResults: state => state.riverSearchState.riverSearchData.data,
       searchTerm: state => state.riverSearchState.riverSearchData.searchTerm,
       mouseoveredFeature: state => state.riverIndexState.riverIndexData.mouseoveredFeature
@@ -164,9 +160,6 @@ export default {
       } else {
         return 'mapbox://styles/mapbox/outdoors-v11'
       }
-    },
-    hideFullscreenToggle () {
-      return !this.fullscreenTarget
     },
     // parses out the layers we're adding to the map from NwiMapStyles / sourceLayers prop
     mapLayers () {
@@ -277,9 +270,6 @@ export default {
     },
     updateLoading (loading) {
       this.loading = loading
-    },
-    updateColorBy (newVal) {
-      this.colorBy = newVal
     },
     attachMouseEvents (layer) {
       this.map.on('mouseenter', layer, this.mouseenterFeature)
