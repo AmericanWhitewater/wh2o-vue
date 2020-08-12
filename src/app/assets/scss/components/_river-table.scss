@@ -2,10 +2,9 @@
   min-width: unset;
   overflow-x: scroll;
 
-  &.content-height {
-    height: $content-height;
-    max-height: 685px;
-    overflow: scroll;
+  &.river-index {
+    overflow-x: unset;
+    height: calc(100vh - 189px);
   }
 }
 
@@ -22,7 +21,6 @@
     vertical-align: middle;
 
     span {
-
       &:hover {
         cursor: pointer;
         text-decoration: underline;
@@ -39,40 +37,32 @@
   }
 
   &.river-table {
-
     tbody {
-
       tr,
       td {
-
         @include ease;
 
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
 
         &:nth-child(1) {
-
           &[class*="low"],
           &.low {
-
             @include flow-border($flow-low);
           }
 
           &[class*="med"],
           &.med {
-
             @include flow-border($flow-medium);
           }
 
           &[class*="hi"],
           &.hi {
-
             @include flow-border($flow-high);
           }
 
           &[class*="unk"],
           &.unk {
-
             @include flow-border($ui-03);
           }
         }
