@@ -113,7 +113,7 @@ export default {
       timeStart: null,
       timeEnd: null,
       resolution: null,
-      timeScale: 'day'
+      timeScale: 'week'
     }
   }),
   computed: {

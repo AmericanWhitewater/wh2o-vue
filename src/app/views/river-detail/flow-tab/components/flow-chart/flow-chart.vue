@@ -22,7 +22,7 @@ export default {
     timeScales: {
       type: String,
       required: false,
-      default: 'day',
+      default: 'week',
       validator: val => ['day', 'week', 'month', 'year'].indexOf(val) > -1
     },
     readings: {
