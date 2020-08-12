@@ -21,6 +21,9 @@
           />
         </div>
         <div class="bx--col-sm-16 bx--col-lg-6">
+          <div class="">
+            <a href="#">Click Here for old View</a>
+          </div>
           <NwiMapControlsV2 />
           <template v-if="loading || searchLoading">
             <UtilityBlock state="loading" />

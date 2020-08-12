@@ -47,6 +47,11 @@
         />
       </div>
     </div>
+    <div class="bx--row">
+      <div class="bx--col bx--offset-md-6">
+        <a href="#">Report Comment</a>
+      </div>
+    </div>
     <cv-modal
       :visible="deleteCommentModalVisible"
       @secondary-click="deleteCommentModalVisible = false"
