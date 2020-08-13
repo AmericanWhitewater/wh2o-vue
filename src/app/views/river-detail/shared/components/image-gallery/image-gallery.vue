@@ -31,6 +31,7 @@
       <div
         v-if="activeImage"
         class="lightbox-wrapper"
+        :style="lightboxWrapperHeight"
       >
         <div class="lightbox-image-wrapper">
           <img
@@ -164,6 +165,7 @@
 <script>
 import { AwLogo } from '@/app/global/components'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
+import { laravelDeploy } from '@/app/environment'
 export default {
   name: 'image-gallery',
   components: {
@@ -211,6 +213,18 @@ export default {
           .indexOf(this.activeImage.id)
       }
       return null
+    },
+    // if we are in the laravel app, position: fixed doesn't work the same way
+    // because it's embedded in a shadow dom, so we need to override the scss-defined
+    // styling
+    lightboxWrapperHeight () {
+      if (laravelDeploy) {
+        return `
+          top: 80px;
+          height: calc(100vh - 80px);
+        `
+      }
+      return ''
     }
   },
   methods: {
