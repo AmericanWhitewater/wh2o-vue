@@ -68,6 +68,11 @@ export default {
       type: String,
       required: false
     },
+    // determines whether or not map is interactive
+    static: {
+      type: Boolean,
+      default: false
+    },
     // display loading spinner because of events from other components
     externalLoading: {
       type: Boolean
@@ -80,11 +85,6 @@ export default {
        * @note vue defaults to false, consider refactoring
        */
       default: true
-    },
-    // hide basemap toggle (satellite/topo)
-    hideBasemapToggle: {
-      type: Boolean,
-      required: false
     },
     hideResultCounter: {
       type: Boolean,
@@ -499,7 +499,8 @@ export default {
       const mapProps = {
         container: this.$refs.mapContainer,
         style: this.baseMapUrl,
-        trackUserLocation: true
+        trackUserLocation: true,
+        interactive: !this.static
       }
       if (this.startingBounds) {
         mapProps.bounds = this.startingBounds
@@ -519,10 +520,12 @@ export default {
         })
       }
 
-      this.map.addControl(
-        new mapboxgl.NavigationControl({ showCompass: true }),
-        'bottom-left'
-      )
+      if (!this.static) {
+        this.map.addControl(
+          new mapboxgl.NavigationControl({ showCompass: true }),
+          'bottom-left'
+        )
+      }
       this.map.on('styledata', this.loadAWMapData)
       this.map.on('styledata', this.modifyMapboxBaseStyle)
 
