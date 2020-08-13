@@ -30,8 +30,8 @@
     >
       <div
         v-if="activeImage"
+        ref="lightboxWrapper"
         class="lightbox-wrapper"
-        :style="lightboxWrapperHeight"
       >
         <div class="lightbox-image-wrapper">
           <img
@@ -213,21 +213,22 @@ export default {
           .indexOf(this.activeImage.id)
       }
       return null
-    },
+    }
+  },
+  methods: {
     // if we are in the laravel app, position: fixed doesn't work the same way
     // because it's embedded in a shadow dom, so we need to override the scss-defined
     // styling
     lightboxWrapperHeight () {
       if (laravelDeploy) {
+        const height = window.scrollY + 80
         return `
-          top: 80px;
-          height: calc(100vh - 80px);
+          top: ${height}px;
+          height: calc(100vh - ${height}px);
         `
       }
       return ''
-    }
-  },
-  methods: {
+    },
     formatURI (image, thumb) {
       if (thumb) {
         return (
@@ -261,6 +262,12 @@ export default {
        * just applies body { overflow: hidden }
        */
       document.body.classList.add('bx--body--with-modal-open')
+
+      // this is a really frustrating hack to deal with weird behavior
+      // of position: fixed inside the shadow DOM when laravel mounted
+      this.$nextTick(() => {
+        this.$refs.lightboxWrapper.style = this.lightboxWrapperHeight()
+      })
     },
     closeLightbox () {
       this.lightbox.active = false
