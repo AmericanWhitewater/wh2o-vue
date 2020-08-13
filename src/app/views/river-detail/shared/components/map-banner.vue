@@ -11,6 +11,7 @@
           :starting-bounds="startingBounds"
           fullscreen-target="map-wrapper"
           hide-result-counter
+          static
         />
       </template>
       <template v-else>
