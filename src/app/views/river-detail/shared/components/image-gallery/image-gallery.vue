@@ -221,10 +221,10 @@ export default {
     // styling
     lightboxWrapperHeight () {
       if (laravelDeploy) {
-        const height = window.scrollY + 80
+        const height = window.scrollY + 79
         return `
           top: ${height}px;
-          height: calc(100vh - ${height}px);
+          height: calc(100vh - 79px);
         `
       }
       return ''
