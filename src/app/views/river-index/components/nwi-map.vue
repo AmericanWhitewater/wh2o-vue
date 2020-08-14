@@ -191,7 +191,7 @@ export default {
     // visually highlights a mosued over feature on the map
     mouseoveredFeature (feature) {
       // TODO: consider refactoring this to use feature state (it might be faster)
-      if (feature) {
+      if (feature && feature.properties.id) {
         this.map.setFilter('activeReachSegmentCasing', [
           '==',
           ['get', 'id'],
@@ -410,7 +410,11 @@ export default {
 
         this.updateMapColorScheme(this.colorBy)
 
-        this.mapLayers.forEach(layer => {
+        // the assumption when you set `sourceLayers` prop is that the last layer
+        // displays on top. Unfortunately, when attaching mouse events, we want
+        // the top layer to be the clickable one -- meaning it needs to be attached first.
+        // so we have to reverse mapLayers here to match our desired order
+        this.mapLayers.reverse().forEach(layer => {
           this.attachMouseEvents(layer)
         })
 
