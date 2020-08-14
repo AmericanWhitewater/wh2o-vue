@@ -127,19 +127,19 @@ const actions = {
 
   async [rapidsActions.UPDATE_RAPID] (context, data) {
     context.commit(UPDATE_REQUEST, data)
+    const point = `${data.geom.coordinates[0]} ${data.geom.coordinates[1]}`
 
     const payload = {
-      rloc: `${data.geom.coordinates[0]} ${data.geom.coordinates[1]}`,
-      ...data
+      ...data,
+      rloc: point
     }
     const result = await updateRapid(payload).catch(e => {
       context.commit(DATA_ERROR, e)
     })
-
     if (!result.errors) {
-      context.commit(UPDATE_SUCCESS, result)
+      context.commit(UPDATE_SUCCESS, result.data.poiUpdate)
     } else {
-      context.commit(DATA_ERROR, 'error')
+      context.commit(DATA_ERROR, result.errors)
     }
   },
 
@@ -147,8 +147,8 @@ const actions = {
     context.commit(CREATE_REQUEST, data)
 
     const payload = {
-      rloc: `${data.geom.coordinates[0]} ${data.geom.coordinates[1]}`,
-      ...data
+      ...data,
+      rloc: `${data.geom.coordinates[0]} ${data.geom.coordinates[1]}`
     }
 
     const result = await createRapid(payload).catch(e => {
@@ -156,9 +156,9 @@ const actions = {
     })
 
     if (!result.errors) {
-      context.commit(CREATE_SUCCESS, result)
+      context.commit(CREATE_SUCCESS, result.data.poiUpdate)
     } else {
-      context.commit(DATA_ERROR, 'error')
+      context.commit(DATA_ERROR, result.errors)
     }
   },
 
@@ -170,7 +170,7 @@ const actions = {
     })
 
     if (!result.errors) {
-      context.commit(DELETE_SUCCESS, result)
+      context.commit(DELETE_SUCCESS, result.data.poiDelete)
     } else {
       context.commit(DATA_ERROR, 'error')
     }
