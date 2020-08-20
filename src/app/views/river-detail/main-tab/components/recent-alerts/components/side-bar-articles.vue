@@ -1,8 +1,14 @@
 <template>
   <div class="sidebar-articles">
-    <h4 class="mb-spacing-sm">
-      News
-    </h4>
+    <span class="header-row">
+      <h4 class="mb-spacing-sm">News</h4>
+      <cv-link
+        :to="`/river-detail/${$route.params.id}/news`"
+      >
+        See more
+      </cv-link>
+
+    </span>
     <template v-if="loading">
       <div class="pb-spacing-md">
         <cv-inline-loading

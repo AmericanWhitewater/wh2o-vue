@@ -1,7 +1,5 @@
 .sidebar-articles {
   .sidebar-article {
-    max-height: 250px;
-
     &:hover {
       cursor: pointer;
       h5,
@@ -12,8 +10,8 @@
 
     .article-thumb {
       max-height: 250px;
+      min-height: 250px;
       object-fit: cover;
-      height: 100%;
       width: 100%;
     }
   }
