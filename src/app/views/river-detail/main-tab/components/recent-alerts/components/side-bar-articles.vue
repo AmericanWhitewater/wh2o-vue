@@ -13,7 +13,7 @@
     </template>
     <template v-else-if="articles && articles.length > 0">
       <div
-        v-for="(article, i) in articles.slice(0, 2)"
+        v-for="(article, i) in articles.slice(0, 1)"
         :key="i + 3 * 4"
         class="bx--row mb-spacing-xs sidebar-article"
         @keydown.enter="$router.push(`/article/${article.id}`)"

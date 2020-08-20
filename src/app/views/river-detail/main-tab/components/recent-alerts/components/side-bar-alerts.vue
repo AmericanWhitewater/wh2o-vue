@@ -17,7 +17,7 @@
     </template>
     <template v-else-if="alerts && alerts.length > 0">
       <cv-inline-notification
-        v-for="(alert, index) in alerts.slice(0, 2)"
+        v-for="(alert, index) in alerts.slice(0, 1)"
         :key="index"
         :title="alertTitle(alert)"
         :sub-title="alert.detail"
