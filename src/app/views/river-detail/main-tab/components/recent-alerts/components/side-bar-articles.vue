@@ -1,8 +1,18 @@
 <template>
   <div class="sidebar-articles">
-    <h4 class="mb-spacing-sm">
-      News
-    </h4>
+    <span class="header-row">
+      <h4 class="mb-spacing-sm">News</h4>
+      <cv-button
+        kind="ghost"
+        size="small"
+        class="mb-spacing-sm"
+        :disabled="loading"
+        @click.exact="$router.push(`/river-detail/${$route.params.id}/news`)"
+      >
+        See more
+      </cv-button>
+
+    </span>
     <template v-if="loading">
       <div class="pb-spacing-md">
         <cv-inline-loading
