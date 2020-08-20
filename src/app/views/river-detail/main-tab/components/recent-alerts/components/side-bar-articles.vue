@@ -32,7 +32,7 @@
               class="mb-spacing-2xs"
               v-text="$titleCase(article.title)"
             />
-            <p v-html="article.abstract.slice(0, 150)" />
+            <p v-html="article.abstract" />
           </div>
         </div>
       </div>
