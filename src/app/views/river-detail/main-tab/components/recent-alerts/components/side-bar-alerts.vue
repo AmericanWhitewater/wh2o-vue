@@ -21,7 +21,8 @@
         :key="index"
         :title="alertTitle(alert)"
         :sub-title="alert.detail"
-        @close="doClose(index)"
+        action-label="See More"
+        @action="$router.push(`/river-detail/${$route.params.id}/news`)"
       />
     </template>
     <template v-else>
@@ -95,10 +96,6 @@ export default {
           autoHide: true
         })
       }
-    },
-    doClose (index) {
-      // eslint-disable-next-line no-console
-      console.log('index :', index)
     },
     formatTitle (title, max) {
       if (title && title.length > max) {
