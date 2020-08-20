@@ -6,12 +6,10 @@
     >
       <template #main>
         <beta-box />
+        <recent-alerts />
         <river-description />
         <rapids-section />
         <comments-section />
-      </template>
-      <template #sidebar>
-        <side-bar />
       </template>
     </layout>
   </div>
@@ -19,7 +17,7 @@
 <script>
 import { Layout } from '@/app/global/layout'
 import {
-  SideBar,
+  RecentAlerts,
   RapidsSection,
   RiverDescription,
   CommentsSection,
@@ -30,7 +28,7 @@ export default {
   name: 'main-tab',
   components: {
     BetaBox,
-    SideBar,
+    RecentAlerts,
     RapidsSection,
     CommentsSection,
     RiverDescription,
