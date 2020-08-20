@@ -2,11 +2,15 @@
   <div class="sidebar-articles">
     <span class="header-row">
       <h4 class="mb-spacing-sm">News</h4>
-      <cv-link
-        :to="`/river-detail/${$route.params.id}/news`"
+      <cv-button
+        kind="ghost"
+        size="small"
+        class="mb-spacing-sm"
+        :disabled="loading"
+        @click.exact="$router.push(`/river-detail/${$route.params.id}/news`)"
       >
         See more
-      </cv-link>
+      </cv-button>
 
     </span>
     <template v-if="loading">
