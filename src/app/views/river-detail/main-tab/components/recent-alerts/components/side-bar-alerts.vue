@@ -19,11 +19,9 @@
       <cv-inline-notification
         v-for="(alert, index) in alerts.slice(0, 2)"
         :key="index"
-        :title="formatTitle(alert.title, 30)"
-        :sub-title="formatTitle(alert.detail, 50)"
-        action-label="Read More"
+        :title="alertTitle(alert)"
+        :sub-title="alert.detail"
         @close="doClose(index)"
-        @action="$router.push(`/river-detail/${$route.params.id}/news`)"
       />
     </template>
     <template v-else>
@@ -107,6 +105,17 @@ export default {
         return this.$titleCase(title.slice(0, max) + '...')
       }
       return this.$titleCase(title)
+    },
+    alertTitle (alert) {
+      let title = ''
+      if (alert.post_date && alert.post_date.length > 0) {
+        title += this.formatDate(alert.post_date, 'll')
+      }
+      if (alert.title && alert.title.length > 0) {
+        title += ` - ${this.formatTitle(alert.title, 30)}`
+      }
+
+      return title
     },
     handleSuccess () {
       this.newAlertModalVisible = false

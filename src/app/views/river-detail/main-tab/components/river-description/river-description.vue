@@ -1,5 +1,5 @@
 <template>
-  <main class="mb-xl pt-md">
+  <main class="mb-xl">
     <hr>
     <h2 class="mb-spacing-md">
       River Description
