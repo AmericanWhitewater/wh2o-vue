@@ -23,7 +23,7 @@ const mockStore = {
 }
 
 const options = {
-  stubs: ['Download20', 'Maximize16', 'transition'],
+  stubs: ['transition'],
   methods: {
     openLightbox
   },
