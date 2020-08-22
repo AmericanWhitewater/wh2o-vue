@@ -1,5 +1,6 @@
 import ImageGallery from '../image-gallery.vue'
 import { createWrapper } from '@/utils'
+import { assetUrl } from '@/app/environment'
 
 jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
   Map: () => ({})
@@ -7,11 +8,17 @@ jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
 
 const openLightbox = jest.fn()
 
-const image = {
-  uri: {
-    thumb: '/photos/archive/medium/7578.jpg',
-    medium: null,
-    big: null
+const mockStore = {
+  state: {
+    riverDetailState: {
+      riverDetailData: {
+        data: {
+          id: 123,
+          river: 'Nooksack',
+          section: 'The first part'
+        }
+      }
+    }
   }
 }
 
@@ -19,6 +26,9 @@ const options = {
   stubs: ['Download20', 'Maximize16', 'transition'],
   methods: {
     openLightbox
+  },
+  mocks: {
+    $store: mockStore
   },
   propsData: {
     images: [
@@ -58,7 +68,13 @@ const options = {
         subject: ''
       },
       {
-        image,
+        image: {
+          uri: {
+            thumb: '/photos/archive/medium/7578.jpg',
+            medium: null,
+            big: null
+          }
+        },
         id: '7578',
         author: 'Bryan Mills',
         caption: 'Finish Line',
@@ -119,10 +135,11 @@ describe('ImageGallery', () => {
   it('it formats uri: 01', async () => {
     const wrapper = createWrapper(ImageGallery, options)
 
-    const data = await wrapper.vm.formatURI(image.uri, 'thumb')
+    const data = await wrapper.vm.imageURI(options.propsData.images[0], 'thumb')
 
+    const prefix = assetUrl || ''
     expect(data).toEqual(
-      'https://beta.americanwhitewater.org/photos/archive/medium/7578.jpg'
+      `${prefix}/photos/archive/thumb/8928.jpg`
     )
   })
 

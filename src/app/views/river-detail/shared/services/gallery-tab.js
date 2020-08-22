@@ -14,8 +14,16 @@ const fetchGalleryData = data => {
           ) {
              data {
               id
-              reading
               post_date
+              metric {
+                name
+                unit
+              }
+              gauge {
+                id
+                name
+              }
+              reading
               photos {
                 image {
                   uri {
