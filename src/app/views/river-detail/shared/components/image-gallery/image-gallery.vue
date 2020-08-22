@@ -172,7 +172,7 @@
 import { AwLogo } from '@/app/global/components'
 import { mapState } from 'vuex'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
-import { laravelDeploy, assetUrl } from '@/app/environment'
+import { laravelDeploy } from '@/app/environment'
 export default {
   name: 'image-gallery',
   components: {
@@ -252,8 +252,7 @@ export default {
       } else {
         desiredImage = imageSizes.medium || imageSizes.big || imageSizes.thumb
       }
-      const basePath = assetUrl || ''
-      return `${basePath}${desiredImage}`
+      return this.assetUrl(desiredImage)
     },
     formatAltText (image) {
       if (image.subject) {

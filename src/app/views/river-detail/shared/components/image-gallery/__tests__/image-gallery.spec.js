@@ -1,6 +1,5 @@
 import ImageGallery from '../image-gallery.vue'
 import { createWrapper } from '@/utils'
-import { assetUrl } from '@/app/environment'
 
 jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
   Map: () => ({})
@@ -137,9 +136,8 @@ describe('ImageGallery', () => {
 
     const data = await wrapper.vm.imageURI(options.propsData.images[0], 'thumb')
 
-    const prefix = assetUrl || ''
     expect(data).toEqual(
-      `${prefix}/photos/archive/thumb/8928.jpg`
+      wrapper.vm.assetUrl('/photos/archive/thumb/8928.jpg')
     )
   })
 

@@ -24,7 +24,7 @@ const {
 const environment = NODE_ENV.toLowerCase()
 const apiBaseUrl = VUE_APP_API_BASE_URL
 const appBaseUrl = VUE_APP_BASE_URL
-const assetUrl = STATIC_ASSET_URL || VUE_APP_API_BASE_URL
+const assetBaseUrl = STATIC_ASSET_URL || VUE_APP_API_BASE_URL
 const clientId = VUE_APP_CLIENT_ID
 const clientSecret = VUE_APP_CLIENT_SECRET
 const mapboxAccessToken = VUE_APP_MAPBOX_ACCESS_TOKEN
@@ -36,7 +36,7 @@ export {
   environment,
   apiBaseUrl,
   appBaseUrl,
-  assetUrl,
+  assetBaseUrl,
   mapboxAccessToken,
   nwiTileServer,
   cmsBaseUrl,
