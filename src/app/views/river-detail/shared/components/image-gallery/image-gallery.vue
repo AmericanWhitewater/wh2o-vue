@@ -9,7 +9,7 @@
             class="bx--col-sm-12 bx--col-md-4 bx--col-lg-4 bx--col-max-4 mb-spacing-lg"
           >
             <img
-              :src="formatURI(image.image.uri, 'thumb')"
+              :src="imageURI(image, 'thumb')"
               :alt="formatAltText(image)"
               class="image-thumbnail"
               @click.exact="openLightbox(image.id)"
@@ -36,7 +36,7 @@
         <div class="lightbox-image-wrapper">
           <img
             class="active-image"
-            :src="formatURI(activeImage.image.uri)"
+            :src="imageURI(activeImage)"
             :alt="formatAltText(activeImage)"
           >
         </div>
@@ -53,28 +53,11 @@
                 Close
               </cv-button>
             </header>
-            <cv-toolbar>
-              <cv-overflow-menu class="bx--toolbar-action">
-                <template slot="trigger">
-                  <Download20
-                    class="bx--overflow-menu__icon bx--toolbar-filter-icon"
-                  />
-                </template>
-              </cv-overflow-menu>
-              <cv-overflow-menu class="bx--toolbar-action">
-                <template slot="trigger">
-                  <Maximize16
-                    class="bx--overflow-menu__icon bx--toolbar-filter-icon"
-                  />
-                </template>
-              </cv-overflow-menu>
-            </cv-toolbar>
-            <hr>
             <main>
               <h2
-                v-if="activeImage.title"
+                v-if="activeImage.caption"
                 class="mb-spacing-md"
-                v-text="activeImage.title"
+                v-text="activeImage.caption"
               />
               <h2
                 v-else
@@ -82,10 +65,11 @@
                 v-text="'Untitled'"
               />
               <div class="mb-spacing-md">
-                <h6>Photo Date</h6>
+                <h6>Description</h6>
                 <div
-                  v-if="activeImage.photo_date"
-                  v-text="activeImage.photo_date"
+                  v-if="activeImage.description"
+                  class="active-image-description"
+                  v-html="activeImage.description"
                 />
                 <div
                   v-else
@@ -104,6 +88,29 @@
                 />
               </div>
               <div class="mb-spacing-md">
+                <h6>Subject</h6>
+                <div
+                  v-if="activeImage.subject"
+                  v-text="activeImage.subject"
+                />
+                <div
+                  v-else
+                  v-text="'n/a'"
+                />
+              </div>
+              <div class="mb-spacing-md">
+                <h6>Photo Date</h6>
+                <div
+                  v-text="imageDate(activeImage)"
+                />
+              </div>
+              <div class="mb-spacing-md">
+                <h6>Location</h6>
+                <div
+                  v-text="reachLocation"
+                />
+              </div>
+              <div class="mb-spacing-md">
                 <h6>Rapid</h6>
                 <div
                   v-if="activeImage.poi_name"
@@ -115,47 +122,46 @@
                 />
               </div>
               <div class="mb-spacing-md">
-                <h6>Caption</h6>
-                <p
-                  v-if="activeImage.caption"
-                  v-text="activeImage.caption"
+                <h6>Level</h6>
+                <span
+                  v-text="gaugeReading(activeImage)"
                 />
-                <p
-                  v-else
-                  v-text="'n/a'"
-                />
+                <cv-link
+                  v-if="activeImage.reading && activeImage.gauge && activeImage.gauge.id && activeImage.gauge.name"
+                  :to="`/gage-detail/${activeImage.gauge.id}`"
+                >
+                  {{ activeImage.gauge.name }}
+                </cv-link>
               </div>
-              <div class="mb-spacing-md">
-                <h6>Description</h6>
-                <div
-                  v-if="activeImage.description"
-                  class="active-image-description"
-                  v-html="activeImage.description"
-                />
-                <div
-                  v-else
-                  v-text="'n/a'"
-                />
+              <div
+                v-if="activeImage.image && activeImage.image.uri.big"
+                class="mb-spacing-md"
+              >
+                <cv-link
+                  :href="imageURI(activeImage, 'big')"
+                >
+                  Full resolution
+                </cv-link>
+              </div>
+              <div v-if="images.length > 1">
+                <cv-button-set>
+                  <cv-button
+                    id="previous-button"
+                    :disabled="currentIndex === 0"
+                    @click.exact="cycleImages('previous')"
+                  >
+                    Previous
+                  </cv-button>
+                  <cv-button
+                    id="next-button"
+                    :disabled="currentIndex === images.length - 1"
+                    @click.exact="cycleImages"
+                  >
+                    Next
+                  </cv-button>
+                </cv-button-set>
               </div>
             </main>
-          </div>
-          <div v-if="images.length > 1">
-            <cv-button-set>
-              <cv-button
-                id="previous-button"
-                :disabled="currentIndex === 0"
-                @click.exact="cycleImages('previous')"
-              >
-                Previous
-              </cv-button>
-              <cv-button
-                id="next-button"
-                :disabled="currentIndex === images.length - 1"
-                @click.exact="cycleImages"
-              >
-                Next
-              </cv-button>
-            </cv-button-set>
           </div>
         </div>
       </div>
@@ -164,8 +170,9 @@
 </template>
 <script>
 import { AwLogo } from '@/app/global/components'
+import { mapState } from 'vuex'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
-import { laravelDeploy } from '@/app/environment'
+import { laravelDeploy, assetUrl } from '@/app/environment'
 export default {
   name: 'image-gallery',
   components: {
@@ -196,6 +203,9 @@ export default {
     }
   }),
   computed: {
+    ...mapState({
+      river: state => state.riverDetailState.riverDetailData.data
+    }),
     activeImage () {
       if (this.lightbox.activeImage) {
         return this.images.find(
@@ -203,6 +213,9 @@ export default {
         )
       }
       return null
+    },
+    reachLocation () {
+      return `${this.river.river}, ${this.river.section}`
     },
     currentIndex () {
       if (this.lightbox.activeImage) {
@@ -229,19 +242,18 @@ export default {
       }
       return ''
     },
-    formatURI (image, thumb) {
-      if (thumb) {
-        return (
-          'https://beta.americanwhitewater.org' + image.thumb ||
-          image.medium ||
-          image.big
-        )
+    imageURI (image, size) {
+      const imageSizes = image.image.uri
+      let desiredImage
+      if (size === 'thumb') {
+        desiredImage = imageSizes.thumb || imageSizes.medium || imageSizes.big
+      } else if (size === 'big') {
+        desiredImage = imageSizes.big || imageSizes.medium || imageSizes.thumb
+      } else {
+        desiredImage = imageSizes.medium || imageSizes.big || imageSizes.thumb
       }
-      return (
-        'https://beta.americanwhitewater.org' + image.big ||
-        image.medium ||
-        image.thumb
-      )
+      const basePath = assetUrl || ''
+      return `${basePath}${desiredImage}`
     },
     formatAltText (image) {
       if (image.subject) {
@@ -252,6 +264,28 @@ export default {
         return image.poi_name
       } else {
         return 'Gallery Image'
+      }
+    },
+    imageDate (image) {
+      let date
+      if (image.photo_date) {
+        date = image.photo_date
+      } else if (image.post_date) {
+        date = image.post_date
+      } else {
+        return 'n/a'
+      }
+      return this.formatDate(date, 'll')
+    },
+    gaugeReading (image) {
+      if (image.reading &&
+          image.gauge &&
+          image.gauge.name &&
+          image.metric &&
+          image.metric.unit) {
+        return `${image.reading}${image.metric.unit} at`
+      } else {
+        return 'n/a'
       }
     },
     openLightbox (imageId) {
