@@ -40,7 +40,7 @@
               <div v-if="data.photo">
                 <img
                   class="reach--photo"
-                  :src="`https://americanwhitewater.org/${data.photo.image.uri.big}`"
+                  :src="assetUrl(data.photo.image.uri.big)"
                   @click.exact="switchTab('gallery')"
                   @keydown.exact="switchTab('gallery')"
                 >

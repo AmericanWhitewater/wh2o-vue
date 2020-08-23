@@ -1,4 +1,5 @@
 import Vue from 'vue'
-import { formatDate } from '.'
+import { formatDate, assetUrl } from '.'
 
 Vue.mixin(formatDate)
+Vue.mixin(assetUrl)

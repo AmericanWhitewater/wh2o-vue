@@ -85,6 +85,7 @@ describe('GalleryTab', () => {
   it('should load media and rapids not previously loaded', () => {
     // eslint-disable-next-line no-unused-vars
     const wrapper = createWrapper(GalleryTab, options)
+    wrapper.vm.loadMedia()
 
     expect(mockStore.dispatch).toBeCalledTimes(2)
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(2,

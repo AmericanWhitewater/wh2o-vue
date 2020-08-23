@@ -76,7 +76,8 @@ export default {
   },
   data: () => ({
     selectedRapids: [],
-    mediaUploadModalVisible: false
+    mediaUploadModalVisible: false,
+    currentlyLoadedImagesFor: null
   }),
   computed: {
     ...mapState({
@@ -88,36 +89,33 @@ export default {
       user: state => state.userState.userData.data
     }),
     ...mapGetters(['media']),
-    route () {
+    reachId () {
       return this.$route.params.id
-    }
-  },
-  watch: {
-    route: {
-      immediate: true,
-      handler: function (val) {
-        this.loadRapids(val)
-      }
     }
   },
   methods: {
     loadRapids (routeId) {
       this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, routeId)
     },
-    formatMultiSelectModel (rapids) {
-      this.selectedRapids = rapids ? rapids.map(r => r.id) : null
-    },
     loadMedia (val) {
+      // not used currently but needed for `rapids` in the media upload modal when we add that
+      this.loadRapids(this.reachId)
+
       const data = {
-        reach_id: this.route,
+        reach_id: this.reachId,
         per_page: val ? val.length : 10,
         page: val ? val.page : 1
       }
       this.$store.dispatch(galleryActions.FETCH_GALLERY_DATA, data)
+      this.currentlyLoadedImagesFor = this.reachId
     }
   },
-  created () {
-    this.loadMedia()
+  // this ensures that gallery images are retrieved when you move between
+  // rivers even though the gallery tab component is cached
+  activated () {
+    if (this.reachId !== this.currentlyLoadedImagesFor) {
+      this.loadMedia()
+    }
   }
 }
 </script>
