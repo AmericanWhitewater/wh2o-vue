@@ -14,7 +14,6 @@ const fetchGalleryData = data => {
           ) {
              data {
               id
-              post_date
               metric {
                 name
                 unit

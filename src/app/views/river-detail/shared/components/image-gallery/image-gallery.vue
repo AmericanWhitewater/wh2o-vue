@@ -266,15 +266,10 @@ export default {
       }
     },
     imageDate (image) {
-      let date
-      if (image.photo_date) {
-        date = image.photo_date
-      } else if (image.post_date) {
-        date = image.post_date
-      } else {
+      if (!image.photo_date) {
         return 'n/a'
       }
-      return this.formatDate(date, 'll')
+      return this.formatDate(image.photo_date, 'll')
     },
     gaugeReading (image) {
       if (image.reading &&
