@@ -1,4 +1,5 @@
 import { reflectKeys } from '@/app/global/services'
+import { fetchStates } from '../services/states'
 
 const initialState = {
   loading: false,
@@ -85,7 +86,7 @@ const mutations = {
 }
 
 export const riverIndexActions = reflectKeys(
-  ['FETCH_USER_LOCATION', 'LOAD_REACHES', 'SET_MAP_STYLE', 'SET_MAP_COLOR_BY', 'SET_MAP_POSITION', 'MOUSEOVER_FEATURE'],
+  ['FETCH_USER_LOCATION', 'LOAD_REACHES', 'SET_MAP_STYLE', 'SET_MAP_COLOR_BY', 'SET_MAP_POSITION', 'MOUSEOVER_FEATURE', 'FETCH_STATES'],
   namespacedPrefix
 )
 
@@ -107,6 +108,19 @@ const actions = {
   },
   async [riverIndexActions.MOUSEOVER_FEATURE] (context, data) {
     context.commit(MOUSEOVERED_FEATURE, data)
+  },
+  async [riverIndexActions.FETCH_STATES] (context, data) {
+    context.commit(DATA_REQUEST)
+
+    const result = fetchStates(data).catch(e => {
+      context.commit(DATA_ERROR, e)
+    })
+
+    if (result) {
+      context.commit(DATA_SUCCESS, result.data.states)
+    }
+    // console.log(result.data.states);
+    return result
   }
 }
 

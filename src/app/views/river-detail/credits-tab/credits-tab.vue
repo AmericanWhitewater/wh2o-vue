@@ -11,7 +11,7 @@
         <template v-else-if="credits">
           <div class="bx--row mb-md">
             <div class="bx--col">
-              <h5>Revision Date: {{ formatDate(credits.revision, 'll') }}</h5>
+              <h5>Revision Date: {{ formatDate(credits.edited, 'll') }}</h5>
               <h3>Revision Comment: {{ credits.revision_comment }}</h3>
             </div>
           </div>

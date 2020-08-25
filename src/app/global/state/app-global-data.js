@@ -27,7 +27,11 @@ const mutations = {
   },
 
   [CLOSE_TOAST] (state, payload) {
-    state.toasts.pop()
+    if (Number(payload) > -1) {
+      state.toasts.splice(Number(payload), 1)
+    } else {
+      state.toasts.pop()
+    }
   },
 
   [EDIT_MODE] (state, payload) {

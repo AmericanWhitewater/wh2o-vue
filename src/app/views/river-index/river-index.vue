@@ -37,12 +37,17 @@
           </template>
         </div>
       </div>
+      <div class="bx--row">
+        <div class="bx--col-sm-16">
+          <nwi-state-list />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { NwiRiversTable, NwiMap, NwiMapControlsV2 } from './components'
+import { NwiRiversTable, NwiMap, NwiMapControlsV2, NwiStateList } from './components'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { riverIndexActions } from './shared/state'
 import { mapState } from 'vuex'
@@ -58,7 +63,8 @@ export default {
     NwiMap,
     NwiRiversTable,
     UtilityBlock,
-    NwiMapControlsV2
+    NwiMapControlsV2,
+    NwiStateList
   },
   mixins: [riverSearchHttpConfig],
   props: {

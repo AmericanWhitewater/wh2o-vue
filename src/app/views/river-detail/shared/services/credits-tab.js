@@ -5,13 +5,10 @@ const fetchCreditsData = data => {
     .post('/graphql', {
       query: `
       query {
-        reach(id:${data}){
-          revision_comment
-          revision
-      }
-    }
-    
-    `
+        reach( id: ${data}) {
+            revisions(first:100,page:0){data{id,revision,sk{uname},revision,revision_comment}}
+        }
+    }`
     })
     .then(res => res.data)
 }
