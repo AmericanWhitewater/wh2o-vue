@@ -1,8 +1,19 @@
-import SideBar from '../side-bar.vue'
+import RecentAlerts from '../recent-alerts.vue'
 import { createWrapper } from '@/utils'
 
 const mockStore = {
-  dispatch: jest.fn()
+  dispatch: jest.fn(),
+  state: {
+    riverDetailState: {
+      alertsData: {
+        data: null,
+        loading: null
+      },
+      newsTabData: {
+        data: null
+      }
+    }
+  }
 }
 
 const riverId = '123'
@@ -21,7 +32,7 @@ const options = {
   stubs: ['SidebarAlerts', 'SidebarArticles']
 }
 
-describe('SideBar.vue', () => {
+describe('RecentAlerts.vue', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
@@ -33,7 +44,7 @@ describe('SideBar.vue', () => {
   */
 
   it('loads alerts and news articles in viewport', () => {
-    const wrapper = createWrapper(SideBar, options)
+    const wrapper = createWrapper(RecentAlerts, options)
 
     wrapper.vm.loadData()
 

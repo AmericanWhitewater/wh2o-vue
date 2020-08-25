@@ -1,8 +1,18 @@
 <template>
   <div class="sidebar-articles">
-    <h4 class="mb-spacing-sm">
-      News
-    </h4>
+    <span class="header-row">
+      <h4 class="mb-spacing-sm">News</h4>
+      <cv-button
+        kind="ghost"
+        size="small"
+        class="mb-spacing-sm"
+        :disabled="loading"
+        @click.exact="$router.push(`/river-detail/${$route.params.id}/news`)"
+      >
+        See more
+      </cv-button>
+
+    </span>
     <template v-if="loading">
       <div class="pb-spacing-md">
         <cv-inline-loading
@@ -13,7 +23,7 @@
     </template>
     <template v-else-if="articles && articles.length > 0">
       <div
-        v-for="(article, i) in articles.slice(0, 2)"
+        v-for="(article, i) in articles.slice(0, 1)"
         :key="i + 3 * 4"
         class="bx--row mb-spacing-xs sidebar-article"
         @keydown.enter="$router.push(`/article/${article.id}`)"
@@ -32,7 +42,7 @@
               class="mb-spacing-2xs"
               v-text="$titleCase(article.title)"
             />
-            <p v-html="article.abstract.slice(0, 50)" />
+            <p v-html="article.abstract" />
           </div>
         </div>
       </div>

@@ -17,12 +17,11 @@
     </template>
     <template v-else-if="alerts && alerts.length > 0">
       <cv-inline-notification
-        v-for="(alert, index) in alerts.slice(0, 2)"
+        v-for="(alert, index) in alerts.slice(0, 1)"
         :key="index"
-        :title="formatTitle(alert.title, 30)"
-        :sub-title="formatTitle(alert.detail, 50)"
-        action-label="Read More"
-        @close="doClose(index)"
+        :title="alertTitle(alert)"
+        :sub-title="alert.detail"
+        action-label="See More"
         @action="$router.push(`/river-detail/${$route.params.id}/news`)"
       />
     </template>
@@ -98,15 +97,22 @@ export default {
         })
       }
     },
-    doClose (index) {
-      // eslint-disable-next-line no-console
-      console.log('index :', index)
-    },
     formatTitle (title, max) {
       if (title && title.length > max) {
         return this.$titleCase(title.slice(0, max) + '...')
       }
       return this.$titleCase(title)
+    },
+    alertTitle (alert) {
+      let title = ''
+      if (alert.post_date && alert.post_date.length > 0) {
+        title += this.formatDate(alert.post_date, 'll')
+      }
+      if (alert.title && alert.title.length > 0) {
+        title += ` - ${this.formatTitle(alert.title, 30)}`
+      }
+
+      return title
     },
     handleSuccess () {
       this.newAlertModalVisible = false

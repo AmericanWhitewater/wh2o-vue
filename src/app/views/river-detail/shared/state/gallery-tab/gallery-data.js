@@ -94,20 +94,19 @@ const actions = {
 const getters = {
   media: state => {
     if (state.data) {
-      const media = state.data
-      const data = []
+      const images = state.data.flatMap((post) => {
+        return post.photos.map((photo) => {
+          return {
+            ...photo,
+            reading: post.reading,
+            gauge: post.gauge,
+            metric: post.metric,
+            post_date: post.post_date
+          }
+        })
+      })
 
-      const numberOfImages = media.length
-
-      for (let i = 0; i < numberOfImages; i++) {
-        const numbeOfPostImages = media[i].photos.length
-
-        for (let k = 0; k < numbeOfPostImages; k++) {
-          data.push(media[i].photos[k])
-        }
-      }
-
-      return data
+      return images
     }
 
     return null

@@ -71,7 +71,7 @@ const createRapid = data => {
       }
     }
   }).then(response => {
-    return response.data.data.poiUpdate
+    return response.data
   })
 }
 
@@ -102,7 +102,7 @@ const updateRapid = data => {
       }
     }
   }).then(response => {
-    return response.data.data.poiUpdate
+    return response.data
   })
 }
 
@@ -119,7 +119,7 @@ const deleteRapid = id => {
       id: id
     }
   }).then(response => {
-    return response.data.data.poiDelete
+    return response.data
   })
 }
 

@@ -40,7 +40,7 @@
               <div v-if="data.photo">
                 <img
                   class="reach--photo"
-                  :src="`https://americanwhitewater.org/${data.photo.image.uri.big}`"
+                  :src="assetUrl(data.photo.image.uri.big)"
                   @click.exact="switchTab('gallery')"
                   @keydown.exact="switchTab('gallery')"
                 >
@@ -57,13 +57,12 @@
               :name="transitionName"
               mode="out-in"
             >
-              <page-banner
+              <map-banner
                 v-if="activeTabKey !== 'map' && !loading && data"
                 :title="data.river"
                 :subtitle="data.section"
                 :geom="data.geom"
                 :reach-id="$route.params.id"
-                map
               >
                 <div
                   v-if="editMode"
@@ -72,7 +71,7 @@
                 >
                   <h3>Edit Reach Geometry</h3>
                 </div>
-              </page-banner>
+              </map-banner>
             </transition>
             <geometry-edit-modal
               v-if="editMode"
@@ -175,7 +174,7 @@ import { mapState } from 'vuex'
 import { riverDetailActions, alertsActions, bookmarksActions, reachGagesActions, metricsActions } from './shared/state'
 import { globalAppActions } from '@/app/global/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
-import PageBanner from '@/app/global/components/page-banner/page-banner'
+import MapBanner from './shared/components/map-banner.vue'
 import GeometryEditModal from './shared/components/geometry-edit-modal/geometry-edit-modal'
 import { checkWindow } from '@/app/global/mixins'
 import { appLocalStorage } from '@/app/global/services'
@@ -183,7 +182,7 @@ export default {
   name: 'river-detail',
   components: {
     UtilityBlock,
-    PageBanner,
+    MapBanner,
     GeometryEditModal
   },
   mixins: [checkWindow],

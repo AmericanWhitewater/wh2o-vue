@@ -1,6 +1,6 @@
 export { default as BetaBox } from './beta-box/beta-box'
 export { default as RapidsSection } from './rapids-section/rapids-section'
 export { default as CommentsSection } from './comments-section/comments-section'
-export { default as SideBar } from './side-bar/side-bar'
+export { default as RecentAlerts } from './recent-alerts/recent-alerts'
 export { default as RiverDescription } from './river-description/river-description'
 export { default as FlowColorBlock } from './flow-color-block/flow-color-block'

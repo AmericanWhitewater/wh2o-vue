@@ -47,7 +47,7 @@
     </template>
     <rapid-edit-modal
       v-if="editMode"
-      :key="currentlyEditingRapidId"
+      :key="currentlyEditingRapidId || reachId"
       :rapid-id="currentlyEditingRapidId"
       :rapid-modal-visible="rapidModalVisible"
       @edit:cancelled="closeModal"
@@ -86,6 +86,7 @@ export default {
       loading: state => state.riverDetailState.rapidsData.loading,
       error: state => state.riverDetailState.rapidsData.error,
       rapids: state => state.riverDetailState.rapidsData.data,
+      reachId: state => state.riverDetailState.riverDetailData.data.id,
       user: state => state.userState.userData.data,
       editMode: state => state.appGlobalState.appGlobalData.editMode
     })

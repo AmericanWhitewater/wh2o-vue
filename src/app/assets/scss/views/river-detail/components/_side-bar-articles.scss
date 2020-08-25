@@ -1,4 +1,10 @@
 .sidebar-articles {
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
   .sidebar-article {
     &:hover {
       cursor: pointer;
@@ -9,9 +15,10 @@
     }
 
     .article-thumb {
+      max-height: 250px;
+      min-height: 250px;
       object-fit: cover;
-      height: 100%;
-      width:100%;
+      width: 100%;
     }
   }
   .no-articles-msg {

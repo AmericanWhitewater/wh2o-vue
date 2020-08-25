@@ -20,13 +20,7 @@
 @import "./helpers/vue-animations/slide-fade";
 @import "./helpers/sticky";
 @import "./layout/spacing";
-@import "./components/hr";
-@import "./components/river-table";
-@import "./components/media-upload-form";
-@import "./components/level-legend";
-@import "./components/image-gallery";
-@import "./components/utility-block";
-@import "./components/article-card";
+@import "./components/components";
 @import "./views/river-detail/river-detail";
 @import "./views/river-detail/flow-tab";
 @import "./views/river-detail/gallery-tab";
@@ -41,3 +35,4 @@
 @import "./views/river-detail/components/side-bar-alerts";
 @import "./views/river-detail/components/side-bar-articles";
 @import "./views/river-detail/components/side-bar";
+@import "./views/river-detail/components/geometry-edit-modal";
