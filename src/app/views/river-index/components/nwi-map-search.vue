@@ -1,6 +1,6 @@
 <template>
   <div>
-    <cv-toolbar class="nwi-map-controls-v2">
+    <cv-toolbar class="nwi-map-search">
       <search-bar
         size="small"
         @search:submitted="fetchRivers"
@@ -12,7 +12,7 @@
 import { riverSearchActions } from '@/app/views/river-search/shared/state'
 import SearchBar from '@/app/global/components/search-bar/search-bar.vue'
 export default {
-  name: 'nwi-map-controls-v2',
+  name: 'nwi-map-search',
   components: {
     SearchBar
   },
