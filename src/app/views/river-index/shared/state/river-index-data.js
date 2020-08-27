@@ -2,7 +2,7 @@ import { reflectKeys } from '@/app/global/services'
 
 const initialState = {
   loading: false,
-  data: null,
+  data: [],
   error: null,
   userLocation: null,
   mapStyle: 'topo',
@@ -48,7 +48,7 @@ const mutations = {
 
   [DATA_SUCCESS] (state, payload) {
     state.loading = false
-    state.data = payload.length > 0 ? payload : null
+    state.data = payload
   },
 
   [USER_LOCATION] (state, payload) {

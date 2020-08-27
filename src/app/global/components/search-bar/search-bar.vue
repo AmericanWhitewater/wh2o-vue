@@ -27,7 +27,15 @@ export default {
   },
   data: () => ({
     searchTerm: ''
-  })
+  }),
+  watch: {
+    searchTerm (newVal) {
+      // if search is emptied, emit search submit event here
+      if (newVal.length === 0) {
+        this.$emit('search:submitted', newVal)
+      }
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

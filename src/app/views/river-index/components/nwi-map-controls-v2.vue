@@ -23,6 +23,10 @@ export default {
         { river: term }
       )
     }
+  },
+  // ensure map search bar is empty when page loads
+  created () {
+    this.$store.dispatch(riverSearchActions.CLEAR_SEARCH_QUERY)
   }
 }
 </script>

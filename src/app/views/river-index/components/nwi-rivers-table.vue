@@ -3,7 +3,7 @@
     id="nwi-rivers-table"
     kind="standard"
   >
-    <template v-if="loading">
+    <template v-if="searchLoading">
       <utility-block state="loading" />
     </template>
     <template v-else-if="reaches && reaches.length > 0">
@@ -59,7 +59,7 @@
       <template v-if="showingSearchResults">
         <utility-block
           state="content"
-          text="No rivers in the viewport match your search query."
+          text="No rivers match your search query."
         />
       </template>
       <template v-else>
@@ -76,6 +76,8 @@
 </template>
 
 <script>
+import wkx from 'wkx'
+import { Buffer } from 'buffer'
 import debounce from 'lodash.debounce'
 import ZoomIn16 from '@carbon/icons-vue/lib/zoom--in/16'
 import scrollIntoView from 'scroll-into-view-if-needed'
@@ -90,27 +92,37 @@ export default {
     UtilityBlock
   },
   props: {
-    reaches: {
+    reachesOnMap: {
       type: Array,
-      required: true
-    },
-    showingSearchResults: {
-      type: Boolean,
-      required: true
+      required: false,
+      default: () => []
     }
   },
   data: () => ({
     windowWidth: 0,
-    mq: Breakpoints,
-    loading: false
+    mq: Breakpoints
   }),
   computed: {
     ...mapState({
+      searchResults: state => state.riverSearchState.riverSearchData.data,
+      searchTerm: state => state.riverSearchState.riverSearchData.searchTerm,
+      searchLoading: state => state.riverSearchState.riverSearchData.loading,
       mouseoveredFeature: state => state.riverIndexState.riverIndexData.mouseoveredFeature
     }),
-
+    showingSearchResults () {
+      return Boolean(this.searchTerm)
+    },
+    reaches () {
+      if (this.showingSearchResults) {
+        if (this.searchResults && this.searchResults.length) {
+          return this.searchResults.map(x => this.convertSearchResponseToGeoJSON(x))
+        }
+        return []
+      }
+      return this.reachesOnMap
+    },
     noReaches () {
-      return this.reaches && this.reaches.length === 0
+      return Boolean(this.reaches && this.reaches.length === 0)
     },
     columns () {
       return ['Reach', 'Difficulty', 'Flow', 'Zoom']
@@ -180,6 +192,34 @@ export default {
           return 'high'
         default:
           return 'n/a'
+      }
+    },
+    // the search endpoint returns a very different looking object
+    // than the tileserver, but for all the map centering logic (and table display logic)
+    // to work, we need to convert the data here
+    convertSearchResponseToGeoJSON (reach) {
+      const buffGeom = Buffer.from(reach.geom, 'hex')
+      const geom = wkx.Geometry.parse(buffGeom)
+      return {
+        type: 'Feature',
+        id: undefined,
+        _geometry: geom.toGeoJSON(),
+        properties: {
+          class: reach.class,
+          condition: reach.cond,
+          id: reach.id,
+          river: reach.river,
+          section: reach.section,
+          altname: reach.altname,
+          bbox: null,
+          abstract: reach.abstract,
+          gage_0_id: reach.gauge_id,
+          gage_0_name: reach.gauge_name,
+          gage_0_reading: parseFloat(reach.gauge_reading),
+          gage_0_unit: reach.unit,
+          gage_0_updated: reach.last_gauge_updated,
+          reading: reach.reading
+        }
       }
     }
   },
