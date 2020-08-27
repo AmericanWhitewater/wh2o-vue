@@ -119,7 +119,22 @@ export default {
         }
         return []
       }
-      return this.reachesOnMap
+      // alphabetize results if they're just displaying from the map
+      const alphabetizedReaches = this.reachesOnMap.slice(0).sort((a, b) => {
+        const nameA = a.properties.river.toUpperCase()
+        const nameB = b.properties.river.toUpperCase()
+
+        if (nameA < nameB) {
+          return -1
+        }
+        if (nameA > nameB) {
+          return 1
+        }
+
+        // names must be equal
+        return 0
+      })
+      return alphabetizedReaches
     },
     noReaches () {
       return Boolean(this.reaches && this.reaches.length === 0)
