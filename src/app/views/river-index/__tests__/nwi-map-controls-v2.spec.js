@@ -26,7 +26,7 @@ describe('nwi-map-controls-v2.vue', () => {
 
     await wrapper.vm.$nextTick()
 
-    expect(mockStore.dispatch).toHaveBeenCalledTimes(1)
-    expect(mockStore.dispatch).toHaveBeenCalledWith('[RIVER_SEARCH] FETCH_RIVER_SEARCH_DATA', 'gore crik')
+    expect(mockStore.dispatch).toHaveBeenCalledTimes(2)
+    expect(mockStore.dispatch).toHaveBeenCalledWith('[RIVER_SEARCH] FETCH_RIVER_SEARCH_DATA', { river: 'gore crik' })
   })
 })

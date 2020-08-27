@@ -20,7 +20,7 @@ export default {
     fetchRivers (term) {
       this.$store.dispatch(
         riverSearchActions.FETCH_RIVER_SEARCH_DATA,
-        term
+        { river: term }
       )
     }
   }
