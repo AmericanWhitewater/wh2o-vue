@@ -213,12 +213,15 @@ export default {
     // than the tileserver, but for all the map centering logic (and table display logic)
     // to work, we need to convert the data here
     convertSearchResponseToGeoJSON (reach) {
-      const buffGeom = Buffer.from(reach.geom, 'hex')
-      const geom = wkx.Geometry.parse(buffGeom)
+      let geom
+      if (reach.geom) {
+        const buffGeom = Buffer.from(reach.geom, 'hex')
+        geom = wkx.Geometry.parse(buffGeom).toGeoJSON()
+      }
       return {
         type: 'Feature',
         id: undefined,
-        _geometry: geom.toGeoJSON(),
+        _geometry: geom,
         properties: {
           class: reach.class,
           condition: reach.cond,

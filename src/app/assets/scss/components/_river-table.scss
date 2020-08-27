@@ -71,8 +71,10 @@
   }
 }
 
-.nwi-map-search {
-  .bx--toolbar .bx--search-close {
-    display: flex;
+.nwi-map-search.bx--toolbar {
+  .cv-search {
+    .bx--search-close {
+      display: flex;
+    }
   }
 }
