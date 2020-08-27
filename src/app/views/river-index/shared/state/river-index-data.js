@@ -1,5 +1,6 @@
 import { reflectKeys } from '@/app/global/services'
 import { fetchStates } from '../services/states'
+import { fetchRiverSearchData } from '../services'
 
 const initialState = {
   loading: false,
@@ -11,7 +12,10 @@ const initialState = {
   fullscreen: null,
   mapPosition: null,
   mouseoveredFeature: null,
-  stateList: null
+  stateList: null,
+  mapSearchTerm: null,
+  mapSearchLoading: false,
+  mapSearchResults: []
 }
 
 const namespacedPrefix = '[RIVER_INDEX]'
@@ -27,7 +31,11 @@ const mutationTypes = reflectKeys(
     'MAP_COLOR_BY',
     'MAP_POSITION',
     'STATE_LIST',
-    'MOUSEOVERED_FEATURE'
+    'MOUSEOVERED_FEATURE',
+    'MAP_SEARCH_TERM',
+    'MAP_SEARCH_LOADING',
+    'MAP_SEARCH_SUCCESS',
+    'MAP_SEARCH_ERROR'
   ],
   namespacedPrefix
 )
@@ -42,7 +50,11 @@ const {
   MAP_COLOR_BY,
   MAP_POSITION,
   STATE_LIST,
-  MOUSEOVERED_FEATURE
+  MOUSEOVERED_FEATURE,
+  MAP_SEARCH_TERM,
+  MAP_SEARCH_LOADING,
+  MAP_SEARCH_SUCCESS,
+  MAP_SEARCH_ERROR
 } = mutationTypes
 
 const mutations = {
@@ -80,6 +92,26 @@ const mutations = {
     Object.assign(state, { loading: false, mouseoveredFeature: payload })
   },
 
+  [MAP_SEARCH_TERM] (state, payload) {
+    Object.assign(state, { mapSearchTerm: payload })
+  },
+
+  [MAP_SEARCH_LOADING] (state, payload) {
+    Object.assign(state, { mapSearchLoading: payload })
+  },
+
+  [MAP_SEARCH_SUCCESS] (state, payload) {
+    Object.assign(state, { mapSearchResults: payload, mapSearchLoading: false })
+  },
+
+  [MAP_SEARCH_ERROR] (state, payload) {
+    Object.assign(state, {
+      mapSearchLoading: false,
+      mapSearchResults: [],
+      error: payload || true
+    })
+  },
+
   [DATA_ERROR] (state, payload) {
     Object.assign(state, {
       loading: false,
@@ -94,7 +126,16 @@ const mutations = {
 }
 
 export const riverIndexActions = reflectKeys(
-  ['FETCH_USER_LOCATION', 'LOAD_REACHES', 'SET_MAP_STYLE', 'SET_MAP_COLOR_BY', 'SET_MAP_POSITION', 'MOUSEOVER_FEATURE', 'FETCH_STATES'],
+  ['FETCH_USER_LOCATION',
+    'LOAD_REACHES',
+    'SET_MAP_STYLE',
+    'SET_MAP_COLOR_BY',
+    'SET_MAP_POSITION',
+    'MOUSEOVER_FEATURE',
+    'FETCH_MAP_SEARCH_DATA',
+    'CLEAR_MAP_SEARCH_QUERY',
+    'FETCH_STATES'
+  ],
   namespacedPrefix
 )
 
@@ -135,6 +176,30 @@ const actions = {
       )
     }
     return result
+  },
+  async [riverIndexActions.FETCH_MAP_SEARCH_DATA] (context, data) {
+    context.commit(MAP_SEARCH_TERM, data)
+
+    let result
+    // if there's no search term, just set results to empty array
+    if (!data || data.length === 0) {
+      result = []
+    } else {
+      context.commit(MAP_SEARCH_LOADING, true)
+      result = await fetchRiverSearchData(data).catch(e => {
+        context.commit(DATA_ERROR, e)
+      })
+    }
+
+    if (!result.errors && result.data && result.data.reachmap) {
+      context.commit(MAP_SEARCH_SUCCESS, result.data.reachmap.data)
+    } else {
+      context.commit(MAP_SEARCH_ERROR, 'error searching')
+    }
+  },
+  async [riverIndexActions.CLEAR_SEARCH_QUERY] (context, data) {
+    context.commit(MAP_SEARCH_TERM, null)
+    context.commit(MAP_SEARCH_LOADING, false)
   }
 }
 

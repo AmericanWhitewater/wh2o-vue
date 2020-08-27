@@ -75,8 +75,7 @@
 </template>
 
 <script>
-import wkx from 'wkx'
-import { Buffer } from 'buffer'
+import { lineString } from '@turf/helpers'
 import debounce from 'lodash.debounce'
 import ZoomIn16 from '@carbon/icons-vue/lib/zoom--in/16'
 import scrollIntoView from 'scroll-into-view-if-needed'
@@ -103,9 +102,9 @@ export default {
   }),
   computed: {
     ...mapState({
-      searchResults: state => state.riverSearchState.riverSearchData.data,
-      searchTerm: state => state.riverSearchState.riverSearchData.searchTerm,
-      searchLoading: state => state.riverSearchState.riverSearchData.loading,
+      searchResults: state => state.riverIndexState.riverIndexData.mapSearchResults,
+      searchTerm: state => state.riverIndexState.riverIndexData.mapSearchTerm,
+      searchLoading: state => state.riverIndexState.riverIndexData.mapSearchLoading,
       mouseoveredFeature: state => state.riverIndexState.riverIndexData.mouseoveredFeature
     }),
     showingSearchResults () {
@@ -207,9 +206,20 @@ export default {
     convertSearchResponseToGeoJSON (reach) {
       let geom
       if (reach.geom) {
-        const buffGeom = Buffer.from(reach.geom, 'hex')
-        geom = wkx.Geometry.parse(buffGeom).toGeoJSON()
+        const coords = reach.geom.split(',').map(x => x.split(' ').map(y => parseFloat(y)))
+        geom = lineString(coords).geometry
       }
+      const readingSummaryProps = {}
+      if (reach.readingsummary) {
+        readingSummaryProps.gage_0_id = reach.readingsummary.gauge_id
+        readingSummaryProps.gage_0_reading = parseFloat(reach.readingsummary.gauge_reading)
+        readingSummaryProps.reading = parseFloat(reach.readingsummary.gauge_reading)
+        readingSummaryProps.gage_0_updated = reach.readingsummary.updated
+        if (reach.readingsummary.metric) {
+          reach.readingsummary.unit = reach.readingsummary.metric.unit
+        }
+      }
+
       return {
         type: 'Feature',
         id: undefined,
@@ -221,14 +231,9 @@ export default {
           river: reach.river,
           section: reach.section,
           altname: reach.altname,
-          bbox: null,
           abstract: reach.abstract,
-          gage_0_id: reach.gauge_id,
-          gage_0_name: reach.gauge_name,
-          gage_0_reading: parseFloat(reach.gauge_reading),
-          gage_0_unit: reach.unit,
-          gage_0_updated: reach.last_gauge_updated,
-          reading: reach.reading
+          ...readingSummaryProps,
+          gage_0_name: reach.gauge && reach.gauge.name
         }
       }
     }

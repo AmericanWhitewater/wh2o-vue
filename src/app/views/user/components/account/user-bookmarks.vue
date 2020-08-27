@@ -27,14 +27,8 @@
     <template v-if="!loading && !loadedBookmarks.length">
       <cv-tile class="mb-lg">
         <p class="mb-spacing-lg">
-          You dont have any bookmarks. <br>Start by searching for a river.
+          You dont have any bookmarks.
         </p>
-        <cv-search
-          v-model="searchTerm"
-          placeholder="e.g. Animas"
-          theme="light"
-          @keypress.enter="searchRiver"
-        />
       </cv-tile>
     </template>
   </div>
@@ -46,7 +40,6 @@ import { ArticleCard } from '@/app/global/components'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { mapState } from 'vuex'
 import { bookmarksActions } from '@/app/views/river-detail/shared/state'
-import { riverSearchActions } from '@/app/views/river-search/shared/state'
 
 export default {
   name: 'user-bookmarks',
@@ -112,19 +105,6 @@ export default {
     },
     mockFlowData (max) {
       return `${Math.floor(Math.random() * Math.floor(max))} [cfs]`
-    },
-    searchRiver () {
-      this.$store.dispatch(
-        riverSearchActions.FETCH_RIVER_SEARCH_DATA, {
-          river: this.searchTerm
-        }
-      )
-      /**
-       * @todo figure out how to dynamically set scroll position
-       * transition to search page is jarring, search results obscured
-       */
-      this.searchTerm = ''
-      this.$router.push('/river-search').catch(() => {})
     }
   },
   mounted () {
