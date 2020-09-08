@@ -6,7 +6,16 @@ const fetchCreditsData = data => {
       query: `
       query {
         reach( id: ${data}) {
-            revisions(first:100,page:0){data{id,revision,sk{uname},revision,revision_comment}}
+            revisions(first:100,page:0){
+            data {
+                id,
+                revision, 
+                sk{uname},
+                revision,
+                revision_comment,
+                edited
+                }
+            }
         }
     }`
     })

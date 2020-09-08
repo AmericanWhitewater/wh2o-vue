@@ -9,10 +9,15 @@
           />
         </template>
         <template v-else-if="credits">
-          <div class="bx--row mb-md">
+          <div
+            v-for="c in credits"
+            :key="c.id"
+            class="bx--row mb-md"
+          >
             <div class="bx--col">
-              <h5>Revision Date: {{ formatDate(credits.edited, 'll') }}</h5>
-              <h3>Revision Comment: {{ credits.revision_comment }}</h3>
+              <h5>Revision Date: {{ formatDate(c.edited) }}</h5>
+              <h5>Edited By: {{ c.sk.uname }}</h5>
+              <h3>Revision Comment: {{ c.revision_comment }}</h3>
             </div>
           </div>
         </template>

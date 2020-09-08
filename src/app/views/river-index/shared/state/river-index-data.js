@@ -10,7 +10,8 @@ const initialState = {
   mapColorBy: 'difficulty',
   fullscreen: null,
   mapPosition: null,
-  mouseoveredFeature: null
+  mouseoveredFeature: null,
+  stateList: null
 }
 
 const namespacedPrefix = '[RIVER_INDEX]'
@@ -25,6 +26,7 @@ const mutationTypes = reflectKeys(
     'MAP_STYLE',
     'MAP_COLOR_BY',
     'MAP_POSITION',
+    'STATE_LIST',
     'MOUSEOVERED_FEATURE'
   ],
   namespacedPrefix
@@ -39,6 +41,7 @@ const {
   MAP_STYLE,
   MAP_COLOR_BY,
   MAP_POSITION,
+  STATE_LIST,
   MOUSEOVERED_FEATURE
 } = mutationTypes
 
@@ -50,6 +53,11 @@ const mutations = {
   [DATA_SUCCESS] (state, payload) {
     state.loading = false
     state.data = payload.length > 0 ? payload : null
+  },
+
+  [STATE_LIST] (state, payload) {
+    state.loading = false
+    state.stateList = payload
   },
 
   [USER_LOCATION] (state, payload) {
@@ -112,14 +120,20 @@ const actions = {
   async [riverIndexActions.FETCH_STATES] (context, data) {
     context.commit(DATA_REQUEST)
 
-    const result = fetchStates(data).catch(e => {
+    const result = await fetchStates(data).catch(e => {
       context.commit(DATA_ERROR, e)
     })
 
     if (result) {
-      context.commit(DATA_SUCCESS, result.data.states)
+      context.commit(STATE_LIST, result.data.states.data
+        .filter(x => x.gmi.match(/USA-.*/))
+        .sort((a, b) => {
+          if (a.shortkey.toUpperCase() > b.shortkey.toUpperCase()) { return 1 }
+          if (a.shortkey.toUpperCase() < b.shortkey.toUpperCase()) { return -1 }
+          return 0
+        })
+      )
     }
-    // console.log(result.data.states);
     return result
   }
 }

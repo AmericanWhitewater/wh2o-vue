@@ -3,11 +3,7 @@ const fetchStates = () => {
   return httpClient.post('/graphql', {
     query: `
             query {
-                states (aw_only: true, fist: 50, page: 1) {
-                    name
-                    abbreviation
-                    country
-                }
+                  states(first:100,aw_only:true){data{gmi,name,shortkey,type,aw_region}}
             }
         `
   }).then(r => {
