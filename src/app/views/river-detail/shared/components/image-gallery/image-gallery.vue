@@ -230,19 +230,6 @@ export default {
     }
   },
   methods: {
-    // if we are in the laravel app, position: fixed doesn't work the same way
-    // because it's embedded in a shadow dom, so we need to override the scss-defined
-    // styling
-    lightboxWrapperHeight () {
-      if (laravelDeploy) {
-        const height = window.scrollY + 79
-        return `
-          top: ${height}px;
-          height: calc(100vh - 79px);
-        `
-      }
-      return ''
-    },
     imageURI (image, size) {
       const imageSizes = image.image.uri
       let desiredImage
@@ -283,6 +270,22 @@ export default {
         return 'n/a'
       }
     },
+    // if we are in the laravel app, position: fixed doesn't work the same way
+    // because it's embedded in a shadow dom, so we need to override the scss-defined
+    // styling
+    lightboxWrapperHeight () {
+      if (laravelDeploy) {
+      // determine page size relative to carbon breakpoint
+        const widthInRem = window.outerWidth / parseFloat(getComputedStyle(document.documentElement).fontSize)
+        const navHeight = widthInRem < 42 ? 50 : 79
+        const height = window.scrollY + navHeight
+        return `
+          top: ${height}px;
+          height: calc(100vh - ${navHeight}px);
+        `
+      }
+      return ''
+    },
     openLightbox (imageId) {
       this.lightbox.active = true
       this.lightbox.activeImage = imageId
@@ -302,6 +305,7 @@ export default {
       this.lightbox.active = false
       this.lightbox.activeImage = null
       document.body.classList.remove('bx--body--with-modal-open')
+      this.$refs.lightboxWrapper.style = null
     },
     cycleImages (direction) {
       if (this.images.length > 1) {
