@@ -60,17 +60,13 @@
           />
         </div>
         <div class="bx--col-sm-16 bx--col-lg-6">
-          <div class="">
-            <a href="#">Click Here for old View</a>
-          </div>
-          <NwiMapControlsV2 />
-          <template v-if="loading || searchLoading">
+          <NwiMapSearch />
+          <template v-if="loading">
             <UtilityBlock state="loading" />
           </template>
           <template v-else>
             <nwi-rivers-table
-              :reaches="results"
-              :showing-search-results="showingSearchResults"
+              :reaches-on-map="reachesInViewport"
               @centerReach="centerFeature"
             />
           </template>
@@ -86,7 +82,7 @@
 </template>
 
 <script>
-import { NwiRiversTable, NwiMap, NwiMapControlsV2, NwiStateList } from './components'
+import { NwiRiversTable, NwiMap, NwiMapSearch, NwiStateList } from './components'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { riverIndexActions } from './shared/state'
 import { mapState } from 'vuex'
@@ -102,7 +98,7 @@ export default {
     NwiMap,
     NwiRiversTable,
     UtilityBlock,
-    NwiMapControlsV2,
+    NwiMapSearch,
     NwiStateList
   },
   mixins: [riverSearchHttpConfig],
@@ -131,25 +127,9 @@ export default {
   }),
   computed: {
     ...mapState({
-      searchResults: state => state.riverSearchState.riverSearchData.data,
-      searchLoading: state => state.riverSearchState.riverSearchData.loading,
-      searchTerm: state => state.riverSearchState.riverSearchData.searchTerm,
       reachesInViewport: state => state.riverIndexState.riverIndexData.data,
       error: state => state.riverIndexState.riverIndexData.error
-    }),
-    showingSearchResults () {
-      // true if searchResults is set AND searchTerm is present
-      return Boolean(this.searchResults && this.searchTerm)
-    },
-    results () {
-      if (this.reachesInViewport && this.reachesInViewport.length > 0) {
-        if (this.searchResults && this.searchTerm) {
-          return this.reachesInViewport.filter(reach => this.searchResults.map(r => r.id).includes(reach.properties.id))
-        }
-        return this.reachesInViewport
-      }
-      return []
-    }
+    })
   },
   methods: {
     changeReachesInViewport (newReaches) {

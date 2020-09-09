@@ -147,8 +147,6 @@ export default {
     ...mapState({
       mapStyle: state => state.riverIndexState.riverIndexData.mapStyle,
       colorBy: state => state.riverIndexState.riverIndexData.mapColorBy,
-      searchResults: state => state.riverSearchState.riverSearchData.data,
-      searchTerm: state => state.riverSearchState.riverSearchData.searchTerm,
       mouseoveredFeature: state => state.riverIndexState.riverIndexData.mouseoveredFeature
     }),
     containerHeight () {
@@ -174,12 +172,6 @@ export default {
       return this.sourceLayers
         .map(source => Object.keys(sourceLayers[source]))
         .flat()
-    },
-    searchResultIds () {
-      if (this.searchResults) {
-        return this.searchResults.map(r => r.id)
-      }
-      return []
     }
   },
   watch: {
@@ -222,7 +214,7 @@ export default {
         } else {
           // this method isn't great because mapbox is giving us "tiled" versions
           // of the features, so the geom may be just part of the feature in question
-          bounds = bbox(feature)
+          bounds = bbox(feature._geometry)
         }
         this.map.fitBounds(bounds, fitBoundsOptions)
         this.$emit('centeredFeature')
@@ -235,30 +227,9 @@ export default {
     },
     startingBounds (newBounds) {
       this.map.fitBounds(newBounds, fitBoundsOptions)
-    },
-    // any time search results change, apply filters
-    searchResultIds (resultIds) {
-      this.applySearchResultFilters()
     }
   },
   methods: {
-    applySearchResultFilters () {
-      // this feels a bit complicated. Basically:
-      // -- only reach layers that are affected by search need to be filtered here
-      // -- we can only call setFilter on layers that exist on the map
-      // -- so we iterate through layers that exist on the map and apply filter IF they match
-      //    layersNeedingFiltering
-      const layersNeedingFiltering = ['reachSegments', 'reachClass', 'reachSegmentLabels']
-      this.mapLayers.forEach(mapLayer => {
-        if (layersNeedingFiltering.includes(mapLayer)) {
-          if (this.searchResultIds && this.searchTerm) {
-            this.map.setFilter(mapLayer, ['in', 'id', ...this.searchResultIds])
-          } else {
-            this.map.setFilter(mapLayer, null)
-          }
-        }
-      })
-    },
     // can be used to make tweaks to the mapbox base styles after loading
     modifyMapboxBaseStyle () {
       if (this.map.getLayer('satellite')) {
@@ -359,9 +330,6 @@ export default {
         .filter(
           obj => !uniq[obj.properties.id] && (uniq[obj.properties.id] = true)
         )
-      // because the map events aren't exactly synchronous, we improve usability by
-      // including a search filter here
-      this.applySearchResultFilters()
 
       // only show river sidebar if there's a reasonable number of rivers
       if (reaches.length <= 300) {
@@ -533,8 +501,6 @@ export default {
       this.map.on('styledata', this.loadAWMapData)
       this.map.on('styledata', this.modifyMapboxBaseStyle)
 
-      // TODO: if/when search starts working, we may need to figure out
-      // how to trigger `debouncedUpdateReachesInViewport` on search complete
       this.map.on('moveend', this.debouncedUpdateReachesInViewport)
     },
     initMap () {

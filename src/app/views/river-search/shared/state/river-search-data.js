@@ -3,8 +3,8 @@ import { reflectKeys } from '@/app/global/services'
 import { fetchRiverSearchData } from '../services'
 
 const initialState = {
-  loading: null,
-  data: null,
+  loading: false,
+  data: [],
   error: null,
   searchTerm: null
 }
@@ -45,11 +45,15 @@ const mutations = {
 }
 
 export const riverSearchActions = reflectKeys(
-  ['FETCH_RIVER_SEARCH_DATA'],
+  ['FETCH_RIVER_SEARCH_DATA', 'CLEAR_SEARCH_QUERY'],
   namespacedPrefix
 )
 
 const actions = {
+  async [riverSearchActions.CLEAR_SEARCH_QUERY] (context, data) {
+    context.commit(SEARCH_TERM, null)
+  },
+
   async [riverSearchActions.FETCH_RIVER_SEARCH_DATA] (context, data) {
     context.commit(DATA_REQUEST)
     context.commit(SEARCH_TERM, data.river)

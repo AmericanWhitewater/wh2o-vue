@@ -1,5 +1,5 @@
 import { createWrapper } from '@/utils'
-import NwiMapControlsV2 from '@/app/views/river-index/components/nwi-map-controls-v2.vue'
+import NwiMapSearch from '@/app/views/river-index/components/nwi-map-search.vue'
 import { SearchBar } from '@/app/global/components'
 
 jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
@@ -18,15 +18,15 @@ const options = {
 }
 test.todo('toggles icons: assert presence of component')
 
-describe('nwi-map-controls-v2.vue', () => {
+describe('nwi-map-search.vue', () => {
   it('dispatches search query when emitted from search bar', async () => {
-    const wrapper = createWrapper(NwiMapControlsV2, options)
+    const wrapper = createWrapper(NwiMapSearch, options)
 
     wrapper.findComponent(SearchBar).vm.$emit('search:submitted', 'gore crik')
 
     await wrapper.vm.$nextTick()
 
-    expect(mockStore.dispatch).toHaveBeenCalledTimes(1)
-    expect(mockStore.dispatch).toHaveBeenCalledWith('[RIVER_SEARCH] FETCH_RIVER_SEARCH_DATA', 'gore crik')
+    expect(mockStore.dispatch).toHaveBeenCalledTimes(2)
+    expect(mockStore.dispatch).toHaveBeenCalledWith('[RIVER_SEARCH] FETCH_RIVER_SEARCH_DATA', { river: 'gore crik' })
   })
 })
