@@ -8,18 +8,24 @@ const fetchCreditsData = data => {
         reach( id: ${data}) {
             revisions(first:100,page:0){
             data {
-                id,
-                revision, 
-                sk{uname},
-                revision,
-                revision_comment,
+                id
+                revision
+                sk {
+                    uname
+                    contact {
+                        name  
+                    }
+                }
+                revision_comment
                 edited
                 }
             }
         }
     }`
     })
-    .then(res => res.data)
+    .then(res => {
+      return res.data
+    })
 }
 
 export { fetchCreditsData }

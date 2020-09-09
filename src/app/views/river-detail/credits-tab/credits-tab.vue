@@ -16,7 +16,7 @@
           >
             <div class="bx--col">
               <h5>Revision Date: {{ formatDate(c.edited) }}</h5>
-              <h5>Edited By: {{ c.sk.uname }}</h5>
+              <h5>Edited By: {{ c.sk.contact.name }}</h5>
               <h3>Revision Comment: {{ c.revision_comment }}</h3>
             </div>
           </div>
