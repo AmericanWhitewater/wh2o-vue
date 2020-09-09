@@ -10,6 +10,7 @@ import {
   galleryData,
   mapData,
   newsTabData,
+  projectsData,
   rapidsData,
   reachGagesData,
   riverDetailData
@@ -28,6 +29,7 @@ export default {
     galleryData,
     mapData,
     newsTabData,
+    projectsData,
     rapidsData,
     reachGagesData,
     riverDetailData
