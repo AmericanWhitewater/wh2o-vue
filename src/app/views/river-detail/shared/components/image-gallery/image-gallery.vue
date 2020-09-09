@@ -39,6 +39,25 @@
             :src="imageURI(activeImage)"
             :alt="formatAltText(activeImage)"
           >
+          <cv-button-set
+            v-if="images.length > 1"
+            class="gallery-navigation-buttons"
+          >
+            <cv-button
+              id="previous-button"
+              :disabled="currentIndex === 0"
+              @click.exact="cycleImages('previous')"
+            >
+              Previous
+            </cv-button>
+            <cv-button
+              id="next-button"
+              :disabled="currentIndex === images.length - 1"
+              @click.exact="cycleImages"
+            >
+              Next
+            </cv-button>
+          </cv-button-set>
         </div>
         <div class="lightbox-sidebar">
           <div>
@@ -142,24 +161,6 @@
                 >
                   Full resolution
                 </cv-link>
-              </div>
-              <div v-if="images.length > 1">
-                <cv-button-set>
-                  <cv-button
-                    id="previous-button"
-                    :disabled="currentIndex === 0"
-                    @click.exact="cycleImages('previous')"
-                  >
-                    Previous
-                  </cv-button>
-                  <cv-button
-                    id="next-button"
-                    :disabled="currentIndex === images.length - 1"
-                    @click.exact="cycleImages"
-                  >
-                    Next
-                  </cv-button>
-                </cv-button-set>
               </div>
             </main>
           </div>
