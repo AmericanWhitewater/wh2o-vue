@@ -1,0 +1,16 @@
+.sidebar-projects {
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .sidebar-project {
+    &:hover h5 {
+      text-decoration: underline;
+    }
+  }
+  .no-projects-msg {
+    @include carbon--type-style("code-02");
+  }
+}

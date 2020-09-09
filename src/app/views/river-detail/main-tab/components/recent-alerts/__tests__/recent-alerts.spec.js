@@ -11,6 +11,10 @@ const mockStore = {
       },
       newsTabData: {
         data: null
+      },
+      projectsData: {
+        data: null,
+        loading: null
       }
     }
   }

@@ -1,5 +1,6 @@
 import { reflectKeys } from '@/app/global/services'
 import { fetchAlertsData, createAlert } from '../../services'
+
 const initialState = {
   data: null,
   error: null,
