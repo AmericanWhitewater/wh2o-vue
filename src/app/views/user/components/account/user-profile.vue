@@ -11,7 +11,7 @@
         <div class="bx--row pl-spacing-md pt-spacing-sm pb-spacing-sm">
           <div class="bx--col-auto">
             <user-avatar
-              :image-u-r-i="`https://americanwhitewater.org/${data.image.uri.big || data.image.uri.medium}`"
+              :image-u-r-i="`${baseUrl}${data.image.uri.big || data.image.uri.medium}`"
               :username="data.uname"
             />
           </div>
@@ -35,12 +35,17 @@
 import { mapState } from 'vuex'
 import UserAvatar from '@/app/global/components/user-avatar/user-avatar'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
+import { baseUrl } from '../../../../environment'
+
 export default {
   name: 'user-profile',
   components: {
     UserAvatar,
     UtilityBlock
   },
+  data: () => ({
+    baseUrl: baseUrl
+  }),
   computed: {
     ...mapState({
       data: state => state.userState.userData.data,

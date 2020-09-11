@@ -56,6 +56,8 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import { baseUrl } from '../../../../../../environment'
+
 export default {
   name: 'sidebar-articles',
   computed: {
@@ -74,7 +76,7 @@ export default {
     articleThumb (article) {
       if (article) {
         const uri = article.image.uri.thumb || article.image.uri.medium || article.image.uri.big
-        return `https://americanwhitewater.org${uri}`
+        return `${baseUrl}${uri}`
       }
       return null
     }

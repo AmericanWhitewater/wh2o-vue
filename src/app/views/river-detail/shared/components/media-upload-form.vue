@@ -9,7 +9,7 @@
       <img
         v-for="(item, k) in previewUrls"
         :key="k"
-        :src="`https://beta.americanwhitewater.org${item}`"
+        :src="`${baseUrl}${item}`"
         class="mb-spacing-sm"
       >
     </template>
@@ -69,6 +69,8 @@
 import gql from 'graphql-tag'
 import { postUpdate } from '@/app/global/components/post-update-modal/services/postUpdate.js'
 import { globalAppActions } from '@/app/global/state'
+import { baseUrl } from '../../../../environment'
+
 export default {
   name: 'media-upload-form',
   props: {
@@ -89,6 +91,7 @@ export default {
     }
   },
   data: () => ({
+    baseUrl: baseUrl,
     formPending: false,
     formData: {
       id: null,

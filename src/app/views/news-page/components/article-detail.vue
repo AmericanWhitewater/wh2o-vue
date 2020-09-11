@@ -17,7 +17,7 @@
           >
             <img
               :src="
-                `https://americanwhitewater.org/resources/images/contents/${article.contentsphoto}`
+                `${baseUrl}resources/images/contents/${article.contentsphoto}`
               "
               alt=""
               class="mb-spacing-lg"
@@ -122,6 +122,8 @@ import { ArticleCard } from '@/app/global/components'
 import { articleActions, newsActions } from '../shared/state'
 import { mapState } from 'vuex'
 import Moment from 'moment'
+import { baseUrl } from '../../../environment'
+
 export default {
   name: 'article-detail',
   components: {
@@ -133,7 +135,8 @@ export default {
   metaInfo () {
     return {
       title: this.getMetaTitle,
-      titleTemplate: '%s | American Whitewater'
+      titleTemplate: '%s | American Whitewater',
+      baseUrl: baseUrl
     }
   },
 

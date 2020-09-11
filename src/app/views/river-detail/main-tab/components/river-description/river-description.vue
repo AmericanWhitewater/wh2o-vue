@@ -38,7 +38,9 @@
           </cv-button>
         </template>
         <template v-else>
-          <PageDescription description="This reach does not have a description. If you know about this reach, please tell us about it!">
+          <PageDescription
+            description="This reach does not have a description. If you know about this reach, please tell us about it!"
+          >
             <cv-button
               kind="tertiary"
               size="small"
@@ -84,6 +86,8 @@ import ContentEditor from '@/app/global/components/content-editor/content-editor
 import { globalAppActions } from '@/app/global/state'
 import { httpClient } from '@/app/global/services'
 import PageDescription from '@/app/global/components/page-description/page-description'
+import { baseUrl } from '../../../../../environment'
+
 export default {
   name: 'river-description',
   components: {
@@ -168,20 +172,20 @@ export default {
       this.updatedDescription = ''
     },
     /**
-     * use this to remove double quotes, inline style,
-     * and other unwanted attributes n' such from river description.
-     *
-     * @note when updating river description, you need to remove
-     * double quotes otherwise GQL will not be able to parse.
-     *
-     *
-     * @todo add functionality to accept replacement pairs
-      *
-      * data = [ ['foo','bar'], ['joan','baez']]
-      *
-      *  run each pair through $replaceText and return
-      * squeaky clean content.
-     */
+             * use this to remove double quotes, inline style,
+             * and other unwanted attributes n' such from river description.
+             *
+             * @note when updating river description, you need to remove
+             * double quotes otherwise GQL will not be able to parse.
+             *
+             *
+             * @todo add functionality to accept replacement pairs
+             *
+             * data = [ ['foo','bar'], ['joan','baez']]
+             *
+             *  run each pair through $replaceText and return
+             * squeaky clean content.
+             */
     cleanContent (data) {
       if (data) {
         let content = this.$sanitize(data, {
@@ -193,7 +197,11 @@ export default {
         // content = this.$replaceText(content, '../../content/River_detail_id_', 'http://www.americanwhitewater.org/content/River/detail/id/')
         // debugger
         const updatedUrl = '/#/river-detail/'
-        const legacyUrls = ['http://www.americanwhitewater.org/rivers/id/', 'http://www.americanwhitewater.org/content/River/detail/id/', 'http://www.americanwhitewater.org/content/River_detail_id_']
+        const legacyUrls = [
+          baseUrl + 'rivers/id/',
+          baseUrl + 'content/River/detail/id/',
+          baseUrl + 'content/River_detail_id_'
+        ]
 
         const urlsLength = legacyUrls.length
         for (let i = 0; i < urlsLength; i++) {

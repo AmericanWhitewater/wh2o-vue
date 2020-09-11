@@ -22,7 +22,7 @@ const mockStore = {
 
       },
       gageMetricsData: {
-        data: [{ name: 'Flow', unit: 'cfs', format: '%4.0f', id: '2', shortkey: 'flow' }]
+        data: [{ name: 'Flow', unit: 'cfs', format: '%4.0f', id: '2', shortkey: 'flow', gauge: { id: '2' } }]
       }
     }
   }
@@ -70,7 +70,8 @@ describe('FlowTab', () => {
       rmin: 50,
       rmax: 100,
       last_gauge_reading: 25,
-      gauge_metric: '2'
+      gauge_metric: '2',
+      gauge: { id: '2' }
     }]
 
     const wrapper = createWrapper(BetaBox, options)
@@ -84,7 +85,8 @@ describe('FlowTab', () => {
       rmin: 50,
       rmax: 100,
       last_gauge_reading: 75,
-      gauge_metric: '2'
+      gauge_metric: '2',
+      gauge: { id: '2' }
     }]
 
     const wrapper = createWrapper(BetaBox, options)
@@ -98,7 +100,8 @@ describe('FlowTab', () => {
       rmin: 50,
       rmax: 100,
       last_gauge_reading: 150,
-      gauge_metric: '2'
+      gauge_metric: '2',
+      gauge: { id: '2' }
     }]
 
     const wrapper = createWrapper(BetaBox, options)
@@ -112,7 +115,8 @@ describe('FlowTab', () => {
       rmin: null,
       rmax: null,
       last_gauge_reading: 150,
-      gauge_metric: '2'
+      gauge_metric: '2',
+      gauge: { id: '2' }
     }]
 
     const wrapper = createWrapper(BetaBox, options)

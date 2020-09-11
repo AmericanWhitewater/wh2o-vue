@@ -77,6 +77,8 @@
 import UserAvatar from '@/app/global/components/user-avatar/user-avatar'
 import { globalAppActions } from '@/app/global/state'
 import { httpClient } from '@/app/global/services'
+import { baseUrl } from '../../../../../../environment'
+
 export default {
   name: 'comment',
   components: {
@@ -106,7 +108,7 @@ export default {
   methods: {
     formatURI (input) {
       if (input) {
-        return `https://americanwhitewater.org${input}`
+        return `${baseUrl}${input}`
       }
 
       return null
