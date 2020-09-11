@@ -46,7 +46,7 @@
       >
         <div class="bx--col-sm-16 bx--col-lg-10">
           <nwi-map
-            :external-loading="loading || searchLoading"
+            :external-loading="loading"
             :feature-to-center="featureToCenter"
             :has-controls="false"
             :source-layers="sourceLayers"
