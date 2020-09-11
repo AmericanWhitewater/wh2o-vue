@@ -66,9 +66,8 @@ const actions = {
     })
 
     if (result) {
-      context.commit(DATA_SUCCESS, result.data.reach)
+      context.commit(DATA_SUCCESS, result.data.reach.revisions.data)
     }
-
     return result
   }
 }

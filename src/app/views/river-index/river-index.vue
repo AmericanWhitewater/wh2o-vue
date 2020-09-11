@@ -1,13 +1,52 @@
 <template>
   <div id="national-map-app">
     <div class="bx--grid">
+      <div class="bx--row mb-md mt-md">
+        <div class="bx--col-sm-12 bx--col-lg-5  mb-spacing-lg">
+          <h2 class="mb-spacing-sm">
+            Stream Team
+          </h2>
+          <p class="mb-spacing-md">
+            Adopt a river and help keep American Whitewater river information up to date.
+          </p>
+          <a
+            class="bx--btn bx--btn--secondary"
+            href="/content/StreamTeam/info/?"
+          >Learn More</a>
+        </div>
+        <div class="bx--col-sm-12 bx--col-lg-5  mb-spacing-lg">
+          <h2 class="mb-spacing-sm">
+            Permit Information
+          </h2>
+          <p class="mb-spacing-md">
+            See an extensive listing of all US rivers which require permits to access, and
+            application details.
+          </p>
+          <a
+            class="bx--btn bx--btn--secondary"
+            href="/content/River/list-permits/?"
+          >View Permits</a>
+        </div>
+        <div class="bx--col-sm-12 bx--col-lg-5 ">
+          <h2 class="mb-spacing-sm">
+            Release Information
+          </h2>
+          <p class="mb-spacing-md">
+            Find out the dam release schedules and planned flow rates for your favorite runs.
+          </p>
+          <a
+            class="bx--btn bx--btn--secondary"
+            href="/content/Release/view/?"
+          >View Calendar</a>
+        </div>
+      </div>
       <div
         id="fullscreen-target"
         class="bx--row"
       >
         <div class="bx--col-sm-16 bx--col-lg-10">
           <nwi-map
-            :external-loading="loading"
+            :external-loading="loading || searchLoading"
             :feature-to-center="featureToCenter"
             :has-controls="false"
             :source-layers="sourceLayers"
@@ -33,12 +72,17 @@
           </template>
         </div>
       </div>
+      <div class="bx--row">
+        <div class="bx--col">
+          <nwi-state-list />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { NwiRiversTable, NwiMap, NwiMapSearch } from './components'
+import { NwiRiversTable, NwiMap, NwiMapSearch, NwiStateList } from './components'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { riverIndexActions } from './shared/state'
 import { mapState } from 'vuex'
@@ -54,7 +98,8 @@ export default {
     NwiMap,
     NwiRiversTable,
     UtilityBlock,
-    NwiMapSearch
+    NwiMapSearch,
+    NwiStateList
   },
   mixins: [riverSearchHttpConfig],
   props: {

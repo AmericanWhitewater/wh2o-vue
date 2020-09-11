@@ -10,11 +10,11 @@ const initialState = {
 const namespacedPrefix = '[APP_GLOBAL]'
 
 const mutationTypes = reflectKeys(
-  ['EDIT_MODE', 'NEW_UPDATE', 'NEW_TOAST', 'NETWORK'],
+  ['EDIT_MODE', 'NEW_UPDATE', 'NEW_TOAST', 'NETWORK', 'CLOSE_TOAST'],
   namespacedPrefix
 )
 
-const { EDIT_MODE, NEW_UPDATE, NEW_TOAST, NETWORK } = mutationTypes
+const { EDIT_MODE, NEW_UPDATE, NEW_TOAST, NETWORK, CLOSE_TOAST } = mutationTypes
 
 const mutations = {
 
@@ -25,6 +25,15 @@ const mutations = {
   [NEW_TOAST] (state, payload) {
     state.toasts.push(payload)
   },
+
+  [CLOSE_TOAST] (state, payload) {
+    if (Number(payload) > -1) {
+      state.toasts.splice(Number(payload), 1)
+    } else {
+      state.toasts.pop()
+    }
+  },
+
   [EDIT_MODE] (state, payload) {
     Object.assign(state, { editMode: payload })
   },
@@ -38,7 +47,7 @@ const mutations = {
 }
 
 export const globalAppActions = reflectKeys(
-  ['TOGGLE_EDIT_MODE', 'UPDATE_AVAILABLE', 'SEND_TOAST', 'NETWORK_STATUS'],
+  ['TOGGLE_EDIT_MODE', 'UPDATE_AVAILABLE', 'SEND_TOAST', 'NETWORK_STATUS', 'CLOSE_TOAST'],
   namespacedPrefix
 )
 
@@ -55,6 +64,9 @@ const actions = {
   },
   [globalAppActions.NETWORK_STATUS] (context, data) {
     context.commit(NETWORK, data)
+  },
+  [globalAppActions.CLOSE_TOAST] (context, data) {
+    context.commit(CLOSE_TOAST, data)
   }
 }
 

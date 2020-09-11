@@ -7,7 +7,7 @@ const fetchCommentsData = data => {
   return httpClient
     .post(url, {
       query: `
-        query {
+        query Related{
             posts(reach_id: "${data}", post_types: COMMENT, page: 1, orderBy: {field: REVISION, order: DESC}, first: 10) {
               data {
                 id

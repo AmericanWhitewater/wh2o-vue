@@ -22,7 +22,7 @@ export default {
     timeScales: {
       type: String,
       required: false,
-      default: 'day',
+      default: 'week',
       validator: val => ['day', 'week', 'month', 'year'].indexOf(val) > -1
     },
     readings: {
@@ -35,7 +35,7 @@ export default {
       return this.$store.state.riverDetailState.gageMetricsData.data
     },
     chartLabels () {
-      const data = this.readings.map(reading => moment(Number(reading.updated)).format('LT'))
+      const data = this.readings.map(reading => moment.unix(Number(reading.updated)).format('d/M hh:mm a'))
       return data
     },
     activeGage () {
