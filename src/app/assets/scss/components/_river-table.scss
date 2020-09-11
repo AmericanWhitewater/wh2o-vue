@@ -1,6 +1,8 @@
 .bx--data-table-container {
   min-width: unset;
   overflow-x: scroll;
+  overflow-y: auto;
+  z-index: 2;
 
   &.river-index {
     overflow-x: unset;
@@ -38,6 +40,19 @@
 
   &.river-table {
     tbody {
+      tr.active {
+        background: #e5e5e5;
+
+        td {
+          border-top: 1px solid #e5e5e5;
+          border-bottom: 1px solid #e5e5e5;
+          background: #e5e5e5;
+        }
+        td:nth-child(1) {
+          border-left-width: 1.5rem;
+        }
+      }
+
       tr,
       td {
         @include ease;
