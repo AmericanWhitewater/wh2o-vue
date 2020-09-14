@@ -180,7 +180,7 @@ export default {
         this.map.setStyle(this.baseMapUrl)
       }
     },
-    // visually highlights a mosued over feature on the map
+    // visually highlights a moused over feature on the map
     mouseoveredFeature (feature) {
       // TODO: consider refactoring this to use feature state (it might be faster)
       if (feature && feature.properties.id) {

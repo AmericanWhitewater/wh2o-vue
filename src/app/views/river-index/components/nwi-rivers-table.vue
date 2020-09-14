@@ -8,7 +8,6 @@
     </template>
     <template v-else-if="reaches && reaches.length > 0">
       <div
-        ref="table-container"
         class="bx--data-table-container river-index"
       >
         <table class="bx--data-table river-table">
@@ -147,16 +146,8 @@ export default {
         return 'compact'
       }
       return 'standard'
-    },
-    mouseoveredClass (reachId) {
-      if (
-        this.mouseoveredFeature &&
-        reachId === this.mouseoveredFeature.properties.id
-      ) {
-        return 'active'
-      }
-      return ''
     }
+
   },
   watch: {
     mouseoveredFeature (feature) {
@@ -168,9 +159,10 @@ export default {
         ) {
           scrollIntoView(this.$refs[`reach-${reachId}`][0], {
             scrollMode: 'if-needed',
-            block: 'nearest',
+            block: 'center',
             inline: 'nearest',
-            behavior: 'smooth'
+            behavior: 'smooth',
+            boundary: this.$el
           })
         }
       }
@@ -254,39 +246,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.bx--data-table-container {
-  overflow-y: scroll;
-  z-index: 2;
-
-  // this is mimicking :hover behaviour that already exists
-  .bx--data-table tbody tr.active {
-    td {
-      &:nth-child(1) {
-        border-left-width: 1.5rem;
-      }
-    }
-  }
-
-  td {
-    svg {
-      cursor: pointer;
-    }
-  }
-
-  &.river-index {
-    background-color:$ui-02;
-  }
-
-  &.river-detail {
-    @include carbon--breakpoint("md") {
-      width: 32%;
-      height: 100%;
-    }
-    @include carbon--breakpoint("max") {
-      width: 24%;
-    }
-  }
-}
-</style>

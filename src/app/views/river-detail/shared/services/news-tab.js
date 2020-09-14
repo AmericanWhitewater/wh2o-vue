@@ -11,7 +11,7 @@ const fetchNewsTabData = data => {
             getRiverArticles(id: ${data}) {
                 articles {
                 abstract
-                  image {
+                image {
                   uri {
                     thumb
                     medium
@@ -19,7 +19,7 @@ const fetchNewsTabData = data => {
                   }
                 }
                 author
-                posted
+                posted_date
                 title
                 contents
                 id
