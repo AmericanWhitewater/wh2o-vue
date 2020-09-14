@@ -14,7 +14,7 @@
               </h1>
               <feature-card
                 :img="
-                  `https://americanwhitewater.org/resources/images/contents/${featured.contentsphoto}`
+                  `${baseUrl}resources/images/contents/${featured.contentsphoto}`
                 "
                 :to="`/article/${featured.id}`"
                 :title="featured.title"
@@ -50,6 +50,8 @@ import {
 } from '@/app/global/components'
 import { Layout } from '@/app/global/layout'
 import { newsActions } from './shared/state'
+import { baseUrl } from '../../environment'
+
 export default {
   name: 'news-page',
   components: {
@@ -59,7 +61,8 @@ export default {
     UtilityBlock
   },
   data: () => ({
-    articleSearchTerm: null
+    articleSearchTerm: null,
+    baseUrl: baseUrl
   }),
   metaInfo () {
     return {

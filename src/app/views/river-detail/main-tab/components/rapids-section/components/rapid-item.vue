@@ -43,7 +43,7 @@
               >
                 <img
                   :src="
-                    `https://americanwhitewater.org/${rapid.photo.image.uri.medium}`
+                    `${baseUrl}${rapid.photo.image.uri.medium}`
                   "
                   :alt="rapid.name"
                 >
@@ -120,6 +120,8 @@ import RapidIconBar from './rapid-icon-bar'
 import RapidMediaUploader from './rapid-media-uploader'
 import ConfirmDeleteModal from '@/app/global/components/confirm-delete-modal/confirm-delete-modal.vue'
 import { rapidsActions } from '../../../../shared/state'
+import { baseUrl } from '../../../../../../environment'
+
 export default {
   name: 'rapids-item',
   components: {
@@ -145,7 +147,8 @@ export default {
     uploadFormVisible: false,
     showConfirmation: false,
     readMoreActive: false,
-    characterLimit: 1000
+    characterLimit: 1000,
+    baseUrl: baseUrl
   }),
   computed: {
     /**

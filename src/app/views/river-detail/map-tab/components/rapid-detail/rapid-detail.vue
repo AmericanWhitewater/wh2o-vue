@@ -33,7 +33,7 @@
       >
         <img
           :src="
-            `https://americanwhitewater.org/${rapidData.photo.image.uri.medium}`
+            `${baseUrl}${rapidData.photo.image.uri.medium}`
           "
           :alt="rapidData.name"
         >
@@ -61,6 +61,7 @@
 <script>
 import { RapidIconBar } from '../../../main-tab/components/rapids-section/components'
 import { mapState } from 'vuex'
+import { baseUrl } from '../../../../../environment'
 
 export default {
   name: 'rapid-detail',
@@ -74,7 +75,8 @@ export default {
     }
   },
   data: () => ({
-    characterLimit: 1000
+    characterLimit: 1000,
+    baseUrl: baseUrl
   }),
   computed: {
     imageUrl () {

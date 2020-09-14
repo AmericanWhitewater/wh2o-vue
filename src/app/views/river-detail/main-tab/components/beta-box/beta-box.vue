@@ -44,11 +44,11 @@
               v-if="gages && gages.length"
               class="river-gages"
             >
-              {{
+              <a :href="formatLinkUrl(`content/gauge/detail-new/${gages[0].gauge.id || ''}`)">{{
                 gages[0].gauge && gages[0].gauge.name
                   ? $titleCase(gages[0].gauge.name)
                   : "n/a"
-              }}
+              }}</a>
             </td>
             <td
               v-else
@@ -155,6 +155,7 @@
 import { mapState } from 'vuex'
 import { humanReadable } from '@/app/global/services/human-readable'
 import { BetaBoxEditModal } from './components'
+
 /**
  * @todo if reach has multiple gages, add dropdown to
  * gage tr, v-model+watch+fetch.gageActions.FETCH_GAGE_DATA and make other table values reactive

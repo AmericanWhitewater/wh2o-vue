@@ -5,6 +5,7 @@ import axios from 'axios'
 const fetchGaugeReadings = data => {
   /**
    * @todo remove proxy and setup local gage server
+   * @todo format url to load from .env value
    * @temp get flow data from prod
    *
    */

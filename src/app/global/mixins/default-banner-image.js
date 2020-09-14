@@ -1,3 +1,5 @@
+import { baseUrl } from '../../environment'
+
 const defaultBannerImage = {
   props: {
     backgroundImage: {
@@ -10,29 +12,29 @@ const defaultBannerImage = {
     images: [
       {
         url:
-          'https://beta.americanwhitewater.org/photos/archive/medium/885497.jpg',
+          baseUrl + 'photos/archive/medium/885497.jpg',
         title: 'image-01'
       },
       {
         url:
-          'https://beta.americanwhitewater.org/photos/archive/medium/879537.jpg',
+          baseUrl + 'photos/archive/medium/879537.jpg',
         title: 'image-02'
       },
       {
         url:
-          'https://beta.americanwhitewater.org/photos/archive/medium/8670.jpg'
+          baseUrl + 'photos/archive/medium/8670.jpg'
       },
       {
         url:
-          'https://beta.americanwhitewater.org/photos/archive/medium/39950.jpg'
+          baseUrl + 'photos/archive/medium/39950.jpg'
       },
       {
         url:
-          'https://beta.americanwhitewater.org/photos/archive/medium/884685.jpg'
+          baseUrl + 'photos/archive/medium/884685.jpg'
       },
       {
         url:
-          'https://beta.americanwhitewater.org/photos/archive/medium/882780.jpg'
+          baseUrl + 'photos/archive/medium/882780.jpg'
       }
     ],
     headerSyle: {
