@@ -189,18 +189,6 @@ export default {
     centerReach (reach) {
       this.$emit('centerReach', reach)
     },
-    friendlyCurrentFlow (flow) {
-      switch (flow) {
-        case 'low':
-          return 'low'
-        case 'med':
-          return 'running'
-        case 'high':
-          return 'high'
-        default:
-          return 'n/a'
-      }
-    },
     // the search endpoint returns a very different looking object
     // than the tileserver, but for all the map centering logic (and table display logic)
     // to work, we need to convert the data here
@@ -214,11 +202,24 @@ export default {
       if (reach.readingsummary) {
         readingSummaryProps.gage_0_id = reach.readingsummary.gauge_id
         readingSummaryProps.gage_0_reading = parseFloat(reach.readingsummary.gauge_reading)
-        readingSummaryProps.reading = parseFloat(reach.readingsummary.gauge_reading)
         readingSummaryProps.gage_0_updated = reach.readingsummary.updated
         if (reach.readingsummary.metric) {
           readingSummaryProps.gage_0_unit = reach.readingsummary.metric.unit
         }
+        if (reach.readingsummary.reading) {
+          const reading = reach.readingsummary.reading
+          if (reading > 1) {
+            readingSummaryProps.condition = 'hi'
+          } else if (reading < 0) {
+            readingSummaryProps.condition = 'low'
+          } else {
+            readingSummaryProps.condition = 'med'
+          }
+        }
+      }
+
+      if (!readingSummaryProps.condition) {
+        readingSummaryProps.condition = 'unk'
       }
 
       return {
@@ -227,7 +228,6 @@ export default {
         _geometry: geom,
         properties: {
           class: reach.class,
-          condition: reach.cond,
           id: reach.id,
           river: reach.river,
           section: reach.section,

@@ -18,6 +18,7 @@ const fetchRiverSearchData = query => {
               shortkey
             }
             readingsummary {
+              reading
               gauge_reading
               updated
               gauge_id
