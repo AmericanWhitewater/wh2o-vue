@@ -60,27 +60,6 @@
         class="drawer pt-md"
       >
         <div class="main-nav-items">
-          <cv-search
-            v-model="searchTerm"
-            theme="light"
-            class="mb-spacing-md"
-            placeholder="River Search"
-            @keypress.enter="searchRiver"
-          />
-          <transition
-            name="fade"
-            mode="out-in"
-          >
-            <cv-button
-              v-if="searchTerm.length > 0"
-              class="mb-spacing-md search-submit"
-              size="small"
-              kind="secondary"
-              @click.exact="searchRiver"
-            >
-              Submit
-            </cv-button>
-          </transition>
           <cv-button
             kind="ghost"
             class="mb-spacing-xs map-button"
@@ -92,12 +71,6 @@
             kind="ghost"
             @click.exact="viewRoute('/news')"
             v-text="'News'"
-          />
-          <cv-button
-            class="mb-spacing-xs river-search-button"
-            kind="ghost"
-            @click.exact="viewRoute('/river-search')"
-            v-text="'Search'"
           />
         </div>
         <div class="main-nav-items mb-md">
@@ -136,7 +109,6 @@
 </template>
 <script>
 import AwLogo from '@/app/global/components/logo-library/aw-logo'
-import { riverSearchActions } from '@/app/views/river-search/shared/state'
 export default {
   name: 'mobile-nav',
   components: {
@@ -166,21 +138,6 @@ export default {
       this.drawerOpen = false
       /* keep catch empty to avoid nav duplication error */
       this.$router.push('/').catch(() => {})
-    },
-    /**
-     * this func is is getting replicated a lot.
-     */
-    searchRiver () {
-      this.drawerOpen = false
-      this.$store.dispatch(riverSearchActions.FETCH_RIVER_SEARCH_DATA, {
-        river: this.searchTerm
-      })
-      /**
-       * @todo figure out how to dynamically set scroll position
-       * transition to search page is jarring, search results obscured
-       */
-      this.searchTerm = ''
-      this.$router.push('/river-search').catch(() => {})
     }
   }
 }

@@ -38,6 +38,10 @@
     }
   }
 
+  .zoom-button {
+    cursor: pointer;
+  }
+
   &.river-table {
     tbody {
       tr.active {

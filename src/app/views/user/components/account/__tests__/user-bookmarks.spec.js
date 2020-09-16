@@ -30,11 +30,4 @@ describe('user-profile.vue', () => {
     const wrapper = createWrapper(UserBookmarks, options)
     expect(wrapper.find('.utility-block-loading').exists()).toBe(true)
   })
-
-  it('shows search bar when user has no bookmarks', () => {
-    mockStore.state.riverDetailState.bookmarksData.loading = false
-
-    const wrapper = createWrapper(UserBookmarks, options)
-    expect(wrapper.find('.cv-search').exists()).toBe(true)
-  })
 })

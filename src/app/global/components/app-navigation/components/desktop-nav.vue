@@ -52,16 +52,6 @@
                 News
               </cv-button>
               <cv-button
-                id="search-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/river-search').catch(() => {})"
-                @keydown.enter="$router.push('/river-search').catch(() => {})"
-              >
-                Search
-              </cv-button>
-              <cv-button
                 v-if="!user"
                 id="login-btn"
                 kind="primary"

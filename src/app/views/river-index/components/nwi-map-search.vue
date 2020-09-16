@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-import { riverSearchActions } from '@/app/views/river-search/shared/state'
+import { riverIndexActions } from '../shared/state'
 import SearchBar from '@/app/global/components/search-bar/search-bar.vue'
 export default {
   name: 'nwi-map-search',
@@ -19,14 +19,10 @@ export default {
   methods: {
     fetchRivers (term) {
       this.$store.dispatch(
-        riverSearchActions.FETCH_RIVER_SEARCH_DATA,
-        { river: term }
+        riverIndexActions.FETCH_MAP_SEARCH_DATA,
+        term
       )
     }
-  },
-  // ensure map search bar is empty when page loads
-  created () {
-    this.$store.dispatch(riverSearchActions.CLEAR_SEARCH_QUERY)
   }
 }
 </script>

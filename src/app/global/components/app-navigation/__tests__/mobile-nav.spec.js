@@ -119,25 +119,4 @@ describe('mobile-nav.vue', () => {
     expect(mockRouter.push).toBeCalledTimes(1)
     expect(mockRouter.push).toBeCalledWith('/news')
   })
-
-  it('should navigate to search page when search button clicked', async () => {
-    const wrapper = createWrapper(MobileNav, options)
-
-    await wrapper.find('.nav-trigger').trigger('click')
-    await wrapper.find('.river-search-button').trigger('click')
-
-    expect(mockRouter.push).toBeCalledTimes(1)
-    expect(mockRouter.push).toBeCalledWith('/river-search')
-  })
-
-  it('should submit search term and navigate to search page when search input submitted', async () => {
-    const wrapper = createWrapper(MobileNav, options)
-
-    await wrapper.find('.nav-trigger').trigger('click')
-    await wrapper.find('.bx--search-input').setValue('animas')
-    await wrapper.find('.search-submit').trigger('click')
-
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1, '[RIVER_SEARCH] FETCH_RIVER_SEARCH_DATA', { river: 'animas' })
-    expect(mockRouter.push).toBeCalledWith('/river-search')
-  })
 })

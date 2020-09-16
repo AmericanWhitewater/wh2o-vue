@@ -8,7 +8,6 @@ import { gageDetailRoutes } from './views/gage-detail'
 import { newsPageRoutes } from './views/news-page'
 import { riverDetailRoutes } from './views/river-detail'
 import { riverIndexRoutes } from './views/river-index'
-import { riverSearchRoutes } from './views/river-search'
 import { userRoutes } from './views/user'
 
 Vue.use(VueRouter)
@@ -18,7 +17,6 @@ const routes = [
   ...newsPageRoutes,
   ...riverDetailRoutes,
   ...riverIndexRoutes,
-  ...riverSearchRoutes,
   ...staticRoutes,
   ...userRoutes
 ]
