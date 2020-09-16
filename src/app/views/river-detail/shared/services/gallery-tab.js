@@ -30,6 +30,7 @@ const fetchGalleryData = data => {
                     medium
                     big
                   }
+                  file_size
                 }
                 id
                 author

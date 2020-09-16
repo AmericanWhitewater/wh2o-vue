@@ -152,6 +152,12 @@
                   {{ activeImage.gauge.name }}
                 </cv-link>
               </div>
+              <div class="mb-spacing-md">
+                <h6>Filesize</h6>
+                <span
+                  v-text="formatFileSize(activeImage)"
+                />
+              </div>
               <div
                 v-if="activeImage.image && activeImage.image.uri.big"
                 class="mb-spacing-md"
@@ -241,6 +247,24 @@ export default {
         desiredImage = imageSizes.medium || imageSizes.big || imageSizes.thumb
       }
       return this.assetUrl(desiredImage)
+    },
+    formatFileSize (image) {
+      if (image.image.file_size) {
+        return this.formatBytes(image.image.file_size)
+      } else {
+        return 'n/a'
+      }
+    },
+    formatBytes (bytes, decimals = 2) {
+      if (bytes === 0) return '0 Bytes'
+
+      const k = 1024
+      const dm = decimals < 0 ? 0 : decimals
+      const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+
+      const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
     },
     formatAltText (image) {
       if (image.subject) {
