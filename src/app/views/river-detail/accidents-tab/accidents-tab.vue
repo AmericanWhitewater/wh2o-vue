@@ -16,6 +16,7 @@
             <cv-button
               kind="secondary"
               size="small"
+              @click="goToLink(formatLinkUrl('/content/Accident/report/?'))"
             >
               Submit Report
             </cv-button>
@@ -39,9 +40,18 @@
                     v-for="(a, index) in accidents"
                     :key="index"
                   >
-                    <td v-text="formatDate(a.accidentdate, 'll')" />
-                    <td v-text="a.waterlevel" />
-                    <td v-text="a.status" />
+                    <td v-text="formatDate(a.accident_date, 'll')" />
+                    <td v-text="a.water_level" />
+                    <td>
+                      <cv-list>
+                        <cv-list-item
+                          v-for="(injury, j) in a.injuries"
+                          :key="j"
+                        >
+                          {{ injury.injury }}
+                        </cv-list-item>
+                      </cv-list>
+                    </td>
                     <td>
                       <cv-list>
                         <cv-list-item
@@ -90,7 +100,7 @@
           <cv-button
             size="small"
             kind="secondary"
-            @click.exact="$router.push('/accident-database/new-report')"
+            @click="goToLink(formatLinkUrl('/content/Accident/report/?'))"
           >
             Continue to Form
           </cv-button>
@@ -132,7 +142,7 @@ export default {
       }
     },
     viewAccident (accidentId) {
-      return null
+      this.goToLink(this.formatLinkUrl(`/content/Accident/detail/accidentid/${accidentId}`))
     }
   },
   created () {
