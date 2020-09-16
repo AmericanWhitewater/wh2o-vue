@@ -100,7 +100,7 @@
           <cv-button
             size="small"
             kind="secondary"
-            @click="window.location = formatLinkUrl('/content/Accident/report/?')"
+            @click="goToLink(formatLinkUrl('/content/Accident/report/?'))"
           >
             Continue to Form
           </cv-button>
