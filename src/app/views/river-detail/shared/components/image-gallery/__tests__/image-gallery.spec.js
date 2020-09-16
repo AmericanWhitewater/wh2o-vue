@@ -37,7 +37,8 @@ const options = {
             thumb: '/photos/archive/thumb/8928.jpg',
             medium: '/photos/archive/medium/8928.jpg',
             big: '/photos/archive/8928.jpg'
-          }
+          },
+          file_size: 4423253
         },
         id: '8928',
         author: 'Jered Johnson',
