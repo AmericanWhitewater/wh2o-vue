@@ -111,8 +111,8 @@
             class="mb-spacing-md"
             kind="tertiary"
             size="small"
-            @click.exact="$router.push(`/gage-detail/${activeGage.gauge.id}`)"
-            @keydown.enter="$router.push(`/gage-detail/${activeGage.gauge.id}`)"
+            @click.exact="goToLink(formatLinkUrl(`/content/gauge/detail-new/${activeGage.gauge.id}`))"
+            @keydown.enter="goToLink(formatLinkUrl(`/content/gauge/detail-new/${activeGage.gauge.id}`))"
           >
             Gage Detail
           </cv-button>
