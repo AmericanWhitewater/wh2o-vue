@@ -6,7 +6,6 @@ import { gageDetailState } from './views/gage-detail'
 import { newsPageState } from './views/news-page'
 import { riverDetailState } from './views/river-detail'
 import { riverIndexState } from './views/river-index'
-import { riverSearchState } from './views/river-search'
 import { userState } from './views/user'
 
 Vue.use(Vuex)
@@ -21,7 +20,6 @@ export default new Vuex.Store({
     newsPageState,
     riverDetailState,
     riverIndexState,
-    riverSearchState,
     userState
   }
 })
