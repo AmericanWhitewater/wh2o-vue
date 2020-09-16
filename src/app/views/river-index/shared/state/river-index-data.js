@@ -184,7 +184,6 @@ const actions = {
     // if there's no search term, just set results to empty array
     if (!data || data.length === 0) {
       result = []
-      return 0
     } else {
       context.commit(MAP_SEARCH_LOADING, true)
       result = await fetchRiverSearchData(data).catch(e => {
@@ -192,13 +191,17 @@ const actions = {
       })
     }
 
-    if (!result.errors && result.data && result.data.reachmap) {
-      context.commit(MAP_SEARCH_SUCCESS, result.data.reachmap.data)
+    if (!result.errors) {
+      if (result.data && result.data.reachmap) {
+        context.commit(MAP_SEARCH_SUCCESS, result.data.reachmap.data)
+      } else {
+        context.commit(MAP_SEARCH_SUCCESS, [])
+      }
     } else {
       context.commit(MAP_SEARCH_ERROR, 'error searching')
     }
   },
-  async [riverIndexActions.CLEAR_SEARCH_QUERY] (context, data) {
+  async [riverIndexActions.CLEAR_MAP_SEARCH_QUERY] (context, data) {
     context.commit(MAP_SEARCH_TERM, null)
     context.commit(MAP_SEARCH_LOADING, false)
   }
