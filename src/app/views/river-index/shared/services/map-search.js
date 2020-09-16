@@ -5,7 +5,7 @@ const fetchRiverSearchData = query => {
     .post('graphql/', {
       query: `
       {
-        reachmap(first: 50, match: "skookum") {
+        reachmap(first: 50, match: "${query}") {
           data {
             id
             river

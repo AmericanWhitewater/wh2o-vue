@@ -42,6 +42,7 @@
                 <td>{{ displayGaugeReading(reach) }}</td>
                 <td>
                   <zoom-in16
+                    v-if="reach._geometry"
                     class="zoom-button"
                     width="21"
                     height="21"
@@ -216,7 +217,7 @@ export default {
         readingSummaryProps.reading = parseFloat(reach.readingsummary.gauge_reading)
         readingSummaryProps.gage_0_updated = reach.readingsummary.updated
         if (reach.readingsummary.metric) {
-          reach.readingsummary.unit = reach.readingsummary.metric.unit
+          readingSummaryProps.gage_0_unit = reach.readingsummary.metric.unit
         }
       }
 

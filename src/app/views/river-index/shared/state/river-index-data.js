@@ -184,6 +184,7 @@ const actions = {
     // if there's no search term, just set results to empty array
     if (!data || data.length === 0) {
       result = []
+      return 0
     } else {
       context.commit(MAP_SEARCH_LOADING, true)
       result = await fetchRiverSearchData(data).catch(e => {
