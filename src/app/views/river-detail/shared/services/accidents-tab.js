@@ -8,11 +8,14 @@ const fetchAccidentsData = data => {
         reach(id: ${data}) {
           accidents(first: 20, page: 1) {
             data {
-              accidentdate
-              waterlevel
+              accident_date
+              water_level
               status
               factors {
                 factor
+              }
+              injuries {
+                injury
               }
               id
             }

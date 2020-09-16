@@ -8,7 +8,12 @@ export const assetUrl = {
     },
 
     formatLinkUrl: (path) => {
+      path = path.replace(/^\/+/, '')
       return `${baseUrl}${path}`
+    },
+
+    goToLink: (url) => {
+      window.location = url
     }
   }
 }
