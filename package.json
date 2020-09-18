@@ -41,7 +41,7 @@
     "apollo-link-context": "^1.0.20",
     "apollo-upload-client": "^13.0.0",
     "axios": "^0.19.2",
-    "carbon-components": "^10.11.2",
+    "carbon-components": "^10.20.0",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
     "express": "^4.17.1",
