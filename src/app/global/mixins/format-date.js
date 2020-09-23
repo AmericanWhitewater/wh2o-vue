@@ -1,10 +1,8 @@
-import Moment from 'moment'
-
+import moment from 'moment'
 export const formatDate = {
   methods: {
     formatDate: (date, format) => {
-      const timestamp = Date.parse(date)
-      return Moment(timestamp).format(format || 'll')
+      return moment(date, 'YYYY-MM-DD HH:mm:ss').format(format || 'll')
     }
   }
 }
