@@ -30,7 +30,7 @@
                   <th>Date</th>
                   <th>Flow</th>
                   <th>Result</th>
-                  <th>Factor</th>
+                  <th>Cause</th>
                   <th>&nbsp;</th>
                 </tr>
               </thead>
