@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     summaryLink (code) {
-      return `${baseUrl}content/River/state-summary/?state${code}`
+      return `${baseUrl}content/River/state-summary/?state=${code}`
     },
     gaugesLink (code) {
       return `${baseUrl}content/Gauge2/view/?state=${code}`
