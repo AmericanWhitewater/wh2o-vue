@@ -52,7 +52,8 @@ const actions = {
     })
 
     if (result) {
-      context.commit(DATA_SUCCESS, result.data.posts.data)
+      const sortedPosts = result.data.posts.data.sort((a, b) => (Date.parse(b.post_date) - Date.parse(a.post_date)))
+      context.commit(DATA_SUCCESS, sortedPosts)
     }
 
     return result
