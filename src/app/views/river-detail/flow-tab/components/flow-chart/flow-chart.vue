@@ -30,13 +30,15 @@ export default {
       required: true
     }
   },
+  data: () => ({
+    currentTimeScale: null
+  }),
   computed: {
     metrics () {
       return this.$store.state.riverDetailState.gageMetricsData.data
     },
     chartLabels () {
-      const data = this.readings.map(reading => moment.unix(Number(reading.updated)).format('d/M hh:mm a'))
-      return data
+      return this.readings.map(reading => moment(reading.updated, 'X').format('MM/DD hh:mm a'))
     },
     activeGage () {
       return this.gages.find(gage => Number(gage.gauge.id) === this.readings[0].gauge_id)
@@ -137,8 +139,20 @@ export default {
         },
         scales: {
           xAxes: [{
+            // type: 'time',
             display: true,
             distribution: 'series',
+            // time: {
+            //   unit: this.timeScales,
+            //   displayFormats: {
+            //     day: 'h:mm a',
+            //     week: 'll',
+            //     month: 'll',
+            //     year: 'MMM YYYY'
+            //   },
+            //   //min: moment(this.timeStart)
+            //   min: this.getTimeScale(this.readings).timeStart
+            // },
             gridLines: {
               color: 'rgba(90, 104, 114, 0.2)',
               borderDash: [4, 4]
@@ -161,7 +175,7 @@ export default {
               fontSize: 13,
               unit: this.timeScales,
               displayFormats: {
-                day: 'MM/DD h:mm A',
+                day: 'h:mm A',
                 week: 'MM/DD h:mm A',
                 month: 'MM/DD',
                 year: 'MM/DD/YYYY'
