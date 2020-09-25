@@ -54,7 +54,8 @@ const actions = {
       if (result.errors) {
         context.commit(DATA_ERROR, result.errors[0].message)
       } else {
-        context.commit(DATA_SUCCESS, result.data.getRiverArticles.articles)
+        const sortedArticles = result.data.getRiverArticles.articles.sort((a, b) => (Date.parse(b.posted_date) - Date.parse(a.posted_date)))
+        context.commit(DATA_SUCCESS, sortedArticles)
       }
     }
   }
