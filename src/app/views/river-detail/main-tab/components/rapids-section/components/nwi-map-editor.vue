@@ -25,8 +25,8 @@
 
 <script>
 import mapboxgl from 'mapbox-gl'
-import NwiBasemapToggle from '@/app/views/river-index/components/nwi-basemap-toggle.vue'
 import { mapState } from 'vuex'
+import { basemapToggleMixin } from '@/app/global/mixins'
 import {
   mapboxAccessToken
 } from '@/app/environment'
@@ -38,9 +38,7 @@ import nearestPointOnLine from '@turf/nearest-point-on-line'
 
 export default {
   name: 'nwi-map-editor',
-  components: {
-    NwiBasemapToggle
-  },
+  mixins: [basemapToggleMixin],
   props: {
     height: {
       type: String,
@@ -57,16 +55,6 @@ export default {
     snapMode: true
   }),
   computed: {
-    baseMapUrl () {
-      if (this.mapStyle === 'topo') {
-        return 'mapbox://styles/mapbox/outdoors-v11'
-      } else if (this.mapStyle === 'satellite') {
-        // custom version of `satellite-v8` that includes icons that already exist in `outdoors-v11`
-        return 'mapbox://styles/americanwhitewater/ck1h4j4hm2bts1cpueefclrrn'
-      } else {
-        return 'mapbox://styles/mapbox/outdoors-v11'
-      }
-    },
     ...mapState({
       mapStyle: state => state.riverIndexState.riverIndexData.mapStyle,
       data: state => state.riverDetailState.riverDetailData.data
@@ -84,9 +72,6 @@ export default {
     }
   },
   watch: {
-    mapStyle (v) {
-      this.map.setStyle(this.baseMapUrl)
-    },
     // this ensures that if the lat/lng fields are changed
     // manually by the user, the marker updates accordingly
     geom: {
