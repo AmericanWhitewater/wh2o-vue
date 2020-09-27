@@ -43,6 +43,7 @@ import {
   NwiMapControls,
   NwiResultCounter
 } from '.'
+import { basemapToggleMixin } from '@/app/global/mixins'
 import { mapState } from 'vuex'
 import { riverIndexActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
@@ -63,6 +64,7 @@ export default {
     NwiMapControls,
     NwiResultCounter
   },
+  mixins: [basemapToggleMixin],
   props: {
     height: {
       type: String,
@@ -151,16 +153,6 @@ export default {
         return 'calc(100vh - 125px)'
       }
     },
-    baseMapUrl () {
-      if (this.mapStyle === 'topo') {
-        return 'mapbox://styles/mapbox/outdoors-v11'
-      } else if (this.mapStyle === 'satellite') {
-        // custom version of `satellite-v8` that includes icons that already exist in `outdoors-v11`
-        return 'mapbox://styles/americanwhitewater/ck1h4j4hm2bts1cpueefclrrn'
-      } else {
-        return 'mapbox://styles/mapbox/outdoors-v11'
-      }
-    },
     // parses out the layers we're adding to the map from NwiMapStyles / sourceLayers prop
     mapLayers () {
       const { sourceLayers } = NwiMapStyles
@@ -170,11 +162,6 @@ export default {
     }
   },
   watch: {
-    mapStyle (v) {
-      if (v !== 'graphic') {
-        this.map.setStyle(this.baseMapUrl)
-      }
-    },
     // visually highlights a moused over feature on the map
     mouseoveredFeature (feature) {
       // TODO: consider refactoring this to use feature state (it might be faster)
