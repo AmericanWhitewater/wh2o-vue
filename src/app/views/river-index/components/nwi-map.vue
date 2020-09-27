@@ -18,10 +18,7 @@
       />
       <nwi-result-counter
         v-if="!hideResultCounter"
-      />
-      <cv-loading
-        v-if="loading"
-        :active="loading"
+        :loading="mapDataLoading"
       />
     </template>
     <template v-else>
@@ -43,6 +40,7 @@ import {
   NwiMapControls,
   NwiResultCounter
 } from '.'
+import { basemapToggleMixin } from '@/app/global/mixins'
 import { mapState } from 'vuex'
 import { riverIndexActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
@@ -63,14 +61,11 @@ export default {
     NwiMapControls,
     NwiResultCounter
   },
+  mixins: [basemapToggleMixin],
   props: {
     height: {
       type: String,
       required: false
-    },
-    // display loading spinner because of events from other components
-    externalLoading: {
-      type: Boolean
     },
     // render legend
     includeLegend: {
@@ -134,7 +129,7 @@ export default {
   },
   data () {
     return {
-      loading: false,
+      mapDataLoading: false,
       mapboxAccessToken: mapboxAccessToken
     }
   },
@@ -151,16 +146,6 @@ export default {
         return 'calc(100vh - 125px)'
       }
     },
-    baseMapUrl () {
-      if (this.mapStyle === 'topo') {
-        return 'mapbox://styles/mapbox/outdoors-v11'
-      } else if (this.mapStyle === 'satellite') {
-        // custom version of `satellite-v8` that includes icons that already exist in `outdoors-v11`
-        return 'mapbox://styles/americanwhitewater/ck1h4j4hm2bts1cpueefclrrn'
-      } else {
-        return 'mapbox://styles/mapbox/outdoors-v11'
-      }
-    },
     // parses out the layers we're adding to the map from NwiMapStyles / sourceLayers prop
     mapLayers () {
       const { sourceLayers } = NwiMapStyles
@@ -170,11 +155,6 @@ export default {
     }
   },
   watch: {
-    mapStyle (v) {
-      if (v !== 'graphic') {
-        this.map.setStyle(this.baseMapUrl)
-      }
-    },
     // visually highlights a moused over feature on the map
     mouseoveredFeature (feature) {
       // TODO: consider refactoring this to use feature state (it might be faster)
@@ -187,13 +167,6 @@ export default {
       } else {
         // hide 'active-reach-segment-casing' layer
         this.map.setFilter('activeReachSegmentCasing', ['all', false])
-      }
-    },
-    externalLoading (newVal, oldVal) {
-      // if value of externalLoading is responsible for current value of loading,
-      // update it, otherwise leave as is (because an internal process set it to loading)
-      if (this.loading === oldVal) {
-        this.loading = newVal
       }
     },
     colorBy (newVal) {
@@ -240,9 +213,6 @@ export default {
           1
         ])
       }
-    },
-    updateLoading (loading) {
-      this.loading = loading
     },
     attachMouseEvents (layer) {
       this.map.on('mouseenter', layer, this.mouseenterFeature)
@@ -335,7 +305,6 @@ export default {
     },
     loadAWMapData () {
       if (!this.map.getSource('nwi-source')) {
-        this.loading = true
         this.map.addSource('nwi-source', {
           type: 'vector',
           tiles: [nwiTileServer],
@@ -380,8 +349,6 @@ export default {
         this.mapLayers.reverse().forEach(layer => {
           this.attachMouseEvents(layer)
         })
-
-        this.loading = false
       }
     },
     filterNonDetailReachFeatures () {
@@ -494,6 +461,13 @@ export default {
       this.map.on('styledata', this.loadAWMapData)
       this.map.on('styledata', this.modifyMapboxBaseStyle)
 
+      this.map.on('sourcedata', (e) => {
+        if (e.isSourceLoaded) {
+          this.mapDataLoading = false
+        }
+      })
+      this.map.on('sourcedataloading', () => { this.mapDataLoading = true })
+
       this.map.on('moveend', this.debouncedUpdateReachesInViewport)
     },
     initMap () {
@@ -551,24 +525,6 @@ export default {
       }
     }
 
-  }
-
-  .cv-loading {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    z-index: 8000;
   }
 
   // I think we have to show the logo for legal reasons, hiding it for demo purposes
