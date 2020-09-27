@@ -18,6 +18,7 @@
       />
       <nwi-result-counter
         v-if="!hideResultCounter"
+        :loading="mapDataLoading"
       />
     </template>
     <template v-else>
@@ -459,6 +460,13 @@ export default {
 
       this.map.on('styledata', this.loadAWMapData)
       this.map.on('styledata', this.modifyMapboxBaseStyle)
+
+      this.map.on('sourcedata', (e) => {
+        if (e.isSourceLoaded) {
+          this.mapDataLoading = false
+        }
+      })
+      this.map.on('sourcedataloading', () => { this.mapDataLoading = true })
 
       this.map.on('moveend', this.debouncedUpdateReachesInViewport)
     },
