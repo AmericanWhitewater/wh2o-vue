@@ -123,7 +123,7 @@ export default {
         this.formData.post.reach_id = this.reachId
       }
 
-      if (this.post) {
+      if (this.post && Object.keys(this.post).length !== 0) {
         /**
          * map through post?
          */
