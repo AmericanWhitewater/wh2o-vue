@@ -7,7 +7,7 @@
 const path = require('path')
 
 module.exports = {
-  filenameHashing: false,
+  filenameHashing: true,
   /**
    * disables lint on save which disrupts workflow.
    * linting reserved for pre-commit git hook.

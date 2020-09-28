@@ -96,7 +96,7 @@ export default {
       required: false
     },
     articleId: {
-      type: Number,
+      type: String,
       required: true
     },
     readTime: {
@@ -124,7 +124,8 @@ export default {
       if (this.river) {
         path = `/river-detail/${this.articleId}/main`
       } else {
-        path = `/article/${this.articleId}`
+        // path = `/article/${this.articleId}`
+        this.goToLink(this.formatLinkUrl(`content/Article/view/article_id/${this.articleId}/`))
       }
 
       this.$router.push(path).catch(() => {})
