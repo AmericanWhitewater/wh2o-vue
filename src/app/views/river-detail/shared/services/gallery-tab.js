@@ -10,7 +10,7 @@ const fetchGalleryData = data => {
           post_types: [JOURNAL,PHOTO_POST],
           reach_id: "${data.reach_id}", 
           page: ${data.page}, 
-          orderBy: {field: REVISION, order: ASC}
+          orderBy: {field: REVISION, order: DESC}
           ) {
              data {
               id
