@@ -1,7 +1,5 @@
 <template>
-  <div
-    :class="[{'form-visible':uploadFormVisible}, 'rapid-item bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm']"
-  >
+  <div class="rapid-item bx--col-sm-12 bx--col-md-12 bx--col-lg-16 mb-sm">
     <cv-tile
       v-if="rapid"
       kind="standard"
@@ -32,7 +30,6 @@
       <hr class="ui-03">
       <template>
         <div
-          v-if="!uploadFormVisible"
           class="bx--row"
         >
           <div class="bx--col-sm-12 bx--col-lg-5">
@@ -42,21 +39,11 @@
                 class="inside thumbnail pb-spacing-sm"
               >
                 <img
-                  :src="
-                    `${baseUrl}${rapid.photo.image.uri.medium}`
-                  "
+                  :src="`${baseUrl}${rapid.photo.image.uri.medium}`"
                   :alt="rapid.name"
                 >
               </div>
-              <div class="inside upload-prompt">
-                <cv-button
-                  size="small"
-                  kind="tertiary"
-                  class="mb-spacing-lg"
-                  @click="uploadFormVisible = true"
-                >
-                  Add Media
-                </cv-button>
+              <div class="inside">
                 <cv-button
                   v-if="sanitizedDescription && sanitizedDescription.length > characterLimit"
                   size="small"
@@ -98,11 +85,6 @@
             </template>
           </div>
         </div>
-        <rapid-media-uploader
-          v-if="uploadFormVisible"
-          :rapid-id="rapid.id"
-          @cancel="uploadFormVisible = false"
-        />
         <confirm-delete-modal
           v-if="deleteModalVisible"
           :visible="deleteModalVisible"
@@ -117,7 +99,6 @@
 </template>
 <script>
 import RapidIconBar from './rapid-icon-bar'
-import RapidMediaUploader from './rapid-media-uploader'
 import ConfirmDeleteModal from '@/app/global/components/confirm-delete-modal/confirm-delete-modal.vue'
 import { rapidsActions } from '../../../../shared/state'
 import { baseUrl } from '../../../../../../environment'
@@ -126,7 +107,6 @@ export default {
   name: 'rapids-item',
   components: {
     RapidIconBar,
-    RapidMediaUploader,
     ConfirmDeleteModal
   },
   props: {
@@ -144,7 +124,6 @@ export default {
   },
   data: () => ({
     deleteModalVisible: false,
-    uploadFormVisible: false,
     showConfirmation: false,
     readMoreActive: false,
     characterLimit: 1000,
@@ -181,10 +160,6 @@ export default {
   methods: {
     triggerEdit () {
       this.$emit('rapid:edit', this.rapid.id)
-    },
-    cancelUpload () {
-      this.showConfirmation = false
-      this.uploadFormVisible = false
     },
     deleteRapid (rapid) {
       this.deleteModalVisible = false

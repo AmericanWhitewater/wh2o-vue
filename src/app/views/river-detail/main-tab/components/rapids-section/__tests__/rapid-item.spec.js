@@ -27,7 +27,7 @@ const options = {
   propsData: {
     rapid
   },
-  stubs: ['RapidIconBar', 'RapidMediaUploader', 'RapidEditModal', 'ConfirmDeleteModal']
+  stubs: ['RapidIconBar', 'RapidEditModal', 'ConfirmDeleteModal']
 }
 describe('rapid-item.vue', () => {
   it('it exists', () => {
