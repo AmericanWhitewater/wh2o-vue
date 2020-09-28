@@ -16,6 +16,9 @@ const fetchAlertsData = data => {
                 user {
                   uname
                   uid
+                  contact {
+                    name
+                  }
                   image {
                     uri {
                       thumb

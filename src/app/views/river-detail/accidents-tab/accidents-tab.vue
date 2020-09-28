@@ -144,6 +144,11 @@ export default {
     viewAccident (accidentId) {
       this.goToLink(this.formatLinkUrl(`/content/Accident/detail/accidentid/${accidentId}`))
     }
+    // sortAccidents(accidents) {
+    //   if (accidents === null || accidents === undefined)
+    //     return [];
+    //   return accidents
+    // }
   },
   created () {
     this.loadData()

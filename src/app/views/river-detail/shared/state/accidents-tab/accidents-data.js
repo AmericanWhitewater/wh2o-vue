@@ -1,5 +1,4 @@
 import { reflectKeys } from '@/app/global/services'
-
 import { fetchAccidentsData } from '../../services'
 
 /** Initial state */

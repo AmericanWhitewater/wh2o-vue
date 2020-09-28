@@ -75,7 +75,8 @@ export default {
 #utility-block {
   display: flex;
   width: 100%;
-  min-height: 100px;
+  /*min-height: 100px;*/
+  max-height: 250px;
   height: 100%;
   padding: $spacing-md;
   align-items: center;

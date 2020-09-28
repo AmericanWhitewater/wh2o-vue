@@ -36,21 +36,10 @@
                 <div class="alert-wrapper">
                   <header class="bx--row">
                     <div class="bx--col-sm-12 bx--col-md-8 mb-spacing-md">
-                      <h3
-                        v-if="alert.title"
-                        class="mb-spacing-2xs"
-                        v-text="alert.title"
-                      />
-                      <h3
-                        v-else
-                        class="mb-spacing-2xs"
-                      >
-                        Untitled
-                      </h3>
                       <h6>
                         {{ formatDate(alert.post_date, "ll") }}
                         <template v-if="alert.user">
-                          - {{ alert.user.uname }}
+                          - {{ alert.user.contact.name }}
                         </template>
                       </h6>
                     </div>
