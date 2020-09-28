@@ -1,5 +1,6 @@
 import { reflectKeys } from '@/app/global/services'
 import { fetchCommentsData } from '../../services'
+import moment from 'moment'
 
 const initialState = {
   data: null,
@@ -52,7 +53,9 @@ const actions = {
     })
 
     if (result) {
-      const sortedComments = result.data.posts.data.sort((a, b) => (Date.parse(b.post_date) - Date.parse(a.post_date)))
+      const sortedComments = result.data.posts.data.sort((a, b) =>
+        moment(b.post_date, 'YYYY-MM-DD HH:mm:ss') - moment(a.post_date, 'YYYY-MM-DD HH:mm:ss')
+      )
       context.commit(DATA_SUCCESS, sortedComments)
     }
 

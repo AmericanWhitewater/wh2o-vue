@@ -1,6 +1,6 @@
 import { reflectKeys } from '@/app/global/services'
-
 import { fetchNewsTabData } from '../../services'
+import moment from 'moment'
 
 const initialState = {
   loading: false,
@@ -54,7 +54,9 @@ const actions = {
       if (result.errors) {
         context.commit(DATA_ERROR, result.errors[0].message)
       } else {
-        const sortedArticles = result.data.getRiverArticles.articles.sort((a, b) => (Date.parse(b.posted_date) - Date.parse(a.posted_date)))
+        const sortedArticles = result.data.getRiverArticles.articles.sort((a, b) =>
+          moment(b.posted_date, 'YYYY-MM-DD HH:mm:ss') - moment(a.posted_date, 'YYYY-MM-DD HH:mm:ss')
+        )
         context.commit(DATA_SUCCESS, sortedArticles)
       }
     }
