@@ -465,6 +465,7 @@ export default {
         if (e.isSourceLoaded) {
           this.mapDataLoading = false
         }
+        this.debouncedUpdateReachesInViewport()
       })
       this.map.on('sourcedataloading', () => { this.mapDataLoading = true })
 
