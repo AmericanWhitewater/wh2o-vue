@@ -61,8 +61,6 @@
                 v-if="activeTabKey !== 'map' && !loading && data"
                 :title="data.river"
                 :subtitle="data.section"
-                :geom="data.geom"
-                :reach-id="$route.params.id"
               >
                 <div
                   v-if="editMode"

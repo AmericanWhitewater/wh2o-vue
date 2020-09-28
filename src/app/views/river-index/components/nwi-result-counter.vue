@@ -4,11 +4,18 @@
     mode="out-in"
   >
     <div
-      v-show="results"
+      v-show="results || loading"
       class="nwi-result-counter"
     >
       <a href="#nwi-rivers-table">
+        <cv-inline-loading
+          v-if="loading"
+          class="bx--tag--blue bx--tag"
+          state="loading"
+        />
+
         <cv-tag
+          v-else
           kind="blue"
           :label="`Results Found: ${results}`"
           :disabled="false"
@@ -20,6 +27,12 @@
 <script>
 export default {
   name: 'nwi-result-counter',
+  props: {
+    loading: {
+      type: Boolean,
+      default: false
+    }
+  },
   computed: {
     results () {
       return this.$store.state.riverIndexState.riverIndexData.data?.length
@@ -27,13 +40,3 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
-.nwi-result-counter {
-  border-radius: 3px;
-  bottom: 0.5rem;
-  display: block;
-  position: absolute;
-  right: 0.5rem;
-  z-index: 1;
-}
-</style>
