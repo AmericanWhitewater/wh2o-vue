@@ -1,6 +1,7 @@
 <template>
   <div class="confirm-delete-modal">
     <cv-modal
+      ref="modalWrapper"
       size="small"
       kind="danger"
       :primary-button-disabled="kind === 'strict' && !inputValid"
@@ -8,6 +9,7 @@
       @primary-click="$emit('delete:confirmed')"
       @secondary-click="$emit('delete:cancelled')"
       @modal-hidden="$emit('delete:cancelled')"
+      @modal-shown="setModalOffset"
     >
       <template slot="title">
         Confirm Delete
@@ -42,8 +44,11 @@
   </div>
 </template>
 <script>
+import { shadowDomFixedHeightOffset } from '@/app/global/mixins'
+
 export default {
   name: 'confirm-delete-modal',
+  mixins: [shadowDomFixedHeightOffset],
   props: {
     visible: {
       type: Boolean,

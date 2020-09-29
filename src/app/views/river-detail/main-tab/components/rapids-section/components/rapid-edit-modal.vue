@@ -1,11 +1,13 @@
 <template>
   <div class="rapid-edit-modal">
     <cv-modal
+      ref="modalWrapper"
       :visible="rapidModalVisible"
       size="large"
       @secondary-click="handleCancel"
       @primary-click="submitForm"
       @modal-hidden="handleCancel"
+      @modal-shown="setModalOffset"
     >
       <template slot="title">
         {{ modalTitle }}
@@ -90,7 +92,7 @@
 import { mapState } from 'vuex'
 import { globalAppActions } from '@/app/global/state'
 import { rapidsActions } from '../../../../shared/state'
-import { checkWindow, poiClasses } from '@/app/global/mixins'
+import { checkWindow, poiClasses, shadowDomFixedHeightOffset } from '@/app/global/mixins'
 import ContentEditor from '@/app/global/components/content-editor/content-editor'
 import NwiMapEditor from './nwi-map-editor.vue'
 
@@ -106,7 +108,7 @@ export default {
     NwiMapEditor
   },
   /** @todo revisit adding checkWindow mixin performance considerations */
-  mixins: [checkWindow, poiClasses],
+  mixins: [checkWindow, poiClasses, shadowDomFixedHeightOffset],
   props: {
     rapidModalVisible: {
       type: Boolean,

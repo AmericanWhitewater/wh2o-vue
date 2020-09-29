@@ -1,10 +1,12 @@
 <template>
   <cv-modal
+    ref="modalWrapper"
     :visible="visible"
     size="small"
     :primary-button-disabled="false"
     auto-hide-off
     class="beta-box-edit-modal"
+    @modal-shown="setModalOffset"
     @primary-click="submitForm"
     @secondary-click="handleCancel"
     @modal-hidden="handleCancel"
@@ -69,12 +71,13 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { poiClasses, checkWindow } from '@/app/global/mixins'
+import { poiClasses, checkWindow, shadowDomFixedHeightOffset } from '@/app/global/mixins'
 import { globalAppActions } from '@/app/global/state'
 import { httpClient } from '@/app/global/services'
+
 export default {
   name: 'beta-box-edit-modal',
-  mixins: [poiClasses, checkWindow],
+  mixins: [poiClasses, checkWindow, shadowDomFixedHeightOffset],
   props: {
     visible: {
       type: Boolean,
