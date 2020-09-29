@@ -53,7 +53,9 @@
       </div>
     </div>
     <cv-modal
+      ref="modalWrapper"
       :visible="deleteCommentModalVisible"
+      @modal-shown="setModalOffset"
       @secondary-click="deleteCommentModalVisible = false"
       @modal-hidden="deleteCommentModalVisible = false"
       @primary-click="deleteComment(comment.id)"
@@ -76,6 +78,7 @@
 <script>
 import UserAvatar from '@/app/global/components/user-avatar/user-avatar'
 import { globalAppActions } from '@/app/global/state'
+import { shadowDomFixedHeightOffset } from '@/app/global/mixins'
 import { httpClient } from '@/app/global/services'
 import { baseUrl } from '../../../../../../environment'
 
@@ -84,6 +87,7 @@ export default {
   components: {
     UserAvatar
   },
+  mixins: [shadowDomFixedHeightOffset],
   props: {
     comment: {
       type: Object,

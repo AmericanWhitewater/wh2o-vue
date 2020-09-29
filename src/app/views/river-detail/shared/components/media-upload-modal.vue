@@ -1,10 +1,11 @@
 <template>
   <cv-modal
+    ref="modalWrapper"
     size="small"
     :visible="visible"
     @primary-click="handleSubmit"
     @secondary-click="handleCancel"
-    @modal-shown="$emit('modal-shown')"
+    @modal-shown="handleShow"
     @modal-hidden="handleCancel"
   >
     <template slot="label">
@@ -41,11 +42,14 @@
  *
  */
 import MediaUploadForm from './media-upload-form.vue'
+import { shadowDomFixedHeightOffset } from '@/app/global/mixins'
+
 export default {
   name: 'media-upload-modal',
   components: {
     MediaUploadForm
   },
+  mixins: [shadowDomFixedHeightOffset],
   props: {
     title: {
       type: String,
@@ -76,6 +80,10 @@ export default {
     primaryClickTimestamp: null
   }),
   methods: {
+    handleShow () {
+      this.$emit('modal-shown')
+      this.setModalOffset()
+    },
     handleSubmit () {
       this.$emit('upload:submitted')
       /**

@@ -1,7 +1,9 @@
 <template>
   <div :class="[{ visible: visible }, 'alert-update-modal']">
     <cv-modal
+      ref="modalWrapper"
       :visible="visible"
+      @modal-shown="setModalOffset"
       @secondary-click="handleCancel"
       @primary-click="submitForm"
       @modal-hidden="handleCancel"
@@ -36,10 +38,13 @@
 <script>
 import { httpClient } from '@/app/global/services'
 import { globalAppActions } from '@/app/global/state'
+import { shadowDomFixedHeightOffset } from '@/app/global/mixins'
+
 import { alertsActions } from '@/app/views/river-detail/shared/state'
 import { mapState } from 'vuex'
 export default {
   name: 'alert-update-modal',
+  mixins: [shadowDomFixedHeightOffset],
   props: {
     visible: {
       type: Boolean,

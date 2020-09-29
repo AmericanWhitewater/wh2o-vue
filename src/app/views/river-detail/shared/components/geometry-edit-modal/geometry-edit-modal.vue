@@ -1,8 +1,10 @@
 <template>
   <div :class="[{'visible':visible},'geometry-editor-modal']">
     <cv-modal
+      ref="modalWrapper"
       :visible="visible"
       size="large"
+      @modal-shown="setModalOffset"
       @secondary-click="handleCancel"
       @primary-click="submitForm"
       @modal-hidden="handleCancel"
@@ -26,8 +28,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-
-import { checkWindow } from '@/app/global/mixins'
+import { checkWindow, shadowDomFixedHeightOffset } from '@/app/global/mixins'
 import GeometryEditor from './components/geometry-editor.vue'
 import { lineString } from '@turf/helpers'
 import { riverDetailActions } from '../../state'
@@ -38,7 +39,7 @@ export default {
     GeometryEditor
   },
   /** @todo revisit adding checkWindow mixin performance considerations */
-  mixins: [checkWindow],
+  mixins: [checkWindow, shadowDomFixedHeightOffset],
   props: {
     visible: {
       type: Boolean,
