@@ -43,14 +43,7 @@
                     <td v-text="formatDate(a.accident_date, 'll')" />
                     <td v-text="a.water_level" />
                     <td>
-                      <cv-list>
-                        <cv-list-item
-                          v-for="(injury, j) in a.injuries"
-                          :key="j"
-                        >
-                          {{ injury.injury }}
-                        </cv-list-item>
-                      </cv-list>
+                      {{ accidentResult(a.type) }}
                     </td>
                     <td>
                       <cv-list>
@@ -143,12 +136,20 @@ export default {
     },
     viewAccident (accidentId) {
       this.goToLink(this.formatLinkUrl(`/content/Accident/detail/accidentid/${accidentId}`))
+    },
+
+    accidentResult (result) {
+      switch (result) {
+        case 'F':
+          return 'Fatality'
+        case 'M':
+          return 'Near Miss/Rescue'
+        case 'I':
+          return 'Injury'
+        default:
+          return 'n/a'
+      }
     }
-    // sortAccidents(accidents) {
-    //   if (accidents === null || accidents === undefined)
-    //     return [];
-    //   return accidents
-    // }
   },
   created () {
     this.loadData()
