@@ -54,7 +54,7 @@
                         Edit
                       </cv-button>
                       <cv-button
-                        v-if="canEdit(alert)"
+                        v-if="canDelete(alert)"
                         size="small"
                         kind="danger"
                         @click.exact="initiateAlertDelete(alert.id)"
@@ -173,6 +173,7 @@
 import { mapState } from 'vuex'
 import { newsTabActions, alertsActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
+import { objectPermissionsHelpersMixin } from '@/app/global/mixins'
 import { Layout } from '@/app/global/layout'
 import {
   ArticleCard,
@@ -190,6 +191,7 @@ export default {
     ConfirmDeleteModal,
     PostUpdateModal
   },
+  mixins: [objectPermissionsHelpersMixin],
   data: () => ({
     updateModalTitle: 'New Alert',
     successToastTitle: 'Alert Submitted',
@@ -225,12 +227,6 @@ export default {
         this.activeAlertId = alertId || null
         this.postUpdateModalVisible = true
       }
-    },
-    /**
-     * @todo or if admin
-     */
-    canEdit (alert) {
-      return this.user?.uid === alert.user?.uid
     },
     handleUpdateSuccess () {
       this.postUpdateModalVisible = false
