@@ -67,6 +67,7 @@ import { mapState } from 'vuex'
 import {
   mapboxAccessToken
 } from '@/app/environment'
+import NwiBasemapToggle from '@/app/views/river-index/components/nwi-basemap-toggle.vue'
 
 import bbox from '@turf/bbox'
 import bboxPolygon from '@turf/bbox-polygon'
@@ -77,8 +78,6 @@ import lineSlice from '@turf/line-slice'
 import pointToLineDistance from '@turf/point-to-line-distance'
 import { lineString, point } from '@turf/helpers'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
-import { basemapToggleMixin } from '@/app/global/mixins'
-
 import Graph from 'graph-data-structure'
 
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
@@ -101,7 +100,9 @@ const defaultMapModes = {
 
 export default {
   name: 'geometry-editor',
-  mixins: [basemapToggleMixin],
+  components: {
+    NwiBasemapToggle
+  },
   data: () => ({
     currentGeom: null,
     tooZoomedOut: false,
@@ -109,6 +110,17 @@ export default {
     mapEditMode: 'automatic'
   }),
   computed: {
+    // these basemaps are different than our other NWI maps because they use the NHD flowlines
+    // as a result, we can't use the basemapToggleMixin
+    baseMapUrl () {
+      if (this.mapStyle === 'topo') {
+        return 'mapbox://styles/americanwhitewater/ckbv35azb12w51initt7y2adv'
+      } else if (this.mapStyle === 'satellite') {
+        return 'mapbox://styles/americanwhitewater/ckbv3rzya136r1ioalj7qemof'
+      } else {
+        return 'mapbox://styles/americanwhitewater/ckbv35azb12w51initt7y2adv'
+      }
+    },
     reachGeom () {
       // TODO: get graphql API to return a linestring or geojson instead of this text
       const geom = this.data?.geom?.split(',').map(d => d.split(' ').map(e => parseFloat(e)))
@@ -143,6 +155,9 @@ export default {
     }
   },
   watch: {
+    mapStyle (v) {
+      this.map.setStyle(this.baseMapUrl)
+    },
     currentGeom (v, old) {
       if (v !== old) {
         this.$emit('updatedGeom', v)
