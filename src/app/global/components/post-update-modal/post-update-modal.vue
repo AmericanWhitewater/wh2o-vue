@@ -1,8 +1,10 @@
 <template>
   <div :class="[{'is-visible':visible},'post-update-modal']">
     <cv-modal
+      ref="modalWrapper"
       :visible="visible"
       :size="size"
+      @modal-shown="setModalOffset"
       @secondary-click="handleCancel"
       @primary-click="handleSubmit"
       @modal-hidden="handleCancel"
@@ -40,8 +42,10 @@
 </template>
 <script>
 import { postUpdate } from './services/postUpdate'
+import { shadowDomFixedHeightOffset } from '@/app/global/mixins'
 export default {
   name: 'post-update-modal',
+  mixins: [shadowDomFixedHeightOffset],
   props: {
     label: {
       type: String,
@@ -123,7 +127,7 @@ export default {
         this.formData.post.reach_id = this.reachId
       }
 
-      if (this.post) {
+      if (this.post && Object.keys(this.post).length !== 0) {
         /**
          * map through post?
          */

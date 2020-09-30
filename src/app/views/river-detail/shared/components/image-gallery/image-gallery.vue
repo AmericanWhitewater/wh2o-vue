@@ -178,14 +178,15 @@
 <script>
 import { AwLogo } from '@/app/global/components'
 import { mapState } from 'vuex'
+import { shadowDomFixedHeightOffset } from '@/app/global/mixins'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
-import { laravelDeploy } from '@/app/environment'
 export default {
   name: 'image-gallery',
   components: {
     AwLogo,
     UtilityBlock
   },
+  mixins: [shadowDomFixedHeightOffset],
   props: {
     emptyStateText: {
       type: String,
@@ -294,22 +295,6 @@ export default {
         return 'n/a'
       }
     },
-    // if we are in the laravel app, position: fixed doesn't work the same way
-    // because it's embedded in a shadow dom, so we need to override the scss-defined
-    // styling
-    lightboxWrapperHeight () {
-      if (laravelDeploy) {
-      // determine page size relative to carbon breakpoint
-        const widthInRem = window.outerWidth / parseFloat(getComputedStyle(document.documentElement).fontSize)
-        const navHeight = widthInRem < 42 ? 50 : 79
-        const height = window.scrollY + navHeight
-        return `
-          top: ${height}px;
-          height: calc(100vh - ${navHeight}px);
-        `
-      }
-      return ''
-    },
     openLightbox (imageId) {
       this.lightbox.active = true
       this.lightbox.activeImage = imageId
@@ -322,7 +307,7 @@ export default {
       // this is a really frustrating hack to deal with weird behavior
       // of position: fixed inside the shadow DOM when laravel mounted
       this.$nextTick(() => {
-        this.$refs.lightboxWrapper.style = this.lightboxWrapperHeight()
+        this.$refs.lightboxWrapper.style = this.shadowDomFixedHeightOffset()
       })
     },
     closeLightbox () {
