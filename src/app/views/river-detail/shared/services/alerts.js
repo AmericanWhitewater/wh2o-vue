@@ -13,6 +13,11 @@ const fetchAlertsData = data => {
                 post_date
                 revision
                 post_type
+                permissions {
+                  domain
+                  permission
+                  result
+                }
                 user {
                   uname
                   uid
