@@ -82,14 +82,8 @@ module.exports = {
   },
 
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: '@typescript-eslint/parser'
   },
-
-  extends: [
-    'plugin:vue/strongly-recommended',
-    '@vue/standard',
-    'plugin:vue/essential'
-  ],
 
   overrides: [
     {
@@ -101,5 +95,12 @@ module.exports = {
         jest: true
       }
     }
+  ],
+
+  extends: [
+    'plugin:vue/strongly-recommended',
+    '@vue/standard',
+    'plugin:vue/essential',
+    '@vue/typescript'
   ]
 }

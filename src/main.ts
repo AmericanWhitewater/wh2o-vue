@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueMeta from 'vue-meta'
+// @ts-ignore
 import CarbonComponents from '@carbon/vue'
 
 import './app/assets/scss/app.scss'
@@ -34,7 +35,7 @@ let mountPoint
  */
 if (laravelDeploy) {
   if (process.env.NODE_ENV === 'production') {
-    mountPoint = document.querySelector('#wh2o-vue-host').shadowRoot.querySelector('#wh2o-vue')
+    mountPoint = document.querySelector('#wh2o-vue-host')?.shadowRoot?.querySelector('#wh2o-vue')
   } else {
     mountPoint = '#wh2o-vue'
   }
@@ -47,4 +48,4 @@ export const wh2o = new Vue({
   store,
   apolloProvider,
   render: h => h(App)
-}).$mount(mountPoint)
+}).$mount(mountPoint ?? '#app')

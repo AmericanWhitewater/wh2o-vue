@@ -1,5 +1,5 @@
 module.exports = {
-  preset: '@vue/cli-plugin-unit-jest',
+  preset: '@vue/cli-plugin-unit-jest/presets/typescript-and-babel',
   transformIgnorePatterns: ['/node_modules/(?!@carbon/icons-vue)', '/node_modules/(?!mapbox-gl)'],
   verbose: false,
   collectCoverageFrom: [
