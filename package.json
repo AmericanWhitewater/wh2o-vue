@@ -70,7 +70,15 @@
     "vue-sanitize": "^0.2.0",
     "vue-social-sharing": "^2.4.7",
     "vuex": "^3.5.1",
-    "wkx": "^0.5.0"
+    "wkx": "^0.5.0",
+    "@bit/aw.client.apollo": "file:./components/client/apollo",
+    "@bit/aw.models.article": "file:./components/models/article",
+    "@bit/aw.models.image": "file:./components/models/image",
+    "@bit/aw.models.metrics": "file:./components/models/metrics",
+    "@bit/aw.models.permission": "file:./components/models/permission",
+    "@bit/aw.models.post": "file:./components/models/post",
+    "@bit/aw.models.user": "file:./components/models/user",
+    "@bit/aw.utility.genid": "file:./components/utility/genid"
   },
   "devDependencies": {
     "@sentry/browser": "^5.19.2",
@@ -129,5 +137,10 @@
   "gitHooks": {
     "pre-commit": "lint-staged && npm run test:unit"
   },
-  "homepage": "https://github.com/drewalth/wh2o-vue"
+  "homepage": "https://github.com/drewalth/wh2o-vue",
+  "bit": {
+    "env": {},
+    "componentsDefaultDirectory": "components/{name}",
+    "packageManager": "npm"
+  }
 }
