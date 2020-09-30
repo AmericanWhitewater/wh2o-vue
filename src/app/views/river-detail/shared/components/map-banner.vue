@@ -35,7 +35,7 @@ import NwiMapStyles from '@/app/views/river-index/components/nwi-map-styles'
 import {
   mapboxAccessToken
 } from '@/app/environment'
-import { basemapToggleMixin } from '@/app/global/mixins'
+import { basemapToggleMixin, mapHelpersMixin } from '@/app/global/mixins'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 
 export default {
@@ -43,7 +43,7 @@ export default {
   components: {
     UtilityBlock
   },
-  mixins: [basemapToggleMixin],
+  mixins: [basemapToggleMixin, mapHelpersMixin],
   props: {
     loading: {
       type: Boolean,
@@ -53,12 +53,12 @@ export default {
   computed: {
     reachGeom () {
       // TODO: get graphql API to return a linestring or geojson instead of this text
-      const geom = this.data?.geom?.split(',').map(d => d.split(' '))
+      const geom = this.reach?.geom?.split(',').map(d => d.split(' '))
       return geom ? lineString(geom) : null
     },
     ...mapState({
       mapStyle: state => state.riverIndexState.riverIndexData.mapStyle,
-      data: state => state.riverDetailState.riverDetailData.data
+      reach: state => state.riverDetailState.riverDetailData.data
     }),
     startingBounds () {
       // TODO: get graphql API to return a linestring or geojson instead of this text
@@ -103,20 +103,23 @@ export default {
       // confuse things to share, if it's used again anywhere else it should be
       // refactored into a mixin or something
       const colors = Object.values(NwiMapStyles.colorSchemes.difficulty)
+      const difficulty = this.mapClassToDifficulty(this.reach.class)
+      let reachColor
+
+      if (difficulty > 6) {
+        reachColor = colors[3]
+      } else if (difficulty > 4) {
+        reachColor = colors[2]
+      } else if (difficulty > 2) {
+        reachColor = colors[1]
+      } else if (difficulty <= 2) {
+        reachColor = colors[0]
+      } else {
+        reachColor = '#53789a'
+      }
       const paintProps = {
         ...NwiMapStyles.sourceLayers['reach-segments'].reachSegments.paint,
-        'line-color': [
-          'case',
-          ['>', ['get', 'difficulty'], 6],
-          colors[3],
-          ['>', ['get', 'difficulty'], 4],
-          colors[2],
-          ['>', ['get', 'difficulty'], 2],
-          colors[1],
-          ['<=', ['get', 'difficulty'], 2],
-          colors[0],
-          '#53789a'
-        ]
+        'line-color': reachColor
       }
       this.map.addLayer({
         id: 'reachGeom',
