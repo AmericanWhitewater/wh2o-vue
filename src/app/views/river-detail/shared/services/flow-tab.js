@@ -1,6 +1,7 @@
 import { httpClient } from '@/app/global/services'
 import { apiConstants } from '../config'
 import axios from 'axios'
+import { baseUrl } from '@/app/environment'
 
 const fetchGaugeReadings = data => {
   /**
@@ -9,7 +10,7 @@ const fetchGaugeReadings = data => {
    * @temp get flow data from prod
    *
    */
-  const url = `https://cors-anywhere.herokuapp.com/https://americanwhitewater.org/api/gauge/${data.gauge_id}/flows/${data.metric_id}?from=${data.timeStart}&to=${data.timeEnd}&resolution=${data.resolution}`
+  const url = `${baseUrl}api/gauge/${data.gauge_id}/flows/${data.metric_id}?from=${data.timeStart}&to=${data.timeEnd}&resolution=${data.resolution}`
   /**
    * @temp ideally keep axios in httpClient wrapper
    */
