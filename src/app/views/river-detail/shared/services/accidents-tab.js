@@ -19,6 +19,9 @@ const fetchAccidentsData = data => {
               injuries {
                 injury
               }
+              causes {
+                cause
+              }
               id
             }
           }

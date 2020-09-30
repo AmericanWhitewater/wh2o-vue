@@ -48,10 +48,10 @@
                     <td>
                       <cv-list>
                         <cv-list-item
-                          v-for="(factor, i) in a.factors"
+                          v-for="(c, i) in a.causes"
                           :key="i"
                         >
-                          {{ factor.factor }}
+                          {{ c.cause }}
                         </cv-list-item>
                       </cv-list>
                     </td>
