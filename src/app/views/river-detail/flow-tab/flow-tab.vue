@@ -117,6 +117,11 @@
             Gage Detail
           </cv-button>
           <level-legend />
+          <a
+            v-if="editMode"
+            :href="formatLinkUrl(`/content/StreamTeam/edit-correlations/?reach_id=${$route.params.id}`)"
+            target="_blank"
+          >Edit Flows</a>
         </template>
         <template v-else>
           error
@@ -164,7 +169,8 @@ export default {
       error: state => state.riverDetailState.gageReadingsData.error,
       gages: state => state.riverDetailState.reachGagesData.data,
       gagesLoading: state => state.riverDetailState.reachGagesData.loading,
-      gagesError: state => state.riverDetailState.reachGagesData.error
+      gagesError: state => state.riverDetailState.reachGagesData.error,
+      editMode: state => state.appGlobalState.appGlobalData.editMode
     }),
     chartSize () {
       if (this.windowWidth > this.$options.breakpoints.md) {
