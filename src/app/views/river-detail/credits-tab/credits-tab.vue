@@ -11,12 +11,12 @@
         <template v-else-if="credits">
           <div
             v-for="c in credits"
-            :key="c.id"
+            :key="c.revision"
             class="bx--row mb-md"
           >
             <div class="bx--col">
               <h5>Revision Date: {{ formatDate(c.edited) }}</h5>
-              <h5>Edited By: {{ c.sk.contact.name }}</h5>
+              <h5>Edited By: {{ c.sk && c.sk.contact && c.sk.contact.name }}</h5>
               <h3>Revision Comment: {{ c.revision_comment }}</h3>
             </div>
           </div>
