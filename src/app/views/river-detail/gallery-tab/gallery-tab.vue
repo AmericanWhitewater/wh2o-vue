@@ -13,12 +13,10 @@
             <div class="bx--col">
               <div class="toolbar-wrapper">
                 <cv-button
-                  size="small"
-                  :disabled="!user"
-                  @click.exact="mediaUploadModalVisible = true"
-                  @keydown.enter="mediaUploadModalVisible = true"
+                  size="medium"
+                  :disabled="true"
                 >
-                  Upload Media
+                  Upload - Temporarily Unavailable
                 </cv-button>
               </div>
             </div>
@@ -49,19 +47,20 @@
         </template>
       </template>
     </layout>
+    <!--
     <media-upload-modal
       :visible="mediaUploadModalVisible"
       section="POST"
       @form:cancelled="mediaUploadModalVisible = false"
       @form:success="mediaUploadModalVisible = false"
       @form:error="mediaUploadModalVisible = false"
-    />
+    />!-->
   </div>
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
-import { MediaUploadModal, ImageGallery } from '../shared/components'
+import { ImageGallery } from '../shared/components'
 import { Layout } from '@/app/global/layout'
 import { TablePagination } from '@/app/global/components'
 import { rapidsActions, galleryActions } from '@/app/views/river-detail/shared/state'
@@ -69,7 +68,6 @@ export default {
   name: 'gallery-tab',
   components: {
     UtilityBlock,
-    MediaUploadModal,
     Layout,
     ImageGallery,
     TablePagination
