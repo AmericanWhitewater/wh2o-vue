@@ -362,10 +362,6 @@ export default {
               ['get', 'reach_id'],
               this.detailReachId
             ])
-          } else if (['projects', 'projectIcons'].includes(mapLayer)) {
-            // projects aren't relevant here, can keep displaying, everything else is reach-specific
-          } else {
-            this.map.setFilter(mapLayer, ['==', ['get', 'id'], this.detailReachId])
           }
         })
       }
