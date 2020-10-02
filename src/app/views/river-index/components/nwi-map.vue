@@ -136,6 +136,7 @@ export default {
   computed: {
     ...mapState({
       mapStyle: state => state.riverIndexState.riverIndexData.mapStyle,
+      mapBounds: state => state.riverIndexState.riverIndexData.mapBounds,
       colorBy: state => state.riverIndexState.riverIndexData.mapColorBy,
       mouseoveredFeature: state => state.riverIndexState.riverIndexData.mouseoveredFeature
     }),
@@ -438,20 +439,21 @@ export default {
       if (this.startingBounds) {
         mapProps.bounds = this.startingBounds
         mapProps.fitBoundsOptions = fitBoundsOptions
+      } else if (this.mapBounds) {
+        mapProps.bounds = this.mapBounds
       } else {
         mapProps.center = this.center
         mapProps.zoom = this.startingZoom
+        if (this.centerOnUserLocation && 'geolocation' in navigator) {
+          navigator.geolocation.getCurrentPosition(position => {
+            this.map.flyTo({
+              center: [position.coords.longitude, position.coords.latitude],
+              zoom: 9
+            })
+          })
+        }
       }
       this.map = new mapboxgl.Map(mapProps)
-
-      if (this.centerOnUserLocation && 'geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition(position => {
-          this.map.flyTo({
-            center: [position.coords.longitude, position.coords.latitude],
-            zoom: 9
-          })
-        })
-      }
 
       this.map.addControl(
         new mapboxgl.NavigationControl({ showCompass: true }),
@@ -470,6 +472,13 @@ export default {
       this.map.on('sourcedataloading', () => { this.mapDataLoading = true })
 
       this.map.on('moveend', this.debouncedUpdateReachesInViewport)
+      this.map.on('moveend', () => {
+        // TODO: refactor detail page map tab so that it shares code with this component via mixin
+        // but does not use the same component
+        if (!this.detailReachId) {
+          this.$store.dispatch(riverIndexActions.SET_MAP_BOUNDS, this.map.getBounds().toArray())
+        }
+      })
     },
     initMap () {
       this.map = null
