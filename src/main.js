@@ -34,6 +34,16 @@ let mountPoint
  */
 if (laravelDeploy) {
   if (process.env.NODE_ENV === 'production') {
+    // this is kind of disgusting but there's a link to the Vue root in the nav of the Laravel app
+    // we need to avoid that causing a reload of the Vue app and instead just have it trigger
+    // navigation to the root of the Vue app
+    const navLinks = document.querySelectorAll('[href="/content/River/view/?"]')
+    if (navLinks) {
+      // should only be one
+      const navLink = navLinks[0]
+      navLink.addEventListener('click', () => { router.replace('/') })
+      navLink.setAttribute('href', '#')
+    }
     mountPoint = document.querySelector('#wh2o-vue-host').shadowRoot.querySelector('#wh2o-vue')
   } else {
     mountPoint = '#wh2o-vue'
