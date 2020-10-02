@@ -10,7 +10,7 @@ const initialState = {
   mapStyle: 'topo',
   mapColorBy: 'difficulty',
   fullscreen: null,
-  mapPosition: null,
+  mapBounds: null,
   mouseoveredFeature: null,
   stateList: null,
   mapSearchTerm: null,
@@ -29,7 +29,7 @@ const mutationTypes = reflectKeys(
     'USER_LOCATION',
     'MAP_STYLE',
     'MAP_COLOR_BY',
-    'MAP_POSITION',
+    'MAP_BOUNDS',
     'STATE_LIST',
     'MOUSEOVERED_FEATURE',
     'MAP_SEARCH_TERM',
@@ -48,7 +48,7 @@ const {
   USER_LOCATION,
   MAP_STYLE,
   MAP_COLOR_BY,
-  MAP_POSITION,
+  MAP_BOUNDS,
   STATE_LIST,
   MOUSEOVERED_FEATURE,
   MAP_SEARCH_TERM,
@@ -84,8 +84,8 @@ const mutations = {
     Object.assign(state, { loading: false, mapColorBy: payload })
   },
 
-  [MAP_POSITION] (state, payload) {
-    Object.assign(state, { loading: false, mapPosition: payload })
+  [MAP_BOUNDS] (state, payload) {
+    Object.assign(state, { loading: false, mapBounds: payload })
   },
 
   [MOUSEOVERED_FEATURE] (state, payload) {
@@ -130,7 +130,7 @@ export const riverIndexActions = reflectKeys(
     'LOAD_REACHES',
     'SET_MAP_STYLE',
     'SET_MAP_COLOR_BY',
-    'SET_MAP_POSITION',
+    'SET_MAP_BOUNDS',
     'MOUSEOVER_FEATURE',
     'FETCH_MAP_SEARCH_DATA',
     'CLEAR_MAP_SEARCH_QUERY',
@@ -152,8 +152,8 @@ const actions = {
   async [riverIndexActions.SET_MAP_COLOR_BY] (context, data) {
     context.commit(MAP_COLOR_BY, data)
   },
-  async [riverIndexActions.SET_MAP_POSITION] (context, data) {
-    context.commit(MAP_POSITION, data)
+  async [riverIndexActions.SET_MAP_BOUNDS] (context, data) {
+    context.commit(MAP_BOUNDS, data)
   },
   async [riverIndexActions.MOUSEOVER_FEATURE] (context, data) {
     context.commit(MOUSEOVERED_FEATURE, data)
