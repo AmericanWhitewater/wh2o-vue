@@ -127,12 +127,10 @@ export default {
   },
   methods: {
     loadData () {
-      if (!this.accidents && !this.error) {
-        this.$store.dispatch(
-          accidentsActions.FETCH_ACCIDENTS_DATA,
-          this.riverId
-        )
-      }
+      this.$store.dispatch(
+        accidentsActions.FETCH_ACCIDENTS_DATA,
+        this.riverId
+      )
     },
     viewAccident (accidentId) {
       this.goToLink(this.formatLinkUrl(`/content/Accident/detail/accidentid/${accidentId}`))
