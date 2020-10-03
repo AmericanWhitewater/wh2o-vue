@@ -2,6 +2,7 @@
 node_modules
 /dist
 /live
+/ts-out
 /coverage
 # local env files
 .env.local

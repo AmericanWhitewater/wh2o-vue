@@ -132,12 +132,12 @@ export default {
   methods: {
     viewRoute (path) {
       this.drawerOpen = false
-      this.$router.push(path).catch(() => {})
+      this.$router.push(path)
     },
     resetRouter () {
       this.drawerOpen = false
       /* keep catch empty to avoid nav duplication error */
-      this.$router.push('/').catch(() => {})
+      this.$router.push('/')
     }
   }
 }

@@ -12,13 +12,13 @@ const initialState = {
 const namespacedPrefix = '[BOOKMARKS]'
 
 const merge_array = (array1, array2) => {
-  var result_array = []
-  var arr = array1.concat(array2)
-  var len = arr.length
-  var assoc = {}
+  const result_array = []
+  const arr = array1.concat(array2)
+  let len = arr.length
+  const assoc = {}
 
   while (len--) {
-    var item = arr[len]
+    const item = arr[len]
 
     if (!assoc[item]) {
       result_array.unshift(item)

@@ -22,7 +22,7 @@ const options = {
 
 describe('submodule-two.vue', () => {
   it('created: loads data', async () => {
-    // eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
     const wrapper = createWrapper(SubmoduleTwo, options)
 
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,

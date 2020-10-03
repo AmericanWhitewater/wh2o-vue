@@ -9,7 +9,7 @@
       <img
         v-for="(item, k) in previewUrls"
         :key="k"
-        :src="`${baseUrl}${item}`"
+        :src="`${item}`"
         class="mb-spacing-sm"
       >
     </template>
@@ -65,19 +65,30 @@
     />
   </div>
 </template>
-<script>
-import gql from 'graphql-tag'
-import { postUpdate } from '@/app/global/components/post-update-modal/services/postUpdate.js'
-import { globalAppActions } from '@/app/global/state'
-import { baseUrl } from '../../../../environment'
 
-export default {
+<script lang="ts">
+import { globalAppActions } from '@/app/global/state'
+
+import genid from '@bit/aw.utility.genid'
+import {computed, defineComponent, onMounted, reactive, ref, watch} from '@vue/composition-api'
+import {
+  PhotoFactory,
+  PostRepository,
+  PostTypeEnum,
+  FileInputSectionType,
+  PostInputType, PostFactory,
+  FileInputType, PhotoInputType
+} from '@bit/aw.models.post'
+import {configBaseURL} from "@/aw/global/config";
+
+// eslint-disable-next-line vue/require-direct-export
+export default defineComponent({
   name: 'media-upload-form',
   props: {
     section: {
       type: String,
       required: true,
-      validator: val =>
+      validator: (val: string) =>
         ['RAPID', 'POST', 'GALLERY', 'REACH'].indexOf(val) > -1
     },
     primaryClickTimestamp: {
@@ -90,148 +101,172 @@ export default {
       required: false
     }
   },
-  data: () => ({
-    baseUrl: baseUrl,
-    formPending: false,
-    formData: {
-      id: null,
-      fileinput: {
-        file: null,
-        section: null,
-        section_id: null
-      },
-      photo: {
-        author: null,
-        caption: null,
-        description: null,
-        photo_date: null,
-        poi_id: '0',
-        poi_name: null,
-        post_id: '0',
-        subject: null
-      }
-    },
-    postFormData: {
-      id: null,
-      post: {
-        reach_id: null,
-        post_type: 'PHOTO_POST',
-        post_date: null
-      }
-    },
-    previewUrls: []
-  }),
 
-  computed: {
-    rapids () {
-      return this.$store.state.riverDetailState.rapidsData.data
-    },
-    user () {
-      return this.$store.state.userState.userData.data
-    },
-    fieldsDisabled () {
-      return !this.user || this.formPending
-    },
-    parentIsModal () {
-      return !!this.$parent.$refs.modalDialog
+
+  setup (props, context) {
+    const formPending = ref<boolean>(false)
+
+    const postFormData = reactive<{ id: string; post: PostInputType }>({ id: genid(), post: PostFactory.newInputType() })
+    const previewUrls = ref<string[]>([])
+    const formData = reactive<{ id: string; photo: PhotoInputType; fileinput: FileInputType }>({
+      id: genid(),
+      fileinput: {
+
+        section: FileInputSectionType.POST,
+        section_id: genid(),
+        file: undefined
+      },
+      photo: PhotoFactory.newInputType()
+    })
+    /**
+     * Resets the photo info for next photo
+     */
+    function nextPhoto()
+    {
+      formPending.value = false;
+      formData.photo={...PhotoFactory.newInputType(),post_id:postFormData.id}
+      formData.id=genid()
+
     }
-  },
-  watch: {
-    primaryClickTimestamp () {
-      this.submitPost()
+
+
+    /***
+     * sets all the ids we need
+     */
+    function resetForm()
+    {
+      formPending.value = false;
+      postFormData.id = genid()
+      postFormData.post = PostFactory.newInputType();
+      formData.fileinput={section:FileInputSectionType.POST, section_id:postFormData.id, file:undefined}
+      nextPhoto();
     }
-  },
-  methods: {
-    setFile (input) {
-      if (input && input.length) {
-        this.formData.fileinput.file = input[0].file
-        this.uploadFile()
-      }
-    },
-    async uploadFile () {
-      this.formPending = true
-      await this.$apollo.mutate({
-        mutation: gql`mutation ($fileinput: PhotoFileInput!, $id:ID!, $photo: PhotoInput!) {
-          photo: photoFileUpdate(fileinput: $fileinput, id: $id, photo:$photo)
+
+    const rapids = computed(() => {
+      return context.root.$store.state.riverDetailState.rapidsData.data
+    })
+    const user = computed(() => {
+      return context.root.$store.state.userState.userData.data
+    })
+    const fieldsDisabled = computed(() => {
+      return !user.value || formPending.value
+    })
+    const parentIsModal = computed(() => {
+
+      return !!context?.parent?.$refs.modalDialog
+    })
+
+    async function uploadFile () {
+      formPending.value = true
+
+      try {
+        const photo = await PostRepository.sendFile({ id: formData.id, photo: formData.photo, fileinput: formData.fileinput })
+        if (photo) {
+
+          postFormData.id = photo.post_id
+          postFormData.post.post_date = photo.photo_date
+          postFormData.post.reach_id = parseInt(context.root.$route.params.id)
+          let photo_url =photo.image.uri?.big;
+          if(photo_url )
           {
-            id,
-            caption,
-            post_id,
-            description,
-            subject,
-            photo_date,
-            author,
-            poi_name,
-            poi_id
-            image {
-                ext,
-                uri {
-                    thumb,
-                    medium,
-                    big
-                }
+            if(!photo_url.match(/http/gi))
+            {
+              photo_url = new URL(photo_url,configBaseURL()).toString()
             }
+           previewUrls.value.push(photo_url)
           }
-        }`,
-        variables: {
-          fileinput: this.formData.fileinput,
-          id: this.formData.id,
-          photo: this.formData.photo
         }
-      }).then(result => {
-        this.postFormData.id = result.data.photo.post_id
-        this.postFormData.post.post_date = result.data.photo.photo_date
-        this.postFormData.post.reach_id = this.$route.params.id
-        this.previewUrls.push(result.data.photo.image.uri.big)
-      }).catch(err => {
-        /* eslint-disable-next-line no-console */
-        console.log(err)
-        this.$emit('form:error')
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+      } catch (err) {
+
+        context.emit('form:error')
+        // @ts-ignore
+        context.root.$store.dispatch(globalAppActions.SEND_TOAST, {
           title: 'Upload Failed',
           kind: 'error'
         })
-      })
-      this.formPending = false
-    },
-    async submitPost () {
-      this.formPending = true
+      }
+      formPending.value = false
+
+    }
+
+    function setFile (input: Array<{file: File}>) {
+      if (input && input.length) {
+        formData.fileinput.file = input[0].file
+        uploadFile()
+      }
+    }
+
+
+    async function submitPost () {
+      formPending.value = true
       try {
-        await postUpdate(this.postFormData)
-        this.$emit('form:success')
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        await PostRepository.updatePost({
+          user_id: user.value.uid,
+          post: postFormData.post,
+          post_type: PostTypeEnum.JOURNAL
+        })
+        context.emit('form:success')
+        // @ts-ignore
+        context.root.$store.dispatch(globalAppActions.SEND_TOAST, {
           title: 'Media Uploaded',
           kind: 'success'
         })
       } catch (error) {
         /* eslint-disable-next-line no-console */
         console.log('error :>> ', error)
-        this.$emit('form:error')
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        context.emit('form:error')
+        // @ts-ignore
+        context.root.$store.dispatch(globalAppActions.SEND_TOAST, {
           title: 'Upload Failed',
           kind: 'error'
         })
       } finally {
-        this.formPending = false
+        formPending.value = false
       }
-    },
-    setInitialFormData () {
-      const today = new Date()
-      this.formData.photo.photo_date = today.toISOString()
-
-      if (this.user && this.user.uname) {
-        this.formData.photo.author = this.user.uname
-      }
-
-      this.formData.id = this.$randomId()
-      this.formData.fileinput.section = this.section
-      this.formData.fileinput.section_id = this.$randomId()
     }
-  },
-  created () {
-    this.setInitialFormData()
+
+    function setInitialFormData () {
+      formData.photo.photo_date = new Date()
+
+      if (user.value && user.value.uname) {
+        formData.photo.author = user.value.uname
+      }
+
+      formData.fileinput.section = FileInputSectionType.POST
+      formData.fileinput.section_id = genid()
+    }
+
+    watch(
+      () => props.primaryClickTimestamp, () => {
+        submitPost()
+      })
+
+    function created () {
+      setInitialFormData()
+    }
+
+    onMounted(()=>resetForm())
+
+    return ({
+      previewUrls,
+      setFile,
+      formData,
+      user,
+      formPending,
+      resetForm,
+
+      rapids,
+      created,
+      submitPost,
+      fieldsDisabled,
+      postFormData,
+      parentIsModal
+
+    })
   }
 }
+
+)
 </script>
 <docs>
 

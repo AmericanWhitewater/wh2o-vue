@@ -2,11 +2,16 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
+    "plugins": [{
+      "name": "typescript-tslint-plugin"
+    }],
     "strict": true,
+    "outDir": "ts-out",
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
     "allowJs": true,
+    "noImplicitAny": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -29,6 +34,8 @@
     ]
   },
   "include": [
+    "components/**/*.ts",
+    "components/**/*.vue",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
@@ -38,4 +45,5 @@
   "exclude": [
     "node_modules"
   ]
+
 }

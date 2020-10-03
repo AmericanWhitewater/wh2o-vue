@@ -68,7 +68,8 @@ const mutations = {
     Object.assign(state, ...initialState)
   },
 
-  [UPDATE_REQUEST] (state) {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  [UPDATE_REQUEST] () {
   },
 
   [UPDATE_SUCCESS] (state, payload) {
@@ -77,7 +78,8 @@ const mutations = {
     Object.assign(existingRapid, { ...updatedReach })
   },
 
-  [CREATE_REQUEST] (state) {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  [CREATE_REQUEST] () {
   },
 
   [CREATE_SUCCESS] (state, payload) {
@@ -89,7 +91,8 @@ const mutations = {
     })
   },
 
-  [DELETE_REQUEST] (state) {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  [DELETE_REQUEST] () {
   },
 
   [DELETE_SUCCESS] (state, payload) {
@@ -121,7 +124,7 @@ const actions = {
     return result
   },
 
-  async [rapidsActions.INITIAL_STATE] (context, data) {
+  async [rapidsActions.INITIAL_STATE] (context) {
     context.commit(DATA_RESET)
   },
 

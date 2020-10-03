@@ -6,10 +6,11 @@ module.exports = {
     jest: true
   },
 
-  rules: {
+
+    rules: {
     'no-console': 2,
     'no-debugger': 2,
-    'import/export': 1,
+
     'vue/attributes-order': 2,
     'vue/eqeqeq': 2,
     'vue/html-self-closing': 1,
@@ -28,7 +29,10 @@ module.exports = {
     'vue/return-in-computed-property': 2,
     'vue/this-in-template': 2,
     'vue/use-v-on-exact': 1,
+      'vue/custom-event-name-casing':0,
     'vue/v-on-style': 2,
+      '@typescript-eslint/ban-ts-ignore':0,
+'@typescript-eslint/camelcase':0,
     'vue/valid-template-root': 2,
     'vue/valid-v-for': 2,
     'no-new': 'off',
@@ -81,10 +85,6 @@ module.exports = {
     }]
   },
 
-  parserOptions: {
-    parser: '@typescript-eslint/parser'
-  },
-
   overrides: [
     {
       files: [
@@ -98,9 +98,9 @@ module.exports = {
   ],
 
   extends: [
-    'plugin:vue/strongly-recommended',
-    '@vue/standard',
-    'plugin:vue/essential',
-    '@vue/typescript'
+    "plugin:vue/essential",
+    "plugin:@typescript-eslint/recommended",
+    "@vue/typescript/recommended",
+
   ]
 }

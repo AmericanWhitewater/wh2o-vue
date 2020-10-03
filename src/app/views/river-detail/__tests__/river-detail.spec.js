@@ -19,6 +19,7 @@ const mockRoute = {
 }
 
 const mockRouter = {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   replace: jest.fn(() => { }),
   beforeEach: jest.fn()
 }
@@ -69,7 +70,7 @@ describe('river-detail.vue', () => {
   })
 
   it('loads data on initial load', () => {
-    // eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
     const wrapper = createWrapper(RiverDetail, options)
 
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(1, '[RIVER_DETAIL] FETCH_RIVER_DETAIL_DATA', '123')

@@ -14,7 +14,7 @@
         "origin": "NESTED",
         "originallySharedDir": "resources/assets/js/aw/client/apollo"
     },
-    "aw/client/apollo@1.0.3": {
+    "aw/client/apollo@1.0.11": {
         "files": [
             {
                 "name": "GraphQLClient.ts",
@@ -27,7 +27,33 @@
         "origin": "IMPORTED",
         "originallySharedDir": "resources/assets/js/aw/client/apollo"
     },
-    "aw/models/article@1.0.3": {
+    "aw/global/config@1.0.13": {
+        "files": [
+            {
+                "relativePath": "src/aw/global/config/index.ts",
+                "test": false,
+                "name": "index.ts"
+            }
+        ],
+        "mainFile": "src/aw/global/config/index.ts",
+        "trackDir": "src/aw/global/config",
+        "origin": "AUTHORED",
+        "exported": true
+    },
+    "aw/global/logger@1.0.13": {
+        "files": [
+            {
+                "relativePath": "src/aw/global/logger/index.ts",
+                "test": false,
+                "name": "index.ts"
+            }
+        ],
+        "mainFile": "src/aw/global/logger/index.ts",
+        "trackDir": "src/aw/global/logger",
+        "origin": "AUTHORED",
+        "exported": true
+    },
+    "aw/models/article@1.0.11": {
         "files": [
             {
                 "name": "article.gql",
@@ -55,12 +81,12 @@
                 "test": false
             }
         ],
-        "mainFile": "types/index.ts",
+        "mainFile": "index.ts",
         "rootDir": "components/models/article",
         "origin": "IMPORTED",
         "originallySharedDir": "resources/assets/js/aw/models/article"
     },
-    "aw/models/image@1.0.3": {
+    "aw/models/image@1.0.8": {
         "files": [
             {
                 "name": "factory.ts",
@@ -71,14 +97,19 @@
                 "name": "index.ts",
                 "relativePath": "types/index.ts",
                 "test": false
+            },
+            {
+                "name": "index.ts",
+                "relativePath": "index.ts",
+                "test": false
             }
         ],
-        "mainFile": "types/index.ts",
+        "mainFile": "index.ts",
         "rootDir": "components/models/image",
         "origin": "IMPORTED",
         "originallySharedDir": "resources/assets/js/aw/models/image"
     },
-    "aw/models/metrics@1.0.3": {
+    "aw/models/metrics@1.0.11": {
         "files": [
             {
                 "name": "metrics.gql",
@@ -124,7 +155,7 @@
         "origin": "IMPORTED",
         "originallySharedDir": "resources/assets/js/aw/models/permission"
     },
-    "aw/models/post@1.0.3": {
+    "aw/models/post@1.0.11": {
         "files": [
             {
                 "name": "gauge-by-id.gql",
@@ -207,12 +238,12 @@
                 "test": false
             }
         ],
-        "mainFile": "types/index.ts",
+        "mainFile": "index.ts",
         "rootDir": "components/models/post",
         "origin": "IMPORTED",
         "originallySharedDir": "resources/assets/js/aw/models/post"
     },
-    "aw/models/user@1.0.3": {
+    "aw/models/user@1.0.11": {
         "files": [
             {
                 "name": "me.gql",
@@ -235,7 +266,7 @@
         "origin": "IMPORTED",
         "originallySharedDir": "resources/assets/js/aw/models/user"
     },
-    "aw/utility/genid@1.0.3": {
+    "aw/utility/genid@1.0.7": {
         "files": [
             {
                 "name": "index.ts",

@@ -17,7 +17,7 @@ export const basemapToggleMixin = {
     NwiBasemapToggle
   },
   watch: {
-    mapStyle (v) {
+    mapStyle () {
       this.map.setStyle(this.baseMapUrl)
     }
   }

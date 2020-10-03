@@ -128,7 +128,7 @@ export default {
       httpClient.post('/graphql', {
         query: `
           mutation  {
-            reachUpdate(id: ${this.reachId}, reach:{ 
+            reachUpdate(id: ${this.reachId}, reach:{
               class: "${this.formData.class}",
               length: ${parseFloat(this.formData.length)},
               avggradient: ${parseInt(this.formData.avggradient, 10)},
@@ -141,7 +141,7 @@ export default {
             }
           }
         `
-      }).then(r => {
+      }).then(() => {
         this.formPending = false
         this.$store.dispatch(globalAppActions.SEND_TOAST, {
           title: 'Beta Box Updated',
@@ -151,7 +151,7 @@ export default {
           action: false,
           autoHide: true
         })
-      }).catch(e => {
+      }).catch(() => {
         this.formPending = false
         this.formError = true
         this.$store.dispatch(globalAppActions.SEND_TOAST, {
