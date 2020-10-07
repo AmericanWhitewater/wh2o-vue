@@ -14,6 +14,7 @@
       </template>
       <template slot="content">
         <geometry-editor
+          :key="geomEditorKey"
           @updatedGeom="updateReachGeom"
         />
       </template>
@@ -57,6 +58,9 @@ export default {
       // TODO: get graphql API to return a linestring or geojson instead of this text
       const geom = this.data?.geom?.split(',').map(d => d.split(' ').map(e => parseFloat(e)))
       return geom ? lineString(geom, {}, { id: 'reachGeom' }) : null
+    },
+    geomEditorKey () {
+      return `geomEditor${this.data?.id}`
     }
   },
   methods: {
