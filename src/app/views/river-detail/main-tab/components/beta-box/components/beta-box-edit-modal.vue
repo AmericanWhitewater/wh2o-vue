@@ -23,11 +23,11 @@
         theme="light"
       >
         <cv-dropdown-item
-          v-for="(item, index) in poiClasses"
+          v-for="(item, index) in reachClasses"
           :key="index"
-          :value="item.value"
+          :value="item"
         >
-          {{ item.label }}
+          {{ item }}
         </cv-dropdown-item>
       </cv-dropdown>
       <cv-number-input
@@ -71,13 +71,13 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { poiClasses, checkWindow, shadowDomFixedHeightOffset } from '@/app/global/mixins'
+import { reachClasses, checkWindow, shadowDomFixedHeightOffset } from '@/app/global/mixins'
 import { globalAppActions } from '@/app/global/state'
 import { httpClient } from '@/app/global/services'
 
 export default {
   name: 'beta-box-edit-modal',
-  mixins: [poiClasses, checkWindow, shadowDomFixedHeightOffset],
+  mixins: [reachClasses, checkWindow, shadowDomFixedHeightOffset],
   props: {
     visible: {
       type: Boolean,
