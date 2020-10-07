@@ -195,9 +195,7 @@ export default {
             13,
             1,
             13.5,
-            0.75,
-            14,
-            0
+            0.75
           ],
           'line-width': [
             'interpolate',
@@ -251,9 +249,7 @@ export default {
             0,
             0.5,
             13.5,
-            0.5,
-            14,
-            0
+            0.5
           ],
           'line-color': [
             'interpolate',
