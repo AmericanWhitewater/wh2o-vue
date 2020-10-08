@@ -17,7 +17,7 @@
       <cv-checkbox
         v-model="snapMode"
         value="Snap Mode"
-        label="Snap When Dragging"
+        label="Snap to reach"
       />
     </div>
   </div>
@@ -26,7 +26,7 @@
 <script>
 import mapboxgl from 'mapbox-gl'
 import { mapState } from 'vuex'
-import { basemapToggleMixin } from '@/app/global/mixins'
+import { basemapToggleMixin, mapHelpersMixin } from '@/app/global/mixins'
 import {
   mapboxAccessToken
 } from '@/app/environment'
@@ -38,7 +38,7 @@ import nearestPointOnLine from '@turf/nearest-point-on-line'
 
 export default {
   name: 'nwi-map-editor',
-  mixins: [basemapToggleMixin],
+  mixins: [basemapToggleMixin, mapHelpersMixin],
   props: {
     height: {
       type: String,
@@ -52,7 +52,8 @@ export default {
   data: () => ({
     // TODO: we may want to default snapMode on or off depending
     // on whether the point is *already* snapped to the line
-    snapMode: true
+    snapMode: true,
+    pointOfInterest: null
   }),
   computed: {
     ...mapState({
@@ -68,7 +69,13 @@ export default {
       if (this.reachGeom) {
         return bbox(this.reachGeom)
       }
-      return null
+      return this.defaultMapBounds()
+    },
+    boundsPadding () {
+      if (this.reachGeom) {
+        return 80
+      }
+      return 0
     }
   },
   watch: {
@@ -112,7 +119,7 @@ export default {
         container: this.$refs.nwiMapEditor,
         style: this.baseMapUrl,
         bounds: this.startingBounds,
-        fitBoundsOptions: { padding: 80 }
+        fitBoundsOptions: { padding: this.boundsPadding }
       }
 
       this.map = new mapboxgl.Map(mapProps)
@@ -121,18 +128,22 @@ export default {
       this.map.on('load', () => {
         this.loadReach()
         if (this.geom && this.geom.coordinates && this.geom.coordinates.length === 2) {
-          this.renderPOI()
+          this.renderPOI(this.geom)
+        } else {
+          this.map.once('click', async (e) => {
+            await this.renderPOI(point(e.lngLat).geometry)
+            this.emitPOILocation()
+          })
         }
       })
     },
     emitPOILocation () {
       this.$emit('poiMoved', this.pointOfInterest.getLngLat())
     },
-    renderPOI () {
+    async renderPOI (geometry) {
       this.pointOfInterest = new mapboxgl.Marker({
         draggable: true
-      })
-        .setLngLat([this.geom.coordinates[0], this.geom.coordinates[1]])
+      }).setLngLat(geometry.coordinates)
         .addTo(this.map)
       this.pointOfInterest.on('dragend', this.debouncedEmitPOILocation)
       this.conditionallyBindSnapHandler()
