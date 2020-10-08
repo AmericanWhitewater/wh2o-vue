@@ -458,10 +458,14 @@ export default {
     }
   },
   mounted () {
-    this.currentGeom = this.reachGeom
-    if (mapboxAccessToken) {
-      this.mountMap()
-    }
+    // ensure that reachGeom prop is established
+    this.$nextTick(() => {
+      this.currentGeom = this.reachGeom
+      if (mapboxAccessToken) {
+        this.mountMap()
+      }
+    })
+
     this.graphCache = {}
     this.linesCache = {}
   }
