@@ -51,6 +51,18 @@
         </cv-dropdown>
       </div>
       <div
+        v-if="currentGeom"
+        class="nhd-editor-clear-map"
+      >
+        <cv-button
+          kind="danger"
+          size="small"
+          @click="clearMap"
+        >
+          Clear Map
+        </cv-button>
+      </div>
+      <div
         id="nhd-editor"
         ref="nhdEditor"
       />
@@ -68,6 +80,7 @@ import {
   mapboxAccessToken
 } from '@/app/environment'
 import NwiBasemapToggle from '@/app/views/river-index/components/nwi-basemap-toggle.vue'
+import { mapHelpersMixin } from '@/app/global/mixins'
 
 import bbox from '@turf/bbox'
 import bboxPolygon from '@turf/bbox-polygon'
@@ -103,6 +116,7 @@ export default {
   components: {
     NwiBasemapToggle
   },
+  mixins: [mapHelpersMixin],
   data: () => ({
     currentGeom: null,
     tooZoomedOut: false,
@@ -142,12 +156,12 @@ export default {
       if (this.reachGeom) {
         return bbox(this.reachGeom)
       }
-      return null
+      return this.defaultMapBounds()
     },
     // determines whether we need to add elements to the map
     // or edit ones that already exist
     geometryMode () {
-      if (this.currentGeom || this.reachGeom) {
+      if (this.currentGeom) {
         return 'editing'
       } else {
         return 'creating'
@@ -181,6 +195,12 @@ export default {
     }
   },
   methods: {
+    clearMap () {
+      if (confirm('Are you sure?')) {
+        this.currentGeom = null
+        this.draw.deleteAll()
+      }
+    },
     getNhdLines () {
       const cacheKey = this.map.getBounds().toString()
       if (this.linesCache[cacheKey] == null) {
@@ -440,10 +460,14 @@ export default {
     }
   },
   mounted () {
-    if (mapboxAccessToken) {
-      this.mountMap()
-    }
-    this.currentGeom = this.reachGeom
+    // ensure that reachGeom prop is established
+    this.$nextTick(() => {
+      this.currentGeom = this.reachGeom
+      if (mapboxAccessToken) {
+        this.mountMap()
+      }
+    })
+
     this.graphCache = {}
     this.linesCache = {}
   }
