@@ -22,7 +22,7 @@
         />
         <label class="bx--label mb-spacing-xs">Location</label>
         <p
-          v-if="!activeRapidLocated"
+          v-if="!rapidOnMap"
         >
           Click on the map to locate the rapid
         </p>
@@ -188,8 +188,8 @@ export default {
     activeRapid () {
       return this.rapidId ? this.rapids.find(r => r.id === this.rapidId) : null
     },
-    activeRapidLocated () {
-      return this.activeRapid?.rloc
+    rapidOnMap () {
+      return this.activeRapid?.rloc || (this.formData.geom.coordinates.length > 0)
     },
     modalTitle () {
       return this.activeRapid ? 'Edit Rapid' : 'New Rapid'

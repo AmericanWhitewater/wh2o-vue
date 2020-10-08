@@ -33,6 +33,7 @@ import {
 import debounce from 'lodash.debounce'
 
 import { lineString, point } from '@turf/helpers'
+import buffer from '@turf/buffer'
 import bbox from '@turf/bbox'
 import nearestPointOnLine from '@turf/nearest-point-on-line'
 
@@ -64,9 +65,17 @@ export default {
       const geom = this.data?.geom?.split(',').map(d => d.split(' '))
       return geom ? lineString(geom) : null
     },
+    bboxAroundPoint () {
+      if (this.geom && this.geom.coordinates && this.geom.coordinates.length === 2) {
+        return bbox(buffer(this.geom, 2))
+      }
+      return null
+    },
     startingBounds () {
       if (this.reachGeom) {
         return bbox(this.reachGeom)
+      } else if (this.bboxAroundPoint) {
+        return this.bboxAroundPoint
       }
       return this.defaultMapBounds()
     },
@@ -104,7 +113,7 @@ export default {
   },
   methods: {
     conditionallyBindSnapHandler () {
-      if (this.pointOfInterest) {
+      if (this.reachGeom && this.pointOfInterest) {
         if (this.snapMode) {
           this.pointOfInterest.on('drag', this.snapPOIToReach)
         } else {
@@ -184,7 +193,10 @@ export default {
   },
   mounted () {
     if (mapboxAccessToken) {
-      this.mountMap()
+      // ensures geom properties are set when the map renders
+      this.$nextTick(() => {
+        this.mountMap()
+      })
 
       this.debouncedEmitPOILocation = debounce(this.emitPOILocation, 200, {
         leading: false,
