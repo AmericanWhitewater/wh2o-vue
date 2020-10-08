@@ -43,10 +43,6 @@ export default {
     visible: {
       type: Boolean,
       required: true
-    },
-    alertId: {
-      type: String,
-      required: false
     }
   },
   data: () => ({
