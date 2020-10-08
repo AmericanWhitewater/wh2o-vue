@@ -1,7 +1,7 @@
 <template>
   <div class="page-banner">
     <div class="map-wrapper">
-      <template v-if="startingBounds">
+      <template v-if="reachGeom">
         <div
           id="nwi-map-banner-container"
         >
@@ -17,7 +17,7 @@
       </template>
       <template v-else>
         <utility-block
-          text="Reach Map Unavailable"
+          :text="mapUnavailableText"
           state="content"
           theme="dark"
         />
@@ -58,14 +58,21 @@ export default {
     },
     ...mapState({
       mapStyle: state => state.riverIndexState.riverIndexData.mapStyle,
-      reach: state => state.riverDetailState.riverDetailData.data
+      reach: state => state.riverDetailState.riverDetailData.data,
+      editMode: state => state.appGlobalState.appGlobalData.editMode
+
     }),
     startingBounds () {
-      // TODO: get graphql API to return a linestring or geojson instead of this text
       if (this.reachGeom) {
         return bbox(this.reachGeom)
       }
       return null
+    },
+    mapUnavailableText () {
+      if (this.editMode) {
+        return ''
+      }
+      return 'No geospatial data available'
     }
   },
   methods: {
@@ -145,7 +152,7 @@ export default {
     }
   },
   mounted () {
-    if (mapboxAccessToken) {
+    if (mapboxAccessToken && this.reachGeom) {
       this.mountMap()
     }
   }
