@@ -80,6 +80,7 @@ import {
   mapboxAccessToken
 } from '@/app/environment'
 import NwiBasemapToggle from '@/app/views/river-index/components/nwi-basemap-toggle.vue'
+import { mapHelpersMixin } from '@/app/global/mixins'
 
 import bbox from '@turf/bbox'
 import bboxPolygon from '@turf/bbox-polygon'
@@ -115,6 +116,7 @@ export default {
   components: {
     NwiBasemapToggle
   },
+  mixins: [mapHelpersMixin],
   data: () => ({
     currentGeom: null,
     tooZoomedOut: false,
@@ -154,7 +156,7 @@ export default {
       if (this.reachGeom) {
         return bbox(this.reachGeom)
       }
-      return null
+      return this.defaultMapBounds()
     },
     // determines whether we need to add elements to the map
     // or edit ones that already exist
