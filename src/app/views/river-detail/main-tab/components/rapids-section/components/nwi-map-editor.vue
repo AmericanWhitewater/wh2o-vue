@@ -52,8 +52,7 @@ export default {
   data: () => ({
     // TODO: we may want to default snapMode on or off depending
     // on whether the point is *already* snapped to the line
-    snapMode: true,
-    pointOfInterest: null
+    snapMode: true
   }),
   computed: {
     ...mapState({
