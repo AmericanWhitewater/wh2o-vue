@@ -21,6 +21,11 @@
           :disabled="formPending"
         />
         <label class="bx--label mb-spacing-xs">Location</label>
+        <p
+          v-if="!rapidOnMap"
+        >
+          Click on the map to locate the rapid
+        </p>
         <nwi-map-editor
           height="350"
           class="mb-spacing-md"
@@ -29,6 +34,7 @@
         />
         <!-- remove this field if we can calculate value from dropped pin -->
         <cv-number-input
+          v-if="reachGeom"
           v-model="formData.distance"
           class="mb-spacing-md"
           label="Distance From Start"
@@ -121,7 +127,6 @@ export default {
   },
   data: () => ({
     renderEditor: false,
-
     formPending: false,
     poiCharacteristics: [
       {
@@ -169,7 +174,7 @@ export default {
     formData: {
       name: '',
       difficulty: '',
-      distance: 0,
+      distance: null,
       description: '',
       character: [],
       geom: { coordinates: [], type: 'point' }
@@ -182,6 +187,9 @@ export default {
     }),
     activeRapid () {
       return this.rapidId ? this.rapids.find(r => r.id === this.rapidId) : null
+    },
+    rapidOnMap () {
+      return this.activeRapid?.rloc || (this.formData.geom.coordinates.length > 0)
     },
     modalTitle () {
       return this.activeRapid ? 'Edit Rapid' : 'New Rapid'
@@ -232,33 +240,33 @@ export default {
       this.updateDistance()
     },
     updateDistance () {
-      const segment = lineSlice(
-        point(this.reachGeom.geometry.coordinates[0]),
-        point(this.formData.geom.coordinates),
-        this.reachGeom)
-      this.formData.distance = geoLength(segment, { units: 'miles' }).toFixed(2)
+      if (this.reachGeom) {
+        const segment = lineSlice(
+          point(this.reachGeom.geometry.coordinates[0]),
+          point(this.formData.geom.coordinates),
+          this.reachGeom)
+        this.formData.distance = geoLength(segment, { units: 'miles' }).toFixed(2)
+      }
     },
     handleCancel () {
       this.$emit('edit:cancelled')
     }
   },
   mounted () {
-    let distance
     if (this.activeRapid) {
       this.formData = Object.assign(this.formData, this.activeRapid)
       if (this.activeRapid.rloc) {
         const coords = this.activeRapid.rloc.split(' ').map(x => parseFloat(x))
         this.formData.geom = point(coords).geometry
       }
-      distance = this.activeRapid.distance
+      const distance = this.activeRapid.distance
+      // if distance is present, use it to calculate the point
+      // otherwise, allow user to create the point by clicking
+      if (!this.formData.geom.coordinates.length && this.reachGeom && distance) {
+        this.formData.geom = along(this.reachGeom, distance, { units: 'miles' }).geometry
+      }
     }
     this.renderEditor = true
-    if (!this.formData.geom.coordinates.length && this.reachGeom) {
-      // if distance is present, use it to calculate the point
-      // otherwise, create a point anywhere on the line
-      const distanceAlong = distance || 0
-      this.formData.geom = along(this.reachGeom, distanceAlong, { units: 'miles' }).geometry
-    }
   }
 }
 </script>
