@@ -19,11 +19,29 @@
               class="bx--tile"
             >
               <div>
-                <h4 v-text="data.river" />
+                <h4>
+                  {{ data.river }}
+                  <cv-button
+                    v-if="editMode"
+                    id="edit-title"
+                    size="small"
+                    kind="secondary"
+                    @click="editReachTitleModalVisible = true"
+                  >
+                    Edit
+                  </cv-button>
+                  <reach-title-edit-modal
+                    v-if="editMode"
+                    :visible="editReachTitleModalVisible"
+                    @edit:cancelled="editReachTitleModalVisible=false"
+                  />
+                </h4>
+
                 <h1
                   class="mb-spacing-md"
                   v-text="data.section"
                 />
+
                 <cv-breadcrumb no-trailing-slash>
                   <cv-breadcrumb-item>
                     <cv-link to="/river-index">
@@ -177,7 +195,7 @@ import { mapState } from 'vuex'
 import { riverDetailActions, alertsActions, bookmarksActions, reachGagesActions, metricsActions } from './shared/state'
 import { globalAppActions } from '@/app/global/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
-import MapBanner from './shared/components/map-banner.vue'
+import { MapBanner, ReachTitleEditModal } from './shared/components'
 import GeometryEditModal from './shared/components/geometry-edit-modal/geometry-edit-modal'
 import { checkWindow } from '@/app/global/mixins'
 import { appLocalStorage } from '@/app/global/services'
@@ -186,11 +204,13 @@ export default {
   components: {
     UtilityBlock,
     MapBanner,
-    GeometryEditModal
+    GeometryEditModal,
+    ReachTitleEditModal
   },
   mixins: [checkWindow],
   data: () => ({
     editGeometryModalVisible: false,
+    editReachTitleModalVisible: false,
     bookmarked: false,
     transitionName: 'fade'
   }),

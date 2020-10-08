@@ -149,6 +149,7 @@
       <h3>Edit Beta Box</h3>
     </div>
     <BetaBoxEditModal
+      v-if="editMode"
       :key="editBetaBoxKey"
       :visible="editModalVisible"
     />
@@ -182,7 +183,10 @@ export default {
       metrics: state => state.riverDetailState.gageMetricsData.data
     }),
     editBetaBoxKey () {
-      return `editBetaBox${this.river?.id}`
+      return `editBetaBox${this.reachId}`
+    },
+    reachId () {
+      return this.$route.params.id
     }
   },
   methods: {
