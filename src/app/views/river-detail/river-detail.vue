@@ -31,6 +31,7 @@
                     Edit
                   </cv-button>
                   <reach-title-edit-modal
+                    v-if="editMode"
                     :visible="editReachTitleModalVisible"
                     @edit:cancelled="editReachTitleModalVisible=false"
                   />
