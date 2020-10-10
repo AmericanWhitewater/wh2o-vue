@@ -97,6 +97,7 @@ import Graph from 'graph-data-structure'
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
 import SnapMode from '../utils/SnapMode'
+import DirectSelectMode from '../utils/DirectSelectMode'
 import SnapDrawPointMode from '../utils/SnapDrawPointMode'
 import StaticMode from '@mapbox/mapbox-gl-draw-static-mode'
 import DrawStyles from '../utils/DrawStyles'
@@ -104,7 +105,7 @@ import DrawStyles from '../utils/DrawStyles'
 const defaultMapModes = {
   editing: {
     automatic: 'SnapMode',
-    manual: 'simple_select'
+    manual: 'DirectSelectMode'
   },
   creating: {
     automatic: 'SnapDrawPointMode',
@@ -320,7 +321,12 @@ export default {
       // if we're too zoomed out, editing mode is StaticMode
       // and we should keep it that way
       if (!this.tooZoomedOut) {
-        this.draw.changeMode(defaultMapModes[this.geometryMode][mode])
+        const newMode = defaultMapModes[this.geometryMode][mode]
+        const opts = {}
+        if (newMode === 'DirectSelectMode') {
+          opts.featureId = 'reachGeom'
+        }
+        this.draw.changeMode(newMode, opts)
       }
 
       this.renderDrawFeatures()
@@ -342,7 +348,9 @@ export default {
         styles: DrawStyles,
         modes: {
           StaticMode,
-          ...MapboxDraw.modes,
+          DirectSelectMode,
+          draw_line_string: MapboxDraw.modes.draw_line_string,
+          simple_select: MapboxDraw.modes.simple_select,
           SnapDrawPointMode: {
             ...SnapDrawPointMode,
             config: {
