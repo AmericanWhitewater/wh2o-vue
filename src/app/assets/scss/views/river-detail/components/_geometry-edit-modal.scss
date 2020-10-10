@@ -1,9 +1,21 @@
-h5.mode-name {
-  text-transform: capitalize;
+.geometry-editor-modal {
+  .bx--modal-content {
+    padding-right: 0;
+    padding-left: 0;
+    margin-bottom: 0;
+  }
+  .geom-editor-instructions {
+    padding: 1rem;
+
+    h5.mode-name {
+      text-transform: capitalize;
+    }
+  }
 }
+
 #nhd-editor-container {
-  min-width: 100%;
   width: 100%;
+  height: 70vh;
   position: relative;
 
   .nhd-editor-mode-switcher {
