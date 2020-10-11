@@ -109,7 +109,7 @@ export function usePost() {
   }
 
   function setActivePostFields(post: PostType) {
-    internalPost.value = cloneDeep(post);
+    internalPost.value = { ...post, photos: internalPost.value.photos };
   }
 
   /**
@@ -126,23 +126,25 @@ export function usePost() {
     };
 
     formPending.value = true;
-
-    const newphoto = await PostRepository.sendFile({
-      id: photo.id,
-      photo: photoinput,
-      fileinput: input,
-    });
-    if (newphoto) {
-      setActivePhotoFields(newphoto);
+    try {
+      const newphoto = await PostRepository.sendFile({
+        id: photo.id,
+        photo: photoinput,
+        fileinput: input,
+      });
+      if (newphoto) {
+        setActivePhotoFields(newphoto);
+      }
+    } finally {
+      formPending.value = false;
     }
-
-    formPending.value = false;
   }
 
   let photo_num = 0;
 
   /**
    * Sends a new file to the server as part of the post.
+   * Creates the entry for the photo and sets the active form for that photo.
    * @param input
    */
   async function setNewFile(input: Array<FileAttachmentType>) {
@@ -171,7 +173,9 @@ export function usePost() {
     }
   }
 
-  async function updatePhoto(p: PhotoType) {}
+  async function updatePhoto(p: PhotoType) {
+    await PostRepository.updatePhoto(p);
+  }
 
   /**
    * Sends the post to the server.
@@ -180,7 +184,7 @@ export function usePost() {
     formPending.value = true;
     try {
       for (let i = 0; i < internalPost.value.photos.length; i++) {
-        updatePhoto(internalPost.value.photos[i]);
+        await updatePhoto(internalPost.value.photos[i]);
       }
       await PostRepository.updatePost({
         user_id: postDefaults.user_id,
@@ -218,5 +222,7 @@ export function usePost() {
     setActivePhotoFields,
     setPostDefaults,
     setActivePostFields,
+    switchActivePhoto,
+    updatePost,
   };
 }

@@ -116,6 +116,10 @@ export default {
   },
   created () {
     document.addEventListener('swUpdated', this.showRefreshUI, { once: true })
+    if(!navigator.serviceWorker)
+    {
+      alert('run this from https:/... or localhost.')
+    }
     navigator.serviceWorker.addEventListener('controllerchange', () => {
       if (this.refreshing) return
       this.refreshing = true

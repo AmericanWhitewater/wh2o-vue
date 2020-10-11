@@ -1,4 +1,5 @@
 <template>
+  <div>
   <cv-file-uploader
 
       ref="fileUploader"
@@ -6,7 +7,7 @@
       helper-text="10mb max"
       accepts=".jpg,.png"
       class="mb-spacing-md"
-      :disabled="formPending || !user"
+      :disabled="isFormPending "
       @change="setFile"
   />
   <cv-text-input
@@ -22,13 +23,15 @@
       :class="{ 'mb-spacing-md': !parentIsModal }"
       :disabled="isFormPending "
   />
+
+  </div>
 </template>
 <script lang="ts">
-import {defineComponent, PropType} from "@vue/composition-api";
+import {defineComponent, PropType, ref, watch} from "@vue/composition-api";
 import {PostType} from "../../../../../../components/models/post/types";
 import {PhotoFactory} from "../../../../../../components/models/post";
 import {FileAttachmentType} from "@/app/views/river-detail/shared/components/lib/types";
-
+import isEqual from 'lodash/isEqual'
 // eslint-disable-next-line vue/require-direct-export
 export default defineComponent({
   name: 'photo-post-form',
@@ -52,15 +55,15 @@ export default defineComponent({
   },
   setup(props,ctx)
   {
+    const internalPost = ref(props.value)
+    watch(()=>props.value,()=>!isEqual(props.value,internalPost) && ctx.emit('input',internalPost),{immediate:true})
 
     async function setFile(input: Array<FileAttachmentType>)
     {
       ctx.emit('setFile',input);
     }
 
-
-
-    return({setFile})
+    return({setFile,internalPost})
   }
 })
 </script>

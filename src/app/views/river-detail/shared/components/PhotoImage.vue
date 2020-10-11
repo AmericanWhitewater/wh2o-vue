@@ -1,6 +1,6 @@
 <template>
-  <div>
-  <img v-if="isPhoto" alt='image' :src="url"  class="mb-spacing-sm">
+  <div @click="$emit('click')">
+  <img v-if="isPhoto" alt='image' :src="url"  class="mb-spacing-sm" >
   </div>
 
 </template>

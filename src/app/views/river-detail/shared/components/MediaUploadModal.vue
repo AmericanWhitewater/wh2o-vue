@@ -85,9 +85,9 @@ export default defineComponent({
     const internalVisible = ref(false);
     watch(()=>props.visible,()=>{internalVisible.value = props.visible}, {immediate:true})
 
-    const modalWrapper = ref<CvModal|null>(null)
+
     const primaryClickTimestamp = ref(new Date().valueOf())
-    const modalfix = useShadowDomFixedHeightOffset(context)
+
     function handleShow () {
       context.emit('modal-shown')
       modalfix.setModalOffset()
@@ -115,10 +115,10 @@ export default defineComponent({
       handleCancel,
       handleShow,
       handleSubmit,
-      modalWrapper,
+
       internalVisible,
       primaryClickTimestamp,
-      ...modalfix
+      ...useShadowDomFixedHeightOffset(context)
     })
   }
 
