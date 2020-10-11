@@ -1,4 +1,5 @@
 <template>
+
   <cv-modal
     ref="modalWrapper"
     :auto-hide-off="true"
@@ -9,6 +10,7 @@
     @modal-shown="handleShow"
     @modal-hidden="handleCancel"
   >
+
     <template slot="label">
       <template v-if="label">
         {{ label }}
@@ -42,7 +44,7 @@
  * of modal
  *
  */
-import MediaUploadForm from './media-upload-form.vue'
+import MediaUploadForm from './MediaUploadForm.vue'
 import {defineComponent, ref, watch} from '@vue/composition-api'
 import { useShadowDomFixedHeightOffset } from '@/app/global/compositions/shadow-dom-fixed-height-offset'
 import CvModal from '@carbon/vue/src/components/cv-modal'

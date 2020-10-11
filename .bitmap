@@ -53,7 +53,7 @@
         "origin": "AUTHORED",
         "exported": true
     },
-    "aw/models/article@1.0.11": {
+    "aw/models/article@1.0.12": {
         "files": [
             {
                 "name": "article.gql",
@@ -155,7 +155,7 @@
         "origin": "IMPORTED",
         "originallySharedDir": "resources/assets/js/aw/models/permission"
     },
-    "aw/models/post@1.0.11": {
+    "aw/models/post@1.0.14": {
         "files": [
             {
                 "name": "gauge-by-id.gql",
@@ -266,7 +266,20 @@
         "origin": "IMPORTED",
         "originallySharedDir": "resources/assets/js/aw/models/user"
     },
-    "aw/utility/genid@1.0.7": {
+    "aw/utility/array@1.0.14": {
+        "files": [
+            {
+                "relativePath": "src/aw/utility/array/index.ts",
+                "test": false,
+                "name": "index.ts"
+            }
+        ],
+        "mainFile": "src/aw/utility/array/index.ts",
+        "trackDir": "src/aw/utility/array",
+        "origin": "AUTHORED",
+        "exported": true
+    },
+    "aw/utility/genid@1.0.14": {
         "files": [
             {
                 "name": "index.ts",
