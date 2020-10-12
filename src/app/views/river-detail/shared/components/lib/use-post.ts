@@ -121,8 +121,9 @@ export function usePost() {
    */
   async function uploadFile({ photo, file }: { photo: PhotoType; file: File }) {
     const photoinput = PhotoFactory.Photo2PhotoInput(photo);
+    photoinput.post_id = internalPost.value.id;
     const input: FileInputType = {
-      section_id: photo.id,
+      section_id: internalPost.value.id,
       section: FileInputSectionType.POST,
       file: file,
     };
@@ -176,7 +177,9 @@ export function usePost() {
   }
 
   async function updatePhoto(p: PhotoType) {
-    await PostRepository.updatePhoto(p);
+    const sendpost = cloneDeep(p);
+    sendpost.post_id = internalPost.value.id;
+    await PostRepository.updatePhoto(sendpost);
   }
 
   /**
