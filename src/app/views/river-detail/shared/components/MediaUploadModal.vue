@@ -87,10 +87,10 @@ export default defineComponent({
 
 
     const primaryClickTimestamp = ref(new Date().valueOf())
-
+    const modal_fix = useShadowDomFixedHeightOffset(context);
     function handleShow () {
       context.emit('modal-shown')
-      modalfix.setModalOffset()
+      modal_fix.setModalOffset()
 
     }
     function handleSubmit () {
@@ -118,7 +118,7 @@ export default defineComponent({
 
       internalVisible,
       primaryClickTimestamp,
-      ...useShadowDomFixedHeightOffset(context)
+      ...modal_fix
     })
   }
 

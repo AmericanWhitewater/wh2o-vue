@@ -3,7 +3,9 @@
     <h2 v-if="title" class="mb-spacing-md" v-text="title" />
     <div class="grid">
       <div class="bx--row">
-        <div class="bx--col-sm-2">
+
+        <div class="bx--col-2 ">
+          <div class="overflow">
           <button @click="currentTab = -1">Main</button>
           <photo-image
             v-for="(photo, index) in post.photos"
@@ -11,12 +13,15 @@
             :photo="photo"
             @click="currentTab = parseInt(index)"
           />
+
+          </div>
         </div>
 
-        <div class="bx--col-sm-14">
+        <div class="bx--col-14">
           <photo-post-form
             v-if="currentTab < 0"
-            v-model="post"
+            :value="post"
+            :input="updatePost"
             :is-form-pending="formPending"
             :parent-is-modal="parentIsModal"
             @setFile="setNewFileLocal"
@@ -24,6 +29,7 @@
           <photo-form
             v-if="currentTab >= 0"
             :value="currentPhoto"
+            :is-form-pending="formPending"
             @input="updatePhoto"
             @setFile="setFileFileForPhotoLocal"
           />
@@ -57,7 +63,7 @@ import { usePost } from "@/app/views/river-detail/shared/components/lib/use-post
 import { UserType } from "../../../../../../components/models/user/types";
 import isEqual from "lodash/isEqual";
 import PhotoImage from "@/app/views/river-detail/shared/components/PhotoImage.vue";
-import { cloneDeep } from "@apollo/client/utilities";
+import { cloneDeep } from '@apollo/client/utilities';
 // eslint-disable-next-line vue/require-direct-export
 export default defineComponent({
   name: "media-upload-form",
@@ -88,33 +94,27 @@ export default defineComponent({
       default: () => PhotoFactory.new(),
     },
   },
-  data:()=>({}),
+
 
   setup(props, context) {
     // management functions come from usePost.
     const postManager = usePost();
     //ui tracked here and defaults set with the following computed fields
-
-    const rapids = computed(
-      () => context.root.$store.state.riverDetailState.rapidsData.data
-    );
+    const post = ref(postManager.currentPost.value);
+    const currentTab = ref<number>(-1);
     const user = computed(
       () => context.root.$store.state.userState.userData.data as UserType
     );
-    const reach = computed(
-      () =>
-        context.root.$store.state.riverDetailState.riverDetail.data as ReachType
-    );
-
-    postManager.resetForm();
-    postManager.setPostDefaults({
-      user_id: user.value?.uid,
-      user_name: user.value?.uname,
-      gauge_id: 0,
-      reach_id: reach.value.id,
+    const fieldsDisabled = computed(() => {
+      return !user.value || postManager.formPending.value;
     });
-
-    async function setNewFileLocal(input: Array<FileAttachmentType>) {
+    const parentIsModal = computed(() => {
+      return !!context?.parent?.$refs.modalDialog;
+    });
+    const rapids = computed(
+      () => context.root.$store.state.riverDetailState.rapidsData.data
+    );
+        async function setNewFileLocal(input: Array<FileAttachmentType>) {
       try {
         await postManager.setNewFile(input);
       } catch (error) {
@@ -128,6 +128,23 @@ export default defineComponent({
         });
       }
     }
+
+    const reach_id = computed(
+      () =>
+      {
+
+        return context.root.$route.params.id
+      }
+
+    );
+
+    postManager.setPostDefaults({
+      user_id: user.value?.uid,
+      user_name: user.value?.uname,
+      gauge_id: 0,
+      reach_id: parseInt(reach_id.value),
+    });
+
 
     async function setFileFileForPhotoLocal({
       photo,
@@ -170,24 +187,19 @@ export default defineComponent({
         });
       }
     }
-    // not sure why drew has this...
-    watch(
+
+
+
+   watch(
       () => props.primaryClickTimestamp,
       () => submitPost()
     );
 
-    const fieldsDisabled = computed(() => {
-      return !user.value || postManager.formPending.value;
-    });
-    const parentIsModal = computed(() => {
-      return !!context?.parent?.$refs.modalDialog;
-    });
 
     function updatePhoto(p: PhotoType) {
       postManager.setActivePhotoFields(p);
     }
 
-    const currentTab = ref<number>(-1);
     watch(
       () => currentTab,
       () =>
@@ -195,33 +207,32 @@ export default defineComponent({
           postManager.currentPost.value.photos[currentTab.value].id
         )
     );
-    const post = ref(postManager.currentPost.value);
-    watch(
-      () => post.value,
-      () =>
-        !isEqual(post.value, postManager.currentPost.value) &&
-        postManager.setActivePostFields(post.value)
-    );
+    function updatePost(p: PostType)
+    {
+      postManager.setActivePostFields(p)
+    }
+
     watch(
       () => postManager.currentPost.value,
-      () => (post.value = cloneDeep(postManager.currentPost.value)),
-      { immediate: true }
+      () => {if(!isEqual(post.value,postManager.currentPost.value)){ post.value = cloneDeep(postManager.currentPost.value);}},
+
     );
     watch(
       () => props.value,
       () => postManager.setActivePostFields(props.value as PostType)
-    );
-    context.onMounted(() => postManager.resetForm());
+    )
+    onMounted(() => postManager.resetForm());
     return {
       ...postManager,
+      post,
+      currentTab,
       rapids,
-      parentIsModal,
+      updatePost,
+      parentIsModal:parentIsModal,
       fieldsDisabled,
       setNewFileLocal,
       setFileFileForPhotoLocal,
-      post,
       updatePhoto,
-      currentTab,
       currentPost: computed(
         () => postManager.currentPost.value ?? PostFactory.new()
       ),

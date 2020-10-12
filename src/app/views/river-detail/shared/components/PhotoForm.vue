@@ -72,7 +72,7 @@ export default defineComponent({
         required:true,
         default:()=>PhotoFactory.new()},
         rapids:{type: Array as PropType<{id: string;name: string}[]>,required:true, default:()=>[]},
-        formPending:{type: Boolean,required:true, default:false},
+        isFormPending:{type: Boolean,required:true, default:false},
       },
 
   setup(props,ctx)
@@ -89,7 +89,7 @@ export default defineComponent({
       ctx.emit('setFileForPhoto',{photo:internalPhoto.value,input})
     }
 
-    return({internalPhoto,parentIsModal:false,setFile,isFormPending:computed(()=>props.formPending),})
+    return({internalPhoto,parentIsModal:false,setFile})
 
   }
 
