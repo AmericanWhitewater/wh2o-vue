@@ -1,7 +1,7 @@
 <template>
   <div>
     <photo-image :photo="internalPhoto" />
-    <cv-file-uploader
+    <!--cv-file-uploader
 
       ref="fileUploader"
       data-modal-primary-focus
@@ -10,7 +10,9 @@
       class="mb-spacing-md"
       :disabled="isFormPending "
       @change="setFile"
-    /> <cv-text-input
+    / -->
+    <input type="file" @change="setFile" >
+    <cv-text-input
       v-model="internalPhoto.caption"
       class="mb-spacing-md"
       label="Caption"
@@ -20,7 +22,7 @@
       v-model="internalPhoto.description"
       label="Description"
       :class="{ 'mb-spacing-md': !parentIsModal }"
-      :disabled="isFormPending "
+      :disabled="isFormPending"
     />
 
     <cv-text-input
@@ -28,19 +30,19 @@
       class="mb-spacing-md"
       label="Author"
       required
-      :disabled="isFormPending "
+      :disabled="isFormPending"
     />
     <cv-text-input
       v-model="internalPhoto.subject"
       class="mb-spacing-md"
       label="Subject"
-      :disabled="isFormPending "
+      :disabled="isFormPending"
     />
 
     <cv-dropdown
       v-if="rapids && rapids.length"
       v-model="internalPhoto.poi_id"
-      :disabled="isFormPending "
+      :disabled="isFormPending"
       class="mb-spacing-md"
       label="Rapid"
     >
@@ -53,46 +55,72 @@
       </cv-dropdown-item>
     </cv-dropdown>
   </div>
-
 </template>
 <script lang="ts">
-import {computed, defineComponent, PropType, ref, watch} from "@vue/composition-api";
-import {PhotoType,PhotoFactory} from "@bit/aw.models.post";
-import { cloneDeep } from '@apollo/client/utilities';
-import  isEqual  from 'lodash/isEqual.js'
-import PhotoImage from './PhotoImage.vue'
+import {
+  computed,
+  defineComponent,
+  PropType,
+  ref,
+  watch,
+} from "@vue/composition-api";
+import { PhotoType, PhotoFactory } from "@bit/aw.models.post";
+import { cloneDeep } from "@apollo/client/utilities";
+import isEqual from "lodash/isEqual.js";
+import PhotoImage from "./PhotoImage.vue";
+import { FileAttachmentType } from "@/app/views/river-detail/shared/components/lib/types";
 // eslint-disable-next-line vue/require-direct-export
 export default defineComponent({
-  components:{
+  components: {
     PhotoImage,
   },
-  props:
-      {
-        value:{type: Object as PropType<PhotoType>,
-        required:true,
-        default:()=>PhotoFactory.new()},
-        rapids:{type: Array as PropType<{id: string;name: string}[]>,required:true, default:()=>[]},
-        isFormPending:{type: Boolean,required:true, default:false},
-      },
+  props: {
+    value: {
+      type: Object as PropType<PhotoType>,
+      required: true,
+      default: () => PhotoFactory.new(),
+    },
+    rapids: {
+      type: Array as PropType<{ id: string; name: string }[]>,
+      required: true,
+      default: () => [],
+    },
+    isFormPending: { type: Boolean, required: true, default: false },
+  },
 
-  setup(props,ctx)
-  {
-    const internalPhoto=ref(PhotoFactory.new())
-    watch(()=>props.value,
-        ()=>internalPhoto.value=cloneDeep(props.value),{immediate:true}
-    )
+  setup(props, ctx) {
+    const internalPhoto = ref(PhotoFactory.new());
+    watch(
+      () => props.value,
+      () => (internalPhoto.value = cloneDeep(props.value)),
+      { immediate: true }
+    );
 
-    watch(()=>internalPhoto,()=>!isEqual(internalPhoto,props.value) && ctx.emit('input',internalPhoto))
+    watch(
+      () => internalPhoto.value,
+      () =>{
 
-    function setFile(input: Array<{file: File}>)
-    {
-      ctx.emit('setFileForPhoto',{photo:internalPhoto.value,input})
+        !isEqual(internalPhoto.value, props.value) && ctx.emit("input", cloneDeep(internalPhoto.value))
+      },{deep:true}
+
+    );
+
+    function setFile(a: InputEvent) {
+
+      const files = (a.target as HTMLInputElement)?.files;
+      const input: FileAttachmentType[] = [];
+      if (files) {
+        for (let i = 0; i < files?.length; i++) {
+          if (files[i]) {
+            input.push({file: files[i]});
+          }
+        }
+      }
+
+      ctx.emit("setFileForPhoto", { photo: internalPhoto.value, input });
     }
 
-    return({internalPhoto,parentIsModal:false,setFile})
-
-  }
-
-})
-
+    return { internalPhoto, parentIsModal: false, setFile };
+  },
+});
 </script>

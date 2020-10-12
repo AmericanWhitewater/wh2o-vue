@@ -1,11 +1,8 @@
 <template>
   <div class="news-tab">
-    <layout
-      name="layout-full-width"
-      class="mb-lg"
-    >
+    <layout name="layout-full-width" class="mb-lg">
       <template #main>
-        <hr>
+        <hr >
         <h2 class="mb-spacing-md">
           Alerts
         </h2>
@@ -64,12 +61,9 @@
                       </cv-button>
                     </div>
                   </header>
-                  <hr>
+                  <hr >
                   <main class="alert-detail">
-                    <p
-                      v-if="alert.detail"
-                      v-text="alert.detail"
-                    />
+                    <p v-if="alert.detail" v-text="alert.detail" />
                     <p v-else>
                       This alert has no message
                     </p>
@@ -96,7 +90,7 @@
       <template #main>
         <section class="map-tab">
           <div class="articles">
-            <hr>
+            <hr >
             <h2 class="mb-spacing-sm">
               Articles
             </h2>
@@ -170,95 +164,95 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import { newsTabActions, alertsActions } from '../shared/state'
-import UtilityBlock from '@/app/global/components/utility-block/utility-block'
-import { Layout } from '@/app/global/layout'
+import { mapState } from "vuex";
+import { newsTabActions, alertsActions } from "../shared/state";
+import UtilityBlock from "@/app/global/components/utility-block/utility-block";
+import { Layout } from "@/app/global/layout";
 import {
   ArticleCard,
   ConfirmDeleteModal,
-  PostUpdateModal
-} from '@/app/global/components'
-import { httpClient } from '@/app/global/services'
-import { globalAppActions } from '@/app/global/state'
+  PostUpdateModal,
+} from "@/app/global/components";
+import { httpClient } from "@/app/global/services";
+import { globalAppActions } from "@/app/global/state";
 export default {
-  name: 'news-tab',
+  name: "news-tab",
   components: {
     UtilityBlock,
     Layout,
     ArticleCard,
     ConfirmDeleteModal,
-    PostUpdateModal
+    PostUpdateModal,
   },
   data: () => ({
-    updateModalTitle: 'New Alert',
-    successToastTitle: 'Alert Submitted',
+    updateModalTitle: "New Alert",
+    successToastTitle: "Alert Submitted",
     postUpdateModalVisible: false,
     deleteModalVisible: false,
-    activeAlertId: ''
+    activeAlertId: "",
   }),
   computed: {
     ...mapState({
-      articlesLoading: state => state.riverDetailState.newsTabData.loading,
-      articlesError: state => state.riverDetailState.newsTabData.error,
-      articles: state => state.riverDetailState.newsTabData.data,
-      alertsLoading: state => state.riverDetailState.alertsData.loading,
-      alertsError: state => state.riverDetailState.alertsData.error,
-      alerts: state => state.riverDetailState.alertsData.data,
-      user: state => state.userState.userData.data
+      articlesLoading: (state) => state.riverDetailState.newsTabData.loading,
+      articlesError: (state) => state.riverDetailState.newsTabData.error,
+      articles: (state) => state.riverDetailState.newsTabData.data,
+      alertsLoading: (state) => state.riverDetailState.alertsData.loading,
+      alertsError: (state) => state.riverDetailState.alertsData.error,
+      alerts: (state) => state.riverDetailState.alertsData.data,
+      user: (state) => state.userState.userData.data,
     }),
-    activeAlert () {
+    activeAlert() {
       if (this.activeAlertId) {
-        return this.alerts.find(a => a.id === this.activeAlertId)
+        return this.alerts.find((a) => a.id === this.activeAlertId);
       }
-      return null
+      return null;
     },
-    deleteTitle () {
-      return this.activeAlert?.title || 'Untitled Alert'
-    }
+    deleteTitle() {
+      return this.activeAlert?.title || "Untitled Alert";
+    },
   },
   methods: {
-    initiatePostUpdate (alertId) {
+    initiatePostUpdate(alertId) {
       if (this.user) {
-        this.updateModalTitle = alertId ? 'Edit Alert' : 'New Alert'
-        this.successToastTitle = alertId ? 'Alert Revised' : 'Alert Submitted'
-        this.activeAlertId = alertId || null
-        this.postUpdateModalVisible = true
+        this.updateModalTitle = alertId ? "Edit Alert" : "New Alert";
+        this.successToastTitle = alertId ? "Alert Revised" : "Alert Submitted";
+        this.activeAlertId = alertId || null;
+        this.postUpdateModalVisible = true;
       }
     },
     /**
      * @todo or if admin
      */
-    canEdit (alert) {
-      return this.user?.uid === alert.user?.uid
+    canEdit(alert) {
+      return this.user?.uid === alert.user?.uid;
     },
-    handleUpdateSuccess () {
-      this.postUpdateModalVisible = false
+    handleUpdateSuccess() {
+      this.postUpdateModalVisible = false;
       this.$store.dispatch(globalAppActions.SEND_TOAST, {
         title: this.successToastTitle,
-        kind: 'success',
+        kind: "success",
         override: true,
         contrast: false,
         action: false,
-        autoHide: true
-      })
+        autoHide: true,
+      });
       this.$store.dispatch(
         alertsActions.FETCH_ALERTS_DATA,
         this.$route.params.id
-      )
+      );
     },
-    initiateAlertDelete (alertId) {
-      this.activeAlertId = alertId
-      this.deleteModalVisible = true
+    initiateAlertDelete(alertId) {
+      this.activeAlertId = alertId;
+      this.deleteModalVisible = true;
     },
-    deleteCancelled () {
-      this.activeAlertId = null
-      this.deleteModalVisible = false
+    deleteCancelled() {
+      this.activeAlertId = null;
+      this.deleteModalVisible = false;
     },
-    deleteAlert () {
-      this.deleteModalVisible = false
+    deleteAlert() {
+      this.deleteModalVisible = false;
       httpClient
-        .post('/graphql', {
+        .post("/graphql", {
           query: `
           mutation ($id:ID!) {
             postDelete(id: $id)  {
@@ -266,50 +260,50 @@ export default {
           }
         }`,
           variables: {
-            id: this.activeAlertId
-          }
+            id: this.activeAlertId,
+          },
         })
-        .then(r => {
+        .then((r) => {
           if (!r.errors) {
             this.$store.dispatch(globalAppActions.SEND_TOAST, {
-              title: 'Alert Deleted',
-              kind: 'success',
+              title: "Alert Deleted",
+              kind: "success",
               override: true,
               contrast: false,
               action: false,
-              autoHide: true
-            })
+              autoHide: true,
+            });
             this.$store.dispatch(
               alertsActions.FETCH_ALERTS_DATA,
               this.$route.params.id
-            )
+            );
           }
         })
-        .catch(e => {
+        .catch((e) => {
           // eslint-disable-next-line no-console
-          console.log('e :', e)
-        })
+          console.log("e :", e);
+        });
     },
-    loadData () {
+    loadData() {
       if (!this.articles) {
         this.$store.dispatch(
           newsTabActions.FETCH_NEWS_TAB_DATA,
           this.$route.params.id
-        )
+        );
       }
 
       if (!this.alerts) {
         this.$store.dispatch(
           alertsActions.FETCH_ALERTS_DATA,
           this.$route.params.id
-        )
+        );
       }
-    }
+    },
   },
-  created () {
-    this.loadData()
-  }
-}
+  created() {
+    this.loadData();
+  },
+};
 </script>
 <style lang="scss" scoped>
 .news-tab {
@@ -325,7 +319,7 @@ export default {
       }
     }
     footer {
-      padding-top:1rem;
+      padding-top: 1rem;
     }
   }
 }

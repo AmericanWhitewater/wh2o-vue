@@ -155,7 +155,7 @@
         "origin": "IMPORTED",
         "originallySharedDir": "resources/assets/js/aw/models/permission"
     },
-    "aw/models/post@1.0.14": {
+    "aw/models/post@1.0.15": {
         "files": [
             {
                 "name": "gauge-by-id.gql",

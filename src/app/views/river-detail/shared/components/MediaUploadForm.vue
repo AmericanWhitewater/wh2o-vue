@@ -3,35 +3,42 @@
     <h2 v-if="title" class="mb-spacing-md" v-text="title" />
     <div class="grid">
       <div class="bx--row">
+        <div class="bx--col-lg-2 tab-bg">
+          <div class="overflow ">
+            <div
+              :class="[{'tab-on':currentTab<0},{'tab-off':currentTab>=0}]"
+              @click="currentTab = -1"
+            >
+              Overview
+            </div>
+            <div
+              v-for="(photo, index) in post.photos"
+              :key="photo.id"
 
-        <div class="bx--col-2 ">
-          <div class="overflow">
-          <button @click="currentTab = -1">Main</button>
-          <photo-image
-            v-for="(photo, index) in post.photos"
-            :key="photo.id"
-            :photo="photo"
-            @click="currentTab = parseInt(index)"
-          />
-
+              :class="[{'tab-off':currentTab!==index},{'tab-on':currentTab===index}]"
+              @click="currentTab = parseInt(index)"
+            >
+              <photo-image :photo="photo" />
+            </div>
           </div>
         </div>
 
-        <div class="bx--col-14">
+        <div class="bx--col-lg-14">
           <photo-post-form
             v-if="currentTab < 0"
             :value="post"
-            :input="updatePost"
             :is-form-pending="formPending"
             :parent-is-modal="parentIsModal"
+            @input="updatePost"
             @setFile="setNewFileLocal"
           />
           <photo-form
             v-if="currentTab >= 0"
             :value="currentPhoto"
             :is-form-pending="formPending"
+            :rapids="rapids"
             @input="updatePhoto"
-            @setFile="setFileFileForPhotoLocal"
+            @setFileForPhoto="setFileFileForPhotoLocal"
           />
         </div>
       </div>
@@ -54,7 +61,7 @@ import {
   PhotoType,
   PostFactory,
   PostType,
-  ReachType,
+
 } from "@bit/aw.models.post";
 import { FileAttachmentType } from "@/app/views/river-detail/shared/components/lib/types";
 import PhotoForm from "./PhotoForm.vue";
@@ -63,7 +70,7 @@ import { usePost } from "@/app/views/river-detail/shared/components/lib/use-post
 import { UserType } from "../../../../../../components/models/user/types";
 import isEqual from "lodash/isEqual";
 import PhotoImage from "@/app/views/river-detail/shared/components/PhotoImage.vue";
-import { cloneDeep } from '@apollo/client/utilities';
+import { cloneDeep } from "@apollo/client/utilities";
 // eslint-disable-next-line vue/require-direct-export
 export default defineComponent({
   name: "media-upload-form",
@@ -95,7 +102,6 @@ export default defineComponent({
     },
   },
 
-
   setup(props, context) {
     // management functions come from usePost.
     const postManager = usePost();
@@ -114,7 +120,7 @@ export default defineComponent({
     const rapids = computed(
       () => context.root.$store.state.riverDetailState.rapidsData.data
     );
-        async function setNewFileLocal(input: Array<FileAttachmentType>) {
+    async function setNewFileLocal(input: Array<FileAttachmentType>) {
       try {
         await postManager.setNewFile(input);
       } catch (error) {
@@ -129,14 +135,10 @@ export default defineComponent({
       }
     }
 
-    const reach_id = computed(
-      () =>
-      {
+    const reach_id = computed(() => {
 
-        return context.root.$route.params.id
-      }
-
-    );
+      return context.root.$route.params.id;
+    });
 
     postManager.setPostDefaults({
       user_id: user.value?.uid,
@@ -145,7 +147,6 @@ export default defineComponent({
       reach_id: parseInt(reach_id.value),
     });
 
-
     async function setFileFileForPhotoLocal({
       photo,
       input,
@@ -153,6 +154,7 @@ export default defineComponent({
       photo: PhotoType;
       input: FileAttachmentType[];
     }) {
+
       try {
         await postManager.setFileForPhoto({ photo, input });
       } catch (error) {
@@ -169,7 +171,10 @@ export default defineComponent({
 
     async function submitPost() {
       try {
+
         await postManager.updatePost();
+        postManager.resetForm();
+        currentTab.value = -1;
         context.emit("form:success");
         // @ts-ignore
         context.root.$store.dispatch(globalAppActions.SEND_TOAST, {
@@ -188,39 +193,39 @@ export default defineComponent({
       }
     }
 
-
-
-   watch(
+    watch(
       () => props.primaryClickTimestamp,
       () => submitPost()
     );
-
 
     function updatePhoto(p: PhotoType) {
       postManager.setActivePhotoFields(p);
     }
 
     watch(
-      () => currentTab,
+      () => currentTab.value,
       () =>
         postManager.switchActivePhoto(
           postManager.currentPost.value.photos[currentTab.value].id
         )
     );
-    function updatePost(p: PostType)
-    {
-      postManager.setActivePostFields(p)
+    function updatePost(p: PostType) {
+      postManager.setActivePostFields(p);
     }
 
     watch(
       () => postManager.currentPost.value,
-      () => {if(!isEqual(post.value,postManager.currentPost.value)){ post.value = cloneDeep(postManager.currentPost.value);}},
+      () => {
 
+        if (!isEqual(post.value, postManager.currentPost.value)) {
+          post.value = cloneDeep(postManager.currentPost.value);
+        }
+      },{deep:true}
     );
     watch(
       () => props.value,
       () => postManager.setActivePostFields(props.value as PostType)
-    )
+    );
     onMounted(() => postManager.resetForm());
     return {
       ...postManager,
@@ -228,7 +233,7 @@ export default defineComponent({
       currentTab,
       rapids,
       updatePost,
-      parentIsModal:parentIsModal,
+      parentIsModal: parentIsModal,
       fieldsDisabled,
       setNewFileLocal,
       setFileFileForPhotoLocal,
@@ -240,6 +245,32 @@ export default defineComponent({
   },
 });
 </script>
+<style lang="scss">
+.tab-on {
+  background: white;
+  border-right: none;
+}
+.tab-off {
+  background: grey;
+}
+
+.tab-bg{
+  background: #537653;
+  padding:0
+}
+
+.tab-on,.tab-off
+{
+  height: 100px;
+  border: darkgray solid 1px;
+  padding-left:10px;
+  padding-top:10px;
+  margin-top:10px;
+
+}
+
+
+</style>
 <docs>
 
 ## note

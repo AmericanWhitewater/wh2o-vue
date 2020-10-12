@@ -1,13 +1,11 @@
-import { computed, reactive, ref } from "@vue/composition-api";
+import { computed, ref } from "@vue/composition-api";
 import { cloneDeep } from "@apollo/client/utilities";
 import {
   FileInputSectionType,
   FileInputType,
   PhotoFactory,
-  PhotoInputType,
   PhotoType,
   PostFactory,
-  PostInputType,
   PostRepository,
   PostType,
   PostTypeEnum,
@@ -61,7 +59,7 @@ export function usePost() {
    * Finds the photo in the post and updates the fields.
    */
   function updatePhotoInPost(p: PhotoType) {
-    addOrUpdate((a) => a.id == p.id, internalPost.value.photos, p);
+    addOrUpdate((a) => a.id == p.id, internalPost.value.photos, cloneDeep(p));
   }
 
   /**
@@ -70,11 +68,18 @@ export function usePost() {
    */
   function switchActivePhoto(id: string) {
     const photo = internalPost.value.photos.find((x) => x.id == id);
+    // internalPhoto starts disconnected, becomes connected with a photo upload
 
-    if (!photo) {
-      throw new UsePostException(`Cannot make invalid photo ID active ${id}`);
+    if (id == internalPhoto.value.id && !photo) {
+      internalPost.value.photos.push(cloneDeep(internalPhoto.value));
+    } else {
+      //id specified neither a disconnected photo or existing id.
+      if (!photo) {
+        throw new UsePostException(`Cannot make invalid photo ID active ${id}`);
+      }
+      // only need to switch the edit form if it is not currently active.
+      internalPhoto.value = cloneDeep(photo);
     }
-    internalPhoto.value = cloneDeep(photo);
   }
 
   /**
@@ -83,11 +88,8 @@ export function usePost() {
    * @param p
    */
   function setActivePhotoFields(p: PhotoType) {
-    if (internalPhoto.value.id != p.id) {
-      updatePhotoInPost(p);
-      switchActivePhoto(p.id);
-    }
-    internalPhoto.value = cloneDeep(p);
+    updatePhotoInPost(p);
+    switchActivePhoto(p.id);
   }
 
   /**
@@ -186,6 +188,7 @@ export function usePost() {
       for (let i = 0; i < internalPost.value.photos.length; i++) {
         await updatePhoto(internalPost.value.photos[i]);
       }
+      debugger;
       await PostRepository.updatePost({
         user_id: postDefaults.user_id,
         post: PostFactory.Post2PostInput(internalPost.value),
@@ -203,7 +206,7 @@ export function usePost() {
   function resetForm() {
     const post_id = genid();
     formPending.value = false;
-
+    internalPost.value = { ...PostFactory.new() };
     internalPost.value.id = post_id;
     internalPost.value.reach_id = postDefaults.reach_id;
     internalPost.value.gauge_id = postDefaults.gauge_id;
