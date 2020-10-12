@@ -134,25 +134,35 @@ export default {
      *
      */
     availableMetrics () {
-      if (this.metrics && this.data) {
-        const data = []
-        for (let i = 0; i < this.data.length; i++) {
-          if (!data.includes(this.data[i].metric)) {
-            const input = {}
-            input.id = this.data[i].metric.toString()
-            /**
-             * @todo get unit title/label in api response
-             *
-             */
-            input.label = this.data[i].metric === 2 ? 'cfs' : 'n/a'
-            if (!data.find(m => m.id === input.id)) {
-              data.push(input)
-            }
-          }
+      return [
+        {
+          id: '2',
+          label: 'cfs'
+        },
+        {
+          id: '8',
+          label: 'ft'
         }
-        return data
-      }
-      return null
+      ]
+      // if (this.metrics && this.data) {
+      //   const data = []
+      //   for (let i = 0; i < this.data.length; i++) {
+      //     if (!data.includes(this.data[i].metric)) {
+      //       const input = {}
+      //       input.id = this.data[i].metric.toString()
+      //       /**
+      //        * @todo get unit title/label in api response
+      //        *
+      //        */
+      //       // input.label = this.data[i].metric === 2 ? 'cfs' : 'n/a'
+      //       if (!data.find(m => m.id === input.id)) {
+      //         data.push(input)
+      //       }
+      //     }
+      //   }
+      //   return data
+      // }
+      // return null
     }
   },
   watch: {
@@ -194,20 +204,13 @@ export default {
 
         case 'week':
           this.$emit('timescaleChange', 'll')
-          this.formData.resolution = 60 * 60 * 12
+          this.formData.resolution = 60 * 60 * 6
           this.formData.timeScale = 'week'
           start = moment()
             .subtract(1, 'week')
             .unix()
           break
         case 'day':
-          this.$emit('timescaleChange', 'h:mm a')
-          this.formData.timeScale = 'day'
-          this.formData.resolution = 1
-          start = moment()
-            .subtract(1, 'day')
-            .unix()
-          break
         default:
           this.$emit('timescaleChange', 'h:mm a')
           this.formData.timeScale = 'day'
@@ -240,6 +243,7 @@ export default {
      */
     if (this.gages) {
       this.formData.gauge_id = this.gages[0].gauge.id
+      this.formData.metric_id = this.gages[0].gauge_metric
     }
     this.fetchMetrics()
   },

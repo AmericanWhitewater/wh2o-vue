@@ -52,7 +52,6 @@
           </template>
           <GageChartControls
             @viewModeChange="viewMode = $event"
-
             @gage-change="setActiveGageId"
           />
           <div class="mb-lg">
@@ -170,7 +169,8 @@ export default {
       gages: state => state.riverDetailState.reachGagesData.data,
       gagesLoading: state => state.riverDetailState.reachGagesData.loading,
       gagesError: state => state.riverDetailState.reachGagesData.error,
-      editMode: state => state.appGlobalState.appGlobalData.editMode
+      editMode: state => state.appGlobalState.appGlobalData.editMode,
+      riverData: state => state.riverDetailState.riverDetailData.data
     }),
     chartSize () {
       if (this.windowWidth > this.$options.breakpoints.md) {
