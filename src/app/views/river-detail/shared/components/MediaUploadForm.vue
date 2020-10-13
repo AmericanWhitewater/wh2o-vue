@@ -4,9 +4,12 @@
     <div class="grid">
       <div class="bx--row">
         <div class="bx--col-lg-2 tab-bg">
-          <div class="overflow ">
+          <div class="overflow">
             <div
-              :class="[{'tab-on':currentTab<0},{'tab-off':currentTab>=0}]"
+              :class="[
+                { 'tab-on': currentTab < 0 },
+                { 'tab-off': currentTab >= 0 },
+              ]"
               @click="currentTab = -1"
             >
               Overview
@@ -14,8 +17,10 @@
             <div
               v-for="(photo, index) in post.photos"
               :key="photo.id"
-
-              :class="[{'tab-off':currentTab!==index},{'tab-on':currentTab===index}]"
+              :class="[
+                { 'tab-off': currentTab !== index },
+                { 'tab-on': currentTab === index },
+              ]"
               @click="currentTab = parseInt(index)"
             >
               <photo-image :photo="photo" />
@@ -61,7 +66,6 @@ import {
   PhotoType,
   PostFactory,
   PostType,
-
 } from "@bit/aw.models.post";
 import { FileAttachmentType } from "@/app/views/river-detail/shared/components/lib/types";
 import PhotoForm from "./PhotoForm.vue";
@@ -136,7 +140,6 @@ export default defineComponent({
     }
 
     const reach_id = computed(() => {
-
       return context.root.$route.params.id;
     });
 
@@ -154,7 +157,6 @@ export default defineComponent({
       photo: PhotoType;
       input: FileAttachmentType[];
     }) {
-
       try {
         await postManager.setFileForPhoto({ photo, input });
       } catch (error) {
@@ -171,7 +173,6 @@ export default defineComponent({
 
     async function submitPost() {
       try {
-
         await postManager.updatePost();
         postManager.resetForm();
         currentTab.value = -1;
@@ -216,11 +217,11 @@ export default defineComponent({
     watch(
       () => postManager.currentPost.value,
       () => {
-
         if (!isEqual(post.value, postManager.currentPost.value)) {
           post.value = cloneDeep(postManager.currentPost.value);
         }
-      },{deep:true}
+      },
+      { deep: true }
     );
     watch(
       () => props.value,
@@ -254,22 +255,19 @@ export default defineComponent({
   background: grey;
 }
 
-.tab-bg{
+.tab-bg {
   background: #537653;
-  padding:0
+  padding: 0;
 }
 
-.tab-on,.tab-off
-{
+.tab-on,
+.tab-off {
   height: 100px;
   border: darkgray solid 1px;
-  padding-left:10px;
-  padding-top:10px;
-  margin-top:10px;
-
+  padding-left: 10px;
+  padding-top: 10px;
+  margin-top: 10px;
 }
-
-
 </style>
 <docs>
 
