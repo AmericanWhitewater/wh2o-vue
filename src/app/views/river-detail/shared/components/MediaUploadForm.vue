@@ -206,9 +206,10 @@ export default defineComponent({
     watch(
       () => currentTab.value,
       () => {
+
         if (
-          currentTab.value > 0 &&
-          currentTab.value > postManager.currentPost.value.photos.length
+          currentTab.value >= 0 &&
+          currentTab.value < postManager.currentPost.value.photos.length
         ) {
           postManager.switchActivePhoto(
             postManager.currentPost.value.photos[currentTab.value].id
@@ -255,27 +256,7 @@ export default defineComponent({
 });
 </script>
 <style lang="scss">
-.tab-on {
-  background: white;
-  border-right: none;
-}
-.tab-off {
-  background: grey;
-}
 
-.tab-bg {
-  background: #537653;
-  padding: 0;
-}
-
-.tab-on,
-.tab-off {
-  height: 100px;
-  border: darkgray solid 1px;
-  padding-left: 10px;
-  padding-top: 10px;
-  margin-top: 10px;
-}
 </style>
 <docs>
 

@@ -5,6 +5,7 @@
     :auto-hide-off="true"
     size="small"
     :visible="internalVisible"
+    class="media-upload-modal"
     @primary-click="handleSubmit"
     @secondary-click="handleCancel"
     @modal-shown="handleShow"
