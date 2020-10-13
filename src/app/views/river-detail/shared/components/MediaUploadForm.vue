@@ -205,10 +205,18 @@ export default defineComponent({
 
     watch(
       () => currentTab.value,
-      () =>
-        postManager.switchActivePhoto(
-          postManager.currentPost.value.photos[currentTab.value].id
-        )
+      () => {
+        if (
+          currentTab.value > 0 &&
+          currentTab.value > postManager.currentPost.value.photos.length
+        ) {
+          postManager.switchActivePhoto(
+            postManager.currentPost.value.photos[currentTab.value].id
+          );
+        } else {
+          currentTab.value = -1;
+        }
+      }
     );
     function updatePost(p: PostType) {
       postManager.setActivePostFields(p);
