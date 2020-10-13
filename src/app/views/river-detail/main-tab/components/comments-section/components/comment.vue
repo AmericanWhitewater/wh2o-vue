@@ -18,8 +18,9 @@
           class="date mb-spacing-xs"
           v-text="formatDate(comment.post_date, 'll')"
         />
-        <template v-if="user && comment.user.uid === user.uid">
+        <template>
           <cv-button
+            v-if="canEdit(comment)"
             size="small"
             kind="secondary"
             @click.exact="$emit('comment:edit', comment)"
@@ -28,6 +29,7 @@
             Edit
           </cv-button>
           <cv-button
+            v-if="canDelete(comment)"
             size="small"
             kind="danger"
             class="mb-spacing-xs"
@@ -78,7 +80,7 @@
 <script>
 import UserAvatar from '@/app/global/components/user-avatar/user-avatar'
 import { globalAppActions } from '@/app/global/state'
-import { shadowDomFixedHeightOffset } from '@/app/global/mixins'
+import { shadowDomFixedHeightOffset, objectPermissionsHelpersMixin } from '@/app/global/mixins'
 import { httpClient } from '@/app/global/services'
 import { baseUrl } from '../../../../../../environment'
 
@@ -87,7 +89,7 @@ export default {
   components: {
     UserAvatar
   },
-  mixins: [shadowDomFixedHeightOffset],
+  mixins: [shadowDomFixedHeightOffset, objectPermissionsHelpersMixin],
   props: {
     comment: {
       type: Object,
@@ -114,7 +116,6 @@ export default {
       if (input) {
         return `${baseUrl}${input}`
       }
-
       return null
     },
     deleteComment (commentId) {

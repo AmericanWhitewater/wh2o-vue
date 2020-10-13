@@ -65,7 +65,6 @@ export default defineComponent({
     watch(
       () => internalPost.value,
       () => {
-
         !isEqual(props.value, internalPost.value) &&
           ctx.emit("input", cloneDeep(internalPost.value));
       },

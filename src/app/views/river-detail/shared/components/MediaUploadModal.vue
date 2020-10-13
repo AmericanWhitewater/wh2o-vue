@@ -47,7 +47,7 @@
 import MediaUploadForm from './MediaUploadForm.vue'
 import {defineComponent, ref, watch} from '@vue/composition-api'
 import { useShadowDomFixedHeightOffset } from '@/app/global/compositions/shadow-dom-fixed-height-offset'
-import CvModal from '@carbon/vue/src/components/cv-modal'
+
 // eslint-disable-next-line vue/require-direct-export
 export default defineComponent({
   name: 'media-upload-modal',

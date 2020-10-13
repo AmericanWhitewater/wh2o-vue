@@ -11,8 +11,8 @@
     "bit": "bit remote add ssh://bit@bit.americanwhitewater.org:/opt/bit/aw && bit import && bit link",
     "build:modern": "vue-cli-service build --modern",
     "coveralls": "vue-cli-service test:unit --coverage && cat ./coverage/lcov.info | coveralls",
-    "lint:js": "eslint './src/**/*.js' './src/**/*.vue' --fix",
-    "lint:scss": "stylelint './src/**/*.{scss, vue}' --syntax scss --fix",
+    "lint:js": "eslint './src/**/*.js' './src/**/*.ts' './src/**/*.vue' --fix",
+    "lint:scss": "stylelint './src/**/*.{scss, vue}' -syntax scss --fix",
     "snapshot:update": " vue-cli-service test:unit --updateSnapshot",
     "start": "node server/server.js",
     "test:coverage": "vue-cli-service test:unit --coverage"
@@ -37,6 +37,7 @@
     "@turf/bbox-polygon": "^6.0.1",
     "@turf/boolean-point-in-polygon": "^6.0.1",
     "@turf/boolean-point-on-line": "^6.0.1",
+    "@turf/buffer": "^5.1.5",
     "@turf/helpers": "^6.1.4",
     "@turf/length": "^6.0.2",
     "@turf/line-intersect": "^6.0.2",
@@ -60,6 +61,7 @@
     "geojson-rbush": "^3.1.2",
     "graph-data-structure": "^1.12.0",
     "graphql": "^15.3.0",
+    "jest-transform-graphql": "^2.1.0",
     "lodash": "^4.17.20",
     "mapbox-gl": "^1.10.0",
     "moment": "^2.26.0",
@@ -128,6 +130,7 @@
       "autoprefixer": {}
     }
   },
+
   "browserslist": [
     "> 1%",
     "last 2 versions",

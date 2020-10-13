@@ -43,22 +43,15 @@
                     <td v-text="formatDate(a.accident_date, 'll')" />
                     <td v-text="a.water_level" />
                     <td>
-                      <cv-list>
-                        <cv-list-item
-                          v-for="(injury, j) in a.injuries"
-                          :key="j"
-                        >
-                          {{ injury.injury }}
-                        </cv-list-item>
-                      </cv-list>
+                      {{ accidentResult(a.type) }}
                     </td>
                     <td>
                       <cv-list>
                         <cv-list-item
-                          v-for="(factor, i) in a.factors"
+                          v-for="(c, i) in a.causes"
                           :key="i"
                         >
-                          {{ factor.factor }}
+                          {{ c.cause }}
                         </cv-list-item>
                       </cv-list>
                     </td>
@@ -134,21 +127,27 @@ export default {
   },
   methods: {
     loadData () {
-      if (!this.accidents && !this.error) {
-        this.$store.dispatch(
-          accidentsActions.FETCH_ACCIDENTS_DATA,
-          this.riverId
-        )
-      }
+      this.$store.dispatch(
+        accidentsActions.FETCH_ACCIDENTS_DATA,
+        this.riverId
+      )
     },
     viewAccident (accidentId) {
       this.goToLink(this.formatLinkUrl(`/content/Accident/detail/accidentid/${accidentId}`))
+    },
+
+    accidentResult (result) {
+      switch (result) {
+        case 'F':
+          return 'Fatality'
+        case 'M':
+          return 'Near Miss/Rescue'
+        case 'I':
+          return 'Injury'
+        default:
+          return 'n/a'
+      }
     }
-    // sortAccidents(accidents) {
-    //   if (accidents === null || accidents === undefined)
-    //     return [];
-    //   return accidents
-    // }
   },
   created () {
     this.loadData()

@@ -23,11 +23,11 @@
         theme="light"
       >
         <cv-dropdown-item
-          v-for="(item, index) in poiClasses"
+          v-for="(item, index) in reachClasses"
           :key="index"
-          :value="item.value"
+          :value="item"
         >
-          {{ item.label }}
+          {{ item }}
         </cv-dropdown-item>
       </cv-dropdown>
       <cv-number-input
@@ -38,7 +38,6 @@
         :max="4132"
         :min="0"
         :mobile="windowWidth <= $options.breakpoints.md"
-        :disabled="formPending"
       />
       <cv-number-input
         v-model="formData.avggradient"
@@ -48,7 +47,6 @@
         :max="4132"
         :min="0"
         :mobile="windowWidth <= $options.breakpoints.md"
-        :disabled="formPending"
       />
       <cv-number-input
         v-model="formData.maxgradient"
@@ -58,7 +56,6 @@
         :max="4132"
         :min="0"
         :mobile="windowWidth <= $options.breakpoints.md"
-        :disabled="formPending"
       />
     </template>
     <template slot="secondary-button">
@@ -71,13 +68,12 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { poiClasses, checkWindow, shadowDomFixedHeightOffset } from '@/app/global/mixins'
-import { globalAppActions } from '@/app/global/state'
-import { httpClient } from '@/app/global/services'
+import { reachClasses, checkWindow, shadowDomFixedHeightOffset } from '@/app/global/mixins'
+import { riverDetailActions } from '../../../../shared/state'
 
 export default {
   name: 'beta-box-edit-modal',
-  mixins: [poiClasses, checkWindow, shadowDomFixedHeightOffset],
+  mixins: [reachClasses, checkWindow, shadowDomFixedHeightOffset],
   props: {
     visible: {
       type: Boolean,
@@ -85,26 +81,17 @@ export default {
     }
   },
   data: () => ({
-    formError: false,
-    formPending: false,
     formData: {
-      primaryGage: '',
       class: '',
-      avggradient: 0,
-      maxgradient: 0
+      length: null,
+      avggradient: null,
+      maxgradient: null
     }
   }),
   computed: {
     ...mapState({
-      loading: state => state.riverDetailState.riverDetailData.loading,
-      river: state => state.riverDetailState.riverDetailData.data,
-      error: state => state.riverDetailState.riverDetailData.error,
-      editMode: state => state.appGlobalState.appGlobalData.editMode,
-      gages: state => state.riverDetailState.reachGagesData.data
-    }),
-    reachId () {
-      return this.$route.params.id
-    }
+      reach: state => state.riverDetailState.riverDetailData.data
+    })
   },
   methods: {
     handleCancel () {
@@ -112,61 +99,28 @@ export default {
       this.$parent.editModalVisible = false
     },
     setForm () {
-      if (this.river) {
-        this.formData.class = this.river.class || 'I'
-        this.formData.length = this.river.length || 0
-        this.formData.avggradient = this.river.avggradient || 0
-        this.formData.maxgradient = this.river.maxgradient || 0
+      if (this.reach) {
+        this.formData.class = this.reach.class
+        this.formData.length = this.reach.length
+        this.formData.avggradient = this.reach.avggradient
+        this.formData.maxgradient = this.reach.maxgradient
       }
     },
     submitForm () {
       this.$emit('edit:submit')
       this.$parent.editModalVisible = false
-      this.formPending = true
-      this.formError = false
-
-      httpClient.post('/graphql', {
-        query: `
-          mutation  {
-            reachUpdate(id: ${this.reachId}, reach:{
-              class: "${this.formData.class}",
-              length: ${parseFloat(this.formData.length)},
-              avggradient: ${parseInt(this.formData.avggradient, 10)},
-              maxgradient: ${parseInt(this.formData.maxgradient, 10)}
-              }) {
-              class
-              length
-              avggradient
-              maxgradient
-            }
-          }
-        `
-      }).then(() => {
-        this.formPending = false
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
-          title: 'Beta Box Updated',
-          kind: 'success',
-          override: true,
-          contrast: false,
-          action: false,
-          autoHide: true
-        })
-      }).catch(() => {
-        this.formPending = false
-        this.formError = true
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
-          title: 'Update Failed',
-          kind: 'error',
-          override: true,
-          contrast: false,
-          action: false,
-          autoHide: true
-        })
+      this.$nextTick(() => {
+        this.$store.dispatch(riverDetailActions.UPDATE_REACH, this.formData)
       })
     }
   },
   mounted () {
-    this.setForm()
+    if (this.reach) {
+      this.formData.class = this.reach.class
+      this.formData.length = this.reach.length
+      this.formData.avggradient = this.reach.avggradient
+      this.formData.maxgradient = this.reach.maxgradient
+    }
   }
 }
 </script>

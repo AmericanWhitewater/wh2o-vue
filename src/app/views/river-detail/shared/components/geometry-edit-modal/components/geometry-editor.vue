@@ -1,44 +1,45 @@
 <template>
-  <section>
-    <h5 class="mode-name">
-      Editing in {{ mapEditMode }} Mode
-    </h5>
-    <template v-if="geometryMode === 'creating'">
-      <p v-if="mapEditMode ==='automatic'">
-        Click on the map to create the start and end points of your reach. When you click, your selection will
-        automatically snap to the National Hydrography Dataset (NHD), a USGS dataset of rivers and streams. Once
-        you've defined two points, the map will automatically calculate a path between the two.
-      </p>
-      <p v-if="mapEditMode ==='manual'">
-        Click on the map to start defining a line segment. You can keep adding new vertices by clicking in new places
-        or you can "complete" your line by clicking a second time on the last vertex you created. The dotted pink
-        lines represent the USGS National Hydrography Dataset (NHD), a USGS dataset of rivers and streams.
-      </p>
-    </template>
-    <template v-else>
-      <p v-if="mapEditMode === 'automatic'">
-        The dotted lines represent the National Hydrography Dataset (NHD), a USGS dataset of rivers and streams
-        in the United States. To modify the reach, click on either endpoint to "activate" it, then click it
-        again and drag to move elsewhere on the NHD. The points will automatically "snap" to the nearest flowline
-        in the NHD as you drag. A new "geometry" (line) will be generated when you finish moving the point.
-        It isn't saved until you click "Submit" below.
-      </p>
-      <p v-if="mapEditMode === 'manual'">
-        Manual mode allows you to modify the line segment by hand. Click on the line segment to activate editing.
-        A series of vertices will appear along the line. Click on one, then click again and drag to modify the line.
-        Note: if you go back to automatic mode and modify the reach again, your changes will be overwritten.
-      </p>
-    </template>
-    <cv-inline-notification
-      v-if="tooZoomedOut && !noticeHidden"
-      kind="warning"
-      title="Zoom in to edit"
-      sub-title="Since the editor snaps to a very dense dataset (the National Hydrography Dataset), you can only edit it meaningfully at closer zoom levels. Zoom in to enable editing."
-      @close="noticeHidden = true"
-    />
+  <div>
+    <section class="geom-editor-instructions">
+      <h5 class="mode-name">
+        Editing in {{ mapEditMode }} Mode
+      </h5>
+      <template v-if="geometryMode === 'creating'">
+        <p v-if="mapEditMode ==='automatic'">
+          Click on the map to create the start and end points of your reach. When you click, your selection will
+          automatically snap to the National Hydrography Dataset (NHD), a USGS dataset of rivers and streams. Once
+          you've defined two points, the map will automatically calculate a path between the two.
+        </p>
+        <p v-if="mapEditMode ==='manual'">
+          Click on the map to start defining a line segment. You can keep adding new vertices by clicking in new places
+          or you can "complete" your line by clicking a second time on the last vertex you created. The dotted pink
+          lines represent the USGS National Hydrography Dataset (NHD), a USGS dataset of rivers and streams.
+        </p>
+      </template>
+      <template v-else>
+        <p v-if="mapEditMode === 'automatic'">
+          The dotted lines represent the National Hydrography Dataset (NHD), a USGS dataset of rivers and streams
+          in the United States. To modify the reach, click on either endpoint to "activate" it, then click it
+          again and drag to move elsewhere on the NHD. The points will automatically "snap" to the nearest flowline
+          in the NHD as you drag. A new "geometry" (line) will be generated when you finish moving the point.
+          It isn't saved until you click "Submit" below.
+        </p>
+        <p v-if="mapEditMode === 'manual'">
+          Manual mode allows you to modify the line segment by hand. Click on the line segment to activate editing.
+          A series of vertices will appear along the line. Click on one, then click again and drag to modify the line.
+          Note: if you go back to automatic mode and modify the reach again, your changes will be overwritten.
+        </p>
+      </template>
+      <cv-inline-notification
+        v-if="tooZoomedOut && !noticeHidden"
+        kind="warning"
+        title="Zoom in to edit"
+        sub-title="Since the editor snaps to a very dense dataset (the National Hydrography Dataset), you can only edit it meaningfully at closer zoom levels. Zoom in to enable editing."
+        @close="noticeHidden = true"
+      />
+    </section>
     <div
       id="nhd-editor-container"
-      style="height: 400px;"
     >
       <div class="nhd-editor-mode-switcher">
         <cv-dropdown v-model="mapEditMode">
@@ -51,6 +52,18 @@
         </cv-dropdown>
       </div>
       <div
+        v-if="currentGeom"
+        class="nhd-editor-clear-map"
+      >
+        <cv-button
+          kind="danger"
+          size="small"
+          @click="clearMap"
+        >
+          Clear Map
+        </cv-button>
+      </div>
+      <div
         id="nhd-editor"
         ref="nhdEditor"
       />
@@ -58,7 +71,7 @@
         :offset-right="false"
       />
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -68,6 +81,7 @@ import {
   mapboxAccessToken
 } from '@/app/environment'
 import NwiBasemapToggle from '@/app/views/river-index/components/nwi-basemap-toggle.vue'
+import { mapHelpersMixin } from '@/app/global/mixins'
 
 import bbox from '@turf/bbox'
 import bboxPolygon from '@turf/bbox-polygon'
@@ -83,6 +97,7 @@ import Graph from 'graph-data-structure'
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
 import SnapMode from '../utils/SnapMode'
+import DirectSelectMode from '../utils/DirectSelectMode'
 import SnapDrawPointMode from '../utils/SnapDrawPointMode'
 import StaticMode from '@mapbox/mapbox-gl-draw-static-mode'
 import DrawStyles from '../utils/DrawStyles'
@@ -90,7 +105,7 @@ import DrawStyles from '../utils/DrawStyles'
 const defaultMapModes = {
   editing: {
     automatic: 'SnapMode',
-    manual: 'simple_select'
+    manual: 'DirectSelectMode'
   },
   creating: {
     automatic: 'SnapDrawPointMode',
@@ -103,6 +118,7 @@ export default {
   components: {
     NwiBasemapToggle
   },
+  mixins: [mapHelpersMixin],
   data: () => ({
     currentGeom: null,
     tooZoomedOut: false,
@@ -142,12 +158,12 @@ export default {
       if (this.reachGeom) {
         return bbox(this.reachGeom)
       }
-      return null
+      return this.defaultMapBounds()
     },
     // determines whether we need to add elements to the map
     // or edit ones that already exist
     geometryMode () {
-      if (this.currentGeom || this.reachGeom) {
+      if (this.currentGeom) {
         return 'editing'
       } else {
         return 'creating'
@@ -181,6 +197,12 @@ export default {
     }
   },
   methods: {
+    clearMap () {
+      if (confirm('Are you sure?')) {
+        this.currentGeom = null
+        this.draw.deleteAll()
+      }
+    },
     getNhdLines () {
       const cacheKey = this.map.getBounds().toString()
       if (this.linesCache[cacheKey] == null) {
@@ -299,7 +321,12 @@ export default {
       // if we're too zoomed out, editing mode is StaticMode
       // and we should keep it that way
       if (!this.tooZoomedOut) {
-        this.draw.changeMode(defaultMapModes[this.geometryMode][mode])
+        const newMode = defaultMapModes[this.geometryMode][mode]
+        const opts = {}
+        if (newMode === 'DirectSelectMode') {
+          opts.featureId = 'reachGeom'
+        }
+        this.draw.changeMode(newMode, opts)
       }
 
       this.renderDrawFeatures()
@@ -321,7 +348,9 @@ export default {
         styles: DrawStyles,
         modes: {
           StaticMode,
-          ...MapboxDraw.modes,
+          DirectSelectMode,
+          draw_line_string: MapboxDraw.modes.draw_line_string,
+          simple_select: MapboxDraw.modes.simple_select,
           SnapDrawPointMode: {
             ...SnapDrawPointMode,
             config: {
@@ -440,10 +469,14 @@ export default {
     }
   },
   mounted () {
-    if (mapboxAccessToken) {
-      this.mountMap()
-    }
-    this.currentGeom = this.reachGeom
+    // ensure that reachGeom prop is established
+    this.$nextTick(() => {
+      this.currentGeom = this.reachGeom
+      if (mapboxAccessToken) {
+        this.mountMap()
+      }
+    })
+
     this.graphCache = {}
     this.linesCache = {}
   }

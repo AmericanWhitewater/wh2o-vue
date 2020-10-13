@@ -1,4 +1,13 @@
-declare module '*.vue' {
-  import Vue from 'vue'
-  export default Vue
+import VueRouter, { Route } from "vue-router";
+import Vue from "vue";
+
+declare module "*.vue" {
+  export default Vue;
+}
+
+declare module "vue/types/vue" {
+  interface Vue {
+    $router: VueRouter;
+    $route: Route;
+  }
 }

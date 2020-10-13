@@ -26,8 +26,8 @@
         v-for="(article, i) in articles.slice(0, 1)"
         :key="i + 3 * 4"
         class="bx--row mb-spacing-xs sidebar-article"
-        @keydown.enter="$router.push(`/article/${article.id}`)"
-        @click.exact="$router.push(`/article/${article.id}`)"
+        @keydown.enter="readArticle(article)"
+        @click.exact="readArticle(article)"
       >
         <div class="bx--col-sm-12 bx--col-md-3">
           <img
@@ -79,6 +79,9 @@ export default {
         return `${baseUrl}${uri}`
       }
       return null
+    },
+    readArticle (article) {
+      this.goToLink(this.formatLinkUrl(`content/Article/view/article_id/${article.id}/`))
     }
   }
 }

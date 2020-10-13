@@ -12,11 +12,15 @@ const fetchAccidentsData = data => {
               accident_date
               water_level
               status
+              type
               factors {
                 factor
               }
               injuries {
                 injury
+              }
+              causes {
+                cause
               }
               id
             }

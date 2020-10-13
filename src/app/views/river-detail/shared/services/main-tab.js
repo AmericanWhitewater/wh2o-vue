@@ -70,9 +70,18 @@ const updateRiverDetailGeom = data => {
     })
 }
 
+const fetchReleases = data => {
+  return httpClient
+    .post(apiConstants.graphql, {
+
+    }).then(r => {
+      return r.data
+    })
+}
+
 const updateBetaBox = data => {
   const url = `/rapid/${data.id}`
   return httpClient.patch(url, data)
 }
 
-export { fetchRiverDetailData, updateBetaBox, updateRiverDetailGeom }
+export { fetchRiverDetailData, updateBetaBox, updateRiverDetailGeom, fetchReleases }

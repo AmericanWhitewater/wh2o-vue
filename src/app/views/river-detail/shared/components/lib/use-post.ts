@@ -191,7 +191,7 @@ export function usePost() {
       for (let i = 0; i < internalPost.value.photos.length; i++) {
         await updatePhoto(internalPost.value.photos[i]);
       }
-      debugger;
+
       await PostRepository.updatePost({
         user_id: postDefaults.user_id,
         post: PostFactory.Post2PostInput(internalPost.value),
