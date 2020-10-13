@@ -70,11 +70,40 @@ import { defineComponent } from "@vue/composition-api";
 import { PermissionResultType } from "@bit/aw.models.permission";
 import MediaUploadModal from "@/app/views/river-detail/shared/components/MediaUploadModal.vue";
 import { Vue } from "vue/types/vue";
-
 interface PageOptions {
   page: number;
   length: number;
 }
+
+interface RiverDetailState
+{
+  galleryData: GalleryState;
+  rapidsData: Record<string,unknown>;
+}
+
+interface UserState
+
+  {userData: Record<string,unknown>}
+
+
+interface StateType
+{
+  userState: UserState;
+
+  riverDetailState: RiverDetailState;
+
+}
+interface GalleryState
+{
+  loading: boolean;
+  error: string;
+  data: Record<string,unknown>;
+  pagination: PageOptions;
+}
+
+/**
+ * hybridized ts-js
+ */
 
 // eslint-disable-next-line vue/require-direct-export
 export default defineComponent({
@@ -94,13 +123,15 @@ export default defineComponent({
     canUserPost: false,
   }),
   computed: {
+
     ...mapState({
-      loading: (state: never) => state.riverDetailState.galleryData.loading,
-      error: (state: never) => state.riverDetailState.galleryData.error,
-      photos: (state: never) => state.riverDetailState.galleryData.data?.data,
-      pagination: (state: never) => state.riverDetailState.galleryData.pagination,
-      rapids: (state: never) => state.riverDetailState.rapidsData.data,
-      user: (state: never) => state.userState.userData.data,
+      //@ts-ignore
+      loading: (state: StateType) => state.riverDetailState.galleryData.loading,
+      error: (state: StateType) => state.riverDetailState.galleryData.error,
+      photos: (state: StateType) => state.riverDetailState.galleryData.data?.data,
+      pagination: (state: StateType) => state.riverDetailState.galleryData.pagination,
+      rapids: (state: StateType) => state.riverDetailState.rapidsData.data,
+      user: (state: StateType) => state.userState.userData.data,
     }),
     ...mapGetters(["media"]),
     reachId() {
