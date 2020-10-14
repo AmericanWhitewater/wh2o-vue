@@ -19,7 +19,7 @@ export default {
 
     return MapboxDraw.modes.simple_select.clickOnFeature.call(this, state, e)
   },
-  clickOnVertex (state, e) {
+  clickOnVertex () {
     // don't allow vertices to be selected
   },
   dragMove (state, e) {

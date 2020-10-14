@@ -201,7 +201,7 @@ const actions = {
       context.commit(MAP_SEARCH_ERROR, 'error searching')
     }
   },
-  async [riverIndexActions.CLEAR_MAP_SEARCH_QUERY] (context, data) {
+  async [riverIndexActions.CLEAR_MAP_SEARCH_QUERY] (context) {
     context.commit(MAP_SEARCH_TERM, null)
     context.commit(MAP_SEARCH_LOADING, false)
   }

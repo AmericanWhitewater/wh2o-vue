@@ -2,7 +2,7 @@ import { httpClient } from '@/app/global/services'
 
 import { apiConstants } from '../config'
 
-const fetchNewsTabData = data => {
+const fetchNewsTabData = () => {
   const url = `${apiConstants.graphql}`
   return httpClient
     .post(url, {

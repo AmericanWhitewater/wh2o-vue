@@ -69,7 +69,7 @@ const actions = {
 
     return result
   },
-  async [userActions.LOGOUT] (context, data) {
+  async [userActions.LOGOUT] (context) {
     context.commit(DATA_RESET)
   }
 }

@@ -33,7 +33,7 @@ const options = {
 
 describe('gage-detail.vue', () => {
   it('created: loads data', async () => {
-    // eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
     const wrapper = createWrapper(GageDetail, options)
 
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,

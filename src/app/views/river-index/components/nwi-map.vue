@@ -189,7 +189,7 @@ export default {
         this.$emit('centeredFeature')
       }
     },
-    detailReachId (newReach) {
+    detailReachId () {
       this.adjustMapForDetailReach()
       // this has to be re-called since we're changing paint props again
       this.updateMapColorScheme(this.colorBy)

@@ -1,13 +1,17 @@
 <template>
+
   <cv-modal
     ref="modalWrapper"
+    :auto-hide-off="true"
     size="small"
-    :visible="visible"
+    :visible="internalVisible"
+    class="media-upload-modal"
     @primary-click="handleSubmit"
     @secondary-click="handleCancel"
     @modal-shown="handleShow"
     @modal-hidden="handleCancel"
   >
+
     <template slot="label">
       <template v-if="label">
         {{ label }}
@@ -33,7 +37,7 @@
     </template>
   </cv-modal>
 </template>
-<script>
+<script type="ts">
 /**
  *
  * @note could potentially merge media-upload-form into
@@ -41,15 +45,17 @@
  * of modal
  *
  */
-import MediaUploadForm from './media-upload-form.vue'
-import { shadowDomFixedHeightOffset } from '@/app/global/mixins'
+import MediaUploadForm from './MediaUploadForm.vue'
+import {defineComponent, ref, watch} from '@vue/composition-api'
+import { useShadowDomFixedHeightOffset } from '@/app/global/compositions/shadow-dom-fixed-height-offset'
 
-export default {
+// eslint-disable-next-line vue/require-direct-export
+export default defineComponent({
   name: 'media-upload-modal',
   components: {
     MediaUploadForm
   },
-  mixins: [shadowDomFixedHeightOffset],
+
   props: {
     title: {
       type: String,
@@ -73,28 +79,49 @@ export default {
     rapids: {
       type: Array,
       required: false,
-      default: () => null
+      default: () => []
     }
   },
-  data: () => ({
-    primaryClickTimestamp: null
-  }),
-  methods: {
-    handleShow () {
-      this.$emit('modal-shown')
-      this.setModalOffset()
-    },
-    handleSubmit () {
-      this.$emit('upload:submitted')
+  setup (props, context) {
+    const internalVisible = ref(false);
+    watch(()=>props.visible,()=>{internalVisible.value = props.visible}, {immediate:true})
+
+
+    const primaryClickTimestamp = ref(new Date().valueOf())
+    const modal_fix = useShadowDomFixedHeightOffset(context);
+    function handleShow () {
+      context.emit('modal-shown')
+      modal_fix.setModalOffset()
+
+    }
+    function handleSubmit () {
+      context.emit('upload:submitted')
+      context.emit('form:success')
       /**
        * child component has watcher on primaryClickTimestamp, when
        * changes, submits form.
        */
-      this.primaryClickTimestamp = Date.now()
-    },
-    handleCancel () {
-      this.$emit('upload:cancelled')
+      internalVisible.value=false;
+      primaryClickTimestamp.value = Date.now()
     }
+    function handleCancel () {
+      context.emit('upload:cancelled')
+      context.emit('form:cancelled')
+      internalVisible.value=false;
+    }
+
+
+
+    return ({
+      handleCancel,
+      handleShow,
+      handleSubmit,
+
+      internalVisible,
+      primaryClickTimestamp,
+      ...modal_fix
+    })
   }
-}
+
+})
 </script>

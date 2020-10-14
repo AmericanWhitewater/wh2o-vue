@@ -106,9 +106,7 @@ export default {
     gaugesLink (code) {
       return `${baseUrl}content/Gauge2/view/?state=${code}`
     },
-    toggleOptionDropdown (state) {
 
-    }
   },
   created () {
     this.$store.dispatch(riverIndexActions.FETCH_STATES)
