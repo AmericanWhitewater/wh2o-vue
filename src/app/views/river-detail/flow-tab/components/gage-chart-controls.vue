@@ -134,35 +134,35 @@ export default {
      *
      */
     availableMetrics () {
-      return [
-        {
-          id: '2',
-          label: 'cfs'
-        },
-        {
-          id: '8',
-          label: 'ft'
-        }
-      ]
-      // if (this.metrics && this.data) {
-      //   const data = []
-      //   for (let i = 0; i < this.data.length; i++) {
-      //     if (!data.includes(this.data[i].metric)) {
-      //       const input = {}
-      //       input.id = this.data[i].metric.toString()
-      //       /**
-      //        * @todo get unit title/label in api response
-      //        *
-      //        */
-      //       // input.label = this.data[i].metric === 2 ? 'cfs' : 'n/a'
-      //       if (!data.find(m => m.id === input.id)) {
-      //         data.push(input)
-      //       }
-      //     }
+      // return [
+      //   {
+      //     id: '2',
+      //     label: 'cfs'
+      //   },
+      //   {
+      //     id: '8',
+      //     label: 'ft'
       //   }
-      //   return data
-      // }
-      // return null
+      // ]
+      if (this.metrics && this.data) {
+        const data = []
+        for (let i = 0; i < this.data.length; i++) {
+          if (!data.includes(this.data[i].metric)) {
+            const input = {}
+            input.id = this.data[i].metric.toString()
+            /**
+             * @todo get unit title/label in api response
+             *
+             */
+            input.label = this.data[i].metric === 2 ? 'cfs' : 'n/a'
+            if (!data.find(m => m.id === input.id)) {
+              data.push(input)
+            }
+          }
+        }
+        return data
+      }
+      return null
     }
   },
   watch: {
