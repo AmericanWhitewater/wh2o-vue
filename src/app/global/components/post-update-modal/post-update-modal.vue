@@ -62,7 +62,7 @@ export default {
     post: {
       type: Object,
       required: false,
-      default: () => {}
+      default: () => ({})
     },
     size: {
       type: String,

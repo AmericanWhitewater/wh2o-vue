@@ -65,7 +65,6 @@ export default {
     formatDate (date) {
       return Moment(date).format('llll')
     }
-  },
-  created () {}
+  }
 }
 </script>

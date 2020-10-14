@@ -145,7 +145,7 @@ const actions = {
   async [riverDetailActions.SET_EDIT_MODE] (context, data) {
     context.commit(MODE_SET, data)
   },
-  async [riverDetailActions.INITIAL_STATE] (context, data) {
+  async [riverDetailActions.INITIAL_STATE] (context) {
     context.commit(DATA_RESET)
   }
 }

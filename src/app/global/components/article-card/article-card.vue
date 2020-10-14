@@ -128,7 +128,7 @@ export default {
         this.goToLink(this.formatLinkUrl(`content/Article/view/article_id/${this.articleId}/`))
       }
 
-      this.$router.push(path).catch(() => {})
+      this.$router.push(path)
     },
     formatTitle (title) {
       if (this.windowWidth > this.$options.breakpoints.lg && title.length > 41) {

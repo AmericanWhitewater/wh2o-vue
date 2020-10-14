@@ -1,6 +1,28 @@
-// src/app/views/river-detail/shared/components/media-upload-form.vue
+// src/app/views/river-detail/shared/components/MediaUploadForm.vue
 
 .media-upload-form {
+  .tab-on {
+    background: white;
+    border-right: none;
+  }
+  .tab-off {
+    background: grey;
+  }
+
+  .tab-bg {
+    background: #537653;
+    padding: 0;
+  }
+
+  .tab-on,
+  .tab-off {
+    height: 100px;
+    border: darkgray solid 1px;
+    padding-left: 10px;
+    padding-top: 10px;
+    margin-top: 10px;
+  }
+
   .bx--modal .bx--text-input {
     background-color: #f4f7fb;
   }

@@ -7,10 +7,10 @@ if (!navigator.onLine) {
   store.dispatch(globalAppActions.NETWORK_STATUS, 'online')
 }
 
-window.addEventListener('offline', function (e) {
+window.addEventListener('offline', function () {
   store.dispatch(globalAppActions.NETWORK_STATUS, 'offline')
 })
 
-window.addEventListener('online', function (e) {
+window.addEventListener('online', function () {
   store.dispatch(globalAppActions.NETWORK_STATUS, 'online')
 })

@@ -171,7 +171,7 @@ export default {
     }
   },
   watch: {
-    mapStyle (v) {
+    mapStyle () {
       this.map.setStyle(this.baseMapUrl)
     },
     currentGeom (v, old) {
@@ -189,7 +189,7 @@ export default {
         this.setMapEditingMode(this.mapEditMode)
       }
     },
-    geometryMode (v) {
+    geometryMode () {
       this.setMapEditingMode(this.mapEditMode)
     },
     mapEditMode (v) {
@@ -374,7 +374,7 @@ export default {
 
       this.map.on('zoomend', this.setTooZoomedOut)
 
-      this.map.on('draw.update', (e) => {
+      this.map.on('draw.update', () => {
         if (this.mapEditMode === 'automatic') {
           // calculate the new line "automatically"
           this.currentGeom = this.calculateGeom()
