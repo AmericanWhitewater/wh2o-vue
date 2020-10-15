@@ -181,7 +181,7 @@ export default {
     viewRiver (id, tab) {
       this.$router
         .push(`/river-detail/${id}/${tab || 'main'}`)
-
+        .catch(() => {})
     },
     mouseoverFeature (feature) {
       this.$store.dispatch(riverIndexActions.MOUSEOVER_FEATURE, feature)

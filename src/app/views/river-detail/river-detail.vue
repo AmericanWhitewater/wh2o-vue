@@ -248,7 +248,7 @@ export default {
     }
   },
   watch: {
-    reachId () {
+    reachId (newId) {
       this.loadReachData()
     }
   },

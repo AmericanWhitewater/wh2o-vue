@@ -92,7 +92,7 @@ export default {
     geom: {
       deep: true,
       immediate: true,
-      handler (newVal) {
+      handler (newVal, oldVal) {
         if (this.pointOfInterest) {
           const oldCoords = this.pointOfInterest.getLngLat()
           if (oldCoords.lng !== newVal.coordinates[0] || oldCoords.lat !== newVal.coordinates[1]) {
@@ -106,7 +106,7 @@ export default {
       }
     },
     snapMode: {
-      handler () {
+      handler (v) {
         this.conditionallyBindSnapHandler()
       }
     }

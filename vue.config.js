@@ -4,30 +4,7 @@
  *
  */
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path')
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const ModuleDependencyWarning = require("webpack/lib/ModuleDependencyWarning")
-
-class IgnoreNotFoundExportPlugin {
-    apply(compiler) {
-        const messageRegExp = /export '.*'( \(reexported as '.*'\))? was not found in/
-        function doneHook(stats) {
-            stats.compilation.warnings = stats.compilation.warnings.filter(function(warn) {
-                if (warn instanceof ModuleDependencyWarning && messageRegExp.test(warn.message)) {
-                    return false
-                }
-                return true;
-            })
-        }
-        if (compiler.hooks) {
-            compiler.hooks.done.tap("IgnoreNotFoundExportPlugin", doneHook)
-        } else {
-            compiler.plugin("done", doneHook)
-        }
-    }
-}
 
 module.exports = {
   filenameHashing: true,
@@ -85,12 +62,7 @@ module.exports = {
       .test(/\.(png|mp4|jpe?g|gif)$/i)
       .use('file-loader')
       .loader('file-loader')
-      .end();
-
-     config
-      .plugin("IgnoreNotFoundExportPlugin")
-      .before("friendly-errors")
-      .use(IgnoreNotFoundExportPlugin);
+      .end()
 
     config.resolve.alias.set('tinyqueue', path.join(__dirname, '/node_modules/tinyqueue/tinyqueue.js'))
   },

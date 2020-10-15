@@ -195,7 +195,7 @@ export default {
     },
     post: {
       type: Object,
-      default: () => ({}),
+      default: () => {},
       required: false
     },
     images: {

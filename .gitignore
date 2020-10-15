@@ -2,7 +2,6 @@
 node_modules
 /dist
 /live
-/ts-out
 /coverage
 # local env files
 .env.local
@@ -21,5 +20,5 @@ yarn-error.log*
 *.sln
 *.sw?
 .env
-/components/
+
 docs/.vuepress/dist/
