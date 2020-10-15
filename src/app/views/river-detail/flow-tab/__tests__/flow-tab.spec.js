@@ -49,7 +49,7 @@ describe('FlowTab', () => {
   })
 
   it('it loads gages when component created', () => {
-    // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
+    // eslint-disable-next-line no-unused-vars
     const wrapper = createWrapper(FlowTab, options)
 
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(1, '[REACH_GAGES] FETCH_GAGES', '123')

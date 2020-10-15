@@ -98,14 +98,14 @@ Vue.prototype.$titleCase = (value) => {
   if (value === undefined || value === null) {
     return ''
   }
-  let str = value.toString()
+  var str = value.toString()
   //  make each word capitalize
   str = str.replace(/([^\W_]+[^\s-]*) */g, function (s) {
     return s.charAt(0).toUpperCase() + s.substr(1).toLowerCase()
   })
   //  Certain minor words should be left lowercase unless they are the first or
   //  last words in the string.
-  let i, j, regexp
+  var i, j, regexp
   for (i = 0, j = MINOR_WORDS.length; i < j; i++) {
     regexp = new RegExp('\\s' + MINOR_WORDS[i] + '\\s', 'g')
     str = str.replace(regexp, function (s) {
