@@ -109,6 +109,15 @@ export default {
       handler (v) {
         this.conditionallyBindSnapHandler()
       }
+    },
+    startingBounds: {
+      handler (bounds) {
+        if (this.map) {
+          this.map.fitBounds(bounds, {
+            linear: true
+          })
+        }
+      }
     }
   },
   methods: {
@@ -193,10 +202,7 @@ export default {
   },
   mounted () {
     if (mapboxAccessToken) {
-      // ensures geom properties are set when the map renders
-      this.$nextTick(() => {
-        this.mountMap()
-      })
+      this.mountMap()
 
       this.debouncedEmitPOILocation = debounce(this.emitPOILocation, 200, {
         leading: false,
