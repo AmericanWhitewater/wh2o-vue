@@ -86,6 +86,15 @@ export const mapHelpersMixin = {
         'V+': 8
       }
       return mapping[classString]
+    },
+    // bounds of a view of the continental US
+    defaultMapBounds () {
+      return [
+        -64.42046827451144,
+        29.26833088399728,
+        -127.80531178236257,
+        49.66720956723569
+      ]
     }
   }
 }

@@ -5,7 +5,7 @@
   >
     <hr>
     <h2 class="mb-spacing-md">
-      Rapids
+      River Features
     </h2>
     <cv-button
       v-if="editMode"

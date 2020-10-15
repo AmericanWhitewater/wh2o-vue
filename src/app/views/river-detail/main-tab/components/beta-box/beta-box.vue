@@ -148,7 +148,11 @@
     >
       <h3>Edit Beta Box</h3>
     </div>
-    <BetaBoxEditModal :visible="editModalVisible" />
+    <BetaBoxEditModal
+      v-if="editMode"
+      :key="editBetaBoxKey"
+      :visible="editModalVisible"
+    />
   </div>
 </template>
 <script>
@@ -177,7 +181,13 @@ export default {
       editMode: state => state.appGlobalState.appGlobalData.editMode,
       gages: state => state.riverDetailState.reachGagesData.data,
       metrics: state => state.riverDetailState.gageMetricsData.data
-    })
+    }),
+    editBetaBoxKey () {
+      return `editBetaBox${this.reachId}`
+    },
+    reachId () {
+      return this.$route.params.id
+    }
   },
   methods: {
     formatTime (input) {

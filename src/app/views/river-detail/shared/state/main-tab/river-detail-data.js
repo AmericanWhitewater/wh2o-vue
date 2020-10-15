@@ -8,13 +8,13 @@
 
 import { reflectKeys } from '@/app/global/services'
 
-import { fetchRiverDetailData, updateRiverDetailGeom } from '../../services'
+import { fetchRiverDetailData, updateRiverDetailGeom, updateReach } from '../../services'
 
 import wkx from 'wkx'
 
 const initialState = {
   loading: false,
-  data: null,
+  data: {},
   error: null,
   mode: null
 }
@@ -44,7 +44,8 @@ export const mutations = {
   },
 
   [DATA_SUCCESS] (state, payload) {
-    Object.assign(state, { loading: false, data: payload })
+    state.loading = false
+    Object.assign(state.data, { ...payload })
   },
 
   [DATA_ERROR] (state, payload) {
@@ -83,11 +84,27 @@ export const mutations = {
 }
 
 export const riverDetailActions = reflectKeys(
-  ['FETCH_RIVER_DETAIL_DATA', 'UPDATE_RIVER_DETAIL_GEOM', 'SET_EDIT_MODE', 'INITIAL_STATE'],
+  ['FETCH_RIVER_DETAIL_DATA', 'UPDATE_RIVER_DETAIL_GEOM', 'UPDATE_REACH', 'SET_EDIT_MODE', 'INITIAL_STATE'],
   namespacedPrefix
 )
 
 const actions = {
+  async [riverDetailActions.UPDATE_REACH] (context, data) {
+    context.commit(DATA_REQUEST)
+
+    const result = await updateReach({
+      id: context.state.data.id,
+      ...data
+    }).catch(e => {
+      context.commit(DATA_ERROR, e)
+    })
+
+    if (result.data?.errors) {
+      context.commit(DATA_ERROR, result.data.errors)
+    } else {
+      context.commit(DATA_SUCCESS, result.data.reachUpdate)
+    }
+  },
 
   async [riverDetailActions.FETCH_RIVER_DETAIL_DATA] (context, riverId) {
     context.commit(DATA_REQUEST)
