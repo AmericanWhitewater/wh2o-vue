@@ -90,7 +90,7 @@ export default {
         timeEnd: Math.floor(moment().unix())
       }
     },
-    renderChart () {
+    renderChart (readings) {
       const ctx = this.$refs.chartCanvas.getContext('2d')
 
       const chartOptions = {
@@ -201,7 +201,7 @@ export default {
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
               fontSize: 14
             },
-            beforeBuildTicks: () => {
+            beforeBuildTicks: axis => {
               chartOptions.scales.yAxes[0].ticks.min = 100
             }
           }]

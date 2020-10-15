@@ -92,7 +92,7 @@ describe('NewsTab', () => {
   })
 
   it('it loads artles and alerts when not previously loaded', async () => {
-    // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
+    // eslint-disable-next-line no-unused-vars
     const wrapper = createWrapper(NewsTab, options)
 
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
@@ -108,7 +108,7 @@ describe('NewsTab', () => {
   it('doesnt attempt to load alerts and articles when previously loaded', async () => {
     mockStore.state.riverDetailState.alertsData.data = [{ alert: 'look out' }]
     mockStore.state.riverDetailState.newsTabData.data = articles
-    // eslint-disable-next-line no-unused-vars,@typescript-eslint/no-unused-vars
+    // eslint-disable-next-line no-unused-vars
     const wrapper = createWrapper(NewsTab, options)
     expect(mockStore.dispatch).toHaveBeenCalledTimes(0)
   })
