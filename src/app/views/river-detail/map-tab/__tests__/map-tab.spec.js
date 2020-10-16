@@ -18,6 +18,11 @@ const mockStore = {
         loading: false,
         error: false,
         data: null
+      },
+      rapidsData: {
+        data: null,
+        loading: false,
+        error: false
       }
     }
   },
@@ -34,11 +39,14 @@ const options = {
   mocks: {
     $store: mockStore,
     $route: mockRoute
-  }
-
+  },
+  stubs: { NwiMap: true }
 }
 
 describe('map-tab.vue', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
   it('exists', () => {
     const wrapper = createWrapper(MapTab, options)
 

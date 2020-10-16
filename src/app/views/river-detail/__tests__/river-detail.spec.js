@@ -83,7 +83,7 @@ describe('river-detail.vue', () => {
 
     await wrapper.find('#edit-mode-toggle').trigger('click')
 
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(5, '[APP_GLOBAL] SEND_TOAST', { kind: 'error', title: 'Must log in to edit' })
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(6, '[APP_GLOBAL] SEND_TOAST', { kind: 'error', title: 'Must log in to edit' })
   })
 
   it('enables edit mode when user logged in and edit mode disabled', async () => {
@@ -93,7 +93,7 @@ describe('river-detail.vue', () => {
 
     await wrapper.find('#edit-mode-toggle').trigger('keydown.enter')
 
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(5, '[APP_GLOBAL] TOGGLE_EDIT_MODE', true)
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(6, '[APP_GLOBAL] TOGGLE_EDIT_MODE', true)
   })
 
   it('disables edit mode when user logged in and edit mode enabled', async () => {
@@ -103,7 +103,7 @@ describe('river-detail.vue', () => {
 
     await wrapper.find('#edit-mode-toggle').trigger('click')
 
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(5, '[APP_GLOBAL] TOGGLE_EDIT_MODE', false)
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(6, '[APP_GLOBAL] TOGGLE_EDIT_MODE', false)
   })
 
   it('shows no new notifications icon when reach has alerts', () => {
@@ -126,8 +126,8 @@ describe('river-detail.vue', () => {
 
     await wrapper.find('#bookmark-toggle').trigger('click')
 
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(5, '[BOOKMARKS] ADD_BOOKMARK', '123')
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(6, '[APP_GLOBAL] SEND_TOAST', { kind: 'success', title: 'Bookmark Added' })
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(6, '[BOOKMARKS] ADD_BOOKMARK', '123')
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(7, '[APP_GLOBAL] SEND_TOAST', { kind: 'success', title: 'Bookmark Added' })
   })
 
   it('removes bookmarked reach and notifies user', async () => {
@@ -141,7 +141,7 @@ describe('river-detail.vue', () => {
 
     await wrapper.find('#bookmark-toggle').trigger('click')
 
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(5, '[BOOKMARKS] REMOVE_BOOKMARK', '123')
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(6, '[APP_GLOBAL] SEND_TOAST', { kind: 'success', title: 'Bookmark Removed' })
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(6, '[BOOKMARKS] REMOVE_BOOKMARK', '123')
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(7, '[APP_GLOBAL] SEND_TOAST', { kind: 'success', title: 'Bookmark Removed' })
   })
 })
