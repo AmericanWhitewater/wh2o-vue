@@ -1,11 +1,11 @@
 <template>
   <div
-    id="nwi-map-editor-container"
+    id="rapid-map-editor-container"
     :style="height ? `height:${height}px`:''"
   >
     <div
-      id="nwi-map-editor"
-      ref="nwiMapEditor"
+      id="rapid-map-editor"
+      ref="rapidMapEditor"
     />
     <nwi-basemap-toggle
       :offset-right="false"
@@ -32,13 +32,13 @@ import {
 } from '@/app/environment'
 import debounce from 'lodash.debounce'
 
-import { lineString, point } from '@turf/helpers'
+import { point } from '@turf/helpers'
 import buffer from '@turf/buffer'
 import bbox from '@turf/bbox'
 import nearestPointOnLine from '@turf/nearest-point-on-line'
 
 export default {
-  name: 'nwi-map-editor',
+  name: 'rapid-map-editor',
   mixins: [basemapToggleMixin, mapHelpersMixin],
   props: {
     height: {
@@ -57,27 +57,16 @@ export default {
   }),
   computed: {
     ...mapState({
-      mapStyle: state => state.riverIndexState.riverIndexData.mapStyle,
-      data: state => state.riverDetailState.riverDetailData.data
+      mapStyle: state => state.riverIndexState.riverIndexData.mapStyle
     }),
-    reachGeom () {
-      // TODO: get graphql API to return a linestring or geojson instead of this text
-      const geom = this.data?.geom?.split(',').map(d => d.split(' '))
-      return geom ? lineString(geom) : null
-    },
-    bboxAroundPoint () {
+    bboxAroundRapid () {
       if (this.geom && this.geom.coordinates && this.geom.coordinates.length === 2) {
         return bbox(buffer(this.geom, 2))
       }
       return null
     },
     startingBounds () {
-      if (this.reachGeom) {
-        return bbox(this.reachGeom)
-      } else if (this.bboxAroundPoint) {
-        return this.bboxAroundPoint
-      }
-      return this.defaultMapBounds()
+      return this.bboxAroundReach || this.bboxAroundRapid || this.bboxAroundPOIs || this.defaultMapBounds
     },
     boundsPadding () {
       if (this.reachGeom) {
@@ -133,7 +122,7 @@ export default {
     mountMap () {
       mapboxgl.accessToken = mapboxAccessToken
       const mapProps = {
-        container: this.$refs.nwiMapEditor,
+        container: this.$refs.rapidMapEditor,
         style: this.baseMapUrl,
         bounds: this.startingBounds,
         fitBoundsOptions: { padding: this.boundsPadding }

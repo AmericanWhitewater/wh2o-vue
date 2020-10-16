@@ -34,8 +34,7 @@ import { NwiMap } from '@/app/views/river-index/components'
 import { mapActions } from '../shared/state'
 import { mapState } from 'vuex'
 import { InfoPanel } from './components'
-import bbox from '@turf/bbox'
-import { lineString } from '@turf/helpers'
+import { mapHelpersMixin } from '@/app/global/mixins'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 
 export default {
@@ -45,6 +44,7 @@ export default {
     NwiMap,
     UtilityBlock
   },
+  mixins: [mapHelpersMixin],
   data: () => ({
     detailFeature: null,
     includeLegend: false,
@@ -64,9 +64,7 @@ export default {
       return parseInt(this.$route.params.id, 10)
     },
     startingBounds () {
-      // TODO: get graphql API to return a linestring or geojson instead of this text
-      const geom = this.riverData?.geom?.split(',').map(d => d.split(' '))
-      return geom ? bbox(lineString(geom)) : null
+      return this.reachStartingBounds
     }
   },
   methods: {
