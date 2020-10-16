@@ -1,6 +1,5 @@
 <template>
   <section
-    v-view.once="loadRapids"
     class="rapids-section mb-xl"
   >
     <hr>
@@ -59,7 +58,6 @@
 import { RapidItem, RapidEditModal } from './components'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { mapState } from 'vuex'
-import { rapidsActions } from '@/app/views/river-detail/shared/state'
 import { globalAppActions } from '@/app/global/state'
 
 export default {
@@ -117,12 +115,6 @@ export default {
       // action doesn't complete so this class "bx--body--with-modal-open"
       // doesn't get removed from the body *which prevents scrolling*
       this.$nextTick(() => { this.currentlyEditingRapidId = null })
-    },
-    loadRapids () {
-      this.$store.dispatch(
-        rapidsActions.FETCH_RAPIDS_DATA,
-        this.$route.params.id
-      )
     }
   }
 }

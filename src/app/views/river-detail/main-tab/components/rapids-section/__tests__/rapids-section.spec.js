@@ -83,22 +83,6 @@ describe('RapidsSection', () => {
     expect(wrapper.find('.utility-block-content').exists()).toBe(true)
   })
 
-  it('loads rapids when in view', async () => {
-    /**
-     * @note cannot simulate scroll event, treat as created lifecycle
-     */
-
-    const wrapper = createWrapper(RapidsSection, options)
-
-    wrapper.vm.loadRapids()
-
-    await wrapper.vm.$nextTick()
-
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
-      '[RAPIDS] FETCH_RAPIDS_DATA', '123'
-    )
-  })
-
   it('hides loader and empty state blocks when rapids available', () => {
     mockStore.state.riverDetailState.rapidsData.data = rapids
     const wrapper = createWrapper(RapidsSection, options)
