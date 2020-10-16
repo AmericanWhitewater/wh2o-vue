@@ -82,8 +82,6 @@ import {
 } from '@/app/environment'
 import NwiBasemapToggle from '@/app/views/river-index/components/nwi-basemap-toggle.vue'
 import { mapHelpersMixin } from '@/app/global/mixins'
-
-import bbox from '@turf/bbox'
 import bboxPolygon from '@turf/bbox-polygon'
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon'
 import booleanPointOnLine from '@turf/boolean-point-on-line'
@@ -137,11 +135,6 @@ export default {
         return 'mapbox://styles/americanwhitewater/ckbv35azb12w51initt7y2adv'
       }
     },
-    reachGeom () {
-      // TODO: get graphql API to return a linestring or geojson instead of this text
-      const geom = this.data?.geom?.split(',').map(d => d.split(' ').map(e => parseFloat(e)))
-      return geom ? lineString(geom, {}, { id: 'reachGeom' }) : null
-    },
     reachStart () {
       const geom = this.currentGeom || this.reachGeom
       return geom ? point(geom.geometry.coordinates[0]) : null
@@ -151,14 +144,10 @@ export default {
       return geom ? point(geom.geometry.coordinates.slice(-1)[0]) : null
     },
     ...mapState({
-      mapStyle: state => state.riverIndexState.riverIndexData.mapStyle,
-      data: state => state.riverDetailState.riverDetailData.data
+      mapStyle: state => state.riverIndexState.riverIndexData.mapStyle
     }),
     startingBounds () {
-      if (this.reachGeom) {
-        return bbox(this.reachGeom)
-      }
-      return this.defaultMapBounds()
+      return this.reachStartingBounds
     },
     // determines whether we need to add elements to the map
     // or edit ones that already exist

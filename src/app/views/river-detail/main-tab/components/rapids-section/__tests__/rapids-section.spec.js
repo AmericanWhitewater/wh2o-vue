@@ -45,7 +45,7 @@ const options = {
     $sanitize: jest.fn(),
     $replaceText: jest.fn()
   },
-  stubs: ['rapid-item', 'nwi-map-editor']
+  stubs: ['rapid-item', 'rapid-map-editor']
 }
 describe('RapidsSection', () => {
   beforeEach(() => {
