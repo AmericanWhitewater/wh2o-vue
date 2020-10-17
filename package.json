@@ -19,7 +19,7 @@
   "dependencies": {
     "@carbon/grid": "^10.10.2",
     "@carbon/icons-vue": "^10.11.0",
-    "@carbon/vue": "^2.27.0",
+    "@carbon/vue": "^2.34.0",
     "@mapbox/mapbox-gl-draw": "^1.1.2",
     "@mapbox/mapbox-gl-draw-static-mode": "^1.0.1",
     "@turf/along": "^6.0.1",
