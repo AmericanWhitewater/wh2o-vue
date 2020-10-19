@@ -65,7 +65,7 @@ export default {
       return this.feature && this.feature.sourceLayer === 'access'
     },
     isReach () {
-      return this.feature && this.feature.sourceLayer === 'reach-segments'
+      return this.feature && ['reach-segments', 'reaches-without-geom'].includes(this.feature.sourceLayer)
     },
     featureProperties () {
       if (this.feature) {

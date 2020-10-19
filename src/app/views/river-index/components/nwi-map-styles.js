@@ -34,6 +34,65 @@ export default {
         paint: {}
       }
     },
+    'reaches-without-geom': {
+      reachesWithoutGeom: {
+        layout: {},
+        type: 'circle',
+        paint: {
+          'circle-radius': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            8,
+            3,
+            11,
+            7
+          ],
+          'circle-color': 'white',
+          'circle-stroke-opacity': 1,
+          'circle-opacity': 1,
+          'circle-stroke-color': [
+            'case',
+            ['boolean', ['feature-state', 'hover'], false],
+            'white', 'green'],
+          'circle-stroke-width': [
+            'interpolate',
+            ['linear'],
+            ['zoom'],
+            8,
+            ['case',
+              ['boolean', ['feature-state', 'hover'], false],
+              3, 1],
+            11,
+            ['case',
+              ['boolean', ['feature-state', 'hover'], false],
+              4, 1]
+          ]
+        }
+      },
+      reachesWithoutGeomLabels: {
+        type: 'symbol',
+        minzoom: 11,
+        layout: {
+          'text-field': ['concat', ['get', 'river'], ':\n', ['get', 'section']],
+          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+          'text-size': ['interpolate', ['linear'], ['zoom'], 13, 15, 18, 20],
+          'text-line-height': 1,
+          'text-max-width': 17.5,
+          'text-justify': 'left',
+          'text-anchor': 'top',
+          'text-offset': [0, 0.5],
+          'symbol-sort-key': 10
+        },
+        paint: {
+          'text-color': '#fff',
+          'text-halo-color': '#333',
+          'text-halo-width': 1,
+          'text-halo-blur': 1,
+          'text-opacity': 1
+        }
+      }
+    },
     'reach-segment-labels': {
       reachClass: {
         type: 'symbol',
@@ -240,7 +299,10 @@ export default {
       },
       activeReachSegmentCasing: {
         type: 'line',
-        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        layout: {
+          'line-cap': 'round',
+          'line-join': 'round'
+        },
         paint: {
           'line-gap-width': [
             'interpolate',
@@ -264,18 +326,9 @@ export default {
           ],
           'line-width': ['interpolate', ['linear'], ['zoom'], 8, 1.25, 14, 6],
           'line-opacity': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            10,
-            0.75,
-            11.5,
-            0.15,
-            13.5,
-            0,
-            14,
-            0.75
-          ],
+            'case',
+            ['boolean', ['feature-state', 'hover'], false],
+            1, 0],
           'line-blur': [
             'interpolate',
             ['linear'],
