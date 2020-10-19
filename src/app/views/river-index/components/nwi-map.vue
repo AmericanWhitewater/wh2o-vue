@@ -157,17 +157,31 @@ export default {
   },
   watch: {
     // visually highlights a moused over feature on the map
-    mouseoveredFeature (feature) {
-      // TODO: consider refactoring this to use feature state (it might be faster)
-      if (feature && feature.properties.id) {
-        this.map.setFilter('activeReachSegmentCasing', [
-          '==',
-          ['get', 'id'],
-          feature.properties.id
-        ])
+    mouseoveredFeature (newFeature, oldFeature) {
+      if (newFeature && newFeature.id) {
+        // we have other features like labels that apply to reach-segments but *not* reaches-without-geom
+        // so we're checking if it's reaches-without-geom and otherwise defaulting to reach-segments
+        const sourceLayer = newFeature.sourceLayer === 'reaches-without-geom' ? 'reaches-without-geom' : 'reach-segments'
+        this.map.setFeatureState({
+          id: newFeature.id,
+          source: newFeature.source,
+          sourceLayer: sourceLayer
+        }, {
+          hover: true
+        })
       } else {
-        // hide 'active-reach-segment-casing' layer
-        this.map.setFilter('activeReachSegmentCasing', ['all', false])
+        // did not mouse over a reach, so need to reset feature state of previous reach
+        // if it was set
+        if (oldFeature && oldFeature.id) {
+          const sourceLayer = oldFeature.sourceLayer === 'reaches-without-geom' ? 'reaches-without-geom' : 'reach-segments'
+          this.map.setFeatureState({
+            id: oldFeature.id,
+            source: oldFeature.source,
+            sourceLayer: sourceLayer
+          }, {
+            hover: false
+          })
+        }
       }
     },
     colorBy (newVal) {
@@ -309,6 +323,7 @@ export default {
         this.map.addSource('nwi-source', {
           type: 'vector',
           tiles: [nwiTileServer],
+          promoteId: 'id',
           minzoom: 4,
           maxzoom: 14
         })
@@ -337,9 +352,6 @@ export default {
         if (this.detailReachId) {
           this.adjustMapForDetailReach()
         }
-
-        // hide 'active-reach-segment-casing' layer
-        this.map.setFilter('activeReachSegmentCasing', ['all', false])
 
         this.updateMapColorScheme(this.colorBy)
 

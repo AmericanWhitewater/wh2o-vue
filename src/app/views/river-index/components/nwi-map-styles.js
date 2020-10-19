@@ -240,7 +240,10 @@ export default {
       },
       activeReachSegmentCasing: {
         type: 'line',
-        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        layout: {
+          'line-cap': 'round',
+          'line-join': 'round'
+        },
         paint: {
           'line-gap-width': [
             'interpolate',
@@ -264,18 +267,9 @@ export default {
           ],
           'line-width': ['interpolate', ['linear'], ['zoom'], 8, 1.25, 14, 6],
           'line-opacity': [
-            'interpolate',
-            ['linear'],
-            ['zoom'],
-            10,
-            0.75,
-            11.5,
-            0.15,
-            13.5,
-            0,
-            14,
-            0.75
-          ],
+            'case',
+            ['boolean', ['feature-state', 'hover'], false],
+            1, 0],
           'line-blur': [
             'interpolate',
             ['linear'],
