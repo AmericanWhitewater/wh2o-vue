@@ -83,7 +83,7 @@
 
 <script>
 import { NwiRiversTable, NwiMap, NwiMapSearch, NwiStateList } from './components'
-import 'mapbox-gl/dist/mapbox-gl.css'
+
 import { riverIndexActions } from './shared/state'
 import { mapState } from 'vuex'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
@@ -156,6 +156,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 #national-map-app {
   height: 100%;
   width: 100%;

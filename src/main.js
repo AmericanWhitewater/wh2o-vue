@@ -2,7 +2,6 @@ import Vue from "vue";
 import VueMeta from "vue-meta";
 import CarbonComponents from "@carbon/vue";
 
-import "./app/assets/scss/app.scss";
 import "./app/plugins";
 import "./app/filters";
 import "./registerServiceWorker";

@@ -12,6 +12,16 @@ const path = require("path");
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const ModuleDependencyWarning = require("webpack/lib/ModuleDependencyWarning");
 
+// are we running debug build?
+function isDebug() {
+  return process.env.NODE_ENV !== "production";
+}
+
+//is the app build for embedding
+function isEmbedded() {
+  return process.env.VUE_APP_LARAVEL_DEPLOY;
+}
+
 class IgnoreNotFoundExportPlugin {
   apply(compiler) {
     const messageRegExp = /export '.*'( \(reexported as '.*'\))? was not found in/;
@@ -101,6 +111,7 @@ module.exports = {
   },
 
   css: {
+    extract: false,
     loaderOptions: {
       sass: {
         prependData: `
@@ -149,29 +160,20 @@ module.exports = {
       path.join(__dirname, "/node_modules/tinyqueue/tinyqueue.js")
     );
 
-    /**
-     * Add scoped css support here.
-     */
-    if (config.plugins.has("extract-css")) {
-      const extractCSSPlugin = config.plugin("extract-css");
-      extractCSSPlugin &&
-        extractCSSPlugin.tap(() => [
-          {
-            filename: "build.css",
-            chunkFilename: "build.css",
-          },
-        ]);
-    }
-
-    if (process.env.VUE_APP_LARAVEL_DEPLOY) {
+    if (isEmbedded()) {
       console.log("using shadow");
       enableShadowCss(config);
     }
   },
+  productionSourceMap: isDebug(), // NOTE: this is default
   configureWebpack: (config) => {
     config.optimization = {
-      minimize: process.env.NODE_ENV === "production",
+      minimize: !isDebug(),
     };
+    if (isDebug()) {
+      config.devtool = "source-map";
+    }
+    //return config;
   },
   publicPath: process.env.VUE_APP_BASE_URL || "/",
 };
