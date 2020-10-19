@@ -14,7 +14,6 @@ import App from "./app/app.vue";
 import router from "./app/app-routes";
 import store from "./app/app-state";
 import { laravelDeploy } from "./app/environment";
-
 import VueApollo from "vue-apollo";
 
 Vue.config.devtools = process.env.NODE_ENV === "development";

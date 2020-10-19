@@ -8,7 +8,7 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "bit": "bit remote add ssh://bit@bit.americanwhitewater.org:/opt/bit/aw && bit import && bit link",
+    "bit": "bit config set analytics_reporting false && bit config set error_reporting false && bit config set ssh_key_file ./scripts/bit-key && bit remote add ssh://bit@bit.americanwhitewater.org:/opt/bit/aw && bit import 'aw/*' && bit link",
     "build:modern": "vue-cli-service build --modern",
     "coveralls": "vue-cli-service test:unit --coverage && cat ./coverage/lcov.info | coveralls",
     "lint:js": "eslint './src/**/*.js' './src/**/*.ts' './src/**/*.vue' --fix",
@@ -19,14 +19,6 @@
   },
   "dependencies": {
     "@apollo/client": "^3.2.1",
-    "@bit/aw.client.apollo": "file:./components/client/apollo",
-    "@bit/aw.models.article": "file:./components/models/article",
-    "@bit/aw.models.image": "file:./components/models/image",
-    "@bit/aw.models.metrics": "file:./components/models/metrics",
-    "@bit/aw.models.permission": "file:./components/models/permission",
-    "@bit/aw.models.post": "file:./components/models/post",
-    "@bit/aw.models.user": "file:./components/models/user",
-    "@bit/aw.utility.genid": "file:./components/utility/genid",
     "@carbon/grid": "^10.10.2",
     "@carbon/icons-vue": "^10.11.0",
     "@carbon/vue": "^2.27.0",
@@ -53,7 +45,6 @@
     "apollo-link-context": "^1.0.20",
     "apollo-upload-client": "^13.0.0",
     "axios": "^0.19.2",
-    "bit-bin": "^14.8.8",
     "carbon-components": "^10.11.2",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
@@ -81,7 +72,15 @@
     "vue-sanitize": "^0.2.0",
     "vue-social-sharing": "^2.4.7",
     "vuex": "^3.5.1",
-    "wkx": "^0.5.0"
+    "wkx": "^0.5.0",
+    "@bit/aw.client.apollo": "file:./components/client/apollo",
+    "@bit/aw.models.article": "file:./components/models/article",
+    "@bit/aw.models.image": "file:./components/models/image",
+    "@bit/aw.models.metrics": "file:./components/models/metrics",
+    "@bit/aw.models.permission": "file:./components/models/permission",
+    "@bit/aw.models.post": "file:./components/models/post",
+    "@bit/aw.models.user": "file:./components/models/user",
+    "@bit/aw.utility.genid": "file:./components/utility/genid"
   },
   "devDependencies": {
     "@sentry/browser": "^5.19.2",
@@ -130,7 +129,6 @@
       "autoprefixer": {}
     }
   },
-
   "browserslist": [
     "> 1%",
     "last 2 versions",

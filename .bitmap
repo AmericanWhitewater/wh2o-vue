@@ -30,9 +30,9 @@
     "aw/global/config@1.0.13": {
         "files": [
             {
+                "name": "index.ts",
                 "relativePath": "src/aw/global/config/index.ts",
-                "test": false,
-                "name": "index.ts"
+                "test": false
             }
         ],
         "mainFile": "src/aw/global/config/index.ts",
@@ -43,9 +43,9 @@
     "aw/global/logger@1.0.13": {
         "files": [
             {
+                "name": "index.ts",
                 "relativePath": "src/aw/global/logger/index.ts",
-                "test": false,
-                "name": "index.ts"
+                "test": false
             }
         ],
         "mainFile": "src/aw/global/logger/index.ts",
@@ -89,6 +89,11 @@
     "aw/models/image@1.0.8": {
         "files": [
             {
+                "name": "index.ts",
+                "relativePath": "index.ts",
+                "test": false
+            },
+            {
                 "name": "factory.ts",
                 "relativePath": "lib/factory.ts",
                 "test": false
@@ -96,11 +101,6 @@
             {
                 "name": "index.ts",
                 "relativePath": "types/index.ts",
-                "test": false
-            },
-            {
-                "name": "index.ts",
-                "relativePath": "index.ts",
                 "test": false
             }
         ],
@@ -269,9 +269,9 @@
     "aw/utility/array@1.0.14": {
         "files": [
             {
+                "name": "index.ts",
                 "relativePath": "src/aw/utility/array/index.ts",
-                "test": false,
-                "name": "index.ts"
+                "test": false
             }
         ],
         "mainFile": "src/aw/utility/array/index.ts",

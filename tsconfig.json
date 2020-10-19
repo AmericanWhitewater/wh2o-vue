@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
+    "typeRoots": ["node_modules/@types","src/types"],
     "module": "esnext",
     "plugins": [{
       "name": "typescript-tslint-plugin"
