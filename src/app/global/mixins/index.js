@@ -1,4 +1,4 @@
-
+/* eslint-disable import/export */
 export * from './check-window'
 export { default as navItems } from './nav-items'
 export { default as defaultBannerImage } from './default-banner-image'

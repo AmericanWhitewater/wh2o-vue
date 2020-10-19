@@ -189,7 +189,7 @@ export default {
         this.$emit('centeredFeature')
       }
     },
-    detailReachId () {
+    detailReachId (newReach) {
       this.adjustMapForDetailReach()
       // this has to be re-called since we're changing paint props again
       this.updateMapColorScheme(this.colorBy)
@@ -458,6 +458,11 @@ export default {
 
       this.map.on('styledata', this.loadAWMapData)
       this.map.on('styledata', this.modifyMapboxBaseStyle)
+
+      // this is a kind of weird solution to the fact that once in a blue moon,
+      // our app CSS doesn't finish loading before the map is mounted, which causes
+      // the map to render improperly until the window is resized
+      this.map.on('load', this.map.resize)
 
       this.map.on('sourcedata', (e) => {
         if (e.isSourceLoaded) {

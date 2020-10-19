@@ -151,7 +151,7 @@ export default {
             action: false,
             autoHide: true
           })
-        }).catch(() => {
+        }).catch(e => {
           this.updatePending = false
           this.error = true
           this.$store.dispatch(globalAppActions.SEND_TOAST, {
@@ -195,7 +195,7 @@ export default {
         })
         // href="../../content/River_detail_id_3190_"
         // content = this.$replaceText(content, '../../content/River_detail_id_', 'http://www.americanwhitewater.org/content/River/detail/id/')
-
+        // debugger
         const updatedUrl = '/#/river-detail/'
         const legacyUrls = [
           baseUrl + 'rivers/id/',

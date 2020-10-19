@@ -1,6 +1,6 @@
 const flowChartBackground = {
 
-  beforeDraw: (chart) => {
+  beforeDraw: (chart, easing) => {
     const graphRange = chart.config.options.graphRange
     const chartArea = chart.chartArea
     const ctx = chart.chart.ctx

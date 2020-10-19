@@ -1,4 +1,50 @@
+import bbox from '@turf/bbox'
+import { mapState } from 'vuex'
+import { lineString, point, featureCollection } from '@turf/helpers'
+import buffer from '@turf/buffer'
+
 export const mapHelpersMixin = {
+  computed: {
+    ...mapState({
+      reach: state => state.riverDetailState.riverDetailData.data,
+      rapids: state => state.riverDetailState.rapidsData.data
+    }),
+    reachGeom () {
+      // TODO: get graphql API to return a linestring or geojson instead of this text
+      const geom = this.reach?.geom?.split(',').map(d => d.split(' ').map(y => parseFloat(y)))
+      return geom ? lineString(geom) : null
+    },
+    bboxAroundReach () {
+      return this.reachGeom ? bbox(this.reachGeom) : null
+    },
+    // uses state to find starting bounds for a reach detail map
+    // if reach geometry exists, use that
+    // else if POIs exist, build a bbox around them
+    // else default map bounds
+    reachStartingBounds () {
+      return this.bboxAroundReach || this.bboxAroundPOIs || this.defaultMapBounds
+    },
+    bboxAroundPOIs () {
+      if (this.rapids && this.rapids.length > 0) {
+        const poiLocations = this.rapids.filter(
+          (x) => x.rloc
+        ).map((x) => (point(x.rloc.split(' ').map(x => parseFloat(x)))))
+        const collection = featureCollection(poiLocations)
+        const container = bbox(buffer(collection, 2))
+        return container
+      }
+      return null
+    },
+    // bounds of a view of the continental US
+    defaultMapBounds () {
+      return [
+        -64.42046827451144,
+        29.26833088399728,
+        -127.80531178236257,
+        49.66720956723569
+      ]
+    }
+  },
   methods: {
     // basically duplicating https://github.com/AmericanWhitewater/wh2o/blob/development/app/Http/Controllers/API/TilesController.php#L16-L99
     mapClassToDifficulty (classString) {
@@ -86,15 +132,6 @@ export const mapHelpersMixin = {
         'V+': 8
       }
       return mapping[classString]
-    },
-    // bounds of a view of the continental US
-    defaultMapBounds () {
-      return [
-        -64.42046827451144,
-        29.26833088399728,
-        -127.80531178236257,
-        49.66720956723569
-      ]
     }
   }
 }
