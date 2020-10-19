@@ -20,5 +20,6 @@ yarn-error.log*
 *.sln
 *.sw?
 .env
-
+.bit/
 docs/.vuepress/dist/
+/components
