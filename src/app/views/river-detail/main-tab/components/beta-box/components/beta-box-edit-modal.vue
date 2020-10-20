@@ -98,14 +98,6 @@ export default {
       this.$emit('edit:cancelled')
       this.$parent.editModalVisible = false
     },
-    setForm () {
-      if (this.reach) {
-        this.formData.class = this.reach.class
-        this.formData.length = this.reach.length
-        this.formData.avggradient = this.reach.avggradient
-        this.formData.maxgradient = this.reach.maxgradient
-      }
-    },
     submitForm () {
       this.$emit('edit:submit')
       this.$parent.editModalVisible = false
