@@ -149,7 +149,7 @@
       <h3>Edit Beta Box</h3>
     </div>
     <BetaBoxEditModal
-      v-if="editMode"
+      v-if="editMode && !loading"
       :key="editBetaBoxKey"
       :visible="editModalVisible"
     />
