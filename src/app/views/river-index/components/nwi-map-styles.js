@@ -44,9 +44,9 @@ export default {
             ['linear'],
             ['zoom'],
             8,
-            3,
+            2,
             11,
-            7
+            6
           ],
           'circle-color': 'white',
           'circle-stroke-opacity': 1,
