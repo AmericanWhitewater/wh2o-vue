@@ -173,6 +173,8 @@ module.exports = {
     if (isDebug()) {
       config.devtool = "source-map";
     }
+    config.output.jsonpFunction = "spa_wh2o_vue";
+    //config.output.libraryExport = "default";
     //return config;
   },
   publicPath: process.env.VUE_APP_BASE_URL || "/",
