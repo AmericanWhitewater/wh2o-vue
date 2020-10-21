@@ -15,12 +15,12 @@
               </div>
             </header>
             <header
-              v-else-if="data"
+              v-else-if="reach"
               class="bx--tile"
             >
               <div>
                 <h4>
-                  {{ data.river }}
+                  {{ reach.river }}
                   <cv-button
                     v-if="editMode"
                     id="edit-title"
@@ -31,7 +31,7 @@
                     Edit
                   </cv-button>
                   <reach-title-edit-modal
-                    v-if="editMode"
+                    v-if="editMode && !loading"
                     :visible="editReachTitleModalVisible"
                     @edit:cancelled="editReachTitleModalVisible=false"
                   />
@@ -39,7 +39,7 @@
 
                 <h1
                   class="mb-spacing-md"
-                  v-text="data.section"
+                  v-text="reach.section"
                 />
 
                 <cv-breadcrumb no-trailing-slash>
@@ -50,15 +50,15 @@
                   </cv-breadcrumb-item>
                   <cv-breadcrumb-item>
                     <cv-link href="#0">
-                      River Id: {{ data.id }}
+                      River Id: {{ reach.id }}
                     </cv-link>
                   </cv-breadcrumb-item>
                 </cv-breadcrumb>
               </div>
-              <div v-if="data.photo">
+              <div v-if="reach.photo">
                 <img
                   class="reach--photo"
-                  :src="assetUrl(data.photo.image.uri.big)"
+                  :src="assetUrl(reach.photo.image.uri.big)"
                   @click.exact="switchTab('gallery')"
                   @keydown.exact="switchTab('gallery')"
                 >
@@ -76,9 +76,9 @@
               mode="out-in"
             >
               <map-banner
-                v-if="activeTabKey !== 'map' && !loading && data"
-                :title="data.river"
-                :subtitle="data.section"
+                v-if="activeTabKey !== 'map' && !loading && reach"
+                :title="reach.river"
+                :subtitle="reach.section"
               >
                 <div
                   v-if="editMode"
@@ -90,7 +90,7 @@
               </map-banner>
             </transition>
             <geometry-edit-modal
-              v-if="editMode"
+              v-if="editMode && !loading"
               :visible="editGeometryModalVisible"
               @edit:cancelled="editGeometryModalVisible=false"
             />
@@ -181,7 +181,7 @@
             :name="transitionName"
             mode="out-in"
           >
-            <keep-alive>
+            <keep-alive exclude="beta-box-edit-modal,geometry-edit-modal">
               <router-view />
             </keep-alive>
           </transition>
@@ -192,7 +192,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { riverDetailActions, alertsActions, bookmarksActions, reachGagesActions, metricsActions } from './shared/state'
+import { riverDetailActions, rapidsActions, alertsActions, bookmarksActions, reachGagesActions, metricsActions } from './shared/state'
 import { globalAppActions } from '@/app/global/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 import { MapBanner, ReachTitleEditModal } from './shared/components'
@@ -225,7 +225,7 @@ export default {
   },
   computed: {
     ...mapState({
-      data: state => state.riverDetailState.riverDetailData.data,
+      reach: state => state.riverDetailState.riverDetailData.data,
       loading: state => state.riverDetailState.riverDetailData.loading,
       alerts: state => state.riverDetailState.alertsData.data,
       editMode: state => state.appGlobalState.appGlobalData.editMode,
@@ -258,6 +258,7 @@ export default {
       this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.reachId)
       this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.reachId)
       this.$store.dispatch(metricsActions.FETCH_GAGE_METRICS, this.reachId)
+      this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.reachId)
     },
     toggleEditMode () {
       if (this.user) {

@@ -42,7 +42,7 @@
                 <td>{{ displayGaugeReading(reach) }}</td>
                 <td>
                   <zoom-in16
-                    v-if="reach._geometry"
+                    v-if="reach.geometry"
                     class="zoom-button"
                     width="21"
                     height="21"
@@ -225,7 +225,7 @@ export default {
       return {
         type: 'Feature',
         id: undefined,
-        _geometry: geom,
+        geometry: geom,
         properties: {
           class: reach.class,
           id: reach.id,

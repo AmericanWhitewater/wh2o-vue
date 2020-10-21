@@ -45,7 +45,7 @@ const options = {
     $sanitize: jest.fn(),
     $replaceText: jest.fn()
   },
-  stubs: ['rapid-item', 'nwi-map-editor']
+  stubs: ['rapid-item', 'rapid-map-editor']
 }
 describe('RapidsSection', () => {
   beforeEach(() => {
@@ -81,22 +81,6 @@ describe('RapidsSection', () => {
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
     expect(wrapper.find('.utility-block-error').exists()).toBe(false)
     expect(wrapper.find('.utility-block-content').exists()).toBe(true)
-  })
-
-  it('loads rapids when in view', async () => {
-    /**
-     * @note cannot simulate scroll event, treat as created lifecycle
-     */
-
-    const wrapper = createWrapper(RapidsSection, options)
-
-    wrapper.vm.loadRapids()
-
-    await wrapper.vm.$nextTick()
-
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
-      '[RAPIDS] FETCH_RAPIDS_DATA', '123'
-    )
   })
 
   it('hides loader and empty state blocks when rapids available', () => {

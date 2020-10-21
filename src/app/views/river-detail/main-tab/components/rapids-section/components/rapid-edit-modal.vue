@@ -26,7 +26,7 @@
         >
           Click on the map to locate the rapid
         </p>
-        <nwi-map-editor
+        <rapid-map-editor
           height="350"
           class="mb-spacing-md"
           :geom="formData.geom"
@@ -98,11 +98,10 @@
 import { mapState } from 'vuex'
 import { globalAppActions } from '@/app/global/state'
 import { rapidsActions } from '../../../../shared/state'
-import { checkWindow, poiClasses, shadowDomFixedHeightOffset } from '@/app/global/mixins'
+import { checkWindow, poiClasses, shadowDomFixedHeightOffset, mapHelpersMixin } from '@/app/global/mixins'
 import ContentEditor from '@/app/global/components/content-editor/content-editor'
-import NwiMapEditor from './nwi-map-editor.vue'
-
-import { lineString, point } from '@turf/helpers'
+import RapidMapEditor from './rapid-map-editor.vue'
+import { point } from '@turf/helpers'
 import lineSlice from '@turf/line-slice'
 import geoLength from '@turf/length'
 import along from '@turf/along'
@@ -111,10 +110,10 @@ export default {
   name: 'rapid-edit-modal',
   components: {
     ContentEditor,
-    NwiMapEditor
+    RapidMapEditor
   },
   /** @todo revisit adding checkWindow mixin performance considerations */
-  mixins: [checkWindow, poiClasses, shadowDomFixedHeightOffset],
+  mixins: [checkWindow, poiClasses, shadowDomFixedHeightOffset, mapHelpersMixin],
   props: {
     rapidModalVisible: {
       type: Boolean,
@@ -182,7 +181,6 @@ export default {
   }),
   computed: {
     ...mapState({
-      river: state => state.riverDetailState.riverDetailData.data,
       rapids: state => state.riverDetailState.rapidsData.data
     }),
     activeRapid () {
@@ -193,11 +191,6 @@ export default {
     },
     modalTitle () {
       return this.activeRapid ? 'Edit Rapid' : 'New Rapid'
-    },
-    reachGeom () {
-      // TODO: get graphql API to return a linestring or geojson instead of this text
-      const geom = this.river.geom?.split(',').map(d => d.split(' ').map(y => parseFloat(y)))
-      return geom ? lineString(geom) : null
     }
   },
   methods: {
@@ -217,7 +210,7 @@ export default {
       } else { // creating a new rapid
         this.$store.dispatch(rapidsActions.CREATE_RAPID, {
           id: this.$randomId(),
-          reach_id: this.river.id,
+          reach_id: this.reach.id,
           ...this.formData
         })
         message = 'Rapid Created'
