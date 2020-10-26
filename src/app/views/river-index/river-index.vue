@@ -121,7 +121,7 @@ export default {
     river: null,
     featureToCenter: null,
     loading: false,
-    sourceLayers: ['reach-segments', 'reach-segment-labels', 'projects']
+    sourceLayers: ['reach-segments', 'reach-segment-labels', 'reaches-without-geom', 'projects']
   }),
   computed: {
     ...mapState({
@@ -138,7 +138,7 @@ export default {
     },
     clickFeature (feature) {
       if (
-        ['reach-segments', 'reach-segment-labels'].indexOf(
+        ['reach-segments', 'reach-segment-labels', 'reaches-without-geom'].indexOf(
           feature.sourceLayer
         ) !== -1
       ) {
