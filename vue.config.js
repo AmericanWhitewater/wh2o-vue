@@ -1,17 +1,4 @@
-/**
- * Configuration for Vue CLI
- * @reference https://cli.vuejs.org/config/
- *
- */
-
-const path = require('path')
-
 module.exports = {
-  filenameHashing: true,
-  /**
-   * disables lint on save which disrupts workflow.
-   * linting reserved for pre-commit git hook.
-   */
   lintOnSave: false,
 
   devServer: {
@@ -24,52 +11,32 @@ module.exports = {
       warning: false
     }
   },
+  // https://cli.vuejs.org/config/#productionsourcemap
+  productionSourceMap: false,
 
+  // https://cli.vuejs.org/config/#css-extract
   css: {
     loaderOptions: {
       sass: {
-        prependData: `
-        @import '@/app/assets/scss/abstracts/_variables.scss'; 
-        @import '@/app/assets/scss/abstracts/_mixins.scss';         
-        @import '@/app/assets/scss/vendor/_carbon-components-helpers.scss';
-        `
+        prependData: '@import \'~@/assets/scss/vuetify/variables\''
+      },
+      scss: {
+        prependData: '@import \'~@/assets/scss/vuetify/variables\';'
       }
     }
   },
 
-  /**
-   * Progressive Web Application features
-   * @reference https://cli.vuejs.org/config/#pwa
-   *
-   */
-  pwa: {
-    name: 'American Whitewater',
-    themeColor: '#5a6872',
-    backgroundColor: '#537653',
-    msTileColor: '#FFFFFF',
-    assetsVersion: Math.floor(Math.random() * 1000000000),
-    appleMobileWebAppCapable: 'yes',
-    workboxPluginMode: 'InjectManifest',
-    workboxOptions: {
-      swSrc: './src/sw.js',
-      swDest: 'service-worker.js'
-    },
-    appleMobileWebAppStatusBarStyle: 'black'
+  chainWebpack: (config) => {
+    // Remove the following lines to add Vue Prefetch and Preload on index.html
+    // https://cli.vuejs.org/guide/html-and-static-assets.html#disable-index-generation
+    config.plugins.delete('preload')
+    config.plugins.delete('prefetch')
   },
-  chainWebpack: config => {
-    config.module
-      .rule('file')
-      .test(/\.(png|mp4|jpe?g|gif)$/i)
-      .use('file-loader')
-      .loader('file-loader')
-      .end()
 
-    config.resolve.alias.set('tinyqueue', path.join(__dirname, '/node_modules/tinyqueue/tinyqueue.js'))
-  },
-  configureWebpack: config => {
-    config.optimization = {
-      minimize: process.env.NODE_ENV === 'production'
-    }
-  },
-  publicPath: process.env.VUE_APP_BASE_URL || '/'
+  // https://cli.vuejs.org/config/#transpiledependencies
+  transpileDependencies: [
+    'vue-echarts',
+    'resize-detector',
+    'vuetify'
+  ]
 }

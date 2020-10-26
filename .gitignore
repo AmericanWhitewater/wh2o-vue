@@ -1,11 +1,11 @@
 .DS_Store
 node_modules
 /dist
-/live
-/coverage
+
 # local env files
 .env.local
 .env.*.local
+.env
 
 # Log files
 npm-debug.log*
@@ -14,11 +14,9 @@ yarn-error.log*
 
 # Editor directories and files
 .idea
+.vscode
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-.env
-
-docs/.vuepress/dist/

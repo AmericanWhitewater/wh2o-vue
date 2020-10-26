@@ -1,0 +1,1 @@
+export { default as ReachMap } from './ReachMap.vue'

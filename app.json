@@ -1,6 +1,0 @@
-{
-    "name": "wh2o-vue",
-    "description": "vue spa experiment for aw",
-    "image": "heroku/nodejs",
-    "keywords": ["node", "vue", "pwa" ]
-  }

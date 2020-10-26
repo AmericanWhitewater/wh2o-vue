@@ -1,77 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title><%= htmlWebpackPlugin.options.title %></title>
 
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=no" />
-  <meta name="keywords"
-    content="american, whitewater, rafting, fly, fishing, water, level, river, information, conservation, kayaking" />
-  <meta name="description" content="" id="meta-description" />
-  <link rel="apple-touch-icon" sizes="180x180" href="<%= BASE_URL %>img/icons/apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="<%= BASE_URL %>img/icons/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="<%= BASE_URL %>img/icons/favicon-16x16.png" />
-  <link rel="mask-icon" href="<%= BASE_URL %>img/icons/safari-pinned-tab.svg" color="#5bbad5" />
-  <link rel="shortcut icon" href="<%= BASE_URL %>img/icons/favicon.ico" />
-  <meta name="msapplication-TileColor" content="#ffffff" />
-  <meta name="msapplication-config" content="<%= BASE_URL %>img/icons/browserconfig.xml" />
+    <!-- Quicksand Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
 
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-2048-2732.png"
-    media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-2732-2048.png"
-    media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-1668-2388.png"
-    media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-2388-1668.png"
-    media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-1668-2224.png"
-    media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-2224-1668.png"
-    media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-1536-2048.png"
-    media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-2048-1536.png"
-    media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-1242-2688.png"
-    media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-2688-1242.png"
-    media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-1125-2436.png"
-    media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-2436-1125.png"
-    media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-828-1792.png"
-    media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-1792-828.png"
-    media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-1242-2208.png"
-    media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-2208-1242.png"
-    media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-750-1334.png"
-    media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-1334-750.png"
-    media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-640-1136.png"
-    media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" />
-  <link rel="apple-touch-startup-image" href="<%= BASE_URL %>img/pwa-assets/apple-splash-1136-640.png"
-    media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" />
-
-  <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
-  <title>American Whitewater</title>
-</head>
-
-<body>
-  <noscript>
-    <h1 style="font-family: Arial, Helvetica, sans-serif;">Error</h1>
-    <p style="font-family: Arial, Helvetica, sans-serif;">
-      The American Whitewater app requires Javascript to run properly. Please
-      enable Javascript to continue.
-    </p>
-  </noscript>
-  <div id="app"></div>
-</body>
-
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
 </html>

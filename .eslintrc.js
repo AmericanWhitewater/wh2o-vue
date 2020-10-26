@@ -32,7 +32,7 @@ module.exports = {
     'vue/valid-template-root': 2,
     'vue/valid-v-for': 2,
     'no-new': 'off',
-    'vue/name-property-casing': [2, 'kebab-case'],
+    "vue/component-definition-name-casing": ["error", "PascalCase"],
     camelcase: 'off',
     radix: 'off',
     'vue/order-in-components': [

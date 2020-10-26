@@ -1,60 +1,56 @@
 import Vue from 'vue'
-import VueMeta from 'vue-meta'
-import CarbonComponents from '@carbon/vue'
+import App from './App.vue'
 
-import './app/assets/scss/app.scss'
-import './app/plugins'
-import './app/filters'
-import './registerServiceWorker'
+// VUEX - https://vuex.vuejs.org/
+import store from './store'
 
-import apolloProvider from './app/plugins/apollo-client'
+// VUE-ROUTER - https://router.vuejs.org/
+import router from './router'
 
-import App from './app/app.vue'
-import router from './app/app-routes'
-import store from './app/app-state'
-import { laravelDeploy } from './app/environment'
+// PLUGINS
+import vuetify from './plugins/vuetify'
+import i18n from './plugins/vue-i18n'
+import './plugins/vue-google-maps'
+import './plugins/vue-shortkey'
+import './plugins/vue-head'
+import './plugins/vue-gtag'
+import './plugins/apexcharts'
+import './plugins/echarts'
+import './plugins/animate'
+import './plugins/clipboard'
+import './plugins/moment'
 
-import VueApollo from 'vue-apollo'
+// FILTERS
+import './filters/capitalize'
+import './filters/lowercase'
+import './filters/uppercase'
+import './filters/formatCurrency'
+import './filters/formatDate'
 
-Vue.config.devtools = process.env.NODE_ENV === 'development'
+// STYLES
+// Main Theme SCSS
+import './assets/scss/theme.scss'
+
+// Animation library - https://animate.style/
+import 'animate.css/animate.min.css'
+
+// Set this to false to prevent the production tip on Vue startup.
 Vue.config.productionTip = false
 
-Vue.use(CarbonComponents)
-Vue.use(VueMeta)
-Vue.use(VueApollo)
-
-let mountPoint
-
-/**
- * determines where to mount the vue app.
- *
- * If we're mounting inside the production laravel app
- * use the shadow DOM, if not, the normal #app
- *
- */
-if (laravelDeploy) {
-  if (process.env.NODE_ENV === 'production') {
-    // this is kind of disgusting but there's a link to the Vue root in the nav of the Laravel app
-    // we need to avoid that causing a reload of the Vue app and instead just have it trigger
-    // navigation to the root of the Vue app
-    const navLinks = document.querySelectorAll('[href="/content/River/view/?"]')
-    if (navLinks) {
-      // should only be one
-      const navLink = navLinks[0]
-      navLink.addEventListener('click', () => { router.replace('/') })
-      navLink.setAttribute('href', '#')
-    }
-    mountPoint = document.querySelector('#wh2o-vue-host').shadowRoot.querySelector('#wh2o-vue')
-  } else {
-    mountPoint = '#wh2o-vue'
-  }
-} else {
-  mountPoint = '#app'
-}
-
-export const wh2o = new Vue({
+/*
+|---------------------------------------------------------------------
+| Main Vue Instance
+|---------------------------------------------------------------------
+|
+| Render the vue application on the <div id="app"></div> in index.html
+|
+| https://vuejs.org/v2/guide/instance.html
+|
+*/
+export default new Vue({
+  i18n,
+  vuetify,
   router,
   store,
-  apolloProvider,
-  render: h => h(App)
-}).$mount(mountPoint)
+  render: (h) => h(App)
+}).$mount('#app')
