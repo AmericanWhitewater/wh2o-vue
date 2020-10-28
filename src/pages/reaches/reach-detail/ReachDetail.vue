@@ -26,31 +26,30 @@
               </v-list-item-icon>
 
               <v-list-item-content>
-                <v-list-item-title v-text="item.text"></v-list-item-title>
+                <v-list-item-title>
+                  {{ $t(item.text) }}
+                </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
         </v-list>
       </v-col>
       <v-col cols="12" sm="6" md="8">
+        <h3 class="mb-1">{{ $t('common.description') }}</h3>
         <p v-if="reach" v-text="reach.description" />
-        <!-- <v-card>
-          <v-skeleton-loader
-            v-bind="attrs"
-            type="table-heading, list-item-two-line, image, table-tfoot"
-          ></v-skeleton-loader>
-        </v-card> -->
+        <rapids-section :reach-id="$route.params.id" />
       </v-col>
     </v-row>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
-import { ReachMap } from './components'
+import { ReachMap, RapidsSection } from './components'
 export default {
   name: 'ReachDetail',
   components: {
-    ReachMap
+    ReachMap,
+    RapidsSection
   },
   data: () => ({
     activeTab: 'General',
@@ -65,13 +64,13 @@ export default {
       }
     ],
     items: [
-      { text: 'General', icon: 'mdi-folder' },
-      { text: 'Flow', icon: 'mdi-chart-line' },
-      { text: 'Gallery', icon: 'mdi-camera' },
-      { text: 'Map', icon: 'mdi-map' },
-      { text: 'News', icon: 'mdi-note' },
-      { text: 'Accidents', icon: 'mdi-hospital-box-outline' },
-      { text: 'Credits', icon: 'mdi-account-multiple' }
+      { text: 'general', icon: 'mdi-folder' },
+      { text: 'flow', icon: 'mdi-chart-line' },
+      { text: 'gallery', icon: 'mdi-camera' },
+      { text: 'map', icon: 'mdi-map' },
+      { text: 'news', icon: 'mdi-note' },
+      { text: 'accidents', icon: 'mdi-hospital-box-outline' },
+      { text: 'credits', icon: 'mdi-account-multiple' }
     ]
   }),
   computed: {

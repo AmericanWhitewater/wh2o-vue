@@ -3,6 +3,15 @@ export default {
   accidents: 'Les Accidents',
   articles: 'Des Articles',
   rivers: 'Rivières',
+  rapids: 'Rapides',
+  general: 'Résumé',
+  flow: 'Couler',
+  gallery: 'Galerie',
+  map: 'Carte',
+  news: 'Nouvelles',
+  credits: 'Crédits',
+  search: 'Chercher',
+  'our-organization': 'Notre Organisation',
   'common': {
     'add': 'Ajouter',
     'cancel': 'Annuler',
@@ -121,6 +130,7 @@ export default {
     'call': 'Vous avez d\'autres questions? Veuillez contacter'
   },
   'menu': {
+    base: 'Menu',
     'search': 'Recherche (appuyez sur \'ctrl + /\' pour faire la mise au point)',
     'dashboard': 'Tableau de bord',
     'logout': 'Déconnexion',

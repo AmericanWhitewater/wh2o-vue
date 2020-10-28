@@ -76,7 +76,7 @@
             />
             <toolbar-language />
             <v-btn depressed class="ml-1" @click.stop="drawer = !drawer">
-              Menu
+                {{ $t('menu.base') }}
               <v-icon class="ml-1">mdi-menu</v-icon>
             </v-btn>
           </div>
@@ -135,6 +135,7 @@ export default {
   methods: {
     handleSelect(reachId) {
       this.$router.push(`/reach-detail/${reachId}`).catch(()=>{})
+      this.searchTerm = ""
     },
     onKeyup(e) {
       this.$refs.search.focus();

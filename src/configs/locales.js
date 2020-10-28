@@ -16,12 +16,12 @@ export default {
   availableLocales: [{
     code: 'en',
     flag: 'us',
-    label: 'English',
+    label: 'En',
     messages: en
   }, {
     code: 'es',
     flag: 'es',
-    label: 'Español',
+    label: 'Es',
     messages: es
   },
   // {
@@ -39,7 +39,7 @@ export default {
   {
     code: 'fr',
     flag: 'fr',
-    label: 'Français',
+    label: 'Fr',
     messages: fr
   }
   ]

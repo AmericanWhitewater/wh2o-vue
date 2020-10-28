@@ -5,12 +5,14 @@ export default {
     {
       items: [
         {
+          key: 'search',
           text: 'Search',
           icon: 'mdi-magnify',
           link: '/search'
         },
         {
           text: 'Our Organization',
+          key: "our-organization",
           icon: 'mdi-domain',
           items: [
             {

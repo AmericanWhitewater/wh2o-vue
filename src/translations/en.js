@@ -3,6 +3,15 @@ export default {
   accidents: 'Accidents',
   articles: 'Articles',
   rivers: 'Rivers',
+  rapids: 'Rapids',
+  general: 'General',
+  flow: 'Flow',
+  gallery: 'Gallery',
+  map: 'Map',
+  news: 'News',
+  credits: 'Credits',
+  search: 'Search',
+  'our-organization': 'Our Organization',
   common: {
     add: 'Add',
     cancel: 'Cancel',
@@ -121,6 +130,7 @@ export default {
     call: 'Have other questions? Please reach out '
   },
   menu: {
+    base: 'Menu',
     search: 'Search (press \'ctrl + /\' to focus)',
     dashboard: 'Dashboard',
     logout: 'Logout',
