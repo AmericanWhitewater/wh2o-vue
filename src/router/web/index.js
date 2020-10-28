@@ -5,7 +5,7 @@ export default [
   },
   {
     path: '/search',
-    component: () => import('@/pages/SearchPage.vue')
+    component: () => import('@/pages/search/SearchPage.vue')
   },
   {
     path: '/reach-detail/:id',

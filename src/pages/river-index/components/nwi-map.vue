@@ -16,10 +16,10 @@
         :map-controls="mapControls"
         :fullscreen-target="fullscreenTarget"
       />
-      <nwi-result-counter
+      <!-- <nwi-result-counter
         v-if="!hideResultCounter"
         :loading="mapDataLoading"
-      />
+      /> -->
     </template>
     <template v-else>
       <utility-block
@@ -530,7 +530,7 @@ export default {
     height: 100%;
     width: 100%;
     // background-color:$ui-03;
-    &.river-detail {
+    // &.river-detail {
       //  @include carbon--breakpoint("md") {
       //   width: 68%;
       //   height: 100%;
@@ -539,7 +539,7 @@ export default {
       // @include carbon--breakpoint("max") {
       //   width: 76%;
       // }
-    }
+    // }
 
   }
 

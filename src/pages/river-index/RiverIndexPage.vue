@@ -1,7 +1,7 @@
 <template>
   <div class="river-index-page">
     <v-row>
-      <v-col>
+      <v-col cols="12" sm="6" md="8">
         <nwi-map
             :external-loading="loading"
             :feature-to-center="featureToCenter"
@@ -17,7 +17,7 @@
           />
       </v-col>
     
-    <v-col>
+    <v-col cols="12" sm="6" md="4">
       <NwiMapSearch />
           <template v-if="loading">
             <UtilityBlock state="loading" />
