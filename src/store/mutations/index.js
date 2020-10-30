@@ -4,6 +4,9 @@ export default {
   [type.DATA_SUCCESS](state, payload) {
     state.data = payload
   },
+  [type.DATA_RESET](state) {
+    state.data = null
+  },
   [type.DATA_LOADING](state, payload) {
     state.loading = payload
   },

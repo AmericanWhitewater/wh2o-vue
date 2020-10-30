@@ -8,6 +8,7 @@ export default {
   flow: 'Flow',
   gallery: 'Gallery',
   map: 'Map',
+  comments: 'Comments',
   news: 'News',
   credits: 'Credits',
   search: 'Search',

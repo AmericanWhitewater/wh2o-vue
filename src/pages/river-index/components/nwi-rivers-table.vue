@@ -6,6 +6,7 @@
     <template v-else-if="reaches && reaches.length > 0">
       <div class="table-container">
         <v-data-table
+          :loading="searchLoading"
           @click:row="handleRowClick"
           :items="reaches"
           :headers="[

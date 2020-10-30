@@ -7,15 +7,8 @@
         <v-breadcrumbs :items="breadcrumbs" class="pa-0 py-2"></v-breadcrumbs>
       </div>
       <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>mdi-refresh</v-icon>
-      </v-btn>
+      <reach-map />
     </div>
-    <v-row>
-      <v-col>
-        <reach-map />
-      </v-col>
-    </v-row>
     <v-row>
       <v-col cols="12" sm="6" md="4" lg="2">
         <v-list nav dense>
@@ -35,21 +28,23 @@
         </v-list>
       </v-col>
       <v-col cols="12" sm="6" md="8">
-        <h3 class="mb-1">{{ $t('common.description') }}</h3>
-        <p v-if="reach" v-text="reach.description" />
+        <reach-description v-if="reach" :reach="reach" />
         <rapids-section :reach-id="$route.params.id" />
+        <comments-section :section-id="$route.params.id" section="river" type="comment" />
       </v-col>
     </v-row>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
-import { ReachMap, RapidsSection } from './components'
+import { ReachMap, RapidsSection, CommentsSection, ReachDescription } from './components'
 export default {
   name: 'ReachDetail',
   components: {
     ReachMap,
-    RapidsSection
+    RapidsSection,
+    CommentsSection,
+    ReachDescription
   },
   data: () => ({
     activeTab: 'General',

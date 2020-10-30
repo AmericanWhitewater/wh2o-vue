@@ -33,13 +33,13 @@ export default {
   // light theme colors
   light: {
     background: '#ffffff',
-    surface: '#f2f5f8',
+    surface: '#f4f7fb',
     secondary: '#537653',
     accent: '#6d8f6d',
     primary: '#53789a',
-    error: '#ef476f',
-    info: '#2196F3',
-    success: '#06d6a0',
-    warning: '#ffd166'
+    error: '#da1e28',
+    info: '#054ada',
+    success: '#24a148',
+    warning: '#fdd13a'
   }
 }

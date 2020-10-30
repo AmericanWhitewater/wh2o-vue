@@ -19,7 +19,8 @@
       <main-menu :menu="navigation.menu" />
       <template v-slot:append>
         <div class="pa-2 pt-1">
-          <v-btn block color="secondary"> Logout </v-btn>
+          <v-switch v-model="$vuetify.theme.dark" :label="$vuetify.theme.dark ? 'Light Theme' : 'Dark Theme'" />
+          <v-btn block color="secondary" tile> Logout </v-btn>
         </div>
       </template>
     </v-navigation-drawer>
@@ -75,7 +76,7 @@
               dense
             />
             <toolbar-language />
-            <v-btn depressed class="ml-1" @click.stop="drawer = !drawer">
+            <v-btn depressed class="ml-1" @click.stop="drawer = !drawer" tile>
                 {{ $t('menu.base') }}
               <v-icon class="ml-1">mdi-menu</v-icon>
             </v-btn>
