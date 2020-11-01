@@ -31,7 +31,7 @@
                     Edit
                   </cv-button>
                   <reach-title-edit-modal
-                    v-if="editMode"
+                    v-if="editMode && !loading"
                     :visible="editReachTitleModalVisible"
                     @edit:cancelled="editReachTitleModalVisible=false"
                   />
@@ -90,7 +90,7 @@
               </map-banner>
             </transition>
             <geometry-edit-modal
-              v-if="editMode"
+              v-if="editMode && !loading"
               :visible="editGeometryModalVisible"
               @edit:cancelled="editGeometryModalVisible=false"
             />
@@ -181,7 +181,7 @@
             :name="transitionName"
             mode="out-in"
           >
-            <keep-alive>
+            <keep-alive exclude="beta-box-edit-modal,geometry-edit-modal">
               <router-view />
             </keep-alive>
           </transition>

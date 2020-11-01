@@ -49,7 +49,7 @@ export default {
     detailFeature: null,
     includeLegend: false,
     mapControls: ['baseMap', 'color', 'fullscreen'],
-    sourceLayers: ['reach-segments', 'rapids', 'access']
+    sourceLayers: ['reach-segments', 'reaches-without-geom', 'rapids', 'access']
   }),
   computed: {
     ...mapState({

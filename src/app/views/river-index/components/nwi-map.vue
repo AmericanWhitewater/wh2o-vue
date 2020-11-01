@@ -157,17 +157,26 @@ export default {
   },
   watch: {
     // visually highlights a moused over feature on the map
-    mouseoveredFeature (feature) {
-      // TODO: consider refactoring this to use feature state (it might be faster)
-      if (feature && feature.properties.id) {
-        this.map.setFilter('activeReachSegmentCasing', [
-          '==',
-          ['get', 'id'],
-          feature.properties.id
-        ])
+    mouseoveredFeature (newFeature, oldFeature) {
+      if (newFeature && newFeature.id) {
+        // we have other features like labels that apply to reach-segments but *not* reaches-without-geom
+        // so we're checking if it's reaches-without-geom and otherwise defaulting to reach-segments
+        const sourceLayer = newFeature.sourceLayer === 'reaches-without-geom' ? 'reaches-without-geom' : 'reach-segments'
+        this.map.setFeatureState({
+          id: newFeature.id,
+          source: newFeature.source,
+          sourceLayer: sourceLayer
+        }, {
+          hover: true
+        })
       } else {
-        // hide 'active-reach-segment-casing' layer
-        this.map.setFilter('activeReachSegmentCasing', ['all', false])
+        // did not mouse over a reach, so need to reset feature state of previous reach
+        // if it was set
+        if (oldFeature && oldFeature.id) {
+          const sourceLayer = oldFeature.sourceLayer === 'reaches-without-geom' ? 'reaches-without-geom' : 'reach-segments'
+          // if we start using featureState for anything other than hover, we'll need to specify ID and key here
+          this.map.removeFeatureState({ source: 'nwi-source', sourceLayer: sourceLayer })
+        }
       }
     },
     colorBy (newVal) {
@@ -239,8 +248,9 @@ export default {
     },
     updateMapColorScheme (newScheme) {
       const colors = Object.values(NwiMapStyles.colorSchemes[newScheme])
+      let colorScheme
       if (newScheme === 'difficulty') {
-        const difficultyColors = [
+        colorScheme = [
           'case',
           ['>', ['get', 'difficulty'], 6],
           colors[3],
@@ -252,18 +262,8 @@ export default {
           colors[0],
           '#53789a'
         ]
-        this.map.setPaintProperty(
-          'reachSegments',
-          'line-color',
-          difficultyColors
-        )
-        this.map.setPaintProperty(
-          'reachSegmentDashes',
-          'line-color',
-          difficultyColors
-        )
       } else if (newScheme === 'currentFlow') {
-        const flowColors = [
+        colorScheme = [
           'match',
           ['get', 'condition'],
           'low',
@@ -274,14 +274,15 @@ export default {
           colors[3],
           colors[0]
         ]
-        this.map.setPaintProperty('reachSegments', 'line-color', flowColors)
-        this.map.setPaintProperty(
-          'reachSegmentDashes',
-          'line-color',
-          flowColors
-        )
       } else {
-        this.map.setPaintProperty('reachSegments', 'line-color', '#53789a')
+        colorScheme = '#53789a'
+      }
+      if (this.sourceLayers.includes('reach-segments')) {
+        this.map.setPaintProperty('reachSegments', 'line-color', colorScheme)
+        this.map.setPaintProperty('reachSegmentDashes', 'line-color', colorScheme)
+      }
+      if (this.sourceLayers.includes('reaches-without-geom')) {
+        this.map.setPaintProperty('reachesWithoutGeom', 'circle-color', colorScheme)
       }
     },
     // this method notifies upstream components of what reaches are visible in
@@ -290,8 +291,11 @@ export default {
       // can have multiple responses for a given reach because of tiling,
       // so need to make array unique
       const uniq = {}
+      const reachContainingLayers = ['reachSegments', 'reachesWithoutGeom'].filter(
+        x => this.mapLayers.includes(x)
+      )
       const reaches = this.map
-        .queryRenderedFeatures({ layers: ['reachSegments'] })
+        .queryRenderedFeatures({ layers: reachContainingLayers })
         // eslint-disable-next-line
         .filter(
           obj => !uniq[obj.properties.id] && (uniq[obj.properties.id] = true)
@@ -309,6 +313,7 @@ export default {
         this.map.addSource('nwi-source', {
           type: 'vector',
           tiles: [nwiTileServer],
+          promoteId: 'id',
           minzoom: 4,
           maxzoom: 14
         })
@@ -337,9 +342,6 @@ export default {
         if (this.detailReachId) {
           this.adjustMapForDetailReach()
         }
-
-        // hide 'active-reach-segment-casing' layer
-        this.map.setFilter('activeReachSegmentCasing', ['all', false])
 
         this.updateMapColorScheme(this.colorBy)
 
@@ -370,10 +372,10 @@ export default {
     // other reaches if this.detailReachId is set
     // need to pass layer in here because 'reach-segments' is different from the rest
     processPaintPropsForDetailReach (layer, paint) {
-      if (!this.detailReachId) {
+      if (!this.detailReachId || layer === 'activeReachSegmentCasing') {
         return paint
       } else {
-        const inactiveOpacity = 0.4
+        const inactiveOpacity = 0.5
         // we are iterating through paint props and looking for 'opacity' in the key
         const newPaint = {}
         Object.keys(paint).forEach(key => {
@@ -382,7 +384,7 @@ export default {
             key.includes('opacity') &&
             (isNaN(paint[key]) || paint[key] > 0)
           ) {
-            if (layer === 'reachSegments') {
+            if (['reachSegments', 'reachesWithoutGeom', 'reachesWithoutGeomLabels'].includes(layer)) {
               newPaint[key] = [
                 'case',
                 ['==', ['get', 'id'], this.detailReachId],
