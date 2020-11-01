@@ -4,11 +4,11 @@
   "private": true,
   "author": "Drew Althage",
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --public localhost:9669 --port 9669",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "bit": "bit config set analytics_reporting false && bit config set error_reporting false && bit config set ssh_key_file ./scripts/bit-key && bit remote add ssh://bit@bit.americanwhitewater.org:/opt/bit/aw && bit import 'aw/*' && bit link",
+    "bit": "bit config set analytics_reporting false && bit config set error_reporting false && bit config set ssh_key_file docker/bit-key && bit remote add ssh://bit@bit.americanwhitewater.org:/opt/bit/aw && bit import 'aw/*' && bit link",
     "build:modern": "vue-cli-service build --modern",
     "test:coverage": "vue-cli-service test:unit --coverage",
     "snapshot:update": " vue-cli-service test:unit --updateSnapshot",
@@ -138,5 +138,8 @@
     "env": {},
     "componentsDefaultDirectory": "components/{name}",
     "packageManager": "npm"
+  },
+  "publishConfig": {
+    "registry": "https://npm.americanwhitewater.org"
   }
 }

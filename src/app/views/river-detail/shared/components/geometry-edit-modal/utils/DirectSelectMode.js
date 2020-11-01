@@ -1,8 +1,9 @@
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
-import Constants from "@mapbox/mapbox-gl-draw/src/constants";
+// no default exports from esm modules. need to be explicit
+import { meta, cursors } from "@mapbox/mapbox-gl-draw/src/constants";
 import { isOfMetaType } from "@mapbox/mapbox-gl-draw/src/lib/common_selectors";
 
-const isVertex = isOfMetaType(Constants.meta.VERTEX);
+const isVertex = isOfMetaType(meta.VERTEX);
 
 export default {
   ...MapboxDraw.modes.direct_select,
@@ -12,9 +13,8 @@ export default {
     const onVertex = isVertex(e);
     const noCoords = state.selectedCoordPaths.length === 0;
     // if (isFeature && noCoords) this.updateUIClasses({ mouse: Constants.cursors.MOVE });
-    if (onVertex && !noCoords)
-      this.updateUIClasses({ mouse: Constants.cursors.MOVE });
-    else this.updateUIClasses({ mouse: Constants.cursors.NONE });
+    if (onVertex && !noCoords) this.updateUIClasses({ mouse: cursors.MOVE });
+    else this.updateUIClasses({ mouse: cursors.NONE });
     this.stopDragging(state);
 
     // Skip render

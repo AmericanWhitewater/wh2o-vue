@@ -104,6 +104,8 @@ module.exports = {
      * disables linting overlay which disrupts workflow.
      * linting reserved for pre-commit git hook.
      */
+
+    headers: { "Access-Control-Allow-Origin": "*" },
     overlay: {
       error: false,
       warning: false,

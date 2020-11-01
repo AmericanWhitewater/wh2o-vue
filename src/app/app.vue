@@ -1,5 +1,5 @@
 <template>
-  <div class="wh2o-vue">
+  <div class="wh2o-vue rebuild">
     <app-toaster />
     <app-navigation v-if="!hideNavigation" />
     <transition :name="transitionName">
