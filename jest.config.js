@@ -1,6 +1,6 @@
 module.exports = {
   preset: '@vue/cli-plugin-unit-jest',
-  transformIgnorePatterns: ['/node_modules/(?!@carbon/icons-vue)', '/node_modules/(?!mapbox-gl)'],
+  transformIgnorePatterns: ["/node_modules\/(?!(@carbon\/icons-vue|mapbox-gl|@mapbox))/"],
   verbose: false,
   collectCoverageFrom: [
     'src/**/*.{js,vue}',
@@ -13,6 +13,7 @@ module.exports = {
     '!src/**/create-wrapper.js',
     '!src/**/api-constants.js'
   ],
+  transform:{"\\.ts$":['ts-jest']},
   coverageReporters: ['lcov', 'text-summary'],
   moduleNameMapper: {
     '^.+\\.(css)$': '<rootDir>/src/utils/unit-test-helpers/CSSStub.js'
