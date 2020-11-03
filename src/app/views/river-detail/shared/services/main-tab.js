@@ -53,7 +53,8 @@ const updateRiverDetailGeom = data => {
           reachUpdate(id: $id, reach: $reach) {
             geom,
             ploc,
-            tloc
+            tloc,
+            length
           }
         }
       `,
@@ -62,7 +63,8 @@ const updateRiverDetailGeom = data => {
         reach: {
           geom: data.geom,
           ploc: data.ploc,
-          tloc: data.tloc
+          tloc: data.tloc,
+          length: data.length
         }
       }
     }).then(response => {
