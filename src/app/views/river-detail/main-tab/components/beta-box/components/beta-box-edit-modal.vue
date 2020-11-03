@@ -31,15 +31,6 @@
         </cv-dropdown-item>
       </cv-dropdown>
       <cv-number-input
-        v-model="formData.length"
-        class="mb-spacing-md"
-        label="Length"
-        step=".01"
-        :max="4132"
-        :min="0"
-        :mobile="windowWidth <= $options.breakpoints.md"
-      />
-      <cv-number-input
         v-model="formData.avggradient"
         class="mb-spacing-md"
         label="Average Gradient"
@@ -83,7 +74,6 @@ export default {
   data: () => ({
     formData: {
       class: '',
-      length: null,
       avggradient: null,
       maxgradient: null
     }
@@ -109,7 +99,6 @@ export default {
   mounted () {
     if (this.reach) {
       this.formData.class = this.reach.class
-      this.formData.length = this.reach.length
       this.formData.avggradient = this.reach.avggradient
       this.formData.maxgradient = this.reach.maxgradient
     }
