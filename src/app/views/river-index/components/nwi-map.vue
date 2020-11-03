@@ -189,10 +189,12 @@ export default {
         let bounds
         // ideally the tile server will be returning `bbox` as a property
         if (feature.properties.bbox) {
-          bounds = JSON.parse(feature.properties.bbox)
+          // bbox is currently produced by ST_AsGeoJSON(Box2D(geom))::jsonb->'coordinates'->>0
+          // https://github.com/AmericanWhitewater/wh2o/blob/main/app/Http/Controllers/API/TilesController.php#L339
+          // which yields a five coordinate polygon; can reliably take indices 0 and 2
+          const parsedBoundsPolygon = JSON.parse(feature.properties.bbox)
+          bounds = [parsedBoundsPolygon[0], parsedBoundsPolygon[2]]
         } else {
-          // this method isn't great because mapbox is giving us "tiled" versions
-          // of the features, so the geom may be just part of the feature in question
           bounds = bbox(feature.geometry)
         }
         this.map.fitBounds(bounds, fitBoundsOptions)
