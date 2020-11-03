@@ -50,7 +50,8 @@ import {
 } from '@/app/environment'
 
 const fitBoundsOptions = {
-  padding: 80
+  padding: 80,
+  linear: true
 }
 
 export default {
@@ -192,7 +193,7 @@ export default {
         } else {
           // this method isn't great because mapbox is giving us "tiled" versions
           // of the features, so the geom may be just part of the feature in question
-          bounds = bbox(feature._geometry)
+          bounds = bbox(feature.geometry)
         }
         this.map.fitBounds(bounds, fitBoundsOptions)
         this.$emit('centeredFeature')
