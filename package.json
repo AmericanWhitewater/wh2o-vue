@@ -73,14 +73,14 @@
     "vue-social-sharing": "^2.4.7",
     "vuex": "^3.5.1",
     "wkx": "^0.5.0",
-    "@bit/aw.client.apollo": "file:./components/client/apollo",
-    "@bit/aw.models.article": "file:./components/models/article",
-    "@bit/aw.models.image": "file:./components/models/image",
-    "@bit/aw.models.metrics": "file:./components/models/metrics",
-    "@bit/aw.models.permission": "file:./components/models/permission",
-    "@bit/aw.models.post": "file:./components/models/post",
-    "@bit/aw.models.user": "file:./components/models/user",
-    "@bit/aw.utility.genid": "file:./components/utility/genid"
+    "@bit/aw.client.apollo": "1",
+    "@bit/aw.models.article": "1",
+    "@bit/aw.models.image": "1",
+    "@bit/aw.models.metrics": "1",
+    "@bit/aw.models.permission": "1",
+    "@bit/aw.models.post": "1",
+    "@bit/aw.models.user": "1",
+    "@bit/aw.utility.genid": "1"
   },
   "devDependencies": {
     "@sentry/browser": "^5.19.2",
