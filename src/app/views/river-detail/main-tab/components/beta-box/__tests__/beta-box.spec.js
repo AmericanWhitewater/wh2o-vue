@@ -37,7 +37,7 @@ const options = {
 
 // const gagesData = [{ rc: 0.38333333333333325, epoch: 1587984255.846007, gauge_reading: 1.83, gauge_metric: 8, range_comment: null, class: 'med', excluded: false, url: '/content/Gauge2/detail/id/4248', rmin: 1.6, rmax: 2.2, gauge: { name: 'VALLECITO CREEK NEAR BAYFIELD, CO.', id: '4248' }, updated: 147007.153993, last_gauge_reading: 1.83, last_gauge_updated: 3584, gauge_perfect: false, adjusted_reach_class: null }]
 
-const tdClasses = ['.river-class', '.river-length', '.river-avggradient', '.river-flow-rate', '.flow-range', '.river-gages']
+const tdClasses = ['.river-class', '.river-avggradient', '.river-flow-rate', '.flow-range', '.river-gages']
 
 describe('FlowTab', () => {
   beforeEach(() => {

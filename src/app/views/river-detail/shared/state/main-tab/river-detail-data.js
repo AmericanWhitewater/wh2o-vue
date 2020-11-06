@@ -126,7 +126,8 @@ const actions = {
     const payloadData = {
       geom: wkx.Geometry.parseGeoJSON(geomData.geom).toWkt(),
       ploc: `${geomData.ploc[0]} ${geomData.ploc[1]}`,
-      tloc: `${geomData.tloc[0]} ${geomData.tloc[1]}`
+      tloc: `${geomData.tloc[0]} ${geomData.tloc[1]}`,
+      length: geomData.length
     }
     const result = await updateRiverDetailGeom({
       id: context.state.data.id,
