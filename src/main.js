@@ -41,7 +41,7 @@ if (laravelDeploy) {
     const navLinks = document.querySelectorAll(
       '[href="/content/River/view/?"]'
     );
-    if (navLinks) {
+    if (navLinks && navLinks.length) {
       // should only be one
       const navLink = navLinks[0];
       navLink.addEventListener("click", () => {
