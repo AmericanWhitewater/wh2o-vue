@@ -1,3 +1,3 @@
-export function getGages() {
+export function getGages () {
   console.log('get gages')
 }

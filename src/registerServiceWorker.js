@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 import { register } from 'register-service-worker'
-import store from './app/app-state'
+import store from './app/store'
 import { globalAppActions } from './app/global/state'
 
 if (

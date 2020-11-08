@@ -3,17 +3,16 @@ import VueRouter from 'vue-router'
 
 import { appLocalStorage } from '@/app/global/services'
 
-import staticRoutes from './views/static-routes/static-routes'
-import { gageDetailRoutes } from './views/gage-detail'
-import { newsPageRoutes } from './views/news-page'
-import { riverDetailRoutes } from './views/river-detail'
-import { riverIndexRoutes } from './views/river-index'
-import { userRoutes } from './views/user'
+import staticRoutes from '@/app/views/static-routes/static-routes'
+import { newsPageRoutes } from '@/app/views/news-page'
+import { riverDetailRoutes } from '@/app/views/river-detail'
+import { riverIndexRoutes } from '@/app/views/river-index'
+import { userRoutes } from '@/app/views/user'
 
 Vue.use(VueRouter)
 
 const routes = [
-  ...gageDetailRoutes,
+  // ...gageDetailRoutes,
   ...newsPageRoutes,
   ...riverDetailRoutes,
   ...riverIndexRoutes,

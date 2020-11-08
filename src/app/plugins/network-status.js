@@ -1,4 +1,4 @@
-import store from '@/app/app-state'
+import store from '@/app/store'
 import { globalAppActions } from '@/app/global/state'
 
 if (!navigator.onLine) {
