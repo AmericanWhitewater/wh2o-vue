@@ -50,7 +50,7 @@
               text="no gage readings for your chosen parameters, please try again"
             />
           </template>
-          <GageChartControls
+          <gage-chart-controls
             @viewModeChange="viewMode = $event"
 
             @gage-change="setActiveGageId"
@@ -124,15 +124,21 @@
           >Edit Flows</a>
         </template>
         <template v-else>
-          error
+          <cv-button
+            v-if="editMode"
+            @click.exact="handleOpenGageModal"
+          >
+            Add Gage
+          </cv-button>
         </template>
       </template>
     </layout>
+    <gage-link-modal ref="gageLinkModal" />
   </div>
 </template>
 
 <script>
-import { FlowChart, GageReadings, GageChartControls, LevelLegend, FlowStats } from './components'
+import { FlowChart, GageReadings, GageChartControls, LevelLegend, FlowStats, GageLinkModal } from './components'
 import { GageChartConfig } from './utils/gage-chart-config'
 import { Layout } from '@/app/global/layout'
 import { mapState } from 'vuex'
@@ -141,13 +147,10 @@ import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { checkWindow } from '@/app/global/mixins'
 import { globalAppActions } from '@/app/global/state'
 
-/**
- * @todo this component is getting pretty wild. consider composition API.
- *
- */
 export default {
   name: 'flow-tab',
   components: {
+    GageLinkModal,
     FlowChart,
     GageChartControls,
     GageReadings,
@@ -204,6 +207,9 @@ export default {
   methods: {
     setActiveGageId (id) {
       this.activeGageId = id
+    },
+    handleOpenGageModal () {
+      this.$refs.gageLinkModal.open()
     }
   },
   created () {

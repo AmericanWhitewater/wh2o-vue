@@ -4,7 +4,9 @@ import { fetchUserData } from '../services'
 
 const initialState = {
   loading: false,
-  data: null,
+  data: {
+    uid: 1234
+  },
   error: null
 }
 
@@ -23,7 +25,8 @@ const mutations = {
   },
 
   [DATA_SUCCESS] (state, payload) {
-    Object.assign(state, { loading: false, data: payload })
+    // Object.assign(state, { loading: false, data: payload })
+    console.log('payload :>> ', payload)
   },
 
   [DATA_ERROR] (state, payload) {

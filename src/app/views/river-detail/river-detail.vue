@@ -21,20 +21,6 @@
               <div>
                 <h4>
                   {{ reach.river }}
-                  <cv-button
-                    v-if="editMode"
-                    id="edit-title"
-                    size="small"
-                    kind="secondary"
-                    @click="editReachTitleModalVisible = true"
-                  >
-                    Edit
-                  </cv-button>
-                  <reach-title-edit-modal
-                    v-if="editMode && !loading"
-                    :visible="editReachTitleModalVisible"
-                    @edit:cancelled="editReachTitleModalVisible=false"
-                  />
                 </h4>
 
                 <h1
@@ -55,13 +41,29 @@
                   </cv-breadcrumb-item>
                 </cv-breadcrumb>
               </div>
-              <div v-if="reach.photo">
-                <img
-                  class="reach--photo"
-                  :src="assetUrl(reach.photo.image.uri.big)"
-                  @click.exact="switchTab('gallery')"
-                  @keydown.exact="switchTab('gallery')"
+              <div>
+                <cv-button
+                  v-if="editMode"
+                  id="edit-title"
+                  size="small"
+                  kind="secondary"
+                  @click="editReachTitleModalVisible = true"
                 >
+                  Edit
+                </cv-button>
+                <reach-title-edit-modal
+                  v-if="editMode && !loading"
+                  :visible="editReachTitleModalVisible"
+                  @edit:cancelled="editReachTitleModalVisible=false"
+                />
+                <div v-if="reach.photo">
+                  <img
+                    class="reach--photo"
+                    :src="assetUrl(reach.photo.image.uri.big)"
+                    @click.exact="switchTab('gallery')"
+                    @keydown.exact="switchTab('gallery')"
+                  >
+                </div>
               </div>
             </header>
             <utility-block
