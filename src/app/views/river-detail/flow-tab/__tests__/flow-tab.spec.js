@@ -4,6 +4,11 @@ import { GageChartControls } from '../components'
 
 const mockStore = {
   state: {
+    appGlobalState: {
+      appGlobalData: {
+        editMode: false
+      }
+    },
     userState: {
       userData: {
         data: null

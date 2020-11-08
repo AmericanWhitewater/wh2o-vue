@@ -1,4 +1,4 @@
-import actions from '@/app/store/actions/actions'
+import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
 
 export default {
@@ -6,8 +6,8 @@ export default {
   state: {
     error: false,
     loading: false,
-    data: null
+    data: null,
   },
-  actions,
-  mutations
+  mutations,
+  actions
 }

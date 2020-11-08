@@ -62,7 +62,6 @@ export default new Vuex.Store({
   modules: {
     ...modules,
     appGlobalState,
-    gageDetailState,
     newsPageState,
     riverDetailState,
     riverIndexState,
