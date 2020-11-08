@@ -1,6 +1,8 @@
 module.exports = {
   root: true,
-
+  parserOptions: {
+    parser: "@typescript-eslint/parser",
+  },
   env: {
     node: true,
     jest: true,
@@ -86,9 +88,5 @@ module.exports = {
     },
   ],
 
-  extends: [
-    "plugin:vue/essential",
-    "plugin:@typescript-eslint/recommended",
-    "@vue/typescript/recommended",
-  ],
+  extends: ["plugin:vue/essential", "eslint:recommended", "@vue/typescript"],
 };

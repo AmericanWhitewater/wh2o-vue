@@ -26,7 +26,7 @@ services:
       - ./.eslintrc.js:/usr/src/.eslintrc.js
       - ./babel.config.js:/usr/src/babel.config.js
       - ./jest.config.js:/usr/src/jest.config.js
-      - ./package.json:/usr/src/package.json
+      - ./package.json:/usr/src/package.json:delegated
       - ./tsconfig.json:/usr/src/tsconfig.json
       - ./vue.config.js:/usr/src/vue.config.js
 volumes:
