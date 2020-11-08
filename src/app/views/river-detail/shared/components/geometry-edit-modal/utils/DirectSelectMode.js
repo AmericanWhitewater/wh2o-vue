@@ -7,7 +7,7 @@ const isVertex = isOfMetaType(meta.VERTEX);
 
 export default {
   ...MapboxDraw.modes.direct_select,
-  dragFeature(state, e, delta) {},
+  dragFeature() {},
   onMouseMove(state, e) {
     // On mousemove that is not a drag, stop vertex movement.
     const onVertex = isVertex(e);

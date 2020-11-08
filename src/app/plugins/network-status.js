@@ -1,16 +1,16 @@
-import store from '@/app/app-state'
-import { globalAppActions } from '@/app/global/state'
+import store from "@/app/app-state";
+import { globalAppActions } from "@/app/global/state";
 
 if (!navigator.onLine) {
-  store.dispatch(globalAppActions.NETWORK_STATUS, 'offline')
+  store.dispatch(globalAppActions.NETWORK_STATUS, "offline");
 } else {
-  store.dispatch(globalAppActions.NETWORK_STATUS, 'online')
+  store.dispatch(globalAppActions.NETWORK_STATUS, "online");
 }
 
-window.addEventListener('offline', function (e) {
-  store.dispatch(globalAppActions.NETWORK_STATUS, 'offline')
-})
+window.addEventListener("offline", function () {
+  store.dispatch(globalAppActions.NETWORK_STATUS, "offline");
+});
 
-window.addEventListener('online', function (e) {
-  store.dispatch(globalAppActions.NETWORK_STATUS, 'online')
-})
+window.addEventListener("online", function () {
+  store.dispatch(globalAppActions.NETWORK_STATUS, "online");
+});
