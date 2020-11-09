@@ -1,15 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`rapid-icon-bar.vue hides character icons and shows edit actions when edit mode enabled 1`] = `
-<div class="has-icons rapid-icon-bar">
-  <div><button role="button" class="cv-button bx--btn bx--btn--secondary bx--btn--sm" id="edit-button">
-      Edit
-      <!----></button> <button role="button" class="cv-button bx--btn bx--btn--danger bx--btn--sm" id="delete-button">
-      Delete
-      <!----></button></div>
-</div>
-`;
-
 exports[`rapid-icon-bar.vue shows access point icon when poi is access point 1`] = `
 <div class="has-icons rapid-icon-bar">
   <ul id="character-icons-wrapper">
