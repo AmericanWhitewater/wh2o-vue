@@ -60,9 +60,9 @@
           />
         </div>
         <div class="bx--col-sm-16 bx--col-lg-6">
-          <NwiMapSearch />
+          <nwi-map-search />
           <template v-if="loading">
-            <UtilityBlock state="loading" />
+            <utility-block state="loading" />
           </template>
           <template v-else>
             <nwi-rivers-table
@@ -83,13 +83,8 @@
 
 <script>
 import { NwiRiversTable, NwiMap, NwiMapSearch, NwiStateList } from './components'
-
-import { riverIndexActions } from './shared/state'
 import { mapState } from 'vuex'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
-/**
- * @todo beforeDestroy store bbox / zoom level
- */
 
 export default {
   name: 'river-index',
@@ -125,13 +120,13 @@ export default {
   }),
   computed: {
     ...mapState({
-      reachesInViewport: state => state.riverIndexState.riverIndexData.data,
-      error: state => state.riverIndexState.riverIndexData.error
+      reachesInViewport: state => state.RiverIndex.data,
+      error: state => state.RiverIndex.error
     })
   },
   methods: {
     changeReachesInViewport (newReaches) {
-      this.$store.dispatch(riverIndexActions.LOAD_REACHES, newReaches)
+      this.$store.dispatch('RiverIndex/loadReaches', newReaches)
     },
     centerFeature (feature) {
       this.featureToCenter = feature

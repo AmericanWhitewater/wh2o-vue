@@ -1,6 +1,6 @@
-import RiverIndex from './river-index.vue'
+import RiverIndex from '@/app/views/river-index/river-index.vue'
 
-const riverIndexRoutes = [
+export default [
   {
     path: '/river-index',
     name: 'river-index',
@@ -11,5 +11,3 @@ const riverIndexRoutes = [
     component: RiverIndex
   }
 ]
-
-export default riverIndexRoutes

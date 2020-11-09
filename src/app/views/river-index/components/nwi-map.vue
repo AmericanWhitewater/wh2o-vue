@@ -42,7 +42,6 @@ import {
 } from '.'
 import { basemapToggleMixin } from '@/app/global/mixins'
 import { mapState } from 'vuex'
-import { riverIndexActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 import {
   mapboxAccessToken,
@@ -136,10 +135,10 @@ export default {
   },
   computed: {
     ...mapState({
-      mapStyle: state => state.riverIndexState.riverIndexData.mapStyle,
-      mapBounds: state => state.riverIndexState.riverIndexData.mapBounds,
-      colorBy: state => state.riverIndexState.riverIndexData.mapColorBy,
-      mouseoveredFeature: state => state.riverIndexState.riverIndexData.mouseoveredFeature
+      mapStyle: state => state.RiverIndex.mapStyle,
+      mapBounds: state => state.RiverIndex.mapBounds,
+      colorBy: state => state.RiverIndex.mapColorBy,
+      mouseoveredFeature: state => state.RiverIndex.mouseoveredFeature
     }),
     containerHeight () {
       if (this.height) {
@@ -247,7 +246,7 @@ export default {
       this.debouncedMouseoverFeature(null)
     },
     mouseoverFeature (feature) {
-      this.$store.dispatch(riverIndexActions.MOUSEOVER_FEATURE, feature)
+      this.$store.dispatch('RiverIndex/mouseOverFeature', feature)
     },
     updateMapColorScheme (newScheme) {
       const colors = Object.values(NwiMapStyles.colorSchemes[newScheme])
@@ -482,7 +481,7 @@ export default {
         // TODO: refactor detail page map tab so that it shares code with this component via mixin
         // but does not use the same component
         if (!this.detailReachId) {
-          this.$store.dispatch(riverIndexActions.SET_MAP_BOUNDS, this.map.getBounds().toArray())
+          this.$store.dispatch('RiverIndex/setMapBounds', this.map.getBounds().toArray())
         }
       })
     },

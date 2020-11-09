@@ -5,7 +5,7 @@ export default {
 
   async getProperty (context, data) {
     context.commit(types.DATA_LOADING, true)
-    debugger
+
     let url
 
     if (typeof data === 'string') {
@@ -22,8 +22,8 @@ export default {
         context.commit(types.DATA_SUCCESS, result)
       }
     } catch (error) {
-      // context.commit(types.DATA_ERROR, error.response.data.message || error.response.statusText)
-
+      context.commit(types.DATA_ERROR, error.response.data.message || error.response.statusText)
+      /* eslint-disable-next-line no-console */
       console.log('error :>> ', error)
     }
   },
@@ -59,11 +59,9 @@ export default {
     context.commit(types.DELETE_LOADING)
     try {
       const result = await deleteResource(url)
-      if (data.key) {
-        context.commit(types.DELETE_SUCCESS, result[data.key])
-      } else {
+      if (result) {
         context.commit(types.DELETE_SUCCESS, result)
-      }
+      } 
     } catch (error) {
       context.commit(types.DELETE_ERROR, error.response.data.message || error.response.statusText)
     }

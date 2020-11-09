@@ -4,7 +4,6 @@ import Vuex from 'vuex'
 import { appGlobalState } from '@/app/global/state'
 import { newsPageState } from '@/app/views/news-page'
 import { riverDetailState } from '@/app/views/river-detail'
-import { riverIndexState } from '@/app/views/river-index'
 import { userState } from '@/app/views/user'
 
 /**
@@ -64,7 +63,7 @@ export default new Vuex.Store({
     appGlobalState,
     newsPageState,
     riverDetailState,
-    riverIndexState,
+    // riverIndexState,
     userState
   }
 })
