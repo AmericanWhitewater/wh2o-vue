@@ -1,5 +1,5 @@
 import MapboxDraw from "@mapbox/mapbox-gl-draw";
-import Constants from "@mapbox/mapbox-gl-draw/src/constants";
+import * as Constants from "@mapbox/mapbox-gl-draw/src/constants";
 import knn from "rbush-knn";
 import polygonToLine from "@turf/polygon-to-line";
 import rbush from "geojson-rbush";
