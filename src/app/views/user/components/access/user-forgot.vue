@@ -62,7 +62,7 @@ export default {
         this.formPending = false
         this.message = r.data.data.forgotPassword.message
         this.username = ''
-      }).catch(e => {
+      }).catch(() => {
         this.formPending = false
       })
     }

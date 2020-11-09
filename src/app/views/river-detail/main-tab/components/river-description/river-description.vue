@@ -151,7 +151,7 @@ export default {
             action: false,
             autoHide: true
           })
-        }).catch(e => {
+        }).catch(() => {
           this.updatePending = false
           this.error = true
           this.$store.dispatch(globalAppActions.SEND_TOAST, {

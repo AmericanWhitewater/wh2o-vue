@@ -1,5 +1,5 @@
 <template>
-  <div class="wh2o-vue">
+  <div class="wh2o-vue rebuild">
     <app-toaster />
     <app-navigation v-if="!hideNavigation" />
     <transition :name="transitionName">
@@ -47,6 +47,9 @@ export default {
 </script>
 
  <style lang="scss">
+@import "/assets/scss/app.scss";
+@import '~mapbox-gl/dist/mapbox-gl.css';
+
 .slide-left-enter-active,
 .slide-left-leave-active,
 .slide-right-enter-active,
