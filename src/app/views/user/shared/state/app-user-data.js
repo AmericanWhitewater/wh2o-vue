@@ -1,58 +1,56 @@
-import { reflectKeys } from '@/app/global/services'
+import { reflectKeys } from "@/app/global/services";
 
-import { fetchUserData } from '../services'
+import { fetchUserData } from "../services";
 
 const initialState = {
   loading: false,
-  data: {
-    uid: 1234
-  },
-  error: null
-}
+  data: null,
+  error: null,
+};
 
-const namespacedPrefix = '[USER]'
+const namespacedPrefix = "[USER]";
 
 const mutationTypes = reflectKeys(
-  ['DATA_SUCCESS', 'DATA_REQUEST', 'DATA_ERROR', 'DATA_RESET'],
+  ["DATA_SUCCESS", "DATA_REQUEST", "DATA_ERROR", "DATA_RESET"],
   namespacedPrefix
-)
+);
 
-const { DATA_ERROR, DATA_REQUEST, DATA_RESET, DATA_SUCCESS } = mutationTypes
+const { DATA_ERROR, DATA_REQUEST, DATA_RESET, DATA_SUCCESS } = mutationTypes;
 
 const mutations = {
-  [DATA_REQUEST] (state) {
-    Object.assign(state, { loading: true, error: null })
+  [DATA_REQUEST](state) {
+    Object.assign(state, { loading: true, error: null });
   },
 
-  [DATA_SUCCESS] (state, payload) {
-    Object.assign(state, { loading: false, data: payload })
+  [DATA_SUCCESS](state, payload) {
+    Object.assign(state, { loading: false, data: payload });
   },
 
-  [DATA_ERROR] (state, payload) {
+  [DATA_ERROR](state, payload) {
     Object.assign(state, {
       loading: false,
       data: null,
-      error: payload || true
-    })
+      error: payload || true,
+    });
   },
 
-  [DATA_RESET] (state) {
-    Object.assign(state, initialState)
-  }
-}
+  [DATA_RESET](state) {
+    Object.assign(state, initialState);
+  },
+};
 
 export const userActions = reflectKeys(
-  ['FETCH_USER_DATA', 'LOGOUT'],
+  ["FETCH_USER_DATA", "LOGOUT"],
   namespacedPrefix
-)
+);
 
 const actions = {
-  async [userActions.FETCH_USER_DATA] (context, data) {
-    context.commit(DATA_REQUEST)
+  async [userActions.FETCH_USER_DATA](context, data) {
+    context.commit(DATA_REQUEST);
 
-    const result = await fetchUserData(data).catch(e => {
-      context.commit(DATA_ERROR, e)
-    })
+    const result = await fetchUserData(data).catch((e) => {
+      context.commit(DATA_ERROR, e);
+    });
 
     if (result) {
       /**
@@ -64,34 +62,34 @@ const actions = {
        * to the store.
        *
        */
-      if (Number(result.data.me.uid) === 0) return
+      if (Number(result.data.me.uid) === 0) return;
 
-      context.commit(DATA_SUCCESS, result.data.me)
+      context.commit(DATA_SUCCESS, result.data.me);
     }
 
-    return result
+    return result;
   },
-  async [userActions.LOGOUT] (context, data) {
-    context.commit(DATA_RESET)
-  }
-}
+  async [userActions.LOGOUT](context) {
+    context.commit(DATA_RESET);
+  },
+};
 
 const getters = {
-  userIsAdmin: state => {
+  userIsAdmin: (state) => {
     if (state.data) {
       /**
        * @todo
        */
       // return state.data.admin === 'admin'
-      return true
+      return true;
     }
-    return null
-  }
-}
+    return null;
+  },
+};
 
 export default {
   mutations,
   actions,
   getters,
-  state: Object.assign({}, initialState)
-}
+  state: Object.assign({}, initialState),
+};

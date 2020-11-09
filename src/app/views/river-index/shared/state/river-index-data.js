@@ -1,44 +1,44 @@
-import { reflectKeys } from '@/app/global/services'
-import { fetchStates } from '../services/states'
-import { fetchRiverSearchData } from '../services'
+import { reflectKeys } from "@/app/global/services";
+import { fetchStates } from "../services/states";
+import { fetchRiverSearchData } from "../services";
 
 const initialState = {
   loading: false,
   data: [],
   error: null,
   userLocation: null,
-  mapStyle: 'topo',
-  mapColorBy: 'difficulty',
+  mapStyle: "topo",
+  mapColorBy: "difficulty",
   fullscreen: null,
   mapBounds: null,
   mouseoveredFeature: null,
   stateList: null,
   mapSearchTerm: null,
   mapSearchLoading: false,
-  mapSearchResults: []
-}
+  mapSearchResults: [],
+};
 
-const namespacedPrefix = '[RIVER_INDEX]'
+const namespacedPrefix = "[RIVER_INDEX]";
 
 const mutationTypes = reflectKeys(
   [
-    'DATA_SUCCESS',
-    'DATA_REQUEST',
-    'DATA_ERROR',
-    'DATA_RESET',
-    'USER_LOCATION',
-    'MAP_STYLE',
-    'MAP_COLOR_BY',
-    'MAP_BOUNDS',
-    'STATE_LIST',
-    'MOUSEOVERED_FEATURE',
-    'MAP_SEARCH_TERM',
-    'MAP_SEARCH_LOADING',
-    'MAP_SEARCH_SUCCESS',
-    'MAP_SEARCH_ERROR'
+    "DATA_SUCCESS",
+    "DATA_REQUEST",
+    "DATA_ERROR",
+    "DATA_RESET",
+    "USER_LOCATION",
+    "MAP_STYLE",
+    "MAP_COLOR_BY",
+    "MAP_BOUNDS",
+    "STATE_LIST",
+    "MOUSEOVERED_FEATURE",
+    "MAP_SEARCH_TERM",
+    "MAP_SEARCH_LOADING",
+    "MAP_SEARCH_SUCCESS",
+    "MAP_SEARCH_ERROR",
   ],
   namespacedPrefix
-)
+);
 
 const {
   DATA_ERROR,
@@ -54,161 +54,171 @@ const {
   MAP_SEARCH_TERM,
   MAP_SEARCH_LOADING,
   MAP_SEARCH_SUCCESS,
-  MAP_SEARCH_ERROR
-} = mutationTypes
+  MAP_SEARCH_ERROR,
+} = mutationTypes;
 
 const mutations = {
-  [DATA_REQUEST] (state) {
-    Object.assign(state, { loading: true, error: null })
+  [DATA_REQUEST](state) {
+    Object.assign(state, { loading: true, error: null });
   },
 
-  [DATA_SUCCESS] (state, payload) {
-    state.loading = false
-    state.data = payload
+  [DATA_SUCCESS](state, payload) {
+    state.loading = false;
+    state.data = payload;
   },
 
-  [STATE_LIST] (state, payload) {
-    state.loading = false
-    state.stateList = payload
+  [STATE_LIST](state, payload) {
+    state.loading = false;
+    state.stateList = payload;
   },
 
-  [USER_LOCATION] (state, payload) {
-    Object.assign(state, { loading: false, userLocation: payload })
+  [USER_LOCATION](state, payload) {
+    Object.assign(state, { loading: false, userLocation: payload });
   },
 
-  [MAP_STYLE] (state, payload) {
-    Object.assign(state, { loading: false, mapStyle: payload })
+  [MAP_STYLE](state, payload) {
+    Object.assign(state, { loading: false, mapStyle: payload });
   },
 
-  [MAP_COLOR_BY] (state, payload) {
-    Object.assign(state, { loading: false, mapColorBy: payload })
+  [MAP_COLOR_BY](state, payload) {
+    Object.assign(state, { loading: false, mapColorBy: payload });
   },
 
-  [MAP_BOUNDS] (state, payload) {
-    Object.assign(state, { loading: false, mapBounds: payload })
+  [MAP_BOUNDS](state, payload) {
+    Object.assign(state, { loading: false, mapBounds: payload });
   },
 
-  [MOUSEOVERED_FEATURE] (state, payload) {
-    Object.assign(state, { loading: false, mouseoveredFeature: payload })
+  [MOUSEOVERED_FEATURE](state, payload) {
+    Object.assign(state, { loading: false, mouseoveredFeature: payload });
   },
 
-  [MAP_SEARCH_TERM] (state, payload) {
-    Object.assign(state, { mapSearchTerm: payload })
+  [MAP_SEARCH_TERM](state, payload) {
+    Object.assign(state, { mapSearchTerm: payload });
   },
 
-  [MAP_SEARCH_LOADING] (state, payload) {
-    Object.assign(state, { mapSearchLoading: payload })
+  [MAP_SEARCH_LOADING](state, payload) {
+    Object.assign(state, { mapSearchLoading: payload });
   },
 
-  [MAP_SEARCH_SUCCESS] (state, payload) {
-    Object.assign(state, { mapSearchResults: payload, mapSearchLoading: false })
+  [MAP_SEARCH_SUCCESS](state, payload) {
+    Object.assign(state, {
+      mapSearchResults: payload,
+      mapSearchLoading: false,
+    });
   },
 
-  [MAP_SEARCH_ERROR] (state, payload) {
+  [MAP_SEARCH_ERROR](state, payload) {
     Object.assign(state, {
       mapSearchLoading: false,
       mapSearchResults: [],
-      error: payload || true
-    })
+      error: payload || true,
+    });
   },
 
-  [DATA_ERROR] (state, payload) {
+  [DATA_ERROR](state, payload) {
     Object.assign(state, {
       loading: false,
       data: null,
-      error: payload || true
-    })
+      error: payload || true,
+    });
   },
 
-  [DATA_RESET] (state) {
-    Object.assign(state, ...initialState)
-  }
-}
+  [DATA_RESET](state) {
+    Object.assign(state, ...initialState);
+  },
+};
 
 export const riverIndexActions = reflectKeys(
-  ['FETCH_USER_LOCATION',
-    'LOAD_REACHES',
-    'SET_MAP_STYLE',
-    'SET_MAP_COLOR_BY',
-    'SET_MAP_BOUNDS',
-    'MOUSEOVER_FEATURE',
-    'FETCH_MAP_SEARCH_DATA',
-    'CLEAR_MAP_SEARCH_QUERY',
-    'FETCH_STATES'
+  [
+    "FETCH_USER_LOCATION",
+    "LOAD_REACHES",
+    "SET_MAP_STYLE",
+    "SET_MAP_COLOR_BY",
+    "SET_MAP_BOUNDS",
+    "MOUSEOVER_FEATURE",
+    "FETCH_MAP_SEARCH_DATA",
+    "CLEAR_MAP_SEARCH_QUERY",
+    "FETCH_STATES",
   ],
   namespacedPrefix
-)
+);
 
 const actions = {
-  async [riverIndexActions.FETCH_USER_LOCATION] (context, data) {
-    context.commit(USER_LOCATION, data)
+  async [riverIndexActions.FETCH_USER_LOCATION](context, data) {
+    context.commit(USER_LOCATION, data);
   },
-  async [riverIndexActions.LOAD_REACHES] (context, data) {
-    context.commit(DATA_SUCCESS, data)
+  async [riverIndexActions.LOAD_REACHES](context, data) {
+    context.commit(DATA_SUCCESS, data);
   },
-  async [riverIndexActions.SET_MAP_STYLE] (context, data) {
-    context.commit(MAP_STYLE, data)
+  async [riverIndexActions.SET_MAP_STYLE](context, data) {
+    context.commit(MAP_STYLE, data);
   },
-  async [riverIndexActions.SET_MAP_COLOR_BY] (context, data) {
-    context.commit(MAP_COLOR_BY, data)
+  async [riverIndexActions.SET_MAP_COLOR_BY](context, data) {
+    context.commit(MAP_COLOR_BY, data);
   },
-  async [riverIndexActions.SET_MAP_BOUNDS] (context, data) {
-    context.commit(MAP_BOUNDS, data)
+  async [riverIndexActions.SET_MAP_BOUNDS](context, data) {
+    context.commit(MAP_BOUNDS, data);
   },
-  async [riverIndexActions.MOUSEOVER_FEATURE] (context, data) {
-    context.commit(MOUSEOVERED_FEATURE, data)
+  async [riverIndexActions.MOUSEOVER_FEATURE](context, data) {
+    context.commit(MOUSEOVERED_FEATURE, data);
   },
-  async [riverIndexActions.FETCH_STATES] (context, data) {
-    context.commit(DATA_REQUEST)
+  async [riverIndexActions.FETCH_STATES](context, data) {
+    context.commit(DATA_REQUEST);
 
-    const result = await fetchStates(data).catch(e => {
-      context.commit(DATA_ERROR, e)
-    })
+    const result = await fetchStates(data).catch((e) => {
+      context.commit(DATA_ERROR, e);
+    });
 
     if (result) {
-      context.commit(STATE_LIST, result.data.states.data
-        .filter(x => x.gmi.match(/USA-.*/))
-        .sort((a, b) => {
-          if (a.shortkey.toUpperCase() > b.shortkey.toUpperCase()) { return 1 }
-          if (a.shortkey.toUpperCase() < b.shortkey.toUpperCase()) { return -1 }
-          return 0
-        })
-      )
+      context.commit(
+        STATE_LIST,
+        result.data.states.data
+          .filter((x) => x.gmi.match(/USA-.*/))
+          .sort((a, b) => {
+            if (a.shortkey.toUpperCase() > b.shortkey.toUpperCase()) {
+              return 1;
+            }
+            if (a.shortkey.toUpperCase() < b.shortkey.toUpperCase()) {
+              return -1;
+            }
+            return 0;
+          })
+      );
     }
-    return result
+    return result;
   },
-  async [riverIndexActions.FETCH_MAP_SEARCH_DATA] (context, data) {
-    context.commit(MAP_SEARCH_TERM, data)
+  async [riverIndexActions.FETCH_MAP_SEARCH_DATA](context, data) {
+    context.commit(MAP_SEARCH_TERM, data);
 
-    let result
+    let result;
     // if there's no search term, just set results to empty array
     if (!data || data.length === 0) {
-      result = []
+      result = [];
     } else {
-      context.commit(MAP_SEARCH_LOADING, true)
-      result = await fetchRiverSearchData(data).catch(e => {
-        context.commit(DATA_ERROR, e)
-      })
+      context.commit(MAP_SEARCH_LOADING, true);
+      result = await fetchRiverSearchData(data).catch((e) => {
+        context.commit(DATA_ERROR, e);
+      });
     }
 
     if (!result.errors) {
       if (result.data && result.data.reachmap) {
-        context.commit(MAP_SEARCH_SUCCESS, result.data.reachmap.data)
+        context.commit(MAP_SEARCH_SUCCESS, result.data.reachmap.data);
       } else {
-        context.commit(MAP_SEARCH_SUCCESS, [])
+        context.commit(MAP_SEARCH_SUCCESS, []);
       }
     } else {
-      context.commit(MAP_SEARCH_ERROR, 'error searching')
+      context.commit(MAP_SEARCH_ERROR, "error searching");
     }
   },
-  async [riverIndexActions.CLEAR_MAP_SEARCH_QUERY] (context, data) {
-    context.commit(MAP_SEARCH_TERM, null)
-    context.commit(MAP_SEARCH_LOADING, false)
-  }
-}
+  async [riverIndexActions.CLEAR_MAP_SEARCH_QUERY](context) {
+    context.commit(MAP_SEARCH_TERM, null);
+    context.commit(MAP_SEARCH_LOADING, false);
+  },
+};
 
 export default {
   mutations,
   actions,
-  state: initialState
-}
+  state: initialState,
+};

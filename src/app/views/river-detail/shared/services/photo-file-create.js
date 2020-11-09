@@ -1,9 +1,9 @@
-import { httpClient } from '@/app/global/services'
+import { httpClient } from "@/app/global/services";
 
-import { apiConstants } from '../config'
+import { apiConstants } from "../config";
 
-const fetchNewsTabData = data => {
-  const url = `${apiConstants.graphql}`
+const fetchNewsTabData = () => {
+  const url = `${apiConstants.graphql}`;
   return httpClient
     .post(url, {
       query: `
@@ -22,15 +22,15 @@ const fetchNewsTabData = data => {
             }
             
       
-            ) {
+          ) {
             id
           }
         }
 
     
-    `
+    `,
     })
-    .then(res => res.data)
-}
+    .then((res) => res.data);
+};
 
-export { fetchNewsTabData }
+export { fetchNewsTabData };
