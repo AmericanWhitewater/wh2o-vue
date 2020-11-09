@@ -25,8 +25,7 @@ const mutations = {
   },
 
   [DATA_SUCCESS] (state, payload) {
-    // Object.assign(state, { loading: false, data: payload })
-    console.log('payload :>> ', payload)
+    Object.assign(state, { loading: false, data: payload })
   },
 
   [DATA_ERROR] (state, payload) {

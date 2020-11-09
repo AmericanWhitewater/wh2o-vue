@@ -1,5 +1,5 @@
 <template>
-  <div class='projects-table'>
+  <div class="projects-table">
     <div class="bx--grid">
       <div class="bx--row">
         <div class="bx--col">
@@ -14,28 +14,31 @@
             loading
           </template>
           <template v-else-if="data">
-           <div v-for="(project, index) in data.rows" :key="index">
-             <h3> {{ project.name }} </h3>
-             <p> {{ project.description }} </p>
-           </div>
+            <div
+              v-for="(project, index) in data.rows"
+              :key="index"
+            >
+              <h3> {{ project.name }} </h3>
+              <p> {{ project.description }} </p>
+            </div>
           </template>
           <template v-else>
             error
-          </template> 
+          </template>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import {mapState, mapActions} from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
-  name: "projects-table",
+  name: 'projects-table',
   computed: {
     ...mapState({
       data: state => state.Projects.data,
       loading: state => state.Projects.loading,
-      error: state => state.Projects.error,
+      error: state => state.Projects.error
     })
   },
   methods: {
@@ -43,10 +46,10 @@ export default {
       load: 'Projects/getProperty'
     })
   },
-  created() {
-    if(!this.data) {
+  created () {
+    if (!this.data) {
       this.load('projects')
     }
   }
-};
+}
 </script>

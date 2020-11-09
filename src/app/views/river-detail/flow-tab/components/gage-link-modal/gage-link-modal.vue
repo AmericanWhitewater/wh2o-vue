@@ -48,13 +48,13 @@ export default {
       this.modalVisible = false
     },
     handleSubmit () {
-      console.log('handle submit')
+      alert('handle submit')
     },
     handleCancel () {
-      console.log('cancel')
+      alert('handle cancel')
     },
     handleShow () {
-      console.log('modal visible')
+      alert('handle show')
     }
   }
 }

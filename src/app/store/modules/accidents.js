@@ -6,7 +6,7 @@ export default {
   state: {
     error: false,
     loading: false,
-    data: null,
+    data: null
   },
   mutations,
   actions

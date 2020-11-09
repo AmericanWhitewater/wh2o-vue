@@ -10,11 +10,11 @@ import { riverIndexRoutes } from '@/app/views/river-index'
 import { userRoutes } from '@/app/views/user'
 
 import gageDetailRoutes from './gage-detail.routes'
-import projectsRoutes from "./projects.routes"
-import documentsRoutes from "./documents.routes"
-import accidentsRoutes from "./accidents.routes"
-import gagesRoutes from "./gages.routes"
-import affiliatesRoutes from "./affiliates.routes"
+import projectsRoutes from './projects.routes'
+import documentsRoutes from './documents.routes'
+import accidentsRoutes from './accidents.routes'
+import gagesRoutes from './gages.routes'
+import affiliatesRoutes from './affiliates.routes'
 
 Vue.use(VueRouter)
 
