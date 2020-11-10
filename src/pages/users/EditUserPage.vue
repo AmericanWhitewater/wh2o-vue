@@ -79,7 +79,7 @@ export default {
       breadcrumbs: [
         {
           text: 'Users',
-          to: '/users/list',
+          to: '/admin/users/list',
           exact: true
         },
         {

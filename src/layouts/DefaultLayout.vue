@@ -20,7 +20,9 @@
       <template v-slot:append>
         <div class="pa-2 pt-1">
           <v-switch v-model="$vuetify.theme.dark" :label="$vuetify.theme.dark ? 'Light Theme' : 'Dark Theme'" />
-          <v-btn block color="secondary" tile> Logout </v-btn>
+          <v-btn block color="primary" tile class="mb-1" to="/admin/users/list" outlined> Admin </v-btn>
+          <v-btn block color="primary" tile class="mb-1" :to="`/admin/users/edit/${user.uid}`" > My Account </v-btn>
+          <v-btn block color="secondary" outlined tile> Logout </v-btn>
         </div>
       </template>
     </v-navigation-drawer>
@@ -54,14 +56,17 @@
               <v-icon>mdi-magnify</v-icon>
             </v-btn>
             <v-img
-              src="/images/logos/aw-logo-small.png"
-              height="32"
+              :src="$vuetify.theme.dark ? '/images/logos/aw-logo-small-light.svg' : '/images/logos/aw-logo-small.png'"
+              max-height="25"
+              max-width="200"
               class="pa-2"
               contain
               position="left"
               @click="$router.push('/').catch(() => {})"
             />
-            <v-autocomplete
+            <v-spacer></v-spacer>
+            <div>
+              <v-autocomplete
               @change="handleSelect"
               :search-input.sync="searchTerm"
               @update:search-input="search"
@@ -75,6 +80,7 @@
               hide-details
               dense
             />
+            </div>
             <toolbar-language />
             <v-btn depressed class="ml-1" @click.stop="drawer = !drawer" tile>
                 {{ $t('menu.base') }}
@@ -132,6 +138,9 @@ export default {
       "toolbarTheme",
       "isToolbarDetached",
     ]),
+    user() {
+      return this.$store.state.User
+    }
   },
   methods: {
     handleSelect(reachId) {

@@ -16,15 +16,15 @@
         :key="i"
       >
         <v-card>
-          <v-img height="250" :src="article.abstractphoto" />
+          <v-img height="200" 
+                 :src="`https://www.americanwhitewater.org/resources/images/contents/${article.abstractphoto}`" />
           <v-card-subtitle class="pb-0">
             {{ article.posted }}
           </v-card-subtitle>
           <v-card-title class="pt-0">
             {{ article.title }}
           </v-card-title>
-          <v-card-text>
-            {{ article.abstract.slice(0, 100) }}
+          <v-card-text v-html="article.abstract.slice(0, 100)">
           </v-card-text>
           <v-card-actions class="pb-2 pl-2">
             <v-btn color="primary"> Read More </v-btn>

@@ -1,6 +1,6 @@
 export default [{
   path: '/admin/users',
-  redirect: '/admin/users-list'
+  redirect: '/admin/users/list'
 }, {
   path: '/admin/users/list',
   name: 'users-list',
@@ -9,7 +9,7 @@ export default [{
   },
   component: () => import(/* webpackChunkName: "users-list" */ '@/pages/users/UsersPage.vue')
 }, {
-  path: '/admin/users/edit',
+  path: '/admin/users/edit/:id',
   name: 'users-edit',
   meta: {
     layout: 'admin'

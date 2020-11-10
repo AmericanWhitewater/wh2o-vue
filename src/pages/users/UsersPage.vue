@@ -114,7 +114,7 @@
 
         <template v-slot:item.action="{ }">
           <div class="actions">
-            <v-btn icon to="/users/edit">
+            <v-btn icon to="/admin/users/edit">
               <v-icon>mdi-open-in-new</v-icon>
             </v-btn>
           </div>
