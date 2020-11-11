@@ -29,9 +29,11 @@ export const mapHelpersMixin = {
         const poiLocations = this.rapids.filter(
           (x) => x.rloc
         ).map((x) => (point(x.rloc.split(' ').map(x => parseFloat(x)))))
-        const collection = featureCollection(poiLocations)
-        const container = bbox(buffer(collection, 2))
-        return container
+        if (poiLocations.length) {
+          const collection = featureCollection(poiLocations)
+          const container = bbox(buffer(collection, 2))
+          return container
+        }
       }
       return null
     },
