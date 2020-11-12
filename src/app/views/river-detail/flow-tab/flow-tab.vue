@@ -35,6 +35,7 @@
                 <flow-stats
                   :readings="readings"
                   :loading="loading"
+                  :current="gages[0].gauge_reading || 0"
                 />
               </div>
             </div>
@@ -50,9 +51,8 @@
               text="no gage readings for your chosen parameters, please try again"
             />
           </template>
-          <GageChartControls
+          <gage-chart-controls
             @viewModeChange="viewMode = $event"
-
             @gage-change="setActiveGageId"
           />
           <div class="mb-lg">
