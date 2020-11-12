@@ -1,12 +1,13 @@
-import { httpClient } from '@/app/global/services'
+import { httpClient } from "@/app/global/services";
 
-import { apiConstants } from '../config'
+import { apiConstants } from "../config";
 
-const fetchUserData = data => {
-  const url = `${apiConstants.graphql}`
+const fetchUserData = () => {
+  const url = `${apiConstants.graphql}`;
 
-  return httpClient.post(url, {
-    query: `
+  return httpClient
+    .post(url, {
+      query: `
     query {
         me {
           uid
@@ -26,8 +27,9 @@ const fetchUserData = data => {
           uname
         }
       }
-    `
-  }).then(res => res.data)
-}
+    `,
+    })
+    .then((res) => res.data);
+};
 
-export { fetchUserData }
+export { fetchUserData };
