@@ -1,10 +1,16 @@
 <template>
   <div class="commentsection">
-    <h3>{{ $t("comments") }}</h3>
+   
     <v-card class="mb-3" tile>
     <v-card-title>
-      New Comment
+      <div style="width:100%;" class="d-flex justify-space-between">
+        <h3>{{ $t("comments") }}</h3>
+        <v-btn @click="formVisible = !formVisible" color="secondary" tile>
+          {{$t(formVisible ? 'common.cancel':'common.add')}}
+        </v-btn>
+      </div>
     </v-card-title>
+    <template v-if="formVisible">
     <v-card-text>
       <v-text-field v-model="form.name" placeholder="Title" />
     <v-select
@@ -21,26 +27,18 @@
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn @click="handleCreate" color="secondary" tile>
-      Create Comment
+      <v-btn @click="handleCreate" color="primary" tile>
+      {{ $t('common.save') }}
     </v-btn>
     </v-card-actions>
-    </v-card>
-    <template v-if="comments">
-      <!-- <v-card v-for="(comment, index) in comments" :key="index" class="mb-2" tile>
-        <v-card-text>
-          <v-text-field v-model="comment.comments" @input="handleUpdate(comment.id, {comments: comment.comments})" ></v-text-field>
-          <v-text-field v-model="comment.name" @input="handleUpdate(comment.id, {name: comment.name})"></v-text-field>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn color="error" @click="handleDelete(comment.id)" tile>
-            Delete
-          </v-btn>
-        </v-card-actions>
-      </v-card> -->
-      <comment-detail v-for="(comment, index) in comments" :key="index" class="mb-2" :comment="comment" @update:success="load" />
     </template>
-    <template v-else> Something went wrong </template>
+    <template v-if="comments">
+      <comment-detail v-for="(comment, index) in comments" :key="index" :comment="comment" @update:success="load" />
+    </template>
+     <template v-else> Something went wrong </template>
+    </v-card>
+    
+   
   </div>
 </template>
 <script>
@@ -77,6 +75,7 @@ export default {
       section: 'river',
       comments: ''
     },
+    formVisible: false,
     pendingUpdate: [],
   }),
   computed: {

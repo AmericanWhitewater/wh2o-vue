@@ -120,13 +120,16 @@ export default {
           icon: 'mdi-account-multiple',
           items: [
             {
-              text: 'Clubs'
+              text: 'Clubs',
+              link: '/affiliates'
             },
             {
-              text: 'Events'
+              text: 'Events',
+              link: '/events'
             },
             {
-              text: 'Industry Partners'
+              text: 'Industry Partners',
+              link: '/affiliates'
             }
           ]
         }

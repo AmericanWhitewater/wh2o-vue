@@ -15,10 +15,10 @@
         <v-spacer></v-spacer>
         
         <v-btn tile color="error">
-           {{$t('common.delete')}}
+          {{$t('common.delete')}}
         </v-btn>
         <v-btn :disabled="!edited" @click="handleUpdate" color="secondary" tile>
-           {{$t('common.save')}}
+          {{$t('common.save')}}
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -27,7 +27,7 @@
 <script>
 import {updateComment} from "../controllers"
 export default {
-  name: "CommentDetail",
+  name: "RapidDetail",
   props: {
     comment: {
       required: true,

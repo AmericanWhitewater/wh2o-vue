@@ -7,6 +7,7 @@ export default {
   general: 'General',
   flow: 'Fluir',
   gallery: 'Galería',
+  comments: 'Comentarios',
   map: 'Mapa',
   news: 'Noticias',
   credits: 'Creditos',

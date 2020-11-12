@@ -7,6 +7,7 @@ export default {
   general: 'Résumé',
   flow: 'Couler',
   gallery: 'Galerie',
+  comments: 'Commentaires',
   map: 'Carte',
   news: 'Nouvelles',
   credits: 'Crédits',

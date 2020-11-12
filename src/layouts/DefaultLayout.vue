@@ -22,7 +22,7 @@
           <v-switch v-model="$vuetify.theme.dark" :label="$vuetify.theme.dark ? 'Light Theme' : 'Dark Theme'" />
           <v-btn block color="primary" tile class="mb-1" to="/admin/users/list" outlined> Admin </v-btn>
           <v-btn block color="primary" tile class="mb-1" :to="`/admin/users/edit/${user.uid}`" > My Account </v-btn>
-          <v-btn block color="secondary" outlined tile> Logout </v-btn>
+          <v-btn block color="secondary" outlined tile to="/auth/signin"> Logout </v-btn>
         </div>
       </template>
     </v-navigation-drawer>

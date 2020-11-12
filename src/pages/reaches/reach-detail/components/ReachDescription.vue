@@ -4,6 +4,7 @@
       <v-card-title>
         {{$t('common.description')}}
       </v-card-title>
+      <v-divider></v-divider>
       <v-card-text>
         <v-textarea v-model="formDescription" auto-grow />
       </v-card-text>

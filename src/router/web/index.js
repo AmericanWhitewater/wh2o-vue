@@ -10,5 +10,13 @@ export default [
   {
     path: '/reach-detail/:id',
     component: () => import('@/pages/reaches/reach-detail/ReachDetail.vue')
+  },
+  {
+    path: '/events',
+    component: () => import('@/pages/events/EventsPage.vue')
+  },
+  {
+    path: '/affiliates',
+    component: () => import('@/pages/affiliates/AffiliatesPage.vue')
   }
 ]

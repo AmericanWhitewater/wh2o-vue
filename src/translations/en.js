@@ -20,6 +20,7 @@ export default {
     delete: 'Delete',
     title: 'Title',
     save: 'Save',
+    update: 'Update',
     faq: 'FAQ',
     contact: 'Contact Us',
     tos: 'Terms of Service',

@@ -17,7 +17,7 @@
       >
         <v-card>
           <v-img height="200" 
-                 :src="`https://www.americanwhitewater.org/resources/images/contents/${article.abstractphoto}`" />
+                 src="https://picsum.photos/200/300" />
           <v-card-subtitle class="pb-0">
             {{ article.posted }}
           </v-card-subtitle>
