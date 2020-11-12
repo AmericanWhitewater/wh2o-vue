@@ -35,7 +35,7 @@ export default {
   }),
   computed: {
     metrics () {
-      return this.$store.state.riverDetailState.gageMetricsData.data
+      return this.$store.state.GageMetrics.data
     },
     chartLabels () {
       return this.readings.map(reading => moment(reading.updated, 'X').format('MM/DD hh:mm a'))
@@ -139,20 +139,8 @@ export default {
         },
         scales: {
           xAxes: [{
-            // type: 'time',
             display: true,
             distribution: 'series',
-            // time: {
-            //   unit: this.timeScales,
-            //   displayFormats: {
-            //     day: 'h:mm a',
-            //     week: 'll',
-            //     month: 'll',
-            //     year: 'MMM YYYY'
-            //   },
-            //   //min: moment(this.timeStart)
-            //   min: this.getTimeScale(this.readings).timeStart
-            // },
             gridLines: {
               color: 'rgba(90, 104, 114, 0.2)',
               borderDash: [4, 4]

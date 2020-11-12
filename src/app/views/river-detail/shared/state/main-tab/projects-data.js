@@ -1,5 +1,5 @@
 import { reflectKeys } from '@/app/global/services'
-import { fetchReachProjectsData } from '../../services'
+import { fetchReachProjectsData } from '@/app/views/river-detail/controllers'
 
 const initialState = {
   data: null,

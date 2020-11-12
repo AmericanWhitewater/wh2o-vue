@@ -85,7 +85,8 @@
 </template>
 <script>
 import moment from 'moment'
-import { metricsActions, readingsActions } from '../../shared/state'
+// import { metricsActions, readingsActions } from '../../shared/state'
+import {fetchGaugeMetrics, fetchGaugeReadings} from "@/app/views/river-detail/controllers"
 import { mapState } from 'vuex'
 /**
  * @todo create globally availble Title Case filter. Will help with better
@@ -118,12 +119,12 @@ export default {
   }),
   computed: {
     ...mapState({
-      loading: state => state.riverDetailState.gageReadingsData.loading,
-      error: state => state.riverDetailState.gageReadingsData.error,
-      data: state => state.riverDetailState.gageReadingsData.data,
-      metrics: state => state.riverDetailState.gageMetricsData.data,
-      river: state => state.riverDetailState.riverDetailData.data,
-      gages: state => state.riverDetailState.reachGagesData.data
+      loading: state => state.GageReadings.loading,
+      error: state => state.GageReadings.error,
+      data: state => state.GageReadings.data,
+      metrics: state => state.GageMetrics.data,
+      river: state => state.RiverDetail.data,
+      gages: state => state.RiverGages.data
     }),
     /**
      * @description look through the readings response to find
@@ -221,13 +222,16 @@ export default {
       this.formData.timeEnd = Math.floor(moment(new Date()).unix())
     },
     fetchMetrics () {
-      this.$store.dispatch(metricsActions.FETCH_GAGE_METRICS, this.$route.params.id)
+      this.$store.dispatch('GageMetrics/getProperty', {
+        method: fetchGaugeMetrics,
+        id:this.$route.params.id
+      })
     },
     async fetchReadings () {
       this.$emit('gage-change', this.formData.gauge_id)
       await this.setTimeScale()
       this.$store.dispatch(
-        readingsActions.FETCH_GAGE_READINGS_DATA,
+        'GageReadings/getProperty',
         this.formData
       )
     }

@@ -144,7 +144,7 @@ export default {
       return geom ? point(geom.geometry.coordinates.slice(-1)[0]) : null
     },
     ...mapState({
-      mapStyle: state => state.riverIndexState.riverIndexData.mapStyle
+      mapStyle: state => state.RiverIndex.mapStyle
     }),
     startingBounds () {
       return this.reachStartingBounds

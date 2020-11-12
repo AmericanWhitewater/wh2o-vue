@@ -1,5 +1,5 @@
 import { reflectKeys } from '@/app/global/services'
-import { fetchAlertsData, createAlert } from '../../services'
+import { fetchAlertsData, createAlert } from '@/app/views/river-detail/controllers'
 import moment from 'moment'
 
 const initialState = {

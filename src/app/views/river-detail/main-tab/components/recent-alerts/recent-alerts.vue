@@ -24,7 +24,7 @@
 <script>
 import { mapState } from 'vuex'
 import { SidebarAlerts, SidebarArticles, SidebarProjects } from './components'
-import { alertsActions, newsTabActions, projectsActions } from '@/app/views/river-detail/shared/state'
+import {fetchAlertsData, fetchNewsTabData, fetchReachProjectsData} from '@/app/views/river-detail/controllers'
 export default {
   name: 'recent-alerts',
   components: {
@@ -34,10 +34,10 @@ export default {
   },
   computed: {
     ...mapState({
-      loading: state => state.riverDetailState.alertsData.loading,
-      alerts: state => state.riverDetailState.alertsData.data,
-      articles: state => state.riverDetailState.newsTabData.data,
-      projects: state => state.riverDetailState.projectsData.data
+      loading: state => state.RiverAlerts.loading,
+      alerts: state => state.RiverAlerts.data,
+      articles: state => state.RiverNews.data,
+      projects: state => state.RiverProjects.data
     }),
     anythingPresent () {
       return (this.alerts && this.alerts.length) || (this.articles && this.articles.length) || (this.projects && this.projects.length)
@@ -45,18 +45,25 @@ export default {
   },
   methods: {
     loadData () {
-      this.$store.dispatch(
-        alertsActions.FETCH_ALERTS_DATA,
-        this.$route.params.id
-      )
-      this.$store.dispatch(
-        newsTabActions.FETCH_NEWS_TAB_DATA,
-        this.$route.params.id
-      )
-      this.$store.dispatch(
-        projectsActions.FETCH_PROJECTS_DATA,
-        this.$route.params.id
-      )
+      [{
+        module: 'RiverAlerts',
+        method: fetchAlertsData,
+      }, {
+        module: 'RiverNews',
+        method: fetchNewsTabData
+      },
+      {
+        module: 'RiverProjects',
+        method: fetchReachProjectsData
+      }].forEach(item => {
+        this.$store.dispatch(
+          `${item.module}/getProperty`,
+          {
+            id:this.$route.params.id,
+            method: item.method
+          }
+        )
+      })
     }
   }
 }

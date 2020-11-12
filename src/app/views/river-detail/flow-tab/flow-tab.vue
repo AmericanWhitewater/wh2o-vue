@@ -147,6 +147,8 @@ import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { checkWindow } from '@/app/global/mixins'
 import { globalAppActions } from '@/app/global/state'
 
+import {fetchGages} from "@/app/views/river-detail/controllers"
+
 export default {
   name: 'flow-tab',
   components: {
@@ -167,13 +169,13 @@ export default {
   }),
   computed: {
     ...mapState({
-      readings: state => state.riverDetailState.gageReadingsData.data,
-      loading: state => state.riverDetailState.gageReadingsData.loading,
-      error: state => state.riverDetailState.gageReadingsData.error,
-      gages: state => state.riverDetailState.reachGagesData.data,
-      gagesLoading: state => state.riverDetailState.reachGagesData.loading,
-      gagesError: state => state.riverDetailState.reachGagesData.error,
-      editMode: state => state.appGlobalState.appGlobalData.editMode
+      readings: state => state.GageReadings.data,
+      loading: state => state.GageReadings.loading,
+      error: state => state.GageReadings.error,
+      gages: state => state.RiverGages.data,
+      gagesLoading: state => state.RiverGages.loading,
+      gagesError: state => state.RiverGages.error,
+      editMode: state => state.Global.editMode
     }),
     chartSize () {
       if (this.windowWidth > this.$options.breakpoints.md) {
@@ -183,13 +185,13 @@ export default {
       }
     },
     activeGage () {
-      return this.gages.find(g => g.gauge.id === this.activeGageId)
+      return this.gages ? this.gages.find(g => g.gauge.id === this.activeGageId) : null
     }
   },
   watch: {
     error (val) {
       if (val) {
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        this.$store.dispatch('Global/sendToast', {
           title: 'Failed to load readings',
           kind: 'error'
         })
@@ -197,7 +199,7 @@ export default {
     },
     gagesError (val) {
       if (val) {
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        this.$store.dispatch('Global/sendToast', {
           title: 'Failed to load readings',
           kind: 'error'
         })
@@ -213,7 +215,10 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.$route.params.id)
+    this.$store.dispatch('RiverGages/getProperty', {
+      id:this.$route.params.id,
+      method: fetchGages
+    })
   }
 }
 </script>

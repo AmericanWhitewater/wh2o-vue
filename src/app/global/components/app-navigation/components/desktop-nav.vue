@@ -162,16 +162,8 @@ export default {
   },
   computed: {
     user () {
-      return this.$store.state.userState.userData.data
+      return this.$store.state.User.data
     }
   }
 }
 </script>
-<style lang="scss">
-.nav-main-content-area {
-  align-items: center;
-  display: flex;
-  height: 50px;
-  justify-content: space-between;
-}
-</style>

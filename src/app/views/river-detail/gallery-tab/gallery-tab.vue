@@ -83,8 +83,8 @@ export default {
       error: state => state.riverDetailState.galleryData.error,
       photos: state => state.riverDetailState.galleryData.data?.data,
       pagination: state => state.riverDetailState.galleryData.pagination,
-      rapids: state => state.riverDetailState.rapidsData.data,
-      user: state => state.userState.userData.data
+      rapids: state => state.RiverRapids.data,
+      user: state => state.User.data
     }),
     ...mapGetters(['media']),
     reachId () {

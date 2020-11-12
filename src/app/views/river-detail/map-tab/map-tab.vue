@@ -37,6 +37,8 @@ import { InfoPanel } from './components'
 import { mapHelpersMixin } from '@/app/global/mixins'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 
+import {fetchAccessData} from "@/app/views/river-detail/controllers"
+
 export default {
   name: 'map-tab',
   components: {
@@ -53,12 +55,12 @@ export default {
   }),
   computed: {
     ...mapState({
-      loading: state => state.riverDetailState.mapData.loading,
-      error: state => state.riverDetailState.mapData.error,
-      data: state => state.riverDetailState.mapData.data,
-      riverLoading: state => state.riverDetailState.riverDetailData.loading,
-      riverError: state => state.riverDetailState.riverDetailData.error,
-      riverData: state => state.riverDetailState.riverDetailData.data
+      loading: state => state.RiverMap.loading,
+      error: state => state.RiverMap.error,
+      data: state => state.RiverMap.data,
+      riverLoading: state => state.RiverDetail.loading,
+      riverError: state => state.RiverDetail.error,
+      riverData: state => state.RiverDetail.data
     }),
     reachId () {
       return parseInt(this.$route.params.id, 10)
@@ -70,7 +72,11 @@ export default {
   methods: {
     loadData () {
       if (!this.data) {
-        this.$store.dispatch(mapActions.FETCH_ACCESS_DATA, this.reachId)
+        // this.$store.dispatch(mapActions.FETCH_ACCESS_DATA, this.reachId)
+        this.$store.dispatch('RiverMap/getProperty', {
+          id:this.reachId,
+          method:fetchAccessData
+        })
       }
     },
     clickFeature (feature) {

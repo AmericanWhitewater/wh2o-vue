@@ -45,9 +45,9 @@ export default {
   name: 'sidebar-projects',
   computed: {
     ...mapState({
-      loading: state => state.riverDetailState.projectsData.loading,
-      error: state => state.riverDetailState.projectsData.error,
-      projects: state => state.riverDetailState.projectsData.data
+      loading: state => state.RiverProjects.loading,
+      error: state => state.RiverProjects.error,
+      projects: state => state.RiverProjects.data
     })
   },
   watch: {

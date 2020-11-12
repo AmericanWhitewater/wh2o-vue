@@ -71,10 +71,10 @@ export default {
   }),
   computed: {
     ...mapState({
-      alerts: state => state.riverDetailState.alertsData.data,
-      loading: state => state.riverDetailState.alertsData.loading,
-      error: state => state.riverDetailState.alertsData.error,
-      user: state => state.userState.userData.data
+      alerts: state => state.RiverAlerts.data,
+      loading: state => state.RiverAlerts.loading,
+      error: state => state.RiverAlerts.error,
+      user: state => state.User.data
     })
   },
   watch: {

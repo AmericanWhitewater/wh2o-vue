@@ -58,12 +58,12 @@ export default new Vuex.Store({
   state: {},
   mutations: {},
   actions: {},
-  modules: {
-    ...modules,
-    appGlobalState,
-    newsPageState,
-    riverDetailState,
-    // riverIndexState,
-    userState
-  }
+  modules
+  // modules: {
+  //   ...modules,
+  //   appGlobalState,
+  //   newsPageState,
+  //   riverDetailState,
+  //   userState
+  // }
 })

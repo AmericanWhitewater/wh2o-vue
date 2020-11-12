@@ -88,10 +88,10 @@ export default {
   }),
   computed: {
     ...mapState({
-      comments: state => state.riverDetailState.commentsData.data,
-      loading: state => state.riverDetailState.commentsData.loading,
-      error: state => state.riverDetailState.commentsData.error,
-      user: state => state.userState.userData.data
+      comments: state => state.RiverComments.data,
+      loading: state => state.RiverComments.loading,
+      error: state => state.RiverComments.error,
+      user: state => state.User.data
     })
   },
   methods: {

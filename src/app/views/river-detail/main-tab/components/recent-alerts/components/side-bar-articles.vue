@@ -62,9 +62,9 @@ export default {
   name: 'sidebar-articles',
   computed: {
     ...mapState({
-      loading: state => state.riverDetailState.newsTabData.loading,
-      error: state => state.riverDetailState.newsTabData.error,
-      articles: state => state.riverDetailState.newsTabData.data
+      loading: state => state.RiverNews.loading,
+      error: state => state.RiverNews.error,
+      articles: state => state.RiverNews.data
     })
   },
   watch: {

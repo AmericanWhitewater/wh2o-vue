@@ -181,7 +181,7 @@ export default {
   }),
   computed: {
     ...mapState({
-      rapids: state => state.riverDetailState.rapidsData.data
+      rapids: state => state.RiverRapids.data
     }),
     activeRapid () {
       return this.rapidId ? this.rapids.find(r => r.id === this.rapidId) : null

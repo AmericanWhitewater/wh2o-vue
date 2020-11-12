@@ -1,6 +1,6 @@
 import { reflectKeys } from '@/app/global/services'
 
-import { fetchGalleryData } from '../../services'
+import { fetchGalleryData } from '@/app/views/river-detail/controllers'
 
 /** Initial state */
 const initialState = {

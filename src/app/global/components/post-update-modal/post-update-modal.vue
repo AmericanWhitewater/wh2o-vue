@@ -108,7 +108,7 @@ export default {
   }),
   computed: {
     userId () {
-      return this.$store.state.userState.userData.data?.uid
+      return this.$store.state.User.data?.uid
     }
   },
   watch: {

@@ -106,11 +106,11 @@ export default {
   }),
   computed: {
     ...mapState({
-      river: state => state.riverDetailState.riverDetailData.data,
-      loading: state => state.riverDetailState.riverDetailData.loading,
+      river: state => state.RiverDetail.data,
+      loading: state => state.RiverDetail.loading,
       riverDescription: state =>
-        state.riverDetailState.riverDetailData.data.description,
-      editMode: state => state.appGlobalState.appGlobalData.editMode
+        state.RiverDetail.data.description,
+      editMode: state => state.Global.editMode
     }),
     sanitizedDescription () {
       if (this.refreshedDescription) {

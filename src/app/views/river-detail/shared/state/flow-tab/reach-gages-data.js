@@ -4,7 +4,7 @@
  */
 
 import { reflectKeys } from '@/app/global/services'
-import { fetchGages } from '../../services'
+import { fetchGages } from '@/app/views/river-detail/controllers'
 
 const initialState = {
   loading: false,

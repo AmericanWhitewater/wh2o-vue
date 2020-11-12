@@ -4,40 +4,27 @@
       <div class="bx--grid">
         <div class="bx--row">
           <div class="bx--col">
-            <header
-              v-if="loading"
-              class="bx--tile"
-            >
+            <header v-if="loading" class="bx--tile">
               <div>
                 <cv-skeleton-text />
                 <cv-skeleton-text heading />
                 <cv-breadcrumb-skeleton no-trailing-slash />
               </div>
             </header>
-            <header
-              v-else-if="reach"
-              class="bx--tile"
-            >
+            <header v-else-if="reach" class="bx--tile">
               <div>
                 <h4>
                   {{ reach.river }}
                 </h4>
 
-                <h1
-                  class="mb-spacing-md"
-                  v-text="reach.section"
-                />
+                <h1 class="mb-spacing-md" v-text="reach.section" />
 
                 <cv-breadcrumb no-trailing-slash>
                   <cv-breadcrumb-item>
-                    <cv-link to="/river-index">
-                      River Index
-                    </cv-link>
+                    <cv-link to="/river-index"> River Index </cv-link>
                   </cv-breadcrumb-item>
                   <cv-breadcrumb-item>
-                    <cv-link href="#0">
-                      River Id: {{ reach.id }}
-                    </cv-link>
+                    <cv-link href="#0"> River Id: {{ reach.id }} </cv-link>
                   </cv-breadcrumb-item>
                 </cv-breadcrumb>
               </div>
@@ -54,7 +41,7 @@
                 <reach-title-edit-modal
                   v-if="editMode && !loading"
                   :visible="editReachTitleModalVisible"
-                  @edit:cancelled="editReachTitleModalVisible=false"
+                  @edit:cancelled="editReachTitleModalVisible = false"
                 />
                 <div v-if="reach.photo">
                   <img
@@ -73,10 +60,7 @@
               theme="dark"
               hide-text
             />
-            <transition
-              :name="transitionName"
-              mode="out-in"
-            >
+            <transition :name="transitionName" mode="out-in">
               <map-banner
                 v-if="activeTabKey !== 'map' && !loading && reach"
                 :title="reach.river"
@@ -94,7 +78,7 @@
             <geometry-edit-modal
               v-if="editMode && !loading"
               :visible="editGeometryModalVisible"
-              @edit:cancelled="editGeometryModalVisible=false"
+              @edit:cancelled="editGeometryModalVisible = false"
             />
           </div>
         </div>
@@ -105,9 +89,12 @@
         <aside class="bx--col-sm-4 bx--col-lg-3 bx--col-max-2">
           <a
             v-if="editMode"
-            :href="formatLinkUrl(`/content/Linker/edit/source/river/id/${reachId}/`)"
+            :href="
+              formatLinkUrl(`/content/Linker/edit/source/river/id/${reachId}/`)
+            "
             target="_blank"
-          >Open Linker</a>
+            >Open Linker</a
+          >
           <div class="sticky controls-wrapper">
             <div class="button-toolbar">
               <div class="button-wrapper">
@@ -154,13 +141,8 @@
                 </cv-dropdown-item>
               </cv-dropdown>
             </div>
-            <ul
-              v-if="windowWidth >= $options.breakpoints.lg"
-            >
-              <li
-                v-for="(label, path) in $options.tabs"
-                :key="path"
-              >
+            <ul v-if="windowWidth >= $options.breakpoints.lg">
+              <li v-for="(label, path) in $options.tabs" :key="path">
                 <cv-button
                   :class="[
                     path === 'main' ? 'no-border-top' : '',
@@ -179,10 +161,7 @@
         <main
           class="bx--col-sm-4 bx--col-lg-13 bx--col-max-13 bx--offset-max-1"
         >
-          <transition
-            :name="transitionName"
-            mode="out-in"
-          >
+          <transition :name="transitionName" mode="out-in">
             <keep-alive exclude="beta-box-edit-modal,geometry-edit-modal">
               <router-view />
             </keep-alive>
@@ -193,133 +172,160 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import { riverDetailActions, rapidsActions, alertsActions, bookmarksActions, reachGagesActions, metricsActions } from './shared/state'
-import { globalAppActions } from '@/app/global/state'
-import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
-import { MapBanner, ReachTitleEditModal } from './shared/components'
-import GeometryEditModal from './shared/components/geometry-edit-modal/geometry-edit-modal'
-import { checkWindow } from '@/app/global/mixins'
-import { appLocalStorage } from '@/app/global/services'
+import { mapState, mapActions } from "vuex";
+import {
+  rapidsActions,
+  alertsActions,
+  bookmarksActions,
+  reachGagesActions,
+  metricsActions,
+} from "./shared/state";
+import { globalAppActions } from "@/app/global/state";
+import UtilityBlock from "@/app/global/components/utility-block/utility-block.vue";
+import { MapBanner, ReachTitleEditModal } from "./shared/components";
+import GeometryEditModal from "./shared/components/geometry-edit-modal/geometry-edit-modal";
+import { checkWindow } from "@/app/global/mixins";
+import { appLocalStorage } from "@/app/global/services";
+import {fetchRiverDetailData,fetchGages, fetchAlertsData, fetchGaugeMetrics, fetchRapidsData } from "@/app/views/river-detail/controllers"
+
 export default {
-  name: 'river-detail',
+  name: "river-detail",
   components: {
     UtilityBlock,
     MapBanner,
     GeometryEditModal,
-    ReachTitleEditModal
+    ReachTitleEditModal,
   },
   mixins: [checkWindow],
   data: () => ({
     editGeometryModalVisible: false,
     editReachTitleModalVisible: false,
     bookmarked: false,
-    transitionName: 'fade'
+    transitionName: "fade",
   }),
   tabs: {
-    main: 'General',
-    flow: 'Flow',
-    map: 'Map',
-    gallery: 'Gallery',
-    news: 'News',
-    accidents: 'Accidents',
-    credits: 'Contributors'
+    main: "General",
+    flow: "Flow",
+    map: "Map",
+    gallery: "Gallery",
+    news: "News",
+    accidents: "Accidents",
+    credits: "Contributors",
   },
   computed: {
     ...mapState({
-      reach: state => state.riverDetailState.riverDetailData.data,
-      loading: state => state.riverDetailState.riverDetailData.loading,
-      alerts: state => state.riverDetailState.alertsData.data,
-      editMode: state => state.appGlobalState.appGlobalData.editMode,
-      user: state => state.userState.userData.data
+      reach: (state) => state.RiverDetail.data,
+      loading: (state) => state.RiverDetail.loading,
+      alerts: (state) => state.RiverAlerts.data,
+      editMode: (state) => state.Global.editMode,
+      user: (state) => state.User.data,
     }),
-    reachId () {
-      return this.$route.params.id
+    reachId() {
+      return this.$route.params.id;
     },
-    notificationIcon () {
+    notificationIcon() {
       if (this.alerts && this.alerts.length) {
-        return 'NotificationNew20'
+        return "NotificationNew20";
       }
-      return 'Notification20'
+      return "Notification20";
     },
-    activeTabKey () {
+    activeTabKey() {
       if (this.$route.name) {
-        return this.$route.name.replace('-tab', '')
+        return this.$route.name.replace("-tab", "");
       }
-      return ''
-    }
+      return "";
+    },
   },
   watch: {
-    reachId () {
-      this.loadReachData()
-    }
+    reachId() {
+      this.loadReachData();
+    },
   },
   methods: {
-    loadReachData () {
-      this.$store.dispatch(riverDetailActions.FETCH_RIVER_DETAIL_DATA, this.reachId)
-      this.$store.dispatch(reachGagesActions.FETCH_GAGES, this.reachId)
-      this.$store.dispatch(alertsActions.FETCH_ALERTS_DATA, this.reachId)
-      this.$store.dispatch(metricsActions.FETCH_GAGE_METRICS, this.reachId)
-      this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, this.reachId)
-    },
-    toggleEditMode () {
-      if (this.user) {
-        this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, !this.editMode)
-      } else {
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
-          title: 'Must log in to edit',
-          kind: 'error'
-        })
-      }
-    },
-    switchTab (key) {
-      if (key !== this.activeTabKey) {
-        const path = `/river-detail/${this.$route.params.id}/${key}`
-        if (this.$route.path !== path) {
-          this.$router.replace(path)
-        }
-      }
-    },
-    toggleBookmark () {
-      if (!this.bookmarked) {
-        this.$store.dispatch(bookmarksActions.ADD_BOOKMARK, this.reachId)
-        this.bookmarked = true
-      } else {
-        this.$store.dispatch(bookmarksActions.REMOVE_BOOKMARK, this.reachId)
-        this.bookmarked = false
-      }
-      this.$store.dispatch(globalAppActions.SEND_TOAST, {
-        title: this.bookmarked ? 'Bookmark Added' : 'Bookmark Removed',
-        kind: 'success'
+    loadReachData() {  
+      this.$store.dispatch('RiverAlerts/getProperty', {
+        id: this.reachId,
+        method: fetchAlertsData,
       })
+      this.$store.dispatch('RiverDetail/getProperty', {
+        id: this.reachId,
+        method: fetchRiverDetailData,
+      })
+      this.$store.dispatch('RiverGages/getProperty', {
+        id: this.reachId,
+        method: fetchGages,
+      })
+      this.$store.dispatch('RiverRapids/getProperty', {
+        id: this.reachId,
+        method: fetchRapidsData,
+      })
+      this.$store.dispatch('GageMetrics/getProperty', {
+        id: this.reachId,
+        method: fetchGaugeMetrics,
+      })
+      
     },
-    checkBookmarks () {
-      const bookmarks = appLocalStorage.getItem('wh2o-bookmarked-rivers')
+    toggleEditMode() {
+      if (this.user) {
+        this.$store.dispatch('Global/toggleEditMode', !this.editMode);
+      } else {
+        this.$store.dispatch('Global/sendToast', {
+          title: "Must log in to edit",
+          kind: "error",
+        });
+      }
+    },
+    switchTab(key) {
+      if (key !== this.activeTabKey) {
+        const path = `/river-detail/${this.$route.params.id}/${key}`;
+        if (this.$route.path !== path) {
+          this.$router.replace(path);
+        }
+      }
+    },
+    toggleBookmark() {
+      if (!this.bookmarked) {
+        this.$store.dispatch(bookmarksActions.ADD_BOOKMARK, this.reachId);
+        this.bookmarked = true;
+      } else {
+        this.$store.dispatch(bookmarksActions.REMOVE_BOOKMARK, this.reachId);
+        this.bookmarked = false;
+      }
+      this.$store.dispatch('Global/sendToast', {
+        title: this.bookmarked ? "Bookmark Added" : "Bookmark Removed",
+        kind: "success",
+      });
+    },
+    checkBookmarks() {
+      const bookmarks = appLocalStorage.getItem("wh2o-bookmarked-rivers");
       if (bookmarks) {
-        const data = bookmarks.find(b => b === this.reachId)
+        const data = bookmarks.find((b) => b === this.reachId);
         if (data) {
-          this.bookmarked = true
+          this.bookmarked = true;
         }
       } else {
-        this.bookmarked = false
+        this.bookmarked = false;
       }
-    }
+    },
   },
-  created () {
-    this.loadReachData()
-    this.checkBookmarks()
+  created() {
+    
     this.$router.beforeEach((to, from, next) => {
-      let transitionName = to.meta.transitionName || from.meta.transitionName
-      if (transitionName === 'slide') {
-        const toDepth = to.path.split('/').length
-        const fromDepth = from.path.split('/').length
-        transitionName = toDepth < fromDepth ? 'slide-left' : 'slide-right'
+      let transitionName = to.meta.transitionName || from.meta.transitionName;
+      if (transitionName === "slide") {
+        const toDepth = to.path.split("/").length;
+        const fromDepth = from.path.split("/").length;
+        transitionName = toDepth < fromDepth ? "slide-left" : "slide-right";
       }
 
-      this.transitionName = transitionName || 'fade'
+      this.transitionName = transitionName || "fade";
 
-      next()
-    })
+      next();
+    });
+  },
+  mounted() {
+    this.loadReachData();
+    this.checkBookmarks();
   }
-}
+};
 </script>

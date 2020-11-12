@@ -80,7 +80,7 @@ export default {
   }),
   computed: {
     ...mapState({
-      reach: state => state.riverDetailState.riverDetailData.data
+      reach: state => state.RiverDetail.data
     })
   },
   methods: {
@@ -92,7 +92,8 @@ export default {
       this.$emit('edit:submit')
       this.$parent.editModalVisible = false
       this.$nextTick(() => {
-        this.$store.dispatch(riverDetailActions.UPDATE_REACH, this.formData)
+        // this.$store.dispatch(riverDetailActions.UPDATE_REACH, this.formData)
+        this.$store.dispatch('RiverDetail/updateReach', this.formData)
       })
     }
   },

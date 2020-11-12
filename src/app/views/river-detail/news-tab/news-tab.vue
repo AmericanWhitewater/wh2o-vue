@@ -201,13 +201,13 @@ export default {
   }),
   computed: {
     ...mapState({
-      articlesLoading: state => state.riverDetailState.newsTabData.loading,
-      articlesError: state => state.riverDetailState.newsTabData.error,
-      articles: state => state.riverDetailState.newsTabData.data,
-      alertsLoading: state => state.riverDetailState.alertsData.loading,
-      alertsError: state => state.riverDetailState.alertsData.error,
-      alerts: state => state.riverDetailState.alertsData.data,
-      user: state => state.userState.userData.data
+      articlesLoading: state => state.RiverNews.loading,
+      articlesError: state => state.RiverNews.error,
+      articles: state => state.RiverNews.data,
+      alertsLoading: state => state.RiverAlerts.loading,
+      alertsError: state => state.RiverAlerts.error,
+      alerts: state => state.RiverAlerts.data,
+      user: state => state.User.data
     }),
     activeAlert () {
       if (this.activeAlertId) {

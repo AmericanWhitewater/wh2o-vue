@@ -1,5 +1,5 @@
 import { reflectKeys } from '@/app/global/services'
-import { fetchAccidentsData } from '../../services'
+import { fetchAccidentsData } from '@/app/views/river-detail/controllers'
 
 /** Initial state */
 const initialState = {

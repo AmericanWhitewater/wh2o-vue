@@ -18,15 +18,12 @@
             :key="index"
             class="bx--col-xs-12 bx--col-sm-4 bx--col-lg-6"
           >
-            <resource-card
-              :key="index"
-              :title="gage.name"
-              :to="`/gage-detail/${gage.id}`"
-            />
-            <!-- <div v-for="(project, index) in data.rows" :key="index">
-             <h3> {{ project.name }} </h3>
-             <p> {{ project.description }} </p>
-           </div> -->
+            <hr>
+            <h3> {{ gage.name }} </h3>
+            <h4> {{ gage.header_updated }} </h4>
+            <h4> {{ gage.source }} </h4>
+            <router-link :to="`/gage-detail/${gage.id}`" >Gage Detail</router-link>
+            <div class="mb-spacing-md"/>
           </div>
         </template>
         <template v-else>

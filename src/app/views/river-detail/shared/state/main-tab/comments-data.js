@@ -1,5 +1,5 @@
 import { reflectKeys } from '@/app/global/services'
-import { fetchCommentsData } from '../../services'
+import { fetchCommentsData } from '@/app/views/river-detail/controllers'
 import moment from 'moment'
 
 const initialState = {

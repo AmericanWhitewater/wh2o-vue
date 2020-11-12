@@ -5,7 +5,7 @@ import {
   updateRapid,
   createRapid,
   deleteRapid,
-} from "../../services";
+} from "@/app/views/river-detail/controllers";
 
 /** Initial state */
 const initialState = {

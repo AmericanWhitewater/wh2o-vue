@@ -5,6 +5,8 @@
   "author": "Drew Althage",
   "scripts": {
     "serve": "vue-cli-service serve --public localhost:9669 --port 9669",
+    "dev": "vue-cli-service serve",
+    "dev:laravel": "vue-cli-service serve --public localhost:9669 --port 9669",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
@@ -56,7 +58,6 @@
     "carbon-components": "^10.11.2",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
-    "express": "^4.17.1",
     "geojson-rbush": "^3.1.2",
     "graph-data-structure": "^1.12.0",
     "graphql": "^15.3.0",

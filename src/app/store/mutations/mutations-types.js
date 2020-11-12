@@ -18,3 +18,5 @@ export const CREATE_ERROR = 'CREATE_ERROR'
 export const CREATE_LOADING = 'CREATE_LOADING'
 export const CREATE_REQUEST = 'CREATE_REQUEST'
 export const CREATE_SUCCESS = 'CREATE_SUCCESS'
+
+export const SET_REF_ID = 'SET_REF_ID'

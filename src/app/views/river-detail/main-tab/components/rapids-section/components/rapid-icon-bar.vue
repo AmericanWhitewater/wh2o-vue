@@ -114,7 +114,7 @@ export default {
   },
   computed: {
     editMode () {
-      return this.$store.state.appGlobalState.appGlobalData.editMode
+      return this.$store.state.Global.editMode
     },
     hazard () {
       return this.character.includes('hazard')

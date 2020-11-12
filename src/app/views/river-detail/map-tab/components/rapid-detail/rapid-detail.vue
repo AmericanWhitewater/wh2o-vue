@@ -84,9 +84,9 @@ export default {
       return this.rapid.photoid ? `/photos/archive/medium/${this.rapid.photoid}.jpg` : 'http://drewalthage.com/client/americanwhitewater/img/no-media.png'
     },
     ...mapState({
-      loading: state => state.riverDetailState.rapidsData.loading,
-      error: state => state.riverDetailState.rapidsData.error,
-      rapids: state => state.riverDetailState.rapidsData.data
+      loading: state => state.RiverRapids.loading,
+      error: state => state.RiverRapids.error,
+      rapids: state => state.RiverRapids.data
     }),
     /*
      * Relying on the tileserver for feature info means maintaining consistency between

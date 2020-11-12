@@ -41,7 +41,7 @@ export default {
      */
     this.hideNavigation = !!laravelDeploy
 
-    this.$store.dispatch(userActions.FETCH_USER_DATA)
+    this.$store.dispatch('User/getProperty')
   }
 }
 </script>

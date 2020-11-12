@@ -69,8 +69,8 @@ export default {
   }),
   computed: {
     ...mapState({
-      user: state => state.userState.userData.data,
-      alerts: state => state.riverDetailState.alertsData.data
+      user: state => state.User.data,
+      alerts: state => state.RiverAlerts.data
     }),
     activeAlert () {
       if (this.alertId) {

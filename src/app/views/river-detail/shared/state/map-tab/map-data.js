@@ -1,6 +1,6 @@
 import { reflectKeys } from '@/app/global/services'
 
-import { fetchAccessData } from '../../services'
+import { fetchAccessData } from '@/app/views/river-detail/controllers'
 
 const initialState = {
   loading: false,

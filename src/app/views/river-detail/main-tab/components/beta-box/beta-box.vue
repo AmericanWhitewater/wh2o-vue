@@ -148,7 +148,7 @@
     >
       <h3>Edit Beta Box</h3>
     </div>
-    <BetaBoxEditModal
+    <beta-box-edit-modal
       v-if="editMode && !loading"
       :key="editBetaBoxKey"
       :visible="editModalVisible"
@@ -176,11 +176,11 @@ export default {
   }),
   computed: {
     ...mapState({
-      loading: state => state.riverDetailState.riverDetailData.loading,
-      river: state => state.riverDetailState.riverDetailData.data,
-      editMode: state => state.appGlobalState.appGlobalData.editMode,
-      gages: state => state.riverDetailState.reachGagesData.data,
-      metrics: state => state.riverDetailState.gageMetricsData.data
+      loading: state => state.RiverDetail.loading,
+      river: state => state.RiverDetail.data,
+      editMode: state => state.Global.editMode,
+      gages: state => state.RiverGages.data,
+      metrics: state => state.GageMetrics.data
     }),
     editBetaBoxKey () {
       return `editBetaBox${this.reachId}`

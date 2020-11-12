@@ -212,7 +212,7 @@ export default {
   }),
   computed: {
     ...mapState({
-      river: state => state.riverDetailState.riverDetailData.data
+      river: state => state.RiverDetail.data
     }),
     activeImage () {
       if (this.lightbox.activeImage) {

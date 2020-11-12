@@ -1,6 +1,6 @@
 import { reflectKeys } from '@/app/global/services'
 
-import { fetchGaugeMetrics } from '../../services'
+import { fetchGaugeMetrics } from '@/app/views/river-detail/controllers'
 
 const initialState = {
   loading: false,

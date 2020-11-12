@@ -57,10 +57,9 @@ export default {
       return geom ? lineString(geom) : null
     },
     ...mapState({
-      mapStyle: state => state.riverIndexState.riverIndexData.mapStyle,
-      reach: state => state.riverDetailState.riverDetailData.data,
-      editMode: state => state.appGlobalState.appGlobalData.editMode
-
+      mapStyle: state => state.RiverIndex.mapStyle,
+      reach: state => state.RiverDetail.data,
+      editMode: state => state.Global.editMode
     }),
     startingBounds () {
       if (this.reachGeom) {

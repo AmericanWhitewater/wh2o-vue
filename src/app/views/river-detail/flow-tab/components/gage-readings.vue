@@ -51,10 +51,10 @@ export default {
   }),
   computed: {
     ...mapState({
-      data: state => state.riverDetailState.gageReadingsData.data,
-      loading: state => state.riverDetailState.gageReadingsData.loading,
-      error: state => state.riverDetailState.gageReadingsData.error,
-      metrics: state => state.riverDetailState.gageMetricsData.data
+      data: state => state.GageReadings.data,
+      loading: state => state.GageReadings.loading,
+      error: state => state.GageReadings.error,
+      metrics: state => state.GageReadings.data
     }),
     metric () {
       return this?.metrics.find(m => m.id === this.data[0].metric.toString()).unit

@@ -12,7 +12,7 @@ import {
   fetchRiverDetailData,
   updateRiverDetailGeom,
   updateReach,
-} from "../../services";
+} from "@/app/views/river-detail/controllers";
 
 import wkx from "wkx";
 

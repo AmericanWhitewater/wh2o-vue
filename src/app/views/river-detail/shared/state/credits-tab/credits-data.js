@@ -1,6 +1,6 @@
 import { reflectKeys } from '@/app/global/services'
 
-import { fetchCreditsData } from '../../services'
+import { fetchCreditsData } from '@/app/views/river-detail/controllers'
 
 /** Initial state */
 const initialState = {

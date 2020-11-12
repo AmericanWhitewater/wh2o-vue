@@ -81,12 +81,12 @@ export default {
   }),
   computed: {
     ...mapState({
-      loading: state => state.riverDetailState.rapidsData.loading,
-      error: state => state.riverDetailState.rapidsData.error,
-      rapids: state => state.riverDetailState.rapidsData.data,
-      reachId: state => state.riverDetailState.riverDetailData.data.id,
-      user: state => state.userState.userData.data,
-      editMode: state => state.appGlobalState.appGlobalData.editMode
+      loading: state => state.RiverRapids.loading,
+      error: state => state.RiverRapids.error,
+      rapids: state => state.RiverRapids.data,
+      reachId: state => state.RiverDetail.data.id,
+      user: state => state.User.data,
+      editMode: state => state.Global.editMode
     })
   },
   methods: {

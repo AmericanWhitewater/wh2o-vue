@@ -2,7 +2,7 @@
   <div class="Affiliates-table">
     <div class="bx--grid">
       <div class="bx--row">
-        <div class="bx--col">
+        <div class="bx--col mt-spacing-lg">
           <h1>
             Affiliates
           </h1>
@@ -14,11 +14,12 @@
             loading
           </template>
           <template v-else-if="data">
-            {{ data }}
-            <!-- <div v-for="(project, index) in data.rows" :key="index">
-             <h3> {{ project.name }} </h3>
-             <p> {{ project.description }} </p>
-           </div> -->
+            <div v-for="(affiliate, index) in data" :key="index" class="mb-spacing-lg">
+              <hr>
+             <h3> {{ affiliate.last }} </h3>
+             <p> {{ affiliate.url }} </p>
+             <p> {{ affiliate.abstract }} </p>
+           </div>
           </template>
           <template v-else>
             error

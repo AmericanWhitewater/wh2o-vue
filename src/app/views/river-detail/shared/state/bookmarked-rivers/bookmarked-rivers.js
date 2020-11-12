@@ -1,6 +1,6 @@
 import { reflectKeys, appLocalStorage } from '@/app/global/services'
 
-import { fetchBookmarksData, fetchBookmarksGageData } from '../../services'
+import { fetchBookmarksData, fetchBookmarksGageData } from '@/app/views/river-detail/controllers'
 
 const initialState = {
   loading: false,

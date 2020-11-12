@@ -19,10 +19,6 @@ const mockStore = {
         loading: null
       }
     },
-    riverIndexState: {
-      riverIndexData: {
-      }
-    },
     appGlobalState: {
       appGlobalData: {
       }

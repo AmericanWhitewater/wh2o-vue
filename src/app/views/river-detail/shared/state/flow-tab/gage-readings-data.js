@@ -1,5 +1,5 @@
 import { reflectKeys } from '@/app/global/services'
-import { fetchGaugeReadings } from '../../services'
+import { fetchGaugeReadings } from '@/app/views/river-detail/controllers'
 
 const initialState = {
   loading: false,

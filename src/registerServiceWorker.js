@@ -2,7 +2,6 @@
 
 import { register } from 'register-service-worker'
 import store from './app/store'
-import { globalAppActions } from './app/global/state'
 
 if (
   !process.env.VUE_APP_LARAVEL_DEPLOY && process.env.NODE_ENV !== 'development' && navigator.serviceWorker
@@ -29,7 +28,7 @@ if (
       document.dispatchEvent(
         new CustomEvent('swUpdated', { detail: registration })
       )
-      store.dispatch(globalAppActions.UPDATE_AVAILABLE, true)
+      store.dispatch('Global/updateAvailable', true)
     },
     offline () {
       console.log(

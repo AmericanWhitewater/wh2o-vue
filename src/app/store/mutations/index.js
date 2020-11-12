@@ -2,6 +2,9 @@ import * as types from './mutations-types'
 
 export default {
 
+  [types.SET_REF_ID](state, id) {
+    state.refId = id
+  },
   [types.DATA_REQUEST] (state) {
     Object.assign(state, { loading: true, error: null })
   },

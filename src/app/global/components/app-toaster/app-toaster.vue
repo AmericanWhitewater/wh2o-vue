@@ -41,7 +41,6 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { globalAppActions } from '@/app/global/state'
 /**
  * @displayName App Toaster
  */
@@ -62,8 +61,8 @@ export default {
   computed: {
     ...mapState({
       updateAvailable: state =>
-        state.appGlobalState.appGlobalData.updateAvailable,
-      toasts: state => state.appGlobalState.appGlobalData.toasts
+        state.Global.updateAvailable,
+      toasts: state => state.Global.toasts
     })
   },
   watch: {
@@ -72,12 +71,12 @@ export default {
        * @note this is not a permanent solution for auto hide
        */
       setTimeout(() => {
-        this.$store.dispatch(globalAppActions.CLOSE_TOAST, 0)
+        this.$store.dispatch('Global/closeToast', 0)
       }, 5000)
     },
     updateAvailable (update) {
       if (update) {
-        this.$store.dispatch(globalAppActions.SEND_TOAST, this.newUpdate)
+        this.$store.dispatch('Global/sendToast', this.newUpdate)
       }
     }
   },
@@ -89,7 +88,7 @@ export default {
       return this.$randomId()
     },
     handleClose (index ) {
-      this.$store.dispatch(globalAppActions.CLOSE_TOAST, index)
+      this.$store.dispatch('Global/closeToast', index)
     },
     handleUpdate () {
       window.location.reload(true)
@@ -111,7 +110,7 @@ export default {
       } else {
         this.refreshApp()
       }
-      this.$store.dispatch(globalAppActions.CLOSE_TOAST, index)
+      this.$store.dispatch('Global/closeToast', index)
     }
   },
   created () {

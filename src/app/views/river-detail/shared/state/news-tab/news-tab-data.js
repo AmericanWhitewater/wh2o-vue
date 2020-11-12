@@ -1,5 +1,5 @@
 import { reflectKeys } from '@/app/global/services'
-import { fetchNewsTabData } from '../../services'
+import { fetchNewsTabData } from '@/app/views/river-detail/controllers'
 import moment from 'moment'
 
 const initialState = {

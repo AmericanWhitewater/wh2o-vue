@@ -1,6 +1,6 @@
 import { reflectKeys } from '@/app/global/services'
 
-import { fetchGaugeSourceInfo } from '../../services'
+import { fetchGaugeSourceInfo } from '@/app/views/river-detail/controllers'
 
 const initialState = {
   loading: false,

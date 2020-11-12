@@ -105,7 +105,7 @@ export default {
   }),
   computed: {
     user () {
-      return this.$store.state.userState.userData.data
+      return this.$store.state.User.data
     },
     reachId () {
       return this.$route.params.id

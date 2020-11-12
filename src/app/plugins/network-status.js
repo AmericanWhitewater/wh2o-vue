@@ -1,16 +1,15 @@
 import store from '@/app/store'
-import { globalAppActions } from '@/app/global/state'
 
 if (!navigator.onLine) {
-  store.dispatch(globalAppActions.NETWORK_STATUS, "offline");
+  store.dispatch('Global/networkStatus', "offline");
 } else {
-  store.dispatch(globalAppActions.NETWORK_STATUS, "online");
+  store.dispatch('Global/networkStatus', "online");
 }
 
 window.addEventListener("offline", function () {
-  store.dispatch(globalAppActions.NETWORK_STATUS, "offline");
+  store.dispatch('Global/networkStatus', "offline");
 });
 
 window.addEventListener("online", function () {
-  store.dispatch(globalAppActions.NETWORK_STATUS, "online");
+  store.dispatch('Global/networkStatus', "online");
 });

@@ -124,7 +124,7 @@ export default {
 
   computed: {
     rapids () {
-      return this.$store.state.riverDetailState.rapidsData.data
+      return this.$store.state.RiverRapids.data
     },
     user () {
       return this.$store.state.userState.userData.data

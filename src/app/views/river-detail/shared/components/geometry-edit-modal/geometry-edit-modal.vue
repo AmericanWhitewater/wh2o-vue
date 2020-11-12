@@ -53,7 +53,7 @@ export default {
   }),
   computed: {
     ...mapState({
-      data: state => state.riverDetailState.riverDetailData.data
+      data: state => state.RiverDetail.data
     }),
     reachGeom () {
       // TODO: get graphql API to return a linestring or geojson instead of this text
