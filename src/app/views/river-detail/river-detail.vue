@@ -300,7 +300,7 @@ export default {
   },
   mounted() {
     this.loadReachData();
-    this.checkBookmarks();
+    // this.checkBookmarks();
   }
 };
 </script>
