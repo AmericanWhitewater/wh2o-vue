@@ -17,9 +17,6 @@ const mockStore = {
       data: null,
       loading: null
     },
-    riverDetailState: {
-      
-    },
     Global: {
       editmode: false
     }

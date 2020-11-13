@@ -268,30 +268,30 @@ export default {
         }
       }
     },
-    toggleBookmark() {
-      if (!this.bookmarked) {
-        this.$store.dispatch(bookmarksActions.ADD_BOOKMARK, this.reachId);
-        this.bookmarked = true;
-      } else {
-        this.$store.dispatch(bookmarksActions.REMOVE_BOOKMARK, this.reachId);
-        this.bookmarked = false;
-      }
-      this.$store.dispatch('Global/sendToast', {
-        title: this.bookmarked ? "Bookmark Added" : "Bookmark Removed",
-        kind: "success",
-      });
-    },
-    checkBookmarks() {
-      const bookmarks = appLocalStorage.getItem("wh2o-bookmarked-rivers");
-      if (bookmarks) {
-        const data = bookmarks.find((b) => b === this.reachId);
-        if (data) {
-          this.bookmarked = true;
-        }
-      } else {
-        this.bookmarked = false;
-      }
-    },
+    // toggleBookmark() {
+    //   if (!this.bookmarked) {
+    //     this.$store.dispatch(bookmarksActions.ADD_BOOKMARK, this.reachId);
+    //     this.bookmarked = true;
+    //   } else {
+    //     this.$store.dispatch(bookmarksActions.REMOVE_BOOKMARK, this.reachId);
+    //     this.bookmarked = false;
+    //   }
+    //   this.$store.dispatch('Global/sendToast', {
+    //     title: this.bookmarked ? "Bookmark Added" : "Bookmark Removed",
+    //     kind: "success",
+    //   });
+    // },
+    // checkBookmarks() {
+    //   const bookmarks = appLocalStorage.getItem("wh2o-bookmarked-rivers");
+    //   if (bookmarks) {
+    //     const data = bookmarks.find((b) => b === this.reachId);
+    //     if (data) {
+    //       this.bookmarked = true;
+    //     }
+    //   } else {
+    //     this.bookmarked = false;
+    //   }
+    // },
   },
   created() {
     

@@ -104,7 +104,6 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { accidentsActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { Layout } from '@/app/global/layout'
 import { PageDescription } from '@/app/global/components'

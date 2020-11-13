@@ -100,8 +100,7 @@
 <script>
 import RapidIconBar from './rapid-icon-bar'
 import ConfirmDeleteModal from '@/app/global/components/confirm-delete-modal/confirm-delete-modal.vue'
-import { rapidsActions } from '../../../../shared/state'
-import { baseUrl } from '../../../../../../environment'
+import { baseUrl } from '@/app/environment'
 
 export default {
   name: 'rapids-item',
@@ -163,9 +162,7 @@ export default {
     },
     deleteRapid (rapid) {
       this.deleteModalVisible = false
-      this.$store.dispatch(rapidsActions.DELETE_RAPID, {
-        id: rapid.id
-      })
+      this.$store.dispatch('RiverRapids/deleteRapid', rapid.id)
     }
   },
   created () {

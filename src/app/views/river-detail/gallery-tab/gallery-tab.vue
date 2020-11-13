@@ -62,7 +62,6 @@ import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { ImageGallery } from '../shared/components'
 import { Layout } from '@/app/global/layout'
 import { TablePagination } from '@/app/global/components'
-import { galleryActions } from '@/app/views/river-detail/shared/state'
 
 import { fetchRapidsData } from '@/app/views/river-detail/controllers'
 export default {
@@ -96,10 +95,7 @@ export default {
   },
   methods: {
     loadRapids (routeId) {
-      this.$store.dispatch('RiverRapids/getProperty', {
-        id: routeId,
-        method: fetchRapidsData
-      })
+      this.$store.dispatch('RiverRapids/getProperty', routeId)
     },
     loadMedia (val) {
       // not used currently but needed for `rapids` in the media upload modal when we add that
@@ -112,7 +108,7 @@ export default {
       }
       // this.$store.dispatch(galleryActions.FETCH_GALLERY_DATA, data)
 
-    this.$store.dispatch('RiverGallery/fetchGalleryData', data)
+    this.$store.dispatch('RiverGallery/getProperty', data)
 
       this.currentlyLoadedImagesFor = this.reachId
     }

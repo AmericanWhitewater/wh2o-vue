@@ -34,7 +34,6 @@
 </template>
 <script>
 import { shadowDomFixedHeightOffset } from '@/app/global/mixins'
-import { riverDetailActions } from '../state'
 import { mapState } from 'vuex'
 export default {
   name: 'reach-title-edit-modal',

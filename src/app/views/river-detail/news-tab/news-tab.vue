@@ -171,7 +171,6 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { newsTabActions, alertsActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { objectPermissionsHelpersMixin } from '@/app/global/mixins'
 import { Layout } from '@/app/global/layout'

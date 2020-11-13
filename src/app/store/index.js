@@ -1,11 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { appGlobalState } from '@/app/global/state'
-import { newsPageState } from '@/app/views/news-page'
-import { riverDetailState } from '@/app/views/river-detail'
-import { userState } from '@/app/views/user'
-
 /**
  * imports all Vuex modules added to the modules dir.
  * Module name comes from file name.
@@ -59,11 +54,4 @@ export default new Vuex.Store({
   mutations: {},
   actions: {},
   modules
-  // modules: {
-  //   ...modules,
-  //   appGlobalState,
-  //   newsPageState,
-  //   riverDetailState,
-  //   userState
-  // }
 })

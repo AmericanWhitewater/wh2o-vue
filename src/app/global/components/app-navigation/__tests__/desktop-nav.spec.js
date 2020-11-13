@@ -3,12 +3,10 @@ import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {
-    userState: {
-      userData: {
-        error: null,
-        data: null,
-        loading: null
-      }
+    User: {
+      error: null,
+      data: null,
+      loading: null
     }
   }
 }
@@ -43,7 +41,7 @@ describe('desktop-nav.vue', () => {
     expect(wrapper.find('#account-btn').exists()).toBe(false)
   })
   it('shows account button when user logged in', () => {
-    mockStore.state.userState.userData.data = { uname: 'johnDoe' }
+    mockStore.state.User.data = { uname: 'johnDoe' }
     const wrapper = createWrapper(DesktopNav, options)
     expect(wrapper.find('#login-btn').exists()).toBe(false)
     expect(wrapper.find('#account-btn').exists()).toBe(true)

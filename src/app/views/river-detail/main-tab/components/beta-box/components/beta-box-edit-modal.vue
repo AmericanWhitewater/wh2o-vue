@@ -60,7 +60,6 @@
 <script>
 import { mapState } from 'vuex'
 import { reachClasses, checkWindow, shadowDomFixedHeightOffset } from '@/app/global/mixins'
-import { riverDetailActions } from '../../../../shared/state'
 
 export default {
   name: 'beta-box-edit-modal',
@@ -92,7 +91,6 @@ export default {
       this.$emit('edit:submit')
       this.$parent.editModalVisible = false
       this.$nextTick(() => {
-        // this.$store.dispatch(riverDetailActions.UPDATE_REACH, this.formData)
         this.$store.dispatch('RiverDetail/updateReach', this.formData)
       })
     }

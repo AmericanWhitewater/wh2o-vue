@@ -66,10 +66,8 @@
 </template>
 
 <script>
-import { commentsActions } from '@/app/views/river-detail/shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import PostUpdateModal from '@/app/global/components/post-update-modal/post-update-modal'
-import { globalAppActions } from '@/app/global/state'
 import { mapState } from 'vuex'
 import { Comment } from './components'
 export default {

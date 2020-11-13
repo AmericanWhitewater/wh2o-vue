@@ -3,16 +3,12 @@ import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {
-    appGlobalState: {
-      appGlobalData: {
-        editMode: false
-      }
+    Global: {
+      editMode: false
     },
-    userState: {
-      userData: {
-        data: {
-          uid: '1232'
-        }
+    User: {
+      data: {
+        uid: '1232'
       }
     }
   },
@@ -38,24 +34,24 @@ describe('edit-mode-toggle.vue', () => {
 
     expect(mockStore.dispatch).toHaveBeenCalledTimes(1)
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
-      '[APP_GLOBAL] TOGGLE_EDIT_MODE',
-      !mockStore.state.appGlobalState.appGlobalData.editMode
+      'Global/toggleEditMode',
+      !mockStore.state.Global.editMode
     )
   })
   it('disables edit mode if user logged in', async () => {
-    mockStore.state.appGlobalState.appGlobalData.editMode = true
+    mockStore.state.Global.editMode = true
     const wrapper = createWrapper(EditModeToggle, options)
     wrapper.find('.edit-mode-toggle').trigger('click')
     await wrapper.vm.$nextTick()
     expect(mockStore.dispatch).toHaveBeenCalledTimes(1)
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
-      '[APP_GLOBAL] TOGGLE_EDIT_MODE',
-      !mockStore.state.appGlobalState.appGlobalData.editMode
+      'Global/toggleEditMode',
+      !mockStore.state.Global.editMode
     )
   })
 
   it('send log in alert toast when user not logged in', async () => {
-    mockStore.state.userState.userData.data = null
+    mockStore.state.User.data = null
 
     const toastConfig = {
       title: 'Must log in to edit',
@@ -74,7 +70,7 @@ describe('edit-mode-toggle.vue', () => {
 
     expect(mockStore.dispatch).toHaveBeenCalledTimes(1)
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
-      '[APP_GLOBAL] SEND_TOAST',
+      'Global/sendToast',
       toastConfig
     )
   })

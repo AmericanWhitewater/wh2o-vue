@@ -58,8 +58,6 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { alertsActions } from '@/app/views/river-detail/shared/state'
-import { globalAppActions } from '@/app/global/state'
 import PostUpdateModal from '@/app/global/components/post-update-modal/post-update-modal'
 export default {
   name: 'sidebar-alerts',

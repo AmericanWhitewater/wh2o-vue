@@ -10,10 +10,8 @@ jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
 
 const mockStore = {
   state: {
-    appGlobalState: {
-      appGlobalData: {
-        editMode: false
-      }
+    Global: {
+      editMode: false
     }
   }
 }

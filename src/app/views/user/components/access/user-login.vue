@@ -135,7 +135,7 @@ export default {
 
           if ('access_token' in result) {
             appLocalStorage.setItem('wh2o-auth', result.access_token)
-            this.$store.dispatch(userActions.FETCH_USER_DATA)
+            this.$store.dispatch('User/getProperty')
           }
         } catch (error) {
           this.formError = true

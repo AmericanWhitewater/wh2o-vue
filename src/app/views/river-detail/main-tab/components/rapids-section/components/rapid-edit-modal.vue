@@ -96,8 +96,6 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { globalAppActions } from '@/app/global/state'
-import { rapidsActions } from '../../../../shared/state'
 import { checkWindow, poiClasses, shadowDomFixedHeightOffset, mapHelpersMixin } from '@/app/global/mixins'
 import ContentEditor from '@/app/global/components/content-editor/content-editor'
 import RapidMapEditor from './rapid-map-editor.vue'
@@ -202,13 +200,13 @@ export default {
       let message
       // different actions for *new* POI vs. updated POI
       if (this.activeRapid) {
-        this.$store.dispatch(rapidsActions.UPDATE_RAPID, {
+        this.$store.dispatch('RiverRapids/updateRapid', {
           id: this.activeRapid.id,
           ...this.formData
         })
         message = 'Rapid Edited'
       } else { // creating a new rapid
-        this.$store.dispatch(rapidsActions.CREATE_RAPID, {
+        this.$store.dispatch('RiverRapids/createRapid', {
           id: this.$randomId(),
           reach_id: this.reach.id,
           ...this.formData
@@ -218,7 +216,7 @@ export default {
 
       setTimeout(() => {
         this.$emit('edit:success')
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        this.$store.dispatch('Global/sendToast', {
           title: message,
           kind: 'success',
           override: true,

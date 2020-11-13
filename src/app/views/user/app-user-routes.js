@@ -53,14 +53,6 @@ const userRoutes = [
             component: () => import('./components/account/user-alerts.vue')
           },
           {
-            path: 'bookmarks',
-            name: 'bookmarks',
-            meta: {
-              crumbLabel: 'Bookmarks'
-            },
-            component: () => import('./components/account/user-bookmarks.vue')
-          },
-          {
             path: 'gages',
             name: 'gages',
             component: () => import('./components/account/user-gages.vue')

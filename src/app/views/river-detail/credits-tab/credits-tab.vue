@@ -34,7 +34,6 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { creditsActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { Layout } from '@/app/global/layout'
 export default {

@@ -9,17 +9,13 @@ const mockRoute = {
 
 const mockStore = {
   state: {
-    userState: {
-      userData: {
-        data: null
-      }
+    User: {
+      data: null
     },
-    riverDetailState: {
-      creditsData: {
-        error: null,
-        data: null,
-        loading: null
-      }
+    RiverCredits: {
+      error: null,
+      data: null,
+      loading: null
     }
   },
   dispatch: jest.fn()
@@ -34,7 +30,7 @@ const options = {
 
 describe('CreditsTab', () => {
   it('shows loading block when loading', () => {
-    mockStore.state.riverDetailState.creditsData.loading = true
+    mockStore.state.RiverCredits.loading = true
     const wrapper = createWrapper(CreditsTab, options)
 
     expect(wrapper.find('.credits-tab')).toMatchSnapshot()
@@ -45,8 +41,8 @@ describe('CreditsTab', () => {
   })
 
   it('shows error block when error', () => {
-    mockStore.state.riverDetailState.creditsData.loading = false
-    mockStore.state.riverDetailState.creditsData.error = true
+    mockStore.state.RiverCredits.loading = false
+    mockStore.state.RiverCredits.error = true
     const wrapper = createWrapper(CreditsTab, options)
 
     expect(wrapper.find('.credits-tab')).toMatchSnapshot()

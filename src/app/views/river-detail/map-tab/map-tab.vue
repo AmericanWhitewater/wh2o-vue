@@ -31,7 +31,6 @@
 </template>
 <script>
 import { NwiMap } from '@/app/views/river-index/components'
-import { mapActions } from '../shared/state'
 import { mapState } from 'vuex'
 import { InfoPanel } from './components'
 import { mapHelpersMixin } from '@/app/global/mixins'

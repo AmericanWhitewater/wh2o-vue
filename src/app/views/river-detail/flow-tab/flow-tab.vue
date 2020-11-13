@@ -142,10 +142,8 @@ import { FlowChart, GageReadings, GageChartControls, LevelLegend, FlowStats, Gag
 import { GageChartConfig } from './utils/gage-chart-config'
 import { Layout } from '@/app/global/layout'
 import { mapState } from 'vuex'
-import { reachGagesActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { checkWindow } from '@/app/global/mixins'
-import { globalAppActions } from '@/app/global/state'
 
 import {fetchGages} from "@/app/views/river-detail/controllers"
 

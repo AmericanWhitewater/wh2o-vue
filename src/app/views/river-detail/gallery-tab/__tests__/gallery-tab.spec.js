@@ -29,7 +29,7 @@ const mockStore = {
     }
   },
   getters: {
-    media: null
+    media: () => null
   },
   dispatch: jest.fn()
 }
@@ -51,7 +51,7 @@ describe('GalleryTab', () => {
     jest.clearAllMocks()
   })
   it('shows loading block when loading', async () => {
-    mockStore.state.riverDetailState.galleryData.loading = true
+    mockStore.state.RiverGallery.loading = true
 
     const wrapper = createWrapper(GalleryTab, options)
 
@@ -67,9 +67,9 @@ describe('GalleryTab', () => {
   })
 
   it('shows no results block when there are no photos', () => {
-    mockStore.state.riverDetailState.galleryData.loading = false
-    mockStore.state.riverDetailState.galleryData.error = true
-    mockStore.state.riverDetailState.galleryData.data = []
+    mockStore.state.RiverGallery.loading = false
+    mockStore.state.RiverGallery.error = true
+    mockStore.state.RiverGallery.data = []
 
     const wrapper = createWrapper(GalleryTab, options)
 
@@ -84,7 +84,7 @@ describe('GalleryTab', () => {
     wrapper.vm.loadMedia()
 
     expect(mockStore.dispatch).toBeCalledTimes(2)
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(2,
       'RiverGallery/getProperty',
       {
         page: 1,
@@ -93,6 +93,6 @@ describe('GalleryTab', () => {
       }
     )
 
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(2, '[RAPIDS] FETCH_RAPIDS_DATA', '123456789')
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1, 'RiverRapids/getProperty', '123456789')
   })
 })

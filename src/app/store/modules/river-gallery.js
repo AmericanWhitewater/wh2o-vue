@@ -19,7 +19,7 @@ export default {
   },
   actions: {
     ...actions,
-    async fetchGalleryData(context, data) {
+    async getProperty(context, data) {
       context.commit('DATA_REQUEST')
       try {
         const result = await httpClient

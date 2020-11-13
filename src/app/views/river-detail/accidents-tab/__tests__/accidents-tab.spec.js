@@ -7,12 +7,10 @@ jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
 
 const mockStore = {
   state: {
-    riverDetailState: {
-      accidentsData: {
-        error: null,
-        data: null,
-        loading: null
-      }
+    RiverAccidents: {
+      error: null,
+      data: null,
+      loading: null
     }
   },
   dispatch: jest.fn()
@@ -31,7 +29,7 @@ const options = {
 
 describe('AccidentsTab', () => {
   it('shows loading block when loading', () => {
-    mockStore.state.riverDetailState.accidentsData.loading = true
+    mockStore.state.RiverAccidents.loading = true
     const wrapper = createWrapper(AccidentsTab, options)
 
     expect(wrapper.find('.accidents-tab')).toMatchSnapshot()
@@ -42,8 +40,8 @@ describe('AccidentsTab', () => {
   })
 
   it('shows error block when error', () => {
-    mockStore.state.riverDetailState.accidentsData.loading = false
-    mockStore.state.riverDetailState.accidentsData.error = true
+    mockStore.state.RiverAccidents.loading = false
+    mockStore.state.RiverAccidents.error = true
     const wrapper = createWrapper(AccidentsTab, options)
 
     expect(wrapper.find('.accidents-tab')).toMatchSnapshot()

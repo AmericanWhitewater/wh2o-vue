@@ -46,9 +46,6 @@
                     class="mb-spacing-xl"
                     value="bookmarks"
                   >
-                    <cv-dropdown-item value="bookmarks">
-                      Bookmarks
-                    </cv-dropdown-item>
                     <cv-dropdown-item value="gages">
                       Gages
                     </cv-dropdown-item>
