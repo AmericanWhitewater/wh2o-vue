@@ -172,21 +172,11 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
-import {
-  rapidsActions,
-  alertsActions,
-  bookmarksActions,
-  reachGagesActions,
-  metricsActions,
-} from "./shared/state";
-import { globalAppActions } from "@/app/global/state";
+import { mapState } from "vuex";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block.vue";
 import { MapBanner, ReachTitleEditModal } from "./shared/components";
 import GeometryEditModal from "./shared/components/geometry-edit-modal/geometry-edit-modal";
 import { checkWindow } from "@/app/global/mixins";
-import { appLocalStorage } from "@/app/global/services";
-import {fetchRiverDetailData,fetchGages, fetchAlertsData, fetchGaugeMetrics, fetchRapidsData } from "@/app/views/river-detail/controllers"
 
 export default {
   name: "river-detail",

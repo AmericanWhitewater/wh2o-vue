@@ -152,33 +152,33 @@ module.exports = {
       .loader("file-loader")
       .end();
 
-    // config
-    //   .plugin("IgnoreNotFoundExportPlugin")
-    //   .before("friendly-errors")
-    //   .use(IgnoreNotFoundExportPlugin);
+    config
+      .plugin("IgnoreNotFoundExportPlugin")
+      .before("friendly-errors")
+      .use(IgnoreNotFoundExportPlugin);
 
-    // config.resolve.alias.set(
-    //   "tinyqueue",
-    //   path.join(__dirname, "/node_modules/tinyqueue/tinyqueue.js")
-    // );
+    config.resolve.alias.set(
+      "tinyqueue",
+      path.join(__dirname, "/node_modules/tinyqueue/tinyqueue.js")
+    );
 
-    // if (isEmbedded()) {
-    //   // eslint-disable-next-line no-console
-    //   console.log("using shadow");
-    //   enableShadowCss(config);
-    // }
+    if (isEmbedded()) {
+      // eslint-disable-next-line no-console
+      console.log("using shadow");
+      enableShadowCss(config);
+    }
   },
   productionSourceMap: isDebug(), // NOTE: this is default
-  // configureWebpack: (config) => {
-  //   config.optimization = {
-  //     minimize: !isDebug(),
-  //   };
-  //   if (isDebug()) {
-  //     config.devtool = "source-map";
-  //   }
-  //   config.output.jsonpFunction = "spa_wh2o_vue";
-  //   //config.output.libraryExport = "default";
-  //   //return config;
-  // },
+  configureWebpack: (config) => {
+    config.optimization = {
+      minimize: !isDebug(),
+    };
+    if (isDebug()) {
+      config.devtool = "source-map";
+    }
+    config.output.jsonpFunction = "spa_wh2o_vue";
+    //config.output.libraryExport = "default";
+    //return config;
+  },
   publicPath: process.env.VUE_APP_BASE_URL || "/",
 };

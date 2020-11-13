@@ -1,5 +1,6 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
+import { httpClient } from '@/app/global/services'
 
 export default {
   namespaced: true,
@@ -20,7 +21,7 @@ export default {
             query: `
                 query {
                   
-                    reach(id: "${data}") {
+                    reach(id: "${id}") {
                       direction_default
                       custom_destination
                       county
@@ -43,7 +44,7 @@ export default {
       }
         
       } catch (error) {
-        console.log('error :>> ', error);
+        // console.log('error :>> ', error);
       }
     }
   }

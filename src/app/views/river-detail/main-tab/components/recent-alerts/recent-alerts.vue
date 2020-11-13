@@ -24,7 +24,6 @@
 <script>
 import { mapState } from 'vuex'
 import { SidebarAlerts, SidebarArticles, SidebarProjects } from './components'
-import {fetchAlertsData, fetchNewsTabData, fetchReachProjectsData} from '@/app/views/river-detail/controllers'
 export default {
   name: 'recent-alerts',
   components: {
@@ -45,29 +44,9 @@ export default {
   },
   methods: {
     loadData () {
-      // [{
-      //   module: 'RiverAlerts',
-      //   method: fetchAlertsData,
-      // }, {
-      //   module: 'RiverNews',
-      //   method: fetchNewsTabData
-      // },
-      // {
-      //   module: 'RiverProjects',
-      //   method: fetchReachProjectsData
-      // }].forEach(item => {
-      //   this.$store.dispatch(
-      //     `${item.module}/getProperty`,
-      //     {
-      //       id:this.$route.params.id,
-      //       method: item.method
-      //     }
-      //   )
-      // })
-
       this.$store.dispatch('RiverAlerts/getProperty', this.$route.params.id)
       this.$store.dispatch('RiverNews/getProperty', this.$route.params.id)
-
+      this.$store.dispatch('RiverProjects/getProperty', this.$route.params.id)
     }
   }
 }

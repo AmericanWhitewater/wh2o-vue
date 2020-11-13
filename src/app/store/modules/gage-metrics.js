@@ -13,7 +13,7 @@ export default {
   mutations,
   actions: {
     ...actions,
-    async getProperty(context) {
+    async getProperty(context, data) {
       try {
         const result = await httpClient
           .post('/graphql', {

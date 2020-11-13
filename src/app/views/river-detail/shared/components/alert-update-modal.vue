@@ -112,7 +112,7 @@ export default {
             this.formData.post.detail = ''
             this.formData.post.title = ''
             if (!r.errors) {
-              this.$store.dispatch(globalAppActions.SEND_TOAST, {
+              this.$store.dispatch('Global/sendToast', {
                 title: 'Alert Submitted',
                 kind: 'success',
                 override: true,
@@ -121,7 +121,7 @@ export default {
                 autoHide: true
               })
               this.$store.dispatch(
-                alertsActions.FETCH_ALERTS_DATA,
+                'RiverAlerts/getProperty',
                 this.$route.params.id
               )
             }

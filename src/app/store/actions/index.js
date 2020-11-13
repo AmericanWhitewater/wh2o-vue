@@ -2,22 +2,6 @@ import * as types from '@/app/store/mutations/mutations-types'
 import { getResource, createResource, deleteResource, updateResource } from '@/app/store/services'
 
 export default {
-
-  // async getProperty(context, data = {}) {
-  //   context.commit(types.DATA_LOADING, true)
-  //   if (!data) throw new Error()
-  //   try {
-  //     let result
-  //     if (typeof data === 'string') {
-  //       result = await getResource(data)
-  //     } else if(data.method && typeof data.method === 'function') {
-  //       result = await data.method(data.id)
-  //     }
-  //     context.commit(types.DATA_SUCCESS, result)
-  //   } catch (error) {
-  //     console.log('error :>> ', error);
-  //   }
-  // },
   /**
    * 
    * @param {object} context vuex context
@@ -25,16 +9,12 @@ export default {
    */
   async getProperty(context, endpoint) {
 
-    if (endpoint && typeof endpoint !== 'string') {
-      debugger
-    }
-
     context.commit(types.DATA_LOADING, true)
     try {
       const result = await getResource(endpoint)
       context.commit(types.DATA_SUCCESS, result)
     } catch (error) {
-      console.log('error :>> ', error);
+      context.commit(types.DATA_ERROR, error)
     }
   },
   async createProperty(context, { url, payload, key = '' }) {

@@ -1,5 +1,6 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
+import { httpClient } from '@/app/global/services'
 
 export default {
   namespaced: true,
@@ -19,7 +20,7 @@ export default {
           .post('graphql/', {
             query: `
       {
-        linker(source: RIVER, id: "${reachid}") {
+        linker(source: RIVER, id: "${id}") {
           type
           data {
             __typename
@@ -38,7 +39,7 @@ export default {
       context.commit('DATA_SUCCESS', result)
         
       } catch (error) {
-        console.log('error :>> ', error);
+        // console.log('error :>> ', error);
       }
 
     }

@@ -35,12 +35,8 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { ResourceCard } from '@/app/global/components'
 export default {
   name: 'gages',
-  components: {
-    ResourceCard
-  },
   computed: {
     ...mapState({
       data: state => state.Gages.data,

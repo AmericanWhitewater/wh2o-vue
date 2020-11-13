@@ -17,7 +17,6 @@ import {
   AppNavigation,
   AppCookieBanner
 } from './global/components'
-import { userActions } from '@/app/views/user/shared/state'
 import { laravelDeploy } from '@/app/environment'
 
 export default {

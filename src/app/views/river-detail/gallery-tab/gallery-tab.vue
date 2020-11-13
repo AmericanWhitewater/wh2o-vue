@@ -62,8 +62,6 @@ import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { ImageGallery } from '../shared/components'
 import { Layout } from '@/app/global/layout'
 import { TablePagination } from '@/app/global/components'
-
-import { fetchRapidsData } from '@/app/views/river-detail/controllers'
 export default {
   name: 'gallery-tab',
   components: {

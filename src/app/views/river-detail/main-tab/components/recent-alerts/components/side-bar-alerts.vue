@@ -85,7 +85,7 @@ export default {
       if (this.user) {
         this.newAlertModalVisible = true
       } else {
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        this.$store.dispatch('Global/sendToast', {
           title: 'Must Log In',
           kind: 'error',
           override: true,
@@ -115,10 +115,10 @@ export default {
     handleSuccess () {
       this.newAlertModalVisible = false
       this.$store.dispatch(
-        alertsActions.FETCH_ALERTS_DATA,
+        'RiverAlerts/getProperty',
         this.$route.params.id
       )
-      this.$store.dispatch(globalAppActions.SEND_TOAST, {
+      this.$store.dispatch('Global/sendToast', {
         title: 'Alert Submitted',
         kind: 'success'
       })

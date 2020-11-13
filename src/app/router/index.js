@@ -5,7 +5,6 @@ import { appLocalStorage } from "@/app/global/services";
 
 import staticRoutes from '@/app/views/static-routes/static-routes'
 import { newsPageRoutes } from '@/app/views/news-page'
-import { riverDetailRoutes } from '@/app/views/river-detail'
 import { userRoutes } from '@/app/views/user'
 
 import gageDetailRoutes from './gage-detail.routes'
@@ -15,6 +14,7 @@ import accidentsRoutes from './accidents.routes'
 import gagesRoutes from './gages.routes'
 import affiliatesRoutes from './affiliates.routes'
 import riverIndexRoutes from "./river-index.routes"
+import riverDetailRoutes from "./river-detail.routes"
 
 Vue.use(VueRouter);
 

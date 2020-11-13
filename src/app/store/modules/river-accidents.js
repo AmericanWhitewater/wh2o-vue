@@ -56,7 +56,7 @@ export default {
         }
         
       } catch (error) {
-        console.log('error :>> ', error);
+        // console.log('error :>> ', error);
         context.commit('DATA_ERROR', error)
       }
     }

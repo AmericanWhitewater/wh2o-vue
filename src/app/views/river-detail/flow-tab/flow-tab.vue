@@ -145,8 +145,6 @@ import { mapState } from 'vuex'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { checkWindow } from '@/app/global/mixins'
 
-import {fetchGages} from "@/app/views/river-detail/controllers"
-
 export default {
   name: 'flow-tab',
   components: {

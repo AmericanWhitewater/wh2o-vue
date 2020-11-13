@@ -1,15 +1,15 @@
-const riverDetailRoutes = [
+export default [
   {
     path: '/content/River/detail/id/:id',
     redirect: '/river-detail/:id/main',
-    component: () => import('./river-detail.vue')
+    component: () => import('@/app/views/river-detail/river-detail.vue')
   },
   {
     path: '/river-detail/:id',
     name: 'river-detail',
     redirect: '/river-detail/:id/main',
 
-    component: () => import('./river-detail.vue'),
+    component: () => import('@/app/views/river-detail/river-detail.vue'),
     children: [
       {
         path: 'main',
@@ -18,7 +18,7 @@ const riverDetailRoutes = [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('./main-tab/main-tab.vue')
+        component: () => import('@/app/views/river-detail/main-tab/main-tab.vue')
       },
       {
         path: 'flow',
@@ -27,7 +27,7 @@ const riverDetailRoutes = [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('./flow-tab/flow-tab.vue')
+        component: () => import('@/app/views/river-detail/flow-tab/flow-tab.vue')
       },
       {
         path: 'map',
@@ -36,7 +36,7 @@ const riverDetailRoutes = [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('./map-tab/map-tab.vue')
+        component: () => import('@/app/views/river-detail/map-tab/map-tab.vue')
       },
       {
         path: 'gallery',
@@ -45,7 +45,7 @@ const riverDetailRoutes = [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('./gallery-tab/gallery-tab.vue')
+        component: () => import('@/app/views/river-detail/gallery-tab/gallery-tab.vue')
       },
       {
         path: 'accidents',
@@ -54,7 +54,7 @@ const riverDetailRoutes = [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('./accidents-tab/accidents-tab.vue')
+        component: () => import('@/app/views/river-detail/accidents-tab/accidents-tab.vue')
       },
       {
         path: 'credits',
@@ -63,7 +63,7 @@ const riverDetailRoutes = [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('./credits-tab/credits-tab.vue')
+        component: () => import('@/app/views/river-detail/credits-tab/credits-tab.vue')
       },
       {
         path: 'news',
@@ -72,10 +72,8 @@ const riverDetailRoutes = [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('./news-tab/news-tab.vue')
+        component: () => import('@/app/views/river-detail/news-tab/news-tab.vue')
       }
     ]
   }
 ]
-
-export default riverDetailRoutes

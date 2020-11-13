@@ -58,7 +58,7 @@ if (laravelDeploy) {
 export const wh2o = new Vue({
   router,
   store,
-  // apolloProvider,
-  // shadowRoot: setShadowRoot ? mountPoint.parentNode : false,
+  apolloProvider,
+  shadowRoot: setShadowRoot ? mountPoint.parentNode : false,
   render: (h) => h(App),
 }).$mount(mountPoint);

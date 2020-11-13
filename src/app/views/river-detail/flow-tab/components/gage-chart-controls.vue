@@ -85,14 +85,8 @@
 </template>
 <script>
 import moment from 'moment'
-// import { metricsActions, readingsActions } from '../../shared/state'
-import {fetchGaugeMetrics, fetchGaugeReadings} from "@/app/views/river-detail/controllers"
 import { mapState } from 'vuex'
-/**
- * @todo create globally availble Title Case filter. Will help with better
- * blog post titles and gage name typesetting
- *
- */
+
 export default {
   name: 'gage-chart-controls',
   data: () => ({

@@ -52,8 +52,6 @@
 </template>
 <script>
 import { appLocalStorage } from '@/app/global/services'
-import { globalAppActions } from '@/app/global/state'
-import { userActions } from '../../shared/state'
 import { userLogin } from './services/user-login'
 import {
   clientId,

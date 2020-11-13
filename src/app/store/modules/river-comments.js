@@ -1,6 +1,7 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
 import moment from "moment"
+import { httpClient } from '@/app/global/services'
 
 export default {
   namespaced: true,
@@ -18,7 +19,7 @@ export default {
       try {
         context.commit('DATA_REQUEST')
         const result = await httpClient
-          .post(url, {
+          .post('graphql', {
             query: `
         query Related{
             posts(reach_id: "${data}", post_types: COMMENT, page: 1, orderBy: {field: REVISION, order: DESC}, first: 10) {
@@ -57,7 +58,7 @@ export default {
           const sortedComments = result.data.posts.data.sort((a, b) =>
             moment(b.post_date, 'YYYY-MM-DD HH:mm:ss') - moment(a.post_date, 'YYYY-MM-DD HH:mm:ss')
           )
-          context.commit(DATA_SUCCESS, sortedComments)
+          context.commit('DATA_SUCCESS', sortedComments)
         }
 
 

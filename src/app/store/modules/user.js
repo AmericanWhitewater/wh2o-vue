@@ -28,7 +28,6 @@ export default {
       context.commit('DATA_SUCCESS', result)
         
       } catch (error) {
-        console.log('error :>> ', error);
         context.commit('DATA_ERROR', error)
       }
     }

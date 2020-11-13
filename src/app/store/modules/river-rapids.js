@@ -199,7 +199,7 @@ export default {
     async deleteRapid(context, data) {
       context.commit('DELETE_REQUEST', data);
       try {
-        const result = await httpClient.post(apiConstants.graphql, {
+        const result = await httpClient.post('graphql', {
           query: `
             mutation ($id:ID!) {
               poiDelete(id: $id) {
@@ -208,7 +208,7 @@ export default {
             }
           `,
           variables: {
-            id: id
+            id: data
           }
         }).then(res => res.data)
         if (!result.errors) {
