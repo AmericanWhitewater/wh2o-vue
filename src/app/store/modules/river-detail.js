@@ -1,6 +1,7 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
 import { httpClient } from '@/app/global/services'
+import wkx from "wkx";
 
 export default {
   namespaced: true,
@@ -10,7 +11,26 @@ export default {
     data: null,
     refId: null
   },
-  mutations,
+  mutations: {
+    ...mutations,
+    ['GEOM_UPDATE_REQUEST'](state) {
+      Object.assign(state, { loading: true, error: null });
+    },
+
+    ['GEOM_UPDATE_SUCCESS'](state, payload) {
+      state.loading = false;
+      Object.assign(state.data, {
+        ...payload,
+      });
+    },
+
+    ['GEOM_UPDATE_ERROR'](state, payload) {
+      Object.assign(state, {
+        error: payload || true,
+        loading: false,
+      });
+    },
+  },
   actions: {
     ...actions,
     async getProperty(context, id) {
@@ -64,6 +84,58 @@ export default {
       } catch (error) {
         context.commit('DATA_ERROR', error)
       }
-    }
+    },
+    async updateGeom(context, geomData) {
+      context.commit('GEOM_UPDATE_REQUEST');
+
+      const payloadData = {
+        geom: wkx.Geometry.parseGeoJSON(geomData.geom).toWkt(),
+        ploc: `${geomData.ploc[0]} ${geomData.ploc[1]}`,
+        tloc: `${geomData.tloc[0]} ${geomData.tloc[1]}`,
+        length: geomData.length,
+      };
+
+      const data = {
+        id: context.state.data.id,
+        ...payloadData,
+      }
+
+      try {
+        const result = await httpClient
+          .post('graphql', {
+            query: `
+                mutation ($id:ID!, $reach: ReachInput!) {
+                  reachUpdate(id: $id, reach: $reach) {
+                    geom,
+                    ploc,
+                    tloc,
+                    length
+                  }
+                }
+              `,
+            variables: {
+              id: data.id,
+              reach: {
+                geom: data.geom,
+                ploc: data.ploc,
+                tloc: data.tloc,
+                length: data.length,
+              },
+            },
+          })
+          .then(res => res.data);
+        
+        if (result.data.errors) {
+          context.commit('GEOM_UPDATE_ERROR', result.data.errors);
+        } else {
+          context.commit('GEOM_UPDATE_SUCCESS', result.data.reachUpdate);
+        }
+        
+      } catch (error) {
+        context.commit('GEOM_UPDATE_ERROR', error);
+      }
+
+      
+    },
   }
 }

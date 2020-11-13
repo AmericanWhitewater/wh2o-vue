@@ -18,7 +18,7 @@ export default [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('@/app/views/river-detail/main-tab/main-tab.vue')
+        component: () => import('@/app/views/river-detail/components/main-tab/main-tab.vue')
       },
       {
         path: 'flow',
@@ -27,7 +27,7 @@ export default [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('@/app/views/river-detail/flow-tab/flow-tab.vue')
+        component: () => import('@/app/views/river-detail/components/flow-tab/flow-tab.vue')
       },
       {
         path: 'map',
@@ -36,7 +36,7 @@ export default [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('@/app/views/river-detail/map-tab/map-tab.vue')
+        component: () => import('@/app/views/river-detail/components/map-tab/map-tab.vue')
       },
       {
         path: 'gallery',
@@ -45,7 +45,7 @@ export default [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('@/app/views/river-detail/gallery-tab/gallery-tab.vue')
+        component: () => import('@/app/views/river-detail/components/gallery-tab.vue')
       },
       {
         path: 'accidents',
@@ -54,7 +54,7 @@ export default [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('@/app/views/river-detail/accidents-tab/accidents-tab.vue')
+        component: () => import('@/app/views/river-detail/components/accidents-tab.vue')
       },
       {
         path: 'credits',
@@ -63,7 +63,7 @@ export default [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('@/app/views/river-detail/credits-tab/credits-tab.vue')
+        component: () => import('@/app/views/river-detail/components/credits-tab.vue')
       },
       {
         path: 'news',
@@ -72,7 +72,7 @@ export default [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('@/app/views/river-detail/news-tab/news-tab.vue')
+        component: () => import('@/app/views/river-detail/components/news-tab/news-tab.vue')
       }
     ]
   }

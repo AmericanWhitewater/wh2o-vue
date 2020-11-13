@@ -174,8 +174,7 @@
 <script>
 import { mapState } from "vuex";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block.vue";
-import { MapBanner, ReachTitleEditModal } from "./shared/components";
-import GeometryEditModal from "./shared/components/geometry-edit-modal/geometry-edit-modal";
+import { MapBanner, ReachTitleEditModal, GeometryEditModal } from "./components";
 import { checkWindow } from "@/app/global/mixins";
 
 export default {
