@@ -7,21 +7,21 @@ jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
 
 const mockStore = {
   state: {
-    riverDetailState: {
-      riverDetailData: {
-        data: {
-          geom: null
-        }
-      },
-      rapidsData: {
-        error: null,
-        data: null,
-        loading: null
+    RiverDetail: {
+      data: {
+        geom: null
       }
     },
-    appGlobalState: {
-      appGlobalData: {
-      }
+    RiverRapids: {
+      error: null,
+      data: null,
+      loading: null
+    },
+    riverDetailState: {
+      
+    },
+    Global: {
+      editmode: false
     }
   },
   dispatch: jest.fn()
@@ -49,7 +49,7 @@ describe('RapidsSection', () => {
   })
 
   it('shows loading block when loading', () => {
-    mockStore.state.riverDetailState.rapidsData.loading = true
+    mockStore.state.RiverRapids.loading = true
     const wrapper = createWrapper(RapidsSection, options)
 
     expect(wrapper.find('.utility-block-loading').exists()).toBe(true)
@@ -58,8 +58,8 @@ describe('RapidsSection', () => {
   })
 
   it('shows error block when error', () => {
-    mockStore.state.riverDetailState.rapidsData.loading = false
-    mockStore.state.riverDetailState.rapidsData.error = true
+    mockStore.state.RiverRapids.loading = false
+    mockStore.state.RiverRapids.error = true
     const wrapper = createWrapper(RapidsSection, options)
 
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
@@ -68,9 +68,9 @@ describe('RapidsSection', () => {
   })
 
   it('shows empty state when there are no rapids', () => {
-    mockStore.state.riverDetailState.rapidsData.loading = false
-    mockStore.state.riverDetailState.rapidsData.error = false
-    mockStore.state.riverDetailState.rapidsData.data = []
+    mockStore.state.RiverRapids.loading = false
+    mockStore.state.RiverRapids.error = false
+    mockStore.state.RiverRapids.data = []
 
     const wrapper = createWrapper(RapidsSection, options)
 
@@ -80,7 +80,7 @@ describe('RapidsSection', () => {
   })
 
   it('hides loader and empty state blocks when rapids available', () => {
-    mockStore.state.riverDetailState.rapidsData.data = rapids
+    mockStore.state.RiverRapids.data = rapids
     const wrapper = createWrapper(RapidsSection, options)
 
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
@@ -89,8 +89,8 @@ describe('RapidsSection', () => {
   })
 
   it('disables the new rapid button while rapids are loading', () => {
-    mockStore.state.riverDetailState.rapidsData.loading = true
-    mockStore.state.appGlobalState.appGlobalData.editMode = true
+    mockStore.state.RiverRapids.loading = true
+    mockStore.state.Global.editMode = true
     const wrapper = createWrapper(RapidsSection, options)
     expect(wrapper.find('#new-rapid').attributes('disabled')).toBe('disabled')
   })

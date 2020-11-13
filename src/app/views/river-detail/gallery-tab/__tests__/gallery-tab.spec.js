@@ -16,20 +16,16 @@ jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
 
 const mockStore = {
   state: {
-    userState: {
-      userData: {
-        data: null
-      }
+    User: {
+      data: null
     },
-    riverDetailState: {
-      galleryData: {
-        error: null,
-        data: null,
-        loading: null
-      },
-      rapidsData: {
-        data: null
-      }
+    RiverGallery: {
+      error: null,
+      data: null,
+      loading: null
+    },
+    RiverRapids: {
+      data: null
     }
   },
   getters: {
@@ -88,8 +84,8 @@ describe('GalleryTab', () => {
     wrapper.vm.loadMedia()
 
     expect(mockStore.dispatch).toBeCalledTimes(2)
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(2,
-      '[GALLERY] FETCH_GALLERY_DATA',
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
+      'RiverGallery/getProperty',
       {
         page: 1,
         per_page: 10,
@@ -97,6 +93,6 @@ describe('GalleryTab', () => {
       }
     )
 
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1, '[RAPIDS] FETCH_RAPIDS_DATA', '123456789')
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(2, '[RAPIDS] FETCH_RAPIDS_DATA', '123456789')
   })
 })

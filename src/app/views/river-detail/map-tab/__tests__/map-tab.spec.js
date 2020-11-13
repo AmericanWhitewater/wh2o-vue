@@ -8,22 +8,20 @@ jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
 const mockStore = {
 
   state: {
-    riverDetailState: {
-      mapData: {
-        loading: false,
-        error: false,
-        data: null
-      },
-      riverDetailData: {
-        loading: false,
-        error: false,
-        data: null
-      },
-      rapidsData: {
-        data: null,
-        loading: false,
-        error: false
-      }
+    RiverMap: {
+      loading: false,
+      error: false,
+      data: null
+    },
+    RiverDetail: {
+      loading: false,
+      error: false,
+      data: null
+    },
+    RiverRapids: {
+      data: null,
+      loading: false,
+      error: false
     }
   },
   dispatch: jest.fn()

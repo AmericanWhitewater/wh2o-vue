@@ -4,20 +4,16 @@ import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {
-    riverDetailState: {
-      alertsData: {
-        data: null,
-        error: null,
-        loading: null
-      },
-      reachGagesData: {
-        data: null
-      }
+    RiverAlerts: {
+      data: null,
+      error: null,
+      loading: null
     },
-    userState: {
-      userData: {
-        data: null
-      }
+    RiverGages: {
+      data: null
+    },
+    User: {
+      data: null
     }
   }
 }
@@ -55,7 +51,7 @@ describe('SidebarAlerts.vue', () => {
   })
 
   it('shows spinner for alerts when loading', () => {
-    mockStore.state.riverDetailState.alertsData.loading = true
+    mockStore.state.RiverAlerts.loading = true
 
     const wrapper = createWrapper(SidebarAlerts, options)
 
@@ -64,8 +60,8 @@ describe('SidebarAlerts.vue', () => {
   })
 
   it('shows alerts and hides spinner and empty prompt', () => {
-    mockStore.state.riverDetailState.alertsData.loading = false
-    mockStore.state.riverDetailState.alertsData.data = alerts
+    mockStore.state.RiverAlerts.loading = false
+    mockStore.state.RiverAlerts.data = alerts
 
     const wrapper = createWrapper(SidebarAlerts, options)
 

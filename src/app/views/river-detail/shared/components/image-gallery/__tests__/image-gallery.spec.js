@@ -9,13 +9,11 @@ const openLightbox = jest.fn()
 
 const mockStore = {
   state: {
-    riverDetailState: {
-      riverDetailData: {
-        data: {
-          id: 123,
-          river: 'Nooksack',
-          section: 'The first part'
-        }
+    RiverDetail: {
+      data: {
+        id: 123,
+        river: 'Nooksack',
+        section: 'The first part'
       }
     }
   }

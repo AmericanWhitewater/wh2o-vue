@@ -4,18 +4,16 @@ import { createWrapper } from '@/utils'
 const mockStore = {
   dispatch: jest.fn(),
   state: {
-    riverDetailState: {
-      alertsData: {
-        data: null,
-        loading: null
-      },
-      newsTabData: {
-        data: null
-      },
-      projectsData: {
-        data: null,
-        loading: null
-      }
+    RiverAlerts: {
+      data: null,
+      loading: null
+    },
+    RiverNews: {
+      data: null
+    },
+    RiverProjects: {
+      data: null,
+      loading: null
     }
   }
 }
@@ -53,11 +51,11 @@ describe('RecentAlerts.vue', () => {
     wrapper.vm.loadData()
 
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
-      '[ALERTS] FETCH_ALERTS_DATA', riverId
+      'RiverAlerts/getProperty', riverId
     )
 
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(2,
-      '[NEWS] FETCH_NEWS_TAB_DATA', riverId
+      'RiverNews/getProperty', riverId
     )
   })
 })

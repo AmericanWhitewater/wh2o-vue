@@ -3,20 +3,16 @@ import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {
-    riverDetailState: {
-      riverDetailData: {
-        error: null,
-        data: null,
-        loading: null
-      }
+    Global: {
+      data: null,
+      error: null,
+      editMode: null,
+      loading: null
     },
-    appGlobalState: {
-      appGlobalData: {
-        data: null,
-        error: null,
-        editMode: null,
-        loading: null
-      }
+    RiverDetail: {
+      error: null,
+      data: null,
+      loading: null
     }
   }
 }
@@ -34,15 +30,15 @@ const options = {
 
 describe('RiverDescription', () => {
   it('shows skeleton text when loading', () => {
-    mockStore.state.riverDetailState.riverDetailData.loading = true
+    mockStore.state.RiverDetail.loading = true
 
     const wrapper = createWrapper(RiverDescription, options)
     expect(wrapper.find('.cv-skeleton-text').exists()).toBe(true)
   })
 
   it('shows skeleton text when error', () => {
-    mockStore.state.riverDetailState.riverDetailData.loading = false
-    mockStore.state.riverDetailState.riverDetailData.error = true
+    mockStore.state.RiverDetail.loading = false
+    mockStore.state.RiverDetail.error = true
     const wrapper = createWrapper(RiverDescription, options)
     expect(wrapper.find('.cv-skeleton-text').exists()).toBe(true)
   })

@@ -72,11 +72,7 @@ export default {
   methods: {
     loadData () {
       if (!this.data) {
-        // this.$store.dispatch(mapActions.FETCH_ACCESS_DATA, this.reachId)
-        this.$store.dispatch('RiverMap/getProperty', {
-          id:this.reachId,
-          method:fetchAccessData
-        })
+        this.$store.dispatch('RiverMap/getProperty', this.reachId)
       }
     },
     clickFeature (feature) {

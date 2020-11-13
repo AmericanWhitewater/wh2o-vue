@@ -10,22 +10,18 @@ const articles = [{ abstract: '<p>A bill to fully fund the Land and Water Conser
 
 const mockStore = {
   state: {
-    userState: {
-      userData: {
-        data: null
-      }
+    User: {
+      data: null
     },
-    riverDetailState: {
-      newsTabData: {
-        error: null,
-        data: null,
-        loading: null
-      },
-      alertsData: {
-        error: null,
-        data: null,
-        loading: null
-      }
+    RiverNews: {
+      error: null,
+      data: null,
+      loading: null
+    },
+    RiverAlerts: {
+      error: null,
+      data: null,
+      loading: null
     }
   },
   dispatch: jest.fn()
@@ -55,7 +51,7 @@ describe('NewsTab', () => {
   })
 
   it('shows loading block when articles loading', () => {
-    mockStore.state.riverDetailState.newsTabData.loading = true
+    mockStore.state.RiverNews.loading = true
     const wrapper = createWrapper(NewsTab, options)
 
     expect(wrapper.find('.articles-loading').exists()).toBe(true)
@@ -64,8 +60,8 @@ describe('NewsTab', () => {
   })
 
   it('shows empty block when no articles available', () => {
-    mockStore.state.riverDetailState.newsTabData.loading = false
-    mockStore.state.riverDetailState.newsTabData.error = true
+    mockStore.state.RiverNews.loading = false
+    mockStore.state.RiverNews.error = true
     const wrapper = createWrapper(NewsTab, options)
 
     expect(wrapper.find('.articles-loading').exists()).toBe(false)
@@ -73,7 +69,7 @@ describe('NewsTab', () => {
     // expect(wrapper.find('.news-tab')).toMatchSnapshot()
   })
   it('shows loading block when alerts loading', () => {
-    mockStore.state.riverDetailState.alertsData.loading = true
+    mockStore.state.RiverAlerts.loading = true
     const wrapper = createWrapper(NewsTab, options)
 
     expect(wrapper.find('.alerts-loading').exists()).toBe(true)
@@ -82,8 +78,8 @@ describe('NewsTab', () => {
   })
 
   it('shows empty block when no alerts available', () => {
-    mockStore.state.riverDetailState.alertsData.loading = false
-    mockStore.state.riverDetailState.alertsData.error = true
+    mockStore.state.RiverAlerts.loading = false
+    mockStore.state.RiverAlerts.error = true
     const wrapper = createWrapper(NewsTab, options)
 
     expect(wrapper.find('.alerts-loading').exists()).toBe(false)
@@ -96,18 +92,18 @@ describe('NewsTab', () => {
     const wrapper = createWrapper(NewsTab, options)
 
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
-      '[NEWS] FETCH_NEWS_TAB_DATA', riverId
+      'RiverNews/getProperty', riverId
     )
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(2,
-      '[ALERTS] FETCH_ALERTS_DATA', riverId
+      'RiverAlerts/getProperty', riverId
     )
 
     expect(mockStore.dispatch).toHaveBeenCalledTimes(2)
   })
 
   it('doesnt attempt to load alerts and articles when previously loaded', async () => {
-    mockStore.state.riverDetailState.alertsData.data = [{ alert: 'look out' }]
-    mockStore.state.riverDetailState.newsTabData.data = articles
+    mockStore.state.RiverAlerts.data = [{ alert: 'look out' }]
+    mockStore.state.RiverNews.data = articles
     // eslint-disable-next-line no-unused-vars
     const wrapper = createWrapper(NewsTab, options)
     expect(mockStore.dispatch).toHaveBeenCalledTimes(0)

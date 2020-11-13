@@ -9,21 +9,17 @@ const river = {
 
 const mockStore = {
   state: {
-    appGlobalState: {
-      appGlobalData: {
-        editMode: null
-      }
+    Global: {
+      editMode: null
     },
-    riverDetailState: {
-      riverDetailData: river,
-      reachGagesData: {
+    RiverDetail: river,
+    RiverGages: {
 
-        // data: [{ rc: 0.38333333333333325, epoch: 1587984255.846007, gauge_reading: 1.83, gauge_metric: 8, range_comment: null, class: 'med', excluded: false, url: '/content/Gauge2/detail/id/4248', rmin: 1.6, rmax: 2.2, gauge: { name: 'VALLECITO CREEK NEAR BAYFIELD, CO.', id: '4248' }, updated: 147007.153993, last_gauge_reading: 1.83, last_gauge_updated: 3584, gauge_perfect: false, adjusted_reach_class: null }]
+      // data: [{ rc: 0.38333333333333325, epoch: 1587984255.846007, gauge_reading: 1.83, gauge_metric: 8, range_comment: null, class: 'med', excluded: false, url: '/content/Gauge2/detail/id/4248', rmin: 1.6, rmax: 2.2, gauge: { name: 'VALLECITO CREEK NEAR BAYFIELD, CO.', id: '4248' }, updated: 147007.153993, last_gauge_reading: 1.83, last_gauge_updated: 3584, gauge_perfect: false, adjusted_reach_class: null }]
 
-      },
-      gageMetricsData: {
-        data: [{ name: 'Flow', unit: 'cfs', format: '%4.0f', id: '2', shortkey: 'flow', gauge: { id: '2' } }]
-      }
+    },
+    GageMetrics: {
+      data: [{ name: 'Flow', unit: 'cfs', format: '%4.0f', id: '2', shortkey: 'flow', gauge: { id: '2' } }]
     }
   }
 }
@@ -66,7 +62,7 @@ describe('FlowTab', () => {
 
   it('shows below recommended tag when flow rate too low', () => {
     river.loading = false
-    mockStore.state.riverDetailState.reachGagesData.data = [{
+    mockStore.state.RiverGages.data = [{
       rmin: 50,
       rmax: 100,
       last_gauge_reading: 25,
@@ -81,7 +77,7 @@ describe('FlowTab', () => {
   })
   it('shows runnable tag when flow rate too low', () => {
     river.loading = false
-    mockStore.state.riverDetailState.reachGagesData.data = [{
+    mockStore.state.RiverGages.data = [{
       rmin: 50,
       rmax: 100,
       last_gauge_reading: 75,
@@ -96,7 +92,7 @@ describe('FlowTab', () => {
   })
   it('shows above recommended tag when flow rate too low', () => {
     river.loading = false
-    mockStore.state.riverDetailState.reachGagesData.data = [{
+    mockStore.state.RiverGages.data = [{
       rmin: 50,
       rmax: 100,
       last_gauge_reading: 150,
@@ -111,7 +107,7 @@ describe('FlowTab', () => {
   })
 
   it('handles empty flow range state', () => {
-    mockStore.state.riverDetailState.reachGagesData.data = [{
+    mockStore.state.RiverGages.data = [{
       rmin: null,
       rmax: null,
       last_gauge_reading: 150,

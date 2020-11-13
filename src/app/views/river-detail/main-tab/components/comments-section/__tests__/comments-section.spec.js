@@ -10,17 +10,13 @@ const mockUser = {
 
 const mockStore = {
   state: {
-    riverDetailState: {
-      commentsData: {
-        error: null,
-        data: null,
-        loading: null
-      }
+    RiverComments: {
+      error: null,
+      data: null,
+      loading: null
     },
-    userState: {
-      userData: {
-        data: null
-      }
+    User: {
+      data: null
     }
   },
   dispatch: jest.fn()
@@ -46,7 +42,7 @@ describe('CommentsSection', () => {
   })
 
   it('shows loading block when loading', () => {
-    mockStore.state.riverDetailState.commentsData.loading = true
+    mockStore.state.RiverComments.loading = true
     const wrapper = createWrapper(CommentsSection, options)
 
     expect(wrapper.find('.utility-block-loading').exists()).toBe(true)
@@ -55,8 +51,8 @@ describe('CommentsSection', () => {
   })
 
   it('shows error block when error', () => {
-    mockStore.state.riverDetailState.commentsData.loading = false
-    mockStore.state.riverDetailState.commentsData.error = true
+    mockStore.state.RiverComments.loading = false
+    mockStore.state.RiverComments.error = true
     const wrapper = createWrapper(CommentsSection, options)
 
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
@@ -65,9 +61,9 @@ describe('CommentsSection', () => {
   })
 
   it('shows empty state when no comments present', () => {
-    mockStore.state.riverDetailState.commentsData.loading = false
-    mockStore.state.riverDetailState.commentsData.error = false
-    mockStore.state.riverDetailState.commentsData.data = []
+    mockStore.state.RiverComments.loading = false
+    mockStore.state.RiverComments.error = false
+    mockStore.state.RiverComments.data = []
 
     const wrapper = createWrapper(CommentsSection, options)
 
@@ -83,11 +79,11 @@ describe('CommentsSection', () => {
 
     await wrapper.vm.$nextTick()
 
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1, '[APP_GLOBAL] SEND_TOAST', { kind: 'info', title: 'Please Log In' })
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1, 'Global/sendToast', { kind: 'info', title: 'Please Log In' })
   })
 
   it('sends comment added toast when comment successfully edited', async () => {
-    mockStore.state.userState.userData.data = mockUser
+    mockStore.state.User.data = mockUser
 
     const wrapper = createWrapper(CommentsSection, options)
 
@@ -95,13 +91,13 @@ describe('CommentsSection', () => {
 
     await wrapper.vm.$nextTick()
 
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(2, '[APP_GLOBAL] SEND_TOAST', { kind: 'success', title: 'Comment Added' })
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(2, 'Global/sendToast', { kind: 'success', title: 'Comment Added' })
   })
 
   it('sends comment edited toast when comment successfully edited', async () => {
     const post = { id: '101250363', title: null, detail: 'how is there absolutely zero beta on this run?', post_date: '2013-06-27 00:00:00', revision: 23592, post_type: 'COMMENT', user: { uname: 'circuitmonkey', uid: '151431', image: { uri: { thumb: null, medium: null, big: '/resources/images/contacts/151431.jpg' } } } }
 
-    mockStore.state.userState.userData.data = mockUser
+    mockStore.state.User.data = mockUser
 
     const wrapper = createWrapper(CommentsSection, options)
 
@@ -113,7 +109,7 @@ describe('CommentsSection', () => {
 
     await wrapper.vm.$nextTick()
 
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(2, '[APP_GLOBAL] SEND_TOAST', { kind: 'success', title: 'Comment Edited' })
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(2, 'Global/sendToast', { kind: 'success', title: 'Comment Edited' })
   })
 
   it('shows modal when new comment is initiated', async () => {
@@ -153,7 +149,7 @@ describe('CommentsSection', () => {
     wrapper.vm.loadComments()
 
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
-      '[COMMENTS] FETCH_COMMENTS_DATA', reachId
+      'RiverComments/getProperty', reachId
     )
   })
 
@@ -165,7 +161,7 @@ describe('CommentsSection', () => {
     await wrapper.vm.$nextTick()
 
     expect(mockStore.dispatch).toBeCalledTimes(2)
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(2, '[APP_GLOBAL] SEND_TOAST', {
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(2, 'Global/sendToast', {
       kind: 'success',
       title: 'Comment Added'
     })

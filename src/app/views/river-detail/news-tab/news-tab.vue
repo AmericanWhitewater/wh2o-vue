@@ -239,7 +239,7 @@ export default {
         autoHide: true
       })
       this.$store.dispatch(
-        'RiverNews/fetchNewsTabData',
+        'RiverNews/getProperty',
         this.$route.params.id
       )
     },
@@ -276,7 +276,7 @@ export default {
               autoHide: true
             })
             this.$store.dispatch(
-              'RiverAlerts/fetchAlertsData',
+              'RiverAlerts/getProperty',
               this.$route.params.id
             )
           }
@@ -289,14 +289,14 @@ export default {
     loadData () {
       if (!this.articles) {
         this.$store.dispatch(
-        'RiverNews/fetchNewsTabData',
+        'RiverNews/getProperty',
         this.$route.params.id
       )
       }
 
       if (!this.alerts) {
         this.$store.dispatch(
-          'RiverAlerts/fetchAlertsData',
+          'RiverAlerts/getProperty',
           this.$route.params.id
         )
       }

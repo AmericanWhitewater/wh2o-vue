@@ -3,12 +3,10 @@ import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {
-    riverDetailState: {
-      newsTabData: {
-        data: null,
-        error: null,
-        loading: null
-      }
+    RiverNews: {
+      data: null,
+      error: null,
+      loading: null
     }
   },
   dispatch: jest.fn()
@@ -38,7 +36,7 @@ describe('SidebarArticles', () => {
   })
 
   it('shows loader when articles loading', () => {
-    mockStore.state.riverDetailState.newsTabData.loading = true
+    mockStore.state.RiverNews.loading = true
     const wrapper = createWrapper(SidebarArticles, options)
 
     expect(wrapper.find('#cv-inline-loading--articles').exists()).toBe(true)

@@ -3,21 +3,19 @@ import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {
-    riverDetailState: {
-      gageReadingsData: {
-        data: null,
-        error: false,
-        loading: false
-      },
-      gageMetricsData: {
-        data: null
-      },
-      riverDetailData: {
-        data: null
-      },
-      reachGagesData: {
-        data: null
-      }
+    GageReadings: {
+      data: null,
+      error: false,
+      loading: false
+    },
+    GageMetrics: {
+      data: null
+    },
+    RiverDetail: {
+      data: null
+    },
+    RiverGages: {
+      data: null
     }
   },
   dispatch: jest.fn()

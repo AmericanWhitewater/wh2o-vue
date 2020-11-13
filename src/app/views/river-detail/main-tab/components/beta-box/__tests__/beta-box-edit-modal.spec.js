@@ -3,10 +3,8 @@ import BetaBoxEditModal from '../components/beta-box-edit-modal'
 
 const mockStore = {
   state: {
-    riverDetailState: {
-      riverDetailData: {
-        data: null
-      }
+    RiverDetail: {
+      data: null
     }
   },
   dispatch: jest.fn()

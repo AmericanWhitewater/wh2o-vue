@@ -9,12 +9,10 @@ const rapid = { approximate: true, character: ['hazard', 'playspot'], descriptio
 
 const mockStore = {
   state: {
-    riverDetailState: {
-      rapidsData: {
-        loading: false,
-        data: null,
-        error: false
-      }
+    RiverRapids: {
+      loading: false,
+      data: null,
+      error: false
     }
   }
 }
