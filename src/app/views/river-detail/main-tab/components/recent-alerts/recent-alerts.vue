@@ -45,25 +45,29 @@ export default {
   },
   methods: {
     loadData () {
-      [{
-        module: 'RiverAlerts',
-        method: fetchAlertsData,
-      }, {
-        module: 'RiverNews',
-        method: fetchNewsTabData
-      },
-      {
-        module: 'RiverProjects',
-        method: fetchReachProjectsData
-      }].forEach(item => {
-        this.$store.dispatch(
-          `${item.module}/getProperty`,
-          {
-            id:this.$route.params.id,
-            method: item.method
-          }
-        )
-      })
+      // [{
+      //   module: 'RiverAlerts',
+      //   method: fetchAlertsData,
+      // }, {
+      //   module: 'RiverNews',
+      //   method: fetchNewsTabData
+      // },
+      // {
+      //   module: 'RiverProjects',
+      //   method: fetchReachProjectsData
+      // }].forEach(item => {
+      //   this.$store.dispatch(
+      //     `${item.module}/getProperty`,
+      //     {
+      //       id:this.$route.params.id,
+      //       method: item.method
+      //     }
+      //   )
+      // })
+
+      this.$store.dispatch('RiverAlerts/getProperty', this.$route.params.id)
+      this.$store.dispatch('RiverNews/getProperty', this.$route.params.id)
+
     }
   }
 }

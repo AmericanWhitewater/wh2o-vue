@@ -37,7 +37,7 @@ import {
   RapidDetail
 } from '../'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
-import { rapidsActions } from '../../../shared/state'
+import { fetchRapidsData } from '@/app/views/river-detail/controllers'
 
 export default {
   name: 'info-panel',
@@ -87,10 +87,17 @@ export default {
     // TODO: this doesn't work for when you click rapids on *OTHER* reaches...it fails gracefully
     // (because of the tileserver data being used instead) but need to figure out a different way to handle...
     loadRapids () {
-      this.$store.dispatch(
-        rapidsActions.FETCH_RAPIDS_DATA,
-        this.$route.params.id
-      )
+
+
+      // this.$store.dispatch(
+      //   rapidsActions.FETCH_RAPIDS_DATA,
+      //   this.$route.params.id
+      // )
+
+      this.$store.dispatch('RiverRapids/getProperty', {
+        id: this.$route.params.id,
+        method: fetchRapidsData
+      })
     }
   }
 }

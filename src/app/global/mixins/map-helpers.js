@@ -6,8 +6,8 @@ import buffer from '@turf/buffer'
 export const mapHelpersMixin = {
   computed: {
     ...mapState({
-      reach: state => state.riverDetailState.riverDetailData.data,
-      rapids: state => state.riverDetailState.rapidsData.data
+      reach: state => state.RiverDetail.data,
+      rapids: state => state.RiverRapids.data
     }),
     reachGeom () {
       // TODO: get graphql API to return a linestring or geojson instead of this text

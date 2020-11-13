@@ -222,10 +222,7 @@ export default {
       this.formData.timeEnd = Math.floor(moment(new Date()).unix())
     },
     fetchMetrics () {
-      this.$store.dispatch('GageMetrics/getProperty', {
-        method: fetchGaugeMetrics,
-        id:this.$route.params.id
-      })
+      this.$store.dispatch('GageMetrics/getProperty', this.$route.params.id)
     },
     async fetchReadings () {
       this.$emit('gage-change', this.formData.gauge_id)

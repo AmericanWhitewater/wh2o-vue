@@ -10,5 +10,37 @@ export default {
     refId: null
   },
   mutations,
-  actions
+  actions: {
+    ...actions,
+    async getProperty(context, id) {
+      context.commit('DATA_REQUEST')
+      try {
+        const result = await httpClient
+          .post('graphql/', {
+            query: `
+      {
+        linker(source: RIVER, id: "${reachid}") {
+          type
+          data {
+            __typename
+            ... on Project {
+              id
+              name
+              description
+            }
+          }
+        }
+      }
+      `
+          })
+          .then(res => res.data)
+        
+      context.commit('DATA_SUCCESS', result)
+        
+      } catch (error) {
+        console.log('error :>> ', error);
+      }
+
+    }
+  }
 }

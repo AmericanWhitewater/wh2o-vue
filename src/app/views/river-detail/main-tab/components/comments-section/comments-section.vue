@@ -97,7 +97,7 @@ export default {
   methods: {
     openModal () {
       if (!this.user) {
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        this.$store.dispatch('Global/sendToast', {
           title: 'Please Log In',
           kind: 'info'
         })
@@ -110,7 +110,7 @@ export default {
       this.activeEditComment = post
     },
     loadComments () {
-      this.$store.dispatch(commentsActions.FETCH_COMMENTS_DATA, this.$route.params.id)
+      this.$store.dispatch('RiverComments/getProperty', this.$route.params.id)
     },
     handleCancel () {
       this.postUpdateModalVisible = false
@@ -119,7 +119,7 @@ export default {
     handleSuccess () {
       this.loadComments()
       this.postUpdateModalVisible = false
-      this.$store.dispatch(globalAppActions.SEND_TOAST, {
+      this.$store.dispatch('Global/sendToast', {
         title: this.activeEditComment ? 'Comment Edited' : 'Comment Added',
         kind: 'success'
       })

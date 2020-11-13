@@ -239,7 +239,7 @@ export default {
         autoHide: true
       })
       this.$store.dispatch(
-        alertsActions.FETCH_ALERTS_DATA,
+        'RiverNews/fetchNewsTabData',
         this.$route.params.id
       )
     },
@@ -251,9 +251,9 @@ export default {
       this.activeAlertId = null
       this.deleteModalVisible = false
     },
-    deleteAlert () {
+    async deleteAlert () {
       this.deleteModalVisible = false
-      httpClient
+      await httpClient
         .post('/graphql', {
           query: `
           mutation ($id:ID!) {
@@ -267,7 +267,7 @@ export default {
         })
         .then(r => {
           if (!r.errors) {
-            this.$store.dispatch(globalAppActions.SEND_TOAST, {
+            this.$store.dispatch('Global/sendToast', {
               title: 'Alert Deleted',
               kind: 'success',
               override: true,
@@ -276,7 +276,7 @@ export default {
               autoHide: true
             })
             this.$store.dispatch(
-              alertsActions.FETCH_ALERTS_DATA,
+              'RiverAlerts/fetchAlertsData',
               this.$route.params.id
             )
           }
@@ -289,14 +289,14 @@ export default {
     loadData () {
       if (!this.articles) {
         this.$store.dispatch(
-          newsTabActions.FETCH_NEWS_TAB_DATA,
-          this.$route.params.id
-        )
+        'RiverNews/fetchNewsTabData',
+        this.$route.params.id
+      )
       }
 
       if (!this.alerts) {
         this.$store.dispatch(
-          alertsActions.FETCH_ALERTS_DATA,
+          'RiverAlerts/fetchAlertsData',
           this.$route.params.id
         )
       }

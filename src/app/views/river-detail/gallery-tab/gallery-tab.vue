@@ -13,7 +13,6 @@
             <div class="bx--col">
               <div class="toolbar-wrapper">
                 <cv-button
-                  size="medium"
                   :disabled="true"
                 >
                   Upload - Temporarily Unavailable
@@ -63,7 +62,9 @@ import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { ImageGallery } from '../shared/components'
 import { Layout } from '@/app/global/layout'
 import { TablePagination } from '@/app/global/components'
-import { rapidsActions, galleryActions } from '@/app/views/river-detail/shared/state'
+import { galleryActions } from '@/app/views/river-detail/shared/state'
+
+import { fetchRapidsData } from '@/app/views/river-detail/controllers'
 export default {
   name: 'gallery-tab',
   components: {
@@ -79,21 +80,26 @@ export default {
   }),
   computed: {
     ...mapState({
-      loading: state => state.riverDetailState.galleryData.loading,
-      error: state => state.riverDetailState.galleryData.error,
-      photos: state => state.riverDetailState.galleryData.data?.data,
-      pagination: state => state.riverDetailState.galleryData.pagination,
+      loading: state => state.RiverGallery.loading,
+      error: state => state.RiverGallery.error,
+      photos: state => state.RiverGallery.data?.data,
+      pagination: state => state.RiverGallery.pagination,
       rapids: state => state.RiverRapids.data,
       user: state => state.User.data
     }),
-    ...mapGetters(['media']),
+    ...mapGetters({
+      media: 'RiverGallery/media'
+    }),
     reachId () {
       return this.$route.params.id
     }
   },
   methods: {
     loadRapids (routeId) {
-      this.$store.dispatch(rapidsActions.FETCH_RAPIDS_DATA, routeId)
+      this.$store.dispatch('RiverRapids/getProperty', {
+        id: routeId,
+        method: fetchRapidsData
+      })
     },
     loadMedia (val) {
       // not used currently but needed for `rapids` in the media upload modal when we add that
@@ -104,7 +110,10 @@ export default {
         per_page: val ? val.length : 10,
         page: val ? val.page : 1
       }
-      this.$store.dispatch(galleryActions.FETCH_GALLERY_DATA, data)
+      // this.$store.dispatch(galleryActions.FETCH_GALLERY_DATA, data)
+
+    this.$store.dispatch('RiverGallery/fetchGalleryData', data)
+
       this.currentlyLoadedImagesFor = this.reachId
     }
   },

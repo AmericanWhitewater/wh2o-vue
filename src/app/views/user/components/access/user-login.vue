@@ -85,7 +85,7 @@ export default {
   },
   computed: {
     user () {
-      return this.$store.state.userState.userData.data
+      return this.$store.state.User.data
     },
     loginDisabled () {
       if (!this.formData.username || !this.formData.password) {
@@ -97,7 +97,7 @@ export default {
   watch: {
     user (v) {
       if (v.uid) {
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        this.$store.dispatch('Global/sendToast', {
           title: 'Welcome back!',
           kind: 'info',
           autoHide: true

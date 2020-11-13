@@ -117,9 +117,9 @@ export default {
   },
   computed: {
     ...mapState({
-      loading: state => state.riverDetailState.accidentsData.loading,
-      error: state => state.riverDetailState.accidentsData.error,
-      accidents: state => state.riverDetailState.accidentsData.data
+      loading: state => state.RiverAccidents.loading,
+      error: state => state.RiverAccidents.error,
+      accidents: state => state.RiverAccidents.data
     }),
     riverId () {
       return parseInt(this.$route.params.id, 10)
@@ -128,7 +128,7 @@ export default {
   methods: {
     loadData () {
       this.$store.dispatch(
-        accidentsActions.FETCH_ACCIDENTS_DATA,
+        'RiverAccidents/getProperty',
         this.riverId
       )
     },

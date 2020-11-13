@@ -215,10 +215,7 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('RiverGages/getProperty', {
-      id:this.$route.params.id,
-      method: fetchGages
-    })
+    this.$store.dispatch('RiverGages/getProperty', this.$route.params.id)
   }
 }
 </script>

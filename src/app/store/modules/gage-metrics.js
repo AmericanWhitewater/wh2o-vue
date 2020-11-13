@@ -1,5 +1,6 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
+import {httpClient} from "@/app/global/services"
 
 export default {
   namespaced: true,
@@ -10,5 +11,32 @@ export default {
     refId: null
   },
   mutations,
-  actions
+  actions: {
+    ...actions,
+    async getProperty(context) {
+      try {
+        const result = await httpClient
+          .post('/graphql', {
+            query: `
+                {
+                  getGaugeInformationForReachID(id: ${data}) {
+                      metrics {
+                        name
+                        unit
+                        format
+                        id
+                        shortkey
+                      }
+                    }
+                  }
+              
+              `
+          })
+          .then(res => res.data.data.getGaugeInformationForReachID.metrics)
+        context.commit('DATA_SUCCESS', result)
+      } catch (error) {
+        context.commit('DATA_ERROR', error)
+      }
+    }
+  }
 }

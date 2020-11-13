@@ -3,16 +3,35 @@ import { getResource, createResource, deleteResource, updateResource } from '@/a
 
 export default {
 
-  async getProperty(context, data = {}) {
+  // async getProperty(context, data = {}) {
+  //   context.commit(types.DATA_LOADING, true)
+  //   if (!data) throw new Error()
+  //   try {
+  //     let result
+  //     if (typeof data === 'string') {
+  //       result = await getResource(data)
+  //     } else if(data.method && typeof data.method === 'function') {
+  //       result = await data.method(data.id)
+  //     }
+  //     context.commit(types.DATA_SUCCESS, result)
+  //   } catch (error) {
+  //     console.log('error :>> ', error);
+  //   }
+  // },
+  /**
+   * 
+   * @param {object} context vuex context
+   * @param {string} endpoint for requested data
+   */
+  async getProperty(context, endpoint) {
+
+    if (endpoint && typeof endpoint !== 'string') {
+      debugger
+    }
+
     context.commit(types.DATA_LOADING, true)
-    if (!data) throw new Error()
     try {
-      let result
-      if (typeof data === 'string') {
-        result = await getResource(data)
-      } else if(data.method && typeof data.method === 'function') {
-        result = await data.method(data.id)
-      }
+      const result = await getResource(endpoint)
       context.commit(types.DATA_SUCCESS, result)
     } catch (error) {
       console.log('error :>> ', error);

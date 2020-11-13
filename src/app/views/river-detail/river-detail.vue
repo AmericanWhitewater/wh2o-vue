@@ -243,26 +243,11 @@ export default {
   },
   methods: {
     loadReachData() {  
-      this.$store.dispatch('RiverAlerts/getProperty', {
-        id: this.reachId,
-        method: fetchAlertsData,
-      })
-      this.$store.dispatch('RiverDetail/getProperty', {
-        id: this.reachId,
-        method: fetchRiverDetailData,
-      })
-      this.$store.dispatch('RiverGages/getProperty', {
-        id: this.reachId,
-        method: fetchGages,
-      })
-      this.$store.dispatch('RiverRapids/getProperty', {
-        id: this.reachId,
-        method: fetchRapidsData,
-      })
-      this.$store.dispatch('GageMetrics/getProperty', {
-        id: this.reachId,
-        method: fetchGaugeMetrics,
-      })
+      this.$store.dispatch('RiverAlerts/getProperty', this.reachId)
+      this.$store.dispatch('RiverDetail/getProperty', this.reachId)
+      this.$store.dispatch('RiverGages/getProperty', this.reachId)
+      this.$store.dispatch('RiverRapids/getProperty', this.reachId)
+      this.$store.dispatch('GageMetrics/getProperty', this.reachId)
       
     },
     toggleEditMode() {

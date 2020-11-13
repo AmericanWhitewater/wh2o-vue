@@ -45,9 +45,9 @@ export default {
   },
   computed: {
     ...mapState({
-      loading: state => state.riverDetailState.creditsData.loading,
-      error: state => state.riverDetailState.creditsData.error,
-      credits: state => state.riverDetailState.creditsData.data
+      loading: state => state.RiverCredits.loading,
+      error: state => state.RiverCredits.error,
+      credits: state => state.RiverCredits.data
     }),
     reachId () {
       return this.$route.params.id
@@ -56,7 +56,7 @@ export default {
   methods: {
     loadData () {
       this.$store.dispatch(
-        creditsActions.FETCH_CREDITS_DATA,
+        'RiverCredits/getProperty',
         this.reachId
       )
     }
