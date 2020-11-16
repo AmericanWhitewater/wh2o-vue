@@ -5,8 +5,10 @@ exports[`rapid-icon-bar.vue hides character icons and shows edit actions when ed
   <div><button role="button" class="cv-button bx--btn bx--btn--secondary bx--btn--sm" id="edit-button">
       Edit
       <!---->
+      <!---->
     </button> <button role="button" class="cv-button bx--btn bx--btn--danger bx--btn--sm" id="delete-button">
       Delete
+      <!---->
       <!---->
     </button></div>
 </div>
