@@ -32,6 +32,7 @@ import { mapState } from 'vuex'
 import { checkWindow, shadowDomFixedHeightOffset } from '@/app/global/mixins'
 import GeometryEditor from './components/geometry-editor.vue'
 import { lineString } from '@turf/helpers'
+import turfLength from '@turf/length'
 import { riverDetailActions } from '../../state'
 
 export default {
@@ -59,6 +60,13 @@ export default {
       const geom = this.data?.geom?.split(',').map(d => d.split(' ').map(e => parseFloat(e)))
       return geom ? lineString(geom, {}, { id: 'reachGeom' }) : null
     },
+    reachLength () {
+      if (this.geom) {
+        return Number(turfLength(this.geom, { units: 'miles' }).toPrecision(2))
+      } else {
+        return undefined
+      }
+    },
     geomEditorKey () {
       return `geomEditor${this.data?.id}`
     }
@@ -73,7 +81,8 @@ export default {
       this.$store.dispatch(riverDetailActions.UPDATE_RIVER_DETAIL_GEOM, {
         geom: this.geom.geometry,
         ploc: this.geom.geometry.coordinates[0],
-        tloc: this.geom.geometry.coordinates.slice(-1)[0]
+        tloc: this.geom.geometry.coordinates.slice(-1)[0],
+        length: this.reachLength
       })
     },
     handleCancel () {
