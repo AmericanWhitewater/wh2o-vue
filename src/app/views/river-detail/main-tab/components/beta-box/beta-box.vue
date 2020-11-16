@@ -89,7 +89,7 @@
           <td>
             Flow Rate
             <template v-if="gages && gages.length">
-              as of {{ formatTime(gages[0].epoch) }}
+              as of {{ formatTime(gages[0].last_gauge_updated * 1000) }}
             </template>
           </td>
           <template v-if="!loading">
@@ -191,9 +191,15 @@ export default {
   },
   methods: {
     formatTime (input) {
+
+      if(isNaN(input) )
+      {
+        return ('')
+      }
       return humanReadable(input)
     },
     formatFlowRange (min, max) {
+      
       if (min && max) {
         return `${min} – ${max} ${this.formatMetric(this.gages[0].gauge_metric)}`
       }
