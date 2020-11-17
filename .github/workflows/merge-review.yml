@@ -1,0 +1,24 @@
+name: Merge Review Test Build
+
+on:
+  pull_request:
+    branches:
+      - development
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup docker image
+        uses: docker://node:12.18.3
+
+      - uses: actions/checkout@v2
+
+      - name: NPM Install
+        run: npm ci
+
+      - name: Unit Tests
+        run: npm run test:unit
+
+      - name: NPM Build
+        run: npm run build
