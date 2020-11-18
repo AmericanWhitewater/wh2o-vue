@@ -108,7 +108,7 @@
             v-text="$titleCase(activeGage.gauge.name)"
           />
           <cv-button
-            class="mb-spacing-md"
+            class="mb-spacing-sm"
             kind="tertiary"
             size="small"
             @click.exact="$router.push(`/gage-detail/${activeGage.gauge.id}`)"
@@ -116,12 +116,14 @@
           >
             Gage Detail
           </cv-button>
-          <level-legend />
-          <a
-            v-if="editMode"
+          <div>
+            <a v-if="editMode"
+            class="cv-button mb-spacing-md bx--btn bx--btn--tertiary bx--btn--sm"
             :href="formatLinkUrl(`/content/StreamTeam/edit-correlations/?reach_id=${$route.params.id}`)"
             target="_blank"
           >Edit Flows</a>
+          </div>
+          <level-legend />
         </template>
         <template v-else>
           <cv-button
