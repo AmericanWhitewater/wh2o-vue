@@ -90,7 +90,7 @@ export default {
   },
   created () {
     if (!this.articles) {
-      this.$store.dispatch('NewsPage/frontPageNews')
+      this.$store.dispatch('NewsPage/getFrontPageNews')
     }
   }
 }
