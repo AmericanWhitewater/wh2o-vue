@@ -87,14 +87,6 @@
     <div class="bx--grid">
       <div class="bx--row">
         <aside class="bx--col-sm-4 bx--col-lg-3 bx--col-max-2">
-          <a
-            v-if="editMode"
-            :href="
-              formatLinkUrl(`/content/Linker/edit/source/river/id/${reachId}/`)
-            "
-            target="_blank"
-            >Open Linker</a
-          >
           <div class="sticky controls-wrapper">
             <div class="button-toolbar">
               <div class="button-wrapper">
@@ -156,6 +148,17 @@
                 </cv-button>
               </li>
             </ul>
+            <template v-if="editMode">
+              <div style="width:100%;border-top: 1px solid #ccc" />
+              <a class="cv-button mt-spacing-md mb-spacing-md bx--btn bx--btn--tertiary bx--btn--sm"
+              :href="
+                formatLinkUrl(`/content/Linker/edit/source/river/id/${reachId}/`)
+              "
+              target="_blank"
+              >Open Linker</a
+            >
+            </template>
+            
           </div>
         </aside>
         <main
