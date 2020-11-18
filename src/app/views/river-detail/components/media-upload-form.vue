@@ -68,7 +68,6 @@
 <script>
 import gql from 'graphql-tag'
 import { postUpdate } from '@/app/global/components/post-update-modal/services/postUpdate.js'
-import { globalAppActions } from '@/app/global/state'
 import { baseUrl } from '@/app/environment'
 
 export default {
@@ -187,7 +186,7 @@ export default {
         /* eslint-disable-next-line no-console */
         console.log(err)
         this.$emit('form:error')
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        this.$store.dispatch('Global/sendToast', {
           title: 'Upload Failed',
           kind: 'error'
         })
@@ -199,7 +198,7 @@ export default {
       try {
         await postUpdate(this.postFormData)
         this.$emit('form:success')
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        this.$store.dispatch('Global/sendToast', {
           title: 'Media Uploaded',
           kind: 'success'
         })
@@ -207,7 +206,7 @@ export default {
         /* eslint-disable-next-line no-console */
         console.log('error :>> ', error)
         this.$emit('form:error')
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        this.$store.dispatch('Global/sendToast', {
           title: 'Upload Failed',
           kind: 'error'
         })

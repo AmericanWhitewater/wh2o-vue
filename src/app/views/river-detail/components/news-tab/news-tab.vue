@@ -180,7 +180,6 @@ import {
   PostUpdateModal
 } from '@/app/global/components'
 import { httpClient } from '@/app/global/services'
-import { globalAppActions } from '@/app/global/state'
 export default {
   name: 'news-tab',
   components: {
@@ -229,7 +228,7 @@ export default {
     },
     handleUpdateSuccess () {
       this.postUpdateModalVisible = false
-      this.$store.dispatch(globalAppActions.SEND_TOAST, {
+      this.$store.dispatch('Global/sendToast', {
         title: this.successToastTitle,
         kind: 'success',
         override: true,

@@ -83,7 +83,6 @@
 import { mapState } from 'vuex'
 // the content editor needs to be directly imported?
 import ContentEditor from '@/app/global/components/content-editor/content-editor.vue'
-import { globalAppActions } from '@/app/global/state'
 import { httpClient } from '@/app/global/services'
 import PageDescription from '@/app/global/components/page-description/page-description'
 import { baseUrl } from '@/app/environment'
@@ -126,7 +125,7 @@ export default {
   },
   methods: {
     toggleEditMode () {
-      this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, !this.editMode)
+      this.$store.dispatch('Global/toggleEditMode', !this.editMode)
     },
     submitForm () {
       if (this.updatedDescription) {
@@ -143,7 +142,7 @@ export default {
         }).then(r => {
           this.refreshedDescription = r.data.data.reachUpdate.description
           this.updatePending = false
-          this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          this.$store.dispatch('Global/sendToast', {
             title: 'Description Updated',
             kind: 'success',
             override: true,
@@ -154,7 +153,7 @@ export default {
         }).catch(() => {
           this.updatePending = false
           this.error = true
-          this.$store.dispatch(globalAppActions.SEND_TOAST, {
+          this.$store.dispatch('Global/sendToast', {
             title: 'Update Failed',
             kind: 'error',
             override: true,

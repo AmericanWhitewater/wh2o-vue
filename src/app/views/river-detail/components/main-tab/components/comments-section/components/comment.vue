@@ -79,7 +79,6 @@
 </template>
 <script>
 import UserAvatar from '@/app/global/components/user-avatar/user-avatar'
-import { globalAppActions } from '@/app/global/state'
 import { shadowDomFixedHeightOffset, objectPermissionsHelpersMixin } from '@/app/global/mixins'
 import { httpClient } from '@/app/global/services'
 import { baseUrl } from '@/app/environment'
@@ -131,7 +130,7 @@ export default {
         })
         .then(r => {
           if (!r.errors) {
-            this.$store.dispatch(globalAppActions.SEND_TOAST, {
+            this.$store.dispatch('Global/sendToast', {
               title: 'Comment Removed',
               kind: 'success',
               override: true,

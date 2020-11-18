@@ -58,7 +58,6 @@
 import { RapidItem, RapidEditModal } from './components'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { mapState } from 'vuex'
-import { globalAppActions } from '@/app/global/state'
 
 export default {
   name: 'rapids-section',
@@ -98,7 +97,7 @@ export default {
       if (this.user) {
         this.rapidModalVisible = true
       } else {
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        this.$store.dispatch('Global/sendToast', {
           title: 'Must Log In',
           kind: 'error',
           override: true,
