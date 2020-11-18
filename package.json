@@ -46,7 +46,6 @@
     "@turf/nearest-point-on-line": "^6.0.2",
     "@turf/point-to-line-distance": "^6.0.0",
     "@turf/polygon-to-line": "^6.0.3",
-    "@vue/composition-api": "^1.0.0-beta.6",
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",
     "apollo-link": "^1.2.14",
