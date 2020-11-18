@@ -23,10 +23,10 @@
             v-text="`Distance: ${rapidData.distance}`"
           />
         </div>
-        <rapid-icon-bar
+      </div>
+      <rapid-icon-bar
           :character="rapidData.character"
         />
-      </div>
       <div
         v-if="rapidData.photo && rapidData.photo.image"
         class="inside thumbnail pb-spacing-sm"
