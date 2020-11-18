@@ -2,7 +2,7 @@
   "name": "wh2o-vue",
   "version": "0.1.0",
   "private": true,
-  "author": "Drew Althage",
+  "author": "American Whitewater",
   "scripts": {
     "serve": "vue-cli-service serve --public localhost:9669 --port 9669",
     "dev": "vue-cli-service serve",
@@ -16,9 +16,7 @@
     "snapshot:update": " vue-cli-service test:unit --updateSnapshot",
     "watch-static": "vue-cli-service build --watch --no-clean",
     "lint:js": "eslint './src/**/*.js' './src/**/*.vue' --fix",
-    "lint:scss": "stylelint './src/**/*.{scss, vue}' --syntax scss --fix",
-    "start": "node server/server.js",
-    "coveralls": "vue-cli-service test:unit --coverage && cat ./coverage/lcov.info | coveralls"
+    "lint:scss": "stylelint './src/**/*.{scss, vue}' --syntax scss --fix"
   },
   "dependencies": {
     "@apollo/client": "^3.2.1",
@@ -70,7 +68,6 @@
     "register-service-worker": "^1.7.1",
     "screenfull": "^5.0.2",
     "scroll-into-view-if-needed": "^2.2.24",
-    "serve-static": "^1.14.1",
     "tiptap": "^1.27.1",
     "tiptap-extensions": "^1.29.1",
     "typescript": "^4.0.5",
@@ -99,7 +96,6 @@
     "@vue/test-utils": "^1.0.2",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
-    "coveralls": "^3.1.0",
     "eslint": "^7.0.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.1.0",
