@@ -1,30 +1,30 @@
 <template>
   <div>
     <section class="geom-editor-instructions">
-      <h5 class="mode-name">
+      <h5 class="mode-name mb-spacing-xs">
         Editing in {{ mapEditMode }} Mode
       </h5>
       <template v-if="geometryMode === 'creating'">
-        <p v-if="mapEditMode ==='automatic'">
+        <p v-if="mapEditMode ==='automatic'" class="bx--type-caption">
           Click on the map to create the start and end points of your reach. When you click, your selection will
           automatically snap to the National Hydrography Dataset (NHD), a USGS dataset of rivers and streams. Once
           you've defined two points, the map will automatically calculate a path between the two.
         </p>
-        <p v-if="mapEditMode ==='manual'">
+        <p v-if="mapEditMode ==='manual'" class="bx--type-caption">
           Click on the map to start defining a line segment. You can keep adding new vertices by clicking in new places
           or you can "complete" your line by clicking a second time on the last vertex you created. The dotted pink
           lines represent the USGS National Hydrography Dataset (NHD), a USGS dataset of rivers and streams.
         </p>
       </template>
       <template v-else>
-        <p v-if="mapEditMode === 'automatic'">
+        <p v-if="mapEditMode === 'automatic'" class="bx--type-caption">
           The dotted lines represent the National Hydrography Dataset (NHD), a USGS dataset of rivers and streams
           in the United States. To modify the reach, click on either endpoint to "activate" it, then click it
           again and drag to move elsewhere on the NHD. The points will automatically "snap" to the nearest flowline
           in the NHD as you drag. A new "geometry" (line) will be generated when you finish moving the point.
           It isn't saved until you click "Submit" below.
         </p>
-        <p v-if="mapEditMode === 'manual'">
+        <p v-if="mapEditMode === 'manual'" class="bx--type-caption">
           Manual mode allows you to modify the line segment by hand. Click on the line segment to activate editing.
           A series of vertices will appear along the line. Click on one, then click again and drag to modify the line.
           Note: if you go back to automatic mode and modify the reach again, your changes will be overwritten.
@@ -56,6 +56,7 @@
         class="nhd-editor-clear-map"
       >
         <cv-button
+          style="padding:0.5rem 1.25rem;"
           kind="danger"
           size="small"
           @click="clearMap"
