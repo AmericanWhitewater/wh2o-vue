@@ -86,10 +86,6 @@ export default {
     async fetchStates(context) {
       context.commit(type.DATA_LOADING)
 
-      // const result = await fetchStates(data).catch(e => {
-      //   context.commit(DATA_ERROR, e)
-      // })
-
       const result = await httpClient.post('/graphql', {
         query: `
             query {
@@ -122,9 +118,6 @@ export default {
         result = []
       } else {
         context.commit('MAP_SEARCH_LOADING', true)
-        // result = await fetchRiverSearchData(data).catch(e => {
-        //   context.commit(DATA_ERROR, e)
-        // })
 
         result = await httpClient.post('graphql/', {
           query: `
