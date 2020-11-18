@@ -219,6 +219,7 @@ export default {
       this.$store.dispatch('GageMetrics/getProperty', this.$route.params.id)
     },
     async fetchReadings () {
+
       this.$emit('gage-change', this.formData.gauge_id)
       await this.setTimeScale()
       this.$store.dispatch(
@@ -233,8 +234,10 @@ export default {
      * @todo if the reach does not have any gages, display empty content block
      *
      */
+
     if (this.gages) {
       this.formData.gauge_id = this.gages[0].gauge.id
+      this.formData.metric_id = this.gages[0].gauge_metric.toString()
     }
     this.fetchMetrics()
   },
