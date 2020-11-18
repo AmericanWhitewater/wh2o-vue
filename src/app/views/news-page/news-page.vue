@@ -49,7 +49,6 @@ import {
   UtilityBlock
 } from '@/app/global/components'
 import { Layout } from '@/app/global/layout'
-import { newsActions } from './shared/state'
 import { baseUrl } from '../../environment'
 
 export default {
@@ -71,9 +70,9 @@ export default {
   },
   computed: {
     ...mapState({
-      loading: state => state.newsPageState.newsData.loading,
-      articles: state => state.newsPageState.newsData.frontPageNews,
-      featured: state => state.newsPageState.newsData.featured
+      loading: state => state.NewsPage.loading,
+      articles: state => state.NewsPage.frontPageNews,
+      featured: state => state.NewsPage.featured
     })
   },
   methods: {
@@ -86,12 +85,12 @@ export default {
       })
     },
     searchArticles () {
-      this.$store.dispatch(newsActions.SEARCH_ARTICLES, this.articleSearchTerm)
+      this.$store.dispatch('NewsPage/searchArticles', this.articleSearchTerm)
     }
   },
   created () {
     if (!this.articles) {
-      this.$store.dispatch(newsActions.FRONT_PAGE_NEWS)
+      this.$store.dispatch('NewsPage/frontPageNews')
     }
   }
 }

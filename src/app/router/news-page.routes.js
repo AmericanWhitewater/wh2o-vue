@@ -1,11 +1,11 @@
-const newsPageRoutes = [
+export default [
   {
     path: '/news',
     name: 'news',
     meta: {
       crumbLabel: 'News'
     },
-    component: () => import('./news-page.vue')
+    component: () => import('@/app/views/news-page/news-page.vue')
   },
   {
     path: '/article/:id',
@@ -13,7 +13,7 @@ const newsPageRoutes = [
     meta: {
       crumbLabel: 'Article'
     },
-    component: () => import('./components/article-detail.vue')
+    component: () => import('@/app/views/news-page/components/article-detail.vue')
   },
   {
     path: '/new-article',
@@ -21,8 +21,6 @@ const newsPageRoutes = [
     meta: {
       crumbLabel: 'New Article'
     },
-    component: () => import('./components/new-article.vue')
+    component: () => import('@/app/views/news-page/components/new-article.vue')
   }
 ]
-
-export default newsPageRoutes

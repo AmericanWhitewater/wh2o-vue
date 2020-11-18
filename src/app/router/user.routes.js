@@ -1,12 +1,12 @@
-const userRoutes = [
+export default [
   {
     path: '/user',
-    component: () => import('./app-user.vue'),
+    component: () => import('@/app/views/user/app-user.vue'),
     children: [
       {
         path: 'access',
         name: 'access',
-        component: () => import('./components/access/user-access.vue'),
+        component: () => import('@/app/views/user/components/access/user-access.vue'),
         children: [
           {
             path: 'login',
@@ -14,7 +14,7 @@ const userRoutes = [
             meta: {
               crumbLabel: 'Login'
             },
-            component: () => import('./components/access/user-login.vue')
+            component: () => import('@/app/views/user/components/access/user-login.vue')
           },
           {
             path: 'logout',
@@ -22,7 +22,7 @@ const userRoutes = [
             meta: {
               crumbLabel: 'Logout'
             },
-            component: () => import('./components/access/user-logout.vue')
+            component: () => import('@/app/views/user/components/access/user-logout.vue')
           },
           {
             path: 'register',
@@ -30,7 +30,7 @@ const userRoutes = [
             meta: {
               crumbLabel: 'Register'
             },
-            component: () => import('./components/access/user-register.vue')
+            component: () => import('@/app/views/user/components/access/user-register.vue')
           },
           {
             path: 'forgot',
@@ -38,39 +38,37 @@ const userRoutes = [
             meta: {
               crumbLabel: 'Password Reset'
             },
-            component: () => import('./components/access/user-forgot.vue')
+            component: () => import('@/app/views/user/components/access/user-forgot.vue')
           }
         ]
       },
       {
         path: 'account/:userId',
         name: 'account',
-        component: () => import('./components/account/user-account.vue'),
+        component: () => import('@/app/views/user/components/account/user-account.vue'),
         children: [
           {
             path: 'alerts',
             name: 'alerts',
-            component: () => import('./components/account/user-alerts.vue')
+            component: () => import('@/app/views/user/components/account/user-alerts.vue')
           },
           {
             path: 'gages',
             name: 'gages',
-            component: () => import('./components/account/user-gages.vue')
+            component: () => import('@/app/views/user/components/account/user-gages.vue')
           },
           {
             path: 'settings',
             name: 'settings',
-            component: () => import('./components/account/user-settings.vue')
+            component: () => import('@/app/views/user/components/account/user-settings.vue')
           },
           {
             path: 'profile',
             name: 'profile',
-            component: () => import('./components/account/user-profile.vue')
+            component: () => import('@/app/views/user/components/account/user-profile.vue')
           }
         ]
       }
     ]
   }
 ]
-
-export default userRoutes

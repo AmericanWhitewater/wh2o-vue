@@ -77,7 +77,6 @@
 <script>
 import { mapState } from 'vuex'
 import { checkWindow } from '@/app/global/mixins'
-import { userActions } from '../../shared/state'
 
 /**
  * User Dashboard / My Account
@@ -156,7 +155,7 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch(userActions.FETCH_USER_DATA)
+    this.$store.dispatch('User/getProperty')
   }
 }
 </script>
