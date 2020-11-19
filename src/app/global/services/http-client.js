@@ -13,11 +13,6 @@ const config = {
 
 const httpClient = axios.create(config)
 
-const rest = axios.create({
-  ...config,
-  baseURL: 'http://localhost:3000'
-})
-
 /**
  * Auth interceptor
  * @description add authorization token here.
@@ -42,4 +37,4 @@ httpClient.interceptors.response.use(
     Promise.reject(error)
 )
 
-export { httpClient, rest }
+export { httpClient }
