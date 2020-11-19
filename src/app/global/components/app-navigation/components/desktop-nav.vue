@@ -31,7 +31,7 @@
             </div>
             <header>
               <cv-button
-                id="map-btn"
+                id="affiliates-btn"
                 kind="ghost"
                 size="small"
                 class="header--btn"
@@ -42,7 +42,7 @@
               </cv-button>
 
               <cv-button
-                id="map-btn"
+                id="gages-btn"
                 kind="ghost"
                 size="small"
                 class="header--btn"
@@ -64,7 +64,7 @@
               </cv-button>
 
               <cv-button
-                id="map-btn"
+                id="projects-btn"
                 kind="ghost"
                 size="small"
                 class="header--btn"
@@ -75,7 +75,7 @@
               </cv-button>
 
               <cv-button
-                id="map-btn"
+                id="documents-btn"
                 kind="ghost"
                 size="small"
                 class="header--btn"
