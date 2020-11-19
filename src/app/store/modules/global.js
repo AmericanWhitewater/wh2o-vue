@@ -1,10 +1,14 @@
+import { laravelDeploy } from "@/app/environment"
+
+
 export default {
   namespaced: true,
   state: {
     editMode: false,
     updateAvailable: false,
     toasts: [],
-    offline: null
+    offline: null,
+    laravelDeploy
   },
   mutations: {
     ['NEW_UPDATE'](state, payload) {

@@ -1,7 +1,7 @@
 <template>
   <div id="national-map-app">
     <div class="bx--grid">
-      <div class="bx--row mb-md mt-md">
+      <div v-if="laravelDeploy" class="bx--row mb-md mt-md">
         <div class="bx--col-sm-12 bx--col-lg-5  mb-spacing-lg">
           <h2 class="mb-spacing-sm">
             Stream Team
@@ -72,7 +72,7 @@
           </template>
         </div>
       </div>
-      <div class="bx--row">
+      <div v-if="laravelDeploy" class="bx--row">
         <div class="bx--col">
           <nwi-state-list />
         </div>
@@ -121,7 +121,8 @@ export default {
   computed: {
     ...mapState({
       reachesInViewport: state => state.RiverIndex.data,
-      error: state => state.RiverIndex.error
+      error: state => state.RiverIndex.error,
+      laravelDeploy: state => state.Global.laravelDeploy
     })
   },
   methods: {
