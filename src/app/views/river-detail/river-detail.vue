@@ -149,16 +149,18 @@
               </li>
             </ul>
             <template v-if="editMode">
-              <div style="width:100%;border-top: 1px solid #ccc" />
-              <a class="cv-button mt-spacing-md mb-spacing-md bx--btn bx--btn--tertiary bx--btn--sm"
-              :href="
-                formatLinkUrl(`/content/Linker/edit/source/river/id/${reachId}/`)
-              "
-              target="_blank"
-              >Open Linker</a
-            >
+              <div style="width: 100%; border-top: 1px solid #ccc" />
+              <a
+                class="cv-button mt-spacing-md mb-spacing-md bx--btn bx--btn--tertiary bx--btn--sm"
+                :href="
+                  formatLinkUrl(
+                    `/content/Linker/edit/source/river/id/${reachId}/`
+                  )
+                "
+                target="_blank"
+                >Open Linker</a
+              >
             </template>
-            
           </div>
         </aside>
         <main
@@ -177,8 +179,13 @@
 <script>
 import { mapState } from "vuex";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block.vue";
-import { MapBanner, ReachTitleEditModal, GeometryEditModal } from "./components";
+import {
+  MapBanner,
+  ReachTitleEditModal,
+  GeometryEditModal,
+} from "./components";
 import { checkWindow } from "@/app/global/mixins";
+import { appLocalStorage } from "@/app/global/services";
 
 export default {
   name: "river-detail",
@@ -234,19 +241,36 @@ export default {
     },
   },
   methods: {
-    loadReachData() {  
-      this.$store.dispatch('RiverAlerts/getProperty', this.reachId)
-      this.$store.dispatch('RiverDetail/getProperty', this.reachId)
-      this.$store.dispatch('RiverGages/getProperty', this.reachId)
-      this.$store.dispatch('RiverRapids/getProperty', this.reachId)
-      this.$store.dispatch('GageMetrics/getProperty', this.reachId)
-      
+    toggleBookmark() {
+      let bookmarks = appLocalStorage.getItem("wh2o-river-bookmarks");
+
+      if(bookmarks && bookmarks.length) {
+        const index = bookmarks.indexOf(Number(this.$route.params.id))
+        if(index === -1) {
+          this.bookmarked = true
+          appLocalStorage.setItem("wh2o-river-bookmarks", [...bookmarks, Number(this.$route.params.id)])
+        } else {
+          this.bookmarked = false
+          bookmarks.splice(index,1)
+          appLocalStorage.setItem("wh2o-river-bookmarks", bookmarks)
+        }
+      } else {
+        this.bookmarked = true
+        appLocalStorage.setItem("wh2o-river-bookmarks", [Number(this.$route.params.id)])
+      }
+    },
+    loadReachData() {
+      this.$store.dispatch("RiverAlerts/getProperty", this.reachId);
+      this.$store.dispatch("RiverDetail/getProperty", this.reachId);
+      this.$store.dispatch("RiverGages/getProperty", this.reachId);
+      this.$store.dispatch("RiverRapids/getProperty", this.reachId);
+      this.$store.dispatch("GageMetrics/getProperty", this.reachId);
     },
     toggleEditMode() {
       if (this.user) {
-        this.$store.dispatch('Global/toggleEditMode', !this.editMode);
+        this.$store.dispatch("Global/toggleEditMode", !this.editMode);
       } else {
-        this.$store.dispatch('Global/sendToast', {
+        this.$store.dispatch("Global/sendToast", {
           title: "Must log in to edit",
           kind: "error",
         });
@@ -259,34 +283,9 @@ export default {
           this.$router.replace(path);
         }
       }
-    },
-    // toggleBookmark() {
-    //   if (!this.bookmarked) {
-    //     this.$store.dispatch(bookmarksActions.ADD_BOOKMARK, this.reachId);
-    //     this.bookmarked = true;
-    //   } else {
-    //     this.$store.dispatch(bookmarksActions.REMOVE_BOOKMARK, this.reachId);
-    //     this.bookmarked = false;
-    //   }
-    //   this.$store.dispatch('Global/sendToast', {
-    //     title: this.bookmarked ? "Bookmark Added" : "Bookmark Removed",
-    //     kind: "success",
-    //   });
-    // },
-    // checkBookmarks() {
-    //   const bookmarks = appLocalStorage.getItem("wh2o-bookmarked-rivers");
-    //   if (bookmarks) {
-    //     const data = bookmarks.find((b) => b === this.reachId);
-    //     if (data) {
-    //       this.bookmarked = true;
-    //     }
-    //   } else {
-    //     this.bookmarked = false;
-    //   }
-    // },
+    }
   },
   created() {
-    
     this.$router.beforeEach((to, from, next) => {
       let transitionName = to.meta.transitionName || from.meta.transitionName;
       if (transitionName === "slide") {
@@ -302,7 +301,12 @@ export default {
   },
   mounted() {
     this.loadReachData();
-    // this.checkBookmarks();
-  }
+   
+    let bookmarks = appLocalStorage.getItem("wh2o-river-bookmarks");
+
+    if(bookmarks && bookmarks.includes(Number(this.$route.params.id))) {
+      this.bookmarked = true
+    }
+  },
 };
 </script>
