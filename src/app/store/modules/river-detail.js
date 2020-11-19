@@ -33,6 +33,47 @@ export default {
   },
   actions: {
     ...actions,
+    async updateReach(context, data) {
+      context.commit('DATA_REQUEST');
+      try {
+        const result = await httpClient
+          .post('graphql', {
+            query: `
+              mutation ($id:ID!, $reach: ReachInput!) {
+                reachUpdate(id: $id, reach: $reach) {
+                  river,
+                  section,
+                  class,
+                  length,
+                  avggradient,
+                  maxgradient
+                }
+              }
+            `,
+            variables: {
+              id: data.id,
+              reach: {
+                river: data.river,
+                section: data.section,
+                class: data.class,
+                length: data.length,
+                avggradient: data.avggradient,
+                maxgradient: data.maxgradient
+              }
+            }
+          }).then(res => res.data)
+
+        if (result.errors) {
+          context.commit('DATA_ERROR', result.errors);
+        } else {
+          context.commit('DATA_SUCCESS', result.reachUpdate);
+        }
+      } catch (error) {
+        context.commit('DATA_ERROR', error);
+      } finally {
+        context.commit('DATA_LOADING', false)
+      }
+    },
     async getProperty(context, id) {
       try {
         context.commit('DATA_REQUEST')
@@ -124,18 +165,16 @@ export default {
             },
           })
           .then(res => res.data);
-        
+
         if (result.data.errors) {
           context.commit('GEOM_UPDATE_ERROR', result.data.errors);
         } else {
           context.commit('GEOM_UPDATE_SUCCESS', result.data.reachUpdate);
         }
-        
+
       } catch (error) {
         context.commit('GEOM_UPDATE_ERROR', error);
       }
-
-      
     },
   }
 }
