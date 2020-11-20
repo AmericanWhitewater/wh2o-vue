@@ -83,10 +83,12 @@ export default {
       loading: state => state.RiverRapids.loading,
       error: state => state.RiverRapids.error,
       rapids: state => state.RiverRapids.data,
-      reachId: state => state.RiverDetail.data.id,
       user: state => state.User.data,
       editMode: state => state.Global.editMode
-    })
+    }),
+    reachId() {
+      return this.$route.params.id
+    }
   },
   methods: {
     triggerEdit (rapidId) {

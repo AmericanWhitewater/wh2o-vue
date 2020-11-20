@@ -53,6 +53,16 @@
                 </div>
               </div>
             </header>
+            <header v-else class="bx--tile">
+              <div>
+                <h4>
+                  Error
+                </h4>
+                <h1 class="mb-spacing-md">
+                  Something went wrong
+                </h1>
+              </div>
+            </header>
             <utility-block
               v-if="loading"
               height="400"
