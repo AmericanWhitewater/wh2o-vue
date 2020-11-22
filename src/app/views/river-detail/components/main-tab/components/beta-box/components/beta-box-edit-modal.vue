@@ -34,7 +34,7 @@
         v-model="formData.avggradient"
         class="mb-spacing-md"
         label="Average Gradient"
-        step=".01"
+        step="1"
         :max="4132"
         :min="0"
         :mobile="windowWidth <= $options.breakpoints.md"
@@ -43,7 +43,7 @@
         v-model="formData.maxgradient"
         class="mb-spacing-md"
         label="Maximum Gradient"
-        step=".01"
+        step="1"
         :max="4132"
         :min="0"
         :mobile="windowWidth <= $options.breakpoints.md"
@@ -71,11 +71,7 @@ export default {
     }
   },
   data: () => ({
-    formData: {
-      class: '',
-      avggradient: null,
-      maxgradient: null
-    }
+    formData: {}
   }),
   computed: {
     ...mapState({
@@ -89,17 +85,25 @@ export default {
     },
     submitForm () {
       this.$emit('edit:submit')
-      this.$parent.editModalVisible = false
-      this.$nextTick(() => {
-        this.$store.dispatch('RiverDetail/updateProperty', this.formData)
-      })
+     
+      this.$store.dispatch('RiverDetail/updateProperty', {
+          id: this.$route.params.id,
+          reach: {
+            river: this.formData.river,
+            section: this.formData.section,
+            class: this.formData.class,
+            length: Number(this.formData.length),
+            avggradient: Number(this.formData.avggradient),
+            maxgradient: Number(this.formData.maxgradient)
+          }
+        })
+
+         this.$parent.editModalVisible = false
     }
   },
   mounted () {
     if (this.reach) {
-      this.formData.class = this.reach.class
-      this.formData.avggradient = this.reach.avggradient
-      this.formData.maxgradient = this.reach.maxgradient
+      this.formData = {...this.reach}
     }
   }
 }

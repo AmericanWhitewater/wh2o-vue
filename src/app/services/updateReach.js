@@ -1,7 +1,6 @@
 import http from "@/app/http"
 
 export async function updateReach(data) {
-
   return http.post('graphql', {
     query: `
               mutation ($id:ID!, $reach: ReachInput!) {
@@ -15,16 +14,6 @@ export async function updateReach(data) {
                 }
               }
             `,
-    variables: {
-      id: data.id,
-      reach: {
-        river: data.river,
-        section: data.section,
-        class: data.class,
-        length: data.length,
-        avggradient: data.avggradient,
-        maxgradient: data.maxgradient
-      }
-    }
+    variables: data
   }).then(res => res.data)
 }

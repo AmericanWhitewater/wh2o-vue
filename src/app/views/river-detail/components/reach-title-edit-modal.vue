@@ -45,10 +45,7 @@ export default {
     }
   },
   data: () => ({
-    formData: {
-      river: '',
-      section: ''
-    }
+    formData: {}
   }),
   computed: {
     ...mapState({
@@ -64,14 +61,23 @@ export default {
       // these modals are super problematic. If we don't use nextTick here,
       // the class isn't removed from `body` and you can't scroll
       this.$nextTick(() => {
-        this.$store.dispatch('RiverDetail/updateProperty', this.formData)
+        this.$store.dispatch('RiverDetail/updateProperty', {
+          id: this.$route.params.id,
+          reach: {
+            river: this.formData.river,
+            section: this.formData.section,
+            class: this.formData.class,
+            length: this.formData.length,
+            avggradient: this.formData.avggradient,
+            maxgradient: this.formData.maxgradient
+          }
+        })
       })
     }
   },
   mounted () {
     if (this.reach) {
-      this.formData.river = this.reach.river
-      this.formData.section = this.reach.section
+      this.formData = {...this.reach}
     }
   }
 }
