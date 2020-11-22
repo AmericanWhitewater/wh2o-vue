@@ -1,6 +1,6 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
-import { httpClient } from '@/app/global/services'
+import { getReachGallery } from '@/app/services'
 
 export default {
   namespaced: true,
@@ -22,59 +22,7 @@ export default {
     async getProperty(context, data) {
       context.commit('DATA_REQUEST')
       try {
-        const result = await httpClient
-          .post('/graphql', {
-            query: `
-                query {
-                  posts(
-                    first: ${data.per_page},
-                    post_types: [JOURNAL,PHOTO_POST],
-                    reach_id: "${data.reach_id}", 
-                    page: ${data.page}, 
-                    orderBy: {field: REVISION, order: DESC}
-                    ) {
-                      data {
-                        id
-                        metric {
-                          name
-                          unit
-                        }
-                        gauge {
-                          id
-                          name
-                        }
-                        reading
-                        photos {
-                          image {
-                            uri {
-                              thumb
-                              medium
-                              big
-                            }
-                            file_size
-                          }
-                          id
-                          author
-                          caption
-                          description
-                          photo_date
-                          poi_name
-                          poi_id
-                          subject
-                        }
-                      }
-                      paginatorInfo {
-                        count
-                        perPage
-                        currentPage
-                        lastPage
-                        total
-                      }
-                  
-                    }  
-                  }`
-          })
-          .then(res => res.data)
+        const result = await getReachGallery(data)
         if (!result.errors) {
           context.commit('DATA_SUCCESS', result.data.posts.data)
           context.commit('PAGINATION', result.data.posts.paginatorInfo)

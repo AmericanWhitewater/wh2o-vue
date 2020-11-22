@@ -1,0 +1,13 @@
+.user-account {
+  .bx--grid {
+    &.dashboard-wrapper {
+      margin: 0;
+      padding: 0;
+      min-height: 50vh;
+    }
+  }
+  .bg-ui-01 {
+    background-color:$ui-01;
+    @include layer('raised')
+  }
+}

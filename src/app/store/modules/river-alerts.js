@@ -1,7 +1,7 @@
 import mutations from '@/app/store/mutations'
 import actions from '@/app/store/actions'
 import moment from 'moment'
-import { httpClient } from '@/app/global/services'
+import {getReachAlerts} from "@/app/services"
 
 export default {
   namespaced: true,
@@ -14,46 +14,11 @@ export default {
   mutations,
   actions: {
     ...actions,
-    async getProperty(context, reachId) {
+    async getProperty(context, id) {
       context.commit('DATA_REQUEST')
 
       try {
-        const result = await httpClient
-          .post('/graphql', {
-            query: `
-        query {
-            posts(reach_id: "${reachId}", post_types: WARNING, page: 1, orderBy: {field: REVISION, order: DESC}, first: 10) {
-              data {
-                id
-                title
-                detail
-                post_date
-                revision
-                post_type
-                permissions {
-                  domain
-                  permission
-                  result
-                }
-                user {
-                  uname
-                  uid
-                  contact {
-                    name
-                  }
-                  image {
-                    uri {
-                      thumb
-                      medium
-                      big
-                    }
-                  }
-                }
-              }
-            }
-          }`
-          })
-          .then(res => res.data)
+        const result = await getReachAlerts(id)
         
         if (!result.errors) {
           const sortedPosts = result.data.posts.data.sort((a, b) =>

@@ -1,7 +1,7 @@
-import { httpClient } from '@/app/global/services'
+import http from '@/app/http'
 
-export function postUpdate (formData) {
-  return httpClient.post('/graphql', {
+export async function updatePost(formData) {
+  return http.post('/graphql', {
     query: `
       mutation ($id:ID!, $post: PostInput!) {
           postUpdate(id: $id, post:$post)  {

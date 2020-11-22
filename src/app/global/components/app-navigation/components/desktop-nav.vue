@@ -128,10 +128,10 @@
                 size="small"
                 class="header--btn"
                 @click.exact="
-                  $router.push('/user/account/1/bookmarks').catch(() => {})
+                  $router.push(`/user/account/${user && user.uid}/alerts`).catch(() => {})
                 "
                 @keydown.enter="
-                  $router.push('/user/account/1/bookmarks').catch(() => {})
+                  $router.push(`/user/account/${user && user.uid}/alerts`).catch(() => {})
                 "
               >
                 My Account

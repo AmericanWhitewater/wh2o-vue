@@ -71,7 +71,7 @@
   </div>
 </template>
 <script>
-import { httpClient } from '@/app/global/services'
+import http from '@/app/http'
 import TermsOfService from '@/app/views/static-routes/terms-of-service'
 export default {
   name: 'user-register',
@@ -120,7 +120,7 @@ export default {
       }
 
       if (!this.confirmationError && !this.passwordMatchError) {
-        await httpClient.post('/graphql', {
+        await http.post('/graphql', {
           query: `
               mutation {
                 register(

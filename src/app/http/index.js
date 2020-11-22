@@ -11,7 +11,7 @@ const config = {
   }
 }
 
-const httpClient = axios.create(config)
+const http = axios.create(config)
 
 /**
  * Auth interceptor
@@ -29,12 +29,12 @@ const authInterceptor = config => {
   return config
 }
 
-httpClient.interceptors.request.use(authInterceptor)
-httpClient.interceptors.response.use(
+http.interceptors.request.use(authInterceptor)
+http.interceptors.response.use(
   response => response,
   error =>
     /** Do something with response error */
     Promise.reject(error)
 )
 
-export { httpClient }
+export default http;

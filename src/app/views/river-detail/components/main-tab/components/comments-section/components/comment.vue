@@ -80,7 +80,7 @@
 <script>
 import UserAvatar from '@/app/global/components/user-avatar/user-avatar'
 import { shadowDomFixedHeightOffset, objectPermissionsHelpersMixin } from '@/app/global/mixins'
-import { httpClient } from '@/app/global/services'
+import http from '@/app/http'
 import { baseUrl } from '@/app/environment'
 
 export default {
@@ -119,7 +119,7 @@ export default {
     },
     deleteComment (commentId) {
       this.deleteCommentModalVisible = false
-      httpClient
+      http
         .post('/graphql', {
           query: `
             mutation ($post_id:ID!){postDelete(id:$post_id){id}}

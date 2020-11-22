@@ -1,5 +1,5 @@
 import mutations from '@/app/store/mutations'
-import { httpClient } from '@/app/global/services'
+import { getReachNews } from '@/app/services'
 import moment from 'moment'
 
 export default {
@@ -12,34 +12,11 @@ export default {
   },
   mutations,
   actions: {
-    async getProperty(context, data) {
+    async getProperty(context, id) {
       context.commit('DATA_REQUEST')
 
       try {
-        const result = await httpClient
-          .post('graphql', {
-            query: `
-              query {
-                  getRiverArticles(id: ${data}) {
-                      articles {
-                      abstract
-                      image {
-                        uri {
-                          thumb
-                          medium
-                          big
-                        }
-                      }
-                      author
-                      posted_date
-                      title
-                      contents
-                      id
-                      }
-                  }
-              }`
-          })
-          .then(res => res.data)
+        const result = await getReachNews(id)
 
         if (!result.errors) {
           const sortedArticles = result.data.getRiverArticles.articles.sort((a, b) =>

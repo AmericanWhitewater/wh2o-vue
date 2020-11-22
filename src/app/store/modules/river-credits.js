@@ -1,6 +1,6 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
-import { httpClient } from '@/app/global/services'
+import { getReachCredits } from '@/app/services'
 
 export default {
   namespaced: true,
@@ -15,29 +15,7 @@ export default {
     async getProperty(context, id) {
       try {
         context.commit('DATA_REQUEST')
-        const result = await httpClient
-          .post('/graphql', {
-            query: `
-              query {
-                reach( id: ${id}) {
-                    revisions(first:100,page:0){
-                    data {
-                        id
-                        revision
-                        sk {
-                            uname
-                            contact {
-                                name  
-                            }
-                        }
-                        revision_comment
-                        edited
-                        }
-                    }
-                }
-            }`
-          })
-          .then(res => res.data)
+        const result = await getReachCredits(id)
         
         
         if (!result.errors) {

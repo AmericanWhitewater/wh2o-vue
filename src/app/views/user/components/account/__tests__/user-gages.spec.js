@@ -3,10 +3,8 @@ import UserGages from '../user-gages.vue'
 
 const mockStore = {
   state: {
-    userState: {
-      userData: {
-        data: null
-      }
+    User: {
+      data: null
     }
   }
 

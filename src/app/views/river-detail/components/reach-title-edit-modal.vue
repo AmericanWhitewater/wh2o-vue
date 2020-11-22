@@ -64,7 +64,7 @@ export default {
       // these modals are super problematic. If we don't use nextTick here,
       // the class isn't removed from `body` and you can't scroll
       this.$nextTick(() => {
-        this.$store.dispatch('RiverDetail/updateReach', this.formData)
+        this.$store.dispatch('RiverDetail/updateProperty', this.formData)
       })
     }
   },

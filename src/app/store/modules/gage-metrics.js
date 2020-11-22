@@ -1,6 +1,6 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
-import {httpClient} from "@/app/global/services"
+import {getGageMetrics} from "@/app/services"
 
 export default {
   namespaced: true,
@@ -13,26 +13,9 @@ export default {
   mutations,
   actions: {
     ...actions,
-    async getProperty(context, data) {
+    async getProperty(context, id) {
       try {
-        const result = await httpClient
-          .post('/graphql', {
-            query: `
-                {
-                  getGaugeInformationForReachID(id: ${data}) {
-                      metrics {
-                        name
-                        unit
-                        format
-                        id
-                        shortkey
-                      }
-                    }
-                  }
-              
-              `
-          })
-          .then(res => res.data.data.getGaugeInformationForReachID.metrics)
+        const result = await getGageMetrics(id)
         context.commit('DATA_SUCCESS', result)
       } catch (error) {
         context.commit('DATA_ERROR', error)

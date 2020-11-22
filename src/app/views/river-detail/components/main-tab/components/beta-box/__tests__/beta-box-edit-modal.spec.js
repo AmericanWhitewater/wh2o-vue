@@ -18,18 +18,13 @@ const mockRoute = {
   }
 }
 
-const httpClient = {
-  post: jest.fn()
-}
-
 const options = {
   propsData: {
     visible: true
   },
   mocks: {
     $store: mockStore,
-    $route: mockRoute,
-    httpClient
+    $route: mockRoute
   }
 }
 

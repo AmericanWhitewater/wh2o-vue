@@ -114,10 +114,10 @@
                   :key="index"
                   class="bx--col-sm-12 bx--col-md-8 bx--col-lg-8 bx--col-max-6 mb-spacing-lg"
                 >
-                  <ArticleCard
+                  <article-card
                     :title="$titleCase(article.title)"
                     :article-class="article.id"
-                    :article-id="article.id"
+                    :article-id="String(article.id)"
                     :author="article.author"
                     :read-time="estReadingTime(article.contents)"
                   />
@@ -179,7 +179,7 @@ import {
   ConfirmDeleteModal,
   PostUpdateModal
 } from '@/app/global/components'
-import { httpClient } from '@/app/global/services'
+import http from '@/app/http'
 export default {
   name: 'news-tab',
   components: {
@@ -251,7 +251,7 @@ export default {
     },
     async deleteAlert () {
       this.deleteModalVisible = false
-      await httpClient
+      await http
         .post('/graphql', {
           query: `
           mutation ($id:ID!) {

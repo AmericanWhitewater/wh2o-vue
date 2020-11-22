@@ -1,6 +1,6 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
-import { httpClient } from '@/app/global/services'
+import { getReachGages } from '@/app/services'
 
 export default {
   namespaced: true,
@@ -16,35 +16,7 @@ export default {
     async getProperty(context, id) {
       try {
         context.commit('DATA_REQUEST')
-        const result = await httpClient
-          .post('/graphql', {
-            query: `{
-        getGaugeInformationForReachID(id: ${id}) {
-          gauges {
-              # rc
-              # epoch
-              gauge_reading
-              gauge_metric
-              gauge_comment
-              range_comment
-              class
-              excluded
-              rmin
-              rmax
-              gauge {
-                  name
-                  id
-              }
-              updated
-              last_gauge_reading
-              last_gauge_updated
-              gauge_perfect
-              adjusted_reach_class
-            }
-          }
-        }`
-          })
-          .then(res => res.data)
+        const result = await getReachGages(id)
         
         if (!result.errors) {
           context.commit('DATA_SUCCESS', result.data.getGaugeInformationForReachID.gauges)

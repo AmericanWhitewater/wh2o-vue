@@ -66,8 +66,8 @@
   </div>
 </template>
 <script>
-import gql from 'graphql-tag'
-import { postUpdate } from '@/app/global/components/post-update-modal/services/postUpdate.js'
+
+import { postUpdate, photoFileUpdate } from '@/app/services'
 import { baseUrl } from '@/app/environment'
 
 export default {
@@ -126,7 +126,7 @@ export default {
       return this.$store.state.RiverRapids.data
     },
     user () {
-      return this.$store.state.userState.userData.data
+      return this.$store.state.User.data
     },
     fieldsDisabled () {
       return !this.user || this.formPending
@@ -149,48 +149,18 @@ export default {
     },
     async uploadFile () {
       this.formPending = true
-      await this.$apollo.mutate({
-        mutation: gql`mutation ($fileinput: PhotoFileInput!, $id:ID!, $photo: PhotoInput!) {
-          photo: photoFileUpdate(fileinput: $fileinput, id: $id, photo:$photo)
-          {
-            id,
-            caption,
-            post_id,
-            description,
-            subject,
-            photo_date,
-            author,
-            poi_name,
-            poi_id
-            image {
-                ext,
-                uri {
-                    thumb,
-                    medium,
-                    big
-                }
-            }
-          }
-        }`,
-        variables: {
-          fileinput: this.formData.fileinput,
-          id: this.formData.id,
-          photo: this.formData.photo
-        }
-      }).then(result => {
+      try {
+        const result = await photoFileUpdate(this.$apollo, this.formData)
+
         this.postFormData.id = result.data.photo.post_id
         this.postFormData.post.post_date = result.data.photo.photo_date
         this.postFormData.post.reach_id = this.$route.params.id
         this.previewUrls.push(result.data.photo.image.uri.big)
-      }).catch(err => {
+
+      } catch (error) {
         /* eslint-disable-next-line no-console */
-        console.log(err)
-        this.$emit('form:error')
-        this.$store.dispatch('Global/sendToast', {
-          title: 'Upload Failed',
-          kind: 'error'
-        })
-      })
+        console.log('error :>> ', error);
+      }
       this.formPending = false
     },
     async submitPost () {

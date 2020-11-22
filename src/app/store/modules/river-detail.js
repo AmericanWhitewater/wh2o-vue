@@ -1,7 +1,7 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
-import { httpClient } from '@/app/global/services'
 import wkx from "wkx";
+import {updateReach, getReach, updateReachGeom} from "@/app/services"
 
 export default {
   namespaced: true,
@@ -33,36 +33,11 @@ export default {
   },
   actions: {
     ...actions,
-    async updateReach(context, data) {
+    async updateProperty(context, data) {
       context.commit('DATA_REQUEST');
       try {
-        const result = await httpClient
-          .post('graphql', {
-            query: `
-              mutation ($id:ID!, $reach: ReachInput!) {
-                reachUpdate(id: $id, reach: $reach) {
-                  river,
-                  section,
-                  class,
-                  length,
-                  avggradient,
-                  maxgradient
-                }
-              }
-            `,
-            variables: {
-              id: data.id,
-              reach: {
-                river: data.river,
-                section: data.section,
-                class: data.class,
-                length: data.length,
-                avggradient: data.avggradient,
-                maxgradient: data.maxgradient
-              }
-            }
-          }).then(res => res.data)
-
+        const result = await updateReach(data)
+        
         if (result.errors) {
           context.commit('DATA_ERROR', result.errors);
         } else {
@@ -77,45 +52,7 @@ export default {
     async getProperty(context, id) {
       try {
         context.commit('DATA_REQUEST')
-        const result = await httpClient
-          .post('graphql', {
-            query: `
-              {
-                reach(id: ${id}) {
-                  avggradient
-                  id
-                  class
-                  description
-                  edited
-                  edited
-                  length
-                  maxgradient
-                  plat
-                  plon
-                  geom
-                  photo {
-                    id
-                    post {
-                      user {
-                        uname
-                        uid
-                      }
-                    }
-                    image {
-                      uri {
-                        medium
-                        big
-                      }
-                    }
-                  }
-                  river
-                  section
-                }
-              }
-            
-            `,
-          })
-          .then((res) => res.data);
+        const result = await getReach(id)
 
         if (!result.errors) {
           context.commit('DATA_SUCCESS', result.data.reach)
@@ -142,29 +79,7 @@ export default {
       }
 
       try {
-        const result = await httpClient
-          .post('graphql', {
-            query: `
-                mutation ($id:ID!, $reach: ReachInput!) {
-                  reachUpdate(id: $id, reach: $reach) {
-                    geom,
-                    ploc,
-                    tloc,
-                    length
-                  }
-                }
-              `,
-            variables: {
-              id: data.id,
-              reach: {
-                geom: data.geom,
-                ploc: data.ploc,
-                tloc: data.tloc,
-                length: data.length,
-              },
-            },
-          })
-          .then(res => res.data);
+        const result = await updateReachGeom(data)
 
         if (result.data.errors) {
           context.commit('GEOM_UPDATE_ERROR', result.data.errors);

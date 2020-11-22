@@ -91,7 +91,7 @@ export default {
       this.$emit('edit:submit')
       this.$parent.editModalVisible = false
       this.$nextTick(() => {
-        this.$store.dispatch('RiverDetail/updateReach', this.formData)
+        this.$store.dispatch('RiverDetail/updateProperty', this.formData)
       })
     }
   },

@@ -57,7 +57,7 @@
             </div>
           </div>
           <div class="bx--col-sm-12 bx--col-lg-11">
-            <template v-if="sanitizedDescription">
+            <template v-if="rapid.description && sanitizedDescription">
               <template v-if="sanitizedDescription && sanitizedDescription.length > characterLimit">
                 <div
                   class="description"

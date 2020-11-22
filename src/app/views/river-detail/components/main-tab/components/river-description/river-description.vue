@@ -83,7 +83,7 @@
 import { mapState } from 'vuex'
 // the content editor needs to be directly imported?
 import ContentEditor from '@/app/global/components/content-editor/content-editor.vue'
-import { httpClient } from '@/app/global/services'
+import http from '@/app/http'
 import PageDescription from '@/app/global/components/page-description/page-description'
 import { baseUrl } from '@/app/environment'
 
@@ -131,7 +131,7 @@ export default {
       if (this.updatedDescription) {
         this.updatePending = true
 
-        httpClient.post('/graphql', {
+        http.post('/graphql', {
           query: `
           mutation  {
             reachUpdate(id: ${this.reachId}, reach:{ description: "${this.cleanContent(this.updatedDescription)}"}) {

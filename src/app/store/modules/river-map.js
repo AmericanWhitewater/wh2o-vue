@@ -1,6 +1,6 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
-import { httpClient } from '@/app/global/services'
+import { getReachMap } from '@/app/services'
 
 export default {
   namespaced: true,
@@ -16,28 +16,7 @@ export default {
     async getProperty(context, id) {
       try {
         context.commit('DATA_REQUEST')
-        const result = await httpClient
-          .post('/graphql', {
-            query: `
-                query {
-                  
-                    reach(id: "${id}") {
-                      direction_default
-                      custom_destination
-                      county
-                      permitid
-                      permitinfo
-                      permiturl
-                      shuttledetails
-                      zipcode
-                      geom
-                    }
-
-              }
-              
-              `
-          })
-          .then(res => res.data)
+        const result = await getReachMap(id)
         
         if (!result.errors) {
         context.commit('DATA_SUCCESS', result)

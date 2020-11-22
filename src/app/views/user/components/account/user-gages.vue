@@ -44,7 +44,7 @@ export default {
   }),
   computed: {
     gages () {
-      const data = this.$store.state.userState.userData.data
+      const data = this.$store.state.User.data
 
       if (data) {
         return data.gauge_notification.length > 0 ? data.gauge_notification : null

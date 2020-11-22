@@ -1,4 +1,4 @@
-import {httpClient} from "@/app/global/services"
+import { getStateList, searchReachMap} from "@/app/services"
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations/'
 import * as type from '@/app/store/mutations/mutations-types'
@@ -86,16 +86,7 @@ export default {
     async fetchStates(context) {
       context.commit(type.DATA_LOADING)
 
-      const result = await httpClient.post('/graphql', {
-        query: `
-            query {
-                  states(first:100,aw_only:true){data{gmi,name,shortkey,type,aw_region,num_rivers,num_gauges}}
-            }
-        `
-      },
-        {
-          baseUrl: 'https://beta.americanwhitewater.org/'
-        })
+      const result = await getStateList()
 
       if (result) {
         context.commit('STATE_LIST', result.data.data.states.data
@@ -119,39 +110,7 @@ export default {
       } else {
         context.commit('MAP_SEARCH_LOADING', true)
 
-        result = await httpClient.post('graphql/', {
-          query: `
-      {
-        reachmap(first: 50, match: "${data}") {
-          data {
-            id
-            river
-            section
-            altname
-            class
-            abstract
-            geom
-            states {
-              shortkey
-            }
-            readingsummary {
-              reading
-              gauge_reading
-              updated
-              gauge_id
-              metric {
-                unit
-              }
-              gauge {
-                id
-                name
-              }
-            }
-          }
-        }
-      }      
-      `
-        }).then(res => res.data)
+        result = await searchReachMap(data)
 
       }
 

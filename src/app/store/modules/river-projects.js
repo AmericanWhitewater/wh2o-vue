@@ -1,6 +1,6 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
-import { httpClient } from '@/app/global/services'
+import { getReachProjects } from '@/app/services'
 
 export default {
   namespaced: true,
@@ -16,25 +16,7 @@ export default {
     async getProperty(context, id) {
       context.commit('DATA_REQUEST')
       try {
-        const result = await httpClient
-          .post('graphql/', {
-            query: `
-      {
-        linker(source: RIVER, id: "${id}") {
-          type
-          data {
-            __typename
-            ... on Project {
-              id
-              name
-              description
-            }
-          }
-        }
-      }
-      `
-          })
-          .then(res => res.data)
+        const result = await getReachProjects(id)
         
       context.commit('DATA_SUCCESS', result)
         

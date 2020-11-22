@@ -65,7 +65,7 @@
             </header>
             <utility-block
               v-if="loading"
-              height="400"
+              size="lg"
               state="loading"
               theme="dark"
               hide-text

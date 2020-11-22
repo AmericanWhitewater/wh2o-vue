@@ -29,14 +29,16 @@
       <template slot="secondary-button">
         Cancel
       </template>
-      <template slot="primary-button">
+      <template slot="primary-button"
+                @click.exact="submitAlert"
+                @keydown.enter="submitAlert">
         Submit
       </template>
     </cv-modal>
   </div>
 </template>
 <script>
-import { httpClient } from '@/app/global/services'
+import http from '@/app/http'
 import { shadowDomFixedHeightOffset } from '@/app/global/mixins'
 
 import { mapState } from 'vuex'
@@ -93,12 +95,12 @@ export default {
       this.$emit('update:cancelled')
     },
     submitAlert () {
+      
       if (this.user) {
         this.formData.post.user_id = this.user.uid
 
         this.$emit('update:submitted')
-
-        httpClient
+        http
           .post('/graphql', {
             query: `
             mutation ($id:ID!, $post: PostInput!) {

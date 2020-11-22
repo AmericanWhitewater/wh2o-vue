@@ -1,6 +1,7 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
-import { httpClient } from '@/app/global/services'
+import http from "@/app/http"
+import {getUser} from "@/app/services"
 
 export default {
   namespaced: true,
@@ -12,33 +13,9 @@ export default {
   mutations,
   actions: {
     ...actions,
-    async getProperty(context) {
+    getProperty: async (context) => {
       try {
-        const result = await httpClient
-          .post('graphql', {
-            query: `
-              query {
-                  me {
-                    uid
-                    email
-                    mobile_profile
-                    gauge_notification {
-                      gauge_id
-                    }
-                    permissions
-                    image {
-                      uri {
-                        big
-                        medium
-                        thumb
-                      }
-                    }
-                    uname
-                  }
-                }
-              `,
-          })
-          .then((res) => res.data);
+        const result = await getUser()
 
         context.commit('DATA_SUCCESS', result)
 
@@ -46,14 +23,14 @@ export default {
         context.commit('DATA_ERROR', error)
       }
     },
-    userForgot: data => {
+    userForgot: async (data) => {
 
-      return httpClient.post('graphql', data).then(res => res.data)
+      return http.post('graphql', data).then(res => res.data)
     },
     userLogin: data => {
       
 
-      return httpClient.post('graphql', {
+      return http.post('graphql', {
         query: `
         mutation {
             login(input: ${data}) {
@@ -67,7 +44,7 @@ export default {
     },
     userRegister: data => {
 
-      return httpClient.post('graphql', data).then(res => res.data)
+      return http.post('graphql', data).then(res => res.data)
     },
     logout: (context) => {
       context.commit('DATA_RESET');

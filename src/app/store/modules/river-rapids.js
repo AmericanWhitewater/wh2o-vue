@@ -1,6 +1,6 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
-import { httpClient } from '@/app/global/services'
+import { getRapids, updateRapid, createRapid, deleteRapid } from '@/app/services'
 import * as type from "../mutations/mutations-types"
 
 export default {
@@ -47,42 +47,7 @@ export default {
       context.commit(type.DATA_REQUEST);
 
       try {
-        const result = await httpClient
-          .post('graphql', {
-            query: `
-                  query {
-                    reach(id: ${reachId}) {
-                      pois {
-                        approximate
-                        character
-                        description
-                        difficulty
-                        distance
-                        id
-                        name
-                        rloc
-                        photo {
-                          poi_name
-                          subject
-                          description
-                          author
-                          caption
-                          photo_date
-                          image {
-                            uri {
-                              thumb
-                              medium
-                              big
-                            }
-                          }
-                          id
-                        }
-                      }
-                    }
-                  }
-                `
-          })
-          .then(res => res.data)
+        const result = await getRapids(reachId)
 
         if (!result.errors) {
           const sortedPois = result.data.reach.pois.sort(
@@ -101,39 +66,9 @@ export default {
 
     async updateRapid(context, data) {
       context.commit(type.UPDATE_REQUEST, data);
-      const point = `${data.geom.coordinates[0]} ${data.geom.coordinates[1]}`;
-
-      const payload = {
-        ...data,
-        rloc: point,
-      };
+      
       try {
-        const result = await httpClient.post('graphql', {
-          query: `
-              mutation ($id:ID!, $poi: POIInput!) {
-                poiUpdate(id: $id, poi: $poi) {
-                  id,
-                  name,
-                  rloc,
-                  description,
-                  difficulty,
-                  distance,
-                  character
-                }
-              }
-            `,
-          variables: {
-            id: payload.id,
-            poi: {
-              name: payload.name,
-              rloc: payload.rloc,
-              description: payload.description,
-              difficulty: payload.difficulty,
-              distance: payload.distance,
-              character: payload.character
-            }
-          }
-        }).then(res => res.data)
+        const result = await updateRapid(data)
 
         if (!result.errors) {
           context.commit('UPDATE_SUCCESS', result.data.poiUpdate);
@@ -150,40 +85,8 @@ export default {
     async createRapid(context, data) {
       context.commit('CREATE_REQUEST', data);
 
-      const payload = {
-        ...data,
-        rloc: `${data.geom.coordinates[0]} ${data.geom.coordinates[1]}`,
-      };
-
       try {
-        const result = await httpClient.post('graphql', {
-          query: `
-                mutation ($id:ID!, $poi: POIInput!) {
-                  poiUpdate(id: $id, poi: $poi) {
-                    id,
-                    name,
-                    rloc,
-                    description,
-                    difficulty,
-                    distance,
-                    character
-                  }
-                }
-              `,
-          variables: {
-            id: payload.id,
-            poi: {
-              reach_id: payload.reach_id,
-              name: payload.name,
-              rloc: payload.rloc,
-              description: payload.description,
-              difficulty: payload.difficulty,
-              distance: payload.distance,
-              character: payload.character || [],
-              approximate: false // change this if approximate is added to form
-            }
-          }
-        }).then(res => res.data)
+        const result = await createRapid(data)
 
         if (!result.errors) {
           context.commit('CREATE_SUCCESS', result.data.poiUpdate);
@@ -199,18 +102,7 @@ export default {
     async deleteRapid(context, data) {
       context.commit('DELETE_REQUEST', data);
       try {
-        const result = await httpClient.post('graphql', {
-          query: `
-            mutation ($id:ID!) {
-              poiDelete(id: $id) {
-                id
-              }
-            }
-          `,
-          variables: {
-            id: data
-          }
-        }).then(res => res.data)
+        const result = await deleteRapid(data)
         if (!result.errors) {
           context.commit('DELETE_SUCCESS', result.data.poiDelete);
         } else {
