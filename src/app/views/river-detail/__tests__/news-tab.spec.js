@@ -22,6 +22,9 @@ const mockStore = {
       error: null,
       data: null,
       loading: null
+    },
+    Global: {
+      editMode: false
     }
   },
   dispatch: jest.fn()
