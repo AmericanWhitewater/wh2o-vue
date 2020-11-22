@@ -74,6 +74,11 @@ export default {
           context.commit('UPDATE_SUCCESS', result.data.poiUpdate);
         } else {
           context.commit(type.DATA_ERROR, result.errors);
+          context.dispatch('Global/sendToast', {
+            kind: 'error',
+            title: 'Unauthorized',
+            text: 'You are not authorized to access edit features.'
+          })
         }
 
       } catch (error) {

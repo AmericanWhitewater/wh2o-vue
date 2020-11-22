@@ -11,14 +11,14 @@
       id="new-comment"
       kind="secondary"
       size="small"
-      class="mb-spacing-lg"
+      class="mb-spacing-xl"
       :disabled="loading"
       @click.exact="openModal"
       @keydown.enter="openModal"
     >
       New Comment
     </cv-button>
-    <template v-if="loading">
+    <template v-if="loading && !comments">
       <utility-block state="loading" />
     </template>
     <template v-else-if="comments">
@@ -46,7 +46,8 @@
     <post-update-modal
       :visible="postUpdateModalVisible"
       kind="COMMENT"
-      title="New Comment"
+      size="large"
+      :title="activeEditComment ? 'Edit Comment' : 'New Comment'"
       :reach-id="$route.params.id"
       :post="activeEditComment"
       @update:submitted="postUpdateModalVisible = false"

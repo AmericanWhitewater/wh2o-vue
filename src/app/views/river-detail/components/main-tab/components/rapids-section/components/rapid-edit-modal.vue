@@ -195,18 +195,18 @@ export default {
     descriptionUpdated (description) {
       this.formData.description = description
     },
-    submitForm () {
+    async submitForm () {
       this.$emit('edit:submitted')
       let message
       // different actions for *new* POI vs. updated POI
       if (this.activeRapid) {
-        this.$store.dispatch('RiverRapids/updateRapid', {
+        await this.$store.dispatch('RiverRapids/updateRapid', {
           id: this.activeRapid.id,
           ...this.formData
         })
         message = 'Rapid Edited'
       } else { // creating a new rapid
-        this.$store.dispatch('RiverRapids/createRapid', {
+        await this.$store.dispatch('RiverRapids/createRapid', {
           id: this.$randomId(),
           reach_id: this.reach.id,
           ...this.formData
@@ -214,8 +214,7 @@ export default {
         message = 'Rapid Created'
       }
 
-      setTimeout(() => {
-        this.$emit('edit:success')
+      this.$emit('edit:success')
         this.$store.dispatch('Global/sendToast', {
           title: message,
           kind: 'success',
@@ -224,7 +223,6 @@ export default {
           action: false,
           autoHide: true
         })
-      })
     },
     updateFormDataGeom (newCoords) {
       this.formData.geom.coordinates = [newCoords.lng, newCoords.lat]

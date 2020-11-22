@@ -5,7 +5,7 @@
         <hr >
         <h2 class="mb-spacing-md">Alerts</h2>
         <cv-button
-          class="mb-spacing-md"
+          class="mb-spacing-xl"
           size="small"
           :disabled="alertsLoading"
           @click.exact="initiatePostUpdate()"

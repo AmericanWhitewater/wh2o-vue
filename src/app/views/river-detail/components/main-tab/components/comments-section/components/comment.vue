@@ -18,7 +18,8 @@
           class="date mb-spacing-xs"
           v-text="formatDate(comment.post_date, 'll')"
         />
-        <template>
+        <hr v-if="!editMode" >
+        <template v-if="editMode">
           <cv-button
             v-if="canEdit(comment)"
             size="small"
@@ -38,6 +39,8 @@
           >
             Delete
           </cv-button>
+          <hr v-if="editMode" >
+
         </template>
       </div>
     </div>
@@ -49,11 +52,11 @@
         />
       </div>
     </div>
-    <div class="bx--row">
+    <!-- <div class="bx--row">
       <div class="bx--col bx--offset-md-6">
         <a href="#">Report Comment</a>
       </div>
-    </div>
+    </div> -->
     <cv-modal
       ref="modalWrapper"
       :visible="deleteCommentModalVisible"
@@ -103,6 +106,9 @@ export default {
     }
   }),
   computed: {
+    editMode() {
+      return this.$store.state.Global.editMode
+    },
     user () {
       return this.$store.state.User.data
     },
