@@ -67,7 +67,7 @@ export default {
           this.$store.dispatch("Global/closeToast", 0);
         }, 5000);
       } else {
-        clearInterval(closeTimer);
+        clearTimeout(closeTimer);
       }
     },
     updateAvailable(update) {
