@@ -41,7 +41,8 @@ export default {
         if (result.errors) {
           context.commit('DATA_ERROR', result.errors);
         } else {
-          context.commit('DATA_SUCCESS', result.reachUpdate);
+
+          context.commit('DATA_SUCCESS', result.data.reachUpdate);
         }
       } catch (error) {
         context.commit('DATA_ERROR', error);

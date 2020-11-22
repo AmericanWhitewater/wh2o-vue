@@ -4,7 +4,7 @@
       <div class="bx--grid">
         <div class="bx--row">
           <div class="bx--col">
-            <header v-if="loading" class="bx--tile">
+            <header v-if="loading && !reach" class="bx--tile">
               <div>
                 <cv-skeleton-text />
                 <cv-skeleton-text heading />
@@ -64,7 +64,7 @@
               </div>
             </header>
             <utility-block
-              v-if="loading"
+              v-if="loading && !reach"
               size="lg"
               state="loading"
               theme="dark"

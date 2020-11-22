@@ -1,7 +1,7 @@
 <template>
   <div class="page-banner">
     <div class="map-wrapper">
-      <template v-if="reachGeom">
+      <template v-if="reach && reachGeom">
         <div
           id="nwi-map-banner-container"
         >
