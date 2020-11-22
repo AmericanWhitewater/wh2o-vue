@@ -17,7 +17,6 @@ export default {
 
       try {
         const result = await getReachNews(id)
-
         if (!result.errors) {
           const sortedArticles = result.data.getRiverArticles.articles.sort((a, b) =>
             moment(b.posted_date, 'YYYY-MM-DD HH:mm:ss') - moment(a.posted_date, 'YYYY-MM-DD HH:mm:ss')

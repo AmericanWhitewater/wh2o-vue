@@ -1,14 +1,9 @@
 <template>
   <div class="news-tab">
-    <layout
-      name="layout-full-width"
-      class="mb-lg"
-    >
+    <layout name="layout-full-width" class="mb-lg">
       <template #main>
-        <hr>
-        <h2 class="mb-spacing-md">
-          Alerts
-        </h2>
+        <hr >
+        <h2 class="mb-spacing-md">Alerts</h2>
         <cv-button
           class="mb-spacing-md"
           size="small"
@@ -18,7 +13,7 @@
         >
           New Alert
         </cv-button>
-        <template v-if="alertsLoading">
+        <template v-if="alertsLoading && !alerts">
           <utility-block
             class="alerts-loading"
             state="loading"
@@ -35,15 +30,17 @@
               <cv-tile>
                 <div class="alert-wrapper">
                   <header class="bx--row">
-                    <div class="bx--col-sm-12 bx--col-md-8 mb-spacing-md">
-                      <h6>
+                    <div class="bx--col-sm-12 bx--col-md-8 mb-spacing-xs">
+                      <h4> {{ alert.title }} </h4>
+                      <div class="bx--type-caption">
                         {{ formatDate(alert.post_date, "ll") }}
                         <template v-if="alert.user">
                           - {{ alert.user.contact.name }}
                         </template>
-                      </h6>
+                      </div>
+                      <hr v-if="!editMode" >
                     </div>
-                    <div class="bx--col">
+                    <div v-if="editMode" class="bx--col">
                       <cv-button
                         v-if="canEdit(alert)"
                         size="small"
@@ -62,17 +59,12 @@
                       >
                         Delete
                       </cv-button>
+                      <hr v-if="editMode" >
                     </div>
                   </header>
-                  <hr>
                   <main class="alert-detail">
-                    <p
-                      v-if="alert.detail"
-                      v-text="alert.detail"
-                    />
-                    <p v-else>
-                      This alert has no message
-                    </p>
+                    <p v-if="alert.detail" v-text="alert.detail" />
+                    <p v-else>This alert has no message</p>
                   </main>
                   <!-- <footer>
                     <cv-button size="small" kind="tertiary" >Share Alert</cv-button>
@@ -96,10 +88,8 @@
       <template #main>
         <section class="map-tab">
           <div class="articles">
-            <hr>
-            <h2 class="mb-spacing-sm">
-              Articles
-            </h2>
+            <hr >
+            <h2 class="mb-spacing-sm">Articles</h2>
             <div v-if="articlesLoading">
               <utility-block
                 class="articles-loading"
@@ -170,140 +160,126 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import UtilityBlock from '@/app/global/components/utility-block/utility-block'
-import { objectPermissionsHelpersMixin } from '@/app/global/mixins'
-import { Layout } from '@/app/global/layout'
+import { mapState } from "vuex";
+import UtilityBlock from "@/app/global/components/utility-block/utility-block";
+import { objectPermissionsHelpersMixin } from "@/app/global/mixins";
+import { Layout } from "@/app/global/layout";
 import {
   ArticleCard,
   ConfirmDeleteModal,
-  PostUpdateModal
-} from '@/app/global/components'
-import http from '@/app/http'
+  PostUpdateModal,
+} from "@/app/global/components";
+import { deletePost } from "@/app/services";
 export default {
-  name: 'news-tab',
+  name: "news-tab",
   components: {
     UtilityBlock,
     Layout,
     ArticleCard,
     ConfirmDeleteModal,
-    PostUpdateModal
+    PostUpdateModal,
   },
   mixins: [objectPermissionsHelpersMixin],
   data: () => ({
-    updateModalTitle: 'New Alert',
-    successToastTitle: 'Alert Submitted',
+    updateModalTitle: "New Alert",
+    successToastTitle: "Alert Submitted",
     postUpdateModalVisible: false,
     deleteModalVisible: false,
-    activeAlertId: ''
+    activeAlertId: "",
   }),
   computed: {
     ...mapState({
-      articlesLoading: state => state.RiverNews.loading,
-      articlesError: state => state.RiverNews.error,
-      articles: state => state.RiverNews.data,
-      alertsLoading: state => state.RiverAlerts.loading,
-      alertsError: state => state.RiverAlerts.error,
-      alerts: state => state.RiverAlerts.data,
-      user: state => state.User.data
+      articlesLoading: (state) => state.RiverNews.loading,
+      articlesError: (state) => state.RiverNews.error,
+      articles: (state) => state.RiverNews.data,
+      alertsLoading: (state) => state.RiverAlerts.loading,
+      alertsError: (state) => state.RiverAlerts.error,
+      alerts: (state) => state.RiverAlerts.data,
+      user: (state) => state.User.data,
+      editMode: state => state.Global.editMode
     }),
-    activeAlert () {
+    activeAlert() {
       if (this.activeAlertId) {
-        return this.alerts.find(a => a.id === this.activeAlertId)
+        return this.alerts.find((a) => a.id === this.activeAlertId);
       }
-      return null
+      return null;
     },
-    deleteTitle () {
-      return this.activeAlert?.title || 'Untitled Alert'
-    }
+    deleteTitle() {
+      return this.activeAlert?.title || "Untitled Alert";
+    },
   },
   methods: {
-    initiatePostUpdate (alertId) {
+    initiatePostUpdate(alertId) {
       if (this.user) {
-        this.updateModalTitle = alertId ? 'Edit Alert' : 'New Alert'
-        this.successToastTitle = alertId ? 'Alert Revised' : 'Alert Submitted'
-        this.activeAlertId = alertId || null
-        this.postUpdateModalVisible = true
+        this.updateModalTitle = alertId ? "Edit Alert" : "New Alert";
+        this.successToastTitle = alertId ? "Alert Revised" : "Alert Submitted";
+        this.activeAlertId = alertId || null;
+        this.postUpdateModalVisible = true;
       }
     },
-    handleUpdateSuccess () {
-      this.postUpdateModalVisible = false
-      this.$store.dispatch('Global/sendToast', {
+    async handleUpdateSuccess() {
+      this.postUpdateModalVisible = false;
+      await this.$store.dispatch("RiverNews/getProperty", this.$route.params.id);
+      await this.$store.dispatch("RiverAlerts/getProperty", this.$route.params.id);
+      this.$store.dispatch("Global/sendToast", {
         title: this.successToastTitle,
-        kind: 'success',
+        kind: "success",
         override: true,
         contrast: false,
         action: false,
-        autoHide: true
-      })
-      this.$store.dispatch(
-        'RiverNews/getProperty',
-        this.$route.params.id
-      )
+        autoHide: true,
+      });
     },
-    initiateAlertDelete (alertId) {
-      this.activeAlertId = alertId
-      this.deleteModalVisible = true
+    initiateAlertDelete(alertId) {
+      this.activeAlertId = alertId;
+      this.deleteModalVisible = true;
     },
-    deleteCancelled () {
-      this.activeAlertId = null
-      this.deleteModalVisible = false
+    deleteCancelled() {
+      this.activeAlertId = null;
+      this.deleteModalVisible = false;
     },
-    async deleteAlert () {
-      this.deleteModalVisible = false
-      await http
-        .post('/graphql', {
-          query: `
-          mutation ($id:ID!) {
-            postDelete(id: $id)  {
-            id
-          }
-        }`,
-          variables: {
-            id: this.activeAlertId
-          }
-        })
-        .then(r => {
-          if (!r.errors) {
-            this.$store.dispatch('Global/sendToast', {
-              title: 'Alert Deleted',
-              kind: 'success',
-              override: true,
-              contrast: false,
-              action: false,
-              autoHide: true
-            })
-            this.$store.dispatch(
-              'RiverAlerts/getProperty',
-              this.$route.params.id
-            )
-          }
-        })
-        .catch(e => {
-          // eslint-disable-next-line no-console
-          console.log('e :', e)
-        })
-    },
-    loadData () {
-      if (!this.articles) {
-        this.$store.dispatch(
-        'RiverNews/getProperty',
-        this.$route.params.id
-      )
-      }
+    async deleteAlert() {
+      this.deleteModalVisible = false;
 
-      if (!this.alerts) {
-        this.$store.dispatch(
-          'RiverAlerts/getProperty',
-          this.$route.params.id
-        )
+      try {
+        const result = await deletePost(this.activeAlertId);
+
+        if (!result.errors) {
+          this.$store.dispatch("Global/sendToast", {
+            title: "Alert Deleted",
+            kind: "success",
+            override: true,
+            contrast: false,
+            action: false,
+            autoHide: true,
+          });
+          this.$store.dispatch(
+            "RiverAlerts/getProperty",
+            this.$route.params.id
+          );
+        }
+      } catch (error) {
+        this.$store.dispatch("Global/sendToast", {
+          title: "Delete Failed",
+          kind: "error",
+          override: true,
+          contrast: false,
+          action: false,
+          autoHide: true,
+        });
       }
     }
   },
-  created () {
-    this.loadData()
-  }
-}
+  created() {
+    if (!this.articles) {
+        this.$store.dispatch("RiverNews/getProperty", this.$route.params.id);
+      }
+
+      if (!this.alerts) {
+        this.$store.dispatch("RiverAlerts/getProperty", this.$route.params.id);
+      }
+  },
+};
 </script>
 <style lang="scss" scoped>
 .news-tab {
@@ -319,7 +295,7 @@ export default {
       }
     }
     footer {
-      padding-top:1rem;
+      padding-top: 1rem;
     }
   }
 }

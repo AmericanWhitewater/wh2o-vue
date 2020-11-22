@@ -1,6 +1,6 @@
 import http from "@/app/http"
 
-export async function getRiverNews(id) {
+export async function getReachNews(id) {
   return http
     .post('graphql', {
       query: `

@@ -1,4 +1,5 @@
 export * from "./createRapid"
+export * from "./deletePost"
 export * from "./deleteRapid"
 export * from "./getGageMetrics"
 export * from "./getGageReadings"
