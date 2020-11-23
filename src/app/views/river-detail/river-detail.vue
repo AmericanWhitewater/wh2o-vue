@@ -130,7 +130,7 @@
                 >
                   <component :is="editMode ? 'EditOff20' : 'Edit20'" />
                   <span v-if="editMode" class="pl-spacing-2xs">
-                    Disable Edit Mode
+                    Editing
                   </span>
                 </cv-button>
                 <cv-button
