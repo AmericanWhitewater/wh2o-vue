@@ -14,11 +14,10 @@
             loading
           </template>
           <template v-else-if="data">
-            {{ data }}
-            <!-- <div v-for="(project, index) in data.rows" :key="index">
-             <h3> {{ project.name }} </h3>
-             <p> {{ project.description }} </p>
-           </div> -->
+            <div v-for="(accidents, index) in data" :key="index">
+             <h3> {{ accidents.state }} </h3>
+             <p> {{ accidents.location }} </p>
+           </div>
           </template>
           <template v-else>
             error
@@ -41,7 +40,7 @@ export default {
   },
   created () {
     if (!this.data) {
-      this.$store.dispatch('Accidents/getProperty', 'accidents')
+      this.$store.dispatch('Accidents/getProperty')
     }
   }
 }

@@ -1,6 +1,7 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
-import {getAffiliates} from "@/app/services"
+import { getReachCredits } from '@/app/services'
+
 export default {
   namespaced: true,
   state: {
@@ -10,19 +11,20 @@ export default {
   },
   mutations,
   actions: {
-    ...actions, 
-    async getProperty(context) {
+    ...actions,
+    async getProperty(context, id) {
       try {
-        const result = await getAffiliates()
+        context.commit('DATA_REQUEST')
+        const result = await getReachCredits(id)
         
-        if (result.data) {
-          context.commit('DATA_SUCCESS', result.data.affiliates.data)
-        } else {
-          context.commit('DATA_ERROR', result.errors)
+        
+        if (!result.errors) {
+          context.commit('DATA_SUCCESS', result)
         }
-
+        
       } catch (error) {
         context.commit('DATA_ERROR', error)
+        // console.log('error :>> ', error);
       }
     }
   }

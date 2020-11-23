@@ -15,9 +15,11 @@
           </template>
           <template v-else-if="data">
             <div
-              v-for="(project, index) in data.rows"
+              v-for="(project, index) in data"
               :key="index"
+              class="mb-md"
             >
+              <hr>
               <h3> {{ project.name }} </h3>
               <p> {{ project.description }} </p>
             </div>

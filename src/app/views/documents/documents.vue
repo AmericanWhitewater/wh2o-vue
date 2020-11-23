@@ -14,11 +14,11 @@
             loading
           </template>
           <template v-else-if="data">
-            {{ data }}
-            <!-- <div v-for="(project, index) in data.rows" :key="index">
-             <h3> {{ project.name }} </h3>
-             <p> {{ project.description }} </p>
-           </div> -->
+            <div v-for="(document, index) in data" :key="index" class="mb-spacing-lg">
+              <hr>
+             <p> {{ document.uri }} </p>
+             <p> {{ document.description }} </p>
+           </div>
           </template>
           <template v-else>
             error

@@ -16,7 +16,7 @@
           <template v-else-if="data">
             <div v-for="(affiliate, index) in data" :key="index" class="mb-spacing-lg">
               <hr>
-             <h3> {{ affiliate.last }} </h3>
+             <h3> {{ affiliate.name }} </h3>
              <p> {{ affiliate.url }} </p>
              <p> {{ affiliate.abstract }} </p>
            </div>
