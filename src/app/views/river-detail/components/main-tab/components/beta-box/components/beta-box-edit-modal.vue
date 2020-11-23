@@ -105,6 +105,9 @@ export default {
     if (this.reach) {
       this.formData = {...this.reach}
     }
+  },
+  beforeDestroy() {
+    document.body.classList.remove('bx--body--with-modal-open')
   }
 }
 </script>
