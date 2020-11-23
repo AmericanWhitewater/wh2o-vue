@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 import { appLocalStorage } from "@/app/global/services";
-
+import {laravelDeploy} from "@/app/environment"
 import staticRoutes from '@/app/views/static-routes/static-routes'
 
 import gageDetailRoutes from './gage-detail.routes'
@@ -33,8 +33,8 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode: "history",
-  base: "content/River/view",
+  mode: laravelDeploy && "history",
+  base: laravelDeploy && "content/River/view",
   routes,
   /**
    *
