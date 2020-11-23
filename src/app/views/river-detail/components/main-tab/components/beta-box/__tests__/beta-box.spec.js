@@ -7,10 +7,19 @@ const river = {
   loading: null
 }
 
+const $route = {
+  params: {
+    id: '12345'
+  }
+}
+
 const mockStore = {
   state: {
     Global: {
       editMode: null
+    },
+    RiverEvents: {
+      data: null
     },
     RiverDetail: river,
     RiverGages: {
@@ -21,13 +30,15 @@ const mockStore = {
     GageMetrics: {
       data: [{ name: 'Flow', unit: 'cfs', format: '%4.0f', id: '2', shortkey: 'flow', gauge: { id: '2' } }]
     }
-  }
+  },
+  dispatch: jest.fn()
 }
 
 const options = {
   mocks: {
     $store: mockStore,
-    $titleCase: jest.fn()
+    $titleCase: jest.fn(),
+    $route
   }
 }
 

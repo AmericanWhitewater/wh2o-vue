@@ -1,6 +1,6 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
-import { getReachCredits } from '@/app/services'
+import { getReachReleases } from '@/app/services'
 
 export default {
   namespaced: true,
@@ -12,10 +12,10 @@ export default {
   mutations,
   actions: {
     ...actions,
-    async getProperty(context, id) {
+    async getReleases(context, id) {
       try {
         context.commit('DATA_REQUEST')
-        const result = await getReachCredits(id)
+        const result = await getReachReleases(id)
         
         
         if (!result.errors) {

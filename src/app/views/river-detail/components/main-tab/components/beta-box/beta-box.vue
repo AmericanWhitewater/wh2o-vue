@@ -180,7 +180,8 @@ export default {
       river: state => state.RiverDetail.data,
       editMode: state => state.Global.editMode,
       gages: state => state.RiverGages.data,
-      metrics: state => state.GageMetrics.data
+      metrics: state => state.GageMetrics.data,
+      releases: state => state.RiverEvents.data
     }),
     editBetaBoxKey () {
       return `editBetaBox${this.reachId}`
@@ -232,6 +233,9 @@ export default {
       }
       return null
     }
+  },
+  created() {
+    this.$store.dispatch('RiverEvents/getReleases', this.reachId)
   }
 }
 </script>
