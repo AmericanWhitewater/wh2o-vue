@@ -12,6 +12,9 @@ const mockStore = {
   state: {
     Global: {
       editMode: false
+    },
+    User: {
+      data: null
     }
   }
 }

@@ -16,10 +16,7 @@
             class="mr-spacing-md rapid-meta"
             v-text="`Class: ${rapid.difficulty}`"
           />
-          <span
-            class="rapid-meta"
-            v-text="`Distance: ${rapid.distance} mi`"
-          />
+          <span class="rapid-meta" v-text="`Distance: ${rapid.distance} mi`" />
         </div>
         <rapid-icon-bar
           :character="rapid.character"
@@ -27,17 +24,15 @@
           @rapid:delete="deleteModalVisible = true"
         />
       </div>
-      <hr class="ui-03">
+      <hr class="ui-03" >
       <template>
-        <div
-          class="bx--row"
-        >
-          <div class="bx--col-sm-12 bx--col-lg-5">
+        <div class="bx--row">
+          <div
+            v-if="rapid.photo && rapid.photo.image"
+            class="bx--col-sm-12 bx--col-lg-5"
+          >
             <div class="outside">
-              <div
-                v-if="rapid.photo && rapid.photo.image"
-                class="inside thumbnail pb-spacing-sm"
-              >
+              <div class="inside thumbnail pb-spacing-sm">
                 <img
                   :src="`${baseUrl}${rapid.photo.image.uri.medium}`"
                   :alt="rapid.name"
@@ -45,7 +40,10 @@
               </div>
               <div class="inside">
                 <cv-button
-                  v-if="sanitizedDescription && sanitizedDescription.length > characterLimit"
+                  v-if="
+                    sanitizedDescription &&
+                    sanitizedDescription.length > characterLimit
+                  "
                   size="small"
                   kind="tertiary"
                   class="mb-spacing-lg"
@@ -58,28 +56,53 @@
           </div>
           <div class="bx--col-sm-12 bx--col-lg-11">
             <template v-if="rapid.description && sanitizedDescription">
-              <template v-if="sanitizedDescription && sanitizedDescription.length > characterLimit">
+              <template
+                v-if="
+                  sanitizedDescription &&
+                  sanitizedDescription.length > characterLimit
+                "
+              >
                 <div
                   class="description"
                   v-html="sanitizedDescription.slice(0, characterLimit) + '...'"
                 />
                 <div
                   v-if="sanitizedDescription && readMoreActive"
-                  v-html="sanitizedDescription.slice(characterLimit, sanitizedDescription.length * 2)"
+                  v-html="
+                    sanitizedDescription.slice(
+                      characterLimit,
+                      sanitizedDescription.length * 2
+                    )
+                  "
                 />
               </template>
               <template v-else>
-                <div
-                  class="description"
-                  v-html="sanitizedDescription"
-                />
+                <div class="description" v-html="sanitizedDescription" />
               </template>
             </template>
             <template v-else>
               <div class>
                 <p>
                   This rapid does not have a description.
-                  <br>Log in to add one.
+                   <br >
+                  <template v-if="!user">
+                    <cv-button kind="secondary"
+                               size="small"
+                               class="mt-spacing-md"
+                               @keydown.enter="$router.push('/user/access/login')"
+                               @click.exact="$router.push('/user/access/login')">
+                      Log in to add one.
+                    </cv-button>
+                  </template>
+                  <template v-if="user && !editMode">
+                    <cv-button kind="secondary"
+                               size="small"
+                               class="mt-spacing-md"
+                               @keydown.enter="handleToggleEditMode"
+                               @click.exact="handleToggleEditMode">
+                      Add Description
+                    </cv-button>
+                  </template>
                 </p>
               </div>
             </template>
@@ -98,77 +121,82 @@
   </div>
 </template>
 <script>
-import RapidIconBar from './rapid-icon-bar'
-import ConfirmDeleteModal from '@/app/global/components/confirm-delete-modal/confirm-delete-modal.vue'
-import { baseUrl } from '@/app/environment'
+import RapidIconBar from "./rapid-icon-bar";
+import ConfirmDeleteModal from "@/app/global/components/confirm-delete-modal/confirm-delete-modal.vue";
+import { baseUrl } from "@/app/environment";
 
 export default {
-  name: 'rapids-item',
+  name: "rapids-item",
   components: {
     RapidIconBar,
-    ConfirmDeleteModal
+    ConfirmDeleteModal,
   },
   props: {
     rapid: {
       type: Object,
-      required: true
+      required: true,
     },
     mode: {
       type: String,
-      default: 'grid'
+      default: "grid",
     },
     firstPOI: {
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   data: () => ({
     deleteModalVisible: false,
     showConfirmation: false,
     readMoreActive: false,
     characterLimit: 1000,
-    baseUrl: baseUrl
+    baseUrl: baseUrl,
   }),
   computed: {
-    /**
-     * @todo make this a globally available func
-     *
-     */
-    sanitizedDescription () {
+    editMode() {
+      return this.$store.state.Global.editMode;
+    },
+    user() {
+      return this.$store.state.User.data;
+    },
+    sanitizedDescription() {
       if (this.rapid) {
         let content = this.$sanitize(this.rapid.description, {
           disallowedAttributes: {
-            '*': ['style']
-          }
-        })
+            "*": ["style"],
+          },
+        });
 
-        content = this.$replaceText(content, '\n\n', '<br/><br/>')
-        content = this.$replaceText(content, '\n', '')
-        content = this.$replaceText(content, '\r', '')
-        content = this.$replaceText(content, '\t', '')
+        content = this.$replaceText(content, "\n\n", "<br/><br/>");
+        content = this.$replaceText(content, "\n", "");
+        content = this.$replaceText(content, "\r", "");
+        content = this.$replaceText(content, "\t", "");
 
-        const legacyUrl = 'http://www.americanwhitewater.org/rivers/id/'
-        const updatedUrl = '/#/river-detail/'
+        const legacyUrl = "http://www.americanwhitewater.org/rivers/id/";
+        const updatedUrl = "/#/river-detail/";
 
-        content = this.$replaceText(content, legacyUrl, updatedUrl)
+        content = this.$replaceText(content, legacyUrl, updatedUrl);
 
-        return content
+        return content;
       }
-      return null
-    }
+      return null;
+    },
   },
   methods: {
-    triggerEdit () {
-      this.$emit('rapid:edit', this.rapid.id)
+    triggerEdit() {
+      this.$emit("rapid:edit", this.rapid.id);
     },
-    deleteRapid (rapid) {
-      this.deleteModalVisible = false
-      this.$store.dispatch('RiverRapids/deleteRapid', rapid.id)
+    deleteRapid(rapid) {
+      this.deleteModalVisible = false;
+      this.$store.dispatch("RiverRapids/deleteRapid", rapid.id);
+    },
+    handleToggleEditMode() {
+      this.$store.dispatch("Global/toggleEditMode", !this.editMode);
+    },
+  },
+  created() {
+    if (this.firstPOI) {
+      this.rapidExpanded = true;
     }
   },
-  created () {
-    if (this.firstPOI) {
-      this.rapidExpanded = true
-    }
-  }
-}
+};
 </script>

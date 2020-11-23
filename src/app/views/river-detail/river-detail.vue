@@ -97,6 +97,7 @@
             <div class="button-toolbar">
               <div class="button-wrapper">
                 <cv-button
+                  v-if="!editMode"
                   id="bookmark-toggle"
                   kind="ghost"
                   @click.exact="toggleBookmark"
@@ -123,13 +124,17 @@
                 <cv-button
                   v-if="user"
                   id="edit-mode-toggle"
-                  kind="ghost"
+                  :kind="editMode ? 'primary' : 'ghost'"
                   @click.exact="toggleEditMode"
                   @keydown.enter="toggleEditMode"
                 >
                   <component :is="editMode ? 'EditOff20' : 'Edit20'" />
+                  <span v-if="editMode" class="pl-spacing-2xs">
+                    Disable Edit Mode
+                  </span>
                 </cv-button>
                 <cv-button
+                  v-if="!editMode"
                   kind="ghost"
                   @click.exact="switchTab('news')"
                   @keydown.exact="switchTab('news')"
