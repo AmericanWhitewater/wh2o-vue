@@ -7,13 +7,13 @@
       :expanded="firstPOI"
     >
       <div class="top-bar">
-        <div class="title mb-spacing-xs">
+        <div class="title">
           <h4 class="mb-spacing-xs">
             {{ rapid.name }}
           </h4>
           <span
             v-if="rapid.difficulty && rapid.difficulty !== 'N/A'"
-            class="mr-spacing-md rapid-meta"
+            class="mr-spacing-xs rapid-meta"
             v-text="`Class: ${rapid.difficulty}`"
           />
           <span class="rapid-meta" v-text="`Distance: ${rapid.distance} mi`" />
@@ -26,17 +26,22 @@
       </div>
       <hr class="ui-03" >
       <template>
-        <div class="bx--row">
+        <div class="bx--row pt-spacing-xs">
           <div
-            v-if="rapid.photo && rapid.photo.image"
             class="bx--col-sm-12 bx--col-lg-5"
           >
             <div class="outside">
-              <div class="inside thumbnail pb-spacing-sm">
+              <div v-if="rapid.photo && rapid.photo.image" class="inside thumbnail pb-spacing-sm">
                 <img
                   :src="`${baseUrl}${rapid.photo.image.uri.medium}`"
                   :alt="rapid.name"
                 >
+              </div>
+              <div v-else class="inside thumbnail pb-spacing-sm">
+                <div class="empty-block">
+                  <h6>No Image</h6>
+                  <!-- <a class="bx--link">Upload Media</a> -->
+                </div>
               </div>
               <div class="inside">
                 <cv-button

@@ -13,6 +13,17 @@
       min-height: 250px;
       max-height: 250px;
       margin-bottom: 1rem;
+
+      .empty-block {
+        height: 250px;
+        width: 100%;
+        background-color: $ui-03;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column nowrap;
+      }
+
       img {
         object-fit: cover;
         height: 250px;
