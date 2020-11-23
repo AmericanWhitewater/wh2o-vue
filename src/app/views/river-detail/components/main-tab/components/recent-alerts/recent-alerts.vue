@@ -2,6 +2,7 @@
   <aside
     v-if="loading || anythingPresent"
     v-view.once="loadData"
+    class="mb-lg"
   >
     <cv-tile
       ref="contentArea"

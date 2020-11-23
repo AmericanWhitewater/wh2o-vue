@@ -195,17 +195,6 @@ export default {
         this.$store.dispatch('NewsPage/getArticleDetail', val)
       }
     },
-    article (data) {
-      if (data) {
-        const content = this.$sanitize(data.abstract, {
-          allowedTags: [],
-          allowedAttributes: {}
-        })
-        document
-          .getElementById('meta-description')
-          .setAttribute('content', content.slice(0, 150))
-      }
-    },
     frontPageNews (val) {
       if (val) {
         this.randomRelatedArticles()

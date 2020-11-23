@@ -24,5 +24,13 @@ export async function getUser() {
                 }
               `,
     })
-    .then((res) => res.data.data.me);
+    .then((res) => {
+
+      if (res.data.data.me && res.data.data.me.uid !== '0') {
+        return res.data.data.me
+      } else {
+        return null
+      }
+
+    });
 }

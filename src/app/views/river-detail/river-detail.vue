@@ -55,12 +55,8 @@
             </header>
             <header v-else class="bx--tile">
               <div>
-                <h4>
-                  Error
-                </h4>
-                <h1 class="mb-spacing-md">
-                  Something went wrong
-                </h1>
+                <h4>Error</h4>
+                <h1 class="mb-spacing-md">Something went wrong</h1>
               </div>
             </header>
             <utility-block
@@ -110,7 +106,22 @@
                     :is="bookmarked ? 'FavoriteFilled20' : 'Favorite20'"
                   />
                 </cv-button>
+                <cv-interactive-tooltip v-if="!user">
+                  <template #trigger>
+                    <cv-button
+                      id="edit-mode-toggle"
+                      kind="ghost"
+                      disabled
+                      @click.exact="toggleEditMode"
+                      @keydown.enter="toggleEditMode"
+                    >
+                      <edit-off-20 />
+                    </cv-button>
+                  </template>
+                  <template #content> Must Log In to edit. </template>
+                </cv-interactive-tooltip>
                 <cv-button
+                  v-if="user"
                   id="edit-mode-toggle"
                   kind="ghost"
                   @click.exact="toggleEditMode"
@@ -254,19 +265,24 @@ export default {
     toggleBookmark() {
       let bookmarks = appLocalStorage.getItem("wh2o-river-bookmarks");
 
-      if(bookmarks && bookmarks.length) {
-        const index = bookmarks.indexOf(Number(this.$route.params.id))
-        if(index === -1) {
-          this.bookmarked = true
-          appLocalStorage.setItem("wh2o-river-bookmarks", [...bookmarks, Number(this.$route.params.id)])
+      if (bookmarks && bookmarks.length) {
+        const index = bookmarks.indexOf(Number(this.$route.params.id));
+        if (index === -1) {
+          this.bookmarked = true;
+          appLocalStorage.setItem("wh2o-river-bookmarks", [
+            ...bookmarks,
+            Number(this.$route.params.id),
+          ]);
         } else {
-          this.bookmarked = false
-          bookmarks.splice(index,1)
-          appLocalStorage.setItem("wh2o-river-bookmarks", bookmarks)
+          this.bookmarked = false;
+          bookmarks.splice(index, 1);
+          appLocalStorage.setItem("wh2o-river-bookmarks", bookmarks);
         }
       } else {
-        this.bookmarked = true
-        appLocalStorage.setItem("wh2o-river-bookmarks", [Number(this.$route.params.id)])
+        this.bookmarked = true;
+        appLocalStorage.setItem("wh2o-river-bookmarks", [
+          Number(this.$route.params.id),
+        ]);
       }
     },
     loadReachData() {
@@ -293,7 +309,7 @@ export default {
           this.$router.replace(path);
         }
       }
-    }
+    },
   },
   created() {
     this.$router.beforeEach((to, from, next) => {
@@ -311,11 +327,11 @@ export default {
   },
   mounted() {
     this.loadReachData();
-   
+
     let bookmarks = appLocalStorage.getItem("wh2o-river-bookmarks");
 
-    if(bookmarks && bookmarks.includes(Number(this.$route.params.id))) {
-      this.bookmarked = true
+    if (bookmarks && bookmarks.includes(Number(this.$route.params.id))) {
+      this.bookmarked = true;
     }
   },
 };
