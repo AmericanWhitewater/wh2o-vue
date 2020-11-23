@@ -3,15 +3,14 @@
     <span class="header-row">
       <h4 class="mb-spacing-sm">News</h4>
       <cv-button
-        kind="ghost"
+        kind="secondary"
         size="small"
         class="mb-spacing-sm"
         :disabled="loading"
         @click.exact="$router.push(`/river-detail/${$route.params.id}/news`)"
       >
-        See more
+        See More
       </cv-button>
-
     </span>
     <template v-if="loading">
       <div class="pb-spacing-md">
