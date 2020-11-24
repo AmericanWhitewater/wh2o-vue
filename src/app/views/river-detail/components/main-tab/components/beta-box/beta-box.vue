@@ -126,6 +126,11 @@
             </td>
           </template>
         </tr>
+        <tr v-if="releases">
+          <!-- ask product for label -->
+          <td>Next Release</td>
+          <td>{{ formatDate(releases[0].event_date, 'LL') }}</td>
+        </tr>
         <tr>
           <td>Reach Info Last Updated</td>
           <td class="river-last-edited">
@@ -156,7 +161,7 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { humanReadable } from '@/app/global/services/human-readable'
 import { BetaBoxEditModal } from './components'
 
@@ -175,13 +180,17 @@ export default {
     formData: {}
   }),
   computed: {
+    ...mapGetters({
+      'releases':'RiverEvents/releases',
+      'eventsLoaded': 'RiverEvents/eventsLoaded'
+    }),
     ...mapState({
       loading: state => state.RiverDetail.loading,
       river: state => state.RiverDetail.data,
       editMode: state => state.Global.editMode,
       gages: state => state.RiverGages.data,
       metrics: state => state.GageMetrics.data,
-      releases: state => state.RiverEvents.data
+      refId: state => state.RiverDetail.refId
     }),
     editBetaBoxKey () {
       return `editBetaBox${this.reachId}`
@@ -235,7 +244,9 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('RiverEvents/getReleases', this.reachId)
+    if(!this.eventsLoaded || (this.reachId !== this.refId)) {
+      this.$store.dispatch('RiverEvents/getProperty', this.reachId)
+    }
   }
 }
 </script>

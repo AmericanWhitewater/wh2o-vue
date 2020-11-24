@@ -291,8 +291,9 @@ export default {
       }
     },
     loadReachData() {
-      this.$store.dispatch("RiverAlerts/getProperty", this.reachId);
+      this.$store.dispatch("RiverDetail/setRefId", this.reachId);
       this.$store.dispatch("RiverDetail/getProperty", this.reachId);
+      this.$store.dispatch("RiverAlerts/getProperty", this.reachId);
       this.$store.dispatch("RiverGages/getProperty", this.reachId);
       this.$store.dispatch("RiverRapids/getProperty", this.reachId);
       this.$store.dispatch("GageMetrics/getProperty", this.reachId);

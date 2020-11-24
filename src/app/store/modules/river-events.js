@@ -1,6 +1,6 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
-import { getReachReleases } from '@/app/services'
+import { getReachEvents } from '@/app/services'
 
 export default {
   namespaced: true,
@@ -12,20 +12,30 @@ export default {
   mutations,
   actions: {
     ...actions,
-    async getReleases(context, id) {
+    async getProperty(context, id) {
       try {
         context.commit('DATA_REQUEST')
-        const result = await getReachReleases(id)
-        
-        
+        const result = await getReachEvents(id)
+
         if (!result.errors) {
           context.commit('DATA_SUCCESS', result)
         }
-        
+
       } catch (error) {
         context.commit('DATA_ERROR', error)
-        // console.log('error :>> ', error);
       }
+    }
+  },
+  getters: {
+    eventsLoaded: state => {
+      return !!state.data
+    },
+    releases: state => {
+      if (state.data) {
+        return state.data.filter(item => !!item.data && item.data.length && item.data[0].category === 20)[0].data[0].dates.sort((a, b) => b.event_date.localeCompare(a.event_date))
+      }
+
+      return []
     }
   }
 }
