@@ -99,13 +99,20 @@ module.exports = {
    */
   lintOnSave: false,
 
+  /**
+   * Dev server is the configuration for the resources
+   * being served from the local machine for a test
+   * environment.
+   */
   devServer: {
+    // without this, the HMR when serving assets through the
+    // embedded docker config will break with a CORS error.
+    headers: { "Access-Control-Allow-Origin": "*" },
+
     /**
      * disables linting overlay which disrupts workflow.
      * linting reserved for pre-commit git hook.
      */
-
-    // headers: { "Access-Control-Allow-Origin": "*" },
     overlay: {
       error: false,
       warning: false,
