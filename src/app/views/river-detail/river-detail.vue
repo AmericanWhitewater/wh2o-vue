@@ -222,6 +222,20 @@ export default {
     ReachTitleEditModal,
   },
   mixins: [checkWindow],
+  metaInfo() {
+    return {
+      title: this.reach ? this.reach.river : 'River Detail',
+      titleTemplate: '%s - American Whitewater',
+      /**
+       * @todo remove HTML from description
+       */
+      // meta: [
+      //   {
+      //     description: this.reach && this.reach.description ? this.reach.description.slice(0,150) + '...' : ''
+      //   }
+      // ]
+    }
+  },
   data: () => ({
     editGeometryModalVisible: false,
     editReachTitleModalVisible: false,
@@ -260,10 +274,15 @@ export default {
       }
       return "";
     },
+    metaTitle() {
+      return 'Title'
+    }
   },
   watch: {
-    reachId() {
-      this.loadReachData();
+    reachId(val) {
+      if(val) {
+        this.loadReachData();
+      }
     },
   },
   methods: {
@@ -290,12 +309,13 @@ export default {
         ]);
       }
     },
-    loadReachData() {
+    async loadReachData() {
+      await this.$store.dispatch("RiverDetail/getProperty", this.reachId);
       this.$store.dispatch("RiverAlerts/getProperty", this.reachId);
-      this.$store.dispatch("RiverDetail/getProperty", this.reachId);
       this.$store.dispatch("RiverGages/getProperty", this.reachId);
       this.$store.dispatch("RiverRapids/getProperty", this.reachId);
       this.$store.dispatch("GageMetrics/getProperty", this.reachId);
+      this.$options.metaInfo.title = this.reach.river
     },
     toggleEditMode() {
       if (this.user) {

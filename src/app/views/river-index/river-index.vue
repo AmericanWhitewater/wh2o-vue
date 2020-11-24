@@ -112,6 +112,10 @@ export default {
       required: false
     }
   },
+  metaInfo: {
+    title: 'River Index',
+    titleTemplate: '%s - American Whitewater',
+  },
   data: () => ({
     river: null,
     featureToCenter: null,
