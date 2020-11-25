@@ -22,9 +22,15 @@ const mockStore = {
     },
     GageMetrics: {
       data: null
+    },
+    RiverEvents: {
+      data: null
     }
   },
-  dispatch: jest.fn()
+  dispatch: jest.fn(),
+  getters: {
+    'RiverEvents/releases': () => null
+  }
 }
 
 const options = {

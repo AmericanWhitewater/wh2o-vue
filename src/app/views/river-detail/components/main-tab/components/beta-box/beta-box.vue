@@ -126,10 +126,13 @@
             </td>
           </template>
         </tr>
-        <tr v-if="releases">
-          <!-- ask product for label -->
-          <td>Next Release</td>
-          <td>{{ formatDate(releases[0].event_date, 'LL') }}</td>
+        <tr v-if="releases && releases.length">
+          <td>{{ getReleaseFieldLabel(releases[0].event_date) }}</td>
+          <td>
+            <router-link :to="`/river-detail/${reachId}/flow`">
+              {{ formatDate(releases[0].event_date, 'LL') }}
+            </router-link>
+          </td>
         </tr>
         <tr>
           <td>Reach Info Last Updated</td>
@@ -161,7 +164,7 @@
   </div>
 </template>
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import { humanReadable } from '@/app/global/services/human-readable'
 import { BetaBoxEditModal } from './components'
 
@@ -180,18 +183,16 @@ export default {
     formData: {}
   }),
   computed: {
-    ...mapGetters({
-      'releases':'RiverEvents/releases',
-      'eventsLoaded': 'RiverEvents/eventsLoaded'
-    }),
     ...mapState({
       loading: state => state.RiverDetail.loading,
       river: state => state.RiverDetail.data,
       editMode: state => state.Global.editMode,
       gages: state => state.RiverGages.data,
-      metrics: state => state.GageMetrics.data,
-      refId: state => state.RiverDetail.refId
+      metrics: state => state.GageMetrics.data
     }),
+    releases() {
+      return this.$store.getters['RiverEvents/releases']
+    },
     editBetaBoxKey () {
       return `editBetaBox${this.reachId}`
     },
@@ -200,6 +201,18 @@ export default {
     }
   },
   methods: {
+    getReleaseFieldLabel(releaseDate) {
+      if(!releaseDate) return ''
+
+      const today = new Date()
+      const eventDate = new Date(releaseDate)
+
+      if(eventDate.setHours(0,0,0,0) <= today.setHours(0,0,0,0)) {
+        return 'Latest Release'
+      }
+
+      return 'Next Release'
+    },
     formatTime (input) {
 
       if(isNaN(input) )
@@ -241,11 +254,6 @@ export default {
         }
       }
       return null
-    }
-  },
-  created() {
-    if(!this.eventsLoaded || (this.reachId !== this.refId)) {
-      this.$store.dispatch('RiverEvents/getProperty', this.reachId)
     }
   }
 }

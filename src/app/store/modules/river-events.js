@@ -15,6 +15,7 @@ export default {
     async getProperty(context, id) {
       try {
         context.commit('DATA_REQUEST')
+        
         const result = await getReachEvents(id)
 
         if (!result.errors) {
@@ -27,12 +28,15 @@ export default {
     }
   },
   getters: {
-    eventsLoaded: state => {
-      return !!state.data
-    },
     releases: state => {
       if (state.data) {
-        return state.data.filter(item => !!item.data && item.data.length && item.data[0].category === 20)[0].data[0].dates.sort((a, b) => b.event_date.localeCompare(a.event_date))
+        const results = state.data.filter(item => !!item.data && item.data.length && item.data[0].category === 20)
+
+        if (results.length) { 
+          return results[0].data[0].dates.sort((a, b) => b.event_date.localeCompare(a.event_date))
+        }
+        return []
+        
       }
 
       return []

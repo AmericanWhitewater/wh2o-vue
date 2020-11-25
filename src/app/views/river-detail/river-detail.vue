@@ -290,8 +290,9 @@ export default {
         ]);
       }
     },
-    loadReachData() {
+     loadReachData() {
       this.$store.dispatch("RiverDetail/setRefId", this.reachId);
+      this.$store.dispatch('RiverEvents/getProperty', this.reachId)
       this.$store.dispatch("RiverDetail/getProperty", this.reachId);
       this.$store.dispatch("RiverAlerts/getProperty", this.reachId);
       this.$store.dispatch("RiverGages/getProperty", this.reachId);

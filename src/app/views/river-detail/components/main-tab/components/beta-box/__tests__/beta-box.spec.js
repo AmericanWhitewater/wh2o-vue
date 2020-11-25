@@ -31,7 +31,10 @@ const mockStore = {
       data: [{ name: 'Flow', unit: 'cfs', format: '%4.0f', id: '2', shortkey: 'flow', gauge: { id: '2' } }]
     }
   },
-  dispatch: jest.fn()
+  dispatch: jest.fn(),
+  getters: {
+    'RiverEvents/releases': () => null
+  }
 }
 
 const options = {
