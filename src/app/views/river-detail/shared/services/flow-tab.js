@@ -5,22 +5,48 @@ import { baseUrl } from '@/app/environment'
 
 const fetchGaugeReadings = data => {
   /**
-   * @todo remove proxy and setup local gage server
-   * @todo format url to load from .env value
-   * @temp get flow data from prod
-   *
-   */
+     * @todo remove proxy and setup local gage server
+     * @todo format url to load from .env value
+     * @temp get flow data from prod
+     *
+     */
   const url = `${baseUrl}api/gauge/${data.gauge_id}/flows/${data.metric_id}?from=${data.timeStart}&to=${data.timeEnd}&resolution=${data.resolution}`
   /**
-   * @temp ideally keep axios in httpClient wrapper
-   */
+     * @temp ideally keep axios in httpClient wrapper
+     */
   return axios.get(url).then(res => res.data)
 }
 
 const fetchGaugeSourceInfo = id => {
   const url = apiConstants.gauge.base + id + apiConstants.gauge.source
-
   return httpClient.get(url).then(res => res.data)
+}
+
+const fetchGaugeInfo = id => {
+  return httpClient
+    .post('/graphql', {
+      query:
+                `query ($gauge_id: ID!) {
+                  gauge(id: $gauge_id) {
+                    id,    
+                    name,    
+                    source,    
+                    source_id,    
+                    updates 
+                    {      
+                      metric {
+                        id
+                        name   
+                     }      
+                    }
+                  }
+                }`,
+      variables: {
+        gauge_id: id
+      }
+    }).then(r => {
+      return r.data
+    })
 }
 
 const fetchGages = data => {
@@ -75,4 +101,4 @@ const fetchGaugeMetrics = data => {
     .then(res => res.data)
 }
 
-export { fetchGaugeReadings, fetchGaugeSourceInfo, fetchGaugeMetrics, fetchGages }
+export { fetchGaugeReadings, fetchGaugeSourceInfo, fetchGaugeMetrics, fetchGages, fetchGaugeInfo }

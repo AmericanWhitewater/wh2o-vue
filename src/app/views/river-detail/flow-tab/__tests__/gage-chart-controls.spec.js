@@ -17,6 +17,9 @@ const mockStore = {
       },
       reachGagesData: {
         data: null
+      },
+      currentGageData: {
+        data: null
       }
     }
   },

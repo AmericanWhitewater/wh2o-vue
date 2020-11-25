@@ -13,7 +13,8 @@ import {
   projectsData,
   rapidsData,
   reachGagesData,
-  riverDetailData
+  riverDetailData,
+  gageInfoData
 } from './shared/state'
 
 export default {
@@ -32,6 +33,7 @@ export default {
     projectsData,
     rapidsData,
     reachGagesData,
-    riverDetailData
+    riverDetailData,
+    gageInfoData
   }
 }

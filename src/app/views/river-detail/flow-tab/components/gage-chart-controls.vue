@@ -85,7 +85,7 @@
 </template>
 <script>
 import moment from 'moment'
-import { metricsActions, readingsActions } from '../../shared/state'
+import { gaugeInfoActions, metricsActions, readingsActions } from '../../shared/state'
 import { mapState } from 'vuex'
 /**
  * @todo create globally availble Title Case filter. Will help with better
@@ -113,7 +113,17 @@ export default {
       timeStart: null,
       timeEnd: null,
       resolution: null,
-      timeScale: 'week'
+      timeScale: 'week',
+      defaultMetricOptions: [
+        {
+          id: '2',
+          label: 'cfs'
+        },
+        {
+          id: '8',
+          label: 'ft'
+        }
+      ]
     }
   }),
   computed: {
@@ -123,7 +133,8 @@ export default {
       data: state => state.riverDetailState.gageReadingsData.data,
       metrics: state => state.riverDetailState.gageMetricsData.data,
       river: state => state.riverDetailState.riverDetailData.data,
-      gages: state => state.riverDetailState.reachGagesData.data
+      gages: state => state.riverDetailState.reachGagesData.data,
+      gageInfo: state => state.riverDetailState.gageInfoData.data
     }),
     /**
      * @description look through the readings response to find
@@ -134,16 +145,6 @@ export default {
      *
      */
     availableMetrics () {
-      // return [
-      //   {
-      //     id: '2',
-      //     label: 'cfs'
-      //   },
-      //   {
-      //     id: '8',
-      //     label: 'ft'
-      //   }
-      // ]
       if (this.metrics && this.data) {
         const data = []
         for (let i = 0; i < this.data.length; i++) {
@@ -201,7 +202,6 @@ export default {
             .subtract(1, 'month')
             .unix()
           break
-
         case 'week':
           this.$emit('timescaleChange', 'll')
           this.formData.resolution = 60 * 60 * 6
@@ -229,10 +229,15 @@ export default {
     async fetchReadings () {
       this.$emit('gage-change', this.formData.gauge_id)
       await this.setTimeScale()
+      const gageInfoPromise = this.fetchGaugeInfo()
       this.$store.dispatch(
         readingsActions.FETCH_GAGE_READINGS_DATA,
         this.formData
       )
+      await gageInfoPromise
+    },
+    async fetchGaugeInfo () {
+      this.$store.dispatch(gaugeInfoActions.FETCH_GAGE_INFO, this.formData.gauge_id)
     }
   },
   created () {

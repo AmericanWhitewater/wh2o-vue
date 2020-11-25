@@ -19,6 +19,9 @@ export * from './flow-tab/gage-source-data'
 export { default as gageMetricsData } from './flow-tab/gage-metrics-data'
 export * from './flow-tab/gage-metrics-data'
 
+export { default as gageInfoData } from './flow-tab/gage-info-data'
+export * from './flow-tab/gage-info-data'
+
 export { default as reachGagesData } from './flow-tab/reach-gages-data'
 export * from './flow-tab/reach-gages-data'
 
