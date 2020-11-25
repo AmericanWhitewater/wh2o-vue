@@ -196,9 +196,18 @@ export default {
       const cacheKey = this.map.getBounds().toString()
       if (this.linesCache[cacheKey] == null) {
         this.linesCache = {}
-
-        const lines = this.map
-          .queryRenderedFeatures({ layers: ['nhdflowline'] })
+        const mapFeatures = this.map.queryRenderedFeatures({ layers: ['nhdflowline'] })
+        const lines = mapFeatures
+          // mapFeatures sometimes has multiLineStrings in it that need to be split for our graph algorithm
+          .flatMap(x => {
+            if (x.geometry.type === 'MultiLineString') {
+              return x.geometry.coordinates.map((coords, index) => (
+                lineString(coords, x.properties, { id: `${x.id}-${index}`})
+              ))
+            } else {
+              return x
+            }
+          })
           .filter(x => (
             x.geometry.type === 'LineString' &&
             // this is mostly taken from Seth's code, we may want to revisit?
