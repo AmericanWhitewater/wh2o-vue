@@ -248,7 +248,7 @@ export default {
      */
     if (this.gages) {
       this.formData.gauge_id = this.gages[0].gauge.id
-      this.formData.metric_id = this.gages[0].gauge_metric
+      this.formData.metric_id = this.gages[0].gauge_metric.toString()
     }
     this.fetchMetrics()
   },

@@ -1,7 +1,7 @@
-import { httpClient } from '@/app/global/services'
+import { httpClient } from "@/app/global/services";
 
-const fetchSubmoduleTwoData = data => {
-  return httpClient.get('/graphql').then(res => res.data)
-}
+const fetchSubmoduleTwoData = () => {
+  return httpClient.get("/graphql").then((res) => res.data);
+};
 
-export { fetchSubmoduleTwoData }
+export { fetchSubmoduleTwoData };

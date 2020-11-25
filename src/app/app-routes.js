@@ -1,16 +1,16 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from "vue";
+import VueRouter from "vue-router";
 
-import { appLocalStorage } from '@/app/global/services'
+import { appLocalStorage } from "@/app/global/services";
 
-import staticRoutes from './views/static-routes/static-routes'
-import { gageDetailRoutes } from './views/gage-detail'
-import { newsPageRoutes } from './views/news-page'
-import { riverDetailRoutes } from './views/river-detail'
-import { riverIndexRoutes } from './views/river-index'
-import { userRoutes } from './views/user'
+import staticRoutes from "./views/static-routes/static-routes";
+import { gageDetailRoutes } from "./views/gage-detail";
+import { newsPageRoutes } from "./views/news-page";
+import { riverDetailRoutes } from "./views/river-detail";
+import { riverIndexRoutes } from "./views/river-index";
+import { userRoutes } from "./views/user";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   ...gageDetailRoutes,
@@ -18,10 +18,12 @@ const routes = [
   ...riverDetailRoutes,
   ...riverIndexRoutes,
   ...staticRoutes,
-  ...userRoutes
-]
+  ...userRoutes,
+];
 
 const router = new VueRouter({
+  mode: "history",
+  base: "content/River/view",
   routes,
   /**
    *
@@ -29,9 +31,9 @@ const router = new VueRouter({
    * @param {object} from previous route
    * @param {object} savedPosition uses position provided by browser back/forward buttons.
    */
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
-      return savedPosition
+      return savedPosition;
     } else {
       /**
        * @description check to see if user is navigating to river-detail for first time.
@@ -39,21 +41,32 @@ const router = new VueRouter({
        * where it is. better UX when switching between river-detail tabs.
        *
        */
-      const riverDetailRouteNames = ['flow-tab', 'main-tab', 'map-tab', 'gallery-tab', 'accidents-tab', 'credits-tab', 'news-tab']
-      if (riverDetailRouteNames.indexOf(to.name) !== -1 && riverDetailRouteNames.indexOf(from.name) !== -1) {
-        return
+      const riverDetailRouteNames = [
+        "flow-tab",
+        "main-tab",
+        "map-tab",
+        "gallery-tab",
+        "accidents-tab",
+        "credits-tab",
+        "news-tab",
+      ];
+      if (
+        riverDetailRouteNames.indexOf(to.name) !== -1 &&
+        riverDetailRouteNames.indexOf(from.name) !== -1
+      ) {
+        return;
       }
-      return { x: 0, y: 0 }
+      return { x: 0, y: 0 };
     }
-  }
-})
+  },
+});
 
 router.beforeEach((to, from, next) => {
-  const token = appLocalStorage.getItem('wh2o-auth')
-  if (to.path.includes('account') && !token) {
-    next('/user/access/login')
+  const token = appLocalStorage.getItem("wh2o-auth");
+  if (to.path.includes("account") && !token) {
+    next("/user/access/login");
   }
-  next()
-})
+  next();
+});
 
-export default router
+export default router;

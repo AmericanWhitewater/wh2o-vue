@@ -88,7 +88,7 @@ export default {
        */
       return this.$randomId()
     },
-    handleClose (index, title) {
+    handleClose (index ) {
       this.$store.dispatch(globalAppActions.CLOSE_TOAST, index)
     },
     handleUpdate () {

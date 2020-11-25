@@ -1,9 +1,9 @@
-import { httpClient } from '@/app/global/services'
+import { httpClient } from "@/app/global/services";
 
-import { apiConstants } from '../config'
+import { apiConstants } from "../config";
 
-const fetchRiverDetailData = data => {
-  const url = `${apiConstants.graphql}`
+const fetchRiverDetailData = (data) => {
+  const url = `${apiConstants.graphql}`;
   return httpClient
     .post(url, {
       query: `
@@ -40,12 +40,12 @@ const fetchRiverDetailData = data => {
         }
       }
     
-    `
+    `,
     })
-    .then(res => res.data)
-}
+    .then((res) => res.data);
+};
 
-const updateRiverDetailGeom = data => {
+const updateRiverDetailGeom = (data) => {
   return httpClient
     .post(apiConstants.graphql, {
       query: `
@@ -53,7 +53,8 @@ const updateRiverDetailGeom = data => {
           reachUpdate(id: $id, reach: $reach) {
             geom,
             ploc,
-            tloc
+            tloc,
+            length
           }
         }
       `,
@@ -62,26 +63,30 @@ const updateRiverDetailGeom = data => {
         reach: {
           geom: data.geom,
           ploc: data.ploc,
-          tloc: data.tloc
-        }
-      }
-    }).then(response => {
-      return response.data
+          tloc: data.tloc,
+          length: data.length,
+        },
+      },
     })
-}
+    .then((response) => {
+      return response.data;
+    });
+};
 
-const fetchReleases = data => {
-  return httpClient
-    .post(apiConstants.graphql, {
+const fetchReleases = () => {
+  return httpClient.post(apiConstants.graphql, {}).then((r) => {
+    return r.data;
+  });
+};
 
-    }).then(r => {
-      return r.data
-    })
-}
+const updateBetaBox = (data) => {
+  const url = `/rapid/${data.id}`;
+  return httpClient.patch(url, data);
+};
 
-const updateBetaBox = data => {
-  const url = `/rapid/${data.id}`
-  return httpClient.patch(url, data)
-}
-
-export { fetchRiverDetailData, updateBetaBox, updateRiverDetailGeom, fetchReleases }
+export {
+  fetchRiverDetailData,
+  updateBetaBox,
+  updateRiverDetailGeom,
+  fetchReleases,
+};
