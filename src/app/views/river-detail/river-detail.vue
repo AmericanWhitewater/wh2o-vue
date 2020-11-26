@@ -340,6 +340,6 @@ export default {
     if (bookmarks && bookmarks.includes(Number(this.$route.params.id))) {
       this.bookmarked = true;
     }
-  },
+  }
 };
 </script>
