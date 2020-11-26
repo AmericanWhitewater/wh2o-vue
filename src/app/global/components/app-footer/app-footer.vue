@@ -7,7 +7,10 @@
       <div class="bx--row">
         <div class="bx--col">
           <div class="contents">
-            <h6>American Whitewater</h6>
+            <a href="https://github.com/AmericanWhitewater" target="_blank">
+            <LogoGitHub24 />
+            </a>
+            <span>American Whitewater &copy; 1999 – Present</span>
           </div>
         </div>
       </div>
@@ -31,8 +34,17 @@ export default {
   .contents {
     height: 2rem;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     color: $ui-02;
+    @include carbon--type-style("code-01");
+    a {
+      color: $ui-02;
+      display:block;
+      svg {
+        display:block;
+      }
+    }
   }
 }
 </style>

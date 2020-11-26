@@ -34,6 +34,7 @@ import ListNumbered16 from '@carbon/icons-vue/es/list--numbered/16.js'
 import Login32 from '@carbon/icons-vue/es/login/32.js'
 import LogoFacebook24 from '@carbon/icons-vue/es/logo--facebook/24'
 import LogoLinkedIn24 from '@carbon/icons-vue/es/logo--linkedin/24'
+import LogoGitHub24 from '@carbon/icons-vue/es/logo--github/24'
 import Logout32 from '@carbon/icons-vue/es/logout/32.js'
 import Map32 from '@carbon/icons-vue/es/map/32.js'
 import Maximize16 from '@carbon/icons-vue/es/maximize/16.js'
@@ -90,6 +91,7 @@ export const components = {
   Launch20,
   Link16,
   List16,
+  LogoGitHub24,
   ListBulleted16,
   ListNumbered16,
   Login32,

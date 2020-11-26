@@ -8,6 +8,7 @@
       />
     </transition>
     <app-cookie-banner />
+    <app-footer v-if="!laravelDeploy" />
   </div>
 </template>
 
@@ -15,6 +16,7 @@
 import {
   AppToaster,
   AppNavigation,
+  AppFooter,
   AppCookieBanner
 } from './global/components'
 
@@ -23,6 +25,7 @@ export default {
   components: {
     AppNavigation,
     AppToaster,
+    AppFooter,
     AppCookieBanner
   },
   data: () => ({
