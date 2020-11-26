@@ -212,22 +212,21 @@ export default {
     createLoading: false,
     additionalFieldsVisible: false,
     reach: {
+      agency: "",
+      altname: "",
+      class: "none",
+      county: "",
+      description: null,
+      gaugeinfo: "",
+      geom: null,
+      length: "",
+      permitinfo: "",
+      permiturl: "",
+      ploc: "",
       river: "",
       section: "",
-      geom: null,
-      altname: "",
-      county: "",
-      zipcode: "",
-      length: "",
-      agency: "",
-      gaugeinfo: "",
-      description: null,
-      permitid: "",
-      class: "none",
-      ploc: "",
       tloc: "",
-      permiturl: "",
-      permitinfo: "",
+      zipcode: ""
     },
   }),
   computed: {
@@ -252,10 +251,10 @@ export default {
       try {
         this.createLoading = true;
         const result = await createReach({
-          id: null,
+          id: this.$randomId(),
           reach: this.reach
         });
-
+        
         if (!result.errors) {
 
           this.$store.dispatch("Global/sendToast", {

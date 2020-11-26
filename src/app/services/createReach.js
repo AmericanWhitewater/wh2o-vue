@@ -6,21 +6,22 @@ export async function createReach(data) {
     query: `
         mutation ($id:ID!, $reach: ReachInput!) {
           reachUpdate(id: $id, reach: $reach) {
-            county
-            id
+            agency
+            altname
             class
+            county
             description
-            edited
-            edited
-            length
-            maxgradient
-            ploc
-            tloc
+            gaugeinfo
             geom
-            river
-            permiturl
+            id
+            length
             permitinfo
+            permiturl
+            ploc
+            river
             section
+            tloc
+            zipcode
           }
         }
             `,
