@@ -5,7 +5,7 @@ jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
   Map: () => ({})
 }))
 
-const openLightbox = jest.fn()
+const openLightboxMock = jest.fn()
 
 const mockStore = {
   state: {
@@ -21,9 +21,6 @@ const mockStore = {
 
 const options = {
   stubs: ['transition'],
-  methods: {
-    openLightbox
-  },
   mocks: {
     $store: mockStore
   },
@@ -87,6 +84,11 @@ const options = {
 }
 
 describe('ImageGallery', () => {
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   it('when thumbnail clicked lightbox is opened', async () => {
     const wrapper = createWrapper(ImageGallery, options)
 
@@ -97,6 +99,8 @@ describe('ImageGallery', () => {
       }
     })
 
+    wrapper.vm.openLightbox = openLightboxMock
+
     await wrapper.vm.$nextTick()
     /**
      * make sure clicking the thumbnail makes the call with co
@@ -106,8 +110,8 @@ describe('ImageGallery', () => {
 
     await wrapper.vm.$nextTick()
 
-    expect(openLightbox).toHaveBeenCalledWith('7578')
-    expect(openLightbox).toBeCalledTimes(1)
+    expect(openLightboxMock).toHaveBeenCalledWith('7578')
+    expect(openLightboxMock).toBeCalledTimes(1)
     expect(wrapper.find('.lightbox-wrapper').exists()).toBe(true)
   })
 
@@ -150,6 +154,8 @@ describe('ImageGallery', () => {
       }
     })
 
+    wrapper.vm.openLightbox = openLightboxMock
+
     await wrapper.vm.$nextTick()
 
     wrapper.findAll('.image-thumbnail').at(1).trigger('click')
@@ -167,6 +173,8 @@ describe('ImageGallery', () => {
         active: true
       }
     })
+
+    wrapper.vm.openLightbox = openLightboxMock
 
     await wrapper.vm.$nextTick()
 

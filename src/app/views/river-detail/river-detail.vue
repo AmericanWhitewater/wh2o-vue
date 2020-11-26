@@ -68,10 +68,7 @@
             />
             <transition :name="transitionName" mode="out-in">
               <map-banner
-                v-if="activeTabKey !== 'map' && !loading && reach"
-                :title="reach.river"
-                :subtitle="reach.section"
-              >
+                v-if="activeTabKey !== 'map' && !loading && reach">
                 <div
                   v-if="editMode"
                   class="edit-overlay"

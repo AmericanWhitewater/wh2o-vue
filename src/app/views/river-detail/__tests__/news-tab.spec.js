@@ -1,5 +1,4 @@
 import NewsTab from '@/app/views/river-detail/components/news-tab/news-tab.vue'
-import ArticleCard from '@/app/global/components/article-card/article-card'
 import { createWrapper } from '@/utils'
 
 jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
@@ -42,9 +41,7 @@ const options = {
         id: riverId
       }
     },
-    stubs: {
-      ArticleCard
-    }
+    stubs: ['ArticleCard','ArrowRight20']
   }
 }
 

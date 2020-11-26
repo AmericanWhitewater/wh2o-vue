@@ -35,7 +35,7 @@
               </div>
             </div>
             <div v-else>
-              <gage-readings />
+              <gage-readings-table />
             </div>
           </template>
           <template v-else>
@@ -146,7 +146,7 @@
 </template>
 
 <script>
-import { FlowChart, GageReadings, GageChartControls, LevelLegend, FlowStats, GageLinkModal, ReleasesTable} from './components'
+import { FlowChart, GageReadingsTable, GageChartControls, LevelLegend, FlowStats, GageLinkModal, ReleasesTable} from './components'
 import { GageChartConfig } from './utils/gage-chart-config'
 import { Layout } from '@/app/global/layout'
 import { mapState } from 'vuex'
@@ -159,7 +159,7 @@ export default {
     GageLinkModal,
     FlowChart,
     GageChartControls,
-    GageReadings,
+    GageReadingsTable,
     Layout,
     UtilityBlock,
     LevelLegend,

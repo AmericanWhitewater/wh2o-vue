@@ -13,14 +13,15 @@ export default {
   mutations,
   actions: {
     ...actions,
-    async getProperty(context, reachId) {
+    async getProperty(context, id) {
       try {
-        const result = await getGage(reachId)
+        context.commit('DATA_REQUEST')
+        const result = await getGage(Number(id))
 
         if (!result.errors) {
           context.commit('DATA_SUCCESS', result)
         } else {
-          context.commit('DATA_ERROR', result.errors)
+          context.commit('DATA_ERROR', result.errors[0].message)
         }
 
       } catch (error) {

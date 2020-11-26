@@ -22,14 +22,17 @@ const mockStore = {
     RiverGallery: {
       error: null,
       data: null,
-      loading: null
+      loading: null,
+      pagination: {
+        total: 0
+      }
     },
     RiverRapids: {
       data: null
     }
   },
   getters: {
-    media: () => null
+    'RiverGallery/media': null
   },
   dispatch: jest.fn()
 }
@@ -55,23 +58,16 @@ describe('GalleryTab', () => {
 
     const wrapper = createWrapper(GalleryTab, options)
 
-    wrapper.setData({
-      formattedData: null
-    })
-
-    await wrapper.vm.$nextTick()
-
     expect(wrapper.find('.utility-block-loading').exists()).toBe(true)
     expect(wrapper.find('.utility-block-error').exists()).toBe(false)
     expect(wrapper.find('.utility-block-content').exists()).toBe(false)
+    mockStore.state.RiverGallery.loading = false
   })
 
-  it('shows no results block when there are no photos', () => {
-    mockStore.state.RiverGallery.loading = false
-    mockStore.state.RiverGallery.error = true
-    mockStore.state.RiverGallery.data = []
-
+  it('shows no results block when there are no photos', async () => {
     const wrapper = createWrapper(GalleryTab, options)
+
+    await wrapper.vm.$nextTick()
 
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
     expect(wrapper.find('.utility-block-error').exists()).toBe(false)

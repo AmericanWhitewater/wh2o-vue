@@ -41,7 +41,13 @@ export default {
       return this.readings.map(reading => moment(reading.updated, 'X').format('MM/DD hh:mm a'))
     },
     activeGage () {
-      return this.gages.find(gage => Number(gage.gauge.id) === this.readings[0].gauge_id)
+      
+
+      if(this.$route.name !== 'GageDetail') {
+        return this.gages.find(gage => Number(gage.gauge.id) === this.readings[0].gauge_id)
+      } else {
+        return this.gages.find(gage => Number(gage.id) === this.readings[0].gauge_id)
+      }
     },
     formattedReadings () {
       return this.readings.map(reading => Math.floor(reading.reading))

@@ -24,7 +24,8 @@ const options = {
   mocks: {
     $router: mockRouter,
     $store: mockStore
-  }
+  },
+  stubs: ['WifiOff24']
 }
 
 describe('mobile-nav.vue', () => {

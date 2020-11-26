@@ -4,6 +4,8 @@ import { buildChart } from '@/app/views/river-detail/components/flow-tab/compone
 
 jest.mock('@/app/views/river-detail/components/flow-tab/components/flow-chart/build-chart.js')
 
+const renderChartMock = jest.fn()
+
 const mockStore = {
   state: {
     GageMetrics: {
@@ -14,7 +16,10 @@ const mockStore = {
 
 const options = {
   mocks: {
-    $store: mockStore
+    $store: mockStore,
+    $route: {
+      name: 'RiverDetail'
+    }
   },
   propsData: {
     readings: [{ gauge_id: 4139, metric: 2, nv: 1588122880, reading: '1130', updated: 1588122880, data: null, id: 17777068153507 }, { gauge_id: 4139, metric: 2, nv: 1588126464, reading: '1120', updated: 1588126464, data: null, id: 17777068153957 }, { gauge_id: 4139, metric: 2, nv: 1588130048, reading: '1110', updated: 1588130048, data: null, id: 17777068154407 }, { gauge_id: 4139, metric: 2, nv: 1588133632, reading: '1110', updated: 1588133632, data: null, id: 17777068154857 }, { gauge_id: 4139, metric: 2, nv: 1588137216, reading: '1110', updated: 1588137216, data: null, id: 17777068155307 }, { gauge_id: 4139, metric: 2, nv: 1588140800, reading: '1110', updated: 1588140800, data: null, id: 17777068155757 }, { gauge_id: 4139, metric: 2, nv: 1588144384, reading: '1100', updated: 1588144384, data: null, id: 17777068156207 }, { gauge_id: 4139, metric: 2, nv: 1588148096, reading: '1100', updated: 1588148096, data: null, id: 17777068156657 }, { gauge_id: 4139, metric: 2, nv: 1588151680, reading: '1100', updated: 1588151680, data: null, id: 17777068157107 }, { gauge_id: 4139, metric: 2, nv: 1588155264, reading: '1100', updated: 1588155264, data: null, id: 17777068157557 }, { gauge_id: 4139, metric: 2, nv: 1588158848, reading: '1110', updated: 1588158848, data: null, id: 17777068158007 }, { gauge_id: 4139, metric: 2, nv: 1588162432, reading: '1130', updated: 1588162432, data: null, id: 17777068158457 }, { gauge_id: 4139, metric: 2, nv: 1588166016, reading: '1150', updated: 1588166016, data: null, id: 17777068158907 }, { gauge_id: 4139, metric: 2, nv: 1588169600, reading: '1170', updated: 1588169600, data: null, id: 17777068159357 }, { gauge_id: 4139, metric: 2, nv: 1588173184, reading: '1190', updated: 1588173184, data: null, id: 17777068159807 }, { gauge_id: 4139, metric: 2, nv: 1588176896, reading: '1220', updated: 1588176896, data: null, id: 17777068160257 }, { gauge_id: 4139, metric: 2, nv: 1588180480, reading: '1250', updated: 1588180480, data: null, id: 17777068160707 }, { gauge_id: 4139, metric: 2, nv: 1588184064, reading: '1270', updated: 1588184064, data: null, id: 17777068161157 }, { gauge_id: 4139, metric: 2, nv: 1588187648, reading: '1300', updated: 1588187648, data: null, id: 17777068161607 }, { gauge_id: 4139, metric: 2, nv: 1588191232, reading: '1320', updated: 1588191232, data: null, id: 17777068162057 }, { gauge_id: 4139, metric: 2, nv: 1588194816, reading: '1320', updated: 1588194816, data: null, id: 17777068162507 }, { gauge_id: 4139, metric: 2, nv: 1588198400, reading: '1320', updated: 1588198400, data: null, id: 17777068162957 }, { gauge_id: 4139, metric: 2, nv: 1588201984, reading: '1310', updated: 1588201984, data: null, id: 17777068163407 }],
@@ -26,6 +31,7 @@ const options = {
 describe('flow-chart.vue', () => {
   it('it builds on load', async () => {
     const wrapper = createWrapper(FlowChart, options)
+    wrapper.vm.renderChart = renderChartMock
     await wrapper.vm.$nextTick()
     expect(buildChart).toBeCalledTimes(1)
   })

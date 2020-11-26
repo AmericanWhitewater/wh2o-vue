@@ -16,7 +16,7 @@ const router = {
 
 const options = {
   propsData: {
-    articleId: 123,
+    articleId: "123",
     title: 'THIS IS A BOLD TITLE'
   },
   mocks: {

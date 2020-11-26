@@ -2,6 +2,8 @@ import FlowTab from '@/app/views/river-detail/components/flow-tab/flow-tab.vue'
 import { createWrapper } from '@/utils'
 import { GageChartControls } from '@/app/views/river-detail/components/flow-tab/components'
 
+const setActiveGageId = jest.spyOn(FlowTab.methods, 'setActiveGageId') 
+
 const mockStore = {
   state: {
     Global: {
@@ -35,6 +37,7 @@ const mockStore = {
 
 const options = {
   mocks: {
+    $titleCase: jest.fn(val => val),
     $store: mockStore,
     $route: {
       params: {
@@ -42,10 +45,7 @@ const options = {
       }
     }
   },
-  stubs: ['FlowChart', 'FlowStats'],
-  methods: {
-    setActiveGageId: jest.fn()
-  }
+  stubs: ['FlowChart', 'FlowStats']
 }
 
 describe('FlowTab', () => {
@@ -114,12 +114,7 @@ describe('FlowTab', () => {
 
     await wrapper.vm.$nextTick()
 
-    /**
-     *
-     * Why is this firing twice???
-     */
-
-    expect(options.methods.setActiveGageId).toHaveBeenNthCalledWith(1, '4139')
-    expect(options.methods.setActiveGageId).toHaveBeenNthCalledWith(2, '4139')
+    expect(setActiveGageId).toHaveBeenNthCalledWith(1, '4139')
+    expect(setActiveGageId).toHaveBeenNthCalledWith(2, '4139')
   })
 })

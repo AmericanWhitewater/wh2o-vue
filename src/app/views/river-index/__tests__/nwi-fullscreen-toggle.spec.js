@@ -52,12 +52,13 @@ describe('nwi-fullscreen-toggle.vue', () => {
 
   it('disables fullscreen when trigger is focused and keyboard enter ', async () => {
     const wrapper = createWrapper(NwiFullscreenToggle, options)
+    
 
-    wrapper.find('#fullscreen-trigger').trigger('kaydown.enter')
+    wrapper.find('#fullscreen-trigger').trigger('keydown.enter')
 
     await wrapper.vm.$nextTick()
 
-    wrapper.find('#fullscreen-trigger').trigger('kaydown.enter')
+    wrapper.find('#fullscreen-trigger').trigger('keydown.enter')
 
     await wrapper.vm.$nextTick()
 

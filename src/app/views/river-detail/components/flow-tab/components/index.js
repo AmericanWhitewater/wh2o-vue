@@ -1,4 +1,4 @@
-export { default as GageReadings } from './gage-readings.vue'
+export { default as GageReadingsTable } from './gage-readings.vue'
 export { default as GageChartControls } from './gage-chart-controls.vue'
 export { default as FlowChart } from './flow-chart/flow-chart.vue'
 export { default as LevelLegend } from './level-legend.vue'
