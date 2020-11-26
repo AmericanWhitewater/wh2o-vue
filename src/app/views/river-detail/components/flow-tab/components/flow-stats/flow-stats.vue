@@ -1,4 +1,5 @@
 <template>
+<div class="mb-spacing-md">
   <div class="flow-stats bx--row mb-spacing-md">
     <div class="bx--col">
       <h6 class="mb-spacing-2xs">
@@ -24,6 +25,8 @@
         headline
       />
     </div>
+  </div>
+  <div class="bx--row">
     <div class="bx--col">
       <h6 class="mb-spacing-2xs">
         High
@@ -48,6 +51,7 @@
         headline
       />
     </div>
+  </div>
   </div>
 </template>
 <script>

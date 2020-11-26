@@ -139,7 +139,7 @@ export default {
         },
         scales: {
           xAxes: [{
-            display: true,
+            display: false, // pending feedback from product
             distribution: 'series',
             gridLines: {
               color: 'rgba(90, 104, 114, 0.2)',

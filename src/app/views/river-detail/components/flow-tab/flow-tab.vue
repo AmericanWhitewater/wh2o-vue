@@ -32,11 +32,6 @@
                   :readings="readings"
                   class="mb-md"
                 />
-                <flow-stats
-                  :readings="readings"
-                  :loading="loading"
-                  :current="gages[0].gauge_reading || 0"
-                />
               </div>
             </div>
             <div v-else>
@@ -123,6 +118,12 @@
             target="_blank"
           >Edit Flows</a>
           </div>
+          <flow-stats
+                  v-if="readings && gages && gages.length"
+                  :readings="readings"
+                  :loading="loading"
+                  :current="gages[0].gauge_reading || 0"
+                />
           <level-legend />
         </template>
         <template v-else>
