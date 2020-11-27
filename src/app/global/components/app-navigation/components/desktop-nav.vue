@@ -75,6 +75,17 @@
               </cv-button>
 
               <cv-button
+                id="trip-reports-btn"
+                kind="ghost"
+                size="small"
+                class="header--btn"
+                @click.exact="$router.push('/trip-reports').catch(() => {})"
+                @keydown.enter="$router.push('/trip-reports').catch(() => {})"
+              >
+                Trip Reports
+              </cv-button>
+
+              <cv-button
                 id="documents-btn"
                 kind="ghost"
                 size="small"

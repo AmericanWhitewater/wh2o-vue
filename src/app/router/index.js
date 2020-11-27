@@ -5,30 +5,34 @@ import { appLocalStorage } from "@/app/global/services";
 import {laravelDeploy} from "@/app/environment"
 import staticRoutes from '@/app/views/static-routes/static-routes'
 
-import gageDetailRoutes from './gage-detail.routes'
-import projectsRoutes from './projects.routes'
-import documentsRoutes from './documents.routes'
 import accidentsRoutes from './accidents.routes'
-import gagesRoutes from './gages.routes'
 import affiliatesRoutes from './affiliates.routes'
-import riverIndexRoutes from "./river-index.routes"
-import riverDetailRoutes from "./river-detail.routes"
+import documentsRoutes from './documents.routes'
+import gageDetailRoutes from './gage-detail.routes'
+import gagesRoutes from './gages.routes'
 import newsPageRoutes from "./news-page.routes"
+import projectsRoutes from './projects.routes'
+import reportDetailRoutes from "./report-detail.routes"
+import riverDetailRoutes from "./river-detail.routes"
+import riverIndexRoutes from "./river-index.routes"
+import tripReportsRoutes from "./trip-reports.routes"
 import userRoutes from "./user.routes"
 
 Vue.use(VueRouter);
 
 const routes = [
-  ...gageDetailRoutes,
-  ...affiliatesRoutes,
-  ...projectsRoutes,
-  ...gagesRoutes,
-  ...documentsRoutes,
   ...accidentsRoutes,
+  ...affiliatesRoutes,
+  ...documentsRoutes,
+  ...gageDetailRoutes,
+  ...gagesRoutes,
   ...newsPageRoutes,
+  ...projectsRoutes,
+  ...reportDetailRoutes,
   ...riverDetailRoutes,
   ...riverIndexRoutes,
   ...staticRoutes,
+  ...tripReportsRoutes,
   ...userRoutes,
 ];
 
