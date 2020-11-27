@@ -25,3 +25,31 @@ export async function updatePost(formData) {
     return response.data
   })
 }
+
+export async function deletePost(id) {
+  return http.post('/graphql', {
+    query: `
+          mutation ($id:ID!) {
+            postDelete(id: $id)  {
+            id
+          }
+        }`,
+    variables: {
+      id
+    }
+  }).then(res => res.data)
+}
+
+/**
+ * @note redundant.
+ */
+export async function deleteComment(id) {
+  return http.post('/graphql', {
+    query: `
+            mutation ($post_id:ID!){postDelete(id:$post_id){id}}
+          `,
+    variables: {
+      post_id: id
+    }
+  }).then(res => res.data)
+}

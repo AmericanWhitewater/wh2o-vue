@@ -25,6 +25,15 @@ export default [
         component: () => import('@/app/views/river-detail/components/main-tab/main-tab.vue')
       },
       {
+        path: 'reports',
+        name: 'reports-tab',
+        meta: {
+          crumbLabel: 'River Detail',
+          transitionName: 'slide'
+        },
+        component: () => import('@/app/views/river-detail/components/reports-tab.vue')
+      },
+      {
         path: 'flow',
         name: 'flow-tab',
         meta: {
