@@ -10,6 +10,7 @@ import affiliatesRoutes from './affiliates.routes'
 import documentsRoutes from './documents.routes'
 import gageDetailRoutes from './gage-detail.routes'
 import gagesRoutes from './gages.routes'
+import legacyViewer from "./legacy-viewer.routes"
 import newsPageRoutes from "./news-page.routes"
 import projectsRoutes from './projects.routes'
 import reportDetailRoutes from "./report-detail.routes"
@@ -26,6 +27,7 @@ const routes = [
   ...documentsRoutes,
   ...gageDetailRoutes,
   ...gagesRoutes,
+  ...legacyViewer,
   ...newsPageRoutes,
   ...projectsRoutes,
   ...reportDetailRoutes,

@@ -30,92 +30,17 @@
               </transition>
             </div>
             <header>
-              <!-- <cv-button
-                id="affiliates-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/affiliates').catch(() => {})"
-                @keydown.enter="$router.push('/affiliates').catch(() => {})"
-              >
-                Affiliates
-              </cv-button> -->
-
-              <!-- <cv-button
-                id="gages-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/gages').catch(() => {})"
-                @keydown.enter="$router.push('/gages').catch(() => {})"
-              >
-                Gages
-              </cv-button> -->
-
-              <!-- <cv-button
-                id="map-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/accidents').catch(() => {})"
-                @keydown.enter="$router.push('/accidents').catch(() => {})"
-              >
-                Accidents
-              </cv-button> -->
-
-              <!-- <cv-button
-                id="projects-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/projects').catch(() => {})"
-                @keydown.enter="$router.push('/projects').catch(() => {})"
-              >
-                Projects
-              </cv-button> -->
-
               <cv-button
-                id="trip-reports-btn"
+                v-for="(item, index) in links"
+                :id="item.label"
+                :key="index"
                 kind="ghost"
                 size="small"
                 class="header--btn"
-                @click.exact="$router.push('/trip-reports').catch(() => {})"
-                @keydown.enter="$router.push('/trip-reports').catch(() => {})"
+                @click.exact="$router.push(item.path).catch(() => {})"
+                @keydown.enter="$router.push(item.path).catch(() => {})"
               >
-                Trip Reports
-              </cv-button>
-
-              <!-- <cv-button
-                id="documents-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/documents').catch(() => {})"
-                @keydown.enter="$router.push('/documents').catch(() => {})"
-              >
-                Documents
-              </cv-button> -->
-
-              <cv-button
-                id="map-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/river-index').catch(() => {})"
-                @keydown.enter="$router.push('/river-index').catch(() => {})"
-              >
-                Map
-              </cv-button>
-
-              <cv-button
-                id="news-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/news').catch(() => {})"
-                @keydown.enter="$router.push('/news').catch(() => {})"
-              >
-                News
+                {{ item.label }}
               </cv-button>
               <cv-button
                 v-if="!user"
@@ -171,6 +96,30 @@ export default {
       required: true
     }
   },
+  data: () => ({
+    links: [
+      {
+        label:"About",
+        path: '/legacy-viewer?url=https://www.americanwhitewater.org/content/Wiki/aw:about/?'
+      },
+      {
+        label:"Safety",
+        path: '/legacy-viewer?url=https://www.americanwhitewater.org/content/Safety/view/?'
+      },
+      {
+        label:"News",
+        path: '/news'
+      },
+      {
+        label:"Trip Reports",
+        path: '/trip-reports'
+      },
+      {
+        label:"Map",
+        path: '/river-index'
+      },
+    ] 
+  }),
   computed: {
     user () {
       return this.$store.state.User.data
