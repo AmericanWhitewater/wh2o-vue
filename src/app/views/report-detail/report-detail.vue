@@ -27,16 +27,17 @@
                 </cv-breadcrumb-item>
               </cv-breadcrumb>
             </div>
-            <div v-if="user && user.uid === data.user.uid">
+            <div>
               <cv-button
+                v-if="canEdit(data)"
                 size="small"
-                @click.exact="
-                  $store.dispatch('Global/toggleEditMode', !editMode)
-                "
+                @keydown.enter="$refs.postUpdateModal.open()"
+                @click.exact="$refs.postUpdateModal.open()"
               >
                 Edit
               </cv-button>
               <cv-button
+                v-if="canDelete(data)"
                 size="small"
                 kind="danger"
                 @click.exact="confirmDeleteModalVisible = true"
@@ -52,30 +53,56 @@
               <h1 class="mb-spacing-md">Something went wrong</h1>
             </div>
           </header>
-          <utility-block
-            text="No geospatial data available"
-            state="content"
-            theme="dark"
+          <page-description
+            :loading="loading"
+            :description="data ? data.detail : ''"
           />
         </div>
       </div>
       <div class="bx--row mt-lg mb-lg">
         <div class="bx--col">
-          <p v-if="data">
-            {{ data.detail || "Detail Unavailable" }}
-          </p>
+          <template v-if="loading && !data">
+            <utility-block state="loading" />
+          </template>
+          <template v-else-if="data">
+            <image-gallery :images="data.photos" />
+          </template>
         </div>
         <div class="bx--col">
-          <div class="bx--data-table-container">
+          <div class="bx--data-table-container mb-spacing-md">
             <table class="bx--data-table bx--data-table--zebra">
               <tbody>
                 <tr>
                   <td>Reporter</td>
-                  <td v-if="data && data.user">{{ data.user.uname }}</td>
+                  <td v-if="loading && !data"><cv-skeleton-text /></td>
+                  <td v-else-if="data">{{ data.user.uname || "n/a" }}</td>
+                </tr>
+                <tr>
+                  <td>Gauge</td>
+                  <td v-if="loading && !data"><cv-skeleton-text /></td>
+                  <td v-else-if="data">
+                    <router-link
+                      v-if="data.gauge && data.gauge.name"
+                      :to="`/gage-detail/${data.gauge.id}`"
+                    >
+                      {{ data.gauge.name }}
+                    </router-link>
+                    <template v-if="!data.gauge"> n/a </template>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Reading</td>
+                  <td v-if="loading && !data"><cv-skeleton-text /></td>
+                  <td v-else-if="data">{{ data.reading || "n/a" }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
+          <cv-button v-if="data && data.reach_id"
+                      @click.exact="$router.push(`/river-detail/${data.reach_id}`)"
+                     @keydown.enter="$router.push(`/river-detail/${data.reach_id}`)">
+            View Reach
+          </cv-button>
         </div>
       </div>
     </div>
@@ -85,18 +112,52 @@
       :resourceName="data.id"
       @delete:confirmed="handleDelete()"
     />
+    <post-update-modal
+      v-if="data"
+      ref="postUpdateModal"
+      title="New Trip Report"
+      kind="JOURNAL"
+      :post="data"
+      @update:success="load(reportId)"
+    >
+      <template #form-fields="formData">
+        <cv-text-input
+          v-model="formData.formData.post.title"
+          label="Title"
+          theme="light"
+          class="mb-spacing-md"
+        />
+        <cv-text-area
+          v-model="formData.formData.post.detail"
+          label="Description"
+          theme="light"
+          class="mb-spacing-md"
+        />
+      </template>
+    </post-update-modal>
   </div>
 </template>
 <script>
-import { UtilityBlock, ConfirmDeleteModal } from "@/app/global/components";
+import { objectPermissionsHelpersMixin } from "@/app/global/mixins";
+import ImageGallery from "@/app/views/river-detail/components/image-gallery/image-gallery.vue";
+import {
+  UtilityBlock,
+  ConfirmDeleteModal,
+  PageDescription,
+  PostUpdateModal,
+} from "@/app/global/components";
 import { deletePost } from "@/app/services";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "report-detail",
   components: {
     UtilityBlock,
     ConfirmDeleteModal,
+    ImageGallery,
+    PageDescription,
+    PostUpdateModal,
   },
+  mixins: [objectPermissionsHelpersMixin],
   data: () => ({
     confirmDeleteModalVisible: false,
     deleteLoading: false,
@@ -114,6 +175,10 @@ export default {
     },
   },
   methods: {
+    ...mapActions({
+      load: "ReportDetail/getProperty",
+      setRefId: "ReportDetail/setRefId",
+    }),
     async handleDelete() {
       try {
         this.deleteLoading = false;
@@ -142,8 +207,8 @@ export default {
   },
   created() {
     if (!this.data || this.reportId !== this.refId) {
-      this.$store.dispatch("ReportDetail/setRefId", this.reportId);
-      this.$store.dispatch("ReportDetail/getProperty", this.reportId);
+      this.setRefId(this.reportId);
+      this.load(this.reportId);
     }
   },
 };

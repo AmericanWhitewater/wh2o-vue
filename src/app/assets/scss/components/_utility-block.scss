@@ -7,6 +7,9 @@
   align-items: center;
   justify-content: center;
   flex-flow: column nowrap;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 
   &.dark {
     background-color: $ui-03;

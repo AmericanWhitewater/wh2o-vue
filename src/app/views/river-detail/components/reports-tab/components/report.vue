@@ -41,7 +41,15 @@
     </div>
     <div class="bx--row">
       <div class="bx--col bx--offset-md-1">
-        <div class="detail" v-html="data.detail" />
+        <div class="detail mb-spacing-md" v-html="data.detail" />
+        <cv-button
+          kind="secondary"
+          size="small"
+          @click="$router.push(`/report-detail/${data.id}`)"
+          @keydown.enter="$router.push(`/report-detail/${data.id}`)"
+        >
+          See Full Report
+        </cv-button>
       </div>
     </div>
     <cv-modal
@@ -67,7 +75,7 @@ import {
   shadowDomFixedHeightOffset,
   objectPermissionsHelpersMixin,
 } from "@/app/global/mixins";
-import {deleteComment} from "@/app/services";
+import { deleteComment } from "@/app/services";
 import { baseUrl } from "@/app/environment";
 
 export default {
@@ -122,7 +130,7 @@ export default {
             action: false,
             autoHide: true,
           });
-          this.$emit("data:delete", this.data.id);
+          this.$emit("report:delete", this.data.id);
         } else {
           this.$store.dispatch("Global/sendToast", {
             title: "Delete Failed",

@@ -1,8 +1,8 @@
 <template>
-  <div :class="[{'is-visible':visible},'post-update-modal']">
+  <div :class="[active || visible ? 'is-visible' : '','post-update-modal']">
     <cv-modal
       ref="modalWrapper"
-      :visible="visible"
+      :visible="active || visible"
       :size="size"
       @modal-shown="setModalOffset"
       @secondary-click="handleCancel"
@@ -76,7 +76,7 @@ export default {
     },
     visible: {
       type: Boolean,
-      required: true
+      required: false
     },
     kind: {
       type: String,
@@ -94,6 +94,7 @@ export default {
     }
   },
   data: () => ({
+    active: false,
     formPending: false,
     formData: {
       id: null,
@@ -121,6 +122,12 @@ export default {
     }
   },
   methods: {
+    open() {
+      this.active = true
+    },
+    close() {
+      this.active = false
+    },
     /**
      * @description if user is editing a post set the form
      * data to the exising post's data else user is creating
@@ -173,6 +180,7 @@ export default {
       this.formData = Object.assign(this.formData, initialFormData)
     },
     handleCancel () {
+      this.active = false
       this.$emit('update:cancelled', true)
       this.resetForm()
     },
@@ -183,6 +191,7 @@ export default {
       try {  
         const result = await updatePost(this.formData)
         if (!result.errors) {
+          this.close()
           this.$emit('update:success', result.data.postUpdate.id)
           this.resetForm()
         } else {

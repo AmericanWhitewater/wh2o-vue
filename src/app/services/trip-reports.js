@@ -50,11 +50,24 @@ export async function getReport(id) {
                     id
                     title
                     reading
+                    post_type
                     post_date
                     reach_id
                     photos {
                       url
                       id
+                      image {
+                        uri {
+                          big
+                          medium
+                          thumb
+                        }
+                      }
+                    }
+                    permissions {
+                      domain
+                      permission
+                      result
                     }
                     user {
                       uid

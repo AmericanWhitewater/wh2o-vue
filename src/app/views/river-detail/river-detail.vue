@@ -1,5 +1,5 @@
 <template>
-  <div class="river-detail">
+  <div class="river-detail mb-xl">
     <div class="bleed">
       <div class="bx--grid">
         <div class="bx--row">

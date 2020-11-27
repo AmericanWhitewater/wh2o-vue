@@ -1,5 +1,5 @@
 <template>
-  <div class="trip-reports">
+  <div class="trip-reports mb-xl">
     <div class="bx--grid">
       <div class="bx--row">
         <div class="bx--col">
@@ -26,7 +26,8 @@
             </div>
           </header>
           <utility-block
-            text="image unavailable"
+            img="https://www.americanwhitewater.org/photos/archive/889575.jpg"
+            hide-text
             state="content"
             theme="dark"
           />

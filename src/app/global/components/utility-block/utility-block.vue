@@ -1,7 +1,7 @@
 <template>
   <div
     id="utility-block"
-    :style="`height:${height}px`"
+    :style="`height:${height}px;${img ? `background-image: url(${img})` : ''}`"
     :class="[`utility-block-${state}`, theme]"
   >
     <template v-if="!blank">
@@ -35,6 +35,10 @@
 export default {
   name: 'utility-block',
   props: {
+    img: {
+      type: String,
+      required: false
+    },
     blank: {
       type: Boolean,
       required: false
