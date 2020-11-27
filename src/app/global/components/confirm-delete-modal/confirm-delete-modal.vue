@@ -29,7 +29,6 @@
             label="Type resource title to confirm delete"
           />
         </template>
-
         <template v-if="kind === 'general'">
           Are you sure you want to delete {{ resourceName }}?
         </template>
@@ -79,6 +78,9 @@ export default {
 
       return false
     }
+  },
+  beforeDestroy() {
+    document.body.classList.remove('bx--body--with-modal-open')
   }
 }
 </script>

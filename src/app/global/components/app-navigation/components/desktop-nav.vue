@@ -30,7 +30,7 @@
               </transition>
             </div>
             <header>
-              <cv-button
+              <!-- <cv-button
                 id="affiliates-btn"
                 kind="ghost"
                 size="small"
@@ -39,9 +39,9 @@
                 @keydown.enter="$router.push('/affiliates').catch(() => {})"
               >
                 Affiliates
-              </cv-button>
+              </cv-button> -->
 
-              <cv-button
+              <!-- <cv-button
                 id="gages-btn"
                 kind="ghost"
                 size="small"
@@ -50,9 +50,9 @@
                 @keydown.enter="$router.push('/gages').catch(() => {})"
               >
                 Gages
-              </cv-button>
+              </cv-button> -->
 
-              <cv-button
+              <!-- <cv-button
                 id="map-btn"
                 kind="ghost"
                 size="small"
@@ -61,9 +61,9 @@
                 @keydown.enter="$router.push('/accidents').catch(() => {})"
               >
                 Accidents
-              </cv-button>
+              </cv-button> -->
 
-              <cv-button
+              <!-- <cv-button
                 id="projects-btn"
                 kind="ghost"
                 size="small"
@@ -72,7 +72,7 @@
                 @keydown.enter="$router.push('/projects').catch(() => {})"
               >
                 Projects
-              </cv-button>
+              </cv-button> -->
 
               <cv-button
                 id="trip-reports-btn"
@@ -85,7 +85,7 @@
                 Trip Reports
               </cv-button>
 
-              <cv-button
+              <!-- <cv-button
                 id="documents-btn"
                 kind="ghost"
                 size="small"
@@ -94,7 +94,7 @@
                 @keydown.enter="$router.push('/documents').catch(() => {})"
               >
                 Documents
-              </cv-button>
+              </cv-button> -->
 
               <cv-button
                 id="map-btn"

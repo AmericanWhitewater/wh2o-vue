@@ -4,5 +4,22 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+     h1 {
+        @include carbon--breakpoint("sm") {
+          @include carbon--type-style("productive-heading-03");
+        }
+        @include carbon--breakpoint("md") {
+          @include carbon--type-style("productive-heading-04");
+        }
+      }
+      h4 {
+        @include carbon--breakpoint("sm") {
+          @include carbon--type-style("productive-heading-02");
+          margin-bottom: $spacing-xs;
+        }
+        @include carbon--breakpoint("md") {
+          @include carbon--type-style("productive-heading-03");
+        }
+      }
   }
 }

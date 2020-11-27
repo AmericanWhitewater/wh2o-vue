@@ -145,7 +145,7 @@ export default {
       if (this.height) {
         return `${this.height}px`
       } else {
-        return laravelDeploy ? 'calc(100vh - 125px)' : 'calc(100vh - 50px)'
+        return laravelDeploy ? 'calc(100vh - 125px)' : 'calc(100vh - 80px)'
       }
     },
     // parses out the layers we're adding to the map from NwiMapStyles / sourceLayers prop

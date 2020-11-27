@@ -15,8 +15,14 @@
                 </cv-breadcrumb-item>
               </cv-breadcrumb>
             </div>
-            <div>
-              <cv-button size="small"> Submit Report </cv-button>
+            <div v-if="user">
+              <cv-button
+                size="small"
+                @click.exact="postUpdateModalVisible = true"
+                @keydown.enter="postUpdateModalVisible = true"
+              >
+                Submit Report
+              </cv-button>
             </div>
           </header>
           <utility-block
@@ -40,30 +46,34 @@
               </thead>
               <tbody>
                 <template v-if="loading">
-                  loading
+                  <tr>
+                    <td colspan="5">
+                      <utility-block state="loading" />
+                    </td>
+                  </tr>
                 </template>
                 <template v-else-if="data">
                   <tr
-                  v-for="(report, index) in data"
-                  :key="index"
-                  @click="$router.push(`/report-detail/${report.id}`)"
-                >
-                  <td>
-                    {{ formatDate(report.post_date, 'LL') }}
-                  </td>
-                  <td>
-                    {{ report.reach_id || 'n/a' }}
-                  </td>
-                  <td>
-                    {{ report.detail || 'n/a' }}
-                  </td>
-                  <td>
-                    {{ report.reading || 'n/a' }}
-                  </td>
-                  <td>
-                    {{ report.user.uname }}
-                  </td>
-                </tr>
+                    v-for="(report, index) in data"
+                    :key="index"
+                    @click="$router.push(`/report-detail/${report.id}`)"
+                  >
+                    <td>
+                      {{ formatDate(report.post_date, "LL") }}
+                    </td>
+                    <td>
+                      {{ report.reach_id || "n/a" }}
+                    </td>
+                    <td>
+                      {{ report.detail || "n/a" }}
+                    </td>
+                    <td>
+                      {{ report.reading || "n/a" }}
+                    </td>
+                    <td>
+                      {{ report.user.uname }}
+                    </td>
+                  </tr>
                 </template>
               </tbody>
             </table>
@@ -71,30 +81,69 @@
         </div>
       </div>
     </div>
+    <post-update-modal
+      :visible="postUpdateModalVisible"
+      kind="JOURNAL"
+      size="large"
+      title="New Report"
+      @update:submitted="postUpdateModalVisible = false"
+      @update:success="handleSuccess"
+      @update:cancelled="postUpdateModalVisible = false"
+    >
+      <template #form-fields="formData">
+        <cv-text-input
+          v-model="formData.formData.post.title"
+          label="Title"
+          theme="light"
+          class="mb-spacing-md"
+        />
+        <cv-text-area
+          v-model="formData.formData.post.detail"
+          label="Description"
+          theme="light"
+          class="mb-spacing-md"
+        />
+      </template>
+    </post-update-modal>
   </div>
 </template>
 <script>
-
 import {
   UtilityBlock,
   PageDescription,
+  PostUpdateModal,
 } from "@/app/global/components";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "trip-reports",
   components: {
     UtilityBlock,
     PageDescription,
+    PostUpdateModal,
   },
+  data: () => ({
+    postUpdateModalVisible: false,
+  }),
   computed: {
     ...mapState({
       data: (state) => state.TripReports.data,
       loading: (state) => state.TripReports.loading,
+      user: state => state.User.data
     }),
   },
+  methods: {
+    ...mapActions({
+      load: "TripReports/getProperty",
+    }),
+    handleSuccess(newReportId) {
+      this.load();
+      this.postUpdateModalVisible = false;
+      this.$router.push(`/report-detail/${newReportId}`);
+    },
+  },
   created() {
-    if(!this.data) {
-      this.$store.dispatch('TripReports/getProperty')
+    if (!this.data) {
+      this.load();
     }
   },
 };

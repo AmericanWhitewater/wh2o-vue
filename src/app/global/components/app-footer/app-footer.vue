@@ -29,8 +29,12 @@ export default {
 
 <style lang="scss">
 .app-footer {
-  position: relative;
+  position: fixed;
   background-color: $ui-05;
+  z-index: 5;
+  bottom:0;
+  left:0;
+  width: 100vw;
   .contents {
     height: 2rem;
     display: flex;
