@@ -1,9 +1,6 @@
-.comment {
-  padding: $spacing-md;
-  &:hover {
-    @include layer("raised");
-  }
-
+.comment,
+.report {
+  padding: $spacing-md $spacing-md $spacing-lg $spacing-md;
   .detail {
     @include carbon--type-style("body-long-02");
   }

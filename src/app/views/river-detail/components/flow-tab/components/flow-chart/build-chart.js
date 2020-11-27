@@ -2,7 +2,7 @@ import Chart from 'chart.js'
 import { flowChartBackground } from './flow-chart-background'
 
 export function buildChart (context, labels, readings, options) {
-  new Chart(context, {
+  return new Chart(context, {
     plugins: 'graphRange' in options ? [flowChartBackground] : [],
     responsive: true,
     type: 'line',

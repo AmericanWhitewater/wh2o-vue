@@ -31,7 +31,8 @@ export default {
     }
   },
   data: () => ({
-    currentTimeScale: null
+    currentTimeScale: null,
+    chart: null
   }),
   computed: {
     metrics () {
@@ -210,13 +211,18 @@ export default {
           }
         }
 
-        buildChart(ctx, this.chartLabels, this.formattedReadings, chartOptions)
+        this.chart = buildChart(ctx, this.chartLabels, this.formattedReadings, chartOptions)
       }
     }
   },
   mounted () {
     this.getChartMetric()
     this.renderChart(this.readings)
+  },
+  beforeDestroy() {
+    if(this.chart) {
+      this.chart.destroy()
+    }
   }
 }
 </script>

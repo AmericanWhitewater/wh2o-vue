@@ -79,7 +79,7 @@ export async function getReachReports(id) {
 
     `
     })
-    .then(res => res.data)
+    .then(res => res.data.data.posts.data)
 }
 
 export async function getReachProjects(id) {

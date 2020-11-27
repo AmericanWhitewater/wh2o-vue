@@ -15,6 +15,7 @@ export default {
     ...actions,
     async getProperty(context, data) {
       try {
+        context.commit('DATA_REQUEST')
         const result = await getGageReadings(data)
 
         context.commit('DATA_SUCCESS', result)

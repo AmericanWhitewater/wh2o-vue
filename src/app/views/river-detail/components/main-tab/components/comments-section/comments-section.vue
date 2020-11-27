@@ -1,7 +1,7 @@
 <template>
   <section
     v-view.once="loadComments"
-    class="comments-section"
+    class="comments-section mb-xl"
   >
     <hr>
     <h2 class="mb-spacing-md">

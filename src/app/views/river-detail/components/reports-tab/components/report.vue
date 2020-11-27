@@ -1,32 +1,32 @@
 <template>
-  <div v-if="comment.detail" class="mb-sm comment bx--tile">
+  <div v-if="data.detail" class="mb-sm report bx--tile">
     <div class="bx--row">
       <div class="bx--col-sm-12 bx--col-md-1">
         <user-avatar
           theme="light"
-          :image-u-r-i="formatURI(comment.user.image.uri.big)"
-          :username="comment.user.uname"
+          :image-u-r-i="formatURI(data.user.image.uri.big)"
+          :username="data.user.uname"
         />
       </div>
       <div class="bx--col-sm-3 bx--col-lg-11">
-        <h5 class="mr-spacing-sm" v-text="comment.user.uname" />
+        <h5 class="mr-spacing-sm" v-text="data.user.uname" />
         <h6
           class="date mb-spacing-xs"
-          v-text="formatDate(comment.post_date, 'll')"
+          v-text="formatDate(data.post_date, 'll')"
         />
         <hr v-if="!editMode" >
         <template v-if="editMode">
           <cv-button
-            v-if="canEdit(comment)"
+            v-if="canEdit(data)"
             size="small"
             kind="secondary"
-            @click.exact="$emit('comment:edit', comment)"
-            @keydown.enter="$emit('comment:edit', comment)"
+            @click.exact="$emit('report:edit', data)"
+            @keydown.enter="$emit('report:edit', data)"
           >
             Edit
           </cv-button>
           <cv-button
-            v-if="canDelete(comment)"
+            v-if="canDelete(data)"
             size="small"
             kind="danger"
             class="mb-spacing-xs"
@@ -41,25 +41,20 @@
     </div>
     <div class="bx--row">
       <div class="bx--col bx--offset-md-1">
-        <div class="detail" v-html="comment.detail" />
+        <div class="detail" v-html="data.detail" />
       </div>
     </div>
-    <!-- <div class="bx--row">
-      <div class="bx--col bx--offset-md-6">
-        <a href="#">Report Comment</a>
-      </div>
-    </div> -->
     <cv-modal
       ref="modalWrapper"
       :visible="deleteCommentModalVisible"
       @modal-shown="setModalOffset"
       @secondary-click="deleteCommentModalVisible = false"
       @modal-hidden="deleteCommentModalVisible = false"
-      @primary-click="handleDelete(comment.id)"
+      @primary-click="handleDelete(data.id)"
     >
       <template slot="title"> Confirm Delete </template>
       <template slot="content">
-        Are you sure you want to delete this comment? This cannot be undone.
+        Are you sure you want to delete this data? This cannot be undone.
       </template>
       <template slot="secondary-button"> Cancel </template>
       <template slot="primary-button"> Submit </template>
@@ -76,13 +71,13 @@ import {deleteComment} from "@/app/services";
 import { baseUrl } from "@/app/environment";
 
 export default {
-  name: "comment",
+  name: "report",
   components: {
     UserAvatar,
   },
   mixins: [shadowDomFixedHeightOffset, objectPermissionsHelpersMixin],
   props: {
-    comment: {
+    data: {
       type: Object,
       required: true,
     },
@@ -120,14 +115,14 @@ export default {
 
         if (!result.errors) {
           this.$store.dispatch("Global/sendToast", {
-            title: "Comment Removed",
+            title: "Report Removed",
             kind: "success",
             override: true,
             contrast: false,
             action: false,
             autoHide: true,
           });
-          this.$emit("comment:delete", this.comment.id);
+          this.$emit("data:delete", this.data.id);
         } else {
           this.$store.dispatch("Global/sendToast", {
             title: "Delete Failed",
@@ -151,7 +146,7 @@ export default {
     },
   },
   mounted() {
-    this.formData.detail = this.comment.detail;
+    this.formData.detail = this.data.detail;
   },
 };
 </script>

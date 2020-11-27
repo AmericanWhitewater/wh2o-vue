@@ -31,7 +31,7 @@ export default [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('@/app/views/river-detail/components/reports-tab.vue')
+        component: () => import('@/app/views/river-detail/components/reports-tab/reports-tab.vue')
       },
       {
         path: 'flow',
