@@ -31,12 +31,14 @@
           </slot>
         </template>
       </template>
-      <template slot="secondary-button"
+      <template v-if="!formPending"
+                slot="secondary-button"
                 @keydown.enter="handleCancel"
                 @click.exact="handleCancel">
         Cancel
       </template>
-      <template slot="primary-button"
+      <template v-if="!formPending"
+                slot="primary-button"
                 @keydown.enter="handleSubmit"
                 @click.exact="handleSubmit">
         Submit
@@ -119,6 +121,11 @@ export default {
   watch: {
     post () {
       this.setInitialFormData()
+    },
+    reachId(newVal, oldVal) {
+      if(newVal !== oldVal) {
+        this.formData.post.reach_id = newVal
+      }
     }
   },
   methods: {

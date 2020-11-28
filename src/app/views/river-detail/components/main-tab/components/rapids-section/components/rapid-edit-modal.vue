@@ -73,11 +73,12 @@
         />
         <cv-multi-select
           v-model="formData.character"
+          class="mb-spacing-md"
           theme="light"
           :options="poiCharacteristics"
           title="Characteristics"
         />
-        <ContentEditor
+        <content-editor
           v-if="renderEditor"
           :content="formData.description"
           label="Description"

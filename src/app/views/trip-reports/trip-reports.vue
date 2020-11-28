@@ -87,6 +87,7 @@
       kind="JOURNAL"
       size="large"
       title="New Report"
+      :reachId="selectedReach"
       @update:submitted="postUpdateModalVisible = false"
       @update:success="handleSuccess"
       @update:cancelled="postUpdateModalVisible = false"
@@ -97,6 +98,15 @@
           label="Title"
           theme="light"
           class="mb-spacing-md"
+        />
+        <cv-combo-box
+          v-model="selectedReach"
+          class="mb-spacing-md"
+          title="River"
+          auto-filter
+          label="Type to search"
+          :options="reachSearchData"
+          @filter="searchRiver"
         />
         <cv-text-area
           v-model="formData.formData.post.detail"
@@ -109,6 +119,7 @@
   </div>
 </template>
 <script>
+import { searchReachMap } from "@/app/services";
 import {
   UtilityBlock,
   PageDescription,
@@ -124,12 +135,15 @@ export default {
   },
   data: () => ({
     postUpdateModalVisible: false,
+    reachSearchData: [],
+    selectedReach: null,
+    searchLoading: false
   }),
   computed: {
     ...mapState({
       data: (state) => state.TripReports.data,
       loading: (state) => state.TripReports.loading,
-      user: state => state.User.data
+      user: (state) => state.User.data,
     }),
   },
   methods: {
@@ -140,6 +154,35 @@ export default {
       this.load();
       this.postUpdateModalVisible = false;
       this.$router.push(`/report-detail/${newReportId}`);
+    },
+    async searchRiver(term) {
+      if(!term) return
+      try {
+        this.searchLoading = true
+
+        const result = await searchReachMap(term);
+
+        if(!result.errors) {
+          this.reachSearchData = result.data.reachmap.data.map((item) => {
+            if(item.river && item.id && item.section) {
+              return {
+                value: item.id.toString(),
+                label: `${item.river} - ${item.section}`,
+                name: item.river
+              }
+            }
+          })
+        }
+
+      } catch (error) {
+        this.$store.dispatch('Global/sendToast', {
+          kind: 'error',
+          title: 'Error',
+          subtitle: 'Failed to search.'
+        })
+      } finally {
+        this.searchLoading = false
+      }
     },
   },
   created() {
