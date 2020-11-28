@@ -52,16 +52,16 @@
                 Gages
               </cv-button> -->
 
-              <!-- <cv-button
+              <cv-button
                 id="map-btn"
                 kind="ghost"
                 size="small"
                 class="header--btn"
-                @click.exact="$router.push('/accidents').catch(() => {})"
-                @keydown.enter="$router.push('/accidents').catch(() => {})"
+                @click.exact="$router.push('/accident-database').catch(() => {})"
+                @keydown.enter="$router.push('/accident-database').catch(() => {})"
               >
                 Accidents
-              </cv-button> -->
+              </cv-button>
 
               <!-- <cv-button
                 id="projects-btn"
