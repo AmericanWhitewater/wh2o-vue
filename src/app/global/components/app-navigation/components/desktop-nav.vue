@@ -6,21 +6,12 @@
           <div class="bx--col-lg-16 nav-main-content-area">
             <div class="logo-wrapper">
               <div>
-                <router-link
-                  id="aw-logo"
-                  to="/"
-                >
+                <router-link id="aw-logo" to="/">
                   <aw-logo />
                 </router-link>
               </div>
-              <transition
-                name="fade"
-                mode="out-in"
-              >
-                <div
-                  v-if="offline"
-                  class="ml-spacing-md"
-                >
+              <transition name="fade" mode="out-in">
+                <div v-if="offline" class="ml-spacing-md">
                   <cv-tag
                     id="network-tag"
                     kind="red"
@@ -30,18 +21,50 @@
               </transition>
             </div>
             <header>
-              <cv-button
-                v-for="(item, index) in links"
-                :id="item.label"
-                :key="index"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push(item.path).catch(() => {})"
-                @keydown.enter="$router.push(item.path).catch(() => {})"
-              >
-                {{ item.label }}
-              </cv-button>
+              <template v-for="(item, index) in $options.navItems">
+                <template v-if="item.children">
+                  <div :key="index">
+                    <cv-overflow-menu>
+                      <template #trigger>
+                        <div>
+                          <cv-button kind="ghost">
+                            {{ item.label }}
+                          </cv-button>
+                        </div>
+                      </template>
+                      <cv-overflow-menu-item
+                        v-for="(child, i) in item.children"
+                        :id="child.label"
+                        :key="i"
+                        kind="ghost"
+                        size="small"
+                        :value="child.label"
+                        class="header--btn"
+                        @click.exact="$router.push(child.path).catch(() => {})"
+                        @keydown.enter="
+                          $router.push(child.path).catch(() => {})
+                        "
+                      >
+                        {{ child.label }}
+                      </cv-overflow-menu-item>
+                    </cv-overflow-menu>
+                  </div>
+                </template>
+                <template v-else>
+                  <cv-button
+                    :id="item.label"
+                    :key="index"
+                    kind="ghost"
+                    size="small"
+                    class="header--btn"
+                    @click.exact="$router.push(item.path).catch(() => {})"
+                    @keydown.enter="$router.push(item.path).catch(() => {})"
+                  >
+                    {{ item.label }}
+                  </cv-button>
+                </template>
+              </template>
+
               <cv-button
                 v-if="!user"
                 id="login-btn"
@@ -64,10 +87,14 @@
                 size="small"
                 class="header--btn"
                 @click.exact="
-                  $router.push(`/user/account/${user && user.uid}/alerts`).catch(() => {})
+                  $router
+                    .push(`/user/account/${user && user.uid}/alerts`)
+                    .catch(() => {})
                 "
                 @keydown.enter="
-                  $router.push(`/user/account/${user && user.uid}/alerts`).catch(() => {})
+                  $router
+                    .push(`/user/account/${user && user.uid}/alerts`)
+                    .catch(() => {})
                 "
               >
                 My Account
@@ -80,50 +107,28 @@
   </div>
 </template>
 <script>
-import AwLogo from '@/app/global/components/logo-library/aw-logo'
+import AwLogo from "@/app/global/components/logo-library/aw-logo";
+import navItems from "./nav-item";
 export default {
-  name: 'desktop-nav',
+  name: "desktop-nav",
   components: {
-    'aw-logo': AwLogo
+    "aw-logo": AwLogo,
   },
+  navItems,
   props: {
     navItems: {
       type: Array,
-      default: () => null
+      default: () => null,
     },
     offline: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
-  data: () => ({
-    links: [
-      {
-        label:"About",
-        path: '/legacy-viewer?url=https://www.americanwhitewater.org/content/Wiki/aw:about/?'
-      },
-      {
-        label:"Safety",
-        path: '/legacy-viewer?url=https://www.americanwhitewater.org/content/Safety/view/?'
-      },
-      {
-        label:"News",
-        path: '/news'
-      },
-      {
-        label:"Trip Reports",
-        path: '/trip-reports'
-      },
-      {
-        label:"Map",
-        path: '/river-index'
-      },
-    ] 
-  }),
   computed: {
-    user () {
-      return this.$store.state.User.data
-    }
-  }
-}
+    user() {
+      return this.$store.state.User.data;
+    },
+  },
+};
 </script>
