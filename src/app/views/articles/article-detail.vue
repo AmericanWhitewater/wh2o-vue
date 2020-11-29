@@ -1,8 +1,8 @@
 <template>
   <div class="trip-reports mb-xl">
-    <div class="bx--grid">
-      <div class="bx--row">
-        <div class="bx--col">
+    <cv-grid class="bx--grid">
+      <cv-row class="bx--row">
+        <cv-column class="bx--col">
           <header v-if="loading && !data" class="bx--tile">
             <div>
               <cv-skeleton-text heading />
@@ -40,24 +40,24 @@
             state="content"
             theme="dark"
           />
-        </div>
-      </div>
-      <div class="bx--row mt-lg mb-xl">
+        </cv-column>
+      </cv-row>
+      <cv-row class="mt-lg mb-xl">
         <template v-if="loading">
-          <div class="bx--col">
+          <cv-column class="bx--col">
             <utility-block state="loading" />
-          </div>
+          </cv-column>
         </template>
         <template v-else-if="data">
-          <div class="bx--col bx--col-md-10 bx--col-lg-11">
+          <cv-column :sm="12" :md="8" :lg="11" :max="12">
             <div v-html="data.contents" />
-          </div>
+          </cv-column>
         </template>
         <template v-else>
           <utility-block state="error" />
         </template>
-      </div>
-    </div>
+      </cv-row>
+    </cv-grid>
   </div>
 </template>
 <script>

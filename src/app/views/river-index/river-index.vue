@@ -112,6 +112,15 @@ export default {
       required: false
     }
   },
+  metaInfo: {
+    title: 'River Index - American Whitewater',
+    meta: [
+      {
+        name: 'description',
+        content: 'An interactive whitewater river map and guide which provides flow data, descriptions, safety information, and more for the ~6000 rivers in the American Whitewater database.'
+      }
+    ]
+  },
   data: () => ({
     river: null,
     featureToCenter: null,

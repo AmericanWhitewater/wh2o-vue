@@ -10,20 +10,11 @@
                   <aw-logo />
                 </router-link>
               </div>
-              <transition name="fade" mode="out-in">
-                <div v-if="offline" class="ml-spacing-md">
-                  <cv-tag
-                    id="network-tag"
-                    kind="red"
-                    label="Network Disconnected"
-                  />
-                </div>
-              </transition>
             </div>
             <header>
               <template v-for="(item, index) in $options.navItems">
                 <template v-if="item.children">
-                  <div :key="index">
+                  <div :key="index" class="ml-spacing-sm">
                     <cv-overflow-menu>
                       <template #trigger>
                         <div>
@@ -56,7 +47,7 @@
                     :key="index"
                     kind="ghost"
                     size="small"
-                    class="header--btn"
+                    class="ml-spacing-sm"
                     @click.exact="$router.push(item.path).catch(() => {})"
                     @keydown.enter="$router.push(item.path).catch(() => {})"
                   >

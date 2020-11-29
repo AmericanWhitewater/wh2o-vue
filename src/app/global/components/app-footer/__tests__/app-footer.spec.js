@@ -2,7 +2,11 @@ import AppFooter from '../app-footer'
 import { createWrapper } from '@/utils'
 
 const mockStore = {
-  state: {},
+  state: {
+    Global: {
+      offline: false
+    }
+  },
   dispatch: jest.fn()
 }
 

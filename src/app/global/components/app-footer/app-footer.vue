@@ -7,9 +7,21 @@
       <div class="bx--row">
         <div class="bx--col">
           <div class="contents">
-            <a href="https://github.com/AmericanWhitewater" target="_blank">
+            
+            <div class="icons">
+              <a href="https://github.com/AmericanWhitewater" target="_blank">
             <LogoGitHub24 />
             </a>
+            <transition name="fade" mode="out-in">
+                <div v-if="offline" class="ml-spacing-md">
+                  <cv-tag
+                    id="network-tag"
+                    kind="red"
+                    label="Network Disconnected"
+                  />
+                </div>
+              </transition>
+            </div>
             <span>American Whitewater &copy; 1999 – Present</span>
             <router-link to="/legacy-viewer?url=https://www.americanwhitewater.org/">
               Legacy App
@@ -26,7 +38,12 @@
  * @displayName App Footer
  */
 export default {
-  name: 'app-footer'
+  name: 'app-footer',
+  computed: {
+    offline () {
+      return this.$store.state.Global.offline
+    }
+  }
 }
 </script>
 
@@ -45,6 +62,10 @@ export default {
     align-items: center;
     color: $ui-02;
     @include carbon--type-style("code-01");
+    .icons {
+      display: flex;
+      align-items: center;
+    }
     a {
       color: $ui-02;
       display:block;

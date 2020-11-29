@@ -129,9 +129,7 @@
                   @keydown.enter="toggleEditMode"
                 >
                   <component :is="editMode ? 'EditOff20' : 'Edit20'" />
-                  <span v-if="editMode" class="pl-spacing-2xs">
-                    Editing
-                  </span>
+                  <span v-if="editMode" class="pl-spacing-2xs"> Editing </span>
                 </cv-button>
                 <cv-button
                   v-if="!editMode"
@@ -238,6 +236,18 @@ export default {
     accidents: "Accidents",
     credits: "Contributors",
   },
+  metaInfo() {
+    return {
+      title: this.reach ? this.reach.river : "",
+      titleTemplate: "%s - American Whitewater",
+      meta: [
+        {
+          name: "description",
+          content: this.reachMetaDescription,
+        },
+      ],
+    };
+  },
   computed: {
     ...mapState({
       reach: (state) => state.RiverDetail.data,
@@ -246,6 +256,20 @@ export default {
       editMode: (state) => state.Global.editMode,
       user: (state) => state.User.data,
     }),
+    reachMetaDescription: {
+      cache: false,
+      get() {
+        if (this.reach && this.reach.description) {
+          return (
+            this.$sanitize(this.reach.description.slice(0, 150), {
+              allowedTags: [],
+            }).trim() + "..."
+          );
+        }
+
+        return "";
+      },
+    },
     reachId() {
       return this.$route.params.id;
     },
@@ -291,9 +315,9 @@ export default {
         ]);
       }
     },
-     loadReachData() {
+    loadReachData() {
       this.$store.dispatch("RiverDetail/setRefId", this.reachId);
-      this.$store.dispatch('RiverEvents/getProperty', this.reachId)
+      this.$store.dispatch("RiverEvents/getProperty", this.reachId);
       this.$store.dispatch("RiverDetail/getProperty", this.reachId);
       this.$store.dispatch("RiverAlerts/getProperty", this.reachId);
       this.$store.dispatch("RiverGages/getProperty", this.reachId);
@@ -341,6 +365,6 @@ export default {
     if (bookmarks && bookmarks.includes(Number(this.$route.params.id))) {
       this.bookmarked = true;
     }
-  }
+  },
 };
 </script>

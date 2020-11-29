@@ -25,16 +25,6 @@ const options = {
 }
 
 describe('desktop-nav.vue', () => {
-  it('hides offline indicator when offline', () => {
-    const wrapper = createWrapper(DesktopNav, options)
-
-    expect(wrapper.find('#network-tag').exists()).toBe(false)
-  })
-  it('shows offline indicator when offline', () => {
-    options.propsData.offline = true
-    const wrapper = createWrapper(DesktopNav, options)
-    expect(wrapper.find('#network-tag').exists()).toBe(true)
-  })
   it('shows login button when user logged in', () => {
     const wrapper = createWrapper(DesktopNav, options)
     expect(wrapper.find('#login-btn').exists()).toBe(true)
