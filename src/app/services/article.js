@@ -59,12 +59,24 @@ export async function getArticles() {
 export async function updateArticle(data) {
   return http.post('graphql', {
     query: `
-      articleUpdate (id: ID!, $article: ArticleInput!) {
-        id
+      mutation ($id:ID!, $article:ArticleInput!) {
+        articleUpdate (id: $id, article:$article) {
+          id
+        }
       }
     `,
-    variables: {
-      data
-    }
-  }).then(res => res.data)
+    variables: data
+  }).then(res => res.data.data.articleUpdate)
+}
+
+export async function deleteArticle(id) {
+  return http.post('graphql', {
+    query: `
+      mutation {
+        articleDelete (id: "${id}") {
+          id
+        }
+      }
+    `
+  }).then(res => res.data.data.articleDelete)
 }

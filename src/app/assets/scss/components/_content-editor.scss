@@ -1,0 +1,41 @@
+.content-editor {
+  .ProseMirror {
+    background-color: $ui-02;
+    min-height: 250px;
+    padding: 1rem;
+  }
+  .toolbar {
+    @include layer("raised");
+    border: 1px solid $ui-03;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 $spacing-xs;
+    width: 100%;
+
+    button {
+      background-color: $ui-01;
+      border: 0;
+      color: $text-01;
+      cursor: pointer;
+      flex-basis: auto;
+      font-size: 1rem;
+      margin: 0;
+      margin-left: $spacing-sm;
+      padding: $spacing-xs;
+      &:hover {
+        background-color: $ui-02;
+      }
+      h3 {
+        line-height: 1;
+        margin: 0;
+        padding: 0;
+        u {
+          text-decoration: none;
+        }
+      }
+      svg {
+        vertical-align: middle;
+      }
+    }
+  }
+}

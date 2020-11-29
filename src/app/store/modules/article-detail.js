@@ -18,10 +18,10 @@ export default {
         context.commit('DATA_REQUEST')
         const result = await getArticle(Number(id))
 
-        if (!result.errors) {
+        if (result && !result.errors) {
           context.commit('DATA_SUCCESS', result)
         } else {
-          context.commit('DATA_ERROR', result.errors[0].message)
+          context.commit('DATA_ERROR', !result ? 'Nothing Returned from API' : result.errors[0].message)
         }
 
       } catch (error) {

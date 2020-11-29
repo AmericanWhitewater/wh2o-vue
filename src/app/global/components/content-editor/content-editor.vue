@@ -33,7 +33,8 @@
                 <Redo16 />
               </button>
             </span>
-            <button
+            <div>
+              <button
               class="menubar__button"
               :class="{ 'is-active': isActive.bold() }"
               @click="commands.bold"
@@ -89,6 +90,13 @@
             >
               <ListNumbered16 />
             </button>
+            <button
+              class="menubar__button"
+              @click="showImagePrompt(commands.image)"
+            >
+              Image
+            </button>
+            </div>
           </div>
         </div>
       </editor-menu-bar>
@@ -109,6 +117,7 @@ import {
   BulletList,
   ListItem,
   Bold,
+  Image,
   Italic,
   Link,
   Underline,
@@ -158,7 +167,8 @@ export default {
           new Bold(),
           new Italic(),
           new Underline(),
-          new History()
+          new History(),
+          new Image()
         ],
         onUpdate: ({ getHTML }) => {
           this.updatedContent = getHTML()
@@ -169,6 +179,14 @@ export default {
         }
       })
     }
+  },
+  methods: {
+    showImagePrompt(command) {
+      const src = prompt('Enter the url of your image here')
+      if (src !== null) {
+        command({ src })
+      }
+    },
   },
   mounted () {
     this.$emit('editor:mounted')
@@ -182,45 +200,3 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-.content-editor {
-  .ProseMirror {
-    background-color: $ui-02;
-    min-height: 250px;
-    padding: 1rem;
-  }
-  .toolbar {
-    @include layer("raised");
-    border: 1px solid $ui-03;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 $spacing-xs;
-    width: 100%;
-
-    button {
-      background-color: $ui-01;
-      border: 0;
-      color: $text-01;
-      cursor: pointer;
-      flex-basis: auto;
-      font-size: 1rem;
-      margin: 0;
-      padding: $spacing-xs;
-      &:hover {
-        background-color: $ui-02;
-      }
-      h3 {
-        line-height: 1;
-        margin: 0;
-        padding: 0;
-        u {
-          text-decoration: none;
-        }
-      }
-      svg {
-        vertical-align: middle;
-      }
-    }
-  }
-}
-</style>
