@@ -53,6 +53,17 @@
               </cv-button> -->
 
               <cv-button
+                id="article-btn"
+                kind="ghost"
+                size="small"
+                class="header--btn"
+                @click.exact="$router.push('/articles').catch(() => {})"
+                @keydown.enter="$router.push('/articles').catch(() => {})"
+              >
+                Articles
+              </cv-button>
+
+              <cv-button
                 id="map-btn"
                 kind="ghost"
                 size="small"

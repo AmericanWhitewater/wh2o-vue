@@ -63,6 +63,7 @@
 <script>
 import { FlowColorBlock } from '@/app/views/river-detail/components/main-tab/components'
 import { checkWindow } from '@/app/global/mixins'
+import { laravelDeploy } from '@/app/environment'
 export default {
   name: 'article-card',
   components: {
@@ -124,8 +125,12 @@ export default {
       if (this.river) {
         path = `/river-detail/${this.articleId}/main`
       } else {
-        // path = `/article/${this.articleId}`
-        this.goToLink(this.formatLinkUrl(`content/Article/view/article_id/${this.articleId}/`))
+        if(laravelDeploy) {
+          this.goToLink(this.formatLinkUrl(`content/Article/view/article_id/${this.articleId}/`))
+          return
+        } else {
+          path = `/article-detail/${this.articleId}`
+        }
       }
 
       this.$router.push(path).catch(() => {})

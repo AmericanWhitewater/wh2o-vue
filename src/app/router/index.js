@@ -7,6 +7,7 @@ import staticRoutes from '@/app/views/static-routes/static-routes'
 
 import accidentsRoutes from './accidents.routes'
 import affiliatesRoutes from './affiliates.routes'
+import articleRoutes from "./articles.routes"
 import documentsRoutes from './documents.routes'
 import gageDetailRoutes from './gage-detail.routes'
 import gagesRoutes from './gages.routes'
@@ -23,6 +24,7 @@ Vue.use(VueRouter);
 const routes = [
   ...accidentsRoutes,
   ...affiliatesRoutes,
+  ...articleRoutes,
   ...documentsRoutes,
   ...gageDetailRoutes,
   ...gagesRoutes,
