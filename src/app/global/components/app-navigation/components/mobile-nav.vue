@@ -60,18 +60,29 @@
         class="drawer pt-md"
       >
         <div class="main-nav-items">
-          <cv-button
+          <template v-for="(item, index) in $options.navItems">
+            <template v-if="item.children">
+              <cv-dropdown
+            
+            :key="index"
             kind="ghost"
             class="mb-spacing-xs map-button"
-            @click.exact="viewRoute('/river-index')"
-            v-text="'Map'"
-          />
-          <cv-button
-            class="mb-spacing-xs news-button"
-            kind="ghost"
-            @click.exact="viewRoute('/news')"
-            v-text="'News'"
-          />
+            @click.exact="viewRoute(item.path)"
+            v-text="item.label"
+          >
+            <cv-dropdown-item />
+          </cv-dropdown>
+            </template>
+            <template v-else>
+              <cv-button :key="index">
+                {{ item.label }}
+              </cv-button>
+            </template>
+
+
+          </template>
+
+          
         </div>
         <div class="main-nav-items mb-md">
           <cv-button
@@ -108,9 +119,11 @@
   </header>
 </template>
 <script>
+import navItems from "./nav-item"
 import AwLogo from '@/app/global/components/logo-library/aw-logo'
 export default {
   name: 'mobile-nav',
+  navItems,
   components: {
     'aw-logo': AwLogo
   },
