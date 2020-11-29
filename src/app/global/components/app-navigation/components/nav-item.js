@@ -12,7 +12,7 @@ export default [
       },
       {
         label: "Safety",
-        path: '/legacy-viewer?url=https://www.americanwhitewater.org/content/Safety/view/?'
+        path: '/safety'
       },
       {
         label: 'Professional Staff',

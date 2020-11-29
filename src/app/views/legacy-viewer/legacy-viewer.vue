@@ -3,7 +3,7 @@
     <div class="bx--row">
       <div class="bx--col">
         <template v-if="!loaded">
-          <utility-block theme="dark" state="loading" />
+          <utility-block theme="dark" hide-text state="loading" />
         </template>
         <div class="iframe-wrapper">
           <iframe v-show="loaded" class="iframe" :src="url" @load="loaded = true" />

@@ -11,6 +11,9 @@
             <LogoGitHub24 />
             </a>
             <span>American Whitewater &copy; 1999 – Present</span>
+            <router-link to="/legacy-viewer?url=https://www.americanwhitewater.org/">
+              Legacy App
+            </router-link>
           </div>
         </div>
       </div>
