@@ -35,8 +35,6 @@ describe('CreditsTab', () => {
     mockStore.state.RiverCredits.loading = true
     const wrapper = createWrapper(CreditsTab, options)
 
-    expect(wrapper.find('.credits-tab')).toMatchSnapshot()
-
     expect(wrapper.find('.utility-block-loading').exists()).toBe(true)
     expect(wrapper.find('.utility-block-error').exists()).toBe(false)
     expect(wrapper.find('.utility-block-content').exists()).toBe(false)
@@ -46,9 +44,6 @@ describe('CreditsTab', () => {
     mockStore.state.RiverCredits.loading = false
     mockStore.state.RiverCredits.error = true
     const wrapper = createWrapper(CreditsTab, options)
-
-    expect(wrapper.find('.credits-tab')).toMatchSnapshot()
-
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
     expect(wrapper.find('.utility-block-error').exists()).toBe(true)
     expect(wrapper.find('.utility-block-content').exists()).toBe(false)
