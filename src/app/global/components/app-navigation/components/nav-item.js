@@ -44,11 +44,11 @@ export default [
         path: '/legacy-viewer?url=https://www.americanwhitewater.org/content/Membership/gift/?'
       },
       {
-        label: 'Become a Volunteer',
+        label: 'Volunteer',
         path: '/legacy-viewer?url=https://www.americanwhitewater.org/content/Volunteer/view/?'
       },
       {
-        label: 'Advertising Information',
+        label: 'Advertising',
         path: '/legacy-viewer?url=https://www.americanwhitewater.org/content/Wiki/aw:advertising/?'
       },
       {
@@ -60,7 +60,7 @@ export default [
         path: '/legacy-viewer?url=https://www.americanwhitewater.org/content/Wiki/aw:giving/?'
       },
       {
-        label: 'AW Store',
+        label: 'Store',
         target: '_blank',
         path: '/legacy-viewer?url=https://store.americanwhitewater.org/'
       },
@@ -68,7 +68,16 @@ export default [
   },
   {
     label: "River Info",
-    path: '/river-index'
+    children: [
+      {
+        label: 'NWI Map',
+        path: '/river-index'
+      },
+      {
+        label: 'Trip Reports',
+        path: '/trip-reports'
+      }
+    ]
   },
   {
     label: "Library",

@@ -2,15 +2,7 @@
   <div class="accidents-tab">
     <layout name="layout-full-width">
       <template #main>
-        <template v-if="loading">
-          <utility-block
-            v-if="loading"
-            state="loading"
-            text="Loading accident data"
-          />
-        </template>
-        <template v-else-if="accidents">
-          <page-description
+        <page-description
             description="If someone gets hurt on a river, or you read about a whitewater-related injury, please report it to American Whitewater. Don't worry about multiple submissions from other witnesses, as our safety editors will turn multiple witness reports into a single unified accident report."
           >
             <cv-button
@@ -21,6 +13,15 @@
               Submit Report
             </cv-button>
           </page-description>
+
+        <template v-if="loading">
+          <utility-block
+            v-if="loading"
+            state="loading"
+            text="Loading accident data"
+          />
+        </template>
+        <template v-else-if="accidents">
           <div
             class="bx--data-table-container mb-lg"
           >

@@ -12,8 +12,6 @@ if (process.env.NODE_ENV !== 'development') {
   const trackingId = process.env.VUE_APP_GOOGLE_ID || null
 
   Vue.use(VueGtag, {
-    config: { id: trackingId },
-    appName: 'wh2o',
-    pageTrackerScreenviewEnabled: true
+    config: { id: trackingId }
   }, router)
 }

@@ -78,6 +78,26 @@ export default {
           name: "description",
           content: this.articleMetaDescription,
         },
+        {
+          name: 'og:title',
+          content: this.data ? this.data.title || "" : "Article Detail"
+        },
+        {
+          name: "og:description",
+          content: this.articleMetaDescription,
+        },
+        {
+          name: 'og:url',
+          content: this.$route.fullPath
+        },
+        {
+          name: 'twitter:title',
+          content: this.data ? this.data.title || "" : "Article Detail"
+        },
+        {
+          name: "twitter:description",
+          content: this.articleMetaDescription,
+        },
       ],
     };
   },

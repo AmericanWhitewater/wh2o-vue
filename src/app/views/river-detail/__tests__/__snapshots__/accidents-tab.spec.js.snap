@@ -5,6 +5,21 @@ exports[`AccidentsTab shows error block when error 1`] = `
   <div class="bx--grid">
     <div class="bx--row">
       <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-16">
+        <section class="page-description">
+          <div class="page-description-content">
+            <div class="bx--grid">
+              <div class="bx--row">
+                <div class="bx--col-sm-16 bx--col-md-8 bx--col-lg-10">
+                  <p>If someone gets hurt on a river, or you read about a whitewater-related injury, please report it to American Whitewater. Don't worry about multiple submissions from other witnesses, as our safety editors will turn multiple witness reports into a single unified accident report.</p> <button role="button" class="cv-button bx--btn bx--btn--secondary bx--btn--sm">
+                    Submit Report
+                    <!---->
+                  </button>
+                </div>
+                <div class="bx--col-sm-16 bx--col-md-8 bx--col-lg-6 "></div>
+              </div>
+            </div>
+          </div>
+        </section>
         <div id="utility-block" class="utility-block-error light">
           <!---->
           <!---->
@@ -37,6 +52,21 @@ exports[`AccidentsTab shows loading block when loading 1`] = `
   <div class="bx--grid">
     <div class="bx--row">
       <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-16">
+        <section class="page-description">
+          <div class="page-description-content">
+            <div class="bx--grid">
+              <div class="bx--row">
+                <div class="bx--col-sm-16 bx--col-md-8 bx--col-lg-10">
+                  <p>If someone gets hurt on a river, or you read about a whitewater-related injury, please report it to American Whitewater. Don't worry about multiple submissions from other witnesses, as our safety editors will turn multiple witness reports into a single unified accident report.</p> <button role="button" class="cv-button bx--btn bx--btn--secondary bx--btn--sm">
+                    Submit Report
+                    <!---->
+                  </button>
+                </div>
+                <div class="bx--col-sm-16 bx--col-md-8 bx--col-lg-6 "></div>
+              </div>
+            </div>
+          </div>
+        </section>
         <div id="utility-block" class="utility-block-loading light">
           <!---->
           <!---->
