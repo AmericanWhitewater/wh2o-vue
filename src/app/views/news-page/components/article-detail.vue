@@ -119,7 +119,6 @@
 </template>
 <script>
 import { ArticleCard } from '@/app/global/components'
-import { articleActions, newsActions } from '../shared/state'
 import { mapState } from 'vuex'
 import Moment from 'moment'
 import { baseUrl } from '../../../environment'
@@ -193,18 +192,7 @@ export default {
   watch: {
     articleId (val) {
       if (val) {
-        this.$store.dispatch(articleActions.GET_ARTICAL_DETAIL_DATA, val)
-      }
-    },
-    article (data) {
-      if (data) {
-        const content = this.$sanitize(data.abstract, {
-          allowedTags: [],
-          allowedAttributes: {}
-        })
-        document
-          .getElementById('meta-description')
-          .setAttribute('content', content.slice(0, 150))
+        this.$store.dispatch('NewsPage/getArticleDetail', val)
       }
     },
     frontPageNews (val) {
@@ -260,12 +248,12 @@ export default {
   },
   created () {
     this.$store.dispatch(
-      articleActions.GET_ARTICAL_DETAIL_DATA,
+      'NewsPage/getArticleDetail',
       this.articleId
     )
 
     if (!this.frontPageNews) {
-      this.$store.dispatch(newsActions.FRONT_PAGE_NEWS)
+      this.$store.dispatch('NewsPage/frontPageNews')
     }
   },
   mounted () {

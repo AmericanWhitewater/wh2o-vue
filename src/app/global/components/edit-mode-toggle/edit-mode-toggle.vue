@@ -23,24 +23,22 @@
 </template>
 
 <script>
-import { globalAppActions } from '@/app/global/state'
-
 export default {
   name: 'edit-mode-toggle',
   computed: {
     editMode () {
-      return this.$store.state.appGlobalState.appGlobalData.editMode
+      return this.$store.state.Global.editMode
     },
     user () {
-      return this.$store.state.userState.userData.data
+      return this.$store.state.User.data
     }
   },
   methods: {
     toggleEditMode () {
       if (this.user) {
-        this.$store.dispatch(globalAppActions.TOGGLE_EDIT_MODE, !this.editMode)
+        this.$store.dispatch('Global/toggleEditMode', !this.editMode)
       } else {
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        this.$store.dispatch('Global/sendToast', {
           title: 'Must log in to edit',
           kind: 'error',
           override: true,

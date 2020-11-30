@@ -7,10 +7,8 @@ jest.mock('../services/user-login')
 
 const mockStore = {
   state: {
-    userState: {
-      userData: {
-        data: null
-      }
+    User: {
+      data: null
     }
   },
   dispatch: jest.fn()
@@ -52,6 +50,6 @@ describe('UserLogin', () => {
 
     expect(userLogin).toBeCalledTimes(1)
 
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1, '[USER] FETCH_USER_DATA')
+    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1, 'User/getProperty')
   })
 })

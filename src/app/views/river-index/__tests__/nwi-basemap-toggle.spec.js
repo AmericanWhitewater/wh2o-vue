@@ -3,10 +3,8 @@ import NwiBasemapToggle from '../components/nwi-basemap-toggle.vue'
 
 const mockStore = {
   state: {
-    riverIndexState: {
-      riverIndexData: {
-        mapStyle: 'satellite'
-      }
+    RiverIndex: {
+      mapStyle: 'satellite'
     }
   },
   dispatch: jest.fn()
@@ -29,6 +27,6 @@ describe('nwi-basemap-toggle.vue', () => {
     await wrapper.vm.$nextTick()
 
     expect(mockStore.dispatch).toBeCalledTimes(1)
-    expect(mockStore.dispatch).toBeCalledWith('[RIVER_INDEX] SET_MAP_STYLE', 'topo')
+    expect(mockStore.dispatch).toBeCalledWith('RiverIndex/setMapStyle', 'topo')
   })
 })

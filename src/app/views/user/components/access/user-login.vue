@@ -52,8 +52,6 @@
 </template>
 <script>
 import { appLocalStorage } from '@/app/global/services'
-import { globalAppActions } from '@/app/global/state'
-import { userActions } from '../../shared/state'
 import { userLogin } from './services/user-login'
 import {
   clientId,
@@ -85,7 +83,7 @@ export default {
   },
   computed: {
     user () {
-      return this.$store.state.userState.userData.data
+      return this.$store.state.User.data
     },
     loginDisabled () {
       if (!this.formData.username || !this.formData.password) {
@@ -97,7 +95,7 @@ export default {
   watch: {
     user (v) {
       if (v.uid) {
-        this.$store.dispatch(globalAppActions.SEND_TOAST, {
+        this.$store.dispatch('Global/sendToast', {
           title: 'Welcome back!',
           kind: 'info',
           autoHide: true
@@ -135,7 +133,7 @@ export default {
 
           if ('access_token' in result) {
             appLocalStorage.setItem('wh2o-auth', result.access_token)
-            this.$store.dispatch(userActions.FETCH_USER_DATA)
+            this.$store.dispatch('User/getProperty')
           }
         } catch (error) {
           this.formError = true

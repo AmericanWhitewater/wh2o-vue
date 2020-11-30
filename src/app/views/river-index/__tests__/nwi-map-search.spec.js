@@ -27,6 +27,6 @@ describe('nwi-map-search.vue', () => {
     await wrapper.vm.$nextTick()
 
     expect(mockStore.dispatch).toHaveBeenCalledTimes(1)
-    expect(mockStore.dispatch).toHaveBeenCalledWith('[RIVER_INDEX] FETCH_MAP_SEARCH_DATA', 'gore crik')
+    expect(mockStore.dispatch).toHaveBeenCalledWith('RiverIndex/fetchMapSearchData', 'gore crik')
   })
 })

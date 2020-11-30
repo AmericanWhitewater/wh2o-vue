@@ -14,7 +14,6 @@
  *
  */
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
-import { userActions } from '@/app/views/user/shared/state'
 import { appLocalStorage } from '@/app/global/services'
 export default {
   name: 'user-logout',
@@ -23,7 +22,7 @@ export default {
   },
   created () {
     appLocalStorage.removeItem('wh2o-auth')
-    this.$store.dispatch(userActions.LOGOUT)
+    this.$store.dispatch('User/logout')
   },
   mounted () {
     const self = this

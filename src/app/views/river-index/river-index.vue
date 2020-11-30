@@ -1,7 +1,7 @@
 <template>
   <div id="national-map-app">
     <div class="bx--grid">
-      <div class="bx--row mb-md mt-md">
+      <div v-if="laravelDeploy" class="bx--row mb-md mt-md">
         <div class="bx--col-sm-12 bx--col-lg-5  mb-spacing-lg">
           <h2 class="mb-spacing-sm">
             Stream Team
@@ -60,9 +60,9 @@
           />
         </div>
         <div class="bx--col-sm-16 bx--col-lg-6">
-          <NwiMapSearch />
+          <nwi-map-search />
           <template v-if="loading">
-            <UtilityBlock state="loading" />
+            <utility-block state="loading" />
           </template>
           <template v-else>
             <nwi-rivers-table
@@ -72,7 +72,7 @@
           </template>
         </div>
       </div>
-      <div class="bx--row">
+      <div v-if="laravelDeploy" class="bx--row">
         <div class="bx--col">
           <nwi-state-list />
         </div>
@@ -83,13 +83,8 @@
 
 <script>
 import { NwiRiversTable, NwiMap, NwiMapSearch, NwiStateList } from './components'
-
-import { riverIndexActions } from './shared/state'
 import { mapState } from 'vuex'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
-/**
- * @todo beforeDestroy store bbox / zoom level
- */
 
 export default {
   name: 'river-index',
@@ -125,13 +120,14 @@ export default {
   }),
   computed: {
     ...mapState({
-      reachesInViewport: state => state.riverIndexState.riverIndexData.data,
-      error: state => state.riverIndexState.riverIndexData.error
+      reachesInViewport: state => state.RiverIndex.data,
+      error: state => state.RiverIndex.error,
+      laravelDeploy: state => state.Global.laravelDeploy
     })
   },
   methods: {
     changeReachesInViewport (newReaches) {
-      this.$store.dispatch(riverIndexActions.LOAD_REACHES, newReaches)
+      this.$store.dispatch('RiverIndex/loadReaches', newReaches)
     },
     centerFeature (feature) {
       this.featureToCenter = feature
