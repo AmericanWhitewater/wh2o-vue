@@ -28,6 +28,8 @@ const options = {
   }
 }
 
+test.todo('shows table of contributors.')
+
 describe('CreditsTab', () => {
   it('shows loading block when loading', () => {
     mockStore.state.RiverCredits.loading = true
