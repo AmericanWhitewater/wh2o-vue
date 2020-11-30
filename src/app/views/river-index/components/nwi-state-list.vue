@@ -85,7 +85,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import { riverIndexActions } from '../shared/state'
 import { baseUrl } from '../../../environment'
 
 export default {
@@ -93,9 +92,9 @@ export default {
   components: {},
   computed: {
     ...mapState({
-      loading: state => state.riverIndexData.loading,
-      error: state => state.riverIndexState.riverIndexData.error,
-      states: state => state.riverIndexState.riverIndexData.stateList
+      loading: state => state.RiverIndex.loading,
+      error: state => state.RiverIndex.error,
+      states: state => state.RiverIndex.stateList
     })
 
   },
@@ -111,7 +110,7 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch(riverIndexActions.FETCH_STATES)
+    this.$store.dispatch('RiverIndex/fetchStates')
   }
 }
 </script>

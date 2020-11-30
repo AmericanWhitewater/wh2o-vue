@@ -9,7 +9,6 @@
   </div>
 </template>
 <script>
-import { riverIndexActions } from '../shared/state'
 import SearchBar from '@/app/global/components/search-bar/search-bar.vue'
 export default {
   name: 'nwi-map-search',
@@ -19,7 +18,7 @@ export default {
   methods: {
     fetchRivers (term) {
       this.$store.dispatch(
-        riverIndexActions.FETCH_MAP_SEARCH_DATA,
+        'RiverIndex/fetchMapSearchData',
         term
       )
     }

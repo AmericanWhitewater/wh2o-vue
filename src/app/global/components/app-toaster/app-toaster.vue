@@ -3,14 +3,8 @@
     <div class="bx--grid">
       <div class="bx--row bx--no-gutter--left">
         <div class="bx--col">
-          <transition-group
-            name="list"
-            tag="ul"
-          >
-            <li
-              v-for="(t, index) in toasts"
-              :key="randomId(index)"
-            >
+          <transition-group name="list" tag="ul">
+            <li v-for="(t, index) in toasts" :key="randomId(index)">
               <template v-if="t.action">
                 <cv-inline-notification
                   ref="toast"
@@ -40,89 +34,90 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import { globalAppActions } from '@/app/global/state'
+import { mapState } from "vuex";
 /**
  * @displayName App Toaster
  */
 export default {
-  name: 'app-toaster',
+  name: "app-toaster",
   data: () => ({
     refreshing: false,
     registration: null,
     updateExists: false,
     newUpdate: {
-      title: 'App Update Available',
-      label: 'Install',
-      kind: 'info',
+      title: "App Update Available",
+      label: "Install",
+      kind: "info",
       contrast: true,
-      action: true
-    }
+      action: true,
+    },
   }),
   computed: {
     ...mapState({
-      updateAvailable: state =>
-        state.appGlobalState.appGlobalData.updateAvailable,
-      toasts: state => state.appGlobalState.appGlobalData.toasts
-    })
+      updateAvailable: (state) => state.Global.updateAvailable,
+      toasts: (state) => state.Global.toasts,
+    }),
   },
   watch: {
-    toasts () {
-      /**
-       * @note this is not a permanent solution for auto hide
-       */
-      setTimeout(() => {
-        this.$store.dispatch(globalAppActions.CLOSE_TOAST, 0)
-      }, 5000)
-    },
-    updateAvailable (update) {
-      if (update) {
-        this.$store.dispatch(globalAppActions.SEND_TOAST, this.newUpdate)
+    toasts(val) {
+      let closeTimer;
+
+      if (val && val.length) {
+        closeTimer = setTimeout(() => {
+          this.$store.dispatch("Global/closeToast", 0);
+        }, 5000);
+      } else {
+        clearTimeout(closeTimer);
       }
-    }
+    },
+    updateAvailable(update) {
+      if (update) {
+        this.$store.dispatch("Global/sendToast", this.newUpdate);
+      }
+    },
   },
   methods: {
-    randomId () {
+    randomId() {
       /**
        * linter requires this to take an argument?
        */
-      return this.$randomId()
+      return this.$randomId();
     },
-    handleClose (index ) {
-      this.$store.dispatch(globalAppActions.CLOSE_TOAST, index)
+    handleClose(index) {
+      this.$store.dispatch("Global/closeToast", index);
     },
-    handleUpdate () {
-      window.location.reload(true)
+    handleUpdate() {
+      window.location.reload(true);
     },
-    showRefreshUI (e) {
-      this.registration = e.detail
-      this.updateExists = true
+    showRefreshUI(e) {
+      this.registration = e.detail;
+      this.updateExists = true;
     },
-    refreshApp () {
-      this.updateExists = false
+    refreshApp() {
+      this.updateExists = false;
       if (!this.registration || !this.registration.waiting) {
-        return
+        return;
       }
-      this.registration.waiting.postMessage('skipWaiting')
+      this.registration.waiting.postMessage("skipWaiting");
     },
-    handleAction (index, href) {
+    handleAction(index, href) {
       if (href) {
-        this.$router.push(href)
+        this.$router.push(href);
       } else {
-        this.refreshApp()
+        this.refreshApp();
       }
-      this.$store.dispatch(globalAppActions.CLOSE_TOAST, index)
-    }
+      this.$store.dispatch("Global/closeToast", index);
+    },
   },
-  created () {
-    document.addEventListener('swUpdated', this.showRefreshUI, { once: true })
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (this.refreshing) return
-      this.refreshing = true
-      window.location.reload()
-    })
-  }
-}
+  created() {
+    document.addEventListener("swUpdated", this.showRefreshUI, { once: true });
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (this.refreshing) return;
+      this.refreshing = true;
+      window.location.reload();
+    });
+  },
+};
 </script>
 <style lang="scss" scoped>
 .bx--toast-notification {

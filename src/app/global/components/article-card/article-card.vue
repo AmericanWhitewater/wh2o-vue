@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { FlowColorBlock } from '@/app/views/river-detail/main-tab/components'
+import { FlowColorBlock } from '@/app/views/river-detail/components/main-tab/components'
 import { checkWindow } from '@/app/global/mixins'
 export default {
   name: 'article-card',

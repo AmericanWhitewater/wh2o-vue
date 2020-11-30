@@ -16,17 +16,16 @@
 </template>
 
 <script>
-import { riverIndexActions } from '../shared/state'
 
 export default {
   name: 'nwi-color-by-toggle',
   computed: {
     colorBy: {
       get () {
-        return this.$store.state.riverIndexState.riverIndexData.mapColorBy
+        return this.$store.state.RiverIndex.mapColorBy
       },
       set (value) {
-        this.$store.dispatch(riverIndexActions.SET_MAP_COLOR_BY, value)
+        this.$store.dispatch('RiverIndex/setMapColorBy', value)
       }
     }
   }

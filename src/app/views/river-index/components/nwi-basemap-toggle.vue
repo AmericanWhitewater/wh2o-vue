@@ -16,16 +16,15 @@
 </template>
 
 <script>
-import { riverIndexActions } from '../shared/state'
 export default {
   name: 'nwi-basemap-toggle',
   computed: {
     baseMap: {
       get () {
-        return this.$store.state.riverIndexState.riverIndexData.mapStyle
+        return this.$store.state.RiverIndex.mapStyle
       },
       set (value) {
-        this.$store.dispatch(riverIndexActions.SET_MAP_STYLE, value)
+        this.$store.dispatch('RiverIndex/setMapStyle', value)
       }
     }
   }

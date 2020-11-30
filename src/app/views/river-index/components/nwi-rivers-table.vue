@@ -82,7 +82,6 @@ import ZoomIn16 from '@carbon/icons-vue/lib/zoom--in/16'
 import scrollIntoView from 'scroll-into-view-if-needed'
 import { Breakpoints } from '@/app/global/services'
 import { mapState } from 'vuex'
-import { riverIndexActions } from '../shared/state'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 export default {
   name: 'nwi-rivers-table',
@@ -103,10 +102,10 @@ export default {
   }),
   computed: {
     ...mapState({
-      searchResults: state => state.riverIndexState.riverIndexData.mapSearchResults,
-      searchTerm: state => state.riverIndexState.riverIndexData.mapSearchTerm,
-      searchLoading: state => state.riverIndexState.riverIndexData.mapSearchLoading,
-      mouseoveredFeature: state => state.riverIndexState.riverIndexData.mouseoveredFeature
+      searchResults: state => state.RiverIndex.mapSearchResults,
+      searchTerm: state => state.RiverIndex.mapSearchTerm,
+      searchLoading: state => state.RiverIndex.mapSearchLoading,
+      mouseoveredFeature: state => state.RiverIndex.mouseoveredFeature
     }),
     showingSearchResults () {
       return Boolean(this.searchTerm)
@@ -184,7 +183,7 @@ export default {
         .catch(() => {})
     },
     mouseoverFeature (feature) {
-      this.$store.dispatch(riverIndexActions.MOUSEOVER_FEATURE, feature)
+      this.$store.dispatch('RiverIndex/mouseOverFeature', feature)
     },
     centerReach (reach) {
       this.$emit('centerReach', reach)

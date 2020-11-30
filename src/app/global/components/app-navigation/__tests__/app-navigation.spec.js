@@ -5,10 +5,8 @@ import AppNavigation from '../app-navigation.vue'
 
 const mockStore = {
   state: {
-    appGlobalState: {
-      appGlobalData: {
-        offline: false
-      }
+    Global: {
+      offline: false
     }
   }
 }

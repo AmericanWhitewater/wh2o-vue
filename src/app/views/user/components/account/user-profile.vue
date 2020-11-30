@@ -48,9 +48,9 @@ export default {
   }),
   computed: {
     ...mapState({
-      data: state => state.userState.userData.data,
-      loading: state => state.userState.userData.loading,
-      error: state => state.userState.userData.error
+      data: state => state.User.data,
+      loading: state => state.User.loading,
+      error: state => state.User.error
     })
   }
 }

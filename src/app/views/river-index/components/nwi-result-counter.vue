@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     results () {
-      return this.$store.state.riverIndexState.riverIndexData.data?.length
+      return this.$store.state.RiverIndex.data?.length
     }
   }
 }

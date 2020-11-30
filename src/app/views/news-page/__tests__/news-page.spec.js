@@ -7,12 +7,10 @@ jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
 
 const mockStore = {
   state: {
-    newsPageState: {
-      newsData: {
-        loading: false,
-        data: null,
-        featured: null
-      }
+    NewsPage: {
+      loading: false,
+      data: null,
+      featured: null
     }
   },
   dispatch: jest.fn()

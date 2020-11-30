@@ -6,7 +6,7 @@
 
 import Vue from 'vue'
 import VueGtag from 'vue-gtag'
-import router from '@/app/app-routes'
+import router from '@/app/router'
 
 if (process.env.NODE_ENV !== 'development') {
   const trackingId = process.env.VUE_APP_GOOGLE_ID || null

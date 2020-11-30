@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { httpClient } from '@/app/global/services'
+import http from '@/app/http'
 export default {
   name: 'user-forgot',
   data: () => ({
@@ -50,7 +50,7 @@ export default {
   methods: {
     async submitForm () {
       this.formPending = true
-      await httpClient.post('/graphql', {
+      await http.post('/graphql', {
         query: `
           mutation {
             forgotPassword(input: {email: "${this.username}"}) {

@@ -1,10 +1,10 @@
 <template>
   <div class="wh2o-vue rebuild">
     <app-toaster />
-    <app-navigation v-if="!hideNavigation" />
+    <app-navigation v-if="!laravelDeploy" />
     <transition :name="transitionName">
       <router-view
-        :class="[{'laravel-deploy': hideNavigation }, $route.name !== 'home' ? 'interior' : null, 'app-main-content']"
+        :class="[{'laravel-deploy': laravelDeploy }, $route.name !== 'home' ? 'interior' : null, 'app-main-content']"
       />
     </transition>
     <app-cookie-banner />
@@ -17,8 +17,6 @@ import {
   AppNavigation,
   AppCookieBanner
 } from './global/components'
-import { userActions } from '@/app/views/user/shared/state'
-import { laravelDeploy } from '@/app/environment'
 
 export default {
   name: 'app',
@@ -28,20 +26,18 @@ export default {
     AppCookieBanner
   },
   data: () => ({
-    hideNavigation: false,
     transitionName: 'fade'
   }),
+  computed: {
+    laravelDeploy() {
+      return this.$store.state.Global.laravelDeploy
+    }
+  },
   metaInfo: {
     title: 'American Whitewater'
   },
   created () {
-    /**
-     * if mounting app inside legacy wh2o laravel app
-     * hide the SPA navigation
-     */
-    this.hideNavigation = !!laravelDeploy
-
-    this.$store.dispatch(userActions.FETCH_USER_DATA)
+    this.$store.dispatch('User/getProperty')
   }
 }
 </script>
