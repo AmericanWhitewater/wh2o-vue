@@ -135,12 +135,17 @@
         </template>
       </template>
     </layout>
+    <layout name="layout-full-width">
+      <template #main>
+        <releases-table />
+      </template>
+    </layout>
     <gage-link-modal ref="gageLinkModal" />
   </div>
 </template>
 
 <script>
-import { FlowChart, GageReadings, GageChartControls, LevelLegend, FlowStats, GageLinkModal } from './components'
+import { FlowChart, GageReadings, GageChartControls, LevelLegend, FlowStats, GageLinkModal, ReleasesTable} from './components'
 import { GageChartConfig } from './utils/gage-chart-config'
 import { Layout } from '@/app/global/layout'
 import { mapState } from 'vuex'
@@ -157,7 +162,8 @@ export default {
     Layout,
     UtilityBlock,
     LevelLegend,
-    FlowStats
+    FlowStats,
+    ReleasesTable
   },
   mixins: [GageChartConfig, checkWindow],
   data: () => ({

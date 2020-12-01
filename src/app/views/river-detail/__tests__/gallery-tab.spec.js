@@ -5,15 +5,6 @@ jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
   Map: () => ({})
 }))
 
-/**
- *
- * @note snapshot testing on components
- * which use the FileUploader or any child component
- * which generates random id/key/class/attr in html
- * markup will fail on every test.
- *
- */
-
 const mockStore = {
   state: {
     User: {
