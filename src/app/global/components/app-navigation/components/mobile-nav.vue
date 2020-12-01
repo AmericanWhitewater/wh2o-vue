@@ -2,16 +2,8 @@
   <header>
     <div class="bx--grid mobile-nav">
       <div class="bx--row">
-        <div
-          :class="[
-            { 'drawer-open': drawerOpen },
-            'bx--col content-area'
-          ]"
-        >
-          <span
-            id="logo-wrapper"
-            @click.exact="resetRouter"
-          >
+        <div :class="[{ 'drawer-open': drawerOpen }, 'bx--col content-area']">
+          <span id="logo-wrapper" @click.exact="resetRouter">
             <aw-logo />
           </span>
           <div>
@@ -25,7 +17,10 @@
             </cv-tooltip>
 
             <span
-              :class="[{ 'drawer-open': drawerOpen }, 'nav-trigger ml-spacing-md']"
+              :class="[
+                { 'drawer-open': drawerOpen },
+                'nav-trigger ml-spacing-md',
+              ]"
               @click.exact="drawerOpen = !drawerOpen"
             >
               <svg
@@ -55,34 +50,28 @@
       </div>
     </div>
     <transition name="slide">
-      <div
-        v-if="drawerOpen"
-        class="drawer pt-md"
-      >
+      <div v-if="drawerOpen" class="drawer pt-md">
         <div class="main-nav-items">
-          <template v-for="(item, index) in $options.navItems">
-            <template v-if="item.children">
-              <cv-dropdown
-            
-            :key="index"
-            kind="ghost"
-            class="mb-spacing-xs map-button"
-            @click.exact="viewRoute(item.path)"
-            v-text="item.label"
-          >
-            <cv-dropdown-item />
-          </cv-dropdown>
-            </template>
-            <template v-else>
-              <cv-button :key="index">
-                {{ item.label }}
-              </cv-button>
-            </template>
-
-
-          </template>
-
-          
+          <cv-accordion>
+            <cv-accordion-item
+              v-for="(item, index) in $options.navItems"
+              :key="index"
+            >
+              <template slot="title">{{ item.label }}</template>
+              <template slot="content">
+                <cv-button
+                  v-for="(child, i) in item.children"
+                  :key="i"
+                  size="small"
+                  kind="ghost"
+                  @keydown.enter="viewRoute(child.path)"
+                  @click.exact="viewRoute(child.path)"
+                >
+                  {{ child.label }}
+                </cv-button>
+              </template>
+            </cv-accordion-item>
+          </cv-accordion>
         </div>
         <div class="main-nav-items mb-md">
           <cv-button
@@ -119,41 +108,42 @@
   </header>
 </template>
 <script>
-import navItems from "./nav-item"
-import AwLogo from '@/app/global/components/logo-library/aw-logo'
+import navItems from "./nav-item";
+import AwLogo from "@/app/global/components/logo-library/aw-logo";
 export default {
-  name: 'mobile-nav',
+  name: "mobile-nav",
   navItems,
   components: {
-    'aw-logo': AwLogo
+    "aw-logo": AwLogo,
   },
   props: {
     offline: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   data: () => ({
     drawerOpen: false,
-    searchTerm: ''
+    searchTerm: "",
+    activeSubnav: null,
   }),
   computed: {
-    user () {
-      return this.$store.state.User.data
-    }
+    user() {
+      return this.$store.state.User.data;
+    },
   },
   methods: {
-    viewRoute (path) {
-      this.drawerOpen = false
-      this.$router.push(path).catch(() => {})
+    viewRoute(path) {
+      this.drawerOpen = false;
+      this.$router.push(path).catch(() => {});
     },
-    resetRouter () {
-      this.drawerOpen = false
+    resetRouter() {
+      this.drawerOpen = false;
       /* keep catch empty to avoid nav duplication error */
-      this.$router.push('/').catch(() => {})
-    }
-  }
-}
+      this.$router.push("/").catch(() => {});
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
 .mobile-nav {
