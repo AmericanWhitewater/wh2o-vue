@@ -32,7 +32,6 @@ describe('AccidentsTab', () => {
     mockStore.state.RiverAccidents.loading = true
     const wrapper = createWrapper(AccidentsTab, options)
 
-    expect(wrapper.find('.accidents-tab')).toMatchSnapshot()
 
     expect(wrapper.find('.utility-block-loading').exists()).toBe(true)
     expect(wrapper.find('.utility-block-error').exists()).toBe(false)
@@ -44,7 +43,6 @@ describe('AccidentsTab', () => {
     mockStore.state.RiverAccidents.error = true
     const wrapper = createWrapper(AccidentsTab, options)
 
-    expect(wrapper.find('.accidents-tab')).toMatchSnapshot()
 
     expect(wrapper.find('.utility-block-loading').exists()).toBe(false)
     expect(wrapper.find('.utility-block-error').exists()).toBe(true)

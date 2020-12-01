@@ -126,6 +126,14 @@
             </td>
           </template>
         </tr>
+        <tr v-if="releases && releases.length">
+          <td>{{ getReleaseFieldLabel(releases[0].event_date) }}</td>
+          <td>
+            <router-link :to="`/river-detail/${reachId}/flow`">
+              {{ formatDate(releases[0].event_date, 'LL') }}
+            </router-link>
+          </td>
+        </tr>
         <tr>
           <td>Reach Info Last Updated</td>
           <td class="river-last-edited">
@@ -180,9 +188,11 @@ export default {
       river: state => state.RiverDetail.data,
       editMode: state => state.Global.editMode,
       gages: state => state.RiverGages.data,
-      metrics: state => state.GageMetrics.data,
-      releases: state => state.RiverEvents.data
+      metrics: state => state.GageMetrics.data
     }),
+    releases() {
+      return this.$store.getters['RiverEvents/releases']
+    },
     editBetaBoxKey () {
       return `editBetaBox${this.reachId}`
     },
@@ -191,6 +201,18 @@ export default {
     }
   },
   methods: {
+    getReleaseFieldLabel(releaseDate) {
+      if(!releaseDate) return ''
+
+      const today = new Date()
+      const eventDate = new Date(releaseDate)
+
+      if(eventDate.setHours(0,0,0,0) <= today.setHours(0,0,0,0)) {
+        return 'Latest Release'
+      }
+
+      return 'Next Release'
+    },
     formatTime (input) {
 
       if(isNaN(input) )
@@ -233,9 +255,6 @@ export default {
       }
       return null
     }
-  },
-  created() {
-    this.$store.dispatch('RiverEvents/getReleases', this.reachId)
   }
 }
 </script>
