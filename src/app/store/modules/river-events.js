@@ -30,7 +30,7 @@ export default {
   getters: {
     releases: state => {
       if (state.data) {
-        const results = state.data.filter(item => !!item.data && item.data.length && item.data[0].category === 20)
+        const results = state.data.filter(item => !!item.data && item.data.length && item.data[0]?.category === 20)
 
         if (results.length) { 
           return results[0].data[0].dates.sort((a, b) => b.event_date.localeCompare(a.event_date))

@@ -255,9 +255,6 @@ export default {
       }
       return null
     }
-  },
-  created() {
-    this.$store.dispatch('RiverEvents/getReleases', this.reachId)
   }
 }
 </script>
