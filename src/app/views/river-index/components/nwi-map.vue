@@ -130,7 +130,8 @@ export default {
   data () {
     return {
       mapDataLoading: false,
-      mapboxAccessToken: mapboxAccessToken
+      mapboxAccessToken: mapboxAccessToken,
+      map: null
     }
   },
   computed: {
@@ -513,6 +514,11 @@ export default {
   created () {
     if (this.mapboxAccessToken) {
       this.initMap()
+    }
+  },
+  beforeDestroy() {
+    if(this.map) {
+      this.map.remove();
     }
   }
 }
