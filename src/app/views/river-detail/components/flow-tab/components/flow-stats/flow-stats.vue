@@ -84,7 +84,7 @@ export default {
         return {
           min: Math.min(...data),
           max: Math.max(...data),
-          avg: Math.floor(readingsSum / this.readings.length)
+          avg: (readingsSum / this.readings.length).toFixed(2)
         }
       }
       return null
