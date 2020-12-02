@@ -172,7 +172,7 @@ export default {
       switch (this.formData.timeScale) {
         case 'year':
           this.$emit('timescaleChange', 'MMM YYYY')
-          this.formData.resolution = 60 * 60 * 730
+          this.formData.resolution = 60 * 60 * 48
           this.formData.timeScale = 'year'
           start = moment()
             .subtract(1, 'year')
@@ -189,7 +189,7 @@ export default {
 
         case 'week':
           this.$emit('timescaleChange', 'll')
-          this.formData.resolution = 60 * 60 * 6
+          this.formData.resolution = 60 * 60 * 1
           this.formData.timeScale = 'week'
           start = moment()
             .subtract(1, 'week')
@@ -219,7 +219,6 @@ export default {
       this.$store.dispatch('GageMetrics/getProperty', this.$route.params.id)
     },
     async fetchReadings () {
-
       this.$emit('gage-change', this.formData.gauge_id)
       await this.setTimeScale()
       this.$store.dispatch(

@@ -155,7 +155,8 @@ export default {
             ticks: {
               source: 'data',
               beginAtZero: false,
-              autoSkip: false,
+              autoSkip: true,
+              maxTicksLimit: 20,
               maxRotation: 45,
               minRotation: 45,
               labelOffset: 20,
@@ -187,7 +188,7 @@ export default {
               beginAtZero: true,
               suggestedMax: this.getYMax(),
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
-              fontSize: 14
+              fontSize: 14,
             },
             beforeBuildTicks: () => {
               chartOptions.scales.yAxes[0].ticks.min = 100
