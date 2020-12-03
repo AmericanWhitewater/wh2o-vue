@@ -157,17 +157,18 @@ export default {
         value: 'takeout',
         label: 'Take Out',
         name: 'takeout'
-      },
+      }
+      /* TODO: backend does not support type "rapid" or "other"
       {
-        value: 'rapid',
+        value: '',
         label: 'Rapid',
         name: 'rapid'
-      },
+      } 
       {
         value: 'other',
         label: 'Other',
         name: 'other'
-      }
+      }*/
     ],
     formData: {
       name: '',
