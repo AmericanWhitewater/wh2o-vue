@@ -4,8 +4,8 @@ export async function createReach(data) {
   
   return http.post('graphql', {
     query: `
-        mutation ($id:ID!, $reach: ReachInput!) {
-          reachUpdate(id: $id, reach: $reach) {
+        mutation ($reach: ReachInput!) {
+          reachUpdate(reach: $reach) {
             agency
             altname
             class

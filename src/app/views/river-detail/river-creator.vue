@@ -15,6 +15,11 @@
             class="mb-spacing-md"
           />
           <cv-text-input
+            v-model="reach.altname"
+            label="Alt River Name"
+            class="mb-spacing-md"
+          />
+          <cv-text-input
             v-model="reach.section"
             label="Section"
             class="mb-spacing-md"
@@ -254,17 +259,24 @@ export default {
           id: this.$randomId(),
           reach: this.reach
         });
-        
+
         if (!result.errors) {
 
           this.$store.dispatch("Global/sendToast", {
             kind: "success",
             title: "Success",
-            text: "Reach created.",
+            subtitle: "Reach created.",
           });
-          this.$router.push(`/river-detail/${result.id}`);
+          this.$router.push(`/river-detail/${result.data.reachUpdate.id}`);
+        } else {
+          this.$store.dispatch("Global/sendToast", {
+            kind: "error",
+            title: "Error",
+            subtitle: "Failed to Create New Reach.",
+          });
         }
       } catch (error) {
+        
         this.$store.dispatch("Global/sendToast", {
           kind: "error",
           title: "Error",
