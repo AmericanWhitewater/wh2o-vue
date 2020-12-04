@@ -31,7 +31,15 @@ const authInterceptor = config => {
 
 http.interceptors.request.use(authInterceptor)
 http.interceptors.response.use(
-  response => response,
+  response => {
+    if (response.data.errors) {
+      response.data.errors.forEach(error => {
+        throw new Error(error.message)
+      })
+    } else {
+      return response
+    }
+  },
   error =>
     /** Do something with response error */
     Promise.reject(error)
