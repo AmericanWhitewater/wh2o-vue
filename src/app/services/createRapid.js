@@ -1,12 +1,10 @@
 import http from "@/app/http"
 
 export async function createRapid(data) {
-  const payload = {
-    ...data
-  };
+  let rloc;
 
   if (data.geom.coordinates.length) {
-    payload.rloc = `${data.geom.coordinates[0]} ${data.geom.coordinates[1]}`;
+    rloc = `${data.geom.coordinates[0]} ${data.geom.coordinates[1]}`;
   }
 
   return http.post('graphql', {
@@ -24,15 +22,15 @@ export async function createRapid(data) {
                 }
               `,
     variables: {
-      id: payload.id,
+      id: data.id,
       poi: {
-        reach_id: payload.reach_id,
-        name: payload.name,
-        rloc: payload.rloc,
-        description: payload.description,
-        difficulty: payload.difficulty,
-        distance: payload.distance,
-        character: payload.character || [],
+        reach_id: data.reach_id,
+        name: data.name,
+        rloc: rloc,
+        description: data.description,
+        difficulty: data.difficulty,
+        distance: data.distance,
+        character: data.character || [],
         approximate: false // change this if approximate is added to form
       }
     }
