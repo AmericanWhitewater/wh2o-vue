@@ -186,13 +186,6 @@ export default {
             .unix()
           break
         case 'day':
-          this.$emit('timescaleChange', 'h:mm a')
-          this.formData.timeScale = 'day'
-          this.formData.resolution = 1
-          start = moment()
-            .subtract(1, 'day')
-            .unix()
-          break
         default:
           this.$emit('timescaleChange', 'h:mm a')
           this.formData.timeScale = 'day'
