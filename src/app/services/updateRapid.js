@@ -1,12 +1,11 @@
 import http from "@/app/http"
 
 export async function updateRapid(data) {
-  const point = `${data.geom.coordinates[0]} ${data.geom.coordinates[1]}`;
+  let rloc;
 
-  const payload = {
-    ...data,
-    rloc: point,
-  };
+  if (data.geom.coordinates.length) {
+    rloc = `${data.geom.coordinates[0]} ${data.geom.coordinates[1]}`;
+  }
 
   return http.post('graphql', {
     query: `
@@ -23,14 +22,14 @@ export async function updateRapid(data) {
               }
             `,
     variables: {
-      id: payload.id,
+      id: data.id,
       poi: {
-        name: payload.name,
-        rloc: payload.rloc,
-        description: payload.description,
-        difficulty: payload.difficulty,
-        distance: payload.distance,
-        character: payload.character
+        name: data.name,
+        rloc: rloc,
+        description: data.description,
+        difficulty: data.difficulty,
+        distance: data.distance,
+        character: data.character
       }
     }
   }).then(res => res.data)
