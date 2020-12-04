@@ -53,7 +53,8 @@ export default {
   data: () => ({
     // TODO: we may want to default snapMode on or off depending
     // on whether the point is *already* snapped to the line
-    snapMode: true
+    snapMode: true,
+    map: null
   }),
   computed: {
     ...mapState({
@@ -197,6 +198,11 @@ export default {
         leading: false,
         trailing: true
       })
+    }
+  },
+  beforeDestroy() {
+    if(this.map) {
+      this.map.remove()
     }
   }
 }
