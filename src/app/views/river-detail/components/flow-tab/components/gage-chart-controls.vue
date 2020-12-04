@@ -109,7 +109,8 @@ export default {
       timeEnd: null,
       resolution: null,
       timeScale: 'week'
-    }
+    },
+    currentGage: null,
   }),
   computed: {
     ...mapState({
@@ -119,7 +120,6 @@ export default {
       metrics: state => state.GageMetrics.data,
       river: state => state.RiverDetail.data,
       gages: state => state.RiverGages.data,
-      currentGage: state => state.GageDetail.data,
     }),
     /**
      * @description look through the readings response to find
@@ -203,10 +203,6 @@ export default {
       this.$store.dispatch('GageMetrics/getProperty', this.$route.params.id)
     },
 
-    fetchGage() {
-      this.$store.dispatch('GageDetail/getProperty', this.$route.params.id)
-    },
-
     async fetchReadings () {
       this.$emit('gage-change', this.formData.gauge_id)
       await this.setTimeScale()
@@ -224,9 +220,13 @@ export default {
      */
 
     if (this.gages) {
+      // todo: select the correct gage for reach actually
+      // for (let i = 0; i < this.gages.length; i++) {}
+      this.currentGage = this.gages[0]
       this.formData.gauge_id = this.gages[0].gauge.id
       this.formData.metric_id = this.gages[0].gauge_metric.toString()
-      this.fetchGage()
+
+      // this.fetchGage()
     }
     this.fetchMetrics()
   },
