@@ -42,12 +42,7 @@
               :content="!reach.description ? ' ' : reach.description"
               show-control-bar
               @content:updated="reach.description = $event" />
-          <cv-text-input
-            v-model="reach.gaugeinfo"
-            label="Gage Info"
-            class="mb-spacing-md mt-spacing-md"
-          />
-
+          <div class="mb-spacing-md mt-spacing-md"/>
           <cv-link
             @click="additionalFieldsVisible = !additionalFieldsVisible"
             @keydown.enter="additionalFieldsVisible = !additionalFieldsVisible"
@@ -58,11 +53,6 @@
           </cv-link>
           <div class="mb-spacing-lg"/>
           <template v-if="additionalFieldsVisible">
-            <cv-text-input
-              v-model="reach.altname"
-              label="Alt Name"
-              class="mb-spacing-md"
-            />
             <cv-text-input
               v-model="reach.agency"
               label="Agency"
