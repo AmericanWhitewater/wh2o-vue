@@ -26,6 +26,10 @@ export default {
       const updatedReach = payload;
       const existingRapid = state.data.find((r) => r.id === updatedReach.id);
       Object.assign(existingRapid, { ...updatedReach });
+      // resort in case the distances have changed
+      Object.assign(state, {
+        data: state.data.sort(sortRapids)
+      });
     },
 
     ['CREATE_REQUEST']() {
