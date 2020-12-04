@@ -118,7 +118,8 @@ export default {
       data: state => state.GageReadings.data,
       metrics: state => state.GageMetrics.data,
       river: state => state.RiverDetail.data,
-      gages: state => state.RiverGages.data
+      gages: state => state.RiverGages.data,
+      currentGage: state => state.GageDetail.data,
     }),
     /**
      * @description look through the readings response to find
@@ -129,25 +130,10 @@ export default {
      *
      */
     availableMetrics () {
-      if (this.metrics && this.data) {
-        const data = []
-        for (let i = 0; i < this.data.length; i++) {
-          if (!data.includes(this.data[i].metric)) {
-            const input = {}
-            input.id = this.data[i].metric.toString()
-            /**
-             * @todo get unit title/label in api response
-             *
-             */
-            input.label = this.data[i].metric === 2 ? 'cfs' : 'n/a'
-            if (!data.find(m => m.id === input.id)) {
-              data.push(input)
-            }
-          }
+        if (this.currentGage && this.currentGage.gauge.updates) {
+          return this.currentGage.gauge.updates.map(m => ({id: m.metric.id, label: m.metric.name}))
         }
-        return data
-      }
-      return null
+        return null
     }
   },
   watch: {
@@ -215,9 +201,15 @@ export default {
       this.formData.timeStart = Math.floor(start)
       this.formData.timeEnd = Math.floor(moment(new Date()).unix())
     },
+
     fetchMetrics () {
       this.$store.dispatch('GageMetrics/getProperty', this.$route.params.id)
     },
+
+    fetchGage() {
+      this.$store.dispatch('GageDetail/getProperty', this.$route.params.id)
+    },
+
     async fetchReadings () {
       this.$emit('gage-change', this.formData.gauge_id)
       await this.setTimeScale()
@@ -237,6 +229,7 @@ export default {
     if (this.gages) {
       this.formData.gauge_id = this.gages[0].gauge.id
       this.formData.metric_id = this.gages[0].gauge_metric.toString()
+      this.fetchGage()
     }
     this.fetchMetrics()
   },
