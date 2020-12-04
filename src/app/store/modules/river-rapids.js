@@ -3,6 +3,12 @@ import mutations from '@/app/store/mutations'
 import { getRapids, updateRapid, createRapid, deleteRapid } from '@/app/services'
 import * as type from "../mutations/mutations-types"
 
+const sortRapids = (a, b) => {
+  if (a.distance === null) return -1;
+  if (b.distance === null) return 1;
+  else return (a.distance - b.distance);
+}
+
 export default {
   namespaced: true,
   state: {
@@ -28,7 +34,7 @@ export default {
     ['CREATE_SUCCESS'](state, payload) {
       const newReach = payload;
       state.data.push(newReach);
-      const rapids = state.data.sort((a, b) => a.distance - b.distance);
+      const rapids = state.data.sort(sortRapids);
       Object.assign(state, {
         data: rapids,
       });
@@ -50,9 +56,7 @@ export default {
         const result = await getRapids(reachId)
 
         if (!result.errors) {
-          const sortedPois = result.data.reach.pois.sort(
-            (a, b) => a.distance - b.distance
-          );
+          const sortedPois = result.data.reach.pois.sort(sortRapids);
           context.commit(type.DATA_SUCCESS, sortedPois);
         }
       } catch (error) {

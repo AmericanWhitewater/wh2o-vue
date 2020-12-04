@@ -16,7 +16,7 @@
             class="mr-spacing-xs rapid-meta"
             v-text="`Class: ${rapid.difficulty}`"
           />
-          <span class="rapid-meta" v-text="`Distance: ${rapid.distance} mi`" />
+          <span v-if="rapid.distance !== null" class="rapid-meta" v-text="`Distance: ${rapid.distance} mi`" />
         </div>
         <rapid-icon-bar
           :character="rapid.character"

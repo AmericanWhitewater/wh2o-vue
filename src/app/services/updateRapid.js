@@ -1,13 +1,14 @@
 import http from "@/app/http"
 
 export async function updateRapid(data) {
-  const point = `${data.geom.coordinates[0]} ${data.geom.coordinates[1]}`;
-
   const payload = {
-    ...data,
-    rloc: point,
+    ...data
   };
 
+  if (data.geom.coordinates.length) {
+    payload.rloc = `${data.geom.coordinates[0]} ${data.geom.coordinates[1]}`;
+  }
+  
   return http.post('graphql', {
     query: `
               mutation ($id:ID!, $poi: POIInput!) {

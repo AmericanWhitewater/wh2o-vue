@@ -2,9 +2,12 @@ import http from "@/app/http"
 
 export async function createRapid(data) {
   const payload = {
-    ...data,
-    rloc: `${data.geom.coordinates[0]} ${data.geom.coordinates[1]}`,
+    ...data
   };
+
+  if (data.geom.coordinates.length) {
+    payload.rloc = `${data.geom.coordinates[0]} ${data.geom.coordinates[1]}`;
+  }
 
   return http.post('graphql', {
     query: `
