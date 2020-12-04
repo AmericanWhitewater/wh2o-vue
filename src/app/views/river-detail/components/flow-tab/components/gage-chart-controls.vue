@@ -131,7 +131,11 @@ export default {
      */
     availableMetrics () {
         if (this.currentGage && this.currentGage.gauge.updates) {
-          return this.currentGage.gauge.updates.map(m => ({id: m.metric.id, label: m.metric.name}))
+          return this.currentGage.gauge.updates.map(m => (
+                  {
+                    id: m.metric.id,
+                    label: m.metric.name === 'Flow' ? 'CFS' : m.metric.name
+                  }))
         }
         return null
     }
