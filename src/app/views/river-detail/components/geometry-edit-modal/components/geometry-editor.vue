@@ -122,7 +122,8 @@ export default {
     currentGeom: null,
     tooZoomedOut: false,
     noticeHidden: false,
-    mapEditMode: 'automatic'
+    mapEditMode: 'automatic',
+    map: null
   }),
   computed: {
     // these basemaps are different than our other NWI maps because they use the NHD flowlines
