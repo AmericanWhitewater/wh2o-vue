@@ -143,6 +143,21 @@ export default {
         return undefined;
       }
     },
+    user() {
+      return this.$store.state.User.data
+    },
+    canCreate() {
+      if (this.user) {
+        return (
+          this.user.permissions.includes("sk") ||
+          this.user.permissions.includes("rsk") ||
+          this.user.permissions.includes("ssk") ||
+          this.user.permissions.includes("ask") ||
+          this.user.permissions.includes("admin")
+        );
+      }
+      return false;
+    },
   },
   methods: {
     updateReachGeom(val) {
@@ -189,5 +204,14 @@ export default {
   created() {
     this.$store.dispatch("RiverDetail/dataReset");
   },
+  mounted() {
+    if(!this.canCreate) {
+      this.$router.push('/')
+      this.$store.dispatch('Global/sendToast', {
+        kind: 'info',
+        title: 'Unauthorized'
+      })
+    }
+  }
 };
 </script>
