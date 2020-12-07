@@ -1,4 +1,5 @@
 export * from "./createRapid"
+export * from "./createReach"
 export * from "./deleteComment"
 export * from "./deletePost"
 export * from "./deleteRapid"

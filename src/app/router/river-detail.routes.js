@@ -1,5 +1,9 @@
 export default [
   {
+    path: '/river-creator',
+    component: () => import('@/app/views/river-detail/river-creator.vue')
+  },
+  {
     path: '/content/River/detail/id/:id',
     redirect: '/river-detail/:id/main',
     component: () => import('@/app/views/river-detail/river-detail.vue')

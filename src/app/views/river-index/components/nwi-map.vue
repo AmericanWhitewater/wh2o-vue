@@ -44,6 +44,7 @@ import { basemapToggleMixin } from '@/app/global/mixins'
 import { mapState } from 'vuex'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 import {
+  laravelDeploy,
   mapboxAccessToken,
   nwiTileServer
 } from '@/app/environment'
@@ -145,7 +146,7 @@ export default {
       if (this.height) {
         return `${this.height}px`
       } else {
-        return 'calc(100vh - 125px)'
+        return laravelDeploy ? 'calc(100vh - 125px)' : 'calc(100vh - 50px)'
       }
     },
     // parses out the layers we're adding to the map from NwiMapStyles / sourceLayers prop
