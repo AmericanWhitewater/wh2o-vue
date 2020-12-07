@@ -30,6 +30,14 @@ export default {
         loading: false,
       });
     },
+    ['DATA_RESET'](state) {
+      Object.assign(state, {
+        error: false,
+        loading: false,
+        data: null,
+        refId: null
+      })
+    }
   },
   actions: {
     ...actions,
@@ -92,5 +100,8 @@ export default {
         context.commit('GEOM_UPDATE_ERROR', error);
       }
     },
+    dataReset(context) {
+      context.commit('DATA_RESET')
+    }
   }
 }
