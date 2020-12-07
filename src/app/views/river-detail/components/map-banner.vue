@@ -50,6 +50,9 @@ export default {
       required: false
     }
   },
+  data: () => ({
+    map: null
+  }),
   computed: {
     reachGeom () {
       // TODO: get graphql API to return a linestring or geojson instead of this text
@@ -153,6 +156,11 @@ export default {
   mounted () {
     if (mapboxAccessToken && this.reachGeom) {
       this.mountMap()
+    }
+  },
+  beforeDestroy() {
+    if(this.map) {
+      this.map.remove();
     }
   }
 }
