@@ -4,8 +4,8 @@ import { getRapids, updateRapid, createRapid, deleteRapid } from '@/app/services
 import * as type from "../mutations/mutations-types"
 
 const sortRapids = (a, b) => {
-  if (a.distance === null) return -1;
-  if (b.distance === null) return 1;
+  if (a.distance === null) return 1;
+  if (b.distance === null) return -1;
   else return (a.distance - b.distance);
 }
 
