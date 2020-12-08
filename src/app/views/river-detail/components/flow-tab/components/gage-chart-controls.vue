@@ -179,7 +179,7 @@ export default {
 
         case 'week':
           this.$emit('timescaleChange', 'll')
-          this.formData.resolution = 60 * 60 * 1
+          this.formData.resolution = 60 * 60 * 6
           this.formData.timeScale = 'week'
           start = moment()
             .subtract(1, 'week')
