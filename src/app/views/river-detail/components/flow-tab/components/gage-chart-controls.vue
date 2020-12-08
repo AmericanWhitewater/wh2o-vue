@@ -131,6 +131,7 @@ export default {
      */
     availableMetrics () {
         if (this.currentGage && this.currentGage.gauge.updates) {
+          if (this.metrics)
           return this.currentGage.gauge.updates.map(m => (
                   {
                     id: m.metric.id,

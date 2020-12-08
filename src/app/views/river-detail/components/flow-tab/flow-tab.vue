@@ -36,6 +36,7 @@
                   :readings="readings"
                   :loading="loading"
                   :current="lastReading || 0"
+                  :metric-format="activeMetricFormat"
                 />
               </div>
             </div>
@@ -181,7 +182,8 @@ export default {
       gages: state => state.RiverGages.data,
       gagesLoading: state => state.RiverGages.loading,
       gagesError: state => state.RiverGages.error,
-      editMode: state => state.Global.editMode
+      editMode: state => state.Global.editMode,
+      metrics: state => state.GageMetrics.data,
     }),
     chartSize () {
       if (this.windowWidth > this.$options.breakpoints.md) {
@@ -192,7 +194,7 @@ export default {
     },
     lastReading() {
       if (this.activeGage && Number(this.activeGage.gauge_metric) === Number(this.activeMetricId)) {
-        return this.activeGage.last_gauge_reading
+        return this.activeGage.gauge_reading
       }
       if (this.activeGage
               && Number(this.activeGage.gauge_metric) !== Number(this.activeMetricId)
@@ -206,6 +208,12 @@ export default {
     },
     activeGage () {
       return this.gages ? this.gages.find(g => g.gauge.id === this.activeGageId) : null
+    },
+    activeMetricFormat() {
+      if (this.metrics) {
+        return this.metrics.find(m => m.id.toString() === this.activeMetricId.toString()).format
+      }
+      return null
     }
   },
   watch: {

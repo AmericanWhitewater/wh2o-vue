@@ -79,6 +79,7 @@ describe('FlowTab', () => {
     mockStore.state.RiverGages.data = [{
       rmin: 50,
       rmax: 100,
+      gauge_reading: 25,
       last_gauge_reading: 25,
       gauge_metric: '2',
       gauge: { id: '2' }
@@ -94,6 +95,7 @@ describe('FlowTab', () => {
     mockStore.state.RiverGages.data = [{
       rmin: 50,
       rmax: 100,
+      gauge_reading: 75,
       last_gauge_reading: 75,
       gauge_metric: '2',
       gauge: { id: '2' }
@@ -109,6 +111,7 @@ describe('FlowTab', () => {
     mockStore.state.RiverGages.data = [{
       rmin: 50,
       rmax: 100,
+      gauge_reading: 150,
       last_gauge_reading: 150,
       gauge_metric: '2',
       gauge: { id: '2' }

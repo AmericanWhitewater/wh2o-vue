@@ -5,7 +5,7 @@
         Current
       </h6>
       <h3 v-if="!loading && current">
-        {{ current || "n/a" }}
+        {{ current.toFixed(metricFormatVal) || "n/a" }}
       </h3>
       <cv-skeleton-text
         v-if="loading"
@@ -67,9 +67,19 @@ export default {
       type: Number,
       required: false,
       default: 0
+    },
+    metricFormat: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
   computed: {
+    metricFormatVal() {
+       if (this.metricFormat)
+         return Number(this.metricFormat.match(/(?<=\.)(\d+)/g)[0] ?? 2)
+      return 2;
+    },
     stats () {
       if (this.readings.length) {
         let readingsSum = 0
@@ -78,9 +88,9 @@ export default {
           readingsSum = readingsSum + Number(reading)
         })
         return {
-          min: Math.min(...data).toFixed(2),
-          max: Math.max(...data).toFixed(2),
-          avg: (readingsSum / data.length).toFixed(2)
+          min: Math.min(...data).toFixed(this.metricFormatVal),
+          max: Math.max(...data).toFixed(this.metricFormatVal),
+          avg: (readingsSum / data.length).toFixed(this.metricFormatVal)
         }
       }
       return null
