@@ -35,7 +35,7 @@
                 <flow-stats
                   :readings="readings"
                   :loading="loading"
-                  :current="gages[0].gauge_reading || 0"
+                  :current="lastReading || 0"
                 />
               </div>
             </div>
@@ -187,6 +187,11 @@ export default {
       } else {
         return 'position:relative;width:' + this.$options.breakpoints.sm * 2 + 'px'
       }
+    },
+    lastReading() {
+      if (this.activeGage)
+        return this.activeGage.last_gauge_reading
+      return null
     },
     activeGage () {
       return this.gages ? this.gages.find(g => g.gauge.id === this.activeGageId) : null

@@ -85,6 +85,16 @@ export default {
         timeEnd: Math.floor(moment().unix())
       }
     },
+    metricName(metric) {
+      // not ideal, but it works
+        if (metric === 'cfs') {
+          return 'Discharge CFS'
+        }
+        if (metric === 'ft') {
+          return 'Feet Stage'
+        }
+       return metric
+    },
     renderChart () {
       const ctx = this.$refs.chartCanvas.getContext('2d')
 
@@ -170,7 +180,7 @@ export default {
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: `Metric [ ${this.getChartMetric()} ]`,
+              labelString: this.metricName(this.getChartMetric()),
               bounds: 'data',
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
               fontSize: 14
