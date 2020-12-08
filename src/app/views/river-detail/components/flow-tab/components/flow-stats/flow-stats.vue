@@ -73,18 +73,14 @@ export default {
     stats () {
       if (this.readings.length) {
         let readingsSum = 0
-        const data = this.readings.map((reading) =>
-          Math.floor(reading.reading)
-        )
-
+        const data = this.readings.map(r => r.reading )
         data.forEach((reading) => {
-          readingsSum = readingsSum + reading
+          readingsSum = readingsSum + Number(reading)
         })
-
         return {
-          min: Math.min(...data),
-          max: Math.max(...data),
-          avg: (readingsSum / this.readings.length).toFixed(2)
+          min: Math.min(...data).toFixed(2),
+          max: Math.max(...data).toFixed(2),
+          avg: (readingsSum / data.length).toFixed(2)
         }
       }
       return null

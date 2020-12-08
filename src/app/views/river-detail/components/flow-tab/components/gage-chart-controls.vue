@@ -226,7 +226,6 @@ export default {
       this.formData.gauge_id = this.gages[0].gauge.id
       this.formData.metric_id = this.gages[0].gauge_metric.toString()
 
-      // this.fetchGage()
     }
     this.fetchMetrics()
   },

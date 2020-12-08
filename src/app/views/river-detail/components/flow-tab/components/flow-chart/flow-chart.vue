@@ -44,7 +44,7 @@ export default {
       return this.gages.find(gage => Number(gage.gauge.id) === this.readings[0].gauge_id)
     },
     formattedReadings () {
-      return this.readings.map(reading => Math.floor(reading.reading))
+      return this.readings.map(reading => Number(reading.reading).toFixed(2))
     },
     chartAspectRatio () {
       if (this.windowWidth >= this.$options.breakpoints.md) {
@@ -67,20 +67,15 @@ export default {
         case 'year':
           start = moment().subtract(1, 'years').unix()
           break
-
         case 'month':
           start = moment().subtract(1, 'month').unix()
           break
-
         case 'week':
           start = moment().subtract(1, 'weeks').unix()
           break
-
         case 'day':
-
           start = moment().subtract(1, 'days').unix()
           break
-
         default:
           start = moment().subtract(1, 'days').unix()
           break
