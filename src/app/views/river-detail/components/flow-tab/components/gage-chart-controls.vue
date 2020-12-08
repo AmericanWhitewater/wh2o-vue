@@ -109,7 +109,8 @@ export default {
       timeEnd: null,
       resolution: null,
       timeScale: 'week'
-    }
+    },
+    currentGage: null,
   }),
   computed: {
     ...mapState({
@@ -118,7 +119,7 @@ export default {
       data: state => state.GageReadings.data,
       metrics: state => state.GageMetrics.data,
       river: state => state.RiverDetail.data,
-      gages: state => state.RiverGages.data
+      gages: state => state.RiverGages.data,
     }),
     /**
      * @description look through the readings response to find
@@ -129,25 +130,14 @@ export default {
      *
      */
     availableMetrics () {
-      if (this.metrics && this.data) {
-        const data = []
-        for (let i = 0; i < this.data.length; i++) {
-          if (!data.includes(this.data[i].metric)) {
-            const input = {}
-            input.id = this.data[i].metric.toString()
-            /**
-             * @todo get unit title/label in api response
-             *
-             */
-            input.label = this.data[i].metric === 2 ? 'cfs' : 'n/a'
-            if (!data.find(m => m.id === input.id)) {
-              data.push(input)
-            }
-          }
+        if (this.currentGage && this.currentGage.gauge.updates) {
+          return this.currentGage.gauge.updates.map(m => (
+                  {
+                    id: m.metric.id,
+                    label: m.metric.name === 'Flow' ? 'CFS' : m.metric.name
+                  }))
         }
-        return data
-      }
-      return null
+        return null
     }
   },
   watch: {
@@ -172,7 +162,7 @@ export default {
       switch (this.formData.timeScale) {
         case 'year':
           this.$emit('timescaleChange', 'MMM YYYY')
-          this.formData.resolution = 60 * 60 * 730
+          this.formData.resolution = 60 * 60 * 48
           this.formData.timeScale = 'year'
           start = moment()
             .subtract(1, 'year')
@@ -189,20 +179,13 @@ export default {
 
         case 'week':
           this.$emit('timescaleChange', 'll')
-          this.formData.resolution = 60 * 60 * 12
+          this.formData.resolution = 60 * 60 * 6
           this.formData.timeScale = 'week'
           start = moment()
             .subtract(1, 'week')
             .unix()
           break
         case 'day':
-          this.$emit('timescaleChange', 'h:mm a')
-          this.formData.timeScale = 'day'
-          this.formData.resolution = 1
-          start = moment()
-            .subtract(1, 'day')
-            .unix()
-          break
         default:
           this.$emit('timescaleChange', 'h:mm a')
           this.formData.timeScale = 'day'
@@ -215,12 +198,14 @@ export default {
       this.formData.timeStart = Math.floor(start)
       this.formData.timeEnd = Math.floor(moment(new Date()).unix())
     },
+
     fetchMetrics () {
       this.$store.dispatch('GageMetrics/getProperty', this.$route.params.id)
     },
-    async fetchReadings () {
 
+    async fetchReadings () {
       this.$emit('gage-change', this.formData.gauge_id)
+      this.$emit('metric-change', this.formData.metric_id)
       await this.setTimeScale()
       this.$store.dispatch(
         'GageReadings/getProperty',
@@ -236,8 +221,12 @@ export default {
      */
 
     if (this.gages) {
+      // todo: select the correct gage for reach actually
+      // for (let i = 0; i < this.gages.length; i++) {}
+      this.currentGage = this.gages[0]
       this.formData.gauge_id = this.gages[0].gauge.id
       this.formData.metric_id = this.gages[0].gauge_metric.toString()
+      this.$emit('metric-change', this.gages[0].gauge_metric.toString())
     }
     this.fetchMetrics()
   },

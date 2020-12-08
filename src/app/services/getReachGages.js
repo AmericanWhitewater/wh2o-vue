@@ -19,6 +19,14 @@ export async function getReachGages(id) {
               gauge {
                   name
                   id
+                  source
+                  source_id
+                  updates {
+                    metric {
+                        id 
+                        name 
+                    }
+                  }
               }
               updated
               last_gauge_reading
