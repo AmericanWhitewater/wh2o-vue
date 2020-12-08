@@ -17,6 +17,17 @@ export async function getReach(id) {
                   plat
                   plon
                   geom
+                  readingsummary {
+                      adjusted_reach_class
+                      gauge_estimated
+                      gauge_id
+                      gauge_important
+                      gauge_max
+                      gauge_min
+                      gauge_perfect
+                      obs_id
+                      range_comment
+                  }
                   photo {
                     id
                     post {

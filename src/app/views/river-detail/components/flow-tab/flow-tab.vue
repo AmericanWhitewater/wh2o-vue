@@ -192,7 +192,7 @@ export default {
     },
     lastReading() {
       if (this.activeGage && Number(this.activeGage.gauge_metric) === Number(this.activeMetricId)) {
-        return this.activeGage.last_gauge_reading
+        return this.activeGage.gauge_reading
       }
       if (this.activeGage
               && Number(this.activeGage.gauge_metric) !== Number(this.activeMetricId)
