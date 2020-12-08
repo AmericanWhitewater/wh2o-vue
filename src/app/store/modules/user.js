@@ -15,6 +15,7 @@ export default {
     ...actions,
     getProperty: async (context) => {
       try {
+        context.commit('DATA_REQUEST')
         const result = await getUser()
 
         context.commit('DATA_SUCCESS', result)
