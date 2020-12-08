@@ -205,6 +205,7 @@ export default {
 
     async fetchReadings () {
       this.$emit('gage-change', this.formData.gauge_id)
+      this.$emit('metric-change', this.formData.metric_id)
       await this.setTimeScale()
       this.$store.dispatch(
         'GageReadings/getProperty',
@@ -225,7 +226,7 @@ export default {
       this.currentGage = this.gages[0]
       this.formData.gauge_id = this.gages[0].gauge.id
       this.formData.metric_id = this.gages[0].gauge_metric.toString()
-
+      this.$emit('metric-change', this.gages[0].gauge_metric.toString())
     }
     this.fetchMetrics()
   },

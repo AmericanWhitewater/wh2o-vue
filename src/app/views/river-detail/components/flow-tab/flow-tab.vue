@@ -54,6 +54,7 @@
           <gage-chart-controls
             @viewModeChange="viewMode = $event"
             @gage-change="setActiveGageId"
+            @metric-change="setActiveMetricId"
           />
           <div class="mb-lg">
             <hr>
@@ -169,7 +170,8 @@ export default {
   data: () => ({
     activeGageId: '',
     selectedTimespan: 'h:mm a',
-    viewMode: 'chart'
+    viewMode: 'chart',
+    activeMetricId: ''
   }),
   computed: {
     ...mapState({
@@ -189,8 +191,17 @@ export default {
       }
     },
     lastReading() {
-      if (this.activeGage)
+      if (this.activeGage && Number(this.activeGage.gauge_metric) === Number(this.activeMetricId)) {
         return this.activeGage.last_gauge_reading
+      }
+      if (this.activeGage
+              && Number(this.activeGage.gauge_metric) !== Number(this.activeMetricId)
+              && this.readings.length > 0
+      ) {
+        // here we return the most recent "reading" from our new readings set
+        return Number(this.readings.sort((a,b) => a-b)[0].reading);
+      }
+
       return null
     },
     activeGage () {
@@ -218,6 +229,9 @@ export default {
   methods: {
     setActiveGageId (id) {
       this.activeGageId = id
+    },
+    setActiveMetricId(id) {
+      this.activeMetricId = id;
     },
     handleOpenGageModal () {
       this.$refs.gageLinkModal.open()
