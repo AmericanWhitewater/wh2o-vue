@@ -44,9 +44,9 @@
               v-if="gages && gages.length"
               class="river-gages"
             >
-              <a :href="formatLinkUrl(`content/gauge/detail-new/${gages[0].gauge.id || ''}`)">{{
-                gages[0].gauge && gages[0].gauge.name
-                  ? $titleCase(gages[0].gauge.name)
+              <a :href="formatLinkUrl(`content/gauge/detail-new/${reachGage.gauge.id || ''}`)">{{
+                reachGage.gauge && reachGage.gauge.name
+                  ? $titleCase(reachGage.gauge.name)
                   : "n/a"
               }}</a>
             </td>
@@ -70,7 +70,7 @@
               v-if="gages && gages.length"
               class="flow-range"
             >
-              {{ formatFlowRange(gages[0].rmin, gages[0].rmax) }}
+              {{ formatFlowRange(reachGage.rmin, reachGage.rmax) }}
             </td>
             <td
               v-else
@@ -89,7 +89,7 @@
           <td>
             Flow Rate
             <template v-if="gages && gages.length">
-              as of {{ formatTime(gages[0].last_gauge_updated * 1000) }}
+              as of {{ formatTime(reachGage.last_gauge_updated * 1000) }}
             </template>
           </td>
           <template v-if="!loading">
@@ -97,19 +97,19 @@
               v-if="gages && gages.length"
               class="river-flow-rate"
             >
-              {{ gages[0].last_gauge_reading }}
-              {{ formatMetric(gages[0].gauge_metric) }}
+              {{ gages[0].gauge_reading }}
+              {{ formatMetric(reachGage.gauge_metric) }}
               <cv-tag
-                v-if="gages[0].adjusted_reach_class"
+                v-if="reachGage.adjusted_reach_class"
                 kind="cool-gray"
-                :label="gages[0].adjusted_reach_class"
+                :label="reachGage.adjusted_reach_class"
               />
               <cv-tag
-                v-if="formatTag(gages[0])"
-                :kind="formatTag(gages[0]).kind"
-                :label="formatTag(gages[0]).label"
+                v-if="formatTag(reachGage)"
+                :kind="formatTag(reachGage).kind"
+                :label="formatTag(reachGage).label"
               />
-              <template v-if="gages[0].gauge_perfect">
+              <template v-if="reachGage.gauge_perfect">
                 👍
               </template>
             </td>
@@ -198,6 +198,12 @@ export default {
     },
     reachId () {
       return this.$route.params.id
+    },
+    reachGage() {
+      if (this.river && this.gages) {
+        return this.gages.find(g => g.gauge.id.toString() === this.river.readingsummary.gauge_id.toString())
+      }
+      return this.gages[0]
     }
   },
   methods: {
@@ -222,7 +228,6 @@ export default {
       return humanReadable(input)
     },
     formatFlowRange (min, max) {
-      
       if (min && max) {
         return `${min} – ${max} ${this.formatMetric(this.gages[0].gauge_metric)}`
       }
@@ -235,13 +240,13 @@ export default {
       return 'n/a'
     },
     formatTag (gage) {
-      if (gage.rmin && gage.rmax && gage.last_gauge_reading) {
-        if (gage.last_gauge_reading < gage.rmin) {
+      if (gage.rmin && gage.rmax && gage.gauge_reading) {
+        if (gage.gauge_reading < gage.rmin) {
           return ({
             kind: 'red',
             label: 'Below Recommended'
           })
-        } else if (gage.last_gauge_reading > gage.rmax) {
+        } else if (gage.gauge_reading > gage.rmax) {
           return ({
             kind: 'blue',
             label: 'Above Recommended'
