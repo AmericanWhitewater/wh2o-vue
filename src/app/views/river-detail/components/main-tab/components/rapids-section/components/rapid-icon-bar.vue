@@ -106,7 +106,7 @@ export default {
       },
       validator: val => {
         // throw warning if endpoint response changes
-        const knownCharacteristics = ['takeout', 'putin', 'waterfall', 'portage', 'playspot', 'hazard', 'access']
+        const knownCharacteristics = ['takeout', 'putin', 'waterfall', 'portage', 'playspot', 'hazard', 'access', 'rapid', 'other']
         const isKnownCharacteristic = input => knownCharacteristics.indexOf(input) > -1
         return val.every(isKnownCharacteristic)
       }
@@ -136,6 +136,12 @@ export default {
     },
     access () {
       return this.character.includes('access')
+    },
+    rapid () {
+      return this.character.includes('rapid')
+    },
+    other () {
+      return this.character.includes('other')
     }
   }
 }

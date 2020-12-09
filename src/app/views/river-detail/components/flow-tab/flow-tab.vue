@@ -35,7 +35,8 @@
                 <flow-stats
                   :readings="readings"
                   :loading="loading"
-                  :current="gages[0].gauge_reading || 0"
+                  :current="lastReading || 0"
+                  :metric-format="activeMetricFormat"
                 />
               </div>
             </div>
@@ -54,6 +55,7 @@
           <gage-chart-controls
             @viewModeChange="viewMode = $event"
             @gage-change="setActiveGageId"
+            @metric-change="setActiveMetricId"
           />
           <div class="mb-lg">
             <hr>
@@ -169,7 +171,8 @@ export default {
   data: () => ({
     activeGageId: '',
     selectedTimespan: 'h:mm a',
-    viewMode: 'chart'
+    viewMode: 'chart',
+    activeMetricId: ''
   }),
   computed: {
     ...mapState({
@@ -179,7 +182,8 @@ export default {
       gages: state => state.RiverGages.data,
       gagesLoading: state => state.RiverGages.loading,
       gagesError: state => state.RiverGages.error,
-      editMode: state => state.Global.editMode
+      editMode: state => state.Global.editMode,
+      metrics: state => state.GageMetrics.data,
     }),
     chartSize () {
       if (this.windowWidth > this.$options.breakpoints.md) {
@@ -188,8 +192,28 @@ export default {
         return 'position:relative;width:' + this.$options.breakpoints.sm * 2 + 'px'
       }
     },
+    lastReading() {
+      if (this.activeGage && Number(this.activeGage.gauge_metric) === Number(this.activeMetricId)) {
+        return this.activeGage.gauge_reading
+      }
+      if (this.activeGage
+              && Number(this.activeGage.gauge_metric) !== Number(this.activeMetricId)
+              && this.readings.length > 0
+      ) {
+        // here we return the most recent "reading" from our new readings set
+        return Number(this.readings.sort((a,b) => a-b)[0].reading);
+      }
+
+      return null
+    },
     activeGage () {
       return this.gages ? this.gages.find(g => g.gauge.id === this.activeGageId) : null
+    },
+    activeMetricFormat() {
+      if (this.metrics) {
+        return this.metrics.find(m => m.id.toString() === this.activeMetricId.toString()).format
+      }
+      return null
     }
   },
   watch: {
@@ -213,6 +237,9 @@ export default {
   methods: {
     setActiveGageId (id) {
       this.activeGageId = id
+    },
+    setActiveMetricId(id) {
+      this.activeMetricId = id;
     },
     handleOpenGageModal () {
       this.$refs.gageLinkModal.open()

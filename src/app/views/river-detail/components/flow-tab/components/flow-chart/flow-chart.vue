@@ -45,7 +45,7 @@ export default {
       return this.gages.find(gage => Number(gage.gauge.id) === this.readings[0].gauge_id)
     },
     formattedReadings () {
-      return this.readings.map(reading => Math.floor(reading.reading))
+      return this.readings.map(reading => Number(reading.reading).toFixed(2))
     },
     chartAspectRatio () {
       if (this.windowWidth >= this.$options.breakpoints.md) {
@@ -68,20 +68,15 @@ export default {
         case 'year':
           start = moment().subtract(1, 'years').unix()
           break
-
         case 'month':
           start = moment().subtract(1, 'month').unix()
           break
-
         case 'week':
           start = moment().subtract(1, 'weeks').unix()
           break
-
         case 'day':
-
           start = moment().subtract(1, 'days').unix()
           break
-
         default:
           start = moment().subtract(1, 'days').unix()
           break
@@ -90,6 +85,16 @@ export default {
         timeStart: Math.floor(start),
         timeEnd: Math.floor(moment().unix())
       }
+    },
+    metricName(metric) {
+      // not ideal, but it works
+        if (metric === 'cfs') {
+          return 'Discharge CFS'
+        }
+        if (metric === 'ft') {
+          return 'Feet Stage'
+        }
+       return metric
     },
     renderChart () {
       const ctx = this.$refs.chartCanvas.getContext('2d')
@@ -156,7 +161,8 @@ export default {
             ticks: {
               source: 'data',
               beginAtZero: false,
-              autoSkip: false,
+              autoSkip: true,
+              maxTicksLimit: 20,
               maxRotation: 45,
               minRotation: 45,
               labelOffset: 20,
@@ -175,7 +181,7 @@ export default {
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: `Metric [ ${this.getChartMetric()} ]`,
+              labelString: this.metricName(this.getChartMetric()),
               bounds: 'data',
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
               fontSize: 14
@@ -188,7 +194,7 @@ export default {
               beginAtZero: true,
               suggestedMax: this.getYMax(),
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
-              fontSize: 14
+              fontSize: 14,
             },
             beforeBuildTicks: () => {
               chartOptions.scales.yAxes[0].ticks.min = 100

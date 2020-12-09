@@ -131,7 +131,8 @@ export default {
   data () {
     return {
       mapDataLoading: false,
-      mapboxAccessToken: mapboxAccessToken
+      mapboxAccessToken: mapboxAccessToken,
+      map: null
     }
   },
   computed: {
@@ -145,7 +146,7 @@ export default {
       if (this.height) {
         return `${this.height}px`
       } else {
-        return laravelDeploy ? 'calc(100vh - 125px)' : 'calc(100vh - 80px)'
+        return laravelDeploy ? 'calc(100vh - 125px)' : 'calc(100vh - 50px)'
       }
     },
     // parses out the layers we're adding to the map from NwiMapStyles / sourceLayers prop
@@ -514,6 +515,11 @@ export default {
   created () {
     if (this.mapboxAccessToken) {
       this.initMap()
+    }
+  },
+  beforeDestroy() {
+    if(this.map) {
+      this.map.remove();
     }
   }
 }
