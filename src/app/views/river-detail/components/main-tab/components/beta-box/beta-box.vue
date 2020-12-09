@@ -41,7 +41,7 @@
           <td>Gage</td>
           <template v-if="!loading">
             <td
-              v-if="gages && gages.length"
+              v-if="gages && gages.length && reachGage"
               class="river-gages"
             >
               <a :href="formatLinkUrl(`content/gauge/detail-new/${reachGage.gauge.id || ''}`)">{{
@@ -67,7 +67,7 @@
           <td>Flow Range</td>
           <template v-if="!loading">
             <td
-              v-if="gages && gages.length"
+              v-if="gages && gages.length && reachGage"
               class="flow-range"
             >
               {{ formatFlowRange(reachGage.rmin, reachGage.rmax) }}
@@ -88,13 +88,13 @@
         <tr>
           <td>
             Flow Rate
-            <template v-if="gages && gages.length">
+            <template v-if="gages && gages.length && reachGage">
               as of {{ formatTime(reachGage.last_gauge_updated * 1000) }}
             </template>
           </td>
           <template v-if="!loading">
             <td
-              v-if="gages && gages.length"
+              v-if="gages && gages.length && reachGage"
               class="river-flow-rate"
             >
               {{ gages[0].gauge_reading }}
@@ -200,8 +200,8 @@ export default {
       return this.$route.params.id
     },
     reachGage() {
-      if (this.river && this.gages) {
-        return this.gages.find(g => g.gauge.id.toString() === this.river.readingsummary.gauge_id.toString())
+      if (this.river && this.gages.length) {
+        return this.gages.find(g => g.gauge.id.toString() === this.river.readingsummary?.gauge_id.toString())
       }
       return this.gages[0]
     }
