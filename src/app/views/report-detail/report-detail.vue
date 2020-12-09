@@ -53,22 +53,11 @@
               <h1 class="mb-spacing-md">Something went wrong</h1>
             </div>
           </header>
-          <page-description
-            :loading="loading"
-            :description="data ? data.detail : ''"
-          />
         </div>
       </div>
       <div class="bx--row mt-lg mb-lg">
         <div class="bx--col">
-          <template v-if="loading && !data">
-            <utility-block state="loading" />
-          </template>
-          <template v-else-if="data">
-            <image-gallery :images="data.photos" />
-          </template>
-        </div>
-        <div class="bx--col">
+          <p class="mb-md" v-text="data ? data.detail : ''" />
           <div class="bx--data-table-container mb-spacing-md">
             <table class="bx--data-table bx--data-table--zebra">
               <tbody>
@@ -104,6 +93,15 @@
             View Reach
           </cv-button>
         </div>
+        <div class="bx--col">
+          <template v-if="loading && !data">
+            <utility-block state="loading" />
+          </template>
+          <template v-else-if="data">
+            <image-gallery :images="data.photos" />
+          </template>
+        </div>
+        
       </div>
     </div>
     <confirm-delete-modal
@@ -143,7 +141,6 @@ import ImageGallery from "@/app/views/river-detail/components/image-gallery/imag
 import {
   UtilityBlock,
   ConfirmDeleteModal,
-  PageDescription,
   PostUpdateModal,
 } from "@/app/global/components";
 import { deletePost } from "@/app/services";
@@ -154,7 +151,6 @@ export default {
     UtilityBlock,
     ConfirmDeleteModal,
     ImageGallery,
-    PageDescription,
     PostUpdateModal,
   },
   mixins: [objectPermissionsHelpersMixin],
