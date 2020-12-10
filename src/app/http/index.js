@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { appLocalStorage } from '@/app/global/services'
-import { apiBaseUrl } from '@/app/environment'
+import { apiBaseUrl, environment } from '@/app/environment'
 
 const config = {
   baseURL: apiBaseUrl,
@@ -31,10 +31,25 @@ const authInterceptor = config => {
 
 http.interceptors.request.use(authInterceptor)
 http.interceptors.response.use(
-  response => response,
-  error =>
-    /** Do something with response error */
-    Promise.reject(error)
+  response => {
+    if (response.data.errors) {
+      const errors = {}
+
+      response.data.errors.forEach((error, index) => {
+        errors[index] = error
+      })
+
+      if (environment === 'development') {
+        /* eslint-disable-next-line no-console */
+        console.error('Errors', errors)
+      }
+
+      throw errors
+    } else {
+      return response
+    }
+  },
+  error => Promise.reject(error)
 )
 
 export default http;
