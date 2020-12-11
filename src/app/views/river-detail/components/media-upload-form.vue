@@ -9,7 +9,7 @@
       <img
         v-for="(item, k) in previewUrls"
         :key="k"
-        :src="`${baseUrl}${item}`"
+        :src="`${assetBaseUrl}${item}`"
         class="mb-spacing-sm"
       >
     </template>
@@ -67,8 +67,8 @@
 </template>
 <script>
 
-import { postUpdate, photoFileUpdate } from '@/app/services'
-import { baseUrl } from '@/app/environment'
+import { updatePost, photoFileUpdate } from '@/app/services'
+import { assetBaseUrl } from '@/app/environment'
 
 export default {
   name: 'media-upload-form',
@@ -90,7 +90,7 @@ export default {
     }
   },
   data: () => ({
-    baseUrl: baseUrl,
+    assetBaseUrl: assetBaseUrl,
     formPending: false,
     formData: {
       id: null,
@@ -152,10 +152,10 @@ export default {
       try {
         const result = await photoFileUpdate(this.$apollo, this.formData)
 
-        this.postFormData.id = result.data.photo.post_id
-        this.postFormData.post.post_date = result.data.photo.photo_date
+        this.postFormData.id = result.post_id
+        this.postFormData.post.post_date = result.photo_date
         this.postFormData.post.reach_id = this.$route.params.id
-        this.previewUrls.push(result.data.photo.image.uri.big)
+        this.previewUrls.push(result.image.uri.big)
 
       } catch (error) {
         /* eslint-disable-next-line no-console */
@@ -166,7 +166,7 @@ export default {
     async submitPost () {
       this.formPending = true
       try {
-        await postUpdate(this.postFormData)
+        await updatePost(this.postFormData)
         this.$emit('form:success')
         this.$store.dispatch('Global/sendToast', {
           title: 'Media Uploaded',
@@ -192,12 +192,12 @@ export default {
         this.formData.photo.author = this.user.uname
       }
 
-      this.formData.id = this.$randomId()
+      this.formData.id = `${this.$randomId()}`
       this.formData.fileinput.section = this.section
-      this.formData.fileinput.section_id = this.$randomId()
+      this.formData.fileinput.section_id = this.$route.params.id
     }
   },
-  created () {
+  mounted () {
     this.setInitialFormData()
   }
 }
