@@ -76,8 +76,8 @@ export default {
   },
   computed: {
     metricFormatVal() {
-       if (this.metricFormat)
-         return Number(this.metricFormat.match(/(?<=\.)(\d+)/g)[0] ?? 2)
+      // left in computed because it might change to something actually computed
+      // refactor later if not.
       return 2;
     },
     stats () {
