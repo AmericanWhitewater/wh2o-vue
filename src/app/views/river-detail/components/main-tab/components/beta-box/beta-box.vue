@@ -200,7 +200,7 @@ export default {
       return this.$route.params.id
     },
     reachGage() {
-      if (this.river && this.gages) {
+      if (this.river && this.river.readingsummary && this.gages) {
         return this.gages.find(g => g.gauge.id.toString() === this.river.readingsummary.gauge_id.toString())
       }
       return this.gages[0]
