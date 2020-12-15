@@ -105,7 +105,7 @@ module.exports = {
      * linting reserved for pre-commit git hook.
      */
 
-    headers: { "Access-Control-Allow-Origin": "*" },
+    // headers: { "Access-Control-Allow-Origin": "*" },
     overlay: {
       error: false,
       warning: false,

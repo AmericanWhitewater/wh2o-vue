@@ -31,17 +31,21 @@
           </slot>
         </template>
       </template>
-      <template slot="secondary-button">
+      <template slot="secondary-button"
+                @keydown.enter="handleCancel"
+                @click.exact="handleCancel">
         Cancel
       </template>
-      <template slot="primary-button">
+      <template slot="primary-button"
+                @keydown.enter="handleSubmit"
+                @click.exact="handleSubmit">
         Submit
       </template>
     </cv-modal>
   </div>
 </template>
 <script>
-import { postUpdate } from './services/postUpdate'
+import { updatePost } from '@/app/services'
 import { shadowDomFixedHeightOffset } from '@/app/global/mixins'
 export default {
   name: 'post-update-modal',
@@ -108,7 +112,7 @@ export default {
   }),
   computed: {
     userId () {
-      return this.$store.state.userState.userData.data?.uid
+      return this.$store.state.User.data?.uid
     }
   },
   watch: {
@@ -176,9 +180,9 @@ export default {
       this.formPending = true
       this.$emit('update:pending', true)
 
-      try {
-        const result = await postUpdate(this.formData)
-        if (result.data) {
+      try {  
+        const result = await updatePost(this.formData)
+        if (!result.errors) {
           this.$emit('update:success', result.data.postUpdate.id)
           this.resetForm()
         } else {

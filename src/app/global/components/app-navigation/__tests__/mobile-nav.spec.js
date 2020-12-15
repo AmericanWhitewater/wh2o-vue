@@ -10,10 +10,8 @@ const mockRouter = {
 
 const mockStore = {
   state: {
-    userState: {
-      userData: {
-        data: null
-      }
+    User: {
+      data: null
     }
   },
   dispatch: jest.fn()
@@ -67,7 +65,7 @@ describe('mobile-nav.vue', () => {
   })
 
   it('should show logout button when user logged in', async () => {
-    mockStore.state.userState.userData.data = { uid: '123', uname: 'paddleDood420' }
+    mockStore.state.User.data = { uid: '123', uname: 'paddleDood420' }
 
     const wrapper = createWrapper(MobileNav, options)
 

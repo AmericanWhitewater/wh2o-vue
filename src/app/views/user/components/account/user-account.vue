@@ -23,7 +23,7 @@
                         :kind="activeSection(item.label)"
                         :disabled="item.disabled"
                         @click="
-                          $router.replace(`/user/account/1/${item.label}`)
+                          $router.replace(`/user/account/${user && user.uid}/${item.value}`)
                         "
                       >
                         {{ item.label | capitalize }}
@@ -46,20 +46,10 @@
                     class="mb-spacing-xl"
                     value="bookmarks"
                   >
-                    <cv-dropdown-item value="bookmarks">
-                      Bookmarks
-                    </cv-dropdown-item>
-                    <cv-dropdown-item value="gages">
-                      Gages
-                    </cv-dropdown-item>
-                    <cv-dropdown-item value="alerts">
-                      Alerts
-                    </cv-dropdown-item>
-                    <cv-dropdown-item value="profile">
-                      Profile
-                    </cv-dropdown-item>
-                    <cv-dropdown-item value="settings">
-                      Settings
+                    <cv-dropdown-item v-for="(menuItem, i) in tabs" 
+                                      :key="i"
+                                      :value="menuItem.value">
+                      {{ menuItem.label }}
                     </cv-dropdown-item>
                   </cv-dropdown>
                 </template>
@@ -80,7 +70,6 @@
 <script>
 import { mapState } from 'vuex'
 import { checkWindow } from '@/app/global/mixins'
-import { userActions } from '../../shared/state'
 
 /**
  * User Dashboard / My Account
@@ -104,39 +93,23 @@ export default {
   },
   mixins: [checkWindow],
   data: () => ({
-    /**
-     * active / selected route
-     */
     selectedRoute: 'bookmarks',
-    /**
-     * user account subroutes
-     */
     tabs: [
-      // {
-      //   label: 'alerts',
-      //   disabled: true
-      // },
       {
-        label: 'bookmarks'
+        label: 'Gages',
+        value: 'gages',
       },
       {
-        label: 'gages'
-      },
-      {
-        label: 'profile'
-        // disabled: true
+        label: 'Profile',
+        value: 'profile',
       }
-      // {
-      //   label: 'settings',
-      //   disabled: true
-      // }
     ]
   }),
   computed: {
     ...mapState({
-      data: state => state.userState.userData.data,
-      loading: state => state.userState.userData.loading,
-      error: state => state.userState.userData.error
+      user: state => state.User.data,
+      loading: state => state.User.loading,
+      error: state => state.User.error
     })
   },
   watch: {
@@ -144,7 +117,7 @@ export default {
      * for mobile, when the dropdown changes, replace the route
      */
     selectedRoute (val) {
-      this.$router.replace(`/user/account/1/${val}`)
+      this.$router.replace(`/user/account/${this.user && this.user.uid}/${val}`)
     }
   },
   methods: {
@@ -159,24 +132,7 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch(userActions.FETCH_USER_DATA)
+    this.$store.dispatch('User/getProperty')
   }
 }
 </script>
-
-<style lang="scss">
-.user-account {
-  .bx--grid {
-    &.dashboard-wrapper {
-      margin: 0;
-      padding: 0;
-      min-height: 50vh;
-    }
-  }
-  .bg-ui-01 {
-    background-color:$ui-01;
-    @include layer('raised')
-  }
-}
-
-</style>

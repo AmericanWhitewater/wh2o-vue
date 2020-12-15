@@ -33,7 +33,7 @@ export default {
   mixins: [checkWindow, navItems],
   computed: {
     offline () {
-      return this.$store.state.appGlobalState.appGlobalData.offline
+      return this.$store.state.Global.offline
     }
   }
 }

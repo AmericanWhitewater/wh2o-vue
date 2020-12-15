@@ -3,11 +3,9 @@ import AppToaster from '../app-toaster.vue'
 
 const mockStore = {
   state: {
-    appGlobalState: {
-      appGlobalData: {
-        updateAvailable: false,
-        toasts: []
-      }
+    Global: {
+      updateAvailable: false,
+      toasts: []
     }
   },
   dispatch: jest.fn()
