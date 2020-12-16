@@ -13,6 +13,11 @@ export const assetUrl = {
 
     goToLink: (url) => {
       window.location = url
+    },
+
+    go(path) {
+      this.goToLink(this.formatLinkUrl(path))
     }
+
   }
 }
