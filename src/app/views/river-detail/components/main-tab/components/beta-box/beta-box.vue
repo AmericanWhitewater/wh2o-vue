@@ -89,7 +89,7 @@
           <td>
             Flow Rate
             <template v-if="gages && gages.length">
-              as of {{ formatTime(reachGage.last_gauge_updated * 1000) }}
+              as of {{ formatTime(reachGage.updated * 1000) }}
             </template>
           </td>
           <template v-if="!loading">
