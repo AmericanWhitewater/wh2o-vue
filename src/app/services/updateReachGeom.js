@@ -20,6 +20,9 @@ export async function updateReachGeom(data) {
           ploc: data.ploc,
           tloc: data.tloc,
           length: data.length,
+          river: data.river,
+          section: data.section,
+          class: data.class
         },
       },
     })

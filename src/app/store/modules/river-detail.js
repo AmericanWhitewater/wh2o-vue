@@ -73,22 +73,18 @@ export default {
       }
     },
     async updateGeom(context, geomData) {
-      context.commit('GEOM_UPDATE_REQUEST');
+      context.commit('GEOM_UPDATE_REQUEST', geomData);
 
       const payloadData = {
+        ...context.state.data, // must be first so fields are overridden
         geom: wkx.Geometry.parseGeoJSON(geomData.geom).toWkt(),
         ploc: `${geomData.ploc[0]} ${geomData.ploc[1]}`,
         tloc: `${geomData.tloc[0]} ${geomData.tloc[1]}`,
-        length: geomData.length,
+        length: geomData.length
       };
 
-      const data = {
-        id: context.state.data.id,
-        ...payloadData,
-      }
-
       try {
-        const result = await updateReachGeom(data)
+        const result = await updateReachGeom(payloadData)
 
         if (result.data.errors) {
           context.commit('GEOM_UPDATE_ERROR', result.data.errors);
