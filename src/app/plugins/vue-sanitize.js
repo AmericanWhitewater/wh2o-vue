@@ -23,13 +23,23 @@ Vue.use(VueSanitize)
  * @param {string} content any content you'd like to clean
  */
 
-// Vue.prototype.$cleanContent = (content) => {
+Vue.prototype.$cleanContent = (content) => {
 
-//     const cleanedContent = this.$sanitize(content, {
-//         disallowedAttributes: {
-//           "*": ["style", "class"]
-//         }
-//       });
+    let cleanedContent = Vue.prototype.$sanitize(content, {
+        disallowedAttributes: {
+          "*": ["style", "class"]
+        }
+      });
 
-//     return cleanedContent
-//   };
+      cleanedContent = Vue.prototype.$replaceText(cleanedContent, '\n\n', '<br/><br/>')
+      cleanedContent = Vue.prototype.$replaceText(cleanedContent, '\n', '')
+      cleanedContent = Vue.prototype.$replaceText(cleanedContent, '\r', '')
+      cleanedContent = Vue.prototype.$replaceText(cleanedContent, '\t', '')
+
+      const legacyUrl = 'http://www.americanwhitewater.org/rivers/id/'
+      const updatedUrl = '/#/river-detail/'
+
+      cleanedContent = Vue.prototype.$replaceText(content, legacyUrl, updatedUrl)
+
+    return cleanedContent
+  };
