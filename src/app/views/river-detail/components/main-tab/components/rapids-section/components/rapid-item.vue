@@ -165,23 +165,7 @@ export default {
     },
     sanitizedDescription() {
       if (this.rapid) {
-        let content = this.$sanitize(this.rapid.description, {
-          disallowedAttributes: {
-            "*": ["style"],
-          },
-        });
-
-        content = this.$replaceText(content, "\n\n", "<br/><br/>");
-        content = this.$replaceText(content, "\n", "");
-        content = this.$replaceText(content, "\r", "");
-        content = this.$replaceText(content, "\t", "");
-
-        const legacyUrl = "http://www.americanwhitewater.org/rivers/id/";
-        const updatedUrl = "/#/river-detail/";
-
-        content = this.$replaceText(content, legacyUrl, updatedUrl);
-
-        return content;
+        return this.$cleanContent(this.rapid.description);
       }
       return null;
     },
