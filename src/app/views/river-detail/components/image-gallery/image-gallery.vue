@@ -86,9 +86,9 @@
               <div class="mb-spacing-md">
                 <h6>Description</h6>
                 <div
-                  v-if="activeImage.description"
+                  v-if="sanitizedDescription"
                   class="active-image-description"
-                  v-html="activeImage.description"
+                  v-html="sanitizedDescription"
                 />
                 <div
                   v-else
@@ -224,6 +224,12 @@ export default {
     },
     reachLocation () {
       return `${this.river.river}, ${this.river.section}`
+    },
+    sanitizedDescription() {
+      if (this.activeImage.description) {
+        return this.$cleanContent(this.activeImage.description);
+      }
+      return null;
     },
     currentIndex () {
       if (this.lightbox.activeImage) {

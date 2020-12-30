@@ -20,4 +20,7 @@ module.exports = {
   moduleNameMapper: {
     "^.+\\.(css)$": "<rootDir>/src/utils/unit-test-helpers/CSSStub.js",
   },
+  setupFiles: [
+    "<rootDir>/jest.init.js"
+  ]
 };
