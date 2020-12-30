@@ -46,14 +46,21 @@ if (laravelDeploy) {
     });
     navLink.setAttribute("href", "#");
   }
+  
   // we are in the shadow DOM.
   setShadowRoot = true;
   mountPoint = document
     .querySelector("#wh2o-vue-host")
     .shadowRoot.querySelector("#wh2o-vue");
 } else {
-  mountPoint = "#app";
-}
+  // mimicking the Laravel embedded mount as closely as possible
+  const shadow =  document.querySelector('#wh2o-vue-host').attachShadow({mode: 'open'});
+  const template = document.querySelector('template');
+  shadow.appendChild(document.importNode(template.content, true));
+
+  // we are in the shadow DOM.
+  setShadowRoot = true;
+  mountPoint = shadow.querySelector("#wh2o-vue");}
 
 export const wh2o = new Vue({
   router,
