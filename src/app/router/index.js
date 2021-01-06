@@ -33,7 +33,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode: laravelDeploy && "history",
+  mode: "history",
   base: laravelDeploy && "content/River/view",
   routes,
   /**

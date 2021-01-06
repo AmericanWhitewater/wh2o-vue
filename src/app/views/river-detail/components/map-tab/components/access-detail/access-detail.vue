@@ -67,6 +67,13 @@
           </svg>
         </a>
       </div>
+      <template v-if="sanitizedDescription">
+        <hr class="ui-03">
+        <div
+          class="description"
+          v-html="sanitizedDescription"
+        />
+      </template>
     </cv-tile>
   </div>
 </template>
@@ -88,6 +95,12 @@ export default {
     },
     appleMapsURL () {
       return `https://maps.apple.com/?ll=${this.access.coords[1]},${this.access.coords[0]}`
+    },
+    sanitizedDescription () {
+      if (this.access) {
+        return this.$cleanContent(this.access.description)
+      }
+      return null
     }
   }
 }
