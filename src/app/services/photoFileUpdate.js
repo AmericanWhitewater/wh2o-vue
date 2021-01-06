@@ -27,16 +27,5 @@ export async function photoFileUpdate($apollo, data) {
     variables: {
       ...data
     }
-  }).then(res => res.data)
-  //   .then(result => {
-
-  // }).catch(err => {
-  //   /* eslint-disable-next-line no-console */
-  //   console.log(err)
-  //   this.$emit('form:error')
-  //   this.$store.dispatch('Global/sendToast', {
-  //     title: 'Upload Failed',
-  //     kind: 'error'
-  //   })
-  // })
+  }).then(res => res.data.photo);
 }
