@@ -100,12 +100,14 @@ module.exports = {
   lintOnSave: false,
 
   devServer: {
+    // if this isn't set you can't debug remotely with dev server running.
+    disableHostCheck: true,
+    // headers: { "Access-Control-Allow-Origin": "*" },
     /**
      * disables linting overlay which disrupts workflow.
      * linting reserved for pre-commit git hook.
      */
 
-    // headers: { "Access-Control-Allow-Origin": "*" },
     overlay: {
       error: false,
       warning: false,
