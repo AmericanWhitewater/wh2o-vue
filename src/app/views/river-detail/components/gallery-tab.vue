@@ -13,9 +13,9 @@
             <div class="bx--col">
               <div class="toolbar-wrapper">
                 <cv-button
-                  :disabled="true"
+                  @click="mediaUploadModalVisible = true"
                 >
-                  Upload - Temporarily Unavailable
+                  Upload
                 </cv-button>
               </div>
             </div>
@@ -46,14 +46,13 @@
         </template>
       </template>
     </layout>
-    <!--
     <media-upload-modal
       :visible="mediaUploadModalVisible"
       section="POST"
       @form:cancelled="mediaUploadModalVisible = false"
       @form:success="mediaUploadModalVisible = false"
       @form:error="mediaUploadModalVisible = false"
-    />!-->
+    />
   </div>
 </template>
 <script>
@@ -68,7 +67,8 @@ export default {
     UtilityBlock,
     Layout,
     ImageGallery,
-    TablePagination
+    TablePagination,
+    MediaUploadModal: () => import("./media-upload-modal")
   },
   data: () => ({
     selectedRapids: [],
