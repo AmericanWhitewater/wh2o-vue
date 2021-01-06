@@ -26,6 +26,10 @@ Vue.use(VueSanitize)
  */
 
 Vue.prototype.$cleanContent = (content) => {
+  if (!content) {
+    return '';
+  }
+
   let cleanedContent = Vue.prototype.$sanitize(content, {
       disallowedAttributes: {
         "*": ["style", "class"]
