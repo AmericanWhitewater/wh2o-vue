@@ -13,6 +13,7 @@
             <div class="bx--col">
               <div class="toolbar-wrapper">
                 <cv-button
+                    v-if="user.uid"
                   @click="mediaUploadModalVisible = true"
                 >
                   Upload
@@ -48,10 +49,11 @@
     </layout>
     <media-upload-modal
       :visible="mediaUploadModalVisible"
-      section="POST"
+      section="GALLERY"
       @form:cancelled="mediaUploadModalVisible = false"
       @form:success="mediaUploadModalVisible = false"
       @form:error="mediaUploadModalVisible = false"
+      @upload:submitted="refresh()"
     />
   </div>
 </template>
@@ -94,6 +96,14 @@ export default {
   methods: {
     loadRapids (routeId) {
       this.$store.dispatch('RiverRapids/getProperty', routeId)
+    },
+    /**
+     * refresh after an upload.
+     */
+    refresh(){
+      // reset back to page 1, so user can see their uploaded photo.
+      this.loadMedia();
+
     },
     loadMedia (val) {
       // not used currently but needed for `rapids` in the media upload modal when we add that
