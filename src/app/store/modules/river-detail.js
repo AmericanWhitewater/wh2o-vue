@@ -94,6 +94,14 @@ export default {
           context.commit('GEOM_UPDATE_ERROR', result.data.errors);
         } else {
           context.commit('GEOM_UPDATE_SUCCESS', result.data.reachUpdate);
+          context.dispatch('Global/sendToast', {
+            title: 'Geometry updated. It may take up to 5 minutes for your changes to show in the national map.',
+            kind: 'info',
+            override: true,
+            contrast: false,
+            action: false,
+            autoHide: true
+          }, { root: true });
         }
 
       } catch (error) {
