@@ -4,14 +4,13 @@
 
 --------------------*/
 
-$ibm-plex: "IBM Plex Sans", Helvetica Neue, Arial, sans-serif !default;
+$ibm-plex: IBM Plex Sans, Helvetica Neue, Arial, sans-serif !default;
 
+:host,
 body,
 html {
-  // @include font-smoothing;
+  //  @include font-smoothing;
   font-family: $ibm-plex;
-  text-align: left;
-  // color: $text-01;
 
   .bx--type-alpha,
   h1 {
@@ -87,7 +86,6 @@ html {
       color: $hover-primary-text;
     }
   }
-
 }
 
 // override for the content editor?
