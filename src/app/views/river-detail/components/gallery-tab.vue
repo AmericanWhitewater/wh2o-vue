@@ -50,7 +50,7 @@
     <media-upload-modal
       :visible="mediaUploadModalVisible"
       section="GALLERY"
-      @form:cancelled="mediaUploadModalVisible = false"
+      @upload:cancelled="mediaUploadModalVisible = false"
       @form:success="uploadSuccess"
       @form:error="mediaUploadModalVisible = false"
     />
