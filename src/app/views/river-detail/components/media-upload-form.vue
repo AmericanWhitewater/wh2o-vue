@@ -104,9 +104,9 @@ export default {
         caption: null,
         description: null,
         photo_date: null,
-        poi_id: '0',
+        poi_id: null,
         poi_name: null,
-        post_id: '0',
+        post_id: null,
         subject: null
       }
     },
@@ -120,7 +120,6 @@ export default {
     },
     previewUrls: []
   }),
-
   computed: {
     rapids () {
       return this.$store.state.RiverRapids.data
@@ -155,7 +154,7 @@ export default {
         this.postFormData.id = result.post_id
         this.postFormData.post.post_date = result.photo_date
         this.postFormData.post.reach_id = this.$route.params.id
-        this.previewUrls.push(result.image.uri.big)
+        this.previewUrls.push(result.image.uri.medium)
 
       } catch (error) {
         /* eslint-disable-next-line no-console */
@@ -166,7 +165,9 @@ export default {
     async submitPost () {
       this.formPending = true
       try {
-        await updatePost(this.postFormData)
+        //upload the details collected from the form, not just reach id etc.
+        await updatePost(this.postFormData, { ...this.formData.photo, id: this.formData.id })
+
         this.$emit('form:success')
         this.$store.dispatch('Global/sendToast', {
           title: 'Media Uploaded',

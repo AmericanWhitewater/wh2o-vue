@@ -1,9 +1,14 @@
-import http from '@/app/http'
+import http from "@/app/http";
 
-export async function updatePost(formData) {
-  return http.post('/graphql', {
-    query: `
-      mutation ($id:ID!, $post: PostInput!) {
+export async function updatePost(formData, photo) {
+  //if post is coming in with an ID then remove that property.
+  const photoCopy = Object.assign({}, photo);
+  delete photoCopy.id;
+  photoCopy.post_id = formData.id;
+  return http
+    .post("/graphql", {
+      query: `
+      mutation ($id:ID!, $photo_id: ID!, $photo: PhotoInput!, $post: PostInput!) {
           postUpdate(id: $id, post:$post)  {
           id
           detail
@@ -19,9 +24,19 @@ export async function updatePost(formData) {
             uid
           }
         }
+        photoUpdate(id: $photo_id, photo: $photo)
+          {
+            id
+          },
       }`,
-    variables: formData
-  }).then(response => {
-    return response.data
-  })
+      variables: {
+        id: formData.id,
+        post: formData.post,
+        photo: photoCopy,
+        photo_id: photo.id,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    });
 }
