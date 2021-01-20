@@ -13,7 +13,7 @@
             <div class="bx--col">
               <div class="toolbar-wrapper">
                 <cv-button
-                    v-if="user.uid"
+                    v-if="user && user.uid"
                   @click="mediaUploadModalVisible = true"
                 >
                   Upload
