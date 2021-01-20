@@ -2,7 +2,7 @@ import http from "@/app/http";
 
 export async function updatePost(formData, photo) {
   //if post is coming in with an ID then remove that property.
-  const photoCopy = JSON.parse(JSON.stringify(photo));
+  const photoCopy = Object.assign({}, photo);
   delete photoCopy.id;
   photoCopy.post_id = formData.id;
   return http

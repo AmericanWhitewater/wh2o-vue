@@ -51,9 +51,8 @@
       :visible="mediaUploadModalVisible"
       section="GALLERY"
       @form:cancelled="mediaUploadModalVisible = false"
-      @form:success="mediaUploadModalVisible = false"
+      @form:success="uploadSuccess"
       @form:error="mediaUploadModalVisible = false"
-      @upload:submitted="refresh()"
     />
   </div>
 </template>
@@ -97,16 +96,11 @@ export default {
     loadRapids (routeId) {
       this.$store.dispatch('RiverRapids/getProperty', routeId)
     },
-    /**
-     * refresh after an upload.
-     */
-    refresh(){
-      // reset back to page 1, so user can see their uploaded photo.
+    uploadSuccess () {
+      this.mediaUploadModalVisible = false;
       this.loadMedia();
-
     },
     loadMedia (val) {
-      // not used currently but needed for `rapids` in the media upload modal when we add that
       this.loadRapids(this.reachId)
 
       const data = {
@@ -114,9 +108,8 @@ export default {
         per_page: val ? val.length : 10,
         page: val ? val.page : 1
       }
-      // this.$store.dispatch(galleryActions.FETCH_GALLERY_DATA, data)
 
-    this.$store.dispatch('RiverGallery/getProperty', data)
+      this.$store.dispatch('RiverGallery/getProperty', data)
 
       this.currentlyLoadedImagesFor = this.reachId
     }
