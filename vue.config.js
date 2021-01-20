@@ -17,11 +17,6 @@ function isDebug() {
   return process.env.NODE_ENV !== "production";
 }
 
-//is the app build for embedding
-function isEmbedded() {
-  return process.env.VUE_APP_LARAVEL_DEPLOY;
-}
-
 class IgnoreNotFoundExportPlugin {
   apply(compiler) {
     const messageRegExp = /export '.*'( \(reexported as '.*'\))? was not found in/;
@@ -164,11 +159,7 @@ module.exports = {
       path.join(__dirname, "/node_modules/tinyqueue/tinyqueue.js")
     );
 
-    if (isEmbedded()) {
-      // eslint-disable-next-line no-console
-      console.log("using shadow");
-      enableShadowCss(config);
-    }
+    enableShadowCss(config);
   },
   productionSourceMap: isDebug(), // NOTE: this is default
   configureWebpack: (config) => {

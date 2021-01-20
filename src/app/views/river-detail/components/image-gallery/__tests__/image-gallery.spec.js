@@ -15,6 +15,9 @@ const mockStore = {
         river: 'Nooksack',
         section: 'The first part'
       }
+    },
+    RiverRapids: {
+      data: []
     }
   }
 }
