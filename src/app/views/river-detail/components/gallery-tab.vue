@@ -13,9 +13,10 @@
             <div class="bx--col">
               <div class="toolbar-wrapper">
                 <cv-button
-                  :disabled="true"
+                    v-if="user && user.uid"
+                  @click="mediaUploadModalVisible = true"
                 >
-                  Upload - Temporarily Unavailable
+                  Upload
                 </cv-button>
               </div>
             </div>
@@ -46,14 +47,13 @@
         </template>
       </template>
     </layout>
-    <!--
     <media-upload-modal
       :visible="mediaUploadModalVisible"
-      section="POST"
-      @form:cancelled="mediaUploadModalVisible = false"
-      @form:success="mediaUploadModalVisible = false"
+      section="GALLERY"
+      @upload:cancelled="mediaUploadModalVisible = false"
+      @form:success="uploadSuccess"
       @form:error="mediaUploadModalVisible = false"
-    />!-->
+    />
   </div>
 </template>
 <script>
@@ -68,7 +68,8 @@ export default {
     UtilityBlock,
     Layout,
     ImageGallery,
-    TablePagination
+    TablePagination,
+    MediaUploadModal: () => import("./media-upload-modal")
   },
   data: () => ({
     selectedRapids: [],
@@ -95,8 +96,11 @@ export default {
     loadRapids (routeId) {
       this.$store.dispatch('RiverRapids/getProperty', routeId)
     },
+    uploadSuccess () {
+      this.mediaUploadModalVisible = false;
+      this.loadMedia();
+    },
     loadMedia (val) {
-      // not used currently but needed for `rapids` in the media upload modal when we add that
       this.loadRapids(this.reachId)
 
       const data = {
@@ -104,9 +108,8 @@ export default {
         per_page: val ? val.length : 10,
         page: val ? val.page : 1
       }
-      // this.$store.dispatch(galleryActions.FETCH_GALLERY_DATA, data)
 
-    this.$store.dispatch('RiverGallery/getProperty', data)
+      this.$store.dispatch('RiverGallery/getProperty', data)
 
       this.currentlyLoadedImagesFor = this.reachId
     }

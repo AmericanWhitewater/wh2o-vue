@@ -63,7 +63,7 @@ $themes: (
     $skeleton-01: #e5e5e5,
     $skeleton-02: #bebebe,
     $active-01: #bebebe,
-    $hover-field: #e5e5e5
+    $hover-field: #e5e5e5,
   ),
   dark: (
     $brand-01: #5aaafa,
@@ -84,12 +84,11 @@ $themes: (
     $support-01: #ff5050,
     $support-02: #8cd211,
     $support-03: #efc100,
-    $support-04: #7cc7ff
-  )
+    $support-04: #7cc7ff,
+  ),
 );
 
 @mixin themed() {
-
   @each $theme, $map in $themes {
     .theme--#{$theme} & {
       $theme-map: () !global;
@@ -99,7 +98,7 @@ $themes: (
         $theme-map: map-merge(
           $theme-map,
           (
-            $key: $value
+            $key: $value,
           )
         ) !global;
       }
@@ -110,16 +109,14 @@ $themes: (
 }
 
 @function t($key) {
-
   @return map-get($theme-map, $key);
 }
 
-body {
-
+body,
+:host {
   &.dark {
-
     @include themed() {
-      background-color: t($ui-01)
+      background-color: t($ui-01);
     }
   }
 }
