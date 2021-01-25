@@ -24,9 +24,8 @@
       <div
         v-for="(article, i) in articles.slice(0, 1)"
         :key="i + 3 * 4"
-        class="bx--row mb-spacing-xs sidebar-article"
-        @keydown.enter="readArticle(article)"
-        @click.exact="readArticle(article)"
+        class="bx--row mb-spacing-xs"
+       
       >
         <div class="bx--col-sm-12 bx--col-md-3">
           <img
@@ -38,10 +37,37 @@
         <div class="bx--col-sm-12 bx--col-md-5">
           <div class="pt-spacing-sm pb-spacing-md">
             <h5
-              class="mb-spacing-2xs"
+              class="mb-spacing-2xs sidebar-title"
+              @click.exact="readArticle(article)"
+              @keydown.enter="readArticle(article)"
               v-text="$titleCase(article.title)"
             />
-            <p v-html="article.abstract" />
+            <div
+              v-if="article.abstract.length > 200"
+              ref="abstract"
+              class="abstract-content"
+              v-html="article.abstract.slice(0, 200) + '...'"
+            />
+            <div
+              v-else
+              ref="abstract"
+              class="abstract-content"
+              v-html="article.abstract"
+            />
+            <cv-button
+              v-if="article.abstract.length > 200"
+              class="mt-spacing-md"
+              size="small"
+              kind="tertiary"
+              @click.exact="readArticle(article)"
+              @keydown.enter="readArticle(article)"
+            >See More
+            </cv-button>
+            <cv-link
+              v-if="article.abstract.length > 200"
+              action-label="Read More"
+              @action="readArticle(article)"
+            />
           </div>
         </div>
       </div>
