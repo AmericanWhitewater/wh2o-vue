@@ -54,20 +54,9 @@
               class="abstract-content"
               v-html="article.abstract"
             />
-            <cv-button
-              v-if="article.abstract.length > 200"
-              class="mt-spacing-md"
-              size="small"
-              kind="tertiary"
-              @click.exact="readArticle(article)"
-              @keydown.enter="readArticle(article)"
-            >See More
-            </cv-button>
-            <cv-link
-              v-if="article.abstract.length > 200"
-              action-label="Read More"
-              @action="readArticle(article)"
-            />
+            <cv-link :href="articleUrl(article)">
+              Read More
+            </cv-link>
           </div>
         </div>
       </div>
@@ -105,8 +94,8 @@ export default {
       }
       return null
     },
-    readArticle (article) {
-      this.goToLink(this.formatLinkUrl(`content/Article/view/article_id/${article.id}/`))
+    articleUrl (article) {
+      return `/content/Article/view/article_id/${article.id}/`
     }
   }
 }

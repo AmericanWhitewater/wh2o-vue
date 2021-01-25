@@ -28,6 +28,9 @@
             </cv-link>
 
             <p v-html="project.description" />
+            <cv-link :href="projectUrl(project)">
+              Read More
+            </cv-link>
           </div>
         </div>
       </div>
