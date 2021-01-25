@@ -132,8 +132,8 @@
               <div class="mb-spacing-md">
                 <h6>Rapid</h6>
                 <div
-                  v-if="activeImage.poi_name"
-                  v-text="activeImage.poi_name"
+                  v-if="rapidName"
+                  v-text="rapidName"
                 />
                 <div
                   v-else
@@ -212,15 +212,30 @@ export default {
   }),
   computed: {
     ...mapState({
-      river: state => state.RiverDetail.data
+      river: state => state.RiverDetail.data,
+      rapids: state => state.RiverRapids.data,
     }),
     activeImage () {
       if (this.lightbox.activeImage) {
         return this.images.find(
           image => image.id === this.lightbox.activeImage
-        )
+        );
+      }
+      return null;
+    },
+    activeImageRapid () {
+      if (this.activeImage && this.activeImage.poi_id) {
+        return this.rapids.find(
+          rapid => rapid.id === this.activeImage.poi_id
+        );
       }
       return null
+    },
+    rapidName () {
+      if (this.activeImageRapid && this.activeImageRapid.name) {
+        return this.activeImageRapid.name;
+      }
+      return this.activeImage.poi_name;
     },
     reachLocation () {
       return `${this.river.river}, ${this.river.section}`

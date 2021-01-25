@@ -43,7 +43,7 @@ export default {
 </script>
 
  <style lang="scss">
-@import "/assets/scss/app.scss";
+@import "/assets/scss/app";
 @import '~mapbox-gl/dist/mapbox-gl.css';
 
 .slide-left-enter-active,
