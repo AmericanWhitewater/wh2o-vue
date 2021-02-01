@@ -95,12 +95,14 @@ module.exports = {
   lintOnSave: false,
 
   devServer: {
+    // if these options aren't set HMR breaks and debugging remotely fails (say to local to VM)
+    disableHostCheck: true,
+    headers: { "Access-Control-Allow-Origin": "*" },
     /**
      * disables linting overlay which disrupts workflow.
      * linting reserved for pre-commit git hook.
      */
 
-    // headers: { "Access-Control-Allow-Origin": "*" },
     overlay: {
       error: false,
       warning: false,
