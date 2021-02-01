@@ -111,7 +111,8 @@ export default {
   },
   created() {
     document.addEventListener("swUpdated", this.showRefreshUI, { once: true });
-    navigator.serviceWorker.addEventListener("controllerchange", () => {
+    //navigator.serviceWorker only exists when either https://... or http://localhost/...
+    navigator && navigator.serviceWorker && navigator.serviceWorker.addEventListener("controllerchange", () => {
       if (this.refreshing) return;
       this.refreshing = true;
       window.location.reload();
