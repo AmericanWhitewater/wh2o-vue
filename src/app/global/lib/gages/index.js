@@ -13,5 +13,8 @@ export function formatReading(reading, metric_format) {
       return reading.toFixed(Number.parseInt(m[2]));
     }
   }
-  return reading.toFixed(2);
+  if (typeof reading === "number") {
+    return reading.toFixed(2);
+  }
+  return "";
 }
