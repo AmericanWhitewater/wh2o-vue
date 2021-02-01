@@ -64,27 +64,20 @@
               <template
                 v-if="
                   sanitizedDescription &&
-                  sanitizedDescription.length > characterLimit
+                  sanitizedDescription.length > characterLimit &&
+                  !readMoreActive
                 "
               >
                 <div
                   class="description"
                   v-html="sanitizedDescription.slice(0, characterLimit) + '...'"
                 />
-                <div
-                  v-if="sanitizedDescription && readMoreActive"
-                  class="description"
-                  v-html="
-                    sanitizedDescription.slice(
-                      characterLimit,
-                      sanitizedDescription.length * 2
-                    )
-                  "
-                />
+              
               </template>
               <template v-else>
                 <div class="description" v-html="sanitizedDescription" />
               </template>
+
             </template>
             <template v-else>
               <div class>
