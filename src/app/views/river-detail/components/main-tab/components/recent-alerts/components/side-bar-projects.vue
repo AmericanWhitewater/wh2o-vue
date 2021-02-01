@@ -27,10 +27,25 @@
               </h5>
             </cv-link>
 
-            <p v-html="project.description" />
-            <cv-link :href="projectUrl(project)">
-              Read More
-            </cv-link>
+            <div
+              v-if="project.description.length > 200"
+              ref="abstract"
+              class="abstract-content"
+            
+            >
+              <span v-html="project.description.slice(0, 200)"/>
+              <cv-link 
+                :href="projectUrl(project)"
+                class="read-more">
+                ... Read More
+              </cv-link>
+            </div>
+            <div
+              v-else
+              ref="abstract"
+              class="abstract-content"
+              v-html="project.description"
+            />
           </div>
         </div>
       </div>

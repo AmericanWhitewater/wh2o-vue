@@ -46,19 +46,26 @@
               v-if="article.abstract.length > 200"
               ref="abstract"
               class="abstract-content"
-              v-html="article.abstract.slice(0, 200) + '...'"
-            />
+            
+            >
+              <span v-html="article.abstract.slice(0, 200)"/>
+              <cv-link 
+                :href="articleUrl(article)"
+                class="read-more">
+                ... Read More
+              </cv-link>
+            </div>
             <div
               v-else
               ref="abstract"
               class="abstract-content"
               v-html="article.abstract"
             />
-            <cv-link :href="articleUrl(article)">
-              Read More
-            </cv-link>
+             
+             
           </div>
         </div>
+        
       </div>
     </template>
     <template v-else>

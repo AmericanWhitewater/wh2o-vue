@@ -73,6 +73,7 @@
                 />
                 <div
                   v-if="sanitizedDescription && readMoreActive"
+                  class="description"
                   v-html="
                     sanitizedDescription.slice(
                       characterLimit,
