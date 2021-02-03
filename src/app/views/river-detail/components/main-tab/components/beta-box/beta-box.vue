@@ -41,7 +41,7 @@
           <td>Gage</td>
           <template v-if="!loading">
             <td
-              v-if="gages && gages.length"
+              v-if="gages && gages.length && reachGage && reachGage.gauge"
               class="river-gages"
             >
               <a :href="formatLinkUrl(`content/gauge/detail-new/${reachGage.gauge.id || ''}`)">{{
@@ -70,7 +70,7 @@
               v-if="gages && gages.length"
               class="flow-range"
             >
-              {{ formatFlowRange(reachGage.rmin, reachGage.rmax) }}
+              {{ formatFlowRange(reachGage.rmin, reachGage.rmax, reachGage.gauge_metric) }}
             </td>
             <td
               v-else
@@ -97,7 +97,7 @@
               v-if="gages && gages.length"
               class="river-flow-rate"
             >
-              {{ gages[0].gauge_reading }}
+              {{ formatReading(reachGage.gauge_reading, reachGage.gauge_metric) }}
               {{ formatMetric(reachGage.gauge_metric) }}
               <cv-tag
                 v-if="reachGage.adjusted_reach_class"
@@ -167,6 +167,7 @@
 import { mapState } from 'vuex'
 import { humanReadable } from '@/app/global/services/human-readable'
 import { BetaBoxEditModal } from './components'
+import { formatReading } from '@/app/global/lib/gages'
 
 /**
  * @todo if reach has multiple gages, add dropdown to
@@ -200,8 +201,9 @@ export default {
       return this.$route.params.id
     },
     reachGage() {
+
       if (this.river && this.river.readingsummary && this.gages) {
-        return this.gages.find(g => g.gauge.id.toString() === this.river.readingsummary.gauge_id.toString())
+        return this.gages.find(g => g.gauge.id.toString() === this.river.readingsummary.gauge_id.toString());
       }
       return this.gages[0]
     }
@@ -227,17 +229,28 @@ export default {
       }
       return humanReadable(input)
     },
-    formatFlowRange (min, max) {
+    formatFlowRange (min, max, metricID) {
       if (min && max) {
-        return `${min} – ${max} ${this.formatMetric(this.gages[0].gauge_metric)}`
+        return `${this.formatReading(min,metricID)} – ${this.formatReading(max,metricID)} ${this.formatMetric(metricID)}`
       }
       return 'n/a'
     },
+    getMetric(metricID){
+      if(metricID && this.metrics?.length)
+      {
+        return this.metrics.find(m => m.id === metricID.toString())
+      }
+      return null;
+    },
     formatMetric (metricId) {
       if (this.metrics) {
-        return this.metrics.find(m => m.id === metricId.toString())?.unit
+        return this.getMetric(metricId)?.unit || 'n/a'
       }
       return 'n/a'
+    },
+    formatReading(reading, metricID)
+    {
+      return formatReading(reading,this.getMetric(metricID)?.format || '');
     },
     formatTag (gage) {
       if (gage.rmin && gage.rmax && gage.gauge_reading) {
