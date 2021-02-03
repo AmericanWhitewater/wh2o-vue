@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import { nanoid } from 'nanoid'
+import { customAlphabet } from 'nanoid'
 
 /**
  * @description use this when creating new resources.
@@ -9,5 +9,6 @@ import { nanoid } from 'nanoid'
  */
 
 Vue.prototype.$randomId = function () {
-  return nanoid(21, '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz')
+  const nanoid = customAlphabet('1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 21);
+  return nanoid();
 }
