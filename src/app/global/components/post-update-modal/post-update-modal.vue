@@ -180,7 +180,7 @@ export default {
       this.formPending = true
       this.$emit('update:pending', true)
 
-      try {  
+      try {
         const result = await updatePost(this.formData)
         if (!result.errors) {
           this.$emit('update:success', result.data.postUpdate.id)
