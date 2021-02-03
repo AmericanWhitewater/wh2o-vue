@@ -13,20 +13,11 @@
             </header>
             <header v-else-if="reach" class="bx--tile">
               <div>
-                <h4>
+                <h1>
                   {{ reach.river }}
-                </h4>
+                </h1>
 
-                <h1 class="mb-spacing-md" v-text="reach.section" />
-
-                <cv-breadcrumb no-trailing-slash>
-                  <cv-breadcrumb-item>
-                    <cv-link to="/river-index"> River Index </cv-link>
-                  </cv-breadcrumb-item>
-                  <cv-breadcrumb-item>
-                    <cv-link href="#0"> River Id: {{ reach.id }} </cv-link>
-                  </cv-breadcrumb-item>
-                </cv-breadcrumb>
+                <h4 class="mb-spacing-md" v-text="reach.section" />
               </div>
               <div>
                 <cv-button
