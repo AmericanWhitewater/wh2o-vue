@@ -165,7 +165,7 @@ export default {
     async submitPost () {
       this.formPending = true
       try {
-        //upload the details collected from the form, not just reach id etc.
+        // upload the details collected from the form, not just reach id etc.
         await updatePost(this.postFormData, { ...this.formData.photo, id: this.formData.id })
 
         this.$emit('form:success')
