@@ -5,13 +5,10 @@
     align-items: center;
   }
 
-  .sidebar-article {
+  .sidebar-title {
     &:hover {
       cursor: pointer;
-      h5,
-      p {
-        text-decoration: underline;
-      }
+      text-decoration: underline;
     }
 
     .article-thumb {
