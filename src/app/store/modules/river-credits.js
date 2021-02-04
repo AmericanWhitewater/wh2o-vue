@@ -17,9 +17,8 @@ export default {
         context.commit('DATA_REQUEST')
         const result = await getReachCredits(id)
         
-        
         if (!result.errors) {
-          context.commit('DATA_SUCCESS', result)
+          context.commit('DATA_SUCCESS', result.data.reach.revisions.data)
         }
         
       } catch (error) {

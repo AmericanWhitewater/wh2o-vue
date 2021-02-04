@@ -24,9 +24,8 @@
       <div
         v-for="(article, i) in articles.slice(0, 1)"
         :key="i + 3 * 4"
-        class="bx--row mb-spacing-xs sidebar-article"
-        @keydown.enter="readArticle(article)"
-        @click.exact="readArticle(article)"
+        class="bx--row mb-spacing-xs"
+       
       >
         <div class="bx--col-sm-12 bx--col-md-3">
           <img
@@ -38,12 +37,35 @@
         <div class="bx--col-sm-12 bx--col-md-5">
           <div class="pt-spacing-sm pb-spacing-md">
             <h5
-              class="mb-spacing-2xs"
+              class="mb-spacing-2xs sidebar-title"
+              @click.exact="readArticle(article)"
+              @keydown.enter="readArticle(article)"
               v-text="$titleCase(article.title)"
             />
-            <p v-html="article.abstract" />
+            <div
+              v-if="article.abstract.length > 200"
+              ref="abstract"
+              class="abstract-content"
+            
+            >
+              <span v-html="article.abstract.slice(0, 200)"/>
+              <cv-link 
+                :href="articleUrl(article)"
+                class="read-more">
+                ... Read More
+              </cv-link>
+            </div>
+            <div
+              v-else
+              ref="abstract"
+              class="abstract-content"
+              v-html="article.abstract"
+            />
+             
+             
           </div>
         </div>
+        
       </div>
     </template>
     <template v-else>
@@ -79,8 +101,8 @@ export default {
       }
       return null
     },
-    readArticle (article) {
-      this.goToLink(this.formatLinkUrl(`content/Article/view/article_id/${article.id}/`))
+    articleUrl (article) {
+      return `/content/Article/view/article_id/${article.id}/`
     }
   }
 }

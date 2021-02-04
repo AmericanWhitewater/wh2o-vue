@@ -119,3 +119,14 @@
   svg {
   fill: $carbon--gray-70; //$disabled-02 for gray 90
 }
+
+.abstract-content {
+  p {
+    display: inline;
+  }
+}
+
+.read-more {
+  color: $ui-02;
+  font-weight: 200;
+}
