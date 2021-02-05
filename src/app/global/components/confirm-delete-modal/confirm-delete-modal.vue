@@ -1,5 +1,5 @@
 <template>
-  <div class="confirm-delete-modal">
+  <div :class="[{ visible: visible }, 'confirm-delete-modal']">
     <cv-modal
       ref="modalWrapper"
       size="small"
