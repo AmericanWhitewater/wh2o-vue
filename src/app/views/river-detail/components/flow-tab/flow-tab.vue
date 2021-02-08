@@ -379,8 +379,7 @@ export default {
         return ('lo')
       }
       if (rc <= 0.66) {
-        return
-        ('med')
+        return('med')
       }
       if (rc <= 1) {
         return ('hi')
