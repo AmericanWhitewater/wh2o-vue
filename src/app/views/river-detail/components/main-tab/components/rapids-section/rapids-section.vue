@@ -31,6 +31,7 @@
             :rapid="rapid"
             :first-p-o-i="index === 0 ? true : false"
             @rapid:edit="triggerEdit"
+            @rapid:delete="triggerDelete"
           />
         </div>
       </template>
@@ -46,17 +47,26 @@
     </template>
     <rapid-edit-modal
       v-if="editMode"
-      :key="currentlyEditingRapidId || reachId"
-      :rapid-id="currentlyEditingRapidId"
+      :key="currentlyEditingRapid ? currentlyEditingRapid.id : reachId"
+      :rapid-id="currentlyEditingRapid ? currentlyEditingRapid.id : null"
       :rapid-modal-visible="rapidModalVisible"
-      @edit:cancelled="closeModal"
-      @edit:success="closeModal"
+      @edit:cancelled="closeModal('edit')"
+      @edit:success="closeModal('edit')"
+    />
+    <confirm-delete-modal
+      v-if="editMode"
+      :visible="rapidDeleteModalVisible"
+      :resource-name="currentlyDeletingRapid ? currentlyDeletingRapid.name : ''"
+      @delete:cancelled="closeModal('delete')"
+      @delete:success="closeModal('delete')"
+      @delete:confirmed="deleteRapid(currentlyDeletingRapid)"
     />
   </section>
 </template>
 <script>
 import { RapidItem, RapidEditModal } from './components'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
+import ConfirmDeleteModal from "@/app/global/components/confirm-delete-modal/confirm-delete-modal.vue";
 import { mapState } from 'vuex'
 
 export default {
@@ -64,11 +74,14 @@ export default {
   components: {
     RapidItem,
     UtilityBlock,
-    RapidEditModal
+    RapidEditModal,
+    ConfirmDeleteModal,
   },
   data: () => ({
     rapidModalVisible: false,
-    currentlyEditingRapidId: null,
+    rapidDeleteModalVisible: false,
+    currentlyEditingRapid: null,
+    currentlyDeletingRapid: null,
     formData: {
       files: [],
       name: '',
@@ -91,9 +104,13 @@ export default {
     }
   },
   methods: {
-    triggerEdit (rapidId) {
-      this.currentlyEditingRapidId = rapidId
+    triggerEdit (rapid) {
+      this.currentlyEditingRapid = rapid
       this.rapidModalVisible = true
+    },
+    triggerDelete (rapid) {
+      this.currentlyDeletingRapid = rapid;
+      this.rapidDeleteModalVisible = true;
     },
     openModal () {
       if (this.user) {
@@ -109,13 +126,22 @@ export default {
         })
       }
     },
-    closeModal () {
-      this.rapidModalVisible = false
+    deleteRapid(rapid) {
+      this.rapidDeleteModalVisible = false;
+      this.$store.dispatch("RiverRapids/deleteRapid", rapid.id);
+    },
+    closeModal (whichModal) {
       // ensure that actual modal hide() lifecycle completes
       // basically, if the key changes too quickly, the modal hide()
       // action doesn't complete so this class "bx--body--with-modal-open"
       // doesn't get removed from the body *which prevents scrolling*
-      this.$nextTick(() => { this.currentlyEditingRapidId = null })
+      if (whichModal === 'edit') {
+        this.rapidModalVisible = false;
+        this.$nextTick(() => { this.currentlyEditingRapid = null })
+      } else if (whichModal === 'delete') {
+        this.rapidDeleteModalVisible = false;
+        this.$nextTick(() => { this.currentlyDeletingRapid = null });
+      }
     }
   }
 }
