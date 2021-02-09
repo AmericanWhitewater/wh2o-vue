@@ -21,7 +21,7 @@
         <rapid-icon-bar
           :character="rapid.character"
           @rapid:edit="triggerEdit"
-          @rapid:delete="deleteModalVisible = true"
+          @rapid:delete="triggerDelete"
         />
       </div>
       <hr class="ui-03" >
@@ -107,28 +107,18 @@
             </template>
           </div>
         </div>
-        <confirm-delete-modal
-          v-if="deleteModalVisible"
-          :visible="deleteModalVisible"
-          :resource-name="rapid.name"
-          @delete:cancelled="deleteModalVisible = false"
-          @delete:success="deleteModalVisible = false"
-          @delete:confirmed="deleteRapid(rapid)"
-        />
       </template>
     </cv-tile>
   </div>
 </template>
 <script>
 import RapidIconBar from "./rapid-icon-bar";
-import ConfirmDeleteModal from "@/app/global/components/confirm-delete-modal/confirm-delete-modal.vue";
 import { baseUrl } from "@/app/environment";
 
 export default {
   name: "rapids-item",
   components: {
     RapidIconBar,
-    ConfirmDeleteModal,
   },
   props: {
     rapid: {
@@ -144,7 +134,6 @@ export default {
     },
   },
   data: () => ({
-    deleteModalVisible: false,
     showConfirmation: false,
     readMoreActive: false,
     characterLimit: 1000,
@@ -166,11 +155,10 @@ export default {
   },
   methods: {
     triggerEdit() {
-      this.$emit("rapid:edit", this.rapid.id);
+      this.$emit("rapid:edit", this.rapid);
     },
-    deleteRapid(rapid) {
-      this.deleteModalVisible = false;
-      this.$store.dispatch("RiverRapids/deleteRapid", rapid.id);
+    triggerDelete() {
+      this.$emit("rapid:delete", this.rapid);
     },
     handleToggleEditMode() {
       this.$store.dispatch("Global/toggleEditMode", !this.editMode);
