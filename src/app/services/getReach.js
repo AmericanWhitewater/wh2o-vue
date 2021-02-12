@@ -1,8 +1,8 @@
-import http from "@/app/http"
+import http from "@/app/http";
 
 export async function getReach(id) {
   return http
-    .post('graphql', {
+    .post("graphql", {
       query: `
               {
                 reach(id: ${id}) {
@@ -11,7 +11,7 @@ export async function getReach(id) {
                   class
                   description
                   edited
-                  edited
+                  gaugeinfo
                   length
                   maxgradient
                   plat

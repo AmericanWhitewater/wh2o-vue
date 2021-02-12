@@ -54,7 +54,7 @@ export default {
       data: state => state.GageReadings.data,
       loading: state => state.GageReadings.loading,
       error: state => state.GageReadings.error,
-      metrics: state => state.GageReadings.data
+      metrics: state => state.GageMetrics.data
     }),
     metric () {
       return this?.metrics.find(m => m.id === this.data[0].metric.toString()).unit
@@ -63,7 +63,7 @@ export default {
   methods: {
 
     formatDate (date) {
-      return Moment(date).format('llll')
+      return Moment.unix(date).format('llll')
     }
   },
   created () {}

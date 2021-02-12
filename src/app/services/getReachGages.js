@@ -1,13 +1,13 @@
-import http from "@/app/http"
+import http from "@/app/http";
 
 export async function getReachGages(id) {
   return http
-    .post('/graphql', {
+    .post("/graphql", {
       query: `{
         getGaugeInformationForReachID(id: ${id}) {
           gauges {
-              # rc
-              # epoch
+              rc
+              epoch
               gauge_reading
               gauge_metric
               gauge_comment
@@ -35,7 +35,7 @@ export async function getReachGages(id) {
               adjusted_reach_class
             }
           }
-        }`
+        }`,
     })
-    .then(res => res.data)
+    .then((res) => res.data);
 }
