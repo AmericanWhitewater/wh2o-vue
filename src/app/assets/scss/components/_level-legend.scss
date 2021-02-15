@@ -7,13 +7,13 @@
         fill: $flow-high;
       }
       .high-runnable {
-        fill: lighten($flow-medium, 15%);
+        fill: $high-runnable;
       }
       .runnable {
-        fill: $flow-medium;
+        fill: $med-runnable;
       }
       .low-runnable {
-        fill: darken($flow-medium, 15%);
+        fill: $low-runnable;
       }
       .below-recommended {
         fill: $flow-low;

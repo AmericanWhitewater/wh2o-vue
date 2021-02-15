@@ -63,23 +63,8 @@
               Gage Summary
             </h2>
 
-            <div v-for="gage in gagesWithGage" :key="gage.gauge.id" class='gage-grid'>
-              <div class="gage-name">{{ gage.gauge.name }}</div>
-              <div class="gage-comment">{{ gage.gauge.gauge_comment }}</div>
-              <div class='gage-reading-header header'>Reading</div>
-              <div class="gage-range-header header">Range</div>
-              <div class="gage-class-header header">Adjusted Difficulty</div>
-              <div :class="`gage-reading ${getClass(gage.rc)}`">{{
-                  formatReading(gage.gauge_reading, gage.gauge_metric)
-                }} {{ formatMetric(gage.gauge_metric) }} @ {{ formatTime(gage.epoch) }}
-              </div>
-              <div class="gage-range">{{ formatFlowRange(gage.rmin, gage.rmax, gage.gauge_metric) }}</div>
-              <div class="gage-class"><span v-if="gage.adjusted_reach_class">Adjusted Class {{
-                  gage.adjusted_reach_class
-                }}</span></div>
-              <div :class="`range-comment ${getClass(gage.rc,gage.gauge_metric)}`"><span
-                  v-if="gage.range_comment">{{ gage.range_comment }}</span>
-              </div>
+            <div v-for="gage in gagesWithGage" :key="gage.gauge.id" >
+              <gage-summary :gage="gage" :metrics="metrics" />
             </div>
 
 
@@ -187,16 +172,16 @@ import {
   GageLinkModal,
   GageReadings,
   LevelLegend,
-  ReleasesTable
+  ReleasesTable,
+
 } from './components'
+import GageSummary from './components/gage-summary'
 import { GageChartConfig } from './utils/gage-chart-config'
 import { Layout } from '@/app/global/layout'
 import { mapState } from 'vuex'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { checkWindow } from '@/app/global/mixins'
 import cloneDeep from 'lodash/cloneDeep.js'
-import { formatReading } from '@/app/global/lib/gages'
-import { humanReadable } from '@/app/global/services'
 import http from '@/app/http'
 import ContentEditor from '@/app/global/components/content-editor/content-editor.vue'
 
@@ -212,7 +197,8 @@ export default {
     UtilityBlock,
     LevelLegend,
     FlowStats,
-    ReleasesTable
+    ReleasesTable,
+    GageSummary
   },
   mixins: [GageChartConfig, checkWindow],
   data: () => ({
@@ -233,7 +219,7 @@ export default {
       gagesLoading: state => state.RiverGages.loading,
       gagesError: state => state.RiverGages.error,
       editMode: state => state.Global.editMode,
-      metrics: state => state.GageMetrics.data,
+      metrics: state => state.GageMetrics.data ?? [],
 
     }),
 
@@ -265,7 +251,16 @@ export default {
       return null
     },
     sanitizedDescription () {
-      return this.$cleanContent(this.refreshedDescription || (this.river.gaugeinfo ?? ''))
+      if(this.refreshedDescription)
+      {
+        return this.$cleanContent(this.refreshedDescription);
+      }
+      if(this.river && this.river.gaugeinfo)
+      {
+        return this.$cleanContent(this.river.gaugeinfo  )
+
+      }
+      return('');
     },
 
     activeGage () {
@@ -343,51 +338,13 @@ export default {
       }
     },
 
-    formatTime (epoch) {
-      return humanReadable((new Date().valueOf()) - (epoch * 1000))
-    },
-    formatFlowRange (min, max, metricID) {
-      if (min && max) {
-        return `${this.formatReading(min, metricID)} – ${this.formatReading(max, metricID)} ${this.formatMetric(metricID)}`
-      }
-      return 'n/a'
-    },
-    formatMetric (metricId) {
-      if (this.metrics) {
-        return this.getMetric(metricId)?.unit || 'n/a'
-      }
-      return 'n/a'
-    },
+
     setActiveGageId (id) {
       this.activeGageId = id
     },
-    formatReading (reading, metricID) {
-      return formatReading(reading, this.getMetric(metricID)?.format || '')
-    },
-    getMetric (metricID) {
-      if (metricID && this.metrics?.length) {
-        return this.metrics.find(m => m.id === metricID.toString())
-      }
-      return null
-    },
 
-    getClass (rc) {
-      if (rc < 0.0) {
-        return ('too-lo')
-      }
-      if (rc <= 0.33) {
-        return ('lo')
-      }
-      if (rc <= 0.66) {
-        return('med')
-      }
-      if (rc <= 1) {
-        return ('hi')
-      }
-      if (rc > 1) {
-        return ('too-hi')
-      }
-    },
+
+
     setActiveMetricId (id) {
       this.activeMetricId = id
     },
@@ -401,49 +358,4 @@ export default {
 }
 </script>
 <style lang="scss">
-.gage-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  padding-bottom: 1em;
-
-  .gage-name {
-    font-size: larger;
-  }
-
-  .gage-name,
-  .header {
-    font-weight: bolder;
-  }
-
-  .gage-name,
-  .gage-comment,
-  .range-comment {
-    grid-column: 1/4;
-
-  }
-
-  .too-lo {
-    background: $flow-low;
-
-  }
-
-  .too-hi {
-    background: $flow-high;
-
-  }
-
-  .lo {
-    background: darken($flow-medium, 15%);
-  }
-
-  .med {
-    background: $flow-medium;
-
-  }
-
-  .hi {
-    background: lighten($flow-medium, 15%);
-  }
-
-}
 </style>

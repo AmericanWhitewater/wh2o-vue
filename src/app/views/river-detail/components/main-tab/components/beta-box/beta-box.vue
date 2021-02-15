@@ -167,7 +167,7 @@
 import { mapState } from 'vuex'
 import { humanReadable } from '@/app/global/services/human-readable'
 import { BetaBoxEditModal } from './components'
-import { formatReading } from '@/app/global/lib/gages'
+import { formatReadingWithFormat } from '@/app/global/lib/gages'
 
 /**
  * @todo if reach has multiple gages, add dropdown to
@@ -250,7 +250,7 @@ export default {
     },
     formatReading(reading, metricID)
     {
-      return formatReading(reading,this.getMetric(metricID)?.format || '');
+      return formatReadingWithFormat(reading,this.getMetric(metricID)?.format || '');
     },
     formatTag (gage) {
       if (gage.rmin && gage.rmax && gage.gauge_reading) {

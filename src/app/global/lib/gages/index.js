@@ -5,7 +5,7 @@
  * @return number with the specified precision
  */
 
-export function formatReading(reading, metric_format) {
+export function formatReadingWithFormat(reading, metric_format) {
   if (typeof reading === "number") {
     if (metric_format) {
       const m = metric_format.match(/%([0-9]+)\.([0-9]+)f/);
