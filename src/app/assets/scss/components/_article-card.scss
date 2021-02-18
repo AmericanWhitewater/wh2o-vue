@@ -126,7 +126,17 @@
   }
 }
 
+.read-more-container {
+  overflow: hidden;
+  position: relative;
+  height: 100px;
+}
+
 .read-more {
   color: $ui-02;
   font-weight: 200;
+  right: 15px;
+  bottom: 6px;
+  background: $ui-02;
+  position: absolute;
 }
