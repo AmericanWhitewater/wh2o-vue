@@ -43,10 +43,8 @@
               v-text="$titleCase(article.title)"
             />
             <div
-              v-if="article.abstract.length > 200"
               ref="abstract"
               class="abstract-content"
-            
             >
               <div class="read-more-container">
                 <span v-html="article.abstract"/>
@@ -57,14 +55,6 @@
                 </cv-link>
               </div>
             </div>
-            <div
-              v-else
-              ref="abstract"
-              class="abstract-content"
-              v-html="article.abstract"
-            />
-             
-             
           </div>
         </div>
         
