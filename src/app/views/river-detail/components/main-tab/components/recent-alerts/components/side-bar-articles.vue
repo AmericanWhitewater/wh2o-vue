@@ -43,26 +43,18 @@
               v-text="$titleCase(article.title)"
             />
             <div
-              v-if="article.abstract.length > 200"
               ref="abstract"
               class="abstract-content"
-            
             >
-              <span v-html="article.abstract.slice(0, 200)"/>
-              <cv-link 
-                :href="articleUrl(article)"
-                class="read-more">
-                ... Read More
-              </cv-link>
+              <div class="read-more-container">
+                <span v-html="article.abstract"/>
+                <cv-link 
+                  :href="articleUrl(article)"
+                  class="read-more">
+                  ... Read More
+                </cv-link>
+              </div>
             </div>
-            <div
-              v-else
-              ref="abstract"
-              class="abstract-content"
-              v-html="article.abstract"
-            />
-             
-             
           </div>
         </div>
         
