@@ -27,14 +27,14 @@
         class="bx--row mb-spacing-xs"
        
       >
-        <div class="bx--col-sm-12 bx--col-md-3">
+        <div class="bx--col-sm-12 bx--col-md-2">
           <img
             class="article-thumb"
             :src="articleThumb(article)"
             :alt="article.title"
           >
         </div>
-        <div class="bx--col-sm-12 bx--col-md-5">
+        <div class="bx--col-sm-12 bx--col-md-6">
           <div class="pt-spacing-sm pb-spacing-md">
             <h5
               class="mb-spacing-2xs sidebar-title"
@@ -43,26 +43,18 @@
               v-text="$titleCase(article.title)"
             />
             <div
-              v-if="article.abstract.length > 200"
               ref="abstract"
               class="abstract-content"
-            
             >
-              <span v-html="article.abstract.slice(0, 200)"/>
-              <cv-link 
-                :href="articleUrl(article)"
-                class="read-more">
-                ... Read More
-              </cv-link>
+              <div class="read-more-container">
+                <span v-html="article.abstract"/>
+                <cv-link 
+                  :href="articleUrl(article)"
+                  class="read-more">
+                  ... Read More
+                </cv-link>
+              </div>
             </div>
-            <div
-              v-else
-              ref="abstract"
-              class="abstract-content"
-              v-html="article.abstract"
-            />
-             
-             
           </div>
         </div>
         
