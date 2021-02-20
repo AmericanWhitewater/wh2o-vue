@@ -265,7 +265,7 @@ export default {
       return null
     },
     sanitizedDescription () {
-      return this.$cleanContent(this.refreshedDescription || (this.river.gaugeinfo ?? ''))
+      return this.$cleanContent(this.refreshedDescription || (this.river?.gaugeinfo ?? ''))
     },
 
     activeGage () {
