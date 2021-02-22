@@ -1,5 +1,5 @@
 <template>
-  <div class="gage-grid border" :class="[{'selected':selected},getClass(gage.rc) ]">
+  <div class="gage-grid border" :class="[{'selected':selected},getClass(gage.rc) ]" @click='select'>
     <div class="gage-name">{{ gage.gauge.name }}</div>
     <div class="gage-comment">{{ gage.gauge.gauge_comment }}</div>
     <div class='gage-reading-header header'>Reading</div>
@@ -46,6 +46,11 @@ export default {
   data: () => ({}),
   methods: {
     ...gage_functions,
+    select()
+    {
+      this.$emit('select',this.gage);
+
+    },
     getClass (rc) {
       if (rc < 0.0) {
         return ('too-lo')

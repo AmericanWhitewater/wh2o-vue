@@ -13,6 +13,18 @@
           />
         </template>
         <template v-else-if="gages && gages.length">
+                    <div class="mb-lg">
+            <hr>
+            <h2 class="mb-spacing-md">
+              Gage Summary
+            </h2>
+
+            <div v-for="gage in gagesWithGage" :key="gage.gauge.id" >
+              <gage-summary :selected="activeGage && activeGage.gauge && activeGage.gauge.id===gage.gauge.id" :metrics="metrics" :gage="gage" @select="setActiveGageId(gage.gauge.id)" />
+            </div>
+
+
+          </div>
           <template v-if="loading">
             <utility-block
                 class="mb-lg"
@@ -21,14 +33,14 @@
             />
           </template>
           <template v-else-if="readings && readings.length">
-            <div
+             <div
                 v-if="viewMode === 'chart'"
                 style="max-width: 100%; overflow-x: scroll;"
                 class="mb-spacing-sm"
             >
               <div :style="chartSize">
                 <flow-chart
-                    :gages="gages"
+                    :gages="[activeGage]"
                     :readings="readings"
                     class="mb-md"
                 />
@@ -57,18 +69,7 @@
               @gage-change="setActiveGageId"
               @metric-change="setActiveMetricId"
           />
-          <div class="mb-lg">
-            <hr>
-            <h2 class="mb-spacing-md">
-              Gage Summary
-            </h2>
 
-            <div v-for="gage in gagesWithGage" :key="gage.gauge.id" >
-              <gage-summary :gage="gage" :metrics="metrics" />
-            </div>
-
-
-          </div>
         </template>
         <template v-else>
           <utility-block
@@ -143,7 +144,7 @@
                target="_blank"
             >Edit Flows</a>
           </div>
-          <level-legend/>
+          <level-legend />
         </template>
         <template v-else>
           <cv-button
