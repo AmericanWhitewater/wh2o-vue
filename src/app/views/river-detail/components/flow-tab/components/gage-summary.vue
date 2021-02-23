@@ -1,5 +1,6 @@
 <template>
-  <div class="gage-grid border" :class="[{'selected':selected},getClass(gage.rc) ]" @click='select'>
+  <div class="border"  @click='select'>
+    <div :class="[{'selected':selected},getClass(gage.rc) ]" class="gage-grid">
     <div class="gage-name">{{ gage.gauge.name }}</div>
     <div class="gage-comment">{{ gage.gauge.gauge_comment }}</div>
     <div class='gage-reading-header header'>Reading</div>
@@ -16,6 +17,7 @@
     <div :class="`range-comment background`"><span
         v-if="gage.range_comment">{{ gage.range_comment }}</span>
     </div>
+      </div>
     <template v-if="selected">
       <slot/>
     </template>
@@ -74,7 +76,8 @@ export default {
 
 <style scoped lang="scss">
 
-.gage-grid {
+
+  .gage-grid {
 
   &.selected {
     background: silver;

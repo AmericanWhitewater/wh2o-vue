@@ -119,7 +119,7 @@ export default {
       data: state => state.GageReadings.data,
       metrics: state => state.GageMetrics.data,
       river: state => state.RiverDetail.data,
-      gages: state => state.RiverGages.data,
+      gages: state => state.RiverGages.data?.gauges ?? [],
     }),
     /**
      * @description look through the readings response to find

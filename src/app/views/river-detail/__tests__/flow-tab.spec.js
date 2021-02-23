@@ -94,25 +94,28 @@ describe("FlowTab", () => {
 
   it("it shows loading readings block when loading readings", () => {
     mockStore.state.RiverGages.loading = false;
-    mockStore.state.RiverGages.data = [
-      {
-        gauge_reading: 1560,
-        gauge_metric: 2,
-        gauge_comment: null,
-        range_comment:
-          "Optimal flow range (Flows based on 2012 WFET Basin Report). ",
-        class: "med",
-        excluded: false,
-        rmin: 700,
-        rmax: 2500,
-        gauge: { name: "COLORADO RIVER NEAR KREMMLING, CO", id: "4139" },
-        updated: 44181.147891,
-        last_gauge_reading: 1580,
-        last_gauge_updated: 39552,
-        gauge_perfect: true,
-        adjusted_reach_class: null,
-      },
-    ];
+    mockStore.state.RiverGages.data = {
+      gauges: [
+        {
+          gauge_reading: 1560,
+          gauge_metric: 2,
+          gauge_comment: null,
+          range_comment:
+            "Optimal flow range (Flows based on 2012 WFET Basin Report). ",
+          class: "med",
+          excluded: false,
+          rmin: 700,
+          rmax: 2500,
+          gauge: { name: "COLORADO RIVER NEAR KREMMLING, CO", id: "4139" },
+          updated: 44181.147891,
+          last_gauge_reading: 1580,
+          last_gauge_updated: 39552,
+          gauge_perfect: true,
+          adjusted_reach_class: null,
+        },
+      ],
+      ranges: [],
+    };
     mockStore.state.GageReadings.loading = true;
 
     const wrapper = createWrapper(FlowTab, options);

@@ -1,7 +1,7 @@
 <template>
   <div class="flow-tab">
     <layout
-        name="layout-two-thirds"
+        name="layout-full-width"
         class="mb-lg"
     >
       <template #main>
@@ -13,113 +13,67 @@
           />
         </template>
         <template v-else-if="gages && gages.length">
-                    <div class="mb-lg">
+          <div class="mb-lg">
             <hr>
             <h2 class="mb-spacing-md">
               Gage Summary
             </h2>
 
-            <div v-for="gage in gagesWithGage" :key="gage.gauge.id" >
-              <gage-summary :selected="activeGage && activeGage.gauge && activeGage.gauge.id===gage.gauge.id" :metrics="metrics" :gage="gage" @select="setActiveGageId(gage.gauge.id)" />
-            </div>
+            <div v-for="gage in gagesWithGage" :key="gage.gauge.id">
+              <gage-summary :selected="activeGage && activeGage.gauge && activeGage.gauge.id===gage.gauge.id"
+                            :metrics="metrics" :gage="gage" @select="setActiveGageId(gage.gauge.id)">
 
+                <layout
+                    name="layout-two-thirds"
+                    class="mb-lg"
+                >
+                  <template #main>
+                    <template v-if="loading">
+                      <utility-block
+                          class="mb-lg"
+                          state="loading"
+                          text="loading readings..."
+                      />
+                    </template>
+                    <template v-else-if="readings && readings.length">
+                      <div
+                          v-if="viewMode === 'chart'"
+                          style="max-width: 100%; overflow-x: scroll;"
+                          class="mb-spacing-sm"
+                      >
+                        <div :style="chartSize">
+                          <flow-chart
+                              :gages="[gage]"
+                              :readings="readings"
+                              class="mb-md"
+                              :metric="activeMetric"
+                              :metrics="metrics"
+                              :current="lastReading || 0"
 
-          </div>
-          <template v-if="loading">
-            <utility-block
-                class="mb-lg"
-                state="loading"
-                text="loading readings..."
-            />
-          </template>
-          <template v-else-if="readings && readings.length">
-             <div
-                v-if="viewMode === 'chart'"
-                style="max-width: 100%; overflow-x: scroll;"
-                class="mb-spacing-sm"
-            >
-              <div :style="chartSize">
-                <flow-chart
-                    :gages="[activeGage]"
-                    :readings="readings"
-                    class="mb-md"
-                />
-                <flow-stats
-                    :readings="readings"
-                    :loading="loading"
-                    :current="lastReading || 0"
-                    :metric-format="activeMetricFormat"
-                />
-              </div>
-            </div>
-            <div v-else>
-              <gage-readings/>
-            </div>
-          </template>
-          <template v-else>
-            <utility-block
-                class="mb-lg"
-                state="content"
-                title="No results"
-                text="no gage readings for your chosen parameters, please try again"
-            />
-          </template>
-          <gage-chart-controls
-              @viewModeChange="viewMode = $event"
-              @gage-change="setActiveGageId"
-              @metric-change="setActiveMetricId"
-          />
+                          />
+                          <flow-stats
+                              :readings="readings"
+                              :loading="loading"
+                              :current="lastReading || 0"
+                              :metric="activeMetric"
+                          />
+                        </div>
+                      </div>
+                      <div v-else>
+                        <gage-readings/>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <utility-block
+                          class="mb-lg"
+                          state="content"
+                          title="No results"
+                          text="no gage readings for your chosen parameters, please try again"
+                      />
+                    </template>
 
-        </template>
-        <template v-else>
-          <utility-block
-              state="content"
-              title="No Gages"
-              text="this reach doesn't have any associated gages"
-          />
-        </template>
-          <div class="mb-lg">
-            <hr>
-            <h2 class="mb-spacing-md">
-              Gage Description
-            </h2>
-            <template v-if="!editMode">
-              <div
-                  v-if="sanitizedDescription "
-                  class="gage-description"
-                  v-html="sanitizedDescription"
-              />
-              <div
-                  v-else
-                  class="gage-description"
-              >
-                This gage does not have a description.
-              </div>
-            </template>
-            <template v-else>
-              <content-editor
-                  :content="
-            sanitizedDescription ? sanitizedDescription : 'start typing...'
-          "
-                  show-control-bar
-                  @content:updated="handleUpdate"
-                  @editor:destroyed="handleEditorDestroy"
-              />
-              <cv-button
-                  class="mt-spacing-sm"
-                  @click.exact="submitForm"
-                  @keydown.enter="submitForm"
-              >
-                Submit
-              </cv-button>
-            </template>
-
-
-          </div>
-
-
-      </template>
-      <template #sidebar>
+                  </template>
+                        <template #sidebar>
         <template v-if="gagesLoading">
           <cv-skeleton-text headline/>
         </template>
@@ -144,7 +98,14 @@
                target="_blank"
             >Edit Flows</a>
           </div>
-          <level-legend />
+          <level-legend
+              :ranges="rangeForGageID(gage.gauge.id)"
+          />
+          <gage-chart-controls
+                        @viewModeChange="viewMode = $event"
+                        @gage-change="setActiveGageId"
+                        @metric-change="setActiveMetricId"
+                    />
         </template>
         <template v-else>
           <cv-button
@@ -154,6 +115,63 @@
             Add Gage
           </cv-button>
         </template>
+      </template>
+
+                </layout>
+              </gage-summary>
+            </div>
+
+
+          </div>
+
+        </template>
+        <template v-else>
+          <utility-block
+              state="content"
+              title="No Gages"
+              text="this reach doesn't have any associated gages"
+          />
+        </template>
+        <div class="mb-lg">
+          <hr>
+          <h2 class="mb-spacing-md">
+            Gage Description
+          </h2>
+          <template v-if="!editMode">
+            <div
+                v-if="sanitizedDescription "
+                class="gage-description"
+                v-html="sanitizedDescription"
+            />
+            <div
+                v-else
+                class="gage-description"
+            >
+              This gage does not have a description.
+            </div>
+          </template>
+          <template v-else>
+            <content-editor
+                :content="
+            sanitizedDescription ? sanitizedDescription : 'start typing...'
+          "
+                show-control-bar
+                @content:updated="handleUpdate"
+                @editor:destroyed="handleEditorDestroy"
+            />
+            <cv-button
+                class="mt-spacing-sm"
+                @click.exact="submitForm"
+                @keydown.enter="submitForm"
+            >
+              Submit
+            </cv-button>
+          </template>
+
+
+        </div>
+
+
       </template>
     </layout>
     <layout name="layout-full-width">
@@ -174,7 +192,6 @@ import {
   GageReadings,
   LevelLegend,
   ReleasesTable,
-
 } from './components'
 import GageSummary from './components/gage-summary'
 import { GageChartConfig } from './utils/gage-chart-config'
@@ -185,6 +202,7 @@ import { checkWindow } from '@/app/global/mixins'
 import cloneDeep from 'lodash/cloneDeep.js'
 import http from '@/app/http'
 import ContentEditor from '@/app/global/components/content-editor/content-editor.vue'
+import { getEmptyMetric } from '@/app/global/lib/gages'
 
 export default {
   name: 'flow-tab',
@@ -216,7 +234,8 @@ export default {
       readings: state => state.GageReadings.data,
       loading: state => state.GageReadings.loading,
       error: state => state.GageReadings.error,
-      gages: state => state.RiverGages.data,
+      gages: state => state.RiverGages.data?.gauges ?? [],
+      ranges: state => state.RiverGages.data?.ranges ?? [],
       gagesLoading: state => state.RiverGages.loading,
       gagesError: state => state.RiverGages.error,
       editMode: state => state.Global.editMode,
@@ -252,24 +271,22 @@ export default {
       return null
     },
     sanitizedDescription () {
-      if(this.refreshedDescription)
-      {
-        return this.$cleanContent(this.refreshedDescription);
+      if (this.refreshedDescription) {
+        return this.$cleanContent(this.refreshedDescription)
       }
-      if(this.river && this.river.gaugeinfo)
-      {
-        return this.$cleanContent(this.river.gaugeinfo  )
+      if (this.river && this.river.gaugeinfo) {
+        return this.$cleanContent(this.river.gaugeinfo)
 
       }
-      return('');
+      return ('')
     },
 
     activeGage () {
       return this.gages ? this.gages.find(g => g.gauge.id === this.activeGageId) : null
     },
-    activeMetricFormat () {
+    activeMetric () {
       if (this.metrics) {
-        return this.metrics.find(m => m.id.toString() === this.activeMetricId.toString())?.format
+        return this.metrics.find(m => m.id.toString() === this.activeMetricId.toString()) ?? getEmptyMetric()
       }
       return null
     }
@@ -299,7 +316,10 @@ export default {
     handleEditorDestroy () {
       this.updatedDescription = ''
     },
-
+    rangeForGageID(id)
+    {
+      return(this.ranges.filter(x=>parseInt(x.gauge_id) === parseInt(id)).sort(x=>x.min-x.max))
+    },
     submitForm () {
       if (this.updatedDescription && this.river.id) {
         this.updatePending = true
@@ -339,12 +359,9 @@ export default {
       }
     },
 
-
     setActiveGageId (id) {
       this.activeGageId = id
     },
-
-
 
     setActiveMetricId (id) {
       this.activeMetricId = id

@@ -19,3 +19,21 @@ export function formatReadingWithFormat(reading, metric_format) {
   }
   return "";
 }
+
+export function getEmptyMetric() {
+  return { name: "n/a", unit: "n/a", format: "%3.2f", id: "0", shortkey: "" };
+}
+
+export function getEmptyRange() {
+  return {
+    range_min: "R0",
+    range_max: "R9",
+    min: 0,
+    max: 0,
+    time_adjustment: 0,
+    range_comment: "",
+    gauge_perfect: false,
+    gauge_estimated: false,
+    gauge_id: 0,
+  };
+}

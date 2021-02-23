@@ -188,7 +188,7 @@ export default {
       loading: state => state.RiverDetail.loading,
       river: state => state.RiverDetail.data,
       editMode: state => state.Global.editMode,
-      gages: state => state.RiverGages.data,
+      gages: state => state.RiverGages.data?.gauges ?? [],
       metrics: state => state.GageMetrics.data
     }),
     releases() {
