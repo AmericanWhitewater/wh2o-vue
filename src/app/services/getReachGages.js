@@ -14,6 +14,8 @@ export async function getReachGages(id) {
             range_comment, 
             gauge_perfect,
             gauge_estimated,
+            gauge_important,
+            gauge_metric,
             gauge_id,
           },
           gauges {

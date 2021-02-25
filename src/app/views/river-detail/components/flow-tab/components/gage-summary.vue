@@ -79,13 +79,16 @@ export default {
 
   .gage-grid {
 
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding-bottom: 1em;
+  cursor: pointer;
+
+
   &.selected {
     background: silver;
   }
 
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  padding-bottom: 1em;
 
   .gage-name {
     font-size: larger;
@@ -103,26 +106,26 @@ export default {
 
   }
 
-  &.border.too-lo {
+  &.too-lo, .too-lo {
     border-left: $flow-low  1em solid;
 
   }
 
-  &.border.too-hi {
+  &.too-hi, .too-hi {
     border-left: $high-runnable  1em solid;
 
   }
 
-  &.border.lo {
+  &.lo, .lo {
     border-left: $low-runnable  1em solid;
   }
 
-  &.border.med {
+  &.med, .med {
     border-left: $med-runnable  1em solid;
 
   }
 
-  &.border.hi {
+  &.hi, .hi {
     border-left: $high-runnable  1em solid;
   }
 

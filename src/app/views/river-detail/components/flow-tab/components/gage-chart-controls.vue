@@ -2,12 +2,11 @@
   <div class="gage-chart-controls">
     <template v-if="metrics">
       <cv-dropdown
-        v-if="gages"
+        v-if="gages && gages.length > 1"
         v-model="formData.gauge_id"
         :placeholder="$titleCase(formData.gauge_name)"
         label="Selected Gage"
         class="mb-spacing-md"
-        :disabled="gages.length === 1"
         @change="fetchReadings"
       >
         <cv-dropdown-item

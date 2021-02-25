@@ -19,9 +19,9 @@
               Gage Summary
             </h2>
 
-            <div v-for="gage in gagesWithGage" :key="gage.gauge.id">
-              <gage-summary :selected="activeGage && activeGage.gauge && activeGage.gauge.id===gage.gauge.id"
-                            :metrics="metrics" :gage="gage" @select="setActiveGageId(gage.gauge.id)">
+            <div v-for="gage in gagesWithGage" :key="`${gage.gauge.id}-${gage.gauge_metric}`">
+              <gage-summary :selected="activeGage && activeMetric && activeGage.gauge && activeGage.gauge.id==gage.gauge.id && activeMetric.id == gage.gauge_metric"
+                            :metrics="metrics" :gage="gage" @select="setActive(gage)">
 
                 <layout
                     name="layout-two-thirds"
@@ -38,7 +38,7 @@
                     <template v-else-if="readings && readings.length">
                       <div
                           v-if="viewMode === 'chart'"
-                          style="max-width: 100%; overflow-x: scroll;"
+                          style="max-width: 100%; "
                           class="mb-spacing-sm"
                       >
                         <div :style="chartSize">
@@ -82,6 +82,7 @@
               class="mb-spacing-sm"
               v-text="$titleCase(activeGage.gauge.name)"
           />
+          <div v-if="activeGage.gauge_comment"><em >{{ activeGage.gauge_comment }}</em></div>
           <cv-button
               class="mb-spacing-sm"
               kind="tertiary"
@@ -99,7 +100,9 @@
             >Edit Flows</a>
           </div>
           <level-legend
+              :gauge="activeGage.gauge"
               :ranges="rangeForGageID(gage.gauge.id)"
+              :metric="activeMetric"
           />
           <gage-chart-controls
                         @viewModeChange="viewMode = $event"
@@ -231,7 +234,14 @@ export default {
   computed: {
     ...mapState({
       river: state => state.RiverDetail.data,
-      readings: state => state.GageReadings.data,
+      readings: state => {
+        const lastReadings = [];
+        if(state.GageReadings.data[0] && state.GageReadings.data[0].gauge_id == this.activeGage.gage.id && state.GageReadings.data[0].metric == this.activeMetric?.id)
+        {
+          lastReadings.push({...getEmptyReading(),gauge_id:this.activeGage.gage.id, metric:this.activeMetric?.id, reading: this.activeGage.gauge_reading,updated: }
+        }
+        [...state.GageReadings.data]
+      },
       loading: state => state.GageReadings.loading,
       error: state => state.GageReadings.error,
       gages: state => state.RiverGages.data?.gauges ?? [],
@@ -361,6 +371,12 @@ export default {
 
     setActiveGageId (id) {
       this.activeGageId = id
+    },
+
+    setActive(gage)
+    {
+      this.setActiveGageId(gage.gauge.id);
+      this.setActiveMetricId(gage.gauge_metric);
     },
 
     setActiveMetricId (id) {

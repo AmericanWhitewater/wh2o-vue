@@ -34,6 +34,20 @@ export function getEmptyRange() {
     range_comment: "",
     gauge_perfect: false,
     gauge_estimated: false,
+    gauge_important: false,
+    gauge_metric: 0,
     gauge_id: 0,
+  };
+}
+
+export function getEmptyReading() {
+  return {
+    data: null,
+    gauge_id: 310,
+    id: 1331641570661,
+    metric: 8,
+    nv: 74706,
+    reading: "3.8399999141693115",
+    updated: "1613670272.00000000",
   };
 }
