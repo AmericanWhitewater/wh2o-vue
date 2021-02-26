@@ -20,8 +20,12 @@
             </h2>
 
             <div v-for="gage in gagesWithGage" :key="`${gage.gauge.id}-${gage.gauge_metric}`">
-              <gage-summary :selected="activeGage && activeMetric && activeGage.gauge && activeGage.gauge.id==gage.gauge.id && activeMetric.id == gage.gauge_metric"
-                            :metrics="metrics" :gage="gage" @select="setActive(gage)">
+              <gage-summary
+                  :selected="activeGage && activeMetric && activeGage.gauge && activeGage.gauge.id==gage.gauge.id && activeMetric.id == gage.gauge_metric"
+                  :metrics="metrics" :gage="gage" @select="setActive(gage)">
+                <template #unselected>
+                  <div v-if="gage.gauge_comment"><em>{{ gage.gauge_comment }}</em></div>
+                </template>
 
                 <layout
                     name="layout-two-thirds"
@@ -35,7 +39,7 @@
                           text="loading readings..."
                       />
                     </template>
-                    <template v-else-if="readings && readings.length">
+                    <template v-else-if="readingsWithLast && readingsWithLast.length">
                       <div
                           v-if="viewMode === 'chart'"
                           style="max-width: 100%; "
@@ -44,7 +48,7 @@
                         <div :style="chartSize">
                           <flow-chart
                               :gages="[gage]"
-                              :readings="readings"
+                              :readings="readingsWithLast"
                               class="mb-md"
                               :metric="activeMetric"
                               :metrics="metrics"
@@ -52,7 +56,7 @@
 
                           />
                           <flow-stats
-                              :readings="readings"
+                              :readings="readingsWithLast"
                               :loading="loading"
                               :current="lastReading || 0"
                               :metric="activeMetric"
@@ -73,52 +77,57 @@
                     </template>
 
                   </template>
-                        <template #sidebar>
-        <template v-if="gagesLoading">
-          <cv-skeleton-text headline/>
-        </template>
-        <template v-else-if="activeGage">
-          <h4
-              class="mb-spacing-sm"
-              v-text="$titleCase(activeGage.gauge.name)"
-          />
-          <div v-if="activeGage.gauge_comment"><em >{{ activeGage.gauge_comment }}</em></div>
-          <cv-button
-              class="mb-spacing-sm"
-              kind="tertiary"
-              size="small"
-              @click.exact="go(`/content/gauge/detail-new/${activeGage.gauge.id}`)"
-              @keydown.enter="go(`/content/gauge/detail-new/${activeGage.gauge.id}`)"
-          >
-            Gage Detail
-          </cv-button>
-          <div>
-            <a v-if="editMode"
-               class="cv-button mb-spacing-md bx--btn bx--btn--tertiary bx--btn--sm"
-               :href="formatLinkUrl(`/content/StreamTeam/edit-correlations/?reach_id=${$route.params.id}`)"
-               target="_blank"
-            >Edit Flows</a>
-          </div>
-          <level-legend
-              :gauge="activeGage.gauge"
-              :ranges="rangeForGageID(gage.gauge.id)"
-              :metric="activeMetric"
-          />
-          <gage-chart-controls
-                        @viewModeChange="viewMode = $event"
-                        @gage-change="setActiveGageId"
-                        @metric-change="setActiveMetricId"
-                    />
-        </template>
-        <template v-else>
-          <cv-button
-              v-if="editMode"
-              @click.exact="handleOpenGageModal"
-          >
-            Add Gage
-          </cv-button>
-        </template>
-      </template>
+                  <template #sidebar>
+                    <template v-if="gagesLoading">
+                      <cv-skeleton-text headline/>
+                    </template>
+                    <template v-else-if="activeGage">
+                      <h4
+                          class="mb-spacing-sm"
+                          v-text="$titleCase(activeGage.gauge.name)"
+                      />
+                      <div v-if="activeGage.gauge_comment"><em>{{ activeGage.gauge_comment }}</em></div>
+                      <cv-button
+                          class="mb-spacing-sm"
+                          kind="tertiary"
+                          size="small"
+                          @click.exact="go(`/content/gauge/detail-new/${activeGage.gauge.id}`)"
+                          @keydown.enter="go(`/content/gauge/detail-new/${activeGage.gauge.id}`)"
+                      >
+                        Gage Detail
+                      </cv-button>
+                      <div>
+                        <a v-if="editMode"
+                           class="cv-button mb-spacing-md bx--btn bx--btn--tertiary bx--btn--sm"
+                           :href="formatLinkUrl(`/content/StreamTeam/edit-correlations/?reach_id=${$route.params.id}`)"
+                           target="_blank"
+                        >Edit Flows</a>
+                      </div>
+                      <level-legend
+                          :gauge="activeGage.gauge"
+                          :ranges="rangeForGageID(gage.gauge.id)"
+                          :metric="activeMetric"
+                      />
+                      <gage-chart-controls
+                          v-if="activeGage && activeGage.gauge && activeMetric"
+                          :gauge-id="activeGage.gauge.id"
+                          :metric-id="Number(activeMetric.id)"
+                          :metrics="metrics"
+                          :gages="[activeGage]"
+                          @viewModeChange="viewMode = $event"
+                          @gage-change="setActiveGageId"
+                          @metric-change="setActiveMetricId"
+                      />
+                    </template>
+                    <template v-else>
+                      <cv-button
+                          v-if="editMode"
+                          @click.exact="handleOpenGageModal"
+                      >
+                        Add Gage
+                      </cv-button>
+                    </template>
+                  </template>
 
                 </layout>
               </gage-summary>
@@ -205,7 +214,7 @@ import { checkWindow } from '@/app/global/mixins'
 import cloneDeep from 'lodash/cloneDeep.js'
 import http from '@/app/http'
 import ContentEditor from '@/app/global/components/content-editor/content-editor.vue'
-import { getEmptyMetric } from '@/app/global/lib/gages'
+import { getEmptyMetric, getEmptyReading } from '@/app/global/lib/gages'
 
 export default {
   name: 'flow-tab',
@@ -234,14 +243,7 @@ export default {
   computed: {
     ...mapState({
       river: state => state.RiverDetail.data,
-      readings: state => {
-        const lastReadings = [];
-        if(state.GageReadings.data[0] && state.GageReadings.data[0].gauge_id == this.activeGage.gage.id && state.GageReadings.data[0].metric == this.activeMetric?.id)
-        {
-          lastReadings.push({...getEmptyReading(),gauge_id:this.activeGage.gage.id, metric:this.activeMetric?.id, reading: this.activeGage.gauge_reading,updated: }
-        }
-        [...state.GageReadings.data]
-      },
+      readings: state => state.GageReadings?.data,
       loading: state => state.GageReadings.loading,
       error: state => state.GageReadings.error,
       gages: state => state.RiverGages.data?.gauges ?? [],
@@ -252,6 +254,25 @@ export default {
       metrics: state => state.GageMetrics.data ?? [],
 
     }),
+
+    readingsWithLast () {
+      const lastReadings = []
+      //
+      if (this.readings?.length
+          && this.readings[0].gauge_id == this.activeGage?.gauge?.id
+          && this.readings[0].metric == this.activeMetric?.id) {
+        const ag = this.activeGage
+        lastReadings.push({
+          ...getEmptyReading(),
+          gauge_id: ag.gauge.id,
+          metric: this.activeMetric?.id,
+          reading: ag.gauge_reading,
+          updated: ag.epoch
+        })
+      }
+      return ([...(this.readings?.length ? this.readings: []), ...lastReadings])
+
+    },
 
     gagesWithGage () {
       return this.gages?.filter(x => x.gauge) ?? []
@@ -326,9 +347,8 @@ export default {
     handleEditorDestroy () {
       this.updatedDescription = ''
     },
-    rangeForGageID(id)
-    {
-      return(this.ranges.filter(x=>parseInt(x.gauge_id) === parseInt(id)).sort(x=>x.min-x.max))
+    rangeForGageID (id) {
+      return (this.ranges.filter(x => parseInt(x.gauge_id) === parseInt(id)).sort(x => x.min - x.max))
     },
     submitForm () {
       if (this.updatedDescription && this.river.id) {
@@ -373,10 +393,9 @@ export default {
       this.activeGageId = id
     },
 
-    setActive(gage)
-    {
-      this.setActiveGageId(gage.gauge.id);
-      this.setActiveMetricId(gage.gauge_metric);
+    setActive (gage) {
+      this.setActiveGageId(gage.gauge.id)
+      this.setActiveMetricId(gage.gauge_metric)
     },
 
     setActiveMetricId (id) {

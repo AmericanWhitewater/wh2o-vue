@@ -67,7 +67,7 @@
           <td>Flow Range</td>
           <template v-if="!loading">
             <td
-              v-if="gages && gages.length"
+              v-if="reachGage "
               class="flow-range"
             >
               {{ formatFlowRange(reachGage.rmin, reachGage.rmax, reachGage.gauge_metric) }}
@@ -88,13 +88,13 @@
         <tr>
           <td>
             Flow Rate
-            <template v-if="gages && gages.length">
+            <template v-if="reachGage">
               as of {{ formatTime(reachGage.updated * 1000) }}
             </template>
           </td>
           <template v-if="!loading">
             <td
-              v-if="gages && gages.length"
+              v-if="reachGage"
               class="river-flow-rate"
             >
               {{ formatReading(reachGage.gauge_reading, reachGage.gauge_metric) }}
@@ -253,7 +253,7 @@ export default {
       return formatReadingWithFormat(reading,this.getMetric(metricID)?.format || '');
     },
     formatTag (gage) {
-      if (gage.rmin && gage.rmax && gage.gauge_reading) {
+      if (gage && gage.rmin && gage.rmax && gage.gauge_reading) {
         if (gage.gauge_reading < gage.rmin) {
           return ({
             kind: 'red',

@@ -9,7 +9,7 @@ takes a range[] (see getEmptyRange for model)
 
         <li v-for="(item ) in chart"
 
-            :key="`${ item.level }${ !!item.range }${ item.color}`"
+            :key="`${ item.level }${ item.range && item.range.min }${ item.range && item.range.max }${ item.color}`"
             class="label bx--type-caption"
         >
           <range-box :color-class="item.color"/>
@@ -75,11 +75,11 @@ export default {
         })
       }
 
-      if(this.filteredRanges.length === 1)
-      {
-        rv.push({ legend: this.findLegendItem('runnable').label,
+      if (this.filteredRanges.filter(x => x.range_min.match(/R/)).length === 1) {
+        rv.push({
+          legend: this.findLegendItem('runnable').label,
           color: 'runnable',
-          range: this.filteredRanges[0],
+          range: this.filteredRanges.filter(x => x.range_min.match(/R/))[0],
           level: null,
           showRange: true,
           exclude: false,
@@ -87,48 +87,44 @@ export default {
           isLt: false
         })
       }
-      else
-      {
-      for (let i = 0; i < this.enumeratedRanges.length; i++) {
-        const item = this.enumeratedRanges[i];
-        const rec = {
-          legend: this.findLegendItem(item.class).label,
-          color: item.class,
-          range: item.range,
-          level: item.val,
-          showRange: false,
-          exclude:false,
-          isGt: i == 0 || (item.range && item.val == item.range.min),
-          isLt: i==this.enumeratedRanges.length-1 || (item.range && item.val == item.range.max),
+        for (let i = 0; i < this.enumeratedRanges.length; i++) {
+          const item = this.enumeratedRanges[i]
+          const rec = {
+            legend: this.findLegendItem(item.class).label,
+            color: item.class,
+            range: item.range,
+            level: item.val,
+            showRange: false,
+            exclude: false,
+            isGt: i == 0 || (item.range && item.val == item.range.min),
+            isLt: i == this.enumeratedRanges.length - 1 || (item.range && item.val == item.range.max),
 
+          }
+
+          if (rec.isGt && rec.isLt) {
+            rec.exclude = true
+          } else {
+
+            // don't show range comments if the last value showed them.
+            if (item.range && (!this.enumeratedRanges[i - 1] ||
+                !isEqual(item?.range, this.enumeratedRanges[i - 1]?.range))) {
+              rec.showRange = !!item.range
+
+            }
+            //this.enumeratedRanges[i + 1] && console.log(this.formatValue(item.val), this.formatValue(this.enumeratedRanges[i + 1].val))
+            // don't show line if range top of last was the same as range bottom of this
+            if (item.val && (!this.enumeratedRanges[i + 1] || this.formatValue(item.val) === this.formatValue(this.enumeratedRanges[i + 1].val))) {
+
+              rec.exclude = true
+
+            }
+
+          }
+
+          rv.push(rec)
         }
 
-        if(rec.isGt && rec.isLt)
-        {
-          rec.exclude=true;
-        }
-        else
-        {
 
-        // don't show range comments if the last value showed them.
-        if (item.range && (!this.enumeratedRanges[i - 1] ||
-            !isEqual(item?.range, this.enumeratedRanges[i - 1]?.range))) {
-          rec.showRange = !!item.range
-
-        }
-        // don't show line if range top of last was the same as range bottom of this
-        if (item.val && (!this.enumeratedRanges[i + 1] || item.val === this.enumeratedRanges[i + 1].val )) {
-
-          rec.exclude=true;
-
-        }
-
-        }
-
-        rv.push(rec)
-      }
-
-      }
       if (!this.missingVals.hasMin) {
         rv.push({
           legend: this.findLegendItem('below-recommended').label,
@@ -136,12 +132,12 @@ export default {
           range: null,
           level: this.missingVals.minAmount,
           showRange: false,
-          exclude:false,
+          exclude: false,
           isGt: false,
           isLt: true
         })
       }
-      return rv.filter(x=>!x.exclude)
+      return rv.filter(x => !x.exclude)
 
     },
 
@@ -173,8 +169,8 @@ export default {
       return (rv)
 
     },
-    filteredRanges: function(){
-      return(this.ranges.filter(x=>x.gauge_metric == this.metric.id && x.gauge_id ==this.gauge.id))
+    filteredRanges: function () {
+      return (this.ranges.filter(x => x.gauge_metric == this.metric.id && x.gauge_id == this.gauge.id))
     },
     enumeratedRanges: function () {
       function rangetoclass (range) {
