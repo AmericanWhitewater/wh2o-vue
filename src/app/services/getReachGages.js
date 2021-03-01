@@ -24,6 +24,7 @@ export async function getReachGages(id) {
               gauge_reading
               gauge_metric
               gauge_comment
+              delay_update             
               range_comment
               class
               excluded

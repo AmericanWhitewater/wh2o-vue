@@ -1,5 +1,5 @@
 <template>
-  <div class="border" @click='select'>
+  <div class="border" @click.stop='select'>
     <div :class="[{'selected':selected},getClass(gage.rc) ]" class="gage-grid">
       <div class="gage-name">{{ gage.gauge.name }}</div>
       <div class="gage-comment">{{ gage.gauge.gauge_comment }}</div>
@@ -55,7 +55,11 @@ export default {
   methods: {
     ...gage_functions,
     select () {
-      this.$emit('select', this.gage)
+      if(!this.selected)
+      {
+        this.$emit('select', this.gage)
+
+      }
 
     },
     getClass (rc) {

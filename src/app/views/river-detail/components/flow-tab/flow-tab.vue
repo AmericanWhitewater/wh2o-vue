@@ -19,118 +19,125 @@
               Gage Summary
             </h2>
 
-            <div v-for="gage in gagesWithGage" :key="`${gage.gauge.id}-${gage.gauge_metric}`">
-              <gage-summary
-                  :selected="activeGage && activeMetric && activeGage.gauge && activeGage.gauge.id==gage.gauge.id && activeMetric.id == gage.gauge_metric"
-                  :metrics="metrics" :gage="gage" @select="setActive(gage)">
-                <template #unselected>
-                  <div v-if="gage.gauge_comment"><em>{{ gage.gauge_comment }}</em></div>
-                </template>
+            <div v-for="(delay,index) in delays" :key="`d${delay}`">
+              <h4 v-if="index===0">Primary Reporting</h4>
+              <h4 v-else>Backup if Primary doesn't update for {{ delay / (60 * 60) }} hours </h4>
+              <div v-for="gage in gagesWithGage.filter(x=>x.delay_update==delay)"
+                   :key="`${gage.gauge.id}-${gage.gauge_metric}`">
+                <gage-summary
+                    :selected="activeGage && activeMetric && activeGage.gauge && activeGage.gauge.id==gage.gauge.id "
+                    :metrics="metrics" :gage="gage" @select="setActive(gage)">
+                  <template #unselected>
+                    <div v-if="gage.gauge_comment"><em>{{ gage.gauge_comment }}</em></div>
+                  </template>
 
-                <layout
-                    name="layout-two-thirds"
-                    class="mb-lg"
-                >
-                  <template #main>
-                    <template v-if="loading">
-                      <utility-block
-                          class="mb-lg"
-                          state="loading"
-                          text="loading readings..."
-                      />
-                    </template>
-                    <template v-else-if="readingsWithLast && readingsWithLast.length">
-                      <div
-                          v-if="viewMode === 'chart'"
-                          style="max-width: 100%; "
-                          class="mb-spacing-sm"
-                      >
-                        <div :style="chartSize">
-                          <flow-chart
-                              :gages="[gage]"
-                              :readings="readingsWithLast"
-                              class="mb-md"
-                              :metric="activeMetric"
-                              :metrics="metrics"
-                              :current="lastReading || 0"
+                  <layout
+                      name="layout-two-thirds"
+                      class="mb-lg"
+                  >
+                    <template #main>
+                      <template v-if="loading">
+                        <utility-block
+                            class="mb-lg"
+                            state="loading"
+                            text="loading readings..."
+                        />
+                      </template>
+                      <template v-else-if="readingsWithLast && readingsWithLast.length">
+                        <div
+                            v-if="viewMode === 'chart'"
+                            style="max-width: 100%; "
+                            class="mb-spacing-sm"
+                        >
+                          <div :style="chartSize">
+                            <flow-chart
+                                :gages="[gage]"
+                                :readings="readingsWithLast"
+                                :ranges="ranges"
+                                class="mb-md"
+                                :metric="activeMetric"
+                                :metrics="metrics"
+                                :current="lastReading || 0"
 
-                          />
-                          <flow-stats
-                              :readings="readingsWithLast"
-                              :loading="loading"
-                              :current="lastReading || 0"
-                              :metric="activeMetric"
-                          />
+                            />
+                            <flow-stats
+                                :readings="readingsWithLast"
+                                :loading="loading"
+                                :current="lastReading || 0"
+                                :metric="activeMetric"
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div v-else>
-                        <gage-readings/>
-                      </div>
+                        <div v-else>
+                          <gage-readings/>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <utility-block
+                            class="mb-lg"
+                            state="content"
+                            title="No results"
+                            text="no gage readings for your chosen parameters, please try again"
+                        />
+                      </template>
+
                     </template>
-                    <template v-else>
-                      <utility-block
-                          class="mb-lg"
-                          state="content"
-                          title="No results"
-                          text="no gage readings for your chosen parameters, please try again"
-                      />
+                    <template #sidebar>
+                      <template v-if="gagesLoading">
+                        <cv-skeleton-text headline/>
+                      </template>
+                      <template v-else-if="activeGage">
+                        <h4
+                            class="mb-spacing-sm"
+                            v-text="$titleCase(activeGage.gauge.name)"
+                        />
+                        <div v-if="activeGage.gauge_comment"><em>{{ activeGage.gauge_comment }}</em></div>
+                        <cv-button
+                            class="mb-spacing-sm"
+                            kind="tertiary"
+                            size="small"
+                            @click.exact="go(`/content/gauge/detail-new/${activeGage.gauge.id}`)"
+                            @keydown.enter="go(`/content/gauge/detail-new/${activeGage.gauge.id}`)"
+                        >
+                          Gage Detail
+                        </cv-button>
+                        <div>
+                          <a v-if="editMode"
+                             class="cv-button mb-spacing-md bx--btn bx--btn--tertiary bx--btn--sm"
+                             :href="formatLinkUrl(`/content/StreamTeam/edit-correlations/?reach_id=${$route.params.id}`)"
+                             target="_blank"
+                          >Edit Flows</a>
+                        </div>
+                        <level-legend
+                            :gauge="activeGage.gauge"
+                            :ranges="rangeForGageID(gage.gauge.id)"
+                            :metric="activeMetric"
+                        />
+                        <gage-chart-controls
+                            v-if="activeGage && activeGage.gauge && activeMetric"
+                            :gauge-id="activeGage.gauge.id"
+                            :metric-id="Number(activeMetric.id)"
+                            :metrics="metrics"
+                            :gages="[activeGage]"
+                            @viewModeChange="viewMode = $event"
+                            @gage-change="setActiveGageId"
+                            @metric-change="setActiveMetricId"
+                        />
+                      </template>
+                      <template v-else>
+                        <cv-button
+                            v-if="editMode"
+                            @click.exact="handleOpenGageModal"
+                        >
+                          Add Gage
+                        </cv-button>
+                      </template>
                     </template>
 
-                  </template>
-                  <template #sidebar>
-                    <template v-if="gagesLoading">
-                      <cv-skeleton-text headline/>
-                    </template>
-                    <template v-else-if="activeGage">
-                      <h4
-                          class="mb-spacing-sm"
-                          v-text="$titleCase(activeGage.gauge.name)"
-                      />
-                      <div v-if="activeGage.gauge_comment"><em>{{ activeGage.gauge_comment }}</em></div>
-                      <cv-button
-                          class="mb-spacing-sm"
-                          kind="tertiary"
-                          size="small"
-                          @click.exact="go(`/content/gauge/detail-new/${activeGage.gauge.id}`)"
-                          @keydown.enter="go(`/content/gauge/detail-new/${activeGage.gauge.id}`)"
-                      >
-                        Gage Detail
-                      </cv-button>
-                      <div>
-                        <a v-if="editMode"
-                           class="cv-button mb-spacing-md bx--btn bx--btn--tertiary bx--btn--sm"
-                           :href="formatLinkUrl(`/content/StreamTeam/edit-correlations/?reach_id=${$route.params.id}`)"
-                           target="_blank"
-                        >Edit Flows</a>
-                      </div>
-                      <level-legend
-                          :gauge="activeGage.gauge"
-                          :ranges="rangeForGageID(gage.gauge.id)"
-                          :metric="activeMetric"
-                      />
-                      <gage-chart-controls
-                          v-if="activeGage && activeGage.gauge && activeMetric"
-                          :gauge-id="activeGage.gauge.id"
-                          :metric-id="Number(activeMetric.id)"
-                          :metrics="metrics"
-                          :gages="[activeGage]"
-                          @viewModeChange="viewMode = $event"
-                          @gage-change="setActiveGageId"
-                          @metric-change="setActiveMetricId"
-                      />
-                    </template>
-                    <template v-else>
-                      <cv-button
-                          v-if="editMode"
-                          @click.exact="handleOpenGageModal"
-                      >
-                        Add Gage
-                      </cv-button>
-                    </template>
-                  </template>
+                  </layout>
+                </gage-summary>
+              </div>
 
-                </layout>
-              </gage-summary>
             </div>
 
 
@@ -215,6 +222,7 @@ import cloneDeep from 'lodash/cloneDeep.js'
 import http from '@/app/http'
 import ContentEditor from '@/app/global/components/content-editor/content-editor.vue'
 import { getEmptyMetric, getEmptyReading } from '@/app/global/lib/gages'
+import { uniq } from 'lodash/array'
 
 export default {
   name: 'flow-tab',
@@ -260,22 +268,27 @@ export default {
       //
       if (this.readings?.length
           && this.readings[0].gauge_id == this.activeGage?.gauge?.id
-          && this.readings[0].metric == this.activeMetric?.id) {
+          && this.activeGage?.gauge_metric == this.activeMetric?.id) {
+
         const ag = this.activeGage
         lastReadings.push({
           ...getEmptyReading(),
           gauge_id: ag.gauge.id,
-          metric: this.activeMetric?.id,
+          metric: ag.gauge_metric,
           reading: ag.gauge_reading,
           updated: ag.epoch
         })
       }
-      return ([...(this.readings?.length ? this.readings: []), ...lastReadings])
+      return ([...(this.readings?.length ? this.readings : []), ...lastReadings].filter(x => x.metric == this.activeMetric.id).sort((x, y) => x.updated - y.updated))
 
     },
 
     gagesWithGage () {
-      return this.gages?.filter(x => x.gauge) ?? []
+      return (this.gages?.filter(x => x.gauge) ?? []).sort((a, b) => a.delay_update - b.delay_update)
+    },
+
+    delays () {
+      return (uniq(this.gagesWithGage.map(x => x.delay_update)))
     },
 
     chartSize () {
@@ -295,7 +308,7 @@ export default {
       ) {
         // here we return the most recent "reading" from our new readings set
         // can't directly operate on this.readings because it will mutate the array
-        const lastReading = cloneDeep(this.readings).sort((a, b) => a - b)[0].reading
+        const lastReading = cloneDeep(this.readingsWithLast).sort((a, b) => a - b)[0].reading
         return Number(lastReading)
       }
 

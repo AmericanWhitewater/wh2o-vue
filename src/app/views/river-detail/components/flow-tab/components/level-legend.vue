@@ -32,7 +32,7 @@ takes a range[] (see getEmptyRange for model)
 <script>
 import RangeBox from './range-box'
 import RangeDesc from './range-desc'
-import { formatReadingWithFormat } from '@/app/global/lib/gages'
+import { formatReadingWithFormat, rangeToClass } from '@/app/global/lib/gages'
 import { difference, uniq } from 'lodash/array'
 import { isEqual } from 'lodash'
 
@@ -173,46 +173,20 @@ export default {
       return (this.ranges.filter(x => x.gauge_metric == this.metric.id && x.gauge_id == this.gauge.id))
     },
     enumeratedRanges: function () {
-      function rangetoclass (range) {
-        switch (range[0]) {
-          case 'R':
-            switch (range[1]) {
-              case '0':
-              case '1':
-              case '2':
-                return ('low-runnable')
-              case '3':
-              case '4':
-              case '5':
-                return ('runnable')
-              case '6':
-              case '7':
-              case '8':
-                return ('high-runnable')
-
-            }
-            return 'runnable'
-          case 'H':
-            return 'above-recommended'
-          case 'L':
-            return 'below-recommended'
-
-        }
-      }
 
       const mins = x => ({
         val: x.min,
-        class: rangetoclass(x.range_min),
-        min_class: rangetoclass(x.range_min),
-        max_class: rangetoclass(x.range_max),
+        class: rangeToClass(x.range_min),
+        min_class: rangeToClass(x.range_min),
+        max_class: rangeToClass(x.range_max),
         range: x
       })
 
       const maxs = x => ({
         val: x.max,
-        class: rangetoclass(x.range_max),
-        min_class: rangetoclass(x.range_min),
-        max_class: rangetoclass(x.range_max),
+        class: rangeToClass(x.range_max),
+        min_class: rangeToClass(x.range_min),
+        max_class: rangeToClass(x.range_max),
         range: x
       })
       return [...this.filteredRanges.map(mins), ...this.filteredRanges.map(maxs)].sort((x, y) => y.val - x.val)

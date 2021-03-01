@@ -7,7 +7,7 @@
 import moment from 'moment'
 import { buildChart } from './build-chart'
 import { checkWindow } from '@/app/global/mixins'
-import { formatReadingWithFormat, getEmptyMetric } from '@/app/global/lib/gages'
+import { classToColor, formatReadingWithFormat, getEmptyMetric, rangeToClass } from '@/app/global/lib/gages'
 export default {
   name: 'flow-chart',
   mixins: [checkWindow],
@@ -15,6 +15,11 @@ export default {
     gages: {
       type: Array,
       required: true
+    },
+    ranges: {
+      type: Array,
+      required: false,
+      default: ()=>[]
     },
     title: {
       type: String,
@@ -35,6 +40,7 @@ export default {
       required: true,
       default: ()=>[],
     }
+
   },
   data: () => ({
     currentTimeScale: null
@@ -47,11 +53,15 @@ export default {
       return this.readings.map(reading => moment(reading.updated, 'X').format('MM/DD hh:mm a'))
     },
     activeGage () {
-      return this.gages.find(gage => Number(gage.gauge.id) === this.readings[0].gauge_id)
+      return this.gages.find(gage => Number(gage.gauge.id) === this.readings[0].gauge_id) ?? this.gages[0];
+    },
+    activeMetric () {
+      return this.metrics.find(m => Number(m.id) === this.readings[0].metric) ?? this.metrics[0];
     },
     formattedReadings () {
-      return this.readings.map(reading => formatReadingWithFormat(parseFloat(reading.reading),this.chartMetric.format))
+      return this.readings.map(reading => formatReadingWithFormat(parseFloat(reading.reading),this.chartMetric.format,false))
     },
+
     chartAspectRatio () {
       if (this.windowWidth >= this.$options.breakpoints.md) {
         return 16/9 // 16:9
@@ -206,17 +216,28 @@ export default {
 
       }
 
-      if (this.formattedReadings && this.activeGage) {
-        if (this.activeGage?.rmin && this.activeGage?.rmax) {
-          chartOptions.graphRange = {
-            min: Number(this.activeGage.rmin),
-            max: Number(this.activeGage.rmax),
-            colors: {
-              low: '#ffc3c2',
-              running: '#9bf1bb',
-              high: '#a4ecf2'
-            }
-          }
+      if (this.formattedReadings && this.activeGage && this.activeMetric) {
+          const graphRanges = this.ranges.filter(x=>this.activeGage.gauge.id == x.gauge_id && x.gauge_metric == this.activeMetric.id);
+
+        if(graphRanges.length)
+        {
+          let graphBackgrounds = [
+              ...graphRanges.map(x=>({class:rangeToClass(x.range_min), min:x.min,max:x.min+((x.max-x.min)/2)})),
+              ...graphRanges.map(x=>({class:rangeToClass(x.range_max), min:x.min+((x.max-x.min)/2),max:x.max}))]
+           graphBackgrounds = [
+              ...graphBackgrounds,
+              {
+                min:Number.MIN_SAFE_INTEGER,
+                max:graphBackgrounds.map(x=>x.min).sort((a,b)=>a-b)[0],
+                class:'below-recommended'
+              },
+              {
+                max:Number.MAX_SAFE_INTEGER,
+                min:graphBackgrounds.map(x=>x.max).sort((a,b)=>b-a)[0],
+                class:'above-recommended'
+              }
+            ].map(x=>({...x,color:classToColor(x.class)}));
+          chartOptions.graphRange = graphBackgrounds;
         }
 
         buildChart(ctx, this.chartLabels, this.formattedReadings, chartOptions)
