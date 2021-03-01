@@ -315,14 +315,7 @@ export default {
       return null
     },
     sanitizedDescription () {
-      if (this.refreshedDescription) {
-        return this.$cleanContent(this.refreshedDescription)
-      }
-      if (this.river && this.river.gaugeinfo) {
-        return this.$cleanContent(this.river.gaugeinfo)
-
-      }
-      return ('')
+      return this.$cleanContent(this.refreshedDescription || (this.river?.gaugeinfo ?? ''))
     },
 
     activeGage () {

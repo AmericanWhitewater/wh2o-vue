@@ -1,6 +1,38 @@
 <template>
   <div id="national-map-app">
     <div class="bx--grid">
+      <div
+        id="fullscreen-target"
+        class="bx--row"
+      >
+        <div class="bx--col-sm-16 bx--col-lg-10">
+          <nwi-map
+            :external-loading="loading"
+            :feature-to-center="featureToCenter"
+            :has-controls="false"
+            :source-layers="sourceLayers"
+            center-on-user-location
+            id-for-full-screen="national-map-app"
+            :include-legend="showLegend"
+            map-container-id="nwi-map-index"
+            @centeredFeature="centerFeature"
+            @changeReachesInViewport="changeReachesInViewport"
+            @clickFeature="clickFeature"
+          />
+        </div>
+        <div class="bx--col-sm-16 bx--col-lg-6">
+          <nwi-map-search />
+          <template v-if="loading">
+            <utility-block state="loading" />
+          </template>
+          <template v-else>
+            <nwi-rivers-table
+              :reaches-on-map="reachesInViewport"
+              @centerReach="centerFeature"
+            />
+          </template>
+        </div>
+      </div>
       <div v-if="laravelDeploy" class="bx--row mb-md mt-md">
         <div class="bx--col-sm-12 bx--col-lg-5  mb-spacing-lg">
           <h2 class="mb-spacing-sm">
@@ -38,38 +70,6 @@
             class="bx--btn bx--btn--secondary"
             href="/content/Release/view/?"
           >View Calendar</a>
-        </div>
-      </div>
-      <div
-        id="fullscreen-target"
-        class="bx--row"
-      >
-        <div class="bx--col-sm-16 bx--col-lg-10">
-          <nwi-map
-            :external-loading="loading"
-            :feature-to-center="featureToCenter"
-            :has-controls="false"
-            :source-layers="sourceLayers"
-            center-on-user-location
-            id-for-full-screen="national-map-app"
-            :include-legend="showLegend"
-            map-container-id="nwi-map-index"
-            @centeredFeature="centerFeature"
-            @changeReachesInViewport="changeReachesInViewport"
-            @clickFeature="clickFeature"
-          />
-        </div>
-        <div class="bx--col-sm-16 bx--col-lg-6">
-          <nwi-map-search />
-          <template v-if="loading">
-            <utility-block state="loading" />
-          </template>
-          <template v-else>
-            <nwi-rivers-table
-              :reaches-on-map="reachesInViewport"
-              @centerReach="centerFeature"
-            />
-          </template>
         </div>
       </div>
       <div v-if="laravelDeploy" class="bx--row">
