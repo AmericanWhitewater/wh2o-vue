@@ -21,11 +21,11 @@
 
             <div v-for="(delay,index) in delays" :key="`d${delay}`">
               <h4 v-if="index===0">Primary Reporting</h4>
-              <h4 v-else>Backup if Primary doesn't update for {{ delay / (60 * 60) }} hours </h4>
-              <div v-for="gage in gagesWithGage.filter(x=>x.delay_update==delay)"
+              <h4 v-else>Backup #{{index}}} if Primary doesn't update for {{ parseInt(delay / (60 * 60)).toFixed(1) }} hours </h4>
+              <div v-for="gage in gagesWithGage.filter(x=>parseInt(x.delay_update)===parseInt(delay))"
                    :key="`${gage.gauge.id}-${gage.gauge_metric}`">
                 <gage-summary
-                    :selected="activeGage && activeMetric && activeGage.gauge && activeGage.gauge.id==gage.gauge.id "
+                    :selected="activeGage && activeMetric && activeGage.gauge && parseInt(activeGage.gauge.id)===parseInt(gage.gauge.id) "
                     :metrics="metrics" :gage="gage" @select="setActive(gage)">
                   <template #unselected>
                     <div v-if="gage.gauge_comment"><em>{{ gage.gauge_comment }}</em></div>

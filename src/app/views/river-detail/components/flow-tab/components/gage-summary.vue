@@ -5,15 +5,23 @@
       <div class="gage-comment">{{ gage.gauge.gauge_comment }}</div>
       <div class='gage-reading-header header'>Reading</div>
       <div class="gage-range-header header">Range</div>
-      <div class="gage-class-header header">Adjusted Difficulty</div>
+      <div class="gage-class-header header">Difficulty</div>
       <div :class="`gage-reading background`">{{
           formatReading(gage.gauge_reading, gage.gauge_metric)
-        }} {{ formatMetric(gage.gauge_metric) }} @ {{ formatTime(gage.epoch) }}
+        }} {{ formatMetric(gage.gauge_metric) }} @ {{ formatEpoch(gage.epoch) }}
       </div>
       <div class="gage-range">{{ formatFlowRange(gage.rmin, gage.rmax, gage.gauge_metric) }}</div>
       <div class="gage-class"><span v-if="gage.adjusted_reach_class">Adjusted Class {{
           gage.adjusted_reach_class
         }}</span></div>
+      <span class="gage-meta">
+        <span v-if="!gage.exclude && gage.delay_update">When updated this gage will wait {{ parseFloat(gage.delay_update/(3600)).toFixed(1) }} hours prior to reporting on the summary page. </span>
+        <span v-else-if="gage.exclude">When updated this gage will not report on the river summary page. </span>
+        <span v-else>When updated this gage will immediately report on the summary page. </span>
+        <span v-if="gage.time_adjustment >0">It takes {{ parseFloat(gage.time_adjustment/(3600)).toFixed(1) }} hours for water from this gauge to reach river. </span>
+        <span v-if="gage.time_adjustment <0">Water reported on this gauge is {{ Math.abs(parseFloat(gage.time_adjustment/(3600))).toFixed(1) }} hours ahead of the river. </span>
+      </span>
+
       <div class="range-comment background"><span
           v-if="gage.range_comment">{{ gage.range_comment }}</span>
       </div>
@@ -33,9 +41,11 @@
 
 <script>
 import * as gage_functions from './utils/'
+import { formatDate } from '@/app/global/mixins'
 
 export default {
   name: 'gage-summary',
+  mixins:{formatDate},
   props: {
     gage: {
       type: Object,
@@ -54,6 +64,9 @@ export default {
   data: () => ({}),
   methods: {
     ...gage_functions,
+    formatEpoch: function(d){
+      return this.formatDate(new Date(d*1000),'MM/DD HH:mm')
+    },
     select () {
       if(!this.selected)
       {
@@ -111,6 +124,7 @@ export default {
   }
 
   .gage-name,
+  .gage-meta,
   .gage-comment,
   .range-comment {
     grid-column: 1/4;

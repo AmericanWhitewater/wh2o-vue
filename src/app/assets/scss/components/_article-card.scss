@@ -1,11 +1,11 @@
 .bx--article-card .bx--tile {
   background: $ui-background;
   height: 100%;
+  margin-bottom: $spacing-05;
   padding: 0;
   position: relative;
-  transition: background $duration--fast-01;
   text-decoration: none;
-  margin-bottom: $spacing-05;
+  transition: background $duration--fast-01;
   z-index: 1;
 }
 
@@ -14,33 +14,36 @@
 }
 
 .bx--article-card__tile {
-  z-index: 1;
   padding: $spacing-05 25% $spacing-05 $spacing-05;
+  z-index: 1;
 }
 
 .bx--article-card__title {
+
   @include carbon--type-style("productive-heading-03");
-  text-decoration: none;
   color: $text-01;
+  text-decoration: none;
 }
 
 .bx--article-card__subtitle {
+
   @include carbon--type-style("heading-01");
+  color: $text-01;
   font-weight: 400;
   text-decoration: none;
-  color: $text-01;
 }
 
 .bx--article-card__info {
-  position: absolute;
   bottom: 1rem;
-  left: 1rem;
-  padding: 0;
   color: $text-02;
   display: flex;
+  left: 1rem;
+  padding: 0;
+  position: absolute;
 }
 
 .bx--article-card__info p {
+
   @include carbon--type-style("caption-01");
   margin: 0;
 }
@@ -50,11 +53,11 @@
 }
 
 .bx--article-card__icon--action {
-  position: absolute;
   bottom: 1rem;
+  height: 20px;
+  position: absolute;
   right: 1rem;
   width: 20px;
-  height: 20px;
 }
 
 .bx--article-card__icon--action svg {
@@ -62,6 +65,7 @@
 }
 
 // Dark
+
 .bx--article-card--dark .bx--tile {
   background: $carbon--gray-90; //$ui-background for gray 90 theme
 }
@@ -84,6 +88,7 @@
 }
 
 // Disabled
+
 .bx--article-card--disabled {
   cursor: not-allowed;
 }
@@ -104,6 +109,7 @@
 }
 
 // Disabled dark
+
 .bx--article-card--disabled.bx--article-card--dark .bx--tile:hover {
   background: $carbon--gray-90; //$ui-background for gray 90 theme
 }
@@ -115,12 +121,13 @@
 }
 
 .bx--article-card--disabled.bx--article-card--dark
-  .bx--article-card__icon--action
-  svg {
+.bx--article-card__icon--action
+svg {
   fill: $carbon--gray-70; //$disabled-02 for gray 90
 }
 
 .abstract-content {
+
   p {
     display: inline;
   }

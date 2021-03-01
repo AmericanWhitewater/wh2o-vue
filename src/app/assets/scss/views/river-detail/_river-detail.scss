@@ -1,87 +1,111 @@
 .river-detail {
+
   .reach--photo {
+    cursor: pointer;
     height: 100px;
-    width: 100px;
     object-fit: cover;
     object-position: center;
-    cursor: pointer;
+    width: 100px;
   }
 
   .accent-wrapper {
-    position: relative;
     display: none;
+    position: relative;
 
     @include carbon--breakpoint("lg") {
       display: block;
     }
 
     .accent {
+
       @include carbon--type-style("code-02");
-      width: 100%;
       transform: rotate(90deg);
+      width: 100%;
     }
   }
+
   .bleed {
+
     header {
-      padding: $spacing-lg;
+      align-items: center;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      padding: $spacing-lg;
 
       h1 {
+
         @include carbon--breakpoint("sm") {
+
           @include carbon--type-style("productive-heading-03");
         }
+
         @include carbon--breakpoint("md") {
+
           @include carbon--type-style("productive-heading-04");
         }
       }
+
       h4 {
+
         @include carbon--breakpoint("sm") {
+
           @include carbon--type-style("productive-heading-02");
           margin-bottom: $spacing-xs;
         }
+
         @include carbon--breakpoint("md") {
+
           @include carbon--type-style("productive-heading-03");
         }
       }
     }
   }
+
   .controls-wrapper {
     margin-top: 1rem;
+
     @include layer("raised");
   }
 
   .button-toolbar {
+    align-items: center;
     border-bottom: 3px solid $ui-04;
     display: flex;
-    align-items: center;
     justify-content: space-between;
 
     @include carbon--breakpoint("lg") {
+
       .button-wrapper {
         display: flex;
-        width: 100%;
         justify-content: space-evenly;
+        width: 100%;
+
         .bx--btn {
           flex-grow: 1;
           justify-content: center;
         }
       }
     }
+
     .bx--form-item {
       max-width: 139px;
+
       .bx--dropdown {
         border-bottom: 0;
       }
     }
   }
+
   aside {
+
     .bx--toolbar {
       margin: 0;
     }
+
     ul {
+
       li {
+
         .bx--btn--ghost {
           width: 100%;
 
@@ -89,6 +113,7 @@
             border-color: $brand-01;
             box-shadow: inset 4px 0 0 0 #537653;
           }
+
           &.no-border-top {
             border-top: 0;
           }
@@ -98,6 +123,8 @@
   }
 }
 
-.accidents-tab,.credits-tab, .map-tab {
+.accidents-tab,
+.credits-tab,
+.map-tab {
   padding-top: 2rem;
 }

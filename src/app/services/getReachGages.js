@@ -14,6 +14,7 @@ export async function getReachGages(id) {
             range_comment, 
             gauge_perfect,
             gauge_estimated,
+            adjusted_reach_class,
             gauge_important,
             gauge_metric,
             gauge_id,
@@ -21,6 +22,7 @@ export async function getReachGages(id) {
           gauges {
               rc
               epoch
+              time_adjustment,
               gauge_reading
               gauge_metric
               gauge_comment
