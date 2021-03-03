@@ -1,22 +1,26 @@
 .gallery-tab {
+
   .toolbar-wrapper {
+    align-items: center;
     display: flex;
     justify-content: space-between;
-    align-items:center;
     margin-bottom: $layout-sm;
   }
   padding-top: 2rem;
   // give the photoswipe thumbnails some style
+
   img[itemprop="thumbnail"] {
     height: 200px;
     object-fit: cover;
+
     @include carbon--breakpoint("md") {
+      height: 250px;
       width: 250px;
-      height: 250px;
     }
+
     @include carbon--breakpoint("lg") {
-      width: 350px;
       height: 250px;
+      width: 350px;
     }
   }
 }

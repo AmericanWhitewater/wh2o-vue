@@ -67,7 +67,7 @@
           <td>Flow Range</td>
           <template v-if="!loading">
             <td
-              v-if="gages && gages.length"
+              v-if="reachGage "
               class="flow-range"
             >
               {{ formatFlowRange(reachGage.rmin, reachGage.rmax, reachGage.gauge_metric) }}
@@ -88,13 +88,13 @@
         <tr>
           <td>
             Flow Rate
-            <template v-if="gages && gages.length">
+            <template v-if="reachGage">
               as of {{ formatTime(reachGage.updated * 1000) }}
             </template>
           </td>
           <template v-if="!loading">
             <td
-              v-if="gages && gages.length"
+              v-if="reachGage"
               class="river-flow-rate"
             >
               {{ formatReading(reachGage.gauge_reading, reachGage.gauge_metric) }}
@@ -167,7 +167,7 @@
 import { mapState } from 'vuex'
 import { humanReadable } from '@/app/global/services/human-readable'
 import { BetaBoxEditModal } from './components'
-import { formatReading } from '@/app/global/lib/gages'
+import { formatReadingWithFormat } from '@/app/global/lib/gages'
 
 /**
  * @todo if reach has multiple gages, add dropdown to
@@ -188,7 +188,7 @@ export default {
       loading: state => state.RiverDetail.loading,
       river: state => state.RiverDetail.data,
       editMode: state => state.Global.editMode,
-      gages: state => state.RiverGages.data,
+      gages: state => state.RiverGages.data?.gauges ?? [],
       metrics: state => state.GageMetrics.data
     }),
     releases() {
@@ -250,10 +250,10 @@ export default {
     },
     formatReading(reading, metricID)
     {
-      return formatReading(reading,this.getMetric(metricID)?.format || '');
+      return formatReadingWithFormat(reading,this.getMetric(metricID)?.format || '');
     },
     formatTag (gage) {
-      if (gage.rmin && gage.rmax && gage.gauge_reading) {
+      if (gage && gage.rmin && gage.rmax && gage.gauge_reading) {
         if (gage.gauge_reading < gage.rmin) {
           return ({
             kind: 'red',

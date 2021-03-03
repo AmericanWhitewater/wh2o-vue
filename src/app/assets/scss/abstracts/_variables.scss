@@ -4,6 +4,12 @@ $desktop-nav-height: 75px;
 $flow-high: #68DFE9;
 $flow-low: #FF8785;
 $flow-medium: #59E78D;
+
+//this will make the colors easy to scale across the application.
+$high-runnable: lighten($flow-medium, 15%);
+$med-runnable: $flow-medium;
+$low-runnable: darken($flow-medium, 15%);
+
 // high contrast/accessibility flow colors
 $bw-flow-high:#AEB8B8;
 $bw-flow-low:#DFE9E9;

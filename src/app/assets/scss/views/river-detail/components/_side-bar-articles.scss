@@ -1,11 +1,13 @@
 .sidebar-articles {
+
   .header-row {
+    align-items: center;
     display: flex;
     justify-content: space-between;
-    align-items: center;
   }
 
   .sidebar-title {
+
     &:hover {
       cursor: pointer;
       text-decoration: underline;
@@ -18,7 +20,9 @@
       width: 100%;
     }
   }
+
   .no-articles-msg {
+
     @include carbon--type-style("code-02");
   }
 }

@@ -1,40 +1,46 @@
 .rapid-item {
+
   &.form-visible {
     outline: 3px solid $brand-01;
   }
+
   .bx--tile {
     margin: $spacing-md 0;
+
     .upload-prompt {
-      width: 100%;
       display: block;
-    }
-    .thumbnail {
       width: 100%;
-      min-height: 250px;
-      max-height: 250px;
+    }
+
+    .thumbnail {
       margin-bottom: 1rem;
+      max-height: 250px;
+      min-height: 250px;
+      width: 100%;
 
       .empty-block {
-        height: 250px;
-        width: 100%;
+        align-items: center;
         background-color: $ui-03;
         display: flex;
-        justify-content: center;
-        align-items: center;
         flex-flow: column nowrap;
+        height: 250px;
+        justify-content: center;
+        width: 100%;
       }
 
       img {
-        object-fit: cover;
-        height: 250px;
-        width: 100%;
         background-color: $ui-05;
+        height: 250px;
+        object-fit: cover;
+        width: 100%;
       }
     }
   }
 
   .bx--tile--is-expanded {
+
     .bx--tile-content {
+
       .bx--tile-content__below-the-fold {
         border-top: solid 1px $ui-03;
         margin-top: $spacing-sm;
@@ -50,17 +56,20 @@
 }
 
 .rapid-meta {
+
   @include carbon--type-style("code-01");
 }
 
 .description {
+
   @include carbon--type-style("body-long-02");
 }
 
 .top-bar {
+
   @include carbon--breakpoint("lg") {
+    align-items: center;
     display: flex;
     justify-content: space-between;
-    align-items: center;
   }
 }

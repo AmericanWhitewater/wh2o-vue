@@ -1,16 +1,21 @@
 .sidebar-alerts {
+
   .header-row {
+    align-items: center;
     display: flex;
     justify-content: space-between;
-    align-items: center;
   }
+
   .no-alerts-msg {
+
     @include carbon--type-style("code-02");
   }
 
   // hide the "close" button on alerts in this display and make them full width
+
   .cv-inline-notification {
     max-width: unset;
+
     .bx--inline-notification__close-button {
       display: none;
     }

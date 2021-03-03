@@ -89,6 +89,7 @@ $themes: (
 );
 
 @mixin themed() {
+
   @each $theme, $map in $themes {
     .theme--#{$theme} & {
       $theme-map: () !global;
@@ -109,12 +110,15 @@ $themes: (
 }
 
 @function t($key) {
+
   @return map-get($theme-map, $key);
 }
 
 body,
 :host {
+
   &.dark {
+
     @include themed() {
       background-color: t($ui-01);
     }

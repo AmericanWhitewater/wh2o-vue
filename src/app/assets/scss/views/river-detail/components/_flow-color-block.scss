@@ -1,35 +1,44 @@
 .flow-color-block {
-span {
-  display: inline-block;
-  width:2rem;
-  height:2rem;
-  margin-right: $spacing-xs;
-  &.recommended {
-    background-color: $flow-medium;
-    box-shadow: 0px 0px 2px 1px $flow-medium;
+
+  span {
+    display: inline-block;
+    height: 2rem;
+    margin-right: $spacing-xs;
+    width: 2rem;
+
+    &.recommended {
+      background-color: $flow-medium;
+      box-shadow: 0px 0px 2px 1px $flow-medium;
+    }
+
+    &.low {
+      background-color: $flow-low;
+      box-shadow: 0px 0px 2px 1px $flow-low;
+    }
+
+    &.high {
+      background-color: $flow-high;
+      box-shadow: 0px 0px 2px 1px $flow-high;
+    }
+
+    svg {
+      display: block;
+    }
   }
-  &.low {
-     background-color: $flow-low;
-    box-shadow: 0px 0px 2px 1px $flow-low;
+
+  g,
+  circle {
+
+    &.recommended {
+      fill: $flow-medium;
+    }
+
+    &.low {
+      fill: $flow-low;
+    }
+
+    &.high {
+      fill: $flow-high;
+    }
   }
-  &.high {
-     background-color: $flow-high;
-    box-shadow: 0px 0px 2px 1px $flow-high;
-  }
-  svg {
-    display: block;
-  }
-}
-g,
-circle {
-  &.recommended {
-    fill: $flow-medium;
-  }
-  &.low {
-    fill: $flow-low;
-  }
-  &.high {
-    fill: $flow-high;
-  }
-}
 }
