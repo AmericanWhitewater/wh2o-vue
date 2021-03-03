@@ -1,10 +1,6 @@
 <template>
   <div class="media-upload-form">
-    <h2
-      v-if="title"
-      class="mb-spacing-md"
-      v-text="title"
-    />
+    <h2 v-if="title" class="mb-spacing-md" v-text="title" />
     <template v-if="previewUrls.length">
       <img
         v-for="(item, k) in previewUrls"
@@ -75,9 +71,8 @@
   </div>
 </template>
 <script>
-
-import { updatePost, photoFileUpdate } from '@/app/services'
-import { assetBaseUrl } from '@/app/environment'
+import { updatePost, photoFileUpdate } from "@/app/services";
+import { assetBaseUrl } from "@/app/environment";
 
 function initialState() {
   return {
@@ -88,7 +83,7 @@ function initialState() {
       fileinput: {
         file: null,
         section: null,
-        section_id: null
+        section_id: null,
       },
       photo: {
         author: null,
@@ -98,128 +93,133 @@ function initialState() {
         poi_id: null,
         poi_name: null,
         post_id: null,
-        subject: null
-      }
+        subject: null,
+      },
     },
     postFormData: {
       id: null,
       post: {
         reach_id: null,
-        post_type: 'PHOTO_POST',
-        post_date: null
-      }
+        post_type: "PHOTO_POST",
+        post_date: null,
+      },
     },
-    previewUrls: []
+    previewUrls: [],
   };
 }
 
 export default {
-  name: 'media-upload-form',
+  name: "media-upload-form",
   props: {
     section: {
       type: String,
       required: true,
-      validator: val =>
-        ['RAPID', 'POST', 'GALLERY', 'REACH'].indexOf(val) > -1
+      validator: (val) =>
+        ["RAPID", "POST", "GALLERY", "REACH"].indexOf(val) > -1,
     },
     primaryClickTimestamp: {
       type: Number,
       required: false,
-      default: null
+      default: null,
     },
     title: {
       type: String,
-      required: false
-    }
+      required: false,
+    },
   },
   data: initialState,
   computed: {
-    rapids () {
-      return this.$store.state.RiverRapids.data
+    rapids() {
+      return this.$store.state.RiverRapids.data;
     },
-    user () {
-      return this.$store.state.User.data
+    user() {
+      return this.$store.state.User.data;
     },
-    fieldsDisabled () {
-      return !this.user || this.formPending
+    fieldsDisabled() {
+      return !this.user || this.formPending;
     },
-    parentIsModal () {
-      return !!this.$parent.$refs.modalDialog
+    parentIsModal() {
+      return !!this.$parent.$refs.modalDialog;
     },
     dateInvalidMessage() {
-      if (this.formData.photo.photo_date && !/^\d{4}-\d{2}-\d{2}$/.test(this.formData.photo.photo_date)) {
-        return 'Date must be in format YYYY-MM-DD';
+      if (
+        this.formData.photo.photo_date &&
+        !/^\d{4}-\d{2}-\d{2}$/.test(this.formData.photo.photo_date)
+      ) {
+        return "Date must be in format YYYY-MM-DD";
       } else {
         return null;
       }
-    }
+    },
   },
   watch: {
-    primaryClickTimestamp () {
-      this.submitPost()
-    }
+    primaryClickTimestamp() {
+      this.submitPost();
+    },
   },
   methods: {
-    setFile (input) {
+    setFile(input) {
       if (input && input.length) {
-        this.formData.fileinput.file = input[0].file
-        this.uploadFile()
+        this.formData.fileinput.file = input[0].file;
+        this.uploadFile();
       }
     },
-    async uploadFile () {
-      this.formPending = true
+    async uploadFile() {
+      this.formPending = true;
       try {
-        const result = await photoFileUpdate(this.$apollo, this.formData)
+        const result = await photoFileUpdate(this.$apollo, this.formData);
 
         this.postFormData.id = result.post_id;
         const today = new Date();
         this.postFormData.post.post_date = today.toISOString();
-        this.postFormData.post.reach_id = this.$route.params.id
-        this.previewUrls.push(result.image.uri.medium)
-
+        this.postFormData.post.reach_id = this.$route.params.id;
+        this.previewUrls.push(result.image.uri.medium);
       } catch (error) {
         /* eslint-disable-next-line no-console */
-        console.log('error :>> ', error);
+        console.log("error :>> ", error);
       }
-      this.formPending = false
+      this.formPending = false;
     },
-    async submitPost () {
-      this.formPending = true
+    async submitPost() {
+      this.formPending = true;
       try {
         // upload the details collected from the form, not just reach id etc.
-        await updatePost(this.postFormData, { ...this.formData.photo, id: this.formData.id })
+        await updatePost(this.postFormData, {
+          ...this.formData.photo,
+          id: this.formData.id,
+        });
 
-        this.$emit('form:success')
-        this.$store.dispatch('Global/sendToast', {
-          title: 'Media Uploaded',
-          kind: 'success'
-        })
+        this.$emit("form:success");
+        this.$store.dispatch("Global/sendToast", {
+          title: "Media Uploaded",
+          kind: "success",
+        });
       } catch (error) {
         /* eslint-disable-next-line no-console */
-        console.log('error :>> ', error)
-        this.$emit('form:error')
-        this.$store.dispatch('Global/sendToast', {
-          title: 'Upload Failed',
-          kind: 'error'
-        })
+        console.log("error :>> ", error);
+        this.$emit("form:error");
+        this.$store.dispatch("Global/sendToast", {
+          title: "Upload Failed",
+          kind: "error",
+        });
       } finally {
         Object.assign(this.$data, initialState());
       }
     },
-    setInitialFormData () {
+    setInitialFormData() {
       if (this.user && this.user.uname) {
-        this.formData.photo.author = this.user.uname
+        this.formData.photo.author = this.user.uname;
       }
 
-      this.formData.id = `${this.$randomId()}`
-      this.formData.fileinput.section = this.section
-      this.formData.fileinput.section_id = this.$route.params.id
-    }
+      this.formData.id = `${this.$randomId()}`;
+      this.formData.fileinput.section = this.section;
+      this.formData.fileinput.section_id = this.$route.params.id;
+    },
   },
-  mounted () {
-    this.setInitialFormData()
-  }
-}
+  mounted() {
+    this.setInitialFormData();
+  },
+};
 </script>
 <docs>
 
