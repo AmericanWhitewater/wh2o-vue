@@ -46,6 +46,19 @@
       :invalid-message="dateInvalidMessage"
       :disabled="formPending || !user"
     />
+    <cv-number-input
+      v-model="postFormData.post.reading"
+      label="Flow"
+      class="mb-spacing-md"
+    />
+    <cv-select v-model="postFormData.post.metric_id" label="Gage Metric">
+      <cv-select-option
+        v-for="(g, index) in metricOptions"
+        :key="index"
+        :value="String(g.id)"
+        :label="g.label"
+      />
+    </cv-select>
 
     <cv-dropdown
       v-if="rapids && rapids.length"
@@ -73,6 +86,7 @@
 <script>
 import { updatePost, photoFileUpdate } from "@/app/services";
 import { assetBaseUrl } from "@/app/environment";
+import { mapState } from "vuex";
 
 function initialState() {
   return {
@@ -102,6 +116,8 @@ function initialState() {
         reach_id: null,
         post_type: "PHOTO_POST",
         post_date: null,
+        reading: null,
+        metric_id: 2,
       },
     },
     previewUrls: [],
@@ -129,6 +145,9 @@ export default {
   },
   data: initialState,
   computed: {
+    ...mapState({
+      metrics: (state) => state.GageMetrics.data ?? [],
+    }),
     rapids() {
       return this.$store.state.RiverRapids.data;
     },
@@ -150,6 +169,17 @@ export default {
       } else {
         return null;
       }
+    },
+    // users don't need to see all the possible metrics, just the ones they'll actually use
+    // mimicked gage-chart-controls.vue, should probably refactor the way we treat metrics
+    // across the board at some point
+    metricOptions() {
+      return this.metrics
+        .filter((m) => [2, 8, 15].includes(parseInt(m.id)))
+        .map((m) => ({
+          id: m.id,
+          label: m.name === "Flow" ? "CFS" : m.name,
+        }));
     },
   },
   watch: {
