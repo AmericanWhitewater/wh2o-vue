@@ -42,6 +42,15 @@
       label="Caption"
       :disabled="formPending || !user"
     />
+    <cv-text-input
+      v-model="formData.photo.photo_date"
+      label="Photo Date"
+      class="mb-spacing-md"
+      placeholder="yyyy-mm-dd"
+      :invalid-message="dateInvalidMessage"
+      :disabled="formPending || !user"
+    />
+
     <cv-dropdown
       v-if="rapids && rapids.length"
       v-model="formData.photo.poi_id"
@@ -70,26 +79,8 @@
 import { updatePost, photoFileUpdate } from '@/app/services'
 import { assetBaseUrl } from '@/app/environment'
 
-export default {
-  name: 'media-upload-form',
-  props: {
-    section: {
-      type: String,
-      required: true,
-      validator: val =>
-        ['RAPID', 'POST', 'GALLERY', 'REACH'].indexOf(val) > -1
-    },
-    primaryClickTimestamp: {
-      type: Number,
-      required: false,
-      default: null
-    },
-    title: {
-      type: String,
-      required: false
-    }
-  },
-  data: () => ({
+function initialState() {
+  return {
     assetBaseUrl: assetBaseUrl,
     formPending: false,
     formData: {
@@ -119,7 +110,29 @@ export default {
       }
     },
     previewUrls: []
-  }),
+  };
+}
+
+export default {
+  name: 'media-upload-form',
+  props: {
+    section: {
+      type: String,
+      required: true,
+      validator: val =>
+        ['RAPID', 'POST', 'GALLERY', 'REACH'].indexOf(val) > -1
+    },
+    primaryClickTimestamp: {
+      type: Number,
+      required: false,
+      default: null
+    },
+    title: {
+      type: String,
+      required: false
+    }
+  },
+  data: initialState,
   computed: {
     rapids () {
       return this.$store.state.RiverRapids.data
@@ -132,6 +145,13 @@ export default {
     },
     parentIsModal () {
       return !!this.$parent.$refs.modalDialog
+    },
+    dateInvalidMessage() {
+      if (this.formData.photo.photo_date && !/^\d{4}-\d{2}-\d{2}$/.test(this.formData.photo.photo_date)) {
+        return 'Date must be in format YYYY-MM-DD';
+      } else {
+        return null;
+      }
     }
   },
   watch: {
@@ -151,8 +171,9 @@ export default {
       try {
         const result = await photoFileUpdate(this.$apollo, this.formData)
 
-        this.postFormData.id = result.post_id
-        this.postFormData.post.post_date = result.photo_date
+        this.postFormData.id = result.post_id;
+        const today = new Date();
+        this.postFormData.post.post_date = today.toISOString();
         this.postFormData.post.reach_id = this.$route.params.id
         this.previewUrls.push(result.image.uri.medium)
 
@@ -182,13 +203,10 @@ export default {
           kind: 'error'
         })
       } finally {
-        this.formPending = false
+        Object.assign(this.$data, initialState());
       }
     },
     setInitialFormData () {
-      const today = new Date()
-      this.formData.photo.photo_date = today.toISOString()
-
       if (this.user && this.user.uname) {
         this.formData.photo.author = this.user.uname
       }
