@@ -65,7 +65,7 @@ export default {
   methods: {
     ...gage_functions,
     formatEpoch: function(d){
-      return this.formatDate(new Date(d*1000),'MM/DD HH:mm')
+      return this.formatDate(new Date(d*1000),'M/D H:mm a')
     },
     select () {
       if(!this.selected)
@@ -105,6 +105,10 @@ export default {
   grid-template-columns: 1fr 1fr 1fr;
   padding-bottom: 1em;
   cursor: pointer;
+
+  div{
+    padding: .1em;
+  }
 
 
   &.selected {

@@ -101,7 +101,7 @@
                 <cv-interactive-tooltip v-if="!user">
                   <template #trigger>
                     <cv-button
-                      id="edit-mode-toggle"
+                      id="edit-mode-toggle1"
                       kind="ghost"
                       disabled
                       @click.exact="toggleEditMode"
@@ -114,7 +114,7 @@
                 </cv-interactive-tooltip>
                 <cv-button
                   v-if="user"
-                  id="edit-mode-toggle"
+                  id="edit-mode-toggle2"
                   :kind="editMode ? 'primary' : 'ghost'"
                   @click.exact="toggleEditMode"
                   @keydown.enter="toggleEditMode"
@@ -288,7 +288,6 @@ export default {
       this.$store.dispatch("RiverAlerts/getProperty", this.reachId);
       this.$store.dispatch("RiverGages/getProperty", this.reachId);
       this.$store.dispatch("RiverRapids/getProperty", this.reachId);
-      this.$store.dispatch("GageMetrics/getProperty", this.reachId);
     },
     toggleEditMode() {
       if (this.user) {

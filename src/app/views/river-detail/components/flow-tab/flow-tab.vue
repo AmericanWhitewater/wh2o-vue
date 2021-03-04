@@ -69,7 +69,7 @@
                           </div>
                         </div>
                         <div v-else>
-                          <gage-readings/>
+                          <gage-readings :metrics="metrics"/>
                         </div>
                       </template>
                       <template v-else>
@@ -259,7 +259,7 @@ export default {
       gagesLoading: state => state.RiverGages.loading,
       gagesError: state => state.RiverGages.error,
       editMode: state => state.Global.editMode,
-      metrics: state => state.GageMetrics.data ?? [],
+      metrics: state => state.RiverGages.data?.metrics ?? [],
 
     }),
 
@@ -284,7 +284,17 @@ export default {
     },
 
     gagesWithGage () {
-      return (this.gages?.filter(x => x.gauge) ?? []).sort((a, b) => a.delay_update - b.delay_update)
+      return (this.gages?.filter(x => x.gauge) ?? []).sort((a, b) => {
+        //sort by primary over secondary
+            if (a.delay_update - b.delay_update) {
+              return a.delay_update - b.delay_update
+              // sort by updated last
+            } else {
+              return a.epoch - b.epoch;
+            }
+          }
+        )
+
     },
 
     delays () {
@@ -327,16 +337,27 @@ export default {
       }
       return null
     }
-  },
+  }
+  ,
   watch: {
-    error (val) {
+    error(val)
+    {
       if (val) {
         this.$store.dispatch('Global/sendToast', {
           title: 'Failed to load readings',
           kind: 'error'
         })
       }
+    }
+    ,
+    gagesWithGage(u)
+    {
+      if (u && u.length && !this.activeGage) {
+        this.setActive(u[0])
+      }
     },
+
+
     gagesError (val) {
       if (val) {
         this.$store.dispatch('Global/sendToast', {
