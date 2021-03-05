@@ -149,7 +149,7 @@
                   v-if="activeImage.reading && activeImage.gauge && activeImage.gauge.id && activeImage.gauge.name"
                   :to="`/gage-detail/${activeImage.gauge.id}`"
                 >
-                  {{ activeImage.gauge.name }}
+                  at {{ activeImage.gauge.name }}
                 </cv-link>
               </div>
               <div class="mb-spacing-md">
@@ -307,11 +307,9 @@ export default {
     },
     gaugeReading (image) {
       if (image.reading &&
-          image.gauge &&
-          image.gauge.name &&
           image.metric &&
           image.metric.unit) {
-        return `${image.reading}${image.metric.unit} at`
+        return `${image.reading}${image.metric.unit}`
       } else {
         return 'n/a'
       }
