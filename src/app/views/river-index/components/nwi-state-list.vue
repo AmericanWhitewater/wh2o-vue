@@ -20,7 +20,7 @@
         </thead>
         <tbody>
           <tr
-            v-for="st in states"
+            v-for="st in usStates"
             :key="st.gmi"
           >
             <td><a :href="summaryLink(st.shortkey)">{{ st.name }}</a></td>
@@ -79,6 +79,30 @@
           </tr>
         </tbody>
       </table>
+      <h2 class="mb-spacing-sm">
+        International Regions
+      </h2>
+      <table class="bx--data-table bx--data-table--zebra">
+        <thead>
+          <tr>
+            <th><span class="bx--table-header-label">Region</span></th>
+            <th><span class="bx--table-header-label">No. of Rivers</span></th>
+            <th><span class="bx--table-header-label">No. of Gauges</span></th>
+            <th><span class="bx--table-header-label" /></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="st in intlStates"
+            :key="st.gmi"
+          >
+            <td><a :href="summaryLink(st.shortkey)">{{ st.name }}</a></td>
+            <td><a :href="summaryLink(st.shortkey)">{{ st.num_rivers }}</a></td>
+            <td><a :href="gaugesLink(st.shortkey)">{{ st.num_gauges }}</a></td>
+            <td/>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -94,9 +118,9 @@ export default {
     ...mapState({
       loading: state => state.RiverIndex.loading,
       error: state => state.RiverIndex.error,
-      states: state => state.RiverIndex.stateList
-    })
-
+      usStates: state => state.RiverIndex.usStates,
+      intlStates: state => state.RiverIndex.intlStates
+    }),
   },
   methods: {
     summaryLink (code) {

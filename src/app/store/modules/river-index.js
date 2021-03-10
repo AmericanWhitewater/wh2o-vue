@@ -13,10 +13,17 @@ const initialState = {
   fullscreen: null,
   mapBounds: null,
   mouseoveredFeature: null,
-  stateList: null,
+  usStates: [],
+  intlStates: [],
   mapSearchTerm: null,
   mapSearchLoading: false,
   mapSearchResults: []
+}
+
+function sortStateNames (a, b) {
+  if (a.shortkey.toUpperCase() > b.shortkey.toUpperCase()) { return 1 }
+  if (a.shortkey.toUpperCase() < b.shortkey.toUpperCase()) { return -1 }
+  return 0
 }
 
 export default {
@@ -29,7 +36,7 @@ export default {
     },
     ['STATE_LIST'](state, payload) {
       state.loading = false
-      state.stateList = payload
+      Object.assign(state, { ...payload });
     },
     ['USER_LOCATION'](state, payload) {
       Object.assign(state, { loading: false, userLocation: payload })
@@ -89,14 +96,14 @@ export default {
       const result = await getStateList()
 
       if (result) {
-        context.commit('STATE_LIST', result.data.data.states.data
+        const stateResults = result.data.data.states.data;
+        const usStates = stateResults
           .filter(x => x.gmi.match(/USA-.*/))
-          .sort((a, b) => {
-            if (a.shortkey.toUpperCase() > b.shortkey.toUpperCase()) { return 1 }
-            if (a.shortkey.toUpperCase() < b.shortkey.toUpperCase()) { return -1 }
-            return 0
-          })
-        )
+          .sort(sortStateNames);
+        const intlStates = stateResults
+          .filter(x => !x.gmi.match(/USA-.*/) && x.shortkey && x.num_rivers)
+          .sort(sortStateNames);
+        context.commit('STATE_LIST', { usStates, intlStates });
       }
       return result
     },
