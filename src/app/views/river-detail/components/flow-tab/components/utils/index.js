@@ -9,7 +9,7 @@ export function formatReading(reading, metricID) {
 }
 export function getMetric(metricID) {
   if (metricID && this.metrics?.length) {
-    return this.metrics.find((m) => m.id === metricID.toString());
+    return this.metrics.find((m) => m.id.toString() === metricID.toString());
   }
   return null;
 }

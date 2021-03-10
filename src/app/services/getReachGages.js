@@ -5,6 +5,14 @@ export async function getReachGages(id) {
     .post("/graphql", {
       query: `{
         getGaugeInformationForReachID(id: ${id}) {
+        
+        metrics {
+                        name
+                        unit
+                        format
+                        id
+                        shortkey
+                      }
           ranges{
             range_min,
             range_max,

@@ -146,7 +146,7 @@ export default {
   data: initialState,
   computed: {
     ...mapState({
-      metrics: (state) => state.GageMetrics.data ?? [],
+      metrics: (state) => state.RiverGages.data?.metrics ?? [],
     }),
     rapids() {
       return this.$store.state.RiverRapids.data;

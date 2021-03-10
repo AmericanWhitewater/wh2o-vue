@@ -12,25 +12,22 @@ export function formatReadingWithFormat(
   insertCommas = true
 ) {
   if (!isNaN(parseFloat(reading))) {
+    let fractionDigits = 2;
     if (metric_format) {
       const m = metric_format.match(/%([0-9]+)\.([0-9]+)f/);
-
-      if (m.length) {
-        return insertCommas
-          ? numberWithCommas(parseFloat(reading).toFixed(Number.parseInt(m[2])))
-          : parseFloat(reading).toFixed(Number.parseInt(m[2]));
-      }
+      fractionDigits = parseInt(m[2]);
     }
 
-    return insertCommas
-      ? numberWithCommas(reading.toFixed(2))
-      : reading.toFixed(2);
+    if (insertCommas) {
+      return reading.toLocaleString("en", {
+        minimumFractionDigits: fractionDigits,
+        maximumFractionDigits: fractionDigits,
+      });
+    } else {
+      return reading.toFixed(fractionDigits);
+    }
   }
   return "";
-}
-
-function numberWithCommas(x) {
-  return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 }
 
 export function getEmptyMetric() {
