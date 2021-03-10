@@ -54,6 +54,10 @@ export default {
   components: {
     UtilityBlock
   },
+  props:
+      {
+        metrics:{type:Array, required:true, default:()=>[]}
+      },
   data: () => ({
     columns: ['Reading', 'Updated']
   }),
@@ -61,8 +65,7 @@ export default {
     ...mapState({
       data: state => state.GageReadings.data,
       loading: state => state.GageReadings.loading,
-      error: state => state.GageReadings.error,
-      metrics: state => state.GageMetrics.data
+      error: state => state.GageReadings.error
     }),
     metric () {
       return this.metrics?.find(m => m.id === this.data[0].metric.toString()) ?? getEmptyMetric()

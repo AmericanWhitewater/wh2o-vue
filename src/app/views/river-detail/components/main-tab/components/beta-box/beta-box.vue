@@ -189,7 +189,7 @@ export default {
       river: state => state.RiverDetail.data,
       editMode: state => state.Global.editMode,
       gages: state => state.RiverGages.data?.gauges ?? [],
-      metrics: state => state.GageMetrics.data
+      metrics: state => state.RiverGages.data?.metrics ??[]
     }),
     releases() {
       return this.$store.getters['RiverEvents/releases']
