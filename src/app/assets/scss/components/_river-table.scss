@@ -5,8 +5,8 @@
   z-index: 2;
 
   &.river-index {
-    overflow-x: unset;
     height: calc(100vh - 189px);
+    overflow-x: unset;
   }
 }
 
@@ -23,6 +23,7 @@
     vertical-align: middle;
 
     span {
+
       &:hover {
         cursor: pointer;
         text-decoration: underline;
@@ -43,15 +44,18 @@
   }
 
   &.river-table {
+
     tbody {
+
       tr.active {
         background: #e5e5e5;
 
         td {
-          border-top: 1px solid #e5e5e5;
-          border-bottom: 1px solid #e5e5e5;
           background: #e5e5e5;
+          border-bottom: 1px solid #e5e5e5;
+          border-top: 1px solid #e5e5e5;
         }
+
         td:nth-child(1) {
           border-left-width: 1.5rem;
         }
@@ -59,29 +63,35 @@
 
       tr,
       td {
-        @include ease;
 
-        padding-top: 0.5rem;
+        @include ease;
         padding-bottom: 0.5rem;
 
+        padding-top: 0.5rem;
+
         &:nth-child(1) {
+
           &[class*="low"],
           &.low {
+
             @include flow-border($flow-low);
           }
 
           &[class*="med"],
           &.med {
+
             @include flow-border($flow-medium);
           }
 
           &[class*="hi"],
           &.hi {
+
             @include flow-border($flow-high);
           }
 
           &[class*="unk"],
           &.unk {
+
             @include flow-border($ui-03);
           }
         }
@@ -91,7 +101,9 @@
 }
 
 .nwi-map-search.bx--toolbar {
+
   .cv-search {
+
     .bx--search-close {
       display: flex;
     }

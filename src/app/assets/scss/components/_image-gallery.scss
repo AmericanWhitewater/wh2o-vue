@@ -2,81 +2,94 @@
 
 .image-gallery {
   position: relative;
+
   .image-thumbnail {
-    width: 100%;
     cursor: pointer;
+    width: 100%;
   }
+
   .lightbox-wrapper {
-    height: 100vh;
-    width: 100vw;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 999;
     background-color: #fff;
     display: flex;
-    overflow-y: scroll;
+    height: 100vh;
+    left: 0;
     overflow-x: hidden;
+    overflow-y: scroll;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 999;
 
     @include carbon--breakpoint("sm") {
       flex-flow: column nowrap;
     }
+
     @include carbon--breakpoint("md") {
       flex-flow: row nowrap;
     }
+
     .lightbox-image-wrapper {
-      background-color: rgba(22, 22, 22, 0.98);
-      position: relative;
-      display: flex;
-      justify-content: center;
       align-items: center;
+      background-color: rgba(22, 22, 22, 0.98);
+      display: flex;
       height: 100%;
+      justify-content: center;
       padding: $layout-md;
+      position: relative;
+
       @include carbon--breakpoint("sm") {
         width: 100%;
       }
+
       @include carbon--breakpoint("md") {
         width: 70%;
       }
+
       img {
         max-height: 100%;
       }
 
       .gallery-navigation-buttons {
-        width: 100%;
-        position: absolute;
         bottom: 0;
-        left: 0;
         display: flex;
         justify-content: space-between;
+        left: 0;
+        position: absolute;
+        width: 100%;
 
         .bx--btn {
           display: flex;
           justify-content: center;
-          width: 6rem;
           padding: 0;
+          width: 6rem;
         }
       }
     }
+
     .lightbox-sidebar {
-      height: 100%;
-      padding: $spacing-md;
       display: flex;
       flex-flow: column nowrap;
+      height: 100%;
       justify-content: space-between;
+      padding: $spacing-md;
+
       @include carbon--breakpoint("sm") {
         width: 100%;
       }
+
       @include carbon--breakpoint("md") {
         width: 30%;
       }
+
       header {
+        align-items: center;
         display: flex;
         justify-content: space-between;
         width: 100%;
-        align-items: center;
       }
+
       .active-image-description {
+
         @include carbon--type-style("body-long-02");
       }
     }

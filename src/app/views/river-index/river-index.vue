@@ -33,7 +33,7 @@
           </template>
         </div>
       </div>
-      <div v-if="laravelDeploy" class="bx--row mb-md mt-md">
+      <div class="bx--row mb-md mt-md">
         <div class="bx--col-sm-12 bx--col-lg-5  mb-spacing-lg">
           <h2 class="mb-spacing-sm">
             Stream Team
@@ -72,7 +72,7 @@
           >View Calendar</a>
         </div>
       </div>
-      <div v-if="laravelDeploy" class="bx--row">
+      <div class="bx--row">
         <div class="bx--col">
           <nwi-state-list />
         </div>
@@ -121,8 +121,7 @@ export default {
   computed: {
     ...mapState({
       reachesInViewport: state => state.RiverIndex.data,
-      error: state => state.RiverIndex.error,
-      laravelDeploy: state => state.Global.laravelDeploy
+      error: state => state.RiverIndex.error
     })
   },
   methods: {

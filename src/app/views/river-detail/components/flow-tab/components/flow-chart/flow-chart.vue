@@ -7,6 +7,7 @@
 import moment from 'moment'
 import { buildChart } from './build-chart'
 import { checkWindow } from '@/app/global/mixins'
+import { classToColor, formatReadingWithFormat, getEmptyMetric, rangeToClass } from '@/app/global/lib/gages'
 export default {
   name: 'flow-chart',
   mixins: [checkWindow],
@@ -14,6 +15,11 @@ export default {
     gages: {
       type: Array,
       required: true
+    },
+    ranges: {
+      type: Array,
+      required: false,
+      default: ()=>[]
     },
     title: {
       type: String,
@@ -28,29 +34,39 @@ export default {
     readings: {
       type: Array,
       required: true
+    },
+    metrics:{
+      type: Array,
+      required: true,
+      default: ()=>[],
     }
+
   },
   data: () => ({
     currentTimeScale: null
   }),
   computed: {
-    metrics () {
-      return this.$store.state.GageMetrics.data
+    chartMetric(){
+      return this.metrics.find(m => m.id === this.readings[0].metric.toString()) ?? getEmptyMetric()
     },
     chartLabels () {
       return this.readings.map(reading => moment(reading.updated, 'X').format('MM/DD hh:mm a'))
     },
     activeGage () {
-      return this.gages.find(gage => Number(gage.gauge.id) === this.readings[0].gauge_id)
+      return this.gages.find(gage => Number(gage.gauge.id) === this.readings[0].gauge_id) ?? this.gages[0];
+    },
+    activeMetric () {
+      return this.metrics.find(m => Number(m.id) === this.readings[0].metric) ?? this.metrics[0];
     },
     formattedReadings () {
-      return this.readings.map(reading => Number(reading.reading).toFixed(2))
+      return this.readings.map(reading => formatReadingWithFormat(parseFloat(reading.reading),this.chartMetric.format,false))
     },
+
     chartAspectRatio () {
       if (this.windowWidth >= this.$options.breakpoints.md) {
-        return 1.777777777777778 // 16:9
+        return 16/9 // 16:9
       } else {
-        return 1.333333333333333 // 4:3
+        return 4/3 // 4:3
       }
     }
   },
@@ -58,9 +74,7 @@ export default {
     getYMax () {
       return Math.max(...this.formattedReadings) * 1.25
     },
-    getChartMetric () {
-      return this.metrics.find(m => m.id === this.readings[0].metric.toString()).unit
-    },
+
     getTimeScale (timeScale) {
       let start
       switch (timeScale) {
@@ -85,18 +99,9 @@ export default {
         timeEnd: Math.floor(moment().unix())
       }
     },
-    metricName(metric) {
-      // not ideal, but it works
-        if (metric === 'cfs') {
-          return 'Discharge CFS'
-        }
-        if (metric === 'ft') {
-          return 'Feet Stage'
-        }
-       return metric
-    },
     renderChart () {
       const ctx = this.$refs.chartCanvas.getContext('2d')
+      const otherthis = this; //refactor later
 
       const chartOptions = {
         legend: {
@@ -140,7 +145,14 @@ export default {
           titleFontStyle: 600,
           titleMarginBottom: 4,
           xPadding: 16,
-          yPadding: 16
+          yPadding: 16,
+          callbacks: {
+                label: function(tooltipItem, data) {
+                    let label = data.datasets[tooltipItem.datasetIndex].label || '';
+                    return( `${label} ${ formatReadingWithFormat(parseFloat(tooltipItem.value),otherthis.chartMetric.format)} ${otherthis.chartMetric.unit}`);
+                }
+            }
+
         },
         scales: {
           xAxes: [{
@@ -180,7 +192,7 @@ export default {
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: this.metricName(this.getChartMetric()),
+              labelString: this.chartMetric.name,
               bounds: 'data',
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
               fontSize: 14
@@ -194,6 +206,7 @@ export default {
               suggestedMax: this.getYMax(),
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
               fontSize: 14,
+              callback: (value)=>formatReadingWithFormat(parseFloat(value),otherthis.chartMetric.format)
             },
             beforeBuildTicks: () => {
               chartOptions.scales.yAxes[0].ticks.min = 100
@@ -203,17 +216,28 @@ export default {
 
       }
 
-      if (this.formattedReadings && this.activeGage) {
-        if (this.activeGage?.rmin && this.activeGage?.rmax) {
-          chartOptions.graphRange = {
-            min: Number(this.activeGage.rmin),
-            max: Number(this.activeGage.rmax),
-            colors: {
-              low: '#ffc3c2',
-              running: '#9bf1bb',
-              high: '#a4ecf2'
-            }
-          }
+      if (this.formattedReadings && this.activeGage && this.activeMetric) {
+          const graphRanges = this.ranges.filter(x=>this.activeGage.gauge.id == x.gauge_id && x.gauge_metric == this.activeMetric.id);
+
+        if(graphRanges.length)
+        {
+          let graphBackgrounds = [
+              ...graphRanges.map(x=>({class:rangeToClass(x.range_min), min:x.min,max:x.min+((x.max-x.min)/2)})),
+              ...graphRanges.map(x=>({class:rangeToClass(x.range_max), min:x.min+((x.max-x.min)/2),max:x.max}))]
+           graphBackgrounds = [
+              ...graphBackgrounds,
+              {
+                min:Number.MIN_SAFE_INTEGER,
+                max:graphBackgrounds.map(x=>x.min).sort((a,b)=>a-b)[0],
+                class:'below-recommended'
+              },
+              {
+                max:Number.MAX_SAFE_INTEGER,
+                min:graphBackgrounds.map(x=>x.max).sort((a,b)=>b-a)[0],
+                class:'above-recommended'
+              }
+            ].map(x=>({...x,color:classToColor(x.class)}));
+          chartOptions.graphRange = graphBackgrounds;
         }
 
         buildChart(ctx, this.chartLabels, this.formattedReadings, chartOptions)
@@ -221,8 +245,7 @@ export default {
     }
   },
   mounted () {
-    this.getChartMetric()
-    this.renderChart(this.readings)
+    this.renderChart()
   }
 }
 </script>

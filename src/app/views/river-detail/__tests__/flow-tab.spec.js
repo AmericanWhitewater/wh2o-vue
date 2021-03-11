@@ -38,6 +38,7 @@ const mockStore = {
 
 const options = {
   mocks: {
+    $titleCase: jest.fn(),
     $store: mockStore,
     $route: {
       params: {
@@ -45,6 +46,7 @@ const options = {
       },
     },
   },
+
   stubs: ["FlowChart", "FlowStats"],
   methods: {
     setActiveGageId: jest.fn(),
@@ -68,7 +70,7 @@ describe("FlowTab", () => {
     expect(mockStore.dispatch).toHaveBeenCalledTimes(1);
   });
 
-  it("it shows loading gages block and skeleton text when loading gages", () => {
+  it("it shows loading gages block and gauge description text when loading gages", () => {
     mockStore.state.RiverGages.loading = true;
 
     const wrapper = createWrapper(FlowTab, options);
@@ -76,7 +78,7 @@ describe("FlowTab", () => {
     expect(wrapper.find(".bx--inline-loading__text").text()).toBe(
       "loading gages..."
     );
-    expect(wrapper.findAll(".bx--skeleton__text").length).toBe(1);
+    expect(wrapper.findAll(".gage-description").length).toBe(1);
   });
 
   it("it shows no gages block when reach has no linked gages", () => {
@@ -92,43 +94,82 @@ describe("FlowTab", () => {
     );
   });
 
-  it("it shows loading readings block when loading readings", () => {
+  it("it shows gage description", () => {
     mockStore.state.RiverGages.loading = false;
-    mockStore.state.RiverGages.data = [
-      {
-        gauge_reading: 1560,
-        gauge_metric: 2,
-        gauge_comment: null,
-        range_comment:
-          "Optimal flow range (Flows based on 2012 WFET Basin Report). ",
-        class: "med",
-        excluded: false,
-        rmin: 700,
-        rmax: 2500,
-        gauge: { name: "COLORADO RIVER NEAR KREMMLING, CO", id: "4139" },
-        updated: 44181.147891,
-        last_gauge_reading: 1580,
-        last_gauge_updated: 39552,
-        gauge_perfect: true,
-        adjusted_reach_class: null,
-      },
-    ];
+    mockStore.state.RiverGages.data = {
+      ranges: [
+        {
+          range_min: "R0",
+          range_max: "R9",
+          min: 2.3,
+          max: 3.3,
+          time_adjustment: null,
+          range_comment: null,
+          gauge_perfect: false,
+          gauge_estimated: false,
+          adjusted_reach_class: null,
+          gauge_important: false,
+          gauge_metric: 8,
+          gauge_id: 7470,
+        },
+      ],
+      gauges: [
+        {
+          rc: 0.4500000000000002,
+          epoch: 1614274175.60862,
+          time_adjustment: null,
+          gauge_reading: 2.75,
+          gauge_metric: 8,
+          gauge_comment: null,
+          delay_update: 0,
+          range_comment: null,
+          class: "med",
+          excluded: false,
+          rmin: 2.3,
+          rmax: 3.3,
+          gauge: {
+            name: "PINEY CREEK AT RALEIGH, WV",
+            id: "7470",
+            source: "usgs",
+            source_id: "03185000",
+            updates: [
+              { metric: { id: "8", name: "Feet Stage" } },
+              { metric: { id: "2", name: "Flow" } },
+            ],
+          },
+          updated: 355655.39138,
+          last_gauge_reading: 2.75,
+          last_gauge_updated: 896,
+          gauge_perfect: false,
+          adjusted_reach_class: null,
+        },
+      ],
+    };
     mockStore.state.GageReadings.loading = true;
 
     const wrapper = createWrapper(FlowTab, options);
 
-    expect(wrapper.find(".bx--inline-loading__text").text()).toBe(
-      "loading readings..."
-    );
+    expect(wrapper.find(".gage-description").text()).toBe("This is ta test");
   });
 
-  it("shows no results block when no gage readings available", () => {
+  it("shows no results block when no gage readings available", async () => {
     mockStore.state.GageReadings.loading = false;
     mockStore.state.GageReadings.data = [];
+    options.data = () => ({
+      activeGageId: "7470",
+      activeMetricId: 8,
+      selectedTimespan: "h:mm a",
+      viewMode: "chart",
+
+      refreshedDescription: "",
+      updatedDescription: "",
+    });
 
     const wrapper = createWrapper(FlowTab, options);
-
-    expect(wrapper.find("#utility-block .utility-block-text").text()).toBe(
+    wrapper.vm.setActiveGageId("7470");
+    wrapper.vm.setActiveMetricId(8);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.find(".utility-block-text").text()).toBe(
       "no gage readings for your chosen parameters, please try again"
     );
   });
@@ -355,23 +396,77 @@ describe("FlowTab", () => {
 
     const wrapper = createWrapper(FlowTab, options);
 
-    expect(wrapper.find("flowchart-stub").exists()).toBe(true);
+    expect(wrapper.find(".gage-grid").exists()).toBe(true);
   });
 
   it("sets active gage", async () => {
+    mockStore.state.GageReadings.loading = false;
+    mockStore.state.GageReadings.data = [];
+    options.data = () => ({
+      activeGageId: "7470",
+      activeMetricId: 8,
+      selectedTimespan: "h:mm a",
+      viewMode: "chart",
+
+      refreshedDescription: "",
+      updatedDescription: "",
+    });
+    mockStore.state.RiverGages.data = {
+      ranges: [
+        {
+          range_min: "R0",
+          range_max: "R9",
+          min: 2.3,
+          max: 3.3,
+          time_adjustment: null,
+          range_comment: null,
+          gauge_perfect: false,
+          gauge_estimated: false,
+          adjusted_reach_class: null,
+          gauge_important: false,
+          gauge_metric: 8,
+          gauge_id: 7470,
+        },
+      ],
+      gauges: [
+        {
+          rc: 0.4500000000000002,
+          epoch: 1614274175.60862,
+          time_adjustment: null,
+          gauge_reading: 2.75,
+          gauge_metric: 8,
+          gauge_comment: null,
+          delay_update: 0,
+          range_comment: null,
+          class: "med",
+          excluded: false,
+          rmin: 2.3,
+          rmax: 3.3,
+          gauge: {
+            name: "PINEY CREEK AT RALEIGH, WV",
+            id: "7470",
+            source: "usgs",
+            source_id: "03185000",
+            updates: [
+              { metric: { id: "8", name: "Feet Stage" } },
+              { metric: { id: "2", name: "Flow" } },
+            ],
+          },
+          updated: 355655.39138,
+          last_gauge_reading: 2.75,
+          last_gauge_updated: 896,
+          gauge_perfect: false,
+          adjusted_reach_class: null,
+        },
+      ],
+    };
     const wrapper = createWrapper(FlowTab, options);
     const controls = wrapper.findComponent(GageChartControls);
-
     controls.vm.$emit("gage-change", "4139");
 
     await wrapper.vm.$nextTick();
 
-    /**
-     *
-     * Why is this firing twice???
-     */
-
     expect(options.methods.setActiveGageId).toHaveBeenNthCalledWith(1, "4139");
-    expect(options.methods.setActiveGageId).toHaveBeenNthCalledWith(2, "4139");
+    //expect(options.methods.setActiveGageId).toHaveBeenNthCalledWith(2, "4139");
   });
 });

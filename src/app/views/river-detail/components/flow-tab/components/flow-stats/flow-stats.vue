@@ -4,12 +4,12 @@
       <h6 class="mb-spacing-2xs">
         Current
       </h6>
-      <h3 v-if="!loading && current">
-        {{ current.toFixed(metricFormatVal) || "n/a" }}
+      <h3 v-if="!loading && stats">
+        {{ stats.current || 'n/a' }}
       </h3>
       <cv-skeleton-text
-        v-if="loading"
-        headline
+          v-if="loading"
+          headline
       />
     </div>
     <div class="bx--col">
@@ -17,11 +17,11 @@
         Average
       </h6>
       <h3 v-if="!loading && stats">
-        {{ stats.avg || "n/a" }}
+        {{ stats.avg || 'n/a' }}
       </h3>
       <cv-skeleton-text
-        v-if="loading"
-        headline
+          v-if="loading"
+          headline
       />
     </div>
     <div class="bx--col">
@@ -29,11 +29,11 @@
         High
       </h6>
       <h3 v-if="!loading && stats">
-        {{ stats.max || "n/a" }}
+        {{ stats.max || 'n/a' }}
       </h3>
       <cv-skeleton-text
-        v-if="loading"
-        headline
+          v-if="loading"
+          headline
       />
     </div>
     <div class="bx--col">
@@ -41,16 +41,18 @@
         Low
       </h6>
       <h3 v-if="!loading && stats">
-        {{ stats.min || "n/a" }}
+        {{ stats.min || 'n/a' }}
       </h3>
       <cv-skeleton-text
-        v-if="loading"
-        headline
+          v-if="loading"
+          headline
       />
     </div>
   </div>
 </template>
 <script>
+import { formatReadingWithFormat, getEmptyMetric } from '@/app/global/lib/gages'
+
 export default {
   name: 'flow-stats',
   props: {
@@ -63,37 +65,41 @@ export default {
       required: true,
       default: () => []
     },
-    current: {
-      type: Number,
+
+    metric: {
+      type: Object,
       required: false,
-      default: 0
-    },
-    metricFormat: {
-      type: String,
-      required: false,
-      default: ''
+      default: () => getEmptyMetric()
     }
   },
   computed: {
-    metricFormatVal() {
-      // left in computed because it might change to something actually computed
-      // refactor later if not.
-      return 2;
+    unit () {
+      return this.metric.unit
     },
+
     stats () {
       if (this.readings.length) {
-        let readingsSum = 0
-        const data = this.readings.map(r => r.reading )
-        data.forEach((reading) => {
-          readingsSum = readingsSum + Number(reading)
-        })
+
+        const data = this.readings.map(r => r.reading)
+        const readingsSum = data.reduce((a, reading) =>
+            Number(a) + Number(reading), 0
+        )
+
+
+
         return {
-          min: Math.min(...data).toFixed(this.metricFormatVal),
-          max: Math.max(...data).toFixed(this.metricFormatVal),
-          avg: (readingsSum / data.length).toFixed(this.metricFormatVal)
+          current: this.format(this.readings[this.readings.length-1].reading),
+          min: this.format(Math.min(...data)),
+          max: this.format(Math.max(...data)),
+          avg: this.format((readingsSum / data.length))
         }
       }
       return null
+    }
+  },
+  methods: {
+    format (reading) {
+      return `${formatReadingWithFormat(reading, this.metric.format)} ${this.unit}`
     }
   }
 }
