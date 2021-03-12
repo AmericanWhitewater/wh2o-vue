@@ -107,7 +107,8 @@ export default {
   cursor: pointer;
 
   div{
-    padding: .1em;
+    padding-top: .3em;
+    padding-bottom: .3em;
   }
 
 
@@ -119,7 +120,7 @@ export default {
 
 
   .gage-name {
-    font-size: larger;
+    font-size: x-large;
   }
 
   .gage-name,
@@ -141,7 +142,7 @@ export default {
   }
 
   &.too-hi, .too-hi {
-    border-left: $high-runnable 1em solid;
+    border-left: $flow-high 1em solid;
 
   }
 
@@ -156,6 +157,7 @@ export default {
 
   &.hi, .hi {
     border-left: $high-runnable 1em solid;
+
   }
 
 }

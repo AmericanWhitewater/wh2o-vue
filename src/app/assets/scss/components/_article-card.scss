@@ -141,13 +141,13 @@ svg {
 
 .read-more {
   background: $ui-02;
+  background: $ui-02;
   bottom: 6px;
+  bottom: 0;
   color: $ui-02;
   font-weight: 200;
-  right: 0;
-  bottom: 0;
   padding: 6px;
   padding-right: 16px;
-  background: $ui-02;
   position: absolute;
+  right: 0;
 }
