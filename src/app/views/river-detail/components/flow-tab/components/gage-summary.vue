@@ -100,7 +100,8 @@ export default {
 
 
 .gage-grid {
-
+  padding-left: .75em;
+  padding-right: .75em;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   padding-bottom: 1em;
