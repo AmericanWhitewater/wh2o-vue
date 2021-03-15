@@ -210,16 +210,17 @@ export default {
           });
           this.$router.push(`/river-detail/${result.data.reachUpdate.id}`);
         } else {
+
           this.$store.dispatch("Global/sendToast", {
             kind: "error",
             title: "Error",
-            subtitle: "Failed to Create New Reach.",
+            subtitle: "Failed to Create New Reach: "+(Object.getOwnPropertyNames(result.errors).map(x=>result.errors[x]?.message ?? '').join(','))
           });
         }
       } catch (error) {
         this.$store.dispatch("Global/sendToast", {
           kind: "error",
-          title: "Error",
+          title: "Error: "+(Object.getOwnPropertyNames(error).map(x=>error[x]?.message ?? '').join(',')),
           text: "Something went wrong.",
         });
       } finally {
