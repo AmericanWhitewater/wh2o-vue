@@ -11,7 +11,8 @@ export function formatReadingWithFormat(
   metric_format,
   insertCommas = true
 ) {
-  if (!isNaN(parseFloat(reading))) {
+  const floatReading = parseFloat(reading);
+  if (!isNaN(floatReading)) {
     let fractionDigits = 2;
     if (metric_format) {
       const m = metric_format.match(/%([0-9]+)\.([0-9]+)f/);
@@ -19,12 +20,12 @@ export function formatReadingWithFormat(
     }
 
     if (insertCommas) {
-      return reading.toLocaleString("en", {
+      return floatReading.toLocaleString("en", {
         minimumFractionDigits: fractionDigits,
         maximumFractionDigits: fractionDigits,
       });
     } else {
-      return reading.toFixed(fractionDigits);
+      return floatReading.toFixed(fractionDigits);
     }
   }
   return "";
