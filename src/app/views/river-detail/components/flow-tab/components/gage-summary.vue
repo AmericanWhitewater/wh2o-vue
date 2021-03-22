@@ -100,14 +100,16 @@ export default {
 
 
 .gage-grid {
-
+  padding-left: .75em;
+  padding-right: .75em;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   padding-bottom: 1em;
   cursor: pointer;
 
   div{
-    padding: .1em;
+    padding-top: .3em;
+    padding-bottom: .3em;
   }
 
 
@@ -119,7 +121,7 @@ export default {
 
 
   .gage-name {
-    font-size: larger;
+    font-size: x-large;
   }
 
   .gage-name,
@@ -141,7 +143,7 @@ export default {
   }
 
   &.too-hi, .too-hi {
-    border-left: $high-runnable 1em solid;
+    border-left: $flow-high 1em solid;
 
   }
 
@@ -156,6 +158,7 @@ export default {
 
   &.hi, .hi {
     border-left: $high-runnable 1em solid;
+
   }
 
 }
