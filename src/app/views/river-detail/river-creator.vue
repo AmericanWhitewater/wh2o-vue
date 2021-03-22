@@ -214,13 +214,14 @@ export default {
           this.$store.dispatch("Global/sendToast", {
             kind: "error",
             title: "Error",
-            subtitle: "Failed to Create New Reach: "+(Object.getOwnPropertyNames(result.errors).map(x=>result.errors[x]?.message ?? '').join(','))
+            subtitle: "Failed to Create New Reach: "+(Object.keys(result.errors).map(x=>result.errors[x]?.message ?? '').join(','))
           });
         }
       } catch (error) {
+
         this.$store.dispatch("Global/sendToast", {
           kind: "error",
-          title: "Error: "+(Object.getOwnPropertyNames(error).map(x=>error[x]?.message ?? '').join(',')),
+          title: "Error: "+(error?.message ? error.message:(Object.keys(error).map(x=>error[x]?.message ?? '').join(','))),
           text: "Something went wrong.",
         });
       } finally {
