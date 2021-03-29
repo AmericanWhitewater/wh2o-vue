@@ -10,7 +10,8 @@ export async function updateReach(data) {
                   class,
                   length,
                   avggradient,
-                  maxgradient
+                  maxgradient,
+                  status
                 }
               }
             `,

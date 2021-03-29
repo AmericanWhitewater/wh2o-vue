@@ -8,9 +8,7 @@
       @secondary-click="handleCancel"
       @modal-hidden="handleCancel"
     >
-      <template slot="title">
-        Edit Reach Name
-      </template>
+      <template slot="title"> Edit Reach Name </template>
       <template slot="content">
         <cv-text-input
           v-model="formData.river"
@@ -22,46 +20,59 @@
           label="Section"
           class="mb-spacing-md"
         />
+        <cv-select
+          v-model="formData.status"
+          label="Status"
+          class="mb-spacing-md"
+          helper-text="'Published' reaches will appear within 5 minutes of saving. 'Drafts' need to be updated to 'Published' in order to appear."
+        >
+          <cv-select-option
+            v-for="(label, val) in reachPublishedStates"
+            :key="val"
+            :value="val"
+          >
+            {{ label }}
+          </cv-select-option>
+        </cv-select>
       </template>
-      <template slot="secondary-button">
-        Cancel
-      </template>
-      <template slot="primary-button">
-        Submit
-      </template>
+      <template slot="secondary-button"> Cancel </template>
+      <template slot="primary-button"> Submit </template>
     </cv-modal>
   </div>
 </template>
 <script>
-import { shadowDomFixedHeightOffset } from '@/app/global/mixins'
-import { mapState } from 'vuex'
+import {
+  shadowDomFixedHeightOffset,
+  reachPublishedStates,
+} from "@/app/global/mixins";
+import { mapState } from "vuex";
 export default {
-  name: 'reach-title-edit-modal',
-  mixins: [shadowDomFixedHeightOffset],
+  name: "reach-title-edit-modal",
+  mixins: [shadowDomFixedHeightOffset, reachPublishedStates],
   props: {
     visible: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   data: () => ({
-    formData: {}
+    formData: {},
   }),
   computed: {
     ...mapState({
-      reach: state => state.RiverDetail.data
-    })
+      reach: (state) => state.RiverDetail.data,
+    }),
   },
   methods: {
-    handleCancel () {
-      this.$emit('edit:cancelled')
+    handleCancel() {
+      this.$emit("edit:cancelled");
     },
-    submitForm () {
-      this.$parent.editReachTitleModalVisible = false
+    submitForm() {
+      this.$parent.editReachTitleModalVisible = false;
       // these modals are super problematic. If we don't use nextTick here,
       // the class isn't removed from `body` and you can't scroll
       this.$nextTick(() => {
-        this.$store.dispatch('RiverDetail/updateProperty', {
+        this.$store.dispatch("RiverDetail/updateProperty", {
           id: this.$route.params.id,
           reach: {
             river: this.formData.river,
@@ -69,16 +80,17 @@ export default {
             class: this.formData.class,
             length: this.formData.length,
             avggradient: this.formData.avggradient,
-            maxgradient: this.formData.maxgradient
-          }
-        })
-      })
+            maxgradient: this.formData.maxgradient,
+            status: this.formData.status,
+          },
+        });
+      });
+    },
+  },
+  mounted() {
+    if (this.reach) {
+      this.formData = { ...this.reach };
     }
   },
-  mounted () {
-    if (this.reach) {
-      this.formData = {...this.reach}
-    }
-  }
-}
+};
 </script>
