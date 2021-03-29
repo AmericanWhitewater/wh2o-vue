@@ -17,6 +17,7 @@ export async function getReach(id) {
                   plat
                   plon
                   geom
+                  status
                   readingsummary {
                       adjusted_reach_class
                       gauge_estimated

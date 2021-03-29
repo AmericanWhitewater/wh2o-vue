@@ -1,6 +1,7 @@
 <template>
   <div class="media-upload-form">
     <h2 v-if="title" class="mb-spacing-md" v-text="title" />
+    <template v-if="!formPending">
     <template v-if="previewUrls.length">
       <img
         v-for="(item, k) in previewUrls"
@@ -19,6 +20,12 @@
       :disabled="formPending || !user"
       @change="setFile"
     />
+
+    </template>
+    <template v-else>
+    <cv-loading :active="formPending"/>
+
+    </template>
     <cv-text-input
       v-model="formData.photo.author"
       class="mb-spacing-md"
@@ -87,6 +94,7 @@
 import { updatePost, photoFileUpdate } from "@/app/services";
 import { assetBaseUrl } from "@/app/environment";
 import { mapState } from "vuex";
+import { CvLoading } from '@carbon/vue/src/components/cv-loading'
 
 function initialState() {
   return {
@@ -126,6 +134,9 @@ function initialState() {
 
 export default {
   name: "media-upload-form",
+  components:{
+    CvLoading
+  },
   props: {
     section: {
       type: String,
@@ -207,6 +218,10 @@ export default {
       } catch (error) {
         /* eslint-disable-next-line no-console */
         console.log("error :>> ", error);
+        this.$store.dispatch("Global/sendToast", {
+          title: "Upload Failed -"+(error?.message || Object.keys(error).map(x=>error[x]).join(',')),
+          kind: "error",
+        });
       }
       this.formPending = false;
     },
@@ -229,7 +244,7 @@ export default {
         console.log("error :>> ", error);
         this.$emit("form:error");
         this.$store.dispatch("Global/sendToast", {
-          title: "Upload Failed",
+          title: "Upload Failed -"+(error?.message || Object.keys(error).map(x=>error[x]).join(',')),
           kind: "error",
         });
       } finally {

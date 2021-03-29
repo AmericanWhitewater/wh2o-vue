@@ -100,6 +100,20 @@
               <cv-text-input v-model="reach.maxgradient" label="Max Gradient" />
               <div class="mb-spacing-lg" />
             </template>
+            <cv-select
+              v-model="reach.status"
+              label="Status"
+              class="mb-spacing-md"
+              helper-text="'Published' reaches will appear within 5 minutes of saving. 'Drafts' need to be updated to 'Published' in order to appear."
+            >
+              <cv-select-option
+                v-for="(label, val) in reachPublishedStates"
+                :key="val"
+                :value="val"
+              >
+                {{ label }}
+              </cv-select-option>
+            </cv-select>
             <cv-button-set>
               <cv-button
                 :disabled="createLoading"
@@ -124,7 +138,7 @@
 </template>
 <script>
 import { createReach } from "@/app/services";
-import { reachClasses } from "@/app/global/mixins";
+import { reachClasses, reachPublishedStates } from "@/app/global/mixins";
 import turfLength from "@turf/length";
 import GeometryEditor from "@/app/views/river-detail/components/geometry-edit-modal/components/geometry-editor.vue";
 import ContentEditor from "@/app/global/components/content-editor/content-editor.vue";
@@ -137,7 +151,7 @@ export default {
     ContentEditor,
     UtilityBlock,
   },
-  mixins: [reachClasses],
+  mixins: [reachClasses, reachPublishedStates],
   data: () => ({
     geom: null,
     createLoading: false,
@@ -158,6 +172,7 @@ export default {
       section: "",
       tloc: "",
       zipcode: "",
+      status: "v",
     },
   }),
   computed: {
@@ -210,16 +225,18 @@ export default {
           });
           this.$router.push(`/river-detail/${result.data.reachUpdate.id}`);
         } else {
+
           this.$store.dispatch("Global/sendToast", {
             kind: "error",
             title: "Error",
-            subtitle: "Failed to Create New Reach.",
+            subtitle: "Failed to Create New Reach: "+(Object.keys(result.errors).map(x=>result.errors[x]?.message ?? '').join(','))
           });
         }
       } catch (error) {
+
         this.$store.dispatch("Global/sendToast", {
           kind: "error",
-          title: "Error",
+          title: "Error: "+(error?.message ? error.message:(Object.keys(error).map(x=>error[x]?.message ?? '').join(','))),
           text: "Something went wrong.",
         });
       } finally {
