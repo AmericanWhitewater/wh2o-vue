@@ -22,6 +22,7 @@ export async function createReach(data) {
             section
             tloc
             zipcode
+            status
           }
         }
             `,
