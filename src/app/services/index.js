@@ -3,6 +3,7 @@ export * from "./createReach";
 export * from "./deleteComment";
 export * from "./deletePost";
 export * from "./deleteRapid";
+export * from "./deleteReach";
 export * from "./getAccidents";
 export * from "./getAffiliates";
 export * from "./getArticle";
