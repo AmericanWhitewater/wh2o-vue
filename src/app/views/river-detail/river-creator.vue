@@ -4,121 +4,121 @@
       <template v-if="userLoading">
         <div class="bx--row">
           <div class="bx--col">
-            <utility-block state="loading" hide-text />
+            <utility-block hide-text state="loading"/>
           </div>
         </div>
       </template>
       <template v-else-if="user && canCreate">
         <div class="bx--row">
           <div class="bx--col-sm-16 bx--col-lg-10 map-column">
-            <geometry-editor @updatedGeom="updateReachGeom" />
+            <geometry-editor @updatedGeom="updateReachGeom"/>
           </div>
           <div class="bx--col-sm-16 bx--col-lg-6 form-fields-column">
             <h1 class="mb-sm mt-spacing-sm">New Reach</h1>
             <cv-text-input
-              v-model="reach.river"
-              label="River"
-              class="mb-spacing-md"
+                v-model="reach.river"
+                class="mb-spacing-md"
+                label="River"
             />
             <cv-text-input
-              v-model="reach.altname"
-              label="Alt River Name"
-              class="mb-spacing-md"
+                v-model="reach.altname"
+                class="mb-spacing-md"
+                label="Alt River Name"
             />
             <cv-text-input
-              v-model="reach.section"
-              label="Section"
-              class="mb-spacing-md"
+                v-model="reach.section"
+                class="mb-spacing-md"
+                label="Section"
             />
             <cv-select
-              v-model="reach.class"
-              label="Class"
-              class="mb-spacing-md"
+                v-model="reach.class"
+                class="mb-spacing-md"
+                label="Class"
             >
               <cv-select-option
-                v-for="item in reachClasses"
-                :key="item"
-                :value="item"
+                  v-for="item in reachClasses"
+                  :key="item"
+                  :value="item"
               >
                 {{ item }}
               </cv-select-option>
             </cv-select>
-            <label for="Content Editor" class="bx--label">Description</label>
+            <label class="bx--label" for="Content Editor">Description</label>
             <content-editor
-              :content="!reach.description ? ' ' : reach.description"
-              show-control-bar
-              @content:updated="reach.description = $event"
+                :content="!reach.description ? ' ' : reach.description"
+                show-control-bar
+                @content:updated="reach.description = $event"
             />
-            <div class="mb-spacing-md mt-spacing-md" />
+            <div class="mb-spacing-md mt-spacing-md"/>
             <cv-link
-              @click="additionalFieldsVisible = !additionalFieldsVisible"
-              @keydown.enter="
+                @click="additionalFieldsVisible = !additionalFieldsVisible"
+                @keydown.enter="
                 additionalFieldsVisible = !additionalFieldsVisible
               "
             >
               {{
-                `${additionalFieldsVisible ? "Hide" : "Show"} Additional Fields`
+                `${additionalFieldsVisible ? 'Hide' : 'Show'} Additional Fields`
               }}
             </cv-link>
-            <div class="mb-spacing-lg" />
+            <div class="mb-spacing-lg"/>
             <template v-if="additionalFieldsVisible">
               <cv-text-input
-                v-model="reach.agency"
-                label="Agency"
-                class="mb-spacing-md"
+                  v-model="reach.agency"
+                  class="mb-spacing-md"
+                  label="Agency"
               />
               <cv-text-input
-                v-model="reach.county"
-                label="County"
-                class="mb-spacing-md"
+                  v-model="reach.county"
+                  class="mb-spacing-md"
+                  label="County"
               />
               <cv-text-input
-                v-model="reach.zipcode"
-                label="Zipcode"
-                class="mb-spacing-md"
+                  v-model="reach.zipcode"
+                  class="mb-spacing-md"
+                  label="Zipcode"
               />
               <cv-text-input
-                v-model="reach.length"
-                label="Length"
-                class="mb-spacing-md"
+                  v-model="reach.length"
+                  class="mb-spacing-md"
+                  label="Length"
               />
               <cv-text-input
-                v-model="reach.permiturl"
-                label="Permit URL"
-                class="mb-spacing-md"
+                  v-model="reach.permiturl"
+                  class="mb-spacing-md"
+                  label="Permit URL"
               />
               <cv-text-input
-                v-model="reach.permitinfo"
-                label="Permit Info"
-                class="mb-spacing-md"
+                  v-model="reach.permitinfo"
+                  class="mb-spacing-md"
+                  label="Permit Info"
               />
               <cv-text-input
-                v-model="reach.avggradient"
-                label="Average Gradient"
-                class="mb-spacing-md"
+                  v-model="reach.avggradient"
+                  class="mb-spacing-md"
+                  label="Average Gradient"
               />
-              <cv-text-input v-model="reach.maxgradient" label="Max Gradient" />
-              <div class="mb-spacing-lg" />
+              <cv-text-input v-model="reach.maxgradient" label="Max Gradient"/>
+              <div class="mb-spacing-lg"/>
             </template>
             <cv-select
-              v-model="reach.status"
-              label="Status"
-              class="mb-spacing-md"
-              helper-text="'Published' reaches will appear within 5 minutes of saving. 'Drafts' need to be updated to 'Published' in order to appear."
+                v-model="reach.status"
+                class="mb-spacing-md"
+                helper-text="'Published' reaches will appear within 5 minutes of saving. 'Drafts' need to be updated to 'Published' in order to appear."
+                label="Status"
             >
               <cv-select-option
-                v-for="(label, val) in reachPublishedStates"
-                :key="val"
-                :value="val"
+                  v-for="(label, val) in reachPublishedStates"
+                  :key="val"
+                  :value="val"
               >
                 {{ label }}
               </cv-select-option>
             </cv-select>
             <cv-button-set>
               <cv-button
-                :disabled="createLoading"
-                @click.exact="handleSubmit"
-                @keydown.enter="handleSubmit"
+                  :disabled="createLoading"
+                  @click.exact="handleSubmit"
+                  @keydown.enter="handleSubmit"
               >
                 Submit
               </cv-button>
@@ -129,7 +129,7 @@
       <template v-else>
         <div class="bx--row">
           <div class="bx--col">
-            <utility-block state="error" text="Unauthorized" />
+            <utility-block state="error" text="Unauthorized"/>
           </div>
         </div>
       </template>
@@ -137,15 +137,16 @@
   </div>
 </template>
 <script>
-import { createReach } from "@/app/services";
-import { reachClasses, reachPublishedStates } from "@/app/global/mixins";
-import turfLength from "@turf/length";
-import GeometryEditor from "@/app/views/river-detail/components/geometry-edit-modal/components/geometry-editor.vue";
-import ContentEditor from "@/app/global/components/content-editor/content-editor.vue";
-import { mapState } from "vuex";
-import UtilityBlock from "@/app/global/components/utility-block/utility-block.vue";
+import { createReach } from '@/app/services'
+import { reachClasses, reachPublishedStates } from '@/app/global/mixins'
+import turfLength from '@turf/length'
+import GeometryEditor from '@/app/views/river-detail/components/geometry-edit-modal/components/geometry-editor.vue'
+import ContentEditor from '@/app/global/components/content-editor/content-editor.vue'
+import { mapState } from 'vuex'
+import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
+
 export default {
-  name: "river-creator",
+  name: 'river-creator',
   components: {
     GeometryEditor,
     ContentEditor,
@@ -157,22 +158,22 @@ export default {
     createLoading: false,
     additionalFieldsVisible: false,
     reach: {
-      agency: "",
-      altname: "",
-      class: "none",
-      county: "",
+      agency: '',
+      altname: '',
+      class: 'none',
+      county: '',
       description: null,
-      gaugeinfo: "",
+      gaugeinfo: '',
       geom: null,
-      length: "",
-      permitinfo: "",
-      permiturl: "",
-      ploc: "",
-      river: "",
-      section: "",
-      tloc: "",
-      zipcode: "",
-      status: "v",
+      length: '',
+      permitinfo: '',
+      permiturl: '',
+      ploc: '',
+      river: '',
+      section: '',
+      tloc: '',
+      zipcode: '',
+      status: 'v',
     },
   }),
   computed: {
@@ -180,72 +181,113 @@ export default {
       userLoading: (state) => state.User.loading,
       user: (state) => state.User.data,
     }),
-    reachLength() {
+    reachLength () {
       if (this.geom) {
-        return Number(turfLength(this.geom, { units: "miles" }).toPrecision(2));
+        return Number(turfLength(this.geom, { units: 'miles' }).toPrecision(2))
       } else {
-        return undefined;
+        return undefined
       }
     },
-    canCreate() {
+    canCreate () {
       if (this.user) {
         return (
-          this.user.permissions.includes("sk") ||
-          this.user.permissions.includes("rsk") ||
-          this.user.permissions.includes("ssk") ||
-          this.user.permissions.includes("ask") ||
-          this.user.permissions.includes("admin")
-        );
+            this.user.permissions.includes('sk') ||
+            this.user.permissions.includes('rsk') ||
+            this.user.permissions.includes('ssk') ||
+            this.user.permissions.includes('ask') ||
+            this.user.permissions.includes('admin')
+        )
       }
-      return false;
+      return false
     },
   },
   methods: {
-    updateReachGeom(val) {
-      this.geom = val;
+    updateReachGeom (val) {
+      this.geom = val
 
-      this.reach.geom = val.geometry;
-      this.reach.ploc = val.geometry.coordinates[0];
-      this.reach.tloc = val.geometry.coordinates.slice(-1)[0];
-      this.reach.length = this.reachLength;
+      this.reach.geom = val.geometry
+      this.reach.ploc = val.geometry.coordinates[0]
+      this.reach.tloc = val.geometry.coordinates.slice(-1)[0]
+      this.reach.length = this.reachLength
     },
-    async handleSubmit() {
+    async handleSubmit () {
       try {
-        this.createLoading = true;
+        this.createLoading = true
         const result = await createReach({
-          id: this.$randomId(),
+         
           reach: this.reach,
-        });
+        })
 
         if (!result.errors) {
-          this.$store.dispatch("Global/sendToast", {
-            kind: "success",
-            title: "Success",
-            subtitle: "Reach created.",
-          });
-          this.$router.push(`/river-detail/${result.data.reachUpdate.id}`);
+          this.$store.dispatch('Global/sendToast', {
+            kind: 'success',
+            title: 'Success',
+            subtitle: 'Reach created.',
+          })
+          this.$router.push(`/river-detail/${result.data.reachUpdate.id}`)
         } else {
 
-          this.$store.dispatch("Global/sendToast", {
-            kind: "error",
-            title: "Error",
-            subtitle: "Failed to Create New Reach: "+(Object.keys(result.errors).map(x=>result.errors[x]?.message ?? '').join(','))
-          });
+          this.$store.dispatch('Global/sendToast', {
+            kind: 'error',
+            title: 'Error',
+            subtitle: 'Failed to Create New Reach: ' + (Object.keys(result.errors).map(x => result.errors[x]?.message ?? '').join(','))
+          })
         }
       } catch (error) {
 
-        this.$store.dispatch("Global/sendToast", {
-          kind: "error",
-          title: "Error: "+(error?.message ? error.message:(Object.keys(error).map(x=>error[x]?.message ?? '').join(','))),
-          text: "Something went wrong.",
-        });
+        this.$store.dispatch('Global/sendToast', {
+          kind: 'error',
+          title: 'Error: ' + (error?.message ? error.message : (Object.keys(error).map(x => error[x]?.message ?? '').join(','))),
+          text: 'Something went wrong.',
+        })
       } finally {
-        this.createLoading = false;
+        this.createLoading = false
       }
     },
   },
-  created() {
-    this.$store.dispatch("RiverDetail/dataReset");
+  created () {
+    this.$store.dispatch('RiverDetail/dataReset')
   },
-};
+}
 </script>
+<style lang="scss">
+.river-creator {
+
+  .form-fields-column,
+  .map-column {
+    order: 2;
+    padding-top: 1rem;
+
+    @include carbon--breakpoint("sm") {
+      height: calc(80vh - 50px);
+    }
+
+    @include carbon--breakpoint("md") {
+      height: calc(100vh - 50px);
+    }
+
+    @include carbon--breakpoint("lg") {
+      order: 1
+    }
+  }
+
+  .form-fields-column {
+    order: 1;
+    overflow-y: scroll;
+    padding-bottom: 3rem;
+
+    @include carbon--breakpoint("sm") {
+      padding-right: 2%;
+    }
+
+    @include carbon--breakpoint("md") {
+      padding-right: 4%;
+    }
+
+    @include carbon--breakpoint("lg") {
+      order: 2
+    }
+  }
+}
+
+</style>
