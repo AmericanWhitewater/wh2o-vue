@@ -202,7 +202,14 @@ export default {
     descriptionUpdated(description) {
       this.formData.description = description;
     },
+    // default difficulty to "N/A" if it's not set
+    ensureDifficultyPopulated() {
+      if (!this.formData.difficulty?.length) {
+        this.formData.difficulty = "N/A";
+      }
+    },
     async submitForm() {
+      this.ensureDifficultyPopulated();
       this.$emit("edit:submitted");
       let message;
       // different actions for *new* POI vs. updated POI
