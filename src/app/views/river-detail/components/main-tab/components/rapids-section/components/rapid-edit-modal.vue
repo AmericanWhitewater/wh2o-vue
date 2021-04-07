@@ -24,7 +24,7 @@
         <p
           v-if="!rapidOnMap"
         >
-          Click on the map to locate the rapid
+          Click on the map to locate the feature
         </p>
         <rapid-map-editor
           height="350"
@@ -189,7 +189,7 @@ export default {
       return this.activeRapid?.rloc || (this.formData.geom.coordinates.length > 0)
     },
     modalTitle () {
-      return this.activeRapid ? 'Edit Rapid' : 'New Rapid'
+      return this.activeRapid ? 'Edit Feature' : 'New Feature'
     }
   },
   methods: {
@@ -205,14 +205,14 @@ export default {
           id: this.activeRapid.id,
           ...this.formData
         })
-        message = 'Rapid Edited'
+        message = 'Feature Edited'
       } else { // creating a new rapid
         await this.$store.dispatch('RiverRapids/createRapid', {
           id: this.$randomId(),
           reach_id: this.reach.id,
           ...this.formData
         })
-        message = 'Rapid Created'
+        message = 'Feature Created'
       }
 
       this.$emit('edit:success')
