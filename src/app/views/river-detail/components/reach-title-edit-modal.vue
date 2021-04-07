@@ -20,20 +20,6 @@
           label="Section"
           class="mb-spacing-md"
         />
-        <cv-select
-          v-model="formData.status"
-          label="Status"
-          class="mb-spacing-md"
-          helper-text="'Published' reaches will appear within 5 minutes of saving. 'Drafts' need to be updated to 'Published' in order to appear."
-        >
-          <cv-select-option
-            v-for="(label, val) in reachPublishedStates"
-            :key="val"
-            :value="val"
-          >
-            {{ label }}
-          </cv-select-option>
-        </cv-select>
       </template>
       <template slot="secondary-button"> Cancel </template>
       <template slot="primary-button"> Submit </template>
@@ -41,14 +27,11 @@
   </div>
 </template>
 <script>
-import {
-  shadowDomFixedHeightOffset,
-  reachPublishedStates,
-} from "@/app/global/mixins";
+import { shadowDomFixedHeightOffset } from "@/app/global/mixins";
 import { mapState } from "vuex";
 export default {
   name: "reach-title-edit-modal",
-  mixins: [shadowDomFixedHeightOffset, reachPublishedStates],
+  mixins: [shadowDomFixedHeightOffset],
   props: {
     visible: {
       type: Boolean,
@@ -81,7 +64,6 @@ export default {
             length: this.formData.length,
             avggradient: this.formData.avggradient,
             maxgradient: this.formData.maxgradient,
-            status: this.formData.status,
           },
         });
       });

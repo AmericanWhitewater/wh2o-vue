@@ -18,6 +18,11 @@ export async function getReach(id) {
                   plon
                   geom
                   status
+                  permissions {
+                    domain
+                    permission
+                    result
+                  }
                   readingsummary {
                       adjusted_reach_class
                       gauge_estimated

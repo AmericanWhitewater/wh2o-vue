@@ -20,15 +20,44 @@
                 <h4 class="mb-spacing-md" v-text="reach.section" />
               </div>
               <div>
-                <cv-button
-                  v-if="editMode"
-                  id="edit-title"
-                  size="small"
-                  kind="secondary"
-                  @click="editReachTitleModalVisible = true"
-                >
-                  Edit
-                </cv-button>
+                <div class="bx--row">
+                  <cv-button
+                    v-if="editMode"
+                    id="edit-title"
+                    size="small"
+                    kind="secondary"
+                    @click="editReachTitleModalVisible = true"
+                  >
+                    Edit
+                  </cv-button>
+                </div>
+                <div class="bx--row">
+                  <cv-button
+                    v-if="editMode && canDelete(reach)"
+                    size="small"
+                    kind="danger"
+                    @click.exact="deleteReachModalVisible = true"
+                    @keydown.enter="deleteReachModalVisible = true"
+                  >
+                    Delete
+                  </cv-button>
+                  <cv-modal
+                    ref="modalWrapper"
+                    :visible="deleteReachModalVisible"
+                    @modal-shown="setModalOffset"
+                    @secondary-click="deleteReachModalVisible = false"
+                    @modal-hidden="deleteReachModalVisible = false"
+                    @primary-click="handleDelete(reach.id)"
+                  >
+                    <template slot="title"> Confirm Delete </template>
+                    <template slot="content">
+                      Are you sure you want to delete this reach?
+                    </template>
+                    <template slot="secondary-button"> Cancel </template>
+                    <template slot="primary-button"> Submit </template>
+                  </cv-modal>
+                </div>
+
                 <reach-title-edit-modal
                   v-if="editMode && !loading"
                   :visible="editReachTitleModalVisible"
@@ -120,9 +149,7 @@
                   @keydown.enter="toggleEditMode"
                 >
                   <component :is="editMode ? 'EditOff20' : 'Edit20'" />
-                  <span v-if="editMode" class="pl-spacing-2xs">
-                    Editing
-                  </span>
+                  <span v-if="editMode" class="pl-spacing-2xs"> Editing </span>
                 </cv-button>
                 <cv-button
                   v-if="!editMode"
@@ -201,7 +228,11 @@ import {
   ReachTitleEditModal,
   GeometryEditModal,
 } from "./components";
-import { checkWindow } from "@/app/global/mixins";
+import {
+  checkWindow,
+  shadowDomFixedHeightOffset,
+  objectPermissionsHelpersMixin,
+} from "@/app/global/mixins";
 import { appLocalStorage } from "@/app/global/services";
 
 export default {
@@ -212,10 +243,15 @@ export default {
     GeometryEditModal,
     ReachTitleEditModal,
   },
-  mixins: [checkWindow],
+  mixins: [
+    checkWindow,
+    objectPermissionsHelpersMixin,
+    shadowDomFixedHeightOffset,
+  ],
   data: () => ({
     editGeometryModalVisible: false,
     editReachTitleModalVisible: false,
+    deleteReachModalVisible: false,
     bookmarked: false,
     transitionName: "fade",
   }),
@@ -281,9 +317,9 @@ export default {
         ]);
       }
     },
-     loadReachData() {
+    loadReachData() {
       this.$store.dispatch("RiverDetail/setRefId", this.reachId);
-      this.$store.dispatch('RiverEvents/getProperty', this.reachId)
+      this.$store.dispatch("RiverEvents/getProperty", this.reachId);
       this.$store.dispatch("RiverDetail/getProperty", this.reachId);
       this.$store.dispatch("RiverAlerts/getProperty", this.reachId);
       this.$store.dispatch("RiverGages/getProperty", this.reachId);
@@ -306,6 +342,11 @@ export default {
           this.$router.replace(path);
         }
       }
+    },
+    async handleDelete(reachId) {
+      this.$store.dispatch("RiverDetail/deleteReach", reachId);
+      this.deleteCommentModalVisible = false;
+      this.$router.push("/river-index");
     },
   },
   created() {
@@ -330,6 +371,6 @@ export default {
     if (bookmarks && bookmarks.includes(Number(this.$route.params.id))) {
       this.bookmarked = true;
     }
-  }
+  },
 };
 </script>

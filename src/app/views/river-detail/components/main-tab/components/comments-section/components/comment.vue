@@ -71,7 +71,7 @@ import {
   shadowDomFixedHeightOffset,
   objectPermissionsHelpersMixin,
 } from "@/app/global/mixins";
-import {deleteComment} from "@/app/services";
+import { deleteComment } from "@/app/services";
 import { baseUrl } from "@/app/environment";
 
 export default {
