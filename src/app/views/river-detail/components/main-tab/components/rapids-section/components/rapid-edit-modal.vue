@@ -21,11 +21,7 @@
           :disabled="formPending"
         />
         <label class="bx--label mb-spacing-xs">Location</label>
-        <p
-          v-if="!rapidOnMap"
-        >
-          Click on the map to locate the feature
-        </p>
+        <p v-if="!rapidOnMap">Click on the map to locate the feature</p>
         <rapid-map-editor
           height="350"
           class="mb-spacing-md"
@@ -86,177 +82,199 @@
           @content:updated="descriptionUpdated"
         />
       </template>
-      <template slot="secondary-button">
-        Cancel
-      </template>
-      <template slot="primary-button">
-        Submit
-      </template>
+      <template slot="secondary-button"> Cancel </template>
+      <template slot="primary-button"> Submit </template>
     </cv-modal>
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import { checkWindow, poiClasses, shadowDomFixedHeightOffset, mapHelpersMixin } from '@/app/global/mixins'
-import ContentEditor from '@/app/global/components/content-editor/content-editor'
-import RapidMapEditor from './rapid-map-editor.vue'
-import { point } from '@turf/helpers'
-import lineSlice from '@turf/line-slice'
-import geoLength from '@turf/length'
-import along from '@turf/along'
+import { mapState } from "vuex";
+import {
+  checkWindow,
+  poiClasses,
+  shadowDomFixedHeightOffset,
+  mapHelpersMixin,
+} from "@/app/global/mixins";
+import ContentEditor from "@/app/global/components/content-editor/content-editor";
+import RapidMapEditor from "./rapid-map-editor.vue";
+import { point } from "@turf/helpers";
+import lineSlice from "@turf/line-slice";
+import geoLength from "@turf/length";
+import along from "@turf/along";
 
 export default {
-  name: 'rapid-edit-modal',
+  name: "rapid-edit-modal",
   components: {
     ContentEditor,
-    RapidMapEditor
+    RapidMapEditor,
   },
   /** @todo revisit adding checkWindow mixin performance considerations */
-  mixins: [checkWindow, poiClasses, shadowDomFixedHeightOffset, mapHelpersMixin],
+  mixins: [
+    checkWindow,
+    poiClasses,
+    shadowDomFixedHeightOffset,
+    mapHelpersMixin,
+  ],
   props: {
     rapidModalVisible: {
       type: Boolean,
-      required: true
+      required: true,
     },
     rapidId: {
       type: String,
-      required: false
-    }
+      required: false,
+    },
   },
   data: () => ({
     renderEditor: false,
     formPending: false,
     poiCharacteristics: [
       {
-        value: 'putin',
-        label: 'Put In',
-        name: 'putin'
+        value: "putin",
+        label: "Put In",
+        name: "putin",
       },
       {
-        value: 'hazard',
-        label: 'Hazard',
-        name: 'hazard'
+        value: "hazard",
+        label: "Hazard",
+        name: "hazard",
       },
       {
-        value: 'portage',
-        label: 'Portage',
-        name: 'portage'
+        value: "portage",
+        label: "Portage",
+        name: "portage",
       },
       {
-        value: 'access',
-        label: 'Access Point',
-        name: 'access'
+        value: "access",
+        label: "Access Point",
+        name: "access",
       },
 
       {
-        value: 'waterfall',
-        label: 'Waterfall / Large Drop',
-        name: 'waterfall'
+        value: "waterfall",
+        label: "Waterfall / Large Drop",
+        name: "waterfall",
       },
       {
-        value: 'takeout',
-        label: 'Take Out',
-        name: 'takeout'
+        value: "takeout",
+        label: "Take Out",
+        name: "takeout",
       },
       {
-        value: 'rapid',
-        label: 'Rapid',
-        name: 'rapid'
+        value: "rapid",
+        label: "Rapid",
+        name: "rapid",
       },
       {
-        value: 'other',
-        label: 'Other',
-        name: 'other'
-      }
+        value: "other",
+        label: "Other",
+        name: "other",
+      },
     ],
     formData: {
-      name: '',
-      difficulty: '',
+      name: "",
+      difficulty: "",
       distance: null,
-      description: '',
+      description: "",
       character: [],
-      geom: { coordinates: [], type: 'point' }
-    }
+      geom: { coordinates: [], type: "point" },
+    },
   }),
   computed: {
     ...mapState({
-      rapids: state => state.RiverRapids.data
+      rapids: (state) => state.RiverRapids.data,
     }),
-    activeRapid () {
-      return this.rapidId ? this.rapids.find(r => r.id === this.rapidId) : null
+    activeRapid() {
+      return this.rapidId
+        ? this.rapids.find((r) => r.id === this.rapidId)
+        : null;
     },
-    rapidOnMap () {
-      return this.activeRapid?.rloc || (this.formData.geom.coordinates.length > 0)
+    rapidOnMap() {
+      return (
+        this.activeRapid?.rloc || this.formData.geom.coordinates.length > 0
+      );
     },
-    modalTitle () {
-      return this.activeRapid ? 'Edit Feature' : 'New Feature'
-    }
+    modalTitle() {
+      return this.activeRapid ? "Edit Feature" : "New Feature";
+    },
   },
   methods: {
-    descriptionUpdated (description) {
-      this.formData.description = description
+    descriptionUpdated(description) {
+      this.formData.description = description;
     },
-    async submitForm () {
-      this.$emit('edit:submitted')
-      let message
+    async submitForm() {
+      this.$emit("edit:submitted");
+      let message;
       // different actions for *new* POI vs. updated POI
       if (this.activeRapid) {
-        await this.$store.dispatch('RiverRapids/updateRapid', {
+        await this.$store.dispatch("RiverRapids/updateRapid", {
           id: this.activeRapid.id,
-          ...this.formData
-        })
-        message = 'Feature Edited'
-      } else { // creating a new rapid
-        await this.$store.dispatch('RiverRapids/createRapid', {
+          ...this.formData,
+        });
+        message = "Feature Edited";
+      } else {
+        // creating a new rapid
+        await this.$store.dispatch("RiverRapids/createRapid", {
           id: this.$randomId(),
           reach_id: this.reach.id,
-          ...this.formData
-        })
-        message = 'Feature Created'
+          ...this.formData,
+        });
+        message = "Feature Created";
       }
 
-      this.$emit('edit:success')
-        this.$store.dispatch('Global/sendToast', {
-          title: message,
-          kind: 'success',
-          override: true,
-          contrast: false,
-          action: false,
-          autoHide: true
-        })
+      this.$emit("edit:success");
+      this.$store.dispatch("Global/sendToast", {
+        title: message,
+        kind: "success",
+        override: true,
+        contrast: false,
+        action: false,
+        autoHide: true,
+      });
     },
-    updateFormDataGeom (newCoords) {
-      this.formData.geom.coordinates = [newCoords.lng, newCoords.lat]
-      this.updateDistance()
+    updateFormDataGeom(newCoords) {
+      this.formData.geom.coordinates = [newCoords.lng, newCoords.lat];
+      this.updateDistance();
     },
-    updateDistance () {
+    updateDistance() {
       if (this.reachGeom) {
         const segment = lineSlice(
           point(this.reachGeom.geometry.coordinates[0]),
           point(this.formData.geom.coordinates),
-          this.reachGeom)
-        this.formData.distance = geoLength(segment, { units: 'miles' }).toFixed(2)
+          this.reachGeom
+        );
+        this.formData.distance = geoLength(segment, { units: "miles" }).toFixed(
+          2
+        );
       }
     },
-    handleCancel () {
-      this.$emit('edit:cancelled')
-    }
+    handleCancel() {
+      this.$emit("edit:cancelled");
+    },
   },
-  mounted () {
+  mounted() {
     if (this.activeRapid) {
-      this.formData = Object.assign(this.formData, this.activeRapid)
+      this.formData = Object.assign(this.formData, this.activeRapid);
       if (this.activeRapid.rloc) {
-        const coords = this.activeRapid.rloc.split(' ').map(x => parseFloat(x))
-        this.formData.geom = point(coords).geometry
+        const coords = this.activeRapid.rloc
+          .split(" ")
+          .map((x) => parseFloat(x));
+        this.formData.geom = point(coords).geometry;
       }
-      const distance = this.activeRapid.distance
+      const distance = this.activeRapid.distance;
       // if distance is present, use it to calculate the point
       // otherwise, allow user to create the point by clicking
-      if (!this.formData.geom.coordinates.length && this.reachGeom && distance) {
-        this.formData.geom = along(this.reachGeom, distance, { units: 'miles' }).geometry
+      if (
+        !this.formData.geom.coordinates.length &&
+        this.reachGeom &&
+        distance
+      ) {
+        this.formData.geom = along(this.reachGeom, distance, {
+          units: "miles",
+        }).geometry;
       }
     }
-    this.renderEditor = true
-  }
-}
+    this.renderEditor = true;
+  },
+};
 </script>
