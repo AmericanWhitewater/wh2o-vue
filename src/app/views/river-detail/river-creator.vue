@@ -100,20 +100,6 @@
               <cv-text-input v-model="reach.maxgradient" label="Max Gradient"/>
               <div class="mb-spacing-lg"/>
             </template>
-            <cv-select
-                v-model="reach.status"
-                class="mb-spacing-md"
-                helper-text="'Published' reaches will appear within 5 minutes of saving. 'Drafts' need to be updated to 'Published' in order to appear."
-                label="Status"
-            >
-              <cv-select-option
-                  v-for="(label, val) in reachPublishedStates"
-                  :key="val"
-                  :value="val"
-              >
-                {{ label }}
-              </cv-select-option>
-            </cv-select>
             <cv-button-set>
               <cv-button
                   :disabled="createLoading"
@@ -138,7 +124,7 @@
 </template>
 <script>
 import { createReach } from '@/app/services'
-import { reachClasses, reachPublishedStates } from '@/app/global/mixins'
+import { reachClasses } from '@/app/global/mixins'
 import turfLength from '@turf/length'
 import GeometryEditor from '@/app/views/river-detail/components/geometry-edit-modal/components/geometry-editor.vue'
 import ContentEditor from '@/app/global/components/content-editor/content-editor.vue'
@@ -152,7 +138,7 @@ export default {
     ContentEditor,
     UtilityBlock,
   },
-  mixins: [reachClasses, reachPublishedStates],
+  mixins: [reachClasses],
   data: () => ({
     geom: null,
     createLoading: false,
@@ -173,7 +159,7 @@ export default {
       section: '',
       tloc: '',
       zipcode: '',
-      status: 'v',
+      status: 'v', // v means 'verified' or published
     },
   }),
   computed: {
@@ -214,7 +200,7 @@ export default {
       try {
         this.createLoading = true
         const result = await createReach({
-         
+
           reach: this.reach,
         })
 
