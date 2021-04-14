@@ -78,11 +78,6 @@
                 class="mb-spacing-md"
               />
               <cv-text-input
-                v-model="reach.length"
-                label="Length"
-                class="mb-spacing-md"
-              />
-              <cv-text-input
                 v-model="reach.permiturl"
                 label="Permit URL"
                 class="mb-spacing-md"
