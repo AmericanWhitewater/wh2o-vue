@@ -1,7 +1,7 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
 import wkx from "wkx";
-import {updateReach, getReach, updateReachGeom} from "@/app/services"
+import {updateReach, getReach, deleteReach, updateReachGeom} from "@/app/services"
 
 export default {
   namespaced: true,
@@ -37,7 +37,11 @@ export default {
         data: null,
         refId: null
       })
-    }
+    },
+
+    ['DELETE_REQUEST']() { },
+
+    ['DELETE_SUCCESS']() { }
   },
   actions: {
     ...actions,
@@ -106,6 +110,20 @@ export default {
 
       } catch (error) {
         context.commit('GEOM_UPDATE_ERROR', error);
+      }
+    },
+    async deleteReach(context, data) {
+      context.commit('DELETE_REQUEST', data);
+      try {
+        const result = await deleteReach(data)
+        if (!result.errors) {
+          context.commit('DELETE_SUCCESS', result.data.reachDelete);
+          context.commit('DATA_RESET');
+        } else {
+          context.commit('DATA_ERROR', "error");
+        }
+      } catch (error) {
+        context.commit('DATA_ERROR', error)
       }
     },
     dataReset(context) {

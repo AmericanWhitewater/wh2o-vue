@@ -16,7 +16,7 @@
       @click.exact="openModal"
       @keydown.enter="openModal"
     >
-      New Rapid
+      Add Feature
     </cv-button>
     <template v-if="loading">
       <utility-block state="loading" />
