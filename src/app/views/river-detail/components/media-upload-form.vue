@@ -125,7 +125,7 @@ function initialState() {
         post_type: "PHOTO_POST",
         post_date: null,
         reading: null,
-        metric_id: 2,
+        metric_id: "2",
       },
     },
     previewUrls: [],
