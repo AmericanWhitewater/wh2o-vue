@@ -171,6 +171,8 @@ import {
   objectPermissionsHelpersMixin,
 } from "@/app/global/mixins";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block.vue";
+import { deletePost } from "@/app/services";
+
 export default {
   name: "image-gallery",
   components: {
@@ -208,6 +210,7 @@ export default {
     ...mapState({
       river: (state) => state.RiverDetail.data,
       rapids: (state) => state.RiverRapids.data,
+      galleryPosts: (state) => state.RiverGallery.data,
     }),
     activeImage() {
       if (this.lightbox.activeImage) {
@@ -254,7 +257,7 @@ export default {
   methods: {
     handleEditSuccess() {
       this.mediaUploadModalVisible = false;
-      this.$emit("photoEdited");
+      this.$emit("photoModified");
     },
     imageURI(image, size) {
       const imageSizes = image.image.uri;
@@ -340,13 +343,43 @@ export default {
         }
       }
     },
-    async triggerImageDelete() {
+    async triggerImageDelete(image) {
       const ok = await this.$refs.confirmDeleteModal.show({
         title: "Delete Photo",
         message: "Are you sure you want to delete this photo?",
       });
       if (ok) {
-        // console.log("DELETING");
+        // if photo post has only one image, we delete the entire post
+        const post = this.galleryPosts.find((x) => x.id === image.post_id);
+        if (post.photos.length === 1) {
+          // TODO: refactor to use state (along with 'news-tab.vue')
+          try {
+            const result = await deletePost(post.id);
+
+            if (!result.errors) {
+              this.$store.dispatch("Global/sendToast", {
+                title: "Media deleted",
+                kind: "success",
+                override: true,
+                contrast: false,
+                action: false,
+                autoHide: true,
+              });
+              this.$emit("photoModified");
+            }
+          } catch (error) {
+            this.$store.dispatch("Global/sendToast", {
+              title: "Delete Failed",
+              kind: "error",
+              override: true,
+              contrast: false,
+              action: false,
+              autoHide: true,
+            });
+          }
+        } else {
+          // TBD pending Ryan's input on how to accomplish removal of a photo from a post
+        }
       }
     },
   },

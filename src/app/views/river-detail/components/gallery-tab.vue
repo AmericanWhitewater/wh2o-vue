@@ -20,7 +20,7 @@
           </div>
           <div class="bx--row">
             <div class="bx--col">
-              <image-gallery :images="media" @photoEdited="loadMedia" />
+              <image-gallery :images="media" @photoModified="loadMedia" />
             </div>
           </div>
           <div class="bx--row">
