@@ -41,6 +41,7 @@ export default {
           return post.photos.map((photo) => {
             return {
               ...photo,
+              permissions: post.permissions,
               reading: post.reading,
               gauge: post.gauge,
               metric: post.metric,

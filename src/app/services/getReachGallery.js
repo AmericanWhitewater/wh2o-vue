@@ -14,6 +14,11 @@ export async function getReachGallery(data) {
                     ) {
                       data {
                         id
+                        permissions {
+                          domain
+                          permission
+                          result
+                        }
                         metric {
                           name
                           unit
