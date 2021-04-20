@@ -168,6 +168,19 @@
                   Full resolution
                 </cv-link>
               </div>
+              <div v-if="canDelete(activeImage)">
+                <confirm-delete-modal
+                  ref="confirmDeleteModal"
+                />
+                <cv-button
+                  id="delete-button"
+                  kind="danger"
+                  size="small"
+                  @click="triggerImageDelete(activeImage)"
+                >
+                  Delete
+                </cv-button>
+              </div>
             </main>
           </div>
         </div>
@@ -176,17 +189,18 @@
   </div>
 </template>
 <script>
-import { AwLogo } from '@/app/global/components'
+import { AwLogo, ConfirmDeleteModal } from '@/app/global/components'
 import { mapState } from 'vuex'
-import { shadowDomFixedHeightOffset } from '@/app/global/mixins'
+import { shadowDomFixedHeightOffset, objectPermissionsHelpersMixin } from '@/app/global/mixins'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 export default {
   name: 'image-gallery',
   components: {
     AwLogo,
+    ConfirmDeleteModal,
     UtilityBlock
   },
-  mixins: [shadowDomFixedHeightOffset],
+  mixins: [shadowDomFixedHeightOffset, objectPermissionsHelpersMixin],
   props: {
     emptyStateText: {
       type: String,
@@ -342,6 +356,15 @@ export default {
         } else {
           this.lightbox.activeImage = this.images[this.currentIndex + 1].id
         }
+      }
+    },
+    async triggerImageDelete() {
+      const ok = await this.$refs.confirmDeleteModal.show({
+        title: 'Delete Photo',
+        message: "Are you sure you want to delete this photo?"
+      });
+      if (ok) {
+        // console.log("DELETING");
       }
     }
   }
