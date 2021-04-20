@@ -175,6 +175,11 @@ export default {
       validator: (val) =>
         ["RAPID", "POST", "GALLERY", "REACH"].indexOf(val) > -1,
     },
+    // pass in media object from image gallery when used for editing
+    media: {
+      type: Object,
+      required: false,
+    },
   },
   data: initialState,
   computed: {
@@ -242,6 +247,8 @@ export default {
       }
       this.formPending = false;
     },
+    // TODO: refactor this to use state so that when it submits, state is updated
+    // with the results rather than having to trigger a full gallery reload
     async submitPost() {
       this.formPending = true;
       try {
@@ -252,8 +259,11 @@ export default {
         });
 
         this.$emit("form:success");
+        const formSuccessMessage = this.media
+          ? "Media updated"
+          : "Media uploaded";
         this.$store.dispatch("Global/sendToast", {
-          title: "Media Uploaded",
+          title: formSuccessMessage,
           kind: "success",
         });
       } catch (error) {
@@ -280,13 +290,44 @@ export default {
       }
     },
     setInitialFormData() {
-      if (this.user && this.user.uname) {
-        this.formData.photo.author = this.user.uname;
-      }
+      // if media is set, this is an edit request
+      if (this.media) {
+        this.previewUrls = [this.media.image.uri.medium];
 
-      this.formData.id = `${this.$randomId()}`;
-      this.formData.fileinput.section = this.section;
-      this.formData.fileinput.section_id = this.$route.params.id;
+        let dateInput;
+        if (this.media.photo_date) {
+          const date = new Date(this.media.photo_date);
+          dateInput = date.toISOString().slice(0, 10);
+        }
+
+        this.formData.id = this.media.id;
+        Object.assign(this.formData.photo, {
+          author: this.media.author,
+          caption: this.media.caption,
+          description: this.media.description,
+          photo_date: dateInput,
+          poi_id: this.media.poi_id,
+          poi_name: this.media.poi_name,
+          subject: this.media.subject,
+          post_id: this.media.post_id,
+        });
+
+        this.postFormData.id = this.media.post_id;
+        Object.assign(this.postFormData.post, {
+          reach_id: this.media.reach_id,
+          post_date: this.media.post_date,
+          reading: this.media.reading,
+          metric_id: String(this.media.metric_id),
+        });
+      } else {
+        if (this.user && this.user.uname) {
+          this.formData.photo.author = this.user.uname;
+        }
+
+        this.formData.id = `${this.$randomId()}`;
+        this.formData.fileinput.section = this.section;
+        this.formData.fileinput.section_id = this.$route.params.id;
+      }
     },
   },
   mounted() {
