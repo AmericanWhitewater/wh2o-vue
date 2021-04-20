@@ -2,29 +2,27 @@
   <div class="media-upload-form">
     <h2 v-if="title" class="mb-spacing-md" v-text="title" />
     <template v-if="!formPending">
-    <template v-if="previewUrls.length">
-      <img
-        v-for="(item, k) in previewUrls"
-        :key="k"
-        :src="`${assetBaseUrl}${item}`"
-        class="mb-spacing-sm"
-      >
-    </template>
-    <cv-file-uploader
-      v-if="!previewUrls.length"
-      ref="fileUploader"
-      data-modal-primary-focus
-      helper-text="10mb max"
-      accepts=".jpg,.png"
-      class="mb-spacing-md"
-      :disabled="formPending || !user"
-      @change="setFile"
-    />
-
+      <template v-if="previewUrls.length">
+        <img
+          v-for="(item, k) in previewUrls"
+          :key="k"
+          :src="`${assetBaseUrl}${item}`"
+          class="mb-spacing-sm"
+        >
+      </template>
+      <cv-file-uploader
+        v-if="!previewUrls.length"
+        ref="fileUploader"
+        data-modal-primary-focus
+        helper-text="10mb max"
+        accepts=".jpg,.png"
+        class="mb-spacing-md"
+        :disabled="formPending || !user"
+        @change="setFile"
+      />
     </template>
     <template v-else>
-    <cv-loading :active="formPending"/>
-
+      <cv-loading :active="formPending" />
     </template>
     <cv-text-input
       v-model="formData.photo.author"
@@ -94,7 +92,7 @@
 import { updatePost, photoFileUpdate } from "@/app/services";
 import { assetBaseUrl } from "@/app/environment";
 import { mapState } from "vuex";
-import { CvLoading } from '@carbon/vue/src/components/cv-loading'
+import { CvLoading } from "@carbon/vue/src/components/cv-loading";
 
 function initialState() {
   return {
@@ -134,8 +132,8 @@ function initialState() {
 
 export default {
   name: "media-upload-form",
-  components:{
-    CvLoading
+  components: {
+    CvLoading,
   },
   props: {
     section: {
@@ -219,7 +217,12 @@ export default {
         /* eslint-disable-next-line no-console */
         console.log("error :>> ", error);
         this.$store.dispatch("Global/sendToast", {
-          title: "Upload Failed -"+(error?.message || Object.keys(error).map(x=>error[x]).join(',')),
+          title:
+            "Upload Failed -" +
+            (error?.message ||
+              Object.keys(error)
+                .map((x) => error[x])
+                .join(",")),
           kind: "error",
         });
       }
@@ -244,7 +247,12 @@ export default {
         console.log("error :>> ", error);
         this.$emit("form:error");
         this.$store.dispatch("Global/sendToast", {
-          title: "Upload Failed -"+(error?.message || Object.keys(error).map(x=>error[x]).join(',')),
+          title:
+            "Upload Failed -" +
+            (error?.message ||
+              Object.keys(error)
+                .map((x) => error[x])
+                .join(",")),
           kind: "error",
         });
       } finally {
