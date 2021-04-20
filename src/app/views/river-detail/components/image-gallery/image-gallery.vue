@@ -145,13 +145,13 @@
                   Edit
                 </cv-button>
               </div>
-              <div v-if="canDelete(activeImage)">
+              <div v-if="canDelete(activeImage) && isPhotoOnlyOneOnPost(activeImage)">
                 <confirm-delete-modal ref="confirmDeleteModal" />
                 <cv-button
                   id="delete-button"
                   kind="danger"
                   size="small"
-                  @click="triggerImageDelete(activeImage)"
+                  @click="triggerPhotoDelete(activeImage)"
                 >
                   Delete
                 </cv-button>
@@ -343,18 +343,21 @@ export default {
         }
       }
     },
-    async triggerImageDelete(image) {
+    isPhotoOnlyOneOnPost(photo) {
+      const post = this.galleryPosts.find((x) => x.id === photo.post_id);
+      return post.photos.length === 1;
+    },
+    async triggerPhotoDelete(photo) {
       const ok = await this.$refs.confirmDeleteModal.show({
         title: "Delete Photo",
         message: "Are you sure you want to delete this photo?",
       });
       if (ok) {
         // if photo post has only one image, we delete the entire post
-        const post = this.galleryPosts.find((x) => x.id === image.post_id);
-        if (post.photos.length === 1) {
+        if (this.isPhotoOnlyOneOnPost(photo)) {
           // TODO: refactor to use state (along with 'news-tab.vue')
           try {
-            const result = await deletePost(post.id);
+            const result = await deletePost(photo.post_id);
 
             if (!result.errors) {
               this.$store.dispatch("Global/sendToast", {
