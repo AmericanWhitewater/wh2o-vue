@@ -61,7 +61,7 @@ export default {
   computed: {
     ...mapState({
       data: state => state.RiverEvents.data,
-      metrics: state => state.GageMetrics.data,
+      metrics: state => state.RiverGages.data.metrics,
     }),
     releases() {
       return this.$store.getters['RiverEvents/releases']
