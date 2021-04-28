@@ -1,35 +1,16 @@
 <template>
   <div class="content-editor">
-    <h1
-      v-if="sectionTitle"
-      v-text="sectionTitle"
-    />
-    <label
-      v-if="label"
-      class="bx--label"
-      v-text="label"
-    />
-    <div
-      v-if="showControlBar"
-      class="control-bar"
-    >
-      <editor-menu-bar
-        v-slot="{ commands, isActive }"
-        :editor="editor"
-      >
+    <h1 v-if="sectionTitle" v-text="sectionTitle" />
+    <label v-if="label" class="bx--label" v-text="label" />
+    <div v-if="showControlBar" class="control-bar">
+      <editor-menu-bar v-slot="{ commands, isActive }" :editor="editor">
         <div class="menubar">
           <div class="toolbar">
             <span>
-              <button
-                class="menubar__button"
-                @click="commands.undo"
-              >
+              <button class="menubar__button" @click="commands.undo">
                 <Undo16 />
               </button>
-              <button
-                class="menubar__button"
-                @click="commands.redo"
-              >
+              <button class="menubar__button" @click="commands.redo">
                 <Redo16 />
               </button>
             </span>
@@ -102,7 +83,7 @@
  * look at b3 :model.sync
  */
 
-import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
+import { Editor, EditorContent, EditorMenuBar } from "tiptap";
 import {
   Heading,
   OrderedList,
@@ -112,41 +93,41 @@ import {
   Italic,
   Link,
   Underline,
-  History
-} from 'tiptap-extensions'
+  History,
+} from "tiptap-extensions";
 
 export default {
-  name: 'content-editor',
+  name: "content-editor",
   components: {
     EditorContent,
-    EditorMenuBar
+    EditorMenuBar,
   },
   props: {
     showControlBar: {
       type: Boolean,
-      required: false
+      required: false,
     },
     content: {
       type: String,
-      required: true
+      required: true,
     },
     sectionTitle: {
       type: String,
-      required: false
+      required: false,
     },
     label: {
       type: String,
-      required: false
+      required: false,
     },
     placeholder: {
       type: String,
-      default: 'Start typing...',
-      required: false
-    }
+      default: "Start typing...",
+      required: false,
+    },
   },
-  data () {
+  data() {
     return {
-      updatedContent: '',
+      updatedContent: "",
       editor: new Editor({
         content: this.content || this.placeholder,
         extensions: [
@@ -158,29 +139,29 @@ export default {
           new Bold(),
           new Italic(),
           new Underline(),
-          new History()
+          new History(),
         ],
         onUpdate: ({ getHTML }) => {
-          this.updatedContent = getHTML()
+          this.updatedContent = getHTML();
           /**
            * @todo need to debounce
            */
-          this.$emit('content:updated', this.updatedContent)
-        }
-      })
-    }
+          this.$emit("content:updated", this.updatedContent);
+        },
+      }),
+    };
   },
-  mounted () {
-    this.$emit('editor:mounted')
+  mounted() {
+    this.$emit("editor:mounted");
   },
-  beforeDestroy () {
+  beforeDestroy() {
     // Always destroy your editor instance when it's no longer needed
-    this.editor.destroy()
+    this.editor.destroy();
   },
-  destroyed () {
-    this.$emit('editor:destroyed')
-  }
-}
+  destroyed() {
+    this.$emit("editor:destroyed");
+  },
+};
 </script>
 <style lang="scss">
 .content-editor {
