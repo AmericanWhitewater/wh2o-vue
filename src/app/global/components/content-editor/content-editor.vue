@@ -49,6 +49,7 @@ export default {
            bullist numlist outdent indent | removeformat | help",
         plugins: ["paste", "link"],
         menubar: false,
+        height: 400,
       },
     };
   },
