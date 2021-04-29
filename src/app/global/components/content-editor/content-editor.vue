@@ -11,6 +11,7 @@ import tinymce from "tinymce/tinymce";
 import "tinymce/icons/default";
 import "tinymce/plugins/paste";
 import "tinymce/plugins/link";
+import "tinymce/plugins/lists";
 
 // Theme
 import "tinymce/themes/silver/theme";
@@ -44,10 +45,10 @@ export default {
     return {
       editorConfig: {
         toolbar:
-          "undo redo | formatselect | bold italic backcolor link | \
-           alignleft aligncenter alignright alignjustify | \
-           bullist numlist outdent indent | removeformat | help",
-        plugins: ["paste", "link"],
+          "undo redo | formatselect | bold italic link | \
+           alignleft aligncenter alignright | \
+           bullist numlist outdent indent | removeformat",
+        plugins: ["paste", "link", "lists"],
         menubar: false,
         height: 400,
       },
