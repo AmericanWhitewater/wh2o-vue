@@ -79,6 +79,7 @@
           :content="formData.description"
           label="Description"
           placeholder=" "
+          :toolbar="editorToolbar"
           @content:updated="descriptionUpdated"
         />
       </template>
@@ -128,6 +129,7 @@ export default {
   data: () => ({
     renderEditor: false,
     formPending: false,
+    editorToolbar: "undo redo | bold italic | removeformat",
     poiCharacteristics: [
       {
         value: "putin",

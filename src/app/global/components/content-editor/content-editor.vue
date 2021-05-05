@@ -40,14 +40,18 @@ export default {
       default: "Start typing...",
       required: false,
     },
+    toolbar: {
+      type: String,
+      default:
+        "undo redo | formatselect | bold italic link | \
+           alignleft aligncenter alignright | \
+           bullist numlist outdent indent | removeformat",
+    },
   },
   data() {
     return {
       editorConfig: {
-        toolbar:
-          "undo redo | formatselect | bold italic link | \
-           alignleft aligncenter alignright | \
-           bullist numlist outdent indent | removeformat",
+        toolbar: this.toolbar,
         plugins: ["paste", "link", "lists"],
         menubar: false,
         height: 400,
