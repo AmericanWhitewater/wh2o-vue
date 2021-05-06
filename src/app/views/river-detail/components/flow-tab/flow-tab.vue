@@ -145,6 +145,14 @@
 
         </template>
         <template v-else>
+          <div>
+            <a v-if="editMode"
+               class="cv-button mb-spacing-md bx--btn bx--btn--tertiary bx--btn--sm"
+               :href="formatLinkUrl(`/content/StreamTeam/edit-correlations/?reach_id=${$route.params.id}`)"
+               target="_blank"
+            >Edit Flows</a>
+          </div>
+
           <utility-block
               state="content"
               title="No Gages"
