@@ -145,7 +145,7 @@
                   Edit
                 </cv-button>
               </div>
-              <div v-if="canDelete(activeImage) && isPhotoOnlyOneOnPost(activeImage)">
+              <div v-if="canDelete(activeImage)">
                 <confirm-delete-modal ref="confirmDeleteModal" />
                 <cv-button
                   id="delete-button"
@@ -171,7 +171,7 @@ import {
   objectPermissionsHelpersMixin,
 } from "@/app/global/mixins";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block.vue";
-import { deletePost } from "@/app/services";
+import { deletePhoto } from "@/app/services";
 
 export default {
   name: "image-gallery",
@@ -343,45 +343,36 @@ export default {
         }
       }
     },
-    isPhotoOnlyOneOnPost(photo) {
-      const post = this.galleryPosts.find((x) => x.id === photo.post_id);
-      return post.photos.length === 1;
-    },
     async triggerPhotoDelete(photo) {
       const ok = await this.$refs.confirmDeleteModal.show({
         title: "Delete Photo",
         message: "Are you sure you want to delete this photo?",
       });
       if (ok) {
-        // if photo post has only one image, we delete the entire post
-        if (this.isPhotoOnlyOneOnPost(photo)) {
-          // TODO: refactor to use state (along with 'news-tab.vue')
-          try {
-            const result = await deletePost(photo.post_id);
+        // TODO: refactor to use state (along with 'news-tab.vue')
+        try {
+          const result = await deletePhoto(photo.id);
 
-            if (!result.errors) {
-              this.$store.dispatch("Global/sendToast", {
-                title: "Media deleted",
-                kind: "success",
-                override: true,
-                contrast: false,
-                action: false,
-                autoHide: true,
-              });
-              this.$emit("photoModified");
-            }
-          } catch (error) {
+          if (!result.errors) {
             this.$store.dispatch("Global/sendToast", {
-              title: "Delete Failed",
-              kind: "error",
+              title: "Media deleted",
+              kind: "success",
               override: true,
               contrast: false,
               action: false,
               autoHide: true,
             });
+            this.$emit("photoModified");
           }
-        } else {
-          // TBD pending Ryan's input on how to accomplish removal of a photo from a post
+        } catch (error) {
+          this.$store.dispatch("Global/sendToast", {
+            title: "Delete Failed",
+            kind: "error",
+            override: true,
+            contrast: false,
+            action: false,
+            autoHide: true,
+          });
         }
       }
     },
