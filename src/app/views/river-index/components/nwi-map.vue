@@ -548,11 +548,5 @@ export default {
     }
 
   }
-
-  // I think we have to show the logo for legal reasons, hiding it for demo purposes
-  a.mapboxgl-ctrl-logo,
-  .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
-    display: none !important;
-  }
 }
 </style>
