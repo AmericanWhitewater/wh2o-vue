@@ -73,7 +73,11 @@
           label="Flow"
           class="mb-spacing-md"
         />
-        <cv-select v-model="postFormData.post.metric_id" label="Gage Metric">
+        <cv-select
+          v-if="postFormData.post.reading"
+          v-model="postFormData.post.metric_id"
+          label="Gage Metric"
+        >
           <cv-select-option
             v-for="(g, index) in metricOptions"
             :key="index"
@@ -252,6 +256,17 @@ export default {
     async submitPost() {
       this.formPending = true;
       try {
+        // TODO: get rid of this? not sure how, wrestled with carbon select for a while
+        // before going with this.
+        // carbon select won't allow an option that doesn't set model to ""
+        // but graphql API blows up if we submit an empty string, so need to
+        // convert to null before submission
+        if (
+          this.postFormData.post.metric_id === "" ||
+          this.postFormData.post.metric_id === "null"
+        ) {
+          this.postFormData.post.metric_id = null;
+        }
         // upload the details collected from the form, not just reach id etc.
         await updatePost(this.postFormData, {
           ...this.formData.photo,
