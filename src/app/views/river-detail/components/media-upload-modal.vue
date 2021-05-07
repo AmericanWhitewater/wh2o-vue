@@ -214,6 +214,14 @@ export default {
         }));
     },
   },
+  watch: {
+    media: {
+      immediate: true,
+      handler() {
+        this.setInitialFormData();
+      },
+    },
+  },
   methods: {
     handleShow() {
       this.$emit("modal-shown");
@@ -344,9 +352,6 @@ export default {
         this.formData.fileinput.section_id = this.$route.params.id;
       }
     },
-  },
-  mounted() {
-    this.setInitialFormData();
   },
 };
 </script>
