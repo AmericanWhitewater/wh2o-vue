@@ -1,6 +1,7 @@
 export * from "./createRapid";
 export * from "./createReach";
 export * from "./deleteComment";
+export * from "./deletePhoto";
 export * from "./deletePost";
 export * from "./deleteRapid";
 export * from "./deleteReach";

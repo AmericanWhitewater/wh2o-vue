@@ -41,9 +41,12 @@ export default {
           return post.photos.map((photo) => {
             return {
               ...photo,
+              reach_id: post.reach_id,
+              post_id: post.id,
+              permissions: post.permissions,
               reading: post.reading,
               gauge: post.gauge,
-              metric: post.metric,
+              metric_id: post.metric_id,
               post_date: post.post_date
             }
           })
