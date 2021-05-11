@@ -54,8 +54,8 @@
                         v-if="canDelete(alert)"
                         size="small"
                         kind="danger"
-                        @click.exact="initiateAlertDelete(alert.id)"
-                        @keydown.enter="initiateAlertDelete(alert.id)"
+                        @click.exact="triggerAlertDelete(alert.id)"
+                        @keydown.enter="triggerAlertDelete(alert.id)"
                       >
                         Delete
                       </cv-button>
@@ -66,9 +66,6 @@
                     <p v-if="alert.detail" v-text="alert.detail" />
                     <p v-else>This alert has no message</p>
                   </main>
-                  <!-- <footer>
-                    <cv-button size="small" kind="tertiary" >Share Alert</cv-button>
-                  </footer> -->
                 </div>
               </cv-tile>
             </div>
@@ -151,11 +148,7 @@
       </template>
     </post-update-modal>
     <confirm-delete-modal
-      :visible="deleteModalVisible"
-      :resource-name="deleteTitle"
-      @delete:cancelled="deleteCancelled"
-      @delete:success="deleteModalVisible = false"
-      @delete:confirmed="deleteAlert"
+      ref="confirmDeleteModal"
     />
   </div>
 </template>
@@ -184,7 +177,6 @@ export default {
     updateModalTitle: "New Alert",
     successToastTitle: "Alert Submitted",
     postUpdateModalVisible: false,
-    deleteModalVisible: false,
     activeAlertId: "",
   }),
   computed: {
@@ -203,9 +195,6 @@ export default {
         return this.alerts.find((a) => a.id === this.activeAlertId);
       }
       return null;
-    },
-    deleteTitle() {
-      return this.activeAlert?.title || "Untitled Alert";
     },
   },
   methods: {
@@ -230,19 +219,21 @@ export default {
         autoHide: true,
       });
     },
-    initiateAlertDelete(alertId) {
-      this.activeAlertId = alertId;
-      this.deleteModalVisible = true;
+    getAlert(id) {
+      return this.alerts.find(a => a.id === id);
     },
-    deleteCancelled() {
-      this.activeAlertId = null;
-      this.deleteModalVisible = false;
+    async triggerAlertDelete(alertId) {
+      const ok = await this.$refs.confirmDeleteModal.show({
+        title: 'Delete Alert',
+        message: `Are you sure you want to delete "${this.getAlert(alertId)?.title || "Untitled Alert"}"?`
+      });
+      if (ok) {
+        this.deleteAlert(alertId);
+      }
     },
-    async deleteAlert() {
-      this.deleteModalVisible = false;
-
+    async deleteAlert(alertId) {
       try {
-        const result = await deletePost(this.activeAlertId);
+        const result = await deletePost(alertId);
 
         if (!result.errors) {
           this.$store.dispatch("Global/sendToast", {

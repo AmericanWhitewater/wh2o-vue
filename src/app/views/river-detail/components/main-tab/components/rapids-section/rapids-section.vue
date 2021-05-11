@@ -50,16 +50,12 @@
       :key="currentlyEditingRapid ? currentlyEditingRapid.id : reachId"
       :rapid-id="currentlyEditingRapid ? currentlyEditingRapid.id : null"
       :rapid-modal-visible="rapidModalVisible"
-      @edit:cancelled="closeModal('edit')"
-      @edit:success="closeModal('edit')"
+      @edit:cancelled="closeEditModal()"
+      @edit:success="closeEditModal()"
     />
     <confirm-delete-modal
       v-if="editMode"
-      :visible="rapidDeleteModalVisible"
-      :resource-name="currentlyDeletingRapid ? currentlyDeletingRapid.name : ''"
-      @delete:cancelled="closeModal('delete')"
-      @delete:success="closeModal('delete')"
-      @delete:confirmed="deleteRapid(currentlyDeletingRapid)"
+      ref="confirmDeleteModal"
     />
   </section>
 </template>
@@ -79,9 +75,7 @@ export default {
   },
   data: () => ({
     rapidModalVisible: false,
-    rapidDeleteModalVisible: false,
     currentlyEditingRapid: null,
-    currentlyDeletingRapid: null,
     formData: {
       files: [],
       name: '',
@@ -108,9 +102,14 @@ export default {
       this.currentlyEditingRapid = rapid
       this.rapidModalVisible = true
     },
-    triggerDelete (rapid) {
-      this.currentlyDeletingRapid = rapid;
-      this.rapidDeleteModalVisible = true;
+    async triggerDelete (rapid) {
+      const ok = await this.$refs.confirmDeleteModal.show({
+        title: 'Delete Rapid',
+        message: `Are you sure you want to delete "${rapid.name}"?`
+      });
+      if (ok) {
+        this.deleteRapid(rapid);
+      }
     },
     openModal () {
       if (this.user) {
@@ -127,21 +126,15 @@ export default {
       }
     },
     deleteRapid(rapid) {
-      this.rapidDeleteModalVisible = false;
       this.$store.dispatch("RiverRapids/deleteRapid", rapid.id);
     },
-    closeModal (whichModal) {
+    closeEditModal () {
       // ensure that actual modal hide() lifecycle completes
       // basically, if the key changes too quickly, the modal hide()
       // action doesn't complete so this class "bx--body--with-modal-open"
       // doesn't get removed from the body *which prevents scrolling*
-      if (whichModal === 'edit') {
-        this.rapidModalVisible = false;
-        this.$nextTick(() => { this.currentlyEditingRapid = null })
-      } else if (whichModal === 'delete') {
-        this.rapidDeleteModalVisible = false;
-        this.$nextTick(() => { this.currentlyDeletingRapid = null });
-      }
+      this.rapidModalVisible = false;
+      this.$nextTick(() => { this.currentlyEditingRapid = null })
     }
   }
 }
