@@ -118,6 +118,7 @@ import { updatePost, photoFileUpdate } from "@/app/services";
 import { assetBaseUrl } from "@/app/environment";
 import { mapState } from "vuex";
 import { CvLoading } from "@carbon/vue/src/components/cv-loading";
+import moment from "moment";
 
 function initialState() {
   return {
@@ -319,8 +320,8 @@ export default {
 
         let dateInput;
         if (this.media.photo_date) {
-          const date = new Date(this.media.photo_date);
-          dateInput = date.toISOString().slice(0, 10);
+          const date = moment(this.media.photo_date, "YYYY-MM-DD HH:mm:ss");
+          dateInput = date.format("YYYY-MM-DD");
         }
 
         this.formData.id = this.media.id;
