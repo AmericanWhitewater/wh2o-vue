@@ -33,11 +33,12 @@
               >
                 <td
                   :class="[`${reach.properties.condition}`, 'river-name-section']"
-                  @click.exact="$router.push(`/river-detail/${reach.properties.id}/main`).catch(()=>{})"
                 >
-                  <strong>{{ displayReachTitle(reach) }}</strong>
-                  <br>
-                  {{ reach.properties.section }}
+                  <a :href="`/river-detail/${reach.properties.id}/main`">
+                    <strong>{{ displayReachTitle(reach) }}</strong>
+                    <br >
+                    {{ reach.properties.section }}
+                  </a>
                 </td>
                 <td>{{ displayGaugeReading(reach) }}</td>
                 <td>
@@ -251,3 +252,114 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.bx--data-table-container {
+  min-width: unset;
+  overflow-x: scroll;
+  overflow-y: auto;
+  z-index: 2;
+
+  &.river-index {
+    height: calc(100vh - 189px);
+    overflow-x: unset;
+  }
+}
+
+.bx--data-table.river-table {
+  position: relative;
+
+  th {
+    position: sticky;
+    top: -5px;
+  }
+
+  th,
+  td {
+    vertical-align: middle;
+
+    a {
+      color: #5a6872;
+      font-size: 0.875rem;
+      font-weight: 400;
+      line-height: 1.29;
+      letter-spacing: 0.16px;
+    }
+
+    span {
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .river-name-section {
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .zoom-button {
+    cursor: pointer;
+  }
+
+  &.river-table {
+    tbody {
+      tr.active {
+        background: #e5e5e5;
+
+        td {
+          background: #e5e5e5;
+          border-bottom: 1px solid #e5e5e5;
+          border-top: 1px solid #e5e5e5;
+        }
+
+        td:nth-child(1) {
+          border-left-width: 1.5rem;
+        }
+      }
+
+      tr,
+      td {
+        @include ease;
+        padding-bottom: 0.5rem;
+
+        padding-top: 0.5rem;
+
+        &:nth-child(1) {
+          &[class*="low"],
+          &.low {
+            @include flow-border($flow-low);
+          }
+
+          &[class*="med"],
+          &.med {
+            @include flow-border($flow-medium);
+          }
+
+          &[class*="hi"],
+          &.hi {
+            @include flow-border($flow-high);
+          }
+
+          &[class*="unk"],
+          &.unk {
+            @include flow-border($ui-03);
+          }
+        }
+      }
+    }
+  }
+}
+
+.nwi-map-search.bx--toolbar {
+  .cv-search {
+    .bx--search-close {
+      display: flex;
+    }
+  }
+}
+</style>
