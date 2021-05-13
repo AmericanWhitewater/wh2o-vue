@@ -36,11 +36,11 @@
                     'river-name-section',
                   ]"
                 >
-                  <a :href="`/river-detail/${reach.properties.id}/main`">
+                  <router-link :to="`/river-detail/${reach.properties.id}/main`">
                     <strong>{{ displayReachTitle(reach) }}</strong>
                     <br >
                     {{ reach.properties.section }}
-                  </a>
+                  </router-link>
                 </td>
                 <td>{{ displayGaugeReading(reach) }}</td>
                 <td>
