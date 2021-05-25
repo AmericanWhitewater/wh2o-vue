@@ -8,12 +8,13 @@
             :key="index"
             class="bx--col-sm-12 bx--col-md-4 bx--col-lg-4 bx--col-max-4 mb-spacing-lg"
           >
-            <img
-              :src="imageURI(image, 'thumb')"
-              :alt="formatAltText(image)"
-              class="image-thumbnail"
-              @click.exact="openLightbox(image.id)"
-            >
+            <router-link :to="`gallery/${image.id}`">
+              <img
+                :src="imageURI(image, 'thumb')"
+                :alt="formatAltText(image)"
+                class="image-thumbnail"
+              >
+            </router-link>
           </div>
         </template>
         <template v-else>
@@ -35,15 +36,15 @@
           >
             <cv-button
               id="previous-button"
-              :disabled="currentIndex === 0"
-              @click.exact="cycleImages('previous')"
+              :disabled="!prevImage"
+              @click.exact="navigateTo(prevImage)"
             >
               Previous
             </cv-button>
             <cv-button
               id="next-button"
-              :disabled="currentIndex === images.length - 1"
-              @click.exact="cycleImages"
+              :disabled="!nextImage"
+              @click.exact="navigateTo(nextImage)"
             >
               Next
             </cv-button>
@@ -57,7 +58,7 @@
                 id="close-button"
                 size="small"
                 kind="tertiary"
-                @click.exact="closeLightbox"
+                @click.exact="$router.push({ name: 'gallery-tab' })"
               >
                 Close
               </cv-button>
@@ -200,10 +201,6 @@ export default {
     },
   },
   data: () => ({
-    lightbox: {
-      active: false,
-      activeImage: null,
-    },
     mediaUploadModalVisible: false,
   }),
   computed: {
@@ -213,12 +210,30 @@ export default {
       galleryPosts: (state) => state.RiverGallery.data,
     }),
     activeImage() {
-      if (this.lightbox.activeImage) {
+      if (this.$route.params.photoId) {
         return this.images.find(
-          (image) => image.id === this.lightbox.activeImage
+          (image) => image.id === this.$route.params.photoId
         );
+      } else {
+        return null;
       }
-      return null;
+    },
+    prevImage() {
+      if (this.currentIndex && this.currentIndex > 0) {
+        return this.images[this.currentIndex - 1];
+      } else {
+        return null;
+      }
+    },
+    nextImage() {
+      if (
+        typeof (this.currentIndex === "number") &&
+        this.currentIndex < this.images.length - 1
+      ) {
+        return this.images[this.currentIndex + 1];
+      } else {
+        return null;
+      }
     },
     activeImageRapid() {
       if (this.activeImage && this.activeImage.poi_id) {
@@ -244,7 +259,7 @@ export default {
       return null;
     },
     currentIndex() {
-      if (this.lightbox.activeImage) {
+      if (this.activeImage) {
         return this.images
           .map((image) => {
             return image.id;
@@ -252,6 +267,28 @@ export default {
           .indexOf(this.activeImage.id);
       }
       return null;
+    },
+  },
+  watch: {
+    activeImage(newImage, oldImage) {
+      if (!newImage) {
+        // lightbox closing
+        document.body.classList.remove("bx--body--with-modal-open");
+        this.$refs.lightboxWrapper.style = null;
+      } else if (!oldImage) {
+        // lightbox newly opening
+        /**
+         * @note this prevents scrolling. copied from carbon modal open event
+         * just applies body { overflow: hidden }
+         */
+        document.body.classList.add("bx--body--with-modal-open");
+
+        // this is a really frustrating hack to deal with weird behavior
+        // of position: fixed inside the shadow DOM when laravel mounted
+        this.$nextTick(() => {
+          this.$refs.lightboxWrapper.style = this.shadowDomFixedHeightOffset();
+        });
+      }
     },
   },
   methods: {
@@ -313,35 +350,15 @@ export default {
         return "n/a";
       }
     },
-    openLightbox(imageId) {
-      this.lightbox.active = true;
-      this.lightbox.activeImage = imageId;
-      /**
-       * @note this prevents scrolling. copied from carbon modal open event
-       * just applies body { overflow: hidden }
-       */
-      document.body.classList.add("bx--body--with-modal-open");
-
-      // this is a really frustrating hack to deal with weird behavior
-      // of position: fixed inside the shadow DOM when laravel mounted
-      this.$nextTick(() => {
-        this.$refs.lightboxWrapper.style = this.shadowDomFixedHeightOffset();
-      });
+    // navigates to another photo if passed a photo
+    navigateTo(image) {
+      if (image) {
+        this.$router.push({ params: { photoId: image.id } });
+      }
     },
     closeLightbox() {
-      this.lightbox.active = false;
-      this.lightbox.activeImage = null;
       document.body.classList.remove("bx--body--with-modal-open");
       this.$refs.lightboxWrapper.style = null;
-    },
-    cycleImages(direction) {
-      if (this.images.length > 1) {
-        if (direction === "previous") {
-          this.lightbox.activeImage = this.images[this.currentIndex - 1].id;
-        } else {
-          this.lightbox.activeImage = this.images[this.currentIndex + 1].id;
-        }
-      }
     },
     async triggerPhotoDelete(photo) {
       const ok = await this.$refs.confirmDeleteModal.show({
