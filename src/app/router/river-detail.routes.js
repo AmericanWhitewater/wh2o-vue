@@ -49,7 +49,18 @@ export default [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('@/app/views/river-detail/components/gallery-tab.vue')
+        component: () => import('@/app/views/river-detail/components/gallery-tab.vue'),
+        children: [
+          {
+            path: ':photoId',
+            name: 'photo-detail',
+            meta: {
+              crumbLabel: 'Photo',
+              transitionName: 'slide'
+            },
+            component:  () => import('@/app/views/river-detail/components/image-gallery/image-gallery.vue')
+          }
+        ]
       },
       {
         path: 'accidents',
