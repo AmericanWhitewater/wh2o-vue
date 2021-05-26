@@ -26,7 +26,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(release, index) in releases.slice(0,resultOffset)" :key="index">
+          <tr v-for="(release, index) in releasesFromTodayThenPast.slice(0,resultOffset)" :key="index">
             <td>
               {{formatDate(release.event_date, 'LL')}}
             </td>
@@ -45,7 +45,7 @@
     <cv-button kind="secondary"
                 :disabled="resultOffset >= releases.length"
                 size="small"
-                @click.exact="resultOffset += 12" 
+                @click.exact="resultOffset += 12"
                 @keydown.enter="resultOffset += 12">
       Show More
     </cv-button>
@@ -64,8 +64,15 @@ export default {
       metrics: state => state.RiverGages.data.metrics,
     }),
     releases() {
-      return this.$store.getters['RiverEvents/releases']
+      return this.$store.getters['RiverEvents/releaseDates']
     },
+
+    releasesFromTodayThenPast()
+    {
+
+      return this.$store.getters['RiverEvents/releasesFromTodayThenPast'];
+    },
+
     reachId() {
       return this.$route.params.id
     }
