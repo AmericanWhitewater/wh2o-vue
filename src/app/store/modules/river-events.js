@@ -1,7 +1,6 @@
 import actions from "@/app/store/actions";
 import mutations from "@/app/store/mutations";
 import { getReachEvents } from "@/app/services";
-import { cloneDeep } from "lodash";
 
 export default {
   namespaced: true,
@@ -38,9 +37,8 @@ export default {
             re.dates.map((y) => ({ ...y, event: re }))
           );
         });
-
-        return cloneDeep(
-          intermediate.sort((a, b) => b.event_date.localeCompare(a.event_date))
+        return intermediate.sort((a, b) =>
+          b.event_date.localeCompare(a.event_date)
         );
       }
       return [];
