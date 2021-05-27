@@ -52,42 +52,24 @@ export default {
      * @param getters
      * @return {null}
      */
-    closestReleaseDate: (state, getters) => {
+    nextOrClosestReleaseDate: (state, getters) => {
       if (getters.releaseDates?.length) {
         const todayDate = new Date();
         todayDate.setHours(0, 0, 0);
 
-        let today = todayDate.toISOString();
-        return getters.releaseDates.find((x) => x.event_date < today) ?? null;
+        const today = todayDate.toISOString();
+        const index =
+          getters.releaseDates.findIndex((x) => x.event_date < today) ?? null;
+        //case of next release
+        if (index >= 1) {
+          return getters.releaseDates[index - 1];
+        } //case of last release
+        else if (index == 0) {
+          return getters.releaseDates[index];
+        }
+        //fall through if no index found.
       }
       return null;
-    },
-    // puts today at the top, then counts forward, then counts backward from today
-    // probably how most people would use this is "when is the next release?" at the top,
-    // "when are the next couple releases?" near the top, "when were was the last release?"
-    // scroll down
-    releasesFromTodayThenPast: (state, getters) => {
-      const dates = getters.releaseDates;
-      if (dates && dates.length) {
-        const today = new Date();
-        today.setHours(0, 0, 0);
-
-        let nextDateRecord = getters.closestReleaseDate;
-        if (
-          nextDateRecord &&
-          nextDateRecord.event_date >= today.toISOString()
-        ) {
-          let nextIndex = dates.findIndex((x) => x.id === nextDateRecord.id);
-          let lastIndex = dates.length;
-          return cloneDeep([
-            ...dates.slice(0, nextIndex - 1).reverse(),
-            ...dates.slice(nextIndex + 1, lastIndex),
-          ]);
-        }
-
-        return dates;
-      }
-      return [];
     },
 
     /**
@@ -108,9 +90,7 @@ export default {
           let rv = [];
           // unroll event arrays into rv
           Array.prototype.push.apply(rv, ...results.map((x) => x.data));
-
-          // return a clone of the items.
-          return cloneDeep(rv);
+          return rv;
         }
       }
       //otherwise no events.
@@ -125,7 +105,7 @@ export default {
         );
 
         if (results) {
-          return cloneDeep(results);
+          return results;
         }
       }
 

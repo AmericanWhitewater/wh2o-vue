@@ -26,7 +26,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(release, index) in releasesFromTodayThenPast.slice(0,resultOffset)" :key="index">
+          <tr v-for="(release, index) in releases.slice(0,resultOffset)" :key="index">
             <td>
               {{formatDate(release.event_date, 'LL')}}
             </td>
@@ -65,12 +65,6 @@ export default {
     }),
     releases() {
       return this.$store.getters['RiverEvents/releaseDates']
-    },
-
-    releasesFromTodayThenPast()
-    {
-
-      return this.$store.getters['RiverEvents/releasesFromTodayThenPast'];
     },
 
     reachId() {

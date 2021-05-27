@@ -127,11 +127,11 @@
           </template>
         </tr>
         <!-- "Next/Last" Release + date if the release exists -->
-        <tr v-if="releases && releases.length">
-          <td>{{ getReleaseFieldLabel(releases[0].event_date) }}</td>
+        <tr v-if="releaseDate ">
+          <td>{{ getReleaseFieldLabel(releaseDate.event_date) }}</td>
           <td>
             <router-link :to="`/river-detail/${reachId}/flow`">
-              {{ formatDate(releases[0].event_date, 'LL') }}
+              {{ formatDate(releaseDate.event_date, 'LL') }}
             </router-link>
           </td>
         </tr>
@@ -192,9 +192,12 @@ export default {
       gages: state => state.RiverGages.data?.gauges ?? [],
       metrics: state => state.RiverGages.data?.metrics ?? []
     }),
-    releases () {
-      // the zero-index in this will be the last or next release.
-      return this.$store.getters['RiverEvents/releasesFromTodayThenPast']
+    /**
+     * Event date or null
+     */
+    releaseDate () {
+
+      return this.$store.getters['RiverEvents/nextOrClosestReleaseDate']
     },
 
     editBetaBoxKey () {
