@@ -57,17 +57,19 @@ export default {
         const todayDate = new Date();
         todayDate.setHours(0, 0, 0);
 
-        const today = todayDate.toISOString();
-        const index =
-          getters.releaseDates.findIndex((x) => x.event_date < today) ?? null;
+        const today = todayDate.toISOString().substring(0, 10);
+        const index = getters.releaseDates.findIndex(
+          (x) => x.event_date?.substring(0, 10) < today
+        );
         //case of next release
         if (index >= 1) {
           return getters.releaseDates[index - 1];
-        } //case of last release
+        } //case lots of old releases, show the last one
         else if (index == 0) {
           return getters.releaseDates[index];
         }
-        //fall through if no index found.
+        // every release date new so get the one closest to today's date.
+        return getters.releaseDates[getters.releaseDates.length - 1];
       }
       return null;
     },

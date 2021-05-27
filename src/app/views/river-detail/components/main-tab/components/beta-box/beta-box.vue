@@ -224,9 +224,11 @@ export default {
       if (!releaseDate) return ''
 
       const today = new Date()
-      const eventDate = new Date(releaseDate)
+      today.setHours(0, 0, 0, 0);
+      today.setDate(today.getDate() + 1);
 
-      if (eventDate.setHours(0, 0, 0, 0).valueOf() <= today.setHours(0, 0, 0, 0).valueOf()) {
+
+      if (releaseDate.substring(0,10) < today.toISOString().substring(0,10)) {
         return 'Latest Release'
       }
 
