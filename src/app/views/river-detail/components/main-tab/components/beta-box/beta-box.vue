@@ -6,10 +6,10 @@
           <td>Difficulty</td>
           <td class="river-class">
             <template v-if="!loading">
-              {{ river && river.class ? river.class : "n/a" }}
+              {{ river && river.class ? river.class : 'n/a' }}
             </template>
             <template v-else>
-              <cv-skeleton-text />
+              <cv-skeleton-text/>
             </template>
           </td>
         </tr>
@@ -17,10 +17,10 @@
           <td>Length</td>
           <td class="river-length">
             <template v-if="loading">
-              <cv-skeleton-text />
+              <cv-skeleton-text/>
             </template>
             <template v-else>
-              {{ river && river.length ? river.length + " mi" : "n/a" }}
+              {{ river && river.length ? river.length + ' mi' : 'n/a' }}
             </template>
           </td>
         </tr>
@@ -29,11 +29,11 @@
           <td class="river-avggradient">
             <template v-if="!loading">
               {{
-                river && river.avggradient ? river.avggradient + " fpm" : "n/a"
+                river && river.avggradient ? river.avggradient + ' fpm' : 'n/a'
               }}
             </template>
             <template v-else>
-              <cv-skeleton-text />
+              <cv-skeleton-text/>
             </template>
           </td>
         </tr>
@@ -41,25 +41,25 @@
           <td>Gage</td>
           <template v-if="!loading">
             <td
-              v-if="gages && gages.length && reachGage && reachGage.gauge"
-              class="river-gages"
+                v-if="gages && gages.length && reachGage && reachGage.gauge"
+                class="river-gages"
             >
               <a :href="formatLinkUrl(`content/gauge/detail-new/${reachGage.gauge.id || ''}`)">{{
-                reachGage.gauge && reachGage.gauge.name
-                  ? $titleCase(reachGage.gauge.name)
-                  : "n/a"
-              }}</a>
+                  reachGage.gauge && reachGage.gauge.name
+                      ? $titleCase(reachGage.gauge.name)
+                      : 'n/a'
+                }}</a>
             </td>
             <td
-              v-else
-              class="river-gages"
+                v-else
+                class="river-gages"
             >
               n/a
             </td>
           </template>
           <template v-else>
             <td class="river-gages">
-              <cv-skeleton-text />
+              <cv-skeleton-text/>
             </td>
           </template>
         </tr>
@@ -67,21 +67,21 @@
           <td>Flow Range</td>
           <template v-if="!loading">
             <td
-              v-if="reachGage "
-              class="flow-range"
+                v-if="reachGage "
+                class="flow-range"
             >
               {{ formatFlowRange(reachGage.rmin, reachGage.rmax, reachGage.gauge_metric) }}
             </td>
             <td
-              v-else
-              class="flow-range"
+                v-else
+                class="flow-range"
             >
               n/a
             </td>
           </template>
           <template v-else>
             <td class="flow-range">
-              <cv-skeleton-text />
+              <cv-skeleton-text/>
             </td>
           </template>
         </tr>
@@ -94,43 +94,44 @@
           </td>
           <template v-if="!loading">
             <td
-              v-if="reachGage"
-              class="river-flow-rate"
+                v-if="reachGage"
+                class="river-flow-rate"
             >
               {{ formatReading(reachGage.gauge_reading, reachGage.gauge_metric) }}
               {{ formatMetric(reachGage.gauge_metric) }}
               <cv-tag
-                v-if="reachGage.adjusted_reach_class"
-                kind="cool-gray"
-                :label="reachGage.adjusted_reach_class"
+                  v-if="reachGage.adjusted_reach_class"
+                  kind="cool-gray"
+                  :label="reachGage.adjusted_reach_class"
               />
               <cv-tag
-                v-if="formatTag(reachGage)"
-                :kind="formatTag(reachGage).kind"
-                :label="formatTag(reachGage).label"
+                  v-if="formatTag(reachGage)"
+                  :kind="formatTag(reachGage).kind"
+                  :label="formatTag(reachGage).label"
               />
               <template v-if="reachGage.gauge_perfect">
                 👍
               </template>
             </td>
             <td
-              v-else
-              class="river-flow-rate"
+                v-else
+                class="river-flow-rate"
             >
               n/a
             </td>
           </template>
           <template v-else>
             <td class="river-flow-rate">
-              <cv-skeleton-text />
+              <cv-skeleton-text/>
             </td>
           </template>
         </tr>
-        <tr v-if="releases && releases.length">
-          <td>{{ getReleaseFieldLabel(releases[0].event_date) }}</td>
+        <!-- "Next/Last" Release + date if the release exists -->
+        <tr v-if="releaseDate ">
+          <td>{{ getReleaseFieldLabel(releaseDate.event_date) }}</td>
           <td>
             <router-link :to="`/river-detail/${reachId}/flow`">
-              {{ formatDate(releases[0].event_date, 'LL') }}
+              {{ formatDate(releaseDate.event_date, 'LL') }}
             </router-link>
           </td>
         </tr>
@@ -139,27 +140,27 @@
           <td class="river-last-edited">
             <template v-if="!loading">
               {{
-                river && river.edited ? formatDate(river.edited, "LL") : "n/a"
+                river && river.edited ? formatDate(river.edited, 'LL') : 'n/a'
               }}
             </template>
             <template v-else>
-              <cv-skeleton-text />
+              <cv-skeleton-text/>
             </template>
           </td>
         </tr>
       </table>
     </div>
     <div
-      v-if="editMode"
-      class="edit-overlay"
-      @click="editModalVisible = true"
+        v-if="editMode"
+        class="edit-overlay"
+        @click="editModalVisible = true"
     >
       <h3>Edit Beta Box</h3>
     </div>
     <beta-box-edit-modal
-      v-if="editMode && !loading"
-      :key="editBetaBoxKey"
-      :visible="editModalVisible"
+        v-if="editMode && !loading"
+        :key="editBetaBoxKey"
+        :visible="editModalVisible"
     />
   </div>
 </template>
@@ -189,33 +190,45 @@ export default {
       river: state => state.RiverDetail.data,
       editMode: state => state.Global.editMode,
       gages: state => state.RiverGages.data?.gauges ?? [],
-      metrics: state => state.RiverGages.data?.metrics ??[]
+      metrics: state => state.RiverGages.data?.metrics ?? []
     }),
-    releases() {
-      return this.$store.getters['RiverEvents/releases']
+    /**
+     * Event date or null
+     */
+    releaseDate () {
+
+      return this.$store.getters['RiverEvents/nextOrClosestReleaseDate']
     },
+
     editBetaBoxKey () {
       return `editBetaBox${this.reachId}`
     },
     reachId () {
       return this.$route.params.id
     },
-    reachGage() {
+    reachGage () {
 
       if (this.river && this.river.readingsummary && this.gages) {
-        return this.gages.find(g => g.gauge.id.toString() === this.river.readingsummary.gauge_id.toString());
+        return this.gages.find(g => g.gauge.id.toString() === this.river.readingsummary.gauge_id.toString())
       }
       return this.gages[0]
     }
   },
   methods: {
-    getReleaseFieldLabel(releaseDate) {
-      if(!releaseDate) return ''
+    /**
+     *
+     * @param releaseDate - string e.g. "2007-01-01T11:33:00+0"
+     * @return "Latest" or "Next"
+     */
+    getReleaseFieldLabel (releaseDate) {
+      if (!releaseDate) return ''
 
       const today = new Date()
-      const eventDate = new Date(releaseDate)
+      today.setHours(0, 0, 0, 0);
+      today.setDate(today.getDate() + 1);
 
-      if(eventDate.setHours(0,0,0,0) <= today.setHours(0,0,0,0)) {
+
+      if (releaseDate.substring(0,10) < today.toISOString().substring(0,10)) {
         return 'Latest Release'
       }
 
@@ -223,24 +236,22 @@ export default {
     },
     formatTime (input) {
 
-      if(isNaN(input) )
-      {
+      if (isNaN(input)) {
         return ('')
       }
       return humanReadable(input)
     },
     formatFlowRange (min, max, metricID) {
       if (min && max) {
-        return `${this.formatReading(min,metricID)} – ${this.formatReading(max,metricID)} ${this.formatMetric(metricID)}`
+        return `${this.formatReading(min, metricID)} – ${this.formatReading(max, metricID)} ${this.formatMetric(metricID)}`
       }
       return 'n/a'
     },
-    getMetric(metricID){
-      if(metricID && this.metrics?.length)
-      {
+    getMetric (metricID) {
+      if (metricID && this.metrics?.length) {
         return this.metrics.find(m => m.id === metricID.toString())
       }
-      return null;
+      return null
     },
     formatMetric (metricId) {
       if (this.metrics) {
@@ -248,9 +259,8 @@ export default {
       }
       return 'n/a'
     },
-    formatReading(reading, metricID)
-    {
-      return formatReadingWithFormat(reading,this.getMetric(metricID)?.format || '');
+    formatReading (reading, metricID) {
+      return formatReadingWithFormat(reading, this.getMetric(metricID)?.format || '')
     },
     formatTag (gage) {
       if (gage && gage.rmin && gage.rmax && gage.gauge_reading) {
