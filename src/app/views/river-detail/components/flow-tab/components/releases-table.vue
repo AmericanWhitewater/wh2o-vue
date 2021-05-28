@@ -45,7 +45,7 @@
     <cv-button kind="secondary"
                 :disabled="resultOffset >= releases.length"
                 size="small"
-                @click.exact="resultOffset += 12" 
+                @click.exact="resultOffset += 12"
                 @keydown.enter="resultOffset += 12">
       Show More
     </cv-button>
@@ -64,8 +64,9 @@ export default {
       metrics: state => state.RiverGages.data.metrics,
     }),
     releases() {
-      return this.$store.getters['RiverEvents/releases']
+      return this.$store.getters['RiverEvents/releaseDates']
     },
+
     reachId() {
       return this.$route.params.id
     }
