@@ -8,8 +8,15 @@ export default {
     error: false,
     loading: false,
     data: null,
+    year: new Date().getFullYear(),
+    month: new Date().getMonth()
   },
-  mutations,
+  mutations: {
+    ...mutations,
+    ['SET_CALENDAR_DATE'](state, {year, month}){
+      Object.assign(state, { year: year, month: month })
+    }
+  },
   actions: {
     ...actions,
     async getProperty(context, id) {
@@ -24,6 +31,9 @@ export default {
       } catch (error) {
         context.commit("DATA_ERROR", error);
       }
+    },
+    setCalendarDate(context, date) {
+      context.commit('SET_CALENDAR_DATE', date)
     },
   },
   getters: {
@@ -111,5 +121,45 @@ export default {
 
       return [];
     },
+    calendar: state => {
+      if (state.data) {
+        const results = state.data.filter(item => !!item.data && item.data.length && item.data[0]?.category)
+        if (results.length) { 
+          const monthArr = []
+          const previousMonthsLastdays = []
+          monthArr.push(previousMonthsLastdays)
+          const day = new Date(state.year, state.month, 1);
+          for(let i = day.getDay(); i > 0; i--){
+            const copy = new Date(day)
+            copy.setDate(day.getDate() - i)
+            const release = results[0].data[0].dates.find(release => {
+              return new Date(release.event_date).toDateString() === copy.toDateString() 
+            })
+            previousMonthsLastdays.push({
+              day: copy,
+              release: release !== undefined ? release : "no release"
+            })
+            
+          }
+          while(day.getMonth() === state.month){
+            if(day.getDay() === 0){
+              const week = []
+              monthArr.push(week)
+            }
+            const release = results[0].data[0].dates.find(release => {
+              return new Date(release.event_date).toDateString() === day.toDateString() 
+            })
+            monthArr[monthArr.length - 1].push({ 
+              day: new Date(day), 
+              release: release !== undefined ? release : "no release"
+            })
+            day.setDate(day.getDate() + 1)
+          }
+          return monthArr
+        }
+      }
+      return [[]]
+    }
   },
 };
+
