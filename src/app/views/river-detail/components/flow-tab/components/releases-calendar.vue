@@ -77,10 +77,10 @@
           <tbody  >
             <tr v-for="week in calendar.length" :key="week">
               <td v-for="day in calendar[week - 1].length" :key="day" class="calendar-day" >
-                <p :class="calendar[week - 1][day - 1].release !== 'no release' ? 'release-day' : null">
+                <p :class="calendar[week - 1][day - 1].release !== null ? 'release-day' : null">
                   {{ calendar[week - 1][day - 1].day.getDate() }}
                 </p>
-                <div v-if="calendar[week - 1][day - 1].release !== 'no release'" 
+                <div v-if="calendar[week - 1][day - 1].release !== null" 
                      class="release-info">
                   <div>Release</div>
                   <div>Start Time: {{calendar[week - 1][day - 1].release.start_time}}</div>
