@@ -436,7 +436,9 @@ export default {
       const mapProps = {
         container: this.$refs.mapContainer,
         style: this.baseMapUrl,
-        trackUserLocation: true
+        trackUserLocation: true,
+        touchPitch: false,
+        dragRotate: false
       }
       if (this.startingBounds) {
         mapProps.bounds = this.startingBounds
