@@ -9,12 +9,11 @@ export default {
     loading: false,
     data: null,
     year: new Date().getFullYear(),
-    month: new Date().getMonth()
   },
   mutations: {
     ...mutations,
-    ['SET_CALENDAR_DATE'](state, {year, month}){
-      Object.assign(state, { year: year, month: month })
+    ['SET_CALENDAR_YEAR'](state, {year}){
+      Object.assign(state, { year: year })
     }
   },
   actions: {
@@ -121,45 +120,25 @@ export default {
 
       return [];
     },
-    calendar: (state, getters) => {
+    calendarData: (state, getters) => {
       if(getters.releaseDates){
-        const thisAndPreviousMonthsDates = getters.releaseDates.filter(release => {
-          const date = new Date(release.event_date)
-          if(date.getMonth() === state.month - 1 && date.getFullYear() === state.year) return true
-          if(date.getMonth() === state.month && date.getFullYear() === state.year) return true
-          if(date.getMonth() === 0 && date.getFullYear() === state.year - 1) return true
-        })
-        const monthArr = []
-        const previousMonthsLastdays = []
-        monthArr.push(previousMonthsLastdays)
-        const day = new Date(state.year, state.month, 1);
-        for(let i = day.getDay(); i > 0; i--){
-          const copy = new Date(day)
-          copy.setDate(day.getDate() - i)
-          const release = thisAndPreviousMonthsDates.find(release => {
-            return new Date(release.event_date).toISOString().substring(0,10) === copy.toISOString().substring(0,10) 
+        const thisYearsDates = getters.releaseDates
+        .filter(release => new Date(release.event_date).getFullYear() === state.year)
+        
+        const dataSource = []
+
+        for(let i = 0; i < thisYearsDates.length; i++){
+          dataSource.push({
+            startDate: new Date(thisYearsDates[i].event_date),
+            endDate: new Date(thisYearsDates[i].event_date),
+            startTime: thisYearsDates[i].start_time,
+            endTime: thisYearsDates[i].end_time,
+            minFlow: thisYearsDates[i].min,
+            maxFlow: thisYearsDates[i].min
           })
-          previousMonthsLastdays.push({
-            day: copy,
-            release: release !== undefined ? release : null
-          })
-          
         }
-        while(day.getMonth() === state.month){
-          if(day.getDay() === 0){
-            const week = []
-            monthArr.push(week)
-          }
-          const release = thisAndPreviousMonthsDates.find(release => {
-            return new Date(release.event_date).toISOString().substring(0,10)  === day.toISOString().substring(0,10) 
-          })
-          monthArr[monthArr.length - 1].push({ 
-            day: new Date(day), 
-            release: release !== undefined ? release : null
-          })
-          day.setDate(day.getDate() + 1)
-        }
-        return monthArr
+
+        return dataSource
       }
       
       return [[]]
