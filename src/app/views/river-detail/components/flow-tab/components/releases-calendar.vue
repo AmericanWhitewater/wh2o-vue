@@ -66,7 +66,10 @@ export default {
         e.element.style.position = "relative"
         const tooltip = document.createElement("div")
         tooltip.className = "tooltip"
-
+        if(!(e.element.offsetLeft/window.pageYOffset < .5)){
+          tooltip.style.right = 0
+        }
+      
         for (let i in e.events) {
           const title = document.createElement("h5")
           const hr = document.createElement("hr")
@@ -315,7 +318,6 @@ section {
           border: solid #527653 2px;
           padding: 7px;
           width: max-content;
-          right: 0;
           p {
             margin: 5px;
           }

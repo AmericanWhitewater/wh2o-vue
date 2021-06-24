@@ -203,12 +203,12 @@
     </layout>
     
    
-    <layout v-if="releaseView === 'table'" name="layout-full-width">
+    <layout v-if="releaseView === 1" name="layout-full-width">
       <template #main>
         <releases-table @calendarView="calendarView"/>
       </template>
     </layout>
-    <layout v-if="releaseView === 'calendar'" name="layout-full-width">
+    <layout v-if="releaseView === 2" name="layout-full-width">
       <template #main>
         <releases-calendar @tableView="tableView"/>
       </template>
@@ -240,6 +240,8 @@ import ContentEditor from '@/app/global/components/content-editor/content-editor
 import { getEmptyMetric, getEmptyReading } from '@/app/global/lib/gages'
 import { uniq } from 'lodash/array'
 
+const flowviewCalendar = 2; const flowviewTable = 1;
+
 export default {
   name: 'flow-tab',
   components: {
@@ -264,7 +266,7 @@ export default {
     activeMetricId: '',
     refreshedDescription: '',
     updatedDescription: '',
-    releaseView: 'table'
+    releaseView: 1
   }),
   computed: {
     ...mapState({
@@ -278,7 +280,6 @@ export default {
       gagesError: state => state.RiverGages.error,
       editMode: state => state.Global.editMode,
       metrics: state => state.RiverGages.data?.metrics ?? [],
-
     }),
 
     readingsWithLast () {
@@ -442,7 +443,6 @@ export default {
       this.setActiveGageId(gage.gauge.id)
       this.setActiveMetricId(gage.gauge_metric)
     },
-
     setActiveMetricId (id) {
       this.activeMetricId = id
     },
@@ -450,10 +450,10 @@ export default {
       this.$refs.gageLinkModal.open()
     },
     calendarView () {
-      this.releaseView = "calendar"
+      this.releaseView = flowviewCalendar
     },
     tableView () {
-      this.releaseView = "table"
+      this.releaseView = flowviewTable
     }
   },
   created () {
