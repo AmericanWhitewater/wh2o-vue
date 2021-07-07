@@ -4,6 +4,11 @@
     <h2 class="mb-sm">
       Dam Releases
     </h2>
+    <a
+          @click.exact="calendarView"
+      >
+        Switch to Calendar View
+    </a>
     <div class="bx--data-table-container mb-spacing-md">
       <table class="bx--data-table">
         <thead>
@@ -76,8 +81,16 @@ export default {
       if(!this.metrics || !id) return ''
 
       return this.metrics.find(item => item.id === id.toString()).unit
+    },
+    calendarView(){
+      this.$emit("calendarView")
     }
-  }
+  },
+
 };
 </script>
-
+<style lang="scss">
+  a {
+    cursor:pointer;    
+  }
+</style>
