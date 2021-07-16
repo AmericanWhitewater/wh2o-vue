@@ -8,8 +8,14 @@ export default {
     error: false,
     loading: false,
     data: null,
+    year: new Date().getFullYear(),
   },
-  mutations,
+  mutations: {
+    ...mutations,
+    ['SET_CALENDAR_YEAR'](state, {year}){
+      Object.assign(state, { year: year })
+    }
+  },
   actions: {
     ...actions,
     async getProperty(context, id) {
@@ -24,6 +30,9 @@ export default {
       } catch (error) {
         context.commit("DATA_ERROR", error);
       }
+    },
+    setCalendarDate(context, date) {
+      context.commit('SET_CALENDAR_DATE', date)
     },
   },
   getters: {
@@ -111,5 +120,29 @@ export default {
 
       return [];
     },
+    calendarData: (state, getters) => {
+      if(getters.releaseDates){
+        const thisYearsDates = getters.releaseDates
+        .filter(release => new Date(release.event_date).getFullYear() === state.year)
+        
+        const dataSource = []
+
+        for(let i = 0; i < thisYearsDates.length; i++){
+          dataSource.push({
+            startDate: new Date(thisYearsDates[i].event_date),
+            endDate: new Date(thisYearsDates[i].event_date),
+            startTime: thisYearsDates[i].start_time,
+            endTime: thisYearsDates[i].end_time,
+            minFlow: thisYearsDates[i].min,
+            maxFlow: thisYearsDates[i].min
+          })
+        }
+
+        return dataSource
+      }
+      
+      return [[]]
+    }
   },
 };
+

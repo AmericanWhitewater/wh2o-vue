@@ -436,7 +436,9 @@ export default {
       const mapProps = {
         container: this.$refs.mapContainer,
         style: this.baseMapUrl,
-        trackUserLocation: true
+        trackUserLocation: true,
+        touchPitch: false,
+        dragRotate: false
       }
       if (this.startingBounds) {
         mapProps.bounds = this.startingBounds
@@ -455,11 +457,23 @@ export default {
           })
         }
       }
-      this.map = new mapboxgl.Map(mapProps)
+      this.map = new mapboxgl.Map({
+        ...mapProps,
+        transformRequest: (url, resourceType) => {
+          // requests for tiles need to match session csrf token.
+          if (resourceType === 'Tile' && new URL(nwiTileServer).origin === new URL(url).origin) {
+
+            return ({
+              url,
+              headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name=\'csrf-token\']')?.getAttribute('content') }
+            })
+          }
+        }
+      })
 
       this.map.addControl(
-        new mapboxgl.NavigationControl({ showCompass: true }),
-        'bottom-left'
+          new mapboxgl.NavigationControl({ showCompass: true }),
+          'bottom-left'
       )
 
       this.map.on('styledata', this.loadAWMapData)

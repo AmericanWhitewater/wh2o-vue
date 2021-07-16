@@ -201,9 +201,16 @@
 
       </template>
     </layout>
-    <layout name="layout-full-width">
+    
+   
+    <layout v-if="releaseView === 1" name="layout-full-width">
       <template #main>
-        <releases-table/>
+        <releases-table @calendarView="calendarView"/>
+      </template>
+    </layout>
+    <layout v-if="releaseView === 2" name="layout-full-width">
+      <template #main>
+        <releases-calendar @tableView="tableView"/>
       </template>
     </layout>
     <gage-link-modal ref="gageLinkModal"/>
@@ -219,6 +226,7 @@ import {
   GageReadings,
   LevelLegend,
   ReleasesTable,
+  ReleasesCalendar
 } from './components'
 import GageSummary from './components/gage-summary'
 import { GageChartConfig } from './utils/gage-chart-config'
@@ -231,6 +239,8 @@ import http from '@/app/http'
 import ContentEditor from '@/app/global/components/content-editor/content-editor.vue'
 import { getEmptyMetric, getEmptyReading } from '@/app/global/lib/gages'
 import { uniq } from 'lodash/array'
+
+const flowviewCalendar = 2; const flowviewTable = 1;
 
 export default {
   name: 'flow-tab',
@@ -245,6 +255,7 @@ export default {
     LevelLegend,
     FlowStats,
     ReleasesTable,
+    ReleasesCalendar,
     GageSummary
   },
   mixins: [GageChartConfig, checkWindow],
@@ -255,6 +266,7 @@ export default {
     activeMetricId: '',
     refreshedDescription: '',
     updatedDescription: '',
+    releaseView: 1
   }),
   computed: {
     ...mapState({
@@ -268,7 +280,6 @@ export default {
       gagesError: state => state.RiverGages.error,
       editMode: state => state.Global.editMode,
       metrics: state => state.RiverGages.data?.metrics ?? [],
-
     }),
 
     readingsWithLast () {
@@ -432,12 +443,17 @@ export default {
       this.setActiveGageId(gage.gauge.id)
       this.setActiveMetricId(gage.gauge_metric)
     },
-
     setActiveMetricId (id) {
       this.activeMetricId = id
     },
     handleOpenGageModal () {
       this.$refs.gageLinkModal.open()
+    },
+    calendarView () {
+      this.releaseView = flowviewCalendar
+    },
+    tableView () {
+      this.releaseView = flowviewTable
     }
   },
   created () {
@@ -446,4 +462,5 @@ export default {
 }
 </script>
 <style lang="scss">
+
 </style>
