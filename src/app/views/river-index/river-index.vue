@@ -35,6 +35,13 @@
               @centerReach="centerFeature"
             />
           </template>
+          <div
+            v-if="windowWidth < $options.breakpoints.lg"
+            class="map-table-scroll-indicator bx--none"
+            @click="scrollToStateList"
+          >
+            <cv-button :icon="caretIconSVG" small> See state list </cv-button>
+          </div>
         </div>
       </div>
       <div class="bx--row mb-md mt-md">
@@ -73,6 +80,7 @@
           >
         </div>
       </div>
+      <div ref="stateListScrollTarget" />
       <div class="bx--row">
         <div class="bx--col">
           <nwi-state-list />
@@ -167,7 +175,10 @@ export default {
       }
     },
     scrollToMapTable() {
-      this.$refs.mapTable.scrollIntoViewIfNeeded();
+      this.$refs.mapTable.scrollIntoViewIfNeeded(true);
+    },
+    scrollToStateList() {
+      this.$refs.stateListScrollTarget.scrollIntoViewIfNeeded(true);
     },
   },
 };
@@ -182,12 +193,13 @@ export default {
 #fullscreen-target {
   background-color: #fff;
 }
-div.map-scroll-indicator {
+.map-scroll-indicator,
+.map-table-scroll-indicator {
   display: block;
   width: 100%;
   background: rgba(109, 143, 109, 0.5);
   position: relative;
-  bottom: 6rem;
+  bottom: 5rem;
   text-align: center;
   color: white;
 }
