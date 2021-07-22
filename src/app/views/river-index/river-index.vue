@@ -199,8 +199,14 @@ export default {
   width: 100%;
   background: rgba(109, 143, 109, 0.5);
   position: relative;
-  bottom: 5rem;
   text-align: center;
   color: white;
+}
+
+.map-scroll-indicator {
+  bottom: 5rem;
+}
+.map-table-scroll-indicator {
+  bottom: 0;
 }
 </style>
