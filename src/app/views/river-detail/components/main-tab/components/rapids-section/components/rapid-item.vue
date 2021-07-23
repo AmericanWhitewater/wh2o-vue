@@ -16,7 +16,11 @@
             class="mr-spacing-xs rapid-meta"
             v-text="`Class: ${rapid.difficulty}`"
           />
-          <span v-if="rapid.distance !== null" class="rapid-meta" v-text="`Distance: ${rapid.distance} mi`" />
+          <span
+            v-if="rapid.distance !== null"
+            class="rapid-meta"
+            v-text="`Distance: ${rapid.distance} mi`"
+          />
         </div>
         <rapid-icon-bar
           :character="rapid.character"
@@ -27,11 +31,12 @@
       <hr class="ui-03" >
       <template>
         <div class="bx--row pt-spacing-xs">
-          <div
-            class="bx--col-sm-12 bx--col-lg-5"
-          >
+          <div class="bx--col-sm-12 bx--col-lg-5">
             <div class="outside">
-              <div v-if="rapid.photo && rapid.photo.image" class="inside thumbnail pb-spacing-sm">
+              <div
+                v-if="rapid.photo && rapid.photo.image"
+                class="inside thumbnail pb-spacing-sm"
+              >
                 <img
                   :src="`${baseUrl}${rapid.photo.image.uri.medium}`"
                   :alt="rapid.name"
@@ -40,9 +45,15 @@
               <div v-else class="inside thumbnail pb-spacing-sm">
                 <div class="empty-block">
                   <h6>No Image</h6>
-                  <!-- <a class="bx--link">Upload Media</a> -->
                 </div>
               </div>
+              <cv-button
+                v-if="editMode"
+                size="small"
+                kind="tertiary"
+                @click="triggerImageSelect"
+                >Select image</cv-button
+              >
               <div class="inside">
                 <cv-button
                   v-if="
@@ -72,33 +83,35 @@
                   class="description"
                   v-html="sanitizedDescription.slice(0, characterLimit) + '...'"
                 />
-              
               </template>
               <template v-else>
                 <div class="description" v-html="sanitizedDescription" />
               </template>
-
             </template>
             <template v-else>
               <div class>
                 <p>
                   This rapid does not have a description.
-                   <br >
+                  <br >
                   <template v-if="!user">
-                    <cv-button kind="secondary"
-                               size="small"
-                               class="mt-spacing-md"
-                               @keydown.enter="$router.push('/user/access/login')"
-                               @click.exact="$router.push('/user/access/login')">
+                    <cv-button
+                      kind="secondary"
+                      size="small"
+                      class="mt-spacing-md"
+                      @keydown.enter="$router.push('/user/access/login')"
+                      @click.exact="$router.push('/user/access/login')"
+                    >
                       Log in to add one.
                     </cv-button>
                   </template>
                   <template v-if="user && !editMode">
-                    <cv-button kind="secondary"
-                               size="small"
-                               class="mt-spacing-md"
-                               @keydown.enter="handleToggleEditMode"
-                               @click.exact="handleToggleEditMode">
+                    <cv-button
+                      kind="secondary"
+                      size="small"
+                      class="mt-spacing-md"
+                      @keydown.enter="handleToggleEditMode"
+                      @click.exact="handleToggleEditMode"
+                    >
                       Add Description
                     </cv-button>
                   </template>
@@ -159,6 +172,9 @@ export default {
     },
     triggerDelete() {
       this.$emit("rapid:delete", this.rapid);
+    },
+    triggerImageSelect() {
+      this.$emit("rapid:imageSelect", this.rapid);
     },
     handleToggleEditMode() {
       this.$store.dispatch("Global/toggleEditMode", !this.editMode);

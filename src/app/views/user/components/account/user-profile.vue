@@ -11,7 +11,7 @@
         <div class="bx--row pl-spacing-md pt-spacing-sm pb-spacing-sm">
           <div class="bx--col-auto">
             <user-avatar
-              :image-u-r-i="`${baseUrl}${data.image.uri.big || data.image.uri.medium}`"
+              :avatar-u-r-i="`${baseUrl}${data.image.uri.big || data.image.uri.medium}`"
               :username="data.uname"
             />
           </div>

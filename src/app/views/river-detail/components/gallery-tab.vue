@@ -77,7 +77,6 @@ export default {
     ...mapState({
       loading: (state) => state.RiverGallery.loading,
       error: (state) => state.RiverGallery.error,
-      photos: (state) => state.RiverGallery.data?.data,
       pagination: (state) => state.RiverGallery.pagination,
       rapids: (state) => state.RiverRapids.data,
       user: (state) => state.User.data,
