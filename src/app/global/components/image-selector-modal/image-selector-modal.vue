@@ -8,7 +8,10 @@
   >
     <template slot="title"> Select an Image </template>
     <template slot="content">
-      <div class="flex-row">
+      <template v-if="loading">
+        <utility-block state="loading" class="mb-sm" />
+      </template>
+      <div v-else-if="media" class="flex-row bx--row">
         <div
           v-for="(image, index) in media"
           :key="index"
@@ -27,6 +30,17 @@
           </div>
         </div>
       </div>
+      <div class="bx--row">
+        <div class="bx--col">
+          <table-pagination
+            v-if="pagination"
+            :number-of-items="pagination.total"
+            :page="pagination.currentPage"
+            :pagination="pagination"
+            @change="loadMedia"
+          />
+        </div>
+      </div>
     </template>
     <template slot="secondary-button"> Cancel </template>
     <template slot="primary-button"> OK </template>
@@ -34,11 +48,17 @@
 </template>
 <script>
 import { shadowDomFixedHeightOffset, assetUrl } from "@/app/global/mixins";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
+import UtilityBlock from "@/app/global/components/utility-block/utility-block";
+import TablePagination from "@/app/global/components/table-pagination/table-pagination";
 
 // modal open/close modelled on https://stackabuse.com/how-to-create-a-confirmation-dialogue-in-vue-js/
 export default {
   name: "image-selector-modal",
+  components: {
+    TablePagination,
+    UtilityBlock,
+  },
   mixins: [shadowDomFixedHeightOffset, assetUrl],
   data: () => ({
     resolvePromise: undefined,
@@ -49,19 +69,17 @@ export default {
     ...mapGetters({
       media: "RiverGallery/media",
     }),
+    ...mapState({
+      loading: (state) => state.RiverGallery.loading,
+      pagination: (state) => state.RiverGallery.pagination,
+    }),
     reachId() {
       return this.$route.params.id;
     },
   },
   methods: {
     show() {
-      const data = {
-        reach_id: this.reachId,
-        per_page: 24,
-        page: 1,
-      };
-
-      this.$store.dispatch("RiverGallery/getProperty", data);
+      this.loadMedia();
 
       this.$refs.modalWrapper.show();
 
@@ -69,6 +87,14 @@ export default {
         this.resolvePromise = resolve;
         this.rejectPromise = reject;
       });
+    },
+    loadMedia(opts) {
+      const data = {
+        reach_id: this.reachId,
+        per_page: opts ? opts.length : 10,
+        page: opts ? opts.page : 1,
+      };
+      this.$store.dispatch("RiverGallery/getProperty", data);
     },
     selectImage(image) {
       this.selectedImage = image;
