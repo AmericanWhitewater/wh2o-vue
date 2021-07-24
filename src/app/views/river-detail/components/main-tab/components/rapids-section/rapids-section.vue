@@ -113,13 +113,10 @@ export default {
       });
       if (selectedImage && rapid) {
         // do image selection update
-        // TBD once associating a photo with a rapid is made clear
-        // await this.$store.dispatch("RiverRapids/updateRapid", {
-        //   id: rapid.id,
-        //   ...this.formData,
-        // });
-        // console.log(rapid);
-        // console.log("saving rapid with image");
+        await this.$store.dispatch("RiverRapids/updateRapid", {
+          id: rapid.id,
+          photo_id: selectedImage.id,
+        });
       }
     },
     openModal() {
