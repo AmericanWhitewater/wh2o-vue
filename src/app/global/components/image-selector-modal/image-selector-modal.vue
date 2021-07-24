@@ -78,10 +78,14 @@ export default {
     },
   },
   methods: {
-    show() {
+    show(opts) {
       this.loadMedia();
 
       this.$refs.modalWrapper.show();
+
+      if (opts.selectedImage) {
+        this.selectedImage = opts.selectedImage;
+      }
 
       return new Promise((resolve, reject) => {
         this.resolvePromise = resolve;

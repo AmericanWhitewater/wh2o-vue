@@ -1,6 +1,6 @@
 <template>
   <section class="rapids-section mb-xl">
-    <hr >
+    <hr>
     <h2 class="mb-spacing-md">River Features</h2>
     <cv-button
       v-if="editMode"
@@ -109,7 +109,7 @@ export default {
       // need to pass images and selected image as props
       const selectedImage = await this.$refs.imageSelectorModal.show({
         title: "Select an image",
-        images: this.media,
+        selectedImage: rapid.photo,
       });
       if (selectedImage && rapid) {
         // do image selection update

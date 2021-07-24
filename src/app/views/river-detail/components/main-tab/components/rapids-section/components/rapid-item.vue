@@ -37,10 +37,7 @@
                 v-if="rapid.photo && rapid.photo.image"
                 class="inside thumbnail pb-spacing-sm"
               >
-                <img
-                  :src="`${baseUrl}${rapid.photo.image.uri.medium}`"
-                  :alt="rapid.name"
-                >
+                <img :src="imageURI(rapid.photo, 'medium')" :alt="rapid.name">
               </div>
               <div v-else class="inside thumbnail pb-spacing-sm">
                 <div class="empty-block">
@@ -92,7 +89,7 @@
               <div class>
                 <p>
                   This rapid does not have a description.
-                  <br >
+                  <br>
                   <template v-if="!user">
                     <cv-button
                       kind="secondary"
@@ -126,13 +123,14 @@
 </template>
 <script>
 import RapidIconBar from "./rapid-icon-bar";
-import { baseUrl } from "@/app/environment";
+import { assetUrl } from "@/app/global/mixins";
 
 export default {
   name: "rapids-item",
   components: {
     RapidIconBar,
   },
+  mixins: [assetUrl],
   props: {
     rapid: {
       type: Object,
@@ -150,7 +148,6 @@ export default {
     showConfirmation: false,
     readMoreActive: false,
     characterLimit: 1000,
-    baseUrl: baseUrl,
   }),
   computed: {
     editMode() {
