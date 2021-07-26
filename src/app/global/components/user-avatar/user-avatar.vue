@@ -1,8 +1,8 @@
 <template>
   <div :class="[theme, 'user-avatar']">
-    <template v-if="imageURI">
+    <template v-if="avatarURI">
       <img
-        :src="imageURI"
+        :src="avatarURI"
         alt=""
       >
     </template>
@@ -15,7 +15,7 @@
 export default {
   name: 'user-avatar',
   props: {
-    imageURI: {
+    avatarURI: {
       type: String,
       required: false
     },

@@ -3,7 +3,7 @@
     <div class="bx--row">
       <div class="bx--col-sm-12 bx--col-md-1">
         <user-avatar
-          :image-u-r-i="formatURI(comment.user.image.uri.big)"
+          :avatar-u-r-i="formatURI(comment.user.image.uri.big)"
           :username="comment.user.uname"
         />
       </div>

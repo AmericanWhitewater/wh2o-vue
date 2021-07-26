@@ -3,7 +3,7 @@ import http from "@/app/http"
 export async function updateRapid(data) {
   let rloc;
 
-  if (data.geom.coordinates.length) {
+  if (data.geom && data.geom.coordinates.length) {
     rloc = `${data.geom.coordinates[0]} ${data.geom.coordinates[1]}`;
   }
 
@@ -17,7 +17,24 @@ export async function updateRapid(data) {
                   description,
                   difficulty,
                   distance,
-                  character
+                  character,
+                  photo_id,
+                  photo {
+                    poi_name
+                    subject
+                    description
+                    author
+                    caption
+                    photo_date
+                    image {
+                      uri {
+                        thumb
+                        medium
+                        big
+                      }
+                    }
+                    id
+                  }
                 }
               }
             `,
@@ -29,7 +46,8 @@ export async function updateRapid(data) {
         description: data.description,
         difficulty: data.difficulty,
         distance: data.distance,
-        character: data.character
+        character: data.character,
+        photo_id: data.photo_id
       }
     }
   }).then(res => res.data)
