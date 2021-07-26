@@ -17,6 +17,19 @@ export const assetUrl = {
 
     go(path) {
       this.goToLink(this.formatLinkUrl(path))
+    },
+
+    imageURI(image, size) {
+      const imageSizes = image.image.uri;
+      let desiredImage;
+      if (size === "thumb") {
+        desiredImage = imageSizes.thumb || imageSizes.medium || imageSizes.big;
+      } else if (size === "big") {
+        desiredImage = imageSizes.big || imageSizes.medium || imageSizes.thumb;
+      } else {
+        desiredImage = imageSizes.medium || imageSizes.big || imageSizes.thumb;
+      }
+      return this.assetUrl(desiredImage);
     }
 
   }

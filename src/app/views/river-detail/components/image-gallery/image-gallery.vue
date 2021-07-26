@@ -6,7 +6,10 @@
           <div
             v-for="(image, index) in images"
             :key="index"
-            class="bx--col-sm-12 bx--col-md-4 bx--col-lg-4 bx--col-max-4 mb-spacing-lg"
+            class="
+              bx--col-sm-12 bx--col-md-4 bx--col-lg-4 bx--col-max-4
+              mb-spacing-lg
+            "
           >
             <router-link :to="`gallery/${image.id}`">
               <img
@@ -170,6 +173,7 @@ import { mapState } from "vuex";
 import {
   shadowDomFixedHeightOffset,
   objectPermissionsHelpersMixin,
+  assetUrl,
 } from "@/app/global/mixins";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block.vue";
 import { deletePhoto } from "@/app/services";
@@ -182,7 +186,7 @@ export default {
     UtilityBlock,
     MediaUploadModal: () => import("../media-upload-modal"),
   },
-  mixins: [shadowDomFixedHeightOffset, objectPermissionsHelpersMixin],
+  mixins: [shadowDomFixedHeightOffset, objectPermissionsHelpersMixin, assetUrl],
   props: {
     emptyStateText: {
       type: String,
@@ -295,18 +299,6 @@ export default {
     handleEditSuccess() {
       this.mediaUploadModalVisible = false;
       this.$emit("photoModified");
-    },
-    imageURI(image, size) {
-      const imageSizes = image.image.uri;
-      let desiredImage;
-      if (size === "thumb") {
-        desiredImage = imageSizes.thumb || imageSizes.medium || imageSizes.big;
-      } else if (size === "big") {
-        desiredImage = imageSizes.big || imageSizes.medium || imageSizes.thumb;
-      } else {
-        desiredImage = imageSizes.medium || imageSizes.big || imageSizes.thumb;
-      }
-      return this.assetUrl(desiredImage);
     },
     formatFileSize(image) {
       if (image.image.file_size) {
