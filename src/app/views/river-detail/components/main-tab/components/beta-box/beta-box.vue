@@ -206,12 +206,26 @@ export default {
     reachId () {
       return this.$route.params.id
     },
+    gagesWithGage () {
+      return (this.gages?.filter(x => x.gauge) ?? []).sort((a, b) => {
+        //sort by primary over secondary
+            if (a.delay_update - b.delay_update) {
+              return a.delay_update - b.delay_update
+              // sort by updated last
+            } else {
+              return a.epoch - b.epoch;
+            }
+          }
+        )
+
+    },
+
     reachGage () {
 
       if (this.river && this.river.readingsummary && this.gages) {
         return this.gages.find(g => g.gauge.id.toString() === this.river.readingsummary.gauge_id.toString())
       }
-      return this.gages[0]
+      return this.gagesWithGage[0]
     }
   },
   methods: {
