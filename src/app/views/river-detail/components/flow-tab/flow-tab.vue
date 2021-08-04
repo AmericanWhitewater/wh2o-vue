@@ -21,7 +21,7 @@
 
             <div v-for="(delay,index) in delays" :key="`d${delay}`">
               <h4 v-if="index===0">Primary Reporting</h4>
-              <h4 v-else>Backup #{{index}}} if Primary doesn't update for {{ parseInt(delay / (60 * 60)).toFixed(1) }} hours </h4>
+              <h4 v-else>Backup #{{index}} if Primary doesn't update for {{ parseInt(delay / (60 * 60)).toFixed(1) }} hours </h4>
               <div v-for="gage in gagesWithGage.filter(x=>parseInt(x.delay_update)===parseInt(delay))"
                    :key="`${gage.gauge.id}-${gage.gauge_metric}`">
                 <gage-summary
@@ -201,8 +201,8 @@
 
       </template>
     </layout>
-    
-   
+
+
     <layout v-if="releaseView === 1" name="layout-full-width">
       <template #main>
         <releases-table @calendarView="calendarView"/>
