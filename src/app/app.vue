@@ -4,7 +4,7 @@
     <app-navigation v-if="!laravelDeploy" />
     <transition :name="transitionName">
       <router-view
-        :class="[{'laravel-deploy': laravelDeploy }, $route.name !== 'home' ? 'interior' : null, 'app-main-content']"
+        :class="[{ 'laravel-deploy': laravelDeploy }, 'app-main-content']"
       />
     </transition>
     <app-cookie-banner />
@@ -15,36 +15,36 @@
 import {
   AppToaster,
   AppNavigation,
-  AppCookieBanner
-} from './global/components'
+  AppCookieBanner,
+} from "./global/components";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
     AppNavigation,
     AppToaster,
-    AppCookieBanner
+    AppCookieBanner,
   },
   data: () => ({
-    transitionName: 'fade'
+    transitionName: "fade",
   }),
   computed: {
     laravelDeploy() {
-      return this.$store.state.Global.laravelDeploy
-    }
+      return this.$store.state.Global.laravelDeploy;
+    },
   },
   metaInfo: {
-    title: 'American Whitewater'
+    title: "American Whitewater",
   },
-  created () {
-    this.$store.dispatch('User/getProperty')
-  }
-}
+  created() {
+    this.$store.dispatch("User/getProperty");
+  },
+};
 </script>
 
  <style lang="scss">
 @import "/assets/scss/app";
-@import '~mapbox-gl/dist/mapbox-gl.css';
+@import "~mapbox-gl/dist/mapbox-gl.css";
 
 .slide-left-enter-active,
 .slide-left-leave-active,
