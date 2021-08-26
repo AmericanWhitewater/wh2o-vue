@@ -14,16 +14,11 @@ img {
 
 .app-main-content {
   background-color: $ui-background;
-
-  &.interior {
-
-    @include carbon--breakpoint('sm') {
-      padding-top: $mobile-nav-height;
-    }
-    
+  @include carbon--breakpoint("sm") {
+    padding-top: $mobile-nav-height;
   }
 
   &.laravel-deploy {
-    padding-top: 25px;
+    padding-top: 0;
   }
 }
