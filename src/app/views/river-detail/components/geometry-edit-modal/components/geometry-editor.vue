@@ -1,33 +1,51 @@
 <template>
   <div>
     <section class="geom-editor-instructions">
-      <h5 class="mode-name mb-spacing-xs">
-        Editing in {{ mapEditMode }} Mode
-      </h5>
+      <h5 class="mode-name mb-spacing-xs">Editing in {{ mapEditMode }} Mode</h5>
       <template v-if="geometryMode === 'creating'">
-        <p v-if="mapEditMode ==='automatic'" class="bx--type-caption mb-spacing-sm">
-          Click on the map to create the start and end points of your reach. When you click, your selection will
-          automatically snap to the National Hydrography Dataset (NHD), a USGS dataset of rivers and streams. Once
-          you've defined two points, the map will automatically calculate a path between the two.
+        <p
+          v-if="mapEditMode === 'automatic'"
+          class="bx--type-caption mb-spacing-sm"
+        >
+          Click on the map to create the start and end points of your reach.
+          When you click, your selection will automatically snap to the National
+          Hydrography Dataset (NHD), a USGS dataset of rivers and streams. Once
+          you've defined two points, the map will automatically calculate a path
+          between the two.
         </p>
-        <p v-if="mapEditMode ==='manual'" class="bx--type-caption mb-spacing-sm">
-          Click on the map to start defining a line segment. You can keep adding new vertices by clicking in new places
-          or you can "complete" your line by clicking a second time on the last vertex you created. The dotted pink
-          lines represent the USGS National Hydrography Dataset (NHD), a USGS dataset of rivers and streams.
+        <p
+          v-if="mapEditMode === 'manual'"
+          class="bx--type-caption mb-spacing-sm"
+        >
+          Click on the map to start defining a line segment. You can keep adding
+          new vertices by clicking in new places or you can "complete" your line
+          by clicking a second time on the last vertex you created. The dotted
+          pink lines represent the USGS National Hydrography Dataset (NHD), a
+          USGS dataset of rivers and streams.
         </p>
       </template>
       <template v-else>
-        <p v-if="mapEditMode === 'automatic'" class="bx--type-caption mb-spacing-sm">
-          The dotted lines represent the National Hydrography Dataset (NHD), a USGS dataset of rivers and streams
-          in the United States. To modify the reach, click on either endpoint to "activate" it, then click it
-          again and drag to move elsewhere on the NHD. The points will automatically "snap" to the nearest flowline
-          in the NHD as you drag. A new "geometry" (line) will be generated when you finish moving the point.
+        <p
+          v-if="mapEditMode === 'automatic'"
+          class="bx--type-caption mb-spacing-sm"
+        >
+          The dotted lines represent the National Hydrography Dataset (NHD), a
+          USGS dataset of rivers and streams in the United States. To modify the
+          reach, click on either endpoint to "activate" it, then click it again
+          and drag to move elsewhere on the NHD. The points will automatically
+          "snap" to the nearest flowline in the NHD as you drag. A new
+          "geometry" (line) will be generated when you finish moving the point.
           It isn't saved until you click "Submit" below.
         </p>
-        <p v-if="mapEditMode === 'manual'" class="bx--type-caption mb-spacing-sm">
-          Manual mode allows you to modify the line segment by hand. Click on the line segment to activate editing.
-          A series of vertices will appear along the line. Click on one, then click again and drag to modify the line.
-          Note: if you go back to automatic mode and modify the reach again, your changes will be overwritten.
+        <p
+          v-if="mapEditMode === 'manual'"
+          class="bx--type-caption mb-spacing-sm"
+        >
+          Manual mode allows you to modify the line segment by hand. Click on
+          the line segment to activate editing. A series of vertices will appear
+          along the line. Click on one, then click again and drag to modify the
+          line. Note: if you go back to automatic mode and modify the reach
+          again, your changes will be overwritten.
         </p>
       </template>
       <cv-inline-notification
@@ -38,25 +56,16 @@
         @close="noticeHidden = true"
       />
     </section>
-    <div
-      id="nhd-editor-container"
-    >
+    <div id="nhd-editor-container">
       <div class="nhd-editor-mode-switcher">
         <cv-dropdown v-model="mapEditMode">
-          <cv-dropdown-item value="automatic">
-            Automatic
-          </cv-dropdown-item>
-          <cv-dropdown-item value="manual">
-            Manual
-          </cv-dropdown-item>
+          <cv-dropdown-item value="automatic"> Automatic </cv-dropdown-item>
+          <cv-dropdown-item value="manual"> Manual </cv-dropdown-item>
         </cv-dropdown>
       </div>
-      <div
-        v-if="currentGeom"
-        class="nhd-editor-clear-map"
-      >
+      <div v-if="currentGeom" class="nhd-editor-clear-map">
         <cv-button
-          style="padding:0.5rem 1.25rem;"
+          style="padding: 0.5rem 1.25rem"
           kind="danger"
           size="small"
           @click="clearMap"
@@ -64,283 +73,156 @@
           Clear Map
         </cv-button>
       </div>
-      <div
-        id="nhd-editor"
-        ref="nhdEditor"
-      />
-      <nwi-basemap-toggle
-        :offset-right="false"
-      />
+      <div id="nhd-editor" ref="nhdEditor" />
+      <nwi-basemap-toggle :offset-right="false" />
     </div>
   </div>
 </template>
 
 <script>
-import mapboxgl from 'mapbox-gl'
-import { mapState } from 'vuex'
-import {
-  mapboxAccessToken
-} from '@/app/environment'
-import NwiBasemapToggle from '@/app/views/river-index/components/nwi-basemap-toggle.vue'
-import { mapHelpersMixin } from '@/app/global/mixins'
-import bboxPolygon from '@turf/bbox-polygon'
-import booleanPointInPolygon from '@turf/boolean-point-in-polygon'
-import booleanPointOnLine from '@turf/boolean-point-on-line'
-import lineIntersect from '@turf/line-intersect'
-import lineSlice from '@turf/line-slice'
-import pointToLineDistance from '@turf/point-to-line-distance'
-import { lineString, point } from '@turf/helpers'
-import MapboxDraw from '@mapbox/mapbox-gl-draw'
-import Graph from 'graph-data-structure'
+import mapboxgl from "mapbox-gl";
+import { mapState } from "vuex";
+import { mapboxAccessToken } from "@/app/environment";
+import NwiBasemapToggle from "@/app/views/river-index/components/nwi-basemap-toggle.vue";
+import { mapHelpersMixin } from "@/app/global/mixins";
+import { lineString, point } from "@turf/helpers";
+import MapboxDraw from "@mapbox/mapbox-gl-draw";
 
-import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
+import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 
-import SnapMode from '../utils/SnapMode'
-import DirectSelectMode from '../utils/DirectSelectMode'
-import SnapDrawPointMode from '../utils/SnapDrawPointMode'
-import StaticMode from '@mapbox/mapbox-gl-draw-static-mode'
-import DrawStyles from '../utils/DrawStyles'
+import SnapMode from "../utils/SnapMode";
+import DirectSelectMode from "../utils/DirectSelectMode";
+import SnapDrawPointMode from "../utils/SnapDrawPointMode";
+import StaticMode from "@mapbox/mapbox-gl-draw-static-mode";
+import DrawStyles from "../utils/DrawStyles";
+import { NHDTilesService } from "../utils/NHDTilesService";
 
 const defaultMapModes = {
   editing: {
-    automatic: 'SnapMode',
-    manual: 'DirectSelectMode'
+    automatic: "SnapMode",
+    manual: "DirectSelectMode",
   },
   creating: {
-    automatic: 'SnapDrawPointMode',
-    manual: 'draw_line_string'
-  }
-}
+    automatic: "SnapDrawPointMode",
+    manual: "draw_line_string",
+  },
+};
 
 export default {
-  name: 'geometry-editor',
+  name: "geometry-editor",
   components: {
-    NwiBasemapToggle
+    NwiBasemapToggle,
   },
   mixins: [mapHelpersMixin],
   data: () => ({
     currentGeom: null,
     tooZoomedOut: false,
     noticeHidden: false,
-    mapEditMode: 'automatic',
-    map: null
+    mapEditMode: "automatic",
+    map: null,
   }),
   computed: {
     // these basemaps are different than our other NWI maps because they use the NHD flowlines
     // as a result, we can't use the basemapToggleMixin
-    baseMapUrl () {
-      if (this.mapStyle === 'topo') {
-        return 'mapbox://styles/americanwhitewater/ckbv35azb12w51initt7y2adv'
-      } else if (this.mapStyle === 'satellite') {
-        return 'mapbox://styles/americanwhitewater/ckbv3rzya136r1ioalj7qemof'
+    baseMapUrl() {
+      if (this.mapStyle === "topo") {
+        return "mapbox://styles/americanwhitewater/ckbv35azb12w51initt7y2adv";
+      } else if (this.mapStyle === "satellite") {
+        return "mapbox://styles/americanwhitewater/ckbv3rzya136r1ioalj7qemof";
       } else {
-        return 'mapbox://styles/americanwhitewater/ckbv35azb12w51initt7y2adv'
+        return "mapbox://styles/americanwhitewater/ckbv35azb12w51initt7y2adv";
       }
     },
-    reachStart () {
-      const geom = this.currentGeom || this.reachGeom
-      return geom ? point(geom.geometry.coordinates[0]) : null
+    reachStart() {
+      const geom = this.currentGeom || this.reachGeom;
+      return geom ? point(geom.geometry.coordinates[0]) : null;
     },
-    reachEnd () {
-      const geom = this.currentGeom || this.reachGeom
-      return geom ? point(geom.geometry.coordinates.slice(-1)[0]) : null
+    reachEnd() {
+      const geom = this.currentGeom || this.reachGeom;
+      return geom ? point(geom.geometry.coordinates.slice(-1)[0]) : null;
     },
     ...mapState({
-      mapStyle: state => state.RiverIndex.mapStyle
+      mapStyle: (state) => state.RiverIndex.mapStyle,
     }),
-    startingBounds () {
-      return this.reachStartingBounds
+    startingBounds() {
+      return this.reachStartingBounds;
     },
     // determines whether we need to add elements to the map
     // or edit ones that already exist
-    geometryMode () {
+    geometryMode() {
       if (this.currentGeom) {
-        return 'editing'
+        return "editing";
       } else {
-        return 'creating'
+        return "creating";
       }
-    }
+    },
   },
   watch: {
-    mapStyle () {
-      this.map.setStyle(this.baseMapUrl)
+    mapStyle() {
+      this.map.setStyle(this.baseMapUrl);
     },
-    currentGeom (v, old) {
+    currentGeom(v, old) {
       if (v !== old) {
-        this.$emit('updatedGeom', v)
+        this.$emit("updatedGeom", v);
       }
     },
     // turns off editing when user is too zoomed out
-    tooZoomedOut (v) {
+    tooZoomedOut(v) {
       if (v) {
         // deactivate editing
-        this.draw.changeMode('StaticMode')
+        this.draw.changeMode("StaticMode");
       } else {
         // switch back to currently active mode
-        this.setMapEditingMode(this.mapEditMode)
+        this.setMapEditingMode(this.mapEditMode);
       }
     },
-    geometryMode () {
-      this.setMapEditingMode(this.mapEditMode)
+    geometryMode() {
+      this.setMapEditingMode(this.mapEditMode);
     },
-    mapEditMode (v) {
-      this.setMapEditingMode(v)
-    }
+    mapEditMode(v) {
+      this.setMapEditingMode(v);
+    },
   },
   methods: {
-    clearMap () {
-      if (confirm('Are you sure?')) {
-        this.currentGeom = null
-        this.draw.deleteAll()
+    clearMap() {
+      if (confirm("Are you sure?")) {
+        this.currentGeom = null;
+        this.draw.deleteAll();
       }
     },
-    getNhdLines () {
-      const cacheKey = this.map.getBounds().toString()
-      if (this.linesCache[cacheKey] == null) {
-        this.linesCache = {}
-        const mapFeatures = this.map.queryRenderedFeatures({ layers: ['nhdflowline'] })
-        const lines = mapFeatures
-          // mapFeatures sometimes has multiLineStrings in it that need to be split for our graph algorithm
-          .flatMap(x => {
-            if (x.geometry.type === 'MultiLineString') {
-              return x.geometry.coordinates.map((coords, index) => (
-                lineString(coords, x.properties, { id: `${x.id}-${index}`})
-              ))
-            } else {
-              return x
-            }
-          })
-          .filter(x => (
-            x.geometry.type === 'LineString' &&
-            // this is mostly taken from Seth's code, we may want to revisit?
-            // ideally improves speed by excluding some NHD flowlines from graph
-            ![31800, 33601, 33603, 34300, 34305, 34306, 36400, 40300, 40307, 40308, 40309, 44500, 46100, 48400, 48500, 56800].includes(x.properties.fcode)
-          ))
-        this.linesCache[cacheKey] = lines
+    calculateGeom() {
+      if (this.mapEditMode === "automatic") {
+        return this.NHDTilesService.calculateGeom(
+          this.draw.get("reachStart"),
+          this.draw.get("reachEnd"),
+          this.currentGeom
+        );
       }
-      return this.linesCache[cacheKey]
     },
-    getNhdGraph () {
-      const graphCacheKey = this.map.getBounds().toString()
-      if (this.graphCache[graphCacheKey] == null) {
-        this.graphCache = {}
-
-        const graph = new Graph()
-        const lines = this.getNhdLines()
-        lines.forEach((x) => { graph.addNode(x.id.toString()) })
-
-        lines.forEach((x, index) => {
-          lines.slice(index + 1).forEach(y => {
-            if (x !== y &&
-                (booleanPointOnLine(y.geometry.coordinates[0], x) ||
-                 booleanPointOnLine(y.geometry.coordinates.slice(-1)[0], x))) {
-              graph.addEdge(x.id.toString(), y.id.toString())
-              graph.addEdge(y.id.toString(), x.id.toString())
-            }
-          })
-        })
-        this.graphCache[graphCacheKey] = graph
-      }
-      return this.graphCache[graphCacheKey]
-    },
-    calculateGeom () {
-      const graph = this.getNhdGraph()
-      const lines = this.getNhdLines()
-      const reachStart = this.draw.get('reachStart')
-      const reachEnd = this.draw.get('reachEnd')
-
-      // if the start and finish are not both visible in the current viewport,
-      // we need to operate differently, so detect that here:
-      const mapBbox = bboxPolygon(this.map.getBounds().toArray().flat())
-      const intersection = lineIntersect(this.currentGeom, mapBbox)
-
-      let newSegmentStart
-      let newSegmentEnd
-      let whichPointIsOutside
-      let intersectionPoint
-      // geom intersects viewport!
-      if (intersection.features.length) {
-        intersectionPoint = intersection.features[0]
-        // determine whether reachStart or reachEnd is in the viewport
-        if (booleanPointInPolygon(reachStart, mapBbox)) {
-          whichPointIsOutside = 'end'
-          newSegmentStart = reachStart
-          newSegmentEnd = intersectionPoint
-        } else {
-          whichPointIsOutside = 'start'
-          newSegmentStart = intersectionPoint
-          newSegmentEnd = reachEnd
-        }
-      } else {
-        newSegmentStart = reachStart
-        newSegmentEnd = reachEnd
-      }
-
-      // use the segment start/end to generate a new path between those segments
-      // turf has a bug with nearestPointOnLine:
-      // https://github.com/Turfjs/turf/issues/1726
-      // so we're working around it by checking distance from line
-      // with a very small threshhold
-      const putinSegment = lines.find(x =>
-        (pointToLineDistance(newSegmentStart, x) < 0.01)
-      )
-      const takeoutSegment = lines.find(x =>
-        (pointToLineDistance(newSegmentEnd, x) < 0.01)
-      )
-      const shortestPath = graph.shortestPath(
-        putinSegment.id.toString(),
-        takeoutSegment.id.toString()
-      )
-      const coords = []
-      shortestPath.forEach(x => {
-        const l = lines.find(l => (l.id.toString() === x))
-        coords.push(...l.geometry.coordinates)
-      })
-      const initialLine = lineString(coords)
-      const slicedLine = lineSlice(newSegmentStart, newSegmentEnd, initialLine)
-
-      let newGeom
-
-      // if the segment extends beyond the viewport, merge it with the original geom, sliced at the viewport overlap
-      if (whichPointIsOutside) {
-        let fullCoords
-        if (whichPointIsOutside === 'end') {
-          const originalSegment = lineSlice(intersectionPoint, reachEnd, this.currentGeom)
-          fullCoords = [...slicedLine.geometry.coordinates, ...originalSegment.geometry.coordinates]
-        } else {
-          const originalSegment = lineSlice(reachStart, intersectionPoint, this.currentGeom)
-          fullCoords = [...originalSegment.geometry.coordinates, ...slicedLine.geometry.coordinates]
-        }
-        newGeom = lineString(fullCoords)
-      } else {
-        newGeom = slicedLine
-      }
-      return newGeom
-    },
-    setMapEditingMode (mode) {
+    setMapEditingMode(mode) {
       // if we're too zoomed out, editing mode is StaticMode
       // and we should keep it that way
       if (!this.tooZoomedOut) {
-        const newMode = defaultMapModes[this.geometryMode][mode]
-        const opts = {}
-        if (newMode === 'DirectSelectMode') {
-          opts.featureId = 'reachGeom'
+        const newMode = defaultMapModes[this.geometryMode][mode];
+        const opts = {};
+        if (newMode === "DirectSelectMode") {
+          opts.featureId = "reachGeom";
         }
-        this.draw.changeMode(newMode, opts)
+        this.draw.changeMode(newMode, opts);
       }
 
-      this.renderDrawFeatures()
+      this.renderDrawFeatures();
     },
-    mountMap () {
-      mapboxgl.accessToken = mapboxAccessToken
+    mountMap() {
+      mapboxgl.accessToken = mapboxAccessToken;
       const mapProps = {
         container: this.$refs.nhdEditor,
         style: this.baseMapUrl,
         bounds: this.startingBounds,
         fitBoundsOptions: { padding: 80 },
-        minZoom: 5
-      }
-      this.map = new mapboxgl.Map(mapProps)
+        minZoom: 5,
+      };
+      this.map = new mapboxgl.Map(mapProps);
 
       this.draw = new MapboxDraw({
         displayControlsDefault: false,
@@ -354,131 +236,138 @@ export default {
           SnapDrawPointMode: {
             ...SnapDrawPointMode,
             config: {
-              layers: ['nhdflowline']
-            }
+              layers: ["nhdflowline"],
+            },
           },
           SnapMode: {
             ...SnapMode,
             config: {
-              layers: ['nhdflowline']
-            }
-          }
-        }
-      })
-      this.map.addControl(this.draw, 'top-left')
+              layers: ["nhdflowline"],
+            },
+          },
+        },
+      });
+      this.map.addControl(this.draw, "top-left");
 
-      this.map.on('load', () => {
-        this.renderDrawFeatures()
-        this.setTooZoomedOut()
-      })
+      this.map.on("load", () => {
+        this.renderDrawFeatures();
+        this.setTooZoomedOut();
+      });
 
-      this.map.on('zoomend', this.setTooZoomedOut)
+      this.map.on("zoomend", this.setTooZoomedOut);
 
-      this.map.on('draw.update', () => {
-        if (this.mapEditMode === 'automatic') {
+      this.map.on("draw.update", () => {
+        if (this.mapEditMode === "automatic") {
           // calculate the new line "automatically"
-          this.currentGeom = this.calculateGeom()
+          this.currentGeom = this.calculateGeom();
           // render the new line
-          this.draw.delete('reachGeom')
+          this.draw.delete("reachGeom");
           this.draw.add({
-            id: 'reachGeom',
-            ...this.currentGeom
-          })
+            id: "reachGeom",
+            ...this.currentGeom,
+          });
         } else {
           // get the new geom from draw, where it was set
-          this.currentGeom = this.draw.get('reachGeom')
+          this.currentGeom = this.draw.get("reachGeom");
         }
-      })
+      });
 
       // for creating a new reach (or adding geom to one that doesn't have it)
-      this.map.on('draw.create', (e) => {
-        if (this.mapEditMode === 'manual') {
-          const newReach = e.features[0]
+      this.map.on("draw.create", (e) => {
+        if (this.mapEditMode === "manual") {
+          const newReach = e.features[0];
           // need to copy to new feature with 'reachGeom' id to function with
           // existing logic
-          this.draw.delete(newReach.id)
-          newReach.id = 'reachGeom'
-          this.draw.add(newReach)
-          this.currentGeom = newReach
-        } else { // automatic
+          this.draw.delete(newReach.id);
+          newReach.id = "reachGeom";
+          this.draw.add(newReach);
+          this.currentGeom = newReach;
+        } else {
+          // automatic
           // in automatic mode, user is prompted to create two points (snapped to NHD)
           // then calculateGeom() is called
-          const newPoint = e.features[0]
-          this.draw.delete(newPoint.id)
+          const newPoint = e.features[0];
+          this.draw.delete(newPoint.id);
 
-          if (!this.draw.get('reachStart')) {
-            newPoint.id = 'reachStart'
-          } else if (!this.draw.get('reachEnd')) {
-            newPoint.id = 'reachEnd'
+          if (!this.draw.get("reachStart")) {
+            newPoint.id = "reachStart";
+          } else if (!this.draw.get("reachEnd")) {
+            newPoint.id = "reachEnd";
           } else {
-            return
+            return;
           }
-          this.draw.add(newPoint)
+          this.draw.add(newPoint);
 
-          if (this.draw.get('reachStart') && this.draw.get('reachEnd')) {
+          if (this.draw.get("reachStart") && this.draw.get("reachEnd")) {
             // add straight line from start to finish to facilitate geom calculation
-            this.currentGeom = lineString([
-              this.draw.get('reachStart').geometry.coordinates,
-              this.draw.get('reachEnd').geometry.coordinates], {}, { id: 'reachGeom' })
+            this.currentGeom = lineString(
+              [
+                this.draw.get("reachStart").geometry.coordinates,
+                this.draw.get("reachEnd").geometry.coordinates,
+              ],
+              {},
+              { id: "reachGeom" }
+            );
 
-            this.currentGeom = this.calculateGeom()
+            this.currentGeom = this.calculateGeom();
             // render the new line
             this.draw.add({
-              id: 'reachGeom',
-              ...this.currentGeom
-            })
+              id: "reachGeom",
+              ...this.currentGeom,
+            });
           }
         }
-      })
+      });
     },
-    setTooZoomedOut () {
-      const zoom = this.map.getZoom()
+    setTooZoomedOut() {
+      const zoom = this.map.getZoom();
       // we can't support NHD calculations when too zoomed out computationally
       // plus, you can't really accurately "snap" to the NHD when you aren't zoomed
       // in enough to see it. So at low zooms, put the map in static mode and display
       // a notice
       if (zoom < 11) {
-        this.tooZoomedOut = true
+        this.tooZoomedOut = true;
       } else {
-        this.tooZoomedOut = false
+        this.tooZoomedOut = false;
       }
     },
-    renderDrawFeatures () {
+    renderDrawFeatures() {
       if (!this.currentGeom) {
-        return
+        return;
       }
-      const features = []
+      const features = [];
       // endpoints don't get rendered in "manual" mode
-      if (this.mapEditMode === 'automatic') {
-        features.push({
-          id: 'reachStart',
-          ...this.reachStart
-        }, {
-          id: 'reachEnd',
-          ...this.reachEnd
-        })
+      if (this.mapEditMode === "automatic") {
+        features.push(
+          {
+            id: "reachStart",
+            ...this.reachStart,
+          },
+          {
+            id: "reachEnd",
+            ...this.reachEnd,
+          }
+        );
       }
       features.push({
-        id: 'reachGeom',
-        ...this.currentGeom
-      })
+        id: "reachGeom",
+        ...this.currentGeom,
+      });
       this.draw.set({
-        type: 'FeatureCollection',
-        features: features
-      })
-    }
+        type: "FeatureCollection",
+        features: features,
+      });
+    },
   },
-  mounted () {
+  mounted() {
     // ensure that reachGeom prop is established
     this.$nextTick(() => {
-      this.currentGeom = this.reachGeom
+      this.currentGeom = this.reachGeom;
       if (mapboxAccessToken) {
-        this.mountMap()
+        this.mountMap();
+        this.NHDTilesService = new NHDTilesService(this.map);
       }
-    })
-
-    this.graphCache = {}
-    this.linesCache = {}
-  }
-}
+    });
+  },
+};
 </script>
