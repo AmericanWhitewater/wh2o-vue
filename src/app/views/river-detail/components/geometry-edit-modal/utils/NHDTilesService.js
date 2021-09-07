@@ -7,6 +7,8 @@ import pointToLineDistance from '@turf/point-to-line-distance'
 import { lineString } from '@turf/helpers'
 import Graph from 'graph-data-structure'
 
+// this is a class so it can be initialized with the mapboxgljs map object
+// then continue to use it to populate and refresh the graph and lines caches
 class NHDTilesService {
   constructor(map) {
     this.map = map;
@@ -49,14 +51,13 @@ class NHDTilesService {
       // use the segment start/end to generate a new path between those segments
       // turf has a bug with nearestPointOnLine:
       // https://github.com/Turfjs/turf/issues/1726
-      // so we're working around it by checking distance from line
-      // with a very small threshhold
-      const putinSegment = lines.find(x =>
-        (pointToLineDistance(newSegmentStart, x) < 0.01)
-      )
-      const takeoutSegment = lines.find(x =>
-        (pointToLineDistance(newSegmentEnd, x) < 0.01)
-      )
+      // so we're identifying the line closest using pointToLineDistance instead
+      const putinDistances = lines.map(x => pointToLineDistance(newSegmentStart, x));
+      const putinSegment = lines[putinDistances.indexOf(Math.min(...putinDistances))];
+
+      const takeoutDistances = lines.map(x => pointToLineDistance(newSegmentEnd, x));
+      const takeoutSegment = lines[takeoutDistances.indexOf(Math.min(...takeoutDistances))];
+      
       const shortestPath = graph.shortestPath(
         putinSegment.id.toString(),
         takeoutSegment.id.toString()

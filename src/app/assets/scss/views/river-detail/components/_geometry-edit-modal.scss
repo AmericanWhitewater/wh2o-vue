@@ -1,65 +1,7 @@
 .geometry-editor-modal {
-
   .bx--modal-content {
     margin-bottom: 0;
     padding-left: 0;
     padding-right: 0;
   }
-
-  .geom-editor-instructions {
-    padding: 1rem;
-
-    h5.mode-name {
-      text-transform: capitalize;
-    }
-  }
-}
-
-#nhd-editor-container {
-  height: 70vh;
-  position: relative;
-  width: 100%;
-
-  .nhd-editor-mode-switcher {
-    background-color: #fff;
-    border-radius: 3px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    display: block;
-    left: 0.5rem;
-    position: absolute;
-    top: 0.5rem;
-    width: 10rem;
-    z-index: 1;
-
-    .bx--dropdown {
-      border-radius: 3px;
-    }
-
-    button.bx--dropdown-text {
-      cursor: pointer;
-    }
-  }
-
-  .nhd-editor-clear-map {
-    border-radius: 3px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    display: block;
-    left: 11rem;
-    position: absolute;
-    top: 0.5rem;
-    z-index: 1;
-
-    button {
-      padding: 3px;
-      text-align: center;
-      vertical-align: text-top;
-      width: unset;
-    }
-  }
-}
-
-#nhd-editor {
-  background-color: $ui-03;
-  height: 100%;
-  width: 100%;
 }

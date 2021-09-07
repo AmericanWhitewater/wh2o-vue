@@ -1,12 +1,18 @@
 <template>
   <div>
     <section class="geom-editor-instructions">
+      <p class="bx--type-caption">
+        "Automatic - AW" uses an AW-developed algorithm to calculate the river's
+        path on top of the USGS NHD dataset. "Automatic - NLDI" uses a USGS
+        interface called the "Network-Linked Data Index" -- it works reliably
+        but can be less accurate than the AW algorithm. Manual allows you to
+        define reaches by hand.
+      </p>
+      <hr >
       <h5 class="mode-name mb-spacing-xs">Editing in {{ mapEditMode }} Mode</h5>
+
       <template v-if="geometryMode === 'creating'">
-        <p
-          v-if="mapEditMode === 'automatic'"
-          class="bx--type-caption mb-spacing-sm"
-        >
+        <p v-if="isAutomaticMode" class="bx--type-caption mb-spacing-sm">
           Click on the map to create the start and end points of your reach.
           When you click, your selection will automatically snap to the National
           Hydrography Dataset (NHD), a USGS dataset of rivers and streams. Once
@@ -25,10 +31,7 @@
         </p>
       </template>
       <template v-else>
-        <p
-          v-if="mapEditMode === 'automatic'"
-          class="bx--type-caption mb-spacing-sm"
-        >
+        <p v-if="isAutomaticMode" class="bx--type-caption mb-spacing-sm">
           The dotted lines represent the National Hydrography Dataset (NHD), a
           USGS dataset of rivers and streams in the United States. To modify the
           reach, click on either endpoint to "activate" it, then click it again
@@ -59,7 +62,12 @@
     <div id="nhd-editor-container">
       <div class="nhd-editor-mode-switcher">
         <cv-dropdown v-model="mapEditMode">
-          <cv-dropdown-item value="automatic"> Automatic </cv-dropdown-item>
+          <cv-dropdown-item value="automatic">
+            Automatic - AW
+          </cv-dropdown-item>
+          <cv-dropdown-item value="automatic-nldi">
+            Automatic - NLDI
+          </cv-dropdown-item>
           <cv-dropdown-item value="manual"> Manual </cv-dropdown-item>
         </cv-dropdown>
       </div>
@@ -72,6 +80,9 @@
         >
           Clear Map
         </cv-button>
+      </div>
+      <div v-if="calculating" class="calculating-indicator">
+        <cv-inline-loading class="bx--tag--blue bx--tag" state="loading" />
       </div>
       <div id="nhd-editor" ref="nhdEditor" />
       <nwi-basemap-toggle :offset-right="false" />
@@ -96,14 +107,17 @@ import SnapDrawPointMode from "../utils/SnapDrawPointMode";
 import StaticMode from "@mapbox/mapbox-gl-draw-static-mode";
 import DrawStyles from "../utils/DrawStyles";
 import { NHDTilesService } from "../utils/NHDTilesService";
+import NLDIService from "../utils/NLDIService";
 
 const defaultMapModes = {
   editing: {
     automatic: "SnapMode",
+    "automatic-nldi": "SnapMode",
     manual: "DirectSelectMode",
   },
   creating: {
     automatic: "SnapDrawPointMode",
+    "automatic-nldi": "SnapDrawPointMode",
     manual: "draw_line_string",
   },
 };
@@ -119,6 +133,7 @@ export default {
     tooZoomedOut: false,
     noticeHidden: false,
     mapEditMode: "automatic",
+    calculating: false,
     map: null,
   }),
   computed: {
@@ -156,6 +171,12 @@ export default {
         return "creating";
       }
     },
+    isAutomaticMode() {
+      return (
+        this.mapEditMode === "automatic" ||
+        this.mapEditMode === "automatic-nldi"
+      );
+    },
   },
   watch: {
     mapStyle() {
@@ -184,20 +205,38 @@ export default {
     },
   },
   methods: {
+    setInitialEditMode() {
+      if (this.geometryMode === "editing") {
+        // if editing, default to AW algorithm
+        this.mapEditMode = "automatic";
+      } else if (this.geometryMode === "creating") {
+        // if new reach, default to NLDI
+        this.mapEditMode = "automatic-nldi";
+      }
+    },
     clearMap() {
       if (confirm("Are you sure?")) {
         this.currentGeom = null;
         this.draw.deleteAll();
       }
     },
-    calculateGeom() {
+    async calculateGeom() {
+      this.calculating = true;
+      let newGeom;
+      const reachStart = this.draw.get("reachStart");
+      const reachEnd = this.draw.get("reachEnd");
       if (this.mapEditMode === "automatic") {
-        return this.NHDTilesService.calculateGeom(
-          this.draw.get("reachStart"),
-          this.draw.get("reachEnd"),
+        newGeom = this.NHDTilesService.calculateGeom(
+          reachStart,
+          reachEnd,
           this.currentGeom
         );
+      } else if (this.mapEditMode === "automatic-nldi") {
+        newGeom = await NLDIService.calculateGeom(reachStart, reachEnd);
       }
+
+      this.calculating = false;
+      return newGeom;
     },
     setMapEditingMode(mode) {
       // if we're too zoomed out, editing mode is StaticMode
@@ -256,10 +295,10 @@ export default {
 
       this.map.on("zoomend", this.setTooZoomedOut);
 
-      this.map.on("draw.update", () => {
-        if (this.mapEditMode === "automatic") {
+      this.map.on("draw.update", async () => {
+        if (this.isAutomaticMode) {
           // calculate the new line "automatically"
-          this.currentGeom = this.calculateGeom();
+          this.currentGeom = await this.calculateGeom();
           // render the new line
           this.draw.delete("reachGeom");
           this.draw.add({
@@ -273,7 +312,7 @@ export default {
       });
 
       // for creating a new reach (or adding geom to one that doesn't have it)
-      this.map.on("draw.create", (e) => {
+      this.map.on("draw.create", async (e) => {
         if (this.mapEditMode === "manual") {
           const newReach = e.features[0];
           // need to copy to new feature with 'reachGeom' id to function with
@@ -309,7 +348,7 @@ export default {
               { id: "reachGeom" }
             );
 
-            this.currentGeom = this.calculateGeom();
+            this.currentGeom = await this.calculateGeom();
             // render the new line
             this.draw.add({
               id: "reachGeom",
@@ -337,7 +376,7 @@ export default {
       }
       const features = [];
       // endpoints don't get rendered in "manual" mode
-      if (this.mapEditMode === "automatic") {
+      if (this.isAutomaticMode) {
         features.push(
           {
             id: "reachStart",
@@ -366,8 +405,78 @@ export default {
       if (mapboxAccessToken) {
         this.mountMap();
         this.NHDTilesService = new NHDTilesService(this.map);
+        this.setInitialEditMode();
       }
     });
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.calculating-indicator {
+  border-radius: 3px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  position: absolute;
+  z-index: 1;
+}
+.geom-editor-instructions {
+  padding: 0 1rem;
+
+  h5.mode-name {
+    text-transform: capitalize;
+  }
+  max-width: 80%;
+}
+
+#nhd-editor-container {
+  height: 70vh;
+  position: relative;
+  width: 100%;
+
+  .nhd-editor-mode-switcher {
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    display: block;
+    left: 0.5rem;
+    position: absolute;
+    top: 0.5rem;
+    width: 11rem;
+    z-index: 1;
+
+    .bx--dropdown {
+      border-radius: 3px;
+    }
+
+    button.bx--dropdown-text {
+      cursor: pointer;
+    }
+  }
+
+  .nhd-editor-clear-map {
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    display: block;
+    left: 12rem;
+    position: absolute;
+    top: 0.5rem;
+    z-index: 1;
+
+    button {
+      padding: 3px;
+      text-align: center;
+      vertical-align: text-top;
+      width: unset;
+    }
+  }
+}
+
+#nhd-editor {
+  background-color: $ui-03;
+  height: 100%;
+  width: 100%;
+}
+</style>
