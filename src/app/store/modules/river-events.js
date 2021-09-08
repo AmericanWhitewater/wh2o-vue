@@ -142,6 +142,22 @@ export default {
       }
       
       return [[]]
+    },
+
+    documents: (state, getters) => {
+      if (state && state.data && state.data.length) {
+        const results = state.data.filter(
+          (item) =>
+            !!item.data &&
+            item.data.length &&
+            item.data[0]?.__typename === "Document"
+        );
+        const response = results[0]?.data
+        if (response?.length) {
+          return response;
+        }
+      }
+      return [];
     }
   },
 };

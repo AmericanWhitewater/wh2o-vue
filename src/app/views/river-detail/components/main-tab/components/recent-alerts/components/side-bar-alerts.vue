@@ -72,7 +72,7 @@ export default {
       alerts: state => state.RiverAlerts.data,
       loading: state => state.RiverAlerts.loading,
       error: state => state.RiverAlerts.error,
-      user: state => state.User.data
+      user: state => state.User.data,
     })
   },
   watch: {
