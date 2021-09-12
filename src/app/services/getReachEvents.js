@@ -15,6 +15,16 @@ export async function getReachEvents(id) {
                 title,
                   dates { id,event_date,min,max,id,metric_id,start_time,end_time }      
                 }
+                ... on Document {
+                  
+                  short_name
+                  abstract
+                  document
+                  uri
+                  author {
+                    name
+                  }
+                }
               }
             }
         }`

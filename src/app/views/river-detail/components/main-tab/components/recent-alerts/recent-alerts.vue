@@ -11,7 +11,7 @@
       <div class="bx--col">
         <sidebar-alerts
           v-if="loading || (alerts && alerts.length)"
-        />boobs
+        />
         <sidebar-articles
           v-if="loading || (articles && articles.length)"
         />
@@ -38,12 +38,15 @@ export default {
   },
   computed: {
     ...mapState({
-      loading: state => state.RiverAlerts.loading && state.RiverEvents.loading,
+      loading: state => state.RiverAlerts.loading,
       alerts: state => state.RiverAlerts.data,
       articles: state => state.RiverNews.data,
       projects: state => state.RiverProjects.data,
-      documents: state => state.RiverEvents.documents
+    
     }),
+    documents() {
+      return this.$store.getters['RiverEvents/documents']
+    },
     anythingPresent () {
       return (this.alerts && this.alerts.length) || (this.articles && this.articles.length) || (this.projects && this.projects.length)|| (this.documents && this.documents.length)
     }
@@ -53,6 +56,7 @@ export default {
       this.$store.dispatch('RiverAlerts/getProperty', this.$route.params.id)
       this.$store.dispatch('RiverNews/getProperty', this.$route.params.id)
       this.$store.dispatch('RiverProjects/getProperty', this.$route.params.id)
+      this.$store.dispatch('RiverEvents/getProperty', this.$route.params.id)
     }
   }
 }
