@@ -1,7 +1,13 @@
-import actions from '@/app/store/actions'
-import mutations from '@/app/store/mutations'
+import actions from "@/app/store/actions";
+import mutations from "@/app/store/mutations";
 import wkx from "wkx";
-import {updateReach, getReach, deleteReach, updateReachGeom} from "@/app/services"
+import {
+  updateReach,
+  getReach,
+  deleteReach,
+  updateReachGeom,
+} from "@/app/services";
+import { canCreateReach } from "@/app/services/canCreateReach";
 
 export default {
   namespaced: true,
@@ -9,75 +15,81 @@ export default {
     error: false,
     loading: false,
     data: null,
-    refId: null
+    refId: null,
   },
   mutations: {
     ...mutations,
-    ['GEOM_UPDATE_REQUEST'](state) {
+    ["GEOM_UPDATE_REQUEST"](state) {
       Object.assign(state, { loading: true, error: null });
     },
 
-    ['GEOM_UPDATE_SUCCESS'](state, payload) {
+    ["GEOM_UPDATE_SUCCESS"](state, payload) {
       state.loading = false;
       Object.assign(state.data, {
         ...payload,
       });
     },
 
-    ['GEOM_UPDATE_ERROR'](state, payload) {
+    ["GEOM_UPDATE_ERROR"](state, payload) {
       Object.assign(state, {
         error: payload || true,
         loading: false,
       });
     },
-    ['DATA_RESET'](state) {
+    ["DATA_RESET"](state) {
       Object.assign(state, {
         error: false,
         loading: false,
         data: null,
-        refId: null
-      })
+        refId: null,
+      });
     },
 
-    ['DELETE_REQUEST']() { },
+    ["DELETE_REQUEST"]() {},
 
-    ['DELETE_SUCCESS']() { }
+    ["DELETE_SUCCESS"]() {},
   },
   actions: {
     ...actions,
-    async updateProperty(context, data) {
-      context.commit('DATA_REQUEST');
+    async canCreateReach(context, data) {
       try {
-        const result = await updateReach(data)
-        
-        if (result.errors) {
-          context.commit('DATA_ERROR', result.errors);
-        } else {
+        return await canCreateReach(data);
+      } catch (e) {
+        return false;
+      }
+    },
+    async updateProperty(context, data) {
+      context.commit("DATA_REQUEST");
+      try {
+        const result = await updateReach(data);
 
-          context.commit('DATA_SUCCESS', result.data.reachUpdate);
+        if (result.errors) {
+          context.commit("DATA_ERROR", result.errors);
+        } else {
+          context.commit("DATA_SUCCESS", result.data.reachUpdate);
         }
       } catch (error) {
-        context.commit('DATA_ERROR', error);
+        context.commit("DATA_ERROR", error);
       } finally {
-        context.commit('DATA_LOADING', false)
+        context.commit("DATA_LOADING", false);
       }
     },
     async getProperty(context, id) {
       try {
-        context.commit('DATA_REQUEST')
-        const result = await getReach(id)
+        context.commit("DATA_REQUEST");
+        const result = await getReach(id);
 
         if (!result.errors) {
-          context.commit('DATA_SUCCESS', result.data.reach)
+          context.commit("DATA_SUCCESS", result.data.reach);
         } else {
-          context.commit('DATA_ERROR', 'error')
+          context.commit("DATA_ERROR", "error");
         }
       } catch (error) {
-        context.commit('DATA_ERROR', error)
+        context.commit("DATA_ERROR", error);
       }
     },
     async updateGeom(context, geomData) {
-      context.commit('GEOM_UPDATE_REQUEST');
+      context.commit("GEOM_UPDATE_REQUEST");
 
       const payloadData = {
         geom: wkx.Geometry.parseGeoJSON(geomData.geom).toWkt(),
@@ -89,45 +101,49 @@ export default {
       const data = {
         id: context.state.data.id,
         ...payloadData,
-      }
+      };
 
       try {
-        const result = await updateReachGeom(data)
+        const result = await updateReachGeom(data);
 
         if (result.data.errors) {
-          context.commit('GEOM_UPDATE_ERROR', result.data.errors);
+          context.commit("GEOM_UPDATE_ERROR", result.data.errors);
         } else {
-          context.commit('GEOM_UPDATE_SUCCESS', result.data.reachUpdate);
-          context.dispatch('Global/sendToast', {
-            title: 'Geometry updated. It may take up to 5 minutes for your changes to show in the national map.',
-            kind: 'info',
-            override: true,
-            contrast: false,
-            action: false,
-            autoHide: true
-          }, { root: true });
+          context.commit("GEOM_UPDATE_SUCCESS", result.data.reachUpdate);
+          context.dispatch(
+            "Global/sendToast",
+            {
+              title:
+                "Geometry updated. It may take up to 5 minutes for your changes to show in the national map.",
+              kind: "info",
+              override: true,
+              contrast: false,
+              action: false,
+              autoHide: true,
+            },
+            { root: true }
+          );
         }
-
       } catch (error) {
-        context.commit('GEOM_UPDATE_ERROR', error);
+        context.commit("GEOM_UPDATE_ERROR", error);
       }
     },
     async deleteReach(context, data) {
-      context.commit('DELETE_REQUEST', data);
+      context.commit("DELETE_REQUEST", data);
       try {
-        const result = await deleteReach(data)
+        const result = await deleteReach(data);
         if (!result.errors) {
-          context.commit('DELETE_SUCCESS', result.data.reachDelete);
-          context.commit('DATA_RESET');
+          context.commit("DELETE_SUCCESS", result.data.reachDelete);
+          context.commit("DATA_RESET");
         } else {
-          context.commit('DATA_ERROR', "error");
+          context.commit("DATA_ERROR", "error");
         }
       } catch (error) {
-        context.commit('DATA_ERROR', error)
+        context.commit("DATA_ERROR", error);
       }
     },
     dataReset(context) {
-      context.commit('DATA_RESET')
-    }
-  }
-}
+      context.commit("DATA_RESET");
+    },
+  },
+};
