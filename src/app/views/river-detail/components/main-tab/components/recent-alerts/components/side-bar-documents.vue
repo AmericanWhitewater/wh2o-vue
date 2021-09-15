@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar-documents">
+  <div class="sidebar-documents bx--col-sm-12 bx--col-md-4">
     <span class="header-row">
       <h4 class="mb-spacing-sm">Documents</h4>
     </span>
@@ -12,16 +12,14 @@
       </div>
     </template>
     <template v-else-if="document">
-      <div
-       
-      >
-        <div class="bx--col-sm-12 bx--col-md-5">
+    
+        <div>
           <div class="pt-spacing-sm pb-spacing-md">
             <cv-link :href="document.document">
               <h5
                 class="mb-spacing-2xs"
               >
-                {{ $titleCase(document.short_name) }}
+                {{ $titleCase(document.title) }}
               </h5>
             </cv-link>
 
@@ -52,7 +50,16 @@
             />
           </div>
         </div>
-      </div>
+       <cv-button
+        kind="secondary"
+        size="small"
+        class="mb-spacing-sm"
+        :disabled="loading"
+        @click.exact="$router.push(`/river-detail/${$route.params.id}/news`)"
+      >
+        See More
+      </cv-button>
+
     </template>
     <template v-else>
       <p class="no-documents-msg">
@@ -77,7 +84,7 @@ export default {
         return {...allDocuments[0], isOnlyDocument: true}
       }
       console.log(allDocuments)
-      const withTitle = allDocuments.find(document => document.short_name)
+      const withTitle = allDocuments.find(document => document.title)
       if(withTitle !== undefined){
         return withTitle
       }
@@ -89,7 +96,11 @@ export default {
       if(withUri !== undefined){
         return withUri
       }
-      return allDocuments.find(document => !(document && Object.keys(document).length === 0 && document.constructor === Object))
+      const lastResort = allDocuments.find(document => !(document && Object.keys(document).length === 0 && document.constructor === Object))
+      if(lastResort){
+        return lastResort
+      }
+      return null
     },
   },
   methods: {
