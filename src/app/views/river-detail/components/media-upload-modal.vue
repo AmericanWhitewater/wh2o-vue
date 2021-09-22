@@ -305,6 +305,7 @@ export default {
         });
       } finally {
         Object.assign(this.$data, initialState());
+        this.setInitialFormData();
       }
     },
     setFile(input) {
