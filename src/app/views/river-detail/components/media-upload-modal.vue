@@ -233,6 +233,7 @@ export default {
       this.submitPost();
     },
     handleCancel() {
+      this.setInitialFormData();
       this.$emit("upload:cancelled");
     },
     async uploadFile() {
@@ -304,7 +305,6 @@ export default {
           kind: "error",
         });
       } finally {
-        Object.assign(this.$data, initialState());
         this.setInitialFormData();
       }
     },
@@ -315,6 +315,8 @@ export default {
       }
     },
     setInitialFormData() {
+      Object.assign(this.$data, initialState());
+
       // if media is set, this is an edit request
       if (this.media) {
         this.previewUrls = [this.media.image.uri.medium];
