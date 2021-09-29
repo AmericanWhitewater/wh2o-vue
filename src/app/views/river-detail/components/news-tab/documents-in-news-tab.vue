@@ -69,12 +69,17 @@ export default {
   },
   computed: {
     ...mapState({
+      data:(state) => state.RiverEvents.data,
       documentsLoading: (state) => state.RiverEvents.loading,
       documentsError: (state) => state.RiverEvents.error,
       
     }),
     documents() {
-      return this.$store.getters['RiverEvents/documents']
+      if(this.data){
+        return this.$store.getters['RiverEvents/documents']
+      } else {
+        return []
+      }
     },
   },
   created() {
