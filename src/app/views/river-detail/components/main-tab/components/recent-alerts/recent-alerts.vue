@@ -45,7 +45,11 @@ export default {
     
     }),
     documents() {
-      return this.$store.getters['RiverEvents/documents']
+      if(this.$store.getters){
+        return this.$store.getters['RiverEvents/documents']
+      } else {
+        return []
+      }
     },
     anythingPresent () {
       return (this.alerts && this.alerts.length) || (this.articles && this.articles.length) || (this.projects && this.projects.length)|| (this.documents && this.documents.length)
