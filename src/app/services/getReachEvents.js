@@ -20,6 +20,7 @@ export async function getReachEvents(id) {
                   short_name
                   abstract
                   document
+                  title
                   uri
                   author {
                     name

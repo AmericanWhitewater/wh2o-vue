@@ -69,7 +69,10 @@
   </div>
 </template>
 <script>
+
+
 import { baseUrl } from "@/app/environment";
+
 import { mapState } from 'vuex'
 export default {
   name: 'sidebar-documents',
@@ -83,7 +86,6 @@ export default {
       if(allDocuments.length === 1){
         return {...allDocuments[0], isOnlyDocument: true}
       }
-      console.log(allDocuments)
       const withTitle = allDocuments.find(document => document.title)
       if(withTitle !== undefined){
         return withTitle

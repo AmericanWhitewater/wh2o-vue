@@ -59,11 +59,13 @@
 
 import { mapState } from "vuex";
 import { Layout } from "@/app/global/layout";
+import UtilityBlock from "@/app/global/components/utility-block/utility-block";
 
 export default {
   name: "documents-in-news-tab",
   components: {
     Layout,
+    UtilityBlock
   },
   computed: {
     ...mapState({

@@ -41,7 +41,11 @@ export default {
       error: state => state.Documents.error,
     }),
     documents() {
-      return this.$store.getters['RiverEvents/documents']
+      if(this.data){
+        return this.$store.getters['RiverEvents/documents']
+      } else {
+        return []
+      }
     }
   },
   
