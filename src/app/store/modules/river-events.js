@@ -144,7 +144,7 @@ export default {
       return [[]]
     },
 
-    documents: (state, getters) => {
+    documents: (state) => {
       if (state && state.data && state.data.length) {
         const results = state.data.filter(
           (item) =>
