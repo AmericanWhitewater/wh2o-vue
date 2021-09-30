@@ -1,5 +1,6 @@
 import NewsTab from '@/app/views/river-detail/components/news-tab/news-tab.vue'
 import ArticleCard from '@/app/global/components/article-card/article-card'
+import DocumentsInNewsTab from '@/app/views/river-detail/components/news-tab/documents-in-news-tab.vue'
 import { createWrapper } from '@/utils'
 
 jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
@@ -43,7 +44,8 @@ const options = {
       }
     },
     stubs: {
-      ArticleCard
+      ArticleCard,
+      DocumentsInNewsTab: "<div class='stub'></div>"
     }
   }
 }

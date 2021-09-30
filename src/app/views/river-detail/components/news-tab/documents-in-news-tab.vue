@@ -75,7 +75,7 @@ export default {
       
     }),
     documents() {
-      if(this.data){
+      if(this && this.data){
         return this.$store.getters['RiverEvents/documents']
       } else {
         return []
