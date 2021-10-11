@@ -10,7 +10,6 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "bit": "bit config set analytics_reporting false && bit config set error_reporting false && bit config set ssh_key_file docker/bit-key && bit remote add ssh://bit@bit.americanwhitewater.org:/opt/bit/aw && bit import 'aw/*' && bit link",
     "build:modern": "vue-cli-service build --modern",
     "test:coverage": "vue-cli-service test:unit --coverage",
     "snapshot:update": " vue-cli-service test:unit --updateSnapshot",
@@ -20,14 +19,6 @@
   },
   "dependencies": {
     "@apollo/client": "^3.2.1",
-    "@bit/aw.client.apollo": "1",
-    "@bit/aw.models.article": "1",
-    "@bit/aw.models.image": "1",
-    "@bit/aw.models.metrics": "1",
-    "@bit/aw.models.permission": "1",
-    "@bit/aw.models.post": "1",
-    "@bit/aw.models.user": "1",
-    "@bit/aw.utility.genid": "1",
     "@carbon/grid": "^10.10.2",
     "@carbon/icons-vue": "^10.11.0",
     "@carbon/vue": "^2.31.0",
@@ -56,6 +47,7 @@
     "carbon-components": "^10.11.2",
     "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
+    "dotenv": "^10.0.0",
     "geojson-rbush": "^3.1.2",
     "graph-data-structure": "^1.12.0",
     "graphql": "^15.3.0",
@@ -135,11 +127,6 @@
     "pre-commit": "lint-staged && npm run test:unit"
   },
   "homepage": "https://github.com/drewalth/wh2o-vue",
-  "bit": {
-    "env": {},
-    "componentsDefaultDirectory": "components/{name}",
-    "packageManager": "npm"
-  },
   "publishConfig": {
     "registry": "https://npm.americanwhitewater.org"
   }
