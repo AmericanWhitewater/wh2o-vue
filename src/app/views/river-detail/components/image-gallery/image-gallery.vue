@@ -78,7 +78,6 @@ export default {
     ...mapState({
       river: (state) => state.RiverDetail.data,
       rapids: (state) => state.RiverRapids.data,
-      galleryPosts: (state) => state.RiverGallery.data,
     }),
     activeImage() {
       if (this.$route.params.imageId) {
