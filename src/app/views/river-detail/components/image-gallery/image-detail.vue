@@ -273,3 +273,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.bx--btn-set .bx--btn:not(:focus) {
+  box-shadow: none;
+}
+</style>
