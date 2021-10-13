@@ -91,7 +91,7 @@ export default {
   },
   watch: {
     activeImage: {
-      handler: (newImage, oldImage) => {
+      handler: function (newImage, oldImage) {
         if (!newImage) {
           // lightbox closing
           document.body.classList.remove("bx--body--with-modal-open");
