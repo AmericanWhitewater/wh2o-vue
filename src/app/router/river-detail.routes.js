@@ -50,17 +50,16 @@ export default [
           transitionName: 'slide'
         },
         component: () => import('@/app/views/river-detail/components/gallery-tab.vue'),
-        children: [
+      },
+      {
+        path: 'gallery/:imageId',
+        name: 'gallery-detail',
+        meta: 
           {
-            path: ':photoId',
-            name: 'photo-detail',
-            meta: {
-              crumbLabel: 'Photo',
-              transitionName: 'slide'
-            },
-            component:  () => import('@/app/views/river-detail/components/image-gallery/image-gallery.vue')
-          }
-        ]
+            crumbLabel: 'Photo',
+            transitionName: 'slide'
+          },
+          component: () => import('@/app/views/river-detail/components/gallery-tab.vue'),
       },
       {
         path: 'accidents',
