@@ -8,7 +8,7 @@
           <div
             id="nwi-map-banner"
             ref="nwiMapBanner"
-            style="height:400px;"
+            style="height:400px; cursor: pointer;"
           />
           <nwi-basemap-toggle
             :offset-right="false"
