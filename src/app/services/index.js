@@ -28,6 +28,8 @@ export * from "./getReachGallery";
 export * from "./getReachMap";
 export * from "./getReachNews";
 export * from "./getReachProjects";
+export * from "./getReport";
+export * from "./getReachReports";
 export * from "./getStateList";
 export * from "./getUser";
 export * from "./photoFileUpdate";

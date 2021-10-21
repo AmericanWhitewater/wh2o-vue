@@ -43,6 +43,15 @@ export default [
         component: () => import('@/app/views/river-detail/components/map-tab/map-tab.vue')
       },
       {
+        path: 'reports',
+        name: 'reports-tab',
+        meta: {
+          crumbLabel: 'Trip Reports',
+          transitionName: 'slide'
+        },
+        component: () => import('@/app/views/river-detail/components/reports-tab/reports-tab.vue')
+      },
+      {
         path: 'gallery',
         name: 'gallery-tab',
         meta: {

@@ -264,6 +264,7 @@ export default {
     main: "General",
     flow: "Flow",
     map: "Map",
+    reports: "Reports",
     gallery: "Gallery",
     news: "News",
     accidents: "Accidents",
