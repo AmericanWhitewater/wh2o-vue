@@ -2,11 +2,7 @@
   <div v-if="report.detail" class="mb-sm report bx--tile">
     <div class="bx--row">
       <div class="bx--col-sm-12 bx--col-md-1">
-        <user-avatar
-          theme="light"
-          :image-u-r-i="avatarURI(report.user)"
-          :username="report.user.uname"
-        />
+        <user-avatar theme="light" :user="report.user" />
       </div>
       <div class="bx--col-sm-3 bx--col-lg-11">
         <h5 class="mr-spacing-sm" v-text="report.user.uname" />
@@ -50,7 +46,6 @@ import {
   shadowDomFixedHeightOffset,
   objectPermissionsHelpersMixin,
 } from "@/app/global/mixins";
-import { baseUrl } from "@/app/environment";
 export default {
   name: "report-preview",
   components: {
@@ -73,14 +68,6 @@ export default {
     },
     reachId() {
       return this.$route.params.id;
-    },
-  },
-  methods: {
-    avatarURI(user) {
-      if (user && user.image) {
-        return `${baseUrl}${user.image.uri.big}`;
-      }
-      return null;
     },
   },
 };

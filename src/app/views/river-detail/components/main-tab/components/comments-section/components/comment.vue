@@ -2,10 +2,7 @@
   <div class="mb-sm comment">
     <div class="bx--row">
       <div class="bx--col-sm-12 bx--col-md-1">
-        <user-avatar
-          :avatar-u-r-i="formatURI(comment.user.image.uri.big)"
-          :username="comment.user.name"
-        />
+        <user-avatar :user="comment.user" />
       </div>
       <div class="bx--col-sm-3 bx--col-lg-11">
         <h5 class="mr-spacing-sm" v-text="comment.user.name" />
@@ -72,7 +69,6 @@ import {
   objectPermissionsHelpersMixin,
 } from "@/app/global/mixins";
 import { deleteComment } from "@/app/services";
-import { baseUrl } from "@/app/environment";
 
 export default {
   name: "comment",
@@ -105,12 +101,6 @@ export default {
     },
   },
   methods: {
-    formatURI(input) {
-      if (input) {
-        return `${baseUrl}${input}`;
-      }
-      return null;
-    },
     async handleDelete(commentId) {
       this.deleteCommentModalVisible = false;
 
