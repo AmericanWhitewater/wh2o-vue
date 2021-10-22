@@ -86,21 +86,26 @@
               theme="dark"
               hide-text
             />
-            <transition :name="transitionName" mode="out-in">
-              <map-banner
-                v-if="activeTabKey !== 'map' && !loading && reach"
-                :title="reach.river"
-                :subtitle="reach.section"
-              >
-                <div
-                  v-if="editMode"
-                  class="edit-overlay"
-                  @click="editGeometryModalVisible = true"
+            <div
+              @click.exact="$router.push(`/river-detail/${$route.params.id}/map`)"
+            >
+              <transition :name="transitionName" mode="out-in">
+                <map-banner
+                
+                  v-if="activeTabKey !== 'map' && !loading && reach"
+                  :title="reach.river"
+                  :subtitle="reach.section"
                 >
-                  <h3>Edit Reach Geometry</h3>
-                </div>
-              </map-banner>
-            </transition>
+                  <div
+                    v-if="editMode"
+                    class="edit-overlay"
+                    @click="editGeometryModalVisible = true"
+                  >
+                    <h3>Edit Reach Geometry</h3>
+                  </div>
+                </map-banner>
+              </transition>
+            </div>
             <geometry-edit-modal
               v-if="editMode && !loading"
               :visible="editGeometryModalVisible"
