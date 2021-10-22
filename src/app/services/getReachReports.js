@@ -7,10 +7,10 @@ export async function getReachReports(id) {
       query: `
         query {
             posts(
-              first: 20,
               reach_id: "${id}",
-              post_types:[JOURNAL,GAUGE_OBSERVATION],
+              first: 100,
               page: 1,
+              post_types:[JOURNAL],
               orderBy: {field: REVISION, order: DESC}
               ) {
                  data {
@@ -21,7 +21,19 @@ export async function getReachReports(id) {
                     post_date
                     reach_id
                     photos {
-                      url
+                      poi_name
+                      subject
+                      description
+                      author
+                      caption
+                      photo_date
+                      image {
+                        uri {
+                          thumb
+                          medium
+                          big
+                        }
+                      }
                     }
                     user {
                       uid

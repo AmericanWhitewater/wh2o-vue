@@ -1,10 +1,14 @@
 <template>
-  <div v-if="report.detail" class="mb-sm report bx--tile">
+  <div
+    v-if="report.detail"
+    class="mb-sm report-preview bx--tile"
+    @click="displayReport(report)"
+  >
     <div class="bx--row">
       <div class="bx--col-sm-12 bx--col-md-1">
         <user-avatar theme="light" :user="report.user" />
       </div>
-      <div class="bx--col-sm-3 bx--col-lg-11">
+      <div class="bx--col-sm-12 bx--col-md-3">
         <h5 class="mr-spacing-sm" v-text="report.user.uname" />
         <h6
           class="date mb-spacing-xs"
@@ -24,18 +28,14 @@
           <hr v-if="editMode" >
         </template>
       </div>
-    </div>
-    <div class="bx--row">
-      <div class="bx--col bx--offset-md-1">
-        <div class="detail mb-spacing-md" v-html="report.detail" />
-        <cv-button
-          kind="secondary"
-          size="small"
-          @click="$router.push(`/report-detail/${report.id}`)"
-          @keydown.enter="$router.push(`/report-detail/${report.id}`)"
+      <div
+        v-if="report.photos && report.photos[0]"
+        class="bx--col-sm-12 bx--col-md-3 inside thumbnail pb-spacing-sm"
+      >
+        <img
+          :src="imageURI(report.photos[0], 'medium')"
+          :alt="report.photos[0].caption"
         >
-          See Full Report
-        </cv-button>
       </div>
     </div>
   </div>
@@ -70,5 +70,18 @@ export default {
       return this.$route.params.id;
     },
   },
+  methods: {
+    displayReport() {
+      //console.log("navigating to report detail");
+    },
+  },
 };
 </script>
+<style lang="scss" scoped>
+.report-preview {
+  cursor: pointer;
+  &:hover {
+    background-color: #e5e5e5;
+  }
+}
+</style>
