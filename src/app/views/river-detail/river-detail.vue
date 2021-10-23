@@ -187,7 +187,7 @@
                 <cv-button
                   :class="[
                     path === 'main' ? 'no-border-top' : '',
-                    activeTabKey === path ? 'is-active' : '',
+                    pathIsActiveTab(path) ? 'is-active' : '',
                   ]"
                   kind="ghost"
                   @click.exact="switchTab(path)"
@@ -322,6 +322,16 @@ export default {
           Number(this.$route.params.id),
         ]);
       }
+    },
+    pathIsActiveTab(path) {
+      if (path === this.activeTabKey) {
+        return true;
+      } else if (path === 'reports' && this.activeTabKey === 'report-detail') {
+        // reports has a child route that needs custom logic to ensure
+        // tab is still highlighted as active
+        return true;
+      }
+      return false;
     },
     loadReachData() {
       this.$store.dispatch("RiverDetail/setRefId", this.reachId);

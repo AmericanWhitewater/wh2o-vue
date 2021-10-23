@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="report.detail"
+    v-if="report"
     class="mb-sm report-preview bx--tile"
     @click="displayReport(report)"
   >
@@ -14,7 +14,7 @@
           class="date mb-spacing-xs"
           v-text="formatDate(report.post_date, 'll')"
         />
-        <hr v-if="!editMode" >
+        <hr v-if="!editMode">
         <template v-if="editMode">
           <cv-button
             v-if="canEdit(report)"
@@ -25,7 +25,7 @@
           >
             Edit
           </cv-button>
-          <hr v-if="editMode" >
+          <hr v-if="editMode">
         </template>
       </div>
       <div
@@ -71,8 +71,11 @@ export default {
     },
   },
   methods: {
-    displayReport() {
-      //console.log("navigating to report detail");
+    displayReport(report) {
+      this.$router.push({
+        name: "report-detail",
+        params: { reportId: report.id },
+      });
     },
   },
 };

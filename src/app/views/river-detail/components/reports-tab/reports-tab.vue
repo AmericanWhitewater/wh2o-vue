@@ -2,21 +2,26 @@
   <div class="reports-tab">
     <layout name="layout-full-width" class="mb-lg">
       <template #main>
-        <hr >
-        <h2 class="mb-spacing-md">Trip Reports</h2>
-        <template v-if="loading && !reports">
-          <utility-block
-            class="reports-loading"
-            state="loading"
-            text="loading reports"
-          />
+        <template v-if="activeReport">
+          <router-view />
         </template>
-        <template v-else-if="reports">
-          <report-preview
-            v-for="(item, index) in reports"
-            :key="index"
-            :report="item"
-          />
+        <template v-else>
+          <hr>
+          <h2 class="mb-spacing-md">Trip Reports</h2>
+          <template v-if="loading && !reports">
+            <utility-block
+              class="reports-loading"
+              state="loading"
+              text="loading reports"
+            />
+          </template>
+          <template v-else-if="reports">
+            <report-preview
+              v-for="(item, index) in reports"
+              :key="index"
+              :report="item"
+            />
+          </template>
         </template>
       </template>
     </layout>
@@ -43,6 +48,18 @@ export default {
       reports: (state) => state.RiverReports.data,
       loading: (state) => state.RiverReports.loading,
     }),
+    activeReport() {
+      // TODO: refactor so that detail reports are requested on their own
+      // to accomodate paging in requests (currently requesting 100 reports per page
+      // and assuming that will be more than we ever get)
+      if (this.$route.params.reportId && this.reports) {
+        return this.reports.find(
+          (report) => report.id === this.$route.params.reportId
+        );
+      } else {
+        return null;
+      }
+    },
   },
   methods: {},
   created() {

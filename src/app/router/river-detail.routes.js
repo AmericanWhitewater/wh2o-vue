@@ -49,7 +49,18 @@ export default [
           crumbLabel: 'Trip Reports',
           transitionName: 'slide'
         },
-        component: () => import('@/app/views/river-detail/components/reports-tab/reports-tab.vue')
+        component: () => import('@/app/views/river-detail/components/reports-tab/reports-tab.vue'),
+        children: [
+          {
+            path: ':reportId',
+            name: 'report-detail',
+            meta: {
+              crumbLabel: 'Trip Report',
+              transitionName: 'slide'
+            },
+            component: () => import('@/app/views/river-detail/components/reports-tab/components/report-detail.vue')
+          },          
+        ]
       },
       {
         path: 'gallery',
