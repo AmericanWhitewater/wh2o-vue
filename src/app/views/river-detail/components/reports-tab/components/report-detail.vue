@@ -1,47 +1,9 @@
 <template>
-  <utility-block v-if="loading && !report" state="loading" />
+  <utility-block v-if="loading || !report" state="loading" />
   <div v-else class="bx--grid">
     <div class="bx--row">
       <div class="bx--col">
-        <header class="bx--tile pt-spacing-md">
-          <div class="">
-            <h4>
-              {{ formatDate(report.post_date) }}
-            </h4>
-            <h1 class="mb-spacing-md">
-              {{ report.title || "Untitled Report" }}
-            </h1>
-            <cv-breadcrumb no-trailing-slash>
-              <cv-breadcrumb-item>
-                <cv-link :to="{ name: 'reports-tab' }"> Trip Reports </cv-link>
-              </cv-breadcrumb-item>
-              <cv-breadcrumb-item>
-                <cv-link href="#">
-                  {{ report.id }}
-                </cv-link>
-              </cv-breadcrumb-item>
-            </cv-breadcrumb>
-          </div>
-          <div>
-            <cv-button
-              v-if="canEdit(report)"
-              size="small"
-              @keydown.enter="$refs.postUpdateModal.open()"
-              @click.exact="$refs.postUpdateModal.open()"
-            >
-              Edit
-            </cv-button>
-            <cv-button
-              v-if="canDelete(report)"
-              size="small"
-              kind="danger"
-              @click.exact="confirmDeleteModalVisible = true"
-              @keydown.enter="confirmDeleteModalVisible = true"
-            >
-              Delete
-            </cv-button>
-          </div>
-        </header>
+        <report-header :report="report" />
       </div>
     </div>
     <div class="bx--row mt-lg mb-lg">
@@ -75,31 +37,39 @@
         </div>
       </div>
       <div class="bx--col">
-        <!-- images -->
+        <image-gallery :images="report.photos" />
       </div>
     </div>
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
+import ImageGallery from "@/app/views/river-detail/components/image-gallery/image-gallery.vue";
+import ReportHeader from "./report-header";
 import { objectPermissionsHelpersMixin } from "@/app/global/mixins";
+import UtilityBlock from "@/app/global/components/utility-block/utility-block";
+
 export default {
   name: "report-detail",
-  components: {},
+  components: {
+    ImageGallery,
+    ReportHeader,
+    UtilityBlock,
+  },
   mixins: [objectPermissionsHelpersMixin],
   props: {},
   data: () => ({}),
   computed: {
     ...mapState({
-      reports: (state) => state.RiverReports.data,
       user: (state) => state.User.data,
       editMode: (state) => state.Global.editMode,
       loading: (state) => state.RiverReports.loading,
     }),
+    reportId() {
+      return this.$route.params.reportId;
+    },
     report() {
-      return this.reports.find(
-        (report) => report.id === this.$route.params.reportId
-      );
+      return this.$store.getters["RiverReports/getReportById"](this.reportId);
     },
   },
 };
