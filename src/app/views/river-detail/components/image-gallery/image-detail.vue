@@ -6,18 +6,21 @@
         :src="imageURI(image)"
         :alt="formatAltText(image)"
       >
-      <cv-button-set v-if="media.length > 1" class="gallery-navigation-buttons">
+      <cv-button-set
+        v-if="prevImage || nextImage"
+        class="gallery-navigation-buttons"
+      >
         <cv-button
           id="previous-button"
           :disabled="!prevImage"
-          @click.exact="navigateTo(prevImage)"
+          @click.exact="$emit('navigateToImage', prevImage)"
         >
           Previous
         </cv-button>
         <cv-button
           id="next-button"
           :disabled="!nextImage"
-          @click.exact="navigateTo(nextImage)"
+          @click.exact="$emit('navigateToImage', nextImage)"
         >
           Next
         </cv-button>
@@ -31,7 +34,7 @@
             id="close-button"
             size="small"
             kind="tertiary"
-            @click.exact="$router.push({ name: 'gallery-tab' })"
+            @click.exact="$emit('navigateToImage', null)"
           >
             Close
           </cv-button>
@@ -133,7 +136,7 @@
 
 <script>
 import { AwLogo, ConfirmDeleteModal } from "@/app/global/components";
-import { mapState, mapGetters } from "vuex";
+import { mapState } from "vuex";
 import {
   shadowDomFixedHeightOffset,
   objectPermissionsHelpersMixin,
@@ -160,6 +163,14 @@ export default {
       type: Object,
       required: true,
     },
+    nextImage: {
+      type: Object,
+      required: false,
+    },
+    prevImage: {
+      type: Object,
+      required: false,
+    },
   },
   data: () => ({
     mediaUploadModalVisible: false,
@@ -168,29 +179,8 @@ export default {
     ...mapState({
       river: (state) => state.RiverDetail.data,
       rapids: (state) => state.RiverRapids.data,
-      galleryPosts: (state) => state.RiverGallery.data,
-    }),
-    ...mapGetters({
-      media: "RiverGallery/media",
     }),
 
-    prevImage() {
-      if (this.currentIndex && this.currentIndex > 0) {
-        return this.media[this.currentIndex - 1];
-      } else {
-        return null;
-      }
-    },
-    nextImage() {
-      if (
-        typeof (this.currentIndex === "number") &&
-        this.currentIndex < this.media.length - 1
-      ) {
-        return this.media[this.currentIndex + 1];
-      } else {
-        return null;
-      }
-    },
     imageRapid() {
       if (this.image && this.image.poi_id) {
         return this.rapids.find((rapid) => rapid.id === this.image.poi_id);
@@ -203,30 +193,14 @@ export default {
       }
       return this.image.poi_name;
     },
-    currentIndex() {
-      if (this.image) {
-        return this.media
-          .map((image) => {
-            return image.id;
-          })
-          .indexOf(this.image.id);
-      }
-      return null;
-    },
     reachLocation() {
-      return `${this.river.river}, ${this.river.section}`;
+      return `${this.river?.river}, ${this.river?.section}`;
     },
   },
   methods: {
     handleEditSuccess() {
       this.mediaUploadModalVisible = false;
       this.$emit("photoModified");
-    },
-    // navigates to another photo if passed a photo
-    navigateTo(newImage) {
-      if (newImage) {
-        this.$router.push({ params: { imageId: newImage.id } });
-      }
     },
     async triggerPhotoDelete(photo) {
       const ok = await this.$refs.confirmDeleteModal.show({

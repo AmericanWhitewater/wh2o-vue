@@ -20,7 +20,11 @@
           </div>
           <div class="bx--row">
             <div class="bx--col">
-              <image-gallery :images="media" @photoModified="loadMedia" />
+              <image-gallery
+                :images="media"
+                gallery-type="gallery-tab"
+                @photoModified="loadMedia"
+              />
             </div>
           </div>
           <div class="bx--row">
