@@ -113,7 +113,7 @@
   </cv-modal>
 </template>
 <script>
-import { shadowDomFixedHeightOffset } from "@/app/global/mixins";
+import { shadowDomFixedHeightOffset, gaugeHelpers } from "@/app/global/mixins";
 import { updatePost, photoFileUpdate } from "@/app/services";
 import { assetBaseUrl } from "@/app/environment";
 import { mapState } from "vuex";
@@ -157,7 +157,7 @@ function initialState() {
 export default {
   name: "media-upload-modal",
   components: { CvLoading },
-  mixins: [shadowDomFixedHeightOffset],
+  mixins: [shadowDomFixedHeightOffset, gaugeHelpers],
   props: {
     title: {
       type: String,
@@ -187,7 +187,6 @@ export default {
   data: initialState,
   computed: {
     ...mapState({
-      metrics: (state) => state.RiverGages.data?.metrics ?? [],
       rapids: (state) => state.RiverRapids.data,
       user: (state) => state.User.data,
     }),
@@ -200,17 +199,6 @@ export default {
       } else {
         return null;
       }
-    },
-    // users don't need to see all the possible metrics, just the ones they'll actually use
-    // mimicked gage-chart-controls.vue, should probably refactor the way we treat metrics
-    // across the board at some point
-    metricOptions() {
-      return this.metrics
-        .filter((m) => [2, 8, 15].includes(parseInt(m.id)))
-        .map((m) => ({
-          id: m.id,
-          label: m.name === "Flow" ? "CFS" : m.name,
-        }));
     },
   },
   watch: {

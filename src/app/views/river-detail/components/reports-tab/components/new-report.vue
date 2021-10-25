@@ -1,6 +1,6 @@
 <template>
   <div>
-    <hr>
+    <hr >
     <h2 class="mb-spacing-md">Trip Reports</h2>
     <cv-breadcrumb no-trailing-slash>
       <cv-breadcrumb-item>
@@ -10,7 +10,7 @@
         <cv-link href=""> Add New Trip Report </cv-link>
       </cv-breadcrumb-item>
     </cv-breadcrumb>
-    <hr>
+    <hr >
 
     <report-form />
   </div>
@@ -18,7 +18,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { ReportForm } from "./";
+import ReportForm from "./report-form";
 
 export default {
   name: "new-report",

@@ -14,12 +14,38 @@
       :invalid-message="dateInvalidMessage"
       class="mb-spacing-md"
     />
+
+    <div class="bx--row">
+      <cv-number-input
+        v-model="formData.reading"
+        label="Flow"
+        class="mb-spacing-md bx--col-sm-12 bx--col-md-4"
+      />
+      <div class="bx--col-sm-12 bx--col-md-4">
+        <cv-select
+          v-if="formData.reading"
+          v-model="formData.metric_id"
+          label="Gage Metric"
+        >
+          <cv-select-option
+            v-for="(g, index) in metricOptions"
+            :key="index"
+            :value="String(g.id)"
+            :label="g.label"
+          />
+        </cv-select>
+      </div>
+    </div>
+
+    <!-- TODO: add a gauge selector? !-->
+
     <cv-text-area
       v-model="formData.detail"
       label="Description"
       theme="light"
       class="mb-spacing-md"
     />
+
     <cv-button-set>
       <cv-button @click.exact="handleSubmit" @keydown.enter="handleSubmit">
         Submit
@@ -29,11 +55,13 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import { gaugeHelpers } from "@/app/global/mixins";
 import { updatePost } from "@/app/services";
 import moment from "moment";
 
 export default {
   name: "report-form",
+  mixins: [gaugeHelpers],
   props: {
     report: {
       type: Object,
