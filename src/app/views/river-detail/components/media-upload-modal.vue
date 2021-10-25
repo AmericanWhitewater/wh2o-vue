@@ -69,13 +69,13 @@
           :disabled="formPending || !user"
         />
         <cv-number-input
-          v-model="postFormData.post.reading"
+          v-model="postFormData.reading"
           label="Flow"
           class="mb-spacing-md"
         />
         <cv-select
-          v-if="postFormData.post.reading"
-          v-model="postFormData.post.metric_id"
+          v-if="postFormData.reading"
+          v-model="postFormData.metric_id"
           label="Gage Metric"
         >
           <cv-select-option
@@ -144,13 +144,11 @@ function initialState() {
     },
     postFormData: {
       id: null,
-      post: {
-        reach_id: null,
-        post_type: "PHOTO_POST",
-        post_date: null,
-        reading: null,
-        metric_id: "2",
-      },
+      reach_id: null,
+      post_type: "PHOTO_POST",
+      post_date: null,
+      reading: null,
+      metric_id: "2",
     },
     previewUrls: [],
   };
@@ -243,8 +241,8 @@ export default {
 
         this.postFormData.id = result.post_id;
         const today = new Date();
-        this.postFormData.post.post_date = today.toISOString();
-        this.postFormData.post.reach_id = this.$route.params.id;
+        this.postFormData.post_date = today.toISOString();
+        this.postFormData.reach_id = this.$route.params.id;
         this.previewUrls.push(result.image.uri.medium);
       } catch (error) {
         /* eslint-disable-next-line no-console */
@@ -272,10 +270,10 @@ export default {
         // but graphql API blows up if we submit an empty string, so need to
         // convert to null before submission
         if (
-          this.postFormData.post.metric_id === "" ||
-          this.postFormData.post.metric_id === "null"
+          this.postFormData.metric_id === "" ||
+          this.postFormData.metric_id === "null"
         ) {
-          this.postFormData.post.metric_id = null;
+          this.postFormData.metric_id = null;
         }
         // upload the details collected from the form, not just reach id etc.
         await updatePost(this.postFormData, {
@@ -340,7 +338,7 @@ export default {
         });
 
         this.postFormData.id = this.media.post_id;
-        Object.assign(this.postFormData.post, {
+        Object.assign(this.postFormData, {
           reach_id: this.media.reach_id,
           post_date: this.media.post_date,
           reading: this.media.reading,

@@ -52,14 +52,32 @@ export default [
         component: () => import('@/app/views/river-detail/components/reports-tab/reports-tab.vue'),
         children: [
           {
+            path: 'new',
+            name: 'new-report',
+            meta: {
+              crumbLabel: 'New Trip Report',
+              transitionName: 'slide'
+            },
+            component: () => import('@/app/views/river-detail/components/reports-tab/components/new-report.vue')
+          },
+          {
+            path: ':reportId/edit',
+            name: 'edit-report',
+            meta: {
+              crumbLabel: 'Edit Trip Report',
+              transitionName: 'slide'
+            },
+            component: () => import('@/app/views/river-detail/components/reports-tab/components/edit-report.vue')
+          },
+          {
             path: ':reportId',
             name: 'report-detail',
             meta: {
               crumbLabel: 'Trip Report',
               transitionName: 'slide'
             },
-            component: () => import('@/app/views/river-detail/components/reports-tab/components/report-detail.vue')
-          },          
+            component: () => import('@/app/views/river-detail/components/reports-tab/components/report-detail.vue'),
+          },
         ]
       },
       {

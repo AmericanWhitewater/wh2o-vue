@@ -12,7 +12,7 @@
           <cv-link :to="{ name: 'reports-tab' }"> Trip Reports </cv-link>
         </cv-breadcrumb-item>
         <cv-breadcrumb-item>
-          <cv-link href="#">
+          <cv-link href="">
             {{ report.id }}
           </cv-link>
         </cv-breadcrumb-item>
@@ -22,8 +22,12 @@
       <cv-button
         v-if="canEdit(report)"
         size="small"
-        @keydown.enter="$refs.postUpdateModal.open()"
-        @click.exact="$refs.postUpdateModal.open()"
+        @keydown.enter="
+          $router.push({ name: 'edit-report', params: { reportId: report.id } })
+        "
+        @click.exact="
+          $router.push({ name: 'edit-report', params: { reportId: report.id } })
+        "
       >
         Edit
       </cv-button>

@@ -1,9 +1,12 @@
 import http from "@/app/http";
 
 export async function updatePost(formData, photo) {
+  const postId = formData.id;
+  delete formData.id;
+
   const variables = {
-    id: formData.id,
-    post: formData.post
+    id: postId,
+    post: formData
   };
   if (photo) {
     // if post is coming in with an ID then remove that property.

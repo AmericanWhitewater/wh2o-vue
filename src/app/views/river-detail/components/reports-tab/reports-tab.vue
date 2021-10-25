@@ -2,12 +2,23 @@
   <div class="reports-tab">
     <layout name="layout-full-width" class="mb-lg">
       <template #main>
-        <template v-if="activeReport">
+        <template v-if="reportDetail || editingReport || newReport">
           <router-view />
         </template>
         <template v-else>
           <hr>
-          <h2 class="mb-spacing-md">Trip Reports</h2>
+          <div class="bx--row">
+            <div class="bx--col mb-spacing-md"><h2>Trip Reports</h2></div>
+            <div class="bx--col">
+              <cv-button
+                v-if="user"
+                size="small"
+                @click.exact="$router.push({ name: 'new-report' })"
+              >
+                + New Trip Report
+              </cv-button>
+            </div>
+          </div>
           <template v-if="loading && !reports">
             <utility-block
               class="reports-loading"
@@ -48,17 +59,15 @@ export default {
       reports: (state) => state.RiverReports.data,
       loading: (state) => state.RiverReports.loading,
     }),
-    activeReport() {
-      // TODO: refactor so that detail reports are requested on their own
-      // to accomodate paging in requests (currently requesting 100 reports per page
-      // and assuming that will be more than we ever get)
-      if (this.$route.params.reportId && this.reports) {
-        return this.reports.find(
-          (report) => report.id === this.$route.params.reportId
-        );
-      } else {
-        return null;
-      }
+    // TODO: this is a bit brittle, would be good to come up with better strategy
+    reportDetail() {
+      return this.$route.name === "report-detail";
+    },
+    newReport() {
+      return this.$route.name === "new-report";
+    },
+    editingReport() {
+      return this.$route.name === "edit-report";
     },
   },
   methods: {},

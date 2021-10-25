@@ -135,12 +135,12 @@
       <template #form-fields="formData">
         <cv-text-input
           ref="title"
-          v-model="formData.formData.post.title"
+          v-model="formData.formData.title"
           class="mb-spacing-md"
           label="Title"
         />
         <cv-text-area
-          v-model="formData.formData.post.detail"
+          v-model="formData.formData.detail"
           label="Message"
           theme="light"
           class="mb-spacing-md"

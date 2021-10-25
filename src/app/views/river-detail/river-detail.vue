@@ -324,14 +324,10 @@ export default {
       }
     },
     pathIsActiveTab(path) {
-      if (path === this.activeTabKey) {
-        return true;
-      } else if (path === 'reports' && this.activeTabKey === 'report-detail') {
-        // reports has a child route that needs custom logic to ensure
-        // tab is still highlighted as active
-        return true;
-      }
-      return false;
+      return (
+        path === this.activeTabKey ||
+        (path === 'reports' && this.activeTabKey.includes('report'))
+      );
     },
     loadReachData() {
       this.$store.dispatch("RiverDetail/setRefId", this.reachId);

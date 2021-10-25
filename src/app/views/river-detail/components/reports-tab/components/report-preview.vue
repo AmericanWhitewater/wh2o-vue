@@ -9,12 +9,14 @@
         <user-avatar theme="light" :user="report.user" />
       </div>
       <div class="bx--col-sm-12 bx--col-md-3">
-        <h5 class="mr-spacing-sm" v-text="report.user.uname" />
+        <h5 class="mr-spacing-sm">
+          {{ report.user.uname }} - {{ report.title }}
+        </h5>
         <h6
           class="date mb-spacing-xs"
           v-text="formatDate(report.post_date, 'll')"
         />
-        <hr v-if="!editMode">
+        <hr v-if="!editMode" >
         <template v-if="editMode">
           <cv-button
             v-if="canEdit(report)"
@@ -25,7 +27,7 @@
           >
             Edit
           </cv-button>
-          <hr v-if="editMode">
+          <hr v-if="editMode" >
         </template>
       </div>
       <div
