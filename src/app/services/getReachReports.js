@@ -20,26 +20,6 @@ export async function getReachReports(id) {
                     reading
                     post_date
                     reach_id
-                    photos {
-                      poi_name
-                      subject
-                      description
-                      author
-                      caption
-                      photo_date
-                      image {
-                        uri {
-                          thumb
-                          medium
-                          big
-                        }
-                      }
-                    }
-                    permissions {
-                      domain
-                      permission
-                      result
-                    }
                     user {
                       uid
                       uname

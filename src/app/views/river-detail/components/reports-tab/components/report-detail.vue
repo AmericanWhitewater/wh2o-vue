@@ -48,6 +48,11 @@ import ImageGallery from "@/app/views/river-detail/components/image-gallery/imag
 import ReportHeader from "./report-header";
 import { objectPermissionsHelpersMixin } from "@/app/global/mixins";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block";
+import { getReport } from "@/app/services";
+
+// caching reports in the component so that users don't have to wait for another
+// request if they browse back to a report they just looked at
+const reportsCache = {};
 
 export default {
   name: "report-detail",
@@ -58,18 +63,35 @@ export default {
   },
   mixins: [objectPermissionsHelpersMixin],
   props: {},
-  data: () => ({}),
+  data: () => ({
+    report: null,
+    loading: true,
+  }),
   computed: {
     ...mapState({
       user: (state) => state.User.data,
       editMode: (state) => state.Global.editMode,
-      loading: (state) => state.RiverReports.loading,
     }),
     reportId() {
       return this.$route.params.reportId;
     },
-    report() {
-      return this.$store.getters["RiverReports/getReportById"](this.reportId);
+  },
+  watch: {
+    report(newVal) {
+      if (newVal) {
+        this.loading = false;
+      }
+    },
+    reportId: {
+      immediate: true,
+      handler: async function (newVal) {
+        if (reportsCache[newVal]) {
+          this.report = reportsCache[newVal];
+        } else {
+          this.report = await getReport(this.reportId);
+          reportsCache[this.report.id] = this.report;
+        }
+      },
     },
   },
 };
