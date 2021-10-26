@@ -49,6 +49,10 @@ export async function getReport(id) {
                       id
                       name
                     }
+                    metric {
+                      name
+                      unit
+                    }
                   }
             }
           }

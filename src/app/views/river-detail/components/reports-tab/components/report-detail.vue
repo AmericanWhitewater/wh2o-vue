@@ -75,6 +75,9 @@ export default {
     reportId() {
       return this.$route.params.reportId;
     },
+    gaugeReading() {
+      return `${this.report?.reading}${this.report?.metric?.unit}`;
+    },
   },
   watch: {
     report(newVal) {
