@@ -49,7 +49,7 @@ export default {
       context.commit('DATA_REQUEST');
       try {
         const result = await updateReach(data)
-        
+
         if (result.errors) {
           context.commit('DATA_ERROR', result.errors);
         } else {

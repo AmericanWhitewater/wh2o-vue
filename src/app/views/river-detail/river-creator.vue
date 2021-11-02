@@ -8,13 +8,21 @@
           </div>
         </div>
       </template>
-      <template v-else-if="user && canCreate">
+      <template v-else-if="user ">
         <div class="bx--row">
           <div class="bx--col-sm-16 bx--col-lg-10 map-column">
             <geometry-editor @updatedGeom="updateReachGeom" />
           </div>
           <div class="bx--col-sm-16 bx--col-lg-6 form-fields-column">
             <h1 class="mb-sm mt-spacing-sm">New Reach</h1>
+             <cv-inline-notification
+
+        v-if="!canCreateReach && !noticeHidden "
+        kind="warning"
+        title="Cannot create river" :sub-title="errorMessage"
+        @close="noticeHidden = true"
+      />
+            <p v-if="!canCreate" >You must draw the river in a place you are allowed to edit.</p>
             <cv-text-input
               v-model="reach.river"
               label="River"
@@ -97,12 +105,13 @@
             </template>
             <cv-button-set>
               <cv-button
-                :disabled="createLoading"
+                :disabled="createLoading || !canCreate"
                 @click.exact="handleSubmit"
                 @keydown.enter="handleSubmit"
               >
                 Submit
               </cv-button>
+
             </cv-button-set>
           </div>
         </div>
@@ -125,6 +134,7 @@ import GeometryEditor from "@/app/views/river-detail/components/geometry-edit-mo
 import ContentEditor from "@/app/global/components/content-editor/content-editor.vue";
 import { mapState } from "vuex";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block.vue";
+import { canCreateReach } from '@/app/services/canCreateReach'
 export default {
   name: "river-creator",
   components: {
@@ -136,6 +146,8 @@ export default {
   data: () => ({
     geom: null,
     createLoading: false,
+    canCreateReach: false,
+    noticeHidden: false,
     additionalFieldsVisible: false,
     reach: {
       agency: null,
@@ -161,6 +173,16 @@ export default {
       userLoading: (state) => state.User.loading,
       user: (state) => state.User.data,
     }),
+    errorMessage(){
+      if(this.reach.ploc && !this.canCreateReach)
+      {
+        return('River drawn evidently is not in an area you area allowed to creat reaches in, try another state or region.')
+      }
+      else {
+        return('River must be drawn since permission to submit a reach is determined by location in the country')
+      }
+
+    },
     reachLength() {
       if (this.geom) {
         return Number(turfLength(this.geom, { units: "miles" }).toPrecision(2));
@@ -169,26 +191,35 @@ export default {
       }
     },
     canCreate() {
-      if (this.user) {
-        return (
-          this.user.permissions.includes("sk") ||
-          this.user.permissions.includes("rsk") ||
-          this.user.permissions.includes("ssk") ||
-          this.user.permissions.includes("ask") ||
-          this.user.permissions.includes("admin")
-        );
+      if (this.user && this.canCreateReach) {
+        return this.canCreateReach
       }
       return false;
     },
   },
   methods: {
-    updateReachGeom(val) {
+    async updateReachGeom(val) {
       this.geom = val;
 
-      this.reach.geom = val.geometry;
-      this.reach.ploc = val.geometry.coordinates[0];
-      this.reach.tloc = val.geometry.coordinates.slice(-1)[0];
-      this.reach.length = this.reachLength;
+      if (val)
+      {
+        this.reach.geom = val.geometry;
+        this.reach.ploc = val.geometry.coordinates[0];
+        this.reach.tloc = val.geometry.coordinates.slice(-1)[0];
+        this.reach.length = this.reachLength;
+
+        this.canCreateReach = await canCreateReach({plon:this.reach.ploc[0],plat:this.reach.ploc[1]})
+
+      }
+      //handle the clear case
+      else
+      {
+        this.reach.geom = null;
+        this.reach.ploc = null;
+        this.reach.tloc = null;
+        this.reach.length = undefined;
+        this.canCreateReach = false;
+      }
     },
     async handleSubmit() {
       try {
