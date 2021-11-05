@@ -46,23 +46,24 @@
       class="mb-spacing-md"
     />
 
-    <cv-file-uploader
-      ref="fileUploader"
-      data-modal-primary-focus
-      helper-text="10mb max"
-      accepts=".jpg,.png"
-      class="mb-spacing-md"
-      multiple
-      @change="setFile"
-    />
-
     <div v-if="images.length" class="bx--grid">
       <div class="bx--row">
+        <div class="bx--col-sm-12 bx--col-md-3">
+          <cv-file-uploader
+            ref="fileUploader"
+            data-modal-primary-focus
+            dropTargetLabel="Drag and drop here or click to select (10mb max)"
+            accepts=".jpg,.png"
+            class="mb-spacing-md"
+            multiple
+            @change="setFile"
+          />
+        </div>
         <figure
           v-for="(image, index) in images"
           :key="index"
           class="
-            bx--col-sm-12 bx--col-md-3 bx--col-lg-3 bx--col-max-3
+            bx--col-sm-12 bx--col-md-2 bx--col-lg-3 bx--col-max-3
             mb-spacing-lg
             image-hover
           "
@@ -73,15 +74,13 @@
             class="image-thumbnail"
           >
           <figcaption>
-            <cv-button-set>
-              <cv-button size="small" kind="secondary">Edit</cv-button>
-              <cv-button
-                size="small"
-                kind="danger"
-                @click="triggerPhotoDelete(image)"
-                >Remove</cv-button
-              >
-            </cv-button-set>
+            <cv-button size="small" kind="secondary">Edit</cv-button>
+            <cv-button
+              size="small"
+              kind="danger"
+              @click="triggerPhotoDelete(image)"
+              >Remove</cv-button
+            >
           </figcaption>
         </figure>
       </div>
@@ -339,6 +338,10 @@ export default {
       font-weight: 400;
       letter-spacing: 1px;
       text-transform: uppercase;
+
+      button {
+        width: 6rem;
+      }
     }
 
     &:hover:before,
