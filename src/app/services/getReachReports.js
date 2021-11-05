@@ -11,7 +11,7 @@ export async function getReachReports(id) {
               first: 100,
               page: 1,
               post_types:[JOURNAL],
-              orderBy: {field: REVISION, order: DESC}
+              orderBy: {field: POST_DATE, order: DESC}
               ) {
                  data {
                     detail
