@@ -2,45 +2,35 @@
   <cv-modal
     ref="modalWrapper"
     size="med"
-    :visible="visible"
-    @primary-click="handleSubmit"
-    @secondary-click="handleCancel"
-    @modal-shown="handleShow"
-    @modal-hidden="handleCancel"
+    @primary-click="_confirm()"
+    @modal-shown="setModalOffset"
+    @modal-hidden="_cancel()"
   >
-    <template slot="label">
-      <template v-if="label">
-        {{ label }}
-      </template>
-    </template>
     <template slot="title">
-      {{ title }}
+      {{ modalTitle }}
     </template>
+
     <template slot="content">
       <div class="media-upload-form">
-        <template v-if="!formPending">
-          <template v-if="previewUrls.length">
-            <img
-              v-for="(item, k) in previewUrls"
-              :key="k"
-              :src="`${assetBaseUrl}${item}`"
-              class="mb-spacing-sm"
-            >
-          </template>
+        <template v-if="editing">
+          <img :src="imageURI(media, 'thumb')" class="mb-spacing-sm" >
+        </template>
+        <template v-else-if="previewUrl">
+          <img :src="previewUrl" class="mb-spacing-sm" >
+        </template>
+        <template v-else>
           <cv-file-uploader
-            v-if="!previewUrls.length"
+            v-if="!previewUrl"
             ref="fileUploader"
             data-modal-primary-focus
-            helper-text="10mb max"
+            dropTargetLabel="Drag and drop here or click to select (10mb max)"
             accepts=".jpg,.png"
             class="mb-spacing-md"
             :disabled="formPending || !user"
             @change="setFile"
           />
         </template>
-        <template v-else>
-          <cv-loading :active="formPending" />
-        </template>
+
         <cv-text-input
           v-model="formData.photo.author"
           class="mb-spacing-md"
@@ -68,23 +58,26 @@
           :invalid-message="dateInvalidMessage"
           :disabled="formPending || !user"
         />
-        <cv-number-input
-          v-model="postFormData.reading"
-          label="Flow"
-          class="mb-spacing-md"
-        />
-        <cv-select
-          v-if="postFormData.reading"
-          v-model="postFormData.metric_id"
-          label="Gage Metric"
-        >
-          <cv-select-option
-            v-for="(g, index) in metricOptions"
-            :key="index"
-            :value="String(g.id)"
-            :label="g.label"
+
+        <template v-if="includePostFields">
+          <cv-number-input
+            v-model="formData.post.reading"
+            label="Flow"
+            class="mb-spacing-md"
           />
-        </cv-select>
+          <cv-select
+            v-if="formData.post.reading"
+            v-model="formData.post.metric_id"
+            label="Gage Metric"
+          >
+            <cv-select-option
+              v-for="(g, index) in metricOptions"
+              :key="index"
+              :value="String(g.id)"
+              :label="g.label"
+            />
+          </cv-select>
+        </template>
 
         <cv-dropdown
           v-if="rapids && rapids.length"
@@ -108,30 +101,34 @@
         />
       </div>
     </template>
-    <template slot="secondary-button"> Cancel </template>
-    <template slot="primary-button"> OK </template>
+    <template slot="secondary-button">Cancel</template>
+    <template slot="primary-button">OK</template>
   </cv-modal>
 </template>
 <script>
-import { shadowDomFixedHeightOffset, gaugeHelpers } from "@/app/global/mixins";
-import { updatePost, photoFileUpdate } from "@/app/services";
-import { assetBaseUrl } from "@/app/environment";
+import {
+  assetUrl,
+  shadowDomFixedHeightOffset,
+  gaugeHelpers,
+} from "@/app/global/mixins";
+import { updatePost, updatePhoto, photoFileUpdate } from "@/app/services";
 import { mapState } from "vuex";
-import { CvLoading } from "@carbon/vue/src/components/cv-loading";
 import moment from "moment";
 
 function initialState() {
   return {
-    assetBaseUrl: assetBaseUrl,
+    media: null, // currently editing -- passed via show()
+    resolvePromise: undefined,
+    rejectPromise: undefined,
     formPending: false,
     formData: {
-      id: null,
       fileinput: {
         file: null,
         section: null,
         section_id: null,
       },
       photo: {
+        id: null,
         author: null,
         caption: null,
         description: null,
@@ -141,47 +138,32 @@ function initialState() {
         post_id: null,
         subject: null,
       },
+      post: {
+        id: null,
+        reach_id: null,
+        post_type: "PHOTO_POST",
+        post_date: null,
+        reading: null,
+        metric_id: "2",
+      },
     },
-    postFormData: {
-      id: null,
-      reach_id: null,
-      post_type: "PHOTO_POST",
-      post_date: null,
-      reading: null,
-      metric_id: "2",
-    },
-    previewUrls: [],
+    previewUrl: null,
   };
 }
 
 export default {
-  name: "media-upload-modal",
-  components: { CvLoading },
-  mixins: [shadowDomFixedHeightOffset, gaugeHelpers],
+  name: "image-update-modal",
+  mixins: [shadowDomFixedHeightOffset, assetUrl, gaugeHelpers],
   props: {
-    title: {
-      type: String,
-      required: false,
-      default: "Media Upload",
-    },
-    label: {
-      type: String,
-      required: false,
-    },
-    visible: {
-      type: Boolean,
-      required: true,
-    },
     section: {
       type: String,
       required: true,
       validator: (val) =>
         ["RAPID", "POST", "GALLERY", "REACH"].indexOf(val) > -1,
     },
-    // pass in media object from image gallery when used for editing
-    media: {
-      type: Object,
-      required: false,
+    includePostFields: {
+      type: Boolean,
+      default: false,
     },
   },
   data: initialState,
@@ -190,6 +172,16 @@ export default {
       rapids: (state) => state.RiverRapids.data,
       user: (state) => state.User.data,
     }),
+    modalTitle() {
+      if (this.media) {
+        return "Edit Photo";
+      } else {
+        return "Upload Photo";
+      }
+    },
+    editing() {
+      return !!this.media;
+    },
     dateInvalidMessage() {
       if (
         this.formData.photo.photo_date &&
@@ -201,37 +193,42 @@ export default {
       }
     },
   },
-  watch: {
-    media: {
-      immediate: true,
-      handler() {
-        this.setInitialFormData();
-      },
-    },
-  },
   methods: {
-    handleShow() {
-      this.$emit("modal-shown");
-      this.setModalOffset();
+    show(opts = {}) {
+      this.setInitialFormData(opts);
+
+      this.$refs.modalWrapper.show();
+      return new Promise((resolve, reject) => {
+        this.resolvePromise = resolve;
+        this.rejectPromise = reject;
+      });
     },
-    handleSubmit() {
-      this.$emit("upload:submitted");
-      this.submitPost();
+    async _confirm() {
+      await this.submitForm();
+      this.resolvePromise({
+        photo: this.formData.photo,
+        post: this.formData.post,
+      });
+      this.$refs.modalWrapper.hide();
     },
-    handleCancel() {
-      this.setInitialFormData();
-      this.$emit("upload:cancelled");
+    _cancel() {
+      this.resolvePromise(false);
     },
     async uploadFile() {
+      // this is only called when there is no image (i.e. create not edit)
+      // meaning, as of now, this is only called when there is no post
+      // if this modal were to be used to add photos to a post at some point,
+      // it would need to reconfigure this method to save the photo to the post
       this.formPending = true;
       try {
         const result = await photoFileUpdate(this.$apollo, this.formData);
 
-        this.postFormData.id = result.post_id;
+        this.formData.post.id = result.post_id;
+        this.formData.photo.post_id = result.post_id;
         const today = new Date();
-        this.postFormData.post_date = today.toISOString();
-        this.postFormData.reach_id = this.$route.params.id;
-        this.previewUrls.push(result.image.uri.medium);
+        this.formData.post.post_date = today.toISOString();
+        this.formData.post.reach_id = this.$route.params.id;
+        this.previewUrl = this.imageURI(result, "thumb");
       } catch (error) {
         /* eslint-disable-next-line no-console */
         console.log("error :>> ", error);
@@ -249,7 +246,7 @@ export default {
     },
     // TODO: refactor this to use state so that when it submits, state is updated
     // with the results rather than having to trigger a full gallery reload
-    async submitPost() {
+    async submitForm() {
       this.formPending = true;
       try {
         // TODO: get rid of this? not sure how, wrestled with carbon select for a while
@@ -258,16 +255,18 @@ export default {
         // but graphql API blows up if we submit an empty string, so need to
         // convert to null before submission
         if (
-          this.postFormData.metric_id === "" ||
-          this.postFormData.metric_id === "null"
+          this.formData.post.metric_id === "" ||
+          this.formData.post.metric_id === "null"
         ) {
-          this.postFormData.metric_id = null;
+          this.formData.post.metric_id = null;
         }
-        // upload the details collected from the form, not just reach id etc.
-        await updatePost(this.postFormData, {
-          ...this.formData.photo,
-          id: this.formData.id,
-        });
+
+        // if POST fields are in the form, update the post
+        if (this.includePostFields) {
+          await updatePost(this.formData.post);
+        }
+
+        await updatePhoto(this.formData.photo);
 
         this.$emit("form:success");
         const formSuccessMessage = this.media
@@ -290,8 +289,6 @@ export default {
                 .join(",")),
           kind: "error",
         });
-      } finally {
-        this.setInitialFormData();
       }
     },
     setFile(input) {
@@ -300,21 +297,22 @@ export default {
         this.uploadFile();
       }
     },
-    setInitialFormData() {
+    setInitialFormData(opts = {}) {
       Object.assign(this.$data, initialState());
 
       // if media is set, this is an edit request
-      if (this.media) {
-        this.previewUrls = [this.media.image.uri.medium];
+      if (opts.media) {
+        this.media = opts.media;
 
         let dateInput;
+
         if (this.media.photo_date) {
           const date = moment(this.media.photo_date, "YYYY-MM-DD HH:mm:ss");
           dateInput = date.format("YYYY-MM-DD");
         }
 
-        this.formData.id = this.media.id;
         Object.assign(this.formData.photo, {
+          id: this.media.id,
           author: this.media.author,
           caption: this.media.caption,
           description: this.media.description,
@@ -325,8 +323,8 @@ export default {
           post_id: this.media.post_id,
         });
 
-        this.postFormData.id = this.media.post_id;
-        Object.assign(this.postFormData, {
+        Object.assign(this.formData.post, {
+          id: this.media.post_id,
           reach_id: this.media.reach_id,
           post_date: this.media.post_date,
           reading: this.media.reading,
@@ -337,7 +335,7 @@ export default {
           this.formData.photo.author = this.user.name;
         }
 
-        this.formData.id = `${this.$randomId()}`;
+        this.formData.photo.id = `${this.$randomId()}`;
         this.formData.fileinput.section = this.section;
         this.formData.fileinput.section_id = this.$route.params.id;
       }

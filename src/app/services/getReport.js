@@ -19,7 +19,6 @@ export async function getReport(id) {
                     post_date
                     reach_id
                     photos {
-                      url
                       id
                       image {
                         uri {
@@ -28,6 +27,13 @@ export async function getReport(id) {
                           thumb
                         }
                       }
+                      author
+                      caption
+                      description
+                      photo_date
+                      poi_name
+                      poi_id
+                      subject
                     }
                     permissions {
                       domain

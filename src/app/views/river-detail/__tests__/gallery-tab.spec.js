@@ -34,7 +34,7 @@ const options = {
       }
     }
   },
-  stubs: ['media-upload-modal', 'table-pagination', 'image-gallery']
+  stubs: ['image-update-modal', 'table-pagination', 'image-gallery']
 }
 
 describe('GalleryTab', () => {

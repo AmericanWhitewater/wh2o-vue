@@ -34,6 +34,7 @@ export * from "./getStateList";
 export * from "./getUser";
 export * from "./photoFileUpdate";
 export * from "./searchReachMap";
+export * from "./updatePhoto";
 export * from "./updatePost";
 export * from "./updateRapid";
 export * from "./updateReach";

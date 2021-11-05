@@ -74,11 +74,10 @@
             class="image-thumbnail"
           >
           <figcaption>
-            <cv-button size="small" kind="secondary">Edit</cv-button>
-            <cv-button
-              size="small"
-              kind="danger"
-              @click="triggerPhotoDelete(image)"
+            <cv-button size="small" kind="secondary" @click="clickEdit(image)"
+              >Edit</cv-button
+            >
+            <cv-button size="small" kind="danger" @click="clickDelete(image)"
               >Remove</cv-button
             >
           </figcaption>
@@ -86,6 +85,7 @@
       </div>
     </div>
     <confirm-delete-modal ref="confirmDeleteModal" />
+    <image-update-modal ref="imageUpdateModal" section="GALLERY" />
 
     <cv-button-set>
       <cv-button @click.exact="handleSubmit" @keydown.enter="handleSubmit">
@@ -95,8 +95,7 @@
   </div>
 </template>
 <script>
-import { ConfirmDeleteModal } from "@/app/global/components";
-
+import { ConfirmDeleteModal, ImageUpdateModal } from "@/app/global/components";
 import { mapState } from "vuex";
 import { gaugeHelpers, assetUrl, imageHelpers } from "@/app/global/mixins";
 import { updatePost, photoFileUpdate, deletePhoto } from "@/app/services";
@@ -106,6 +105,7 @@ export default {
   name: "report-form",
   components: {
     ConfirmDeleteModal,
+    ImageUpdateModal,
   },
   mixins: [gaugeHelpers, assetUrl, imageHelpers],
   props: {
@@ -220,8 +220,11 @@ export default {
 
       try {
         const photoPost = {
-          id: "",
-          photo: {},
+          photo: {
+            id: "",
+            author: this.user?.uname,
+            photo_date: this.formData.post_date,
+          },
           fileinput: {
             file: file,
             section: "POST",
@@ -245,7 +248,20 @@ export default {
       }
       this.formPending = false;
     },
-    async triggerPhotoDelete(photo) {
+    async clickEdit(photo) {
+      const results = await this.$refs.imageUpdateModal.show({
+        media: photo,
+      });
+
+      // update the report with the modified image
+      if (results) {
+        Object.assign(
+          this.images.find((x) => x.id === results.photo.id),
+          results.photo
+        );
+      }
+    },
+    async clickDelete(photo) {
       const ok = await this.$refs.confirmDeleteModal.show({
         title: "Remove Photo",
         message: "Are you sure you want to remove this photo?",

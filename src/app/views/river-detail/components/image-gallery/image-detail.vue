@@ -101,18 +101,15 @@
             <cv-link :href="imageURI(image, 'big')"> Full resolution </cv-link>
           </div>
           <div v-if="canEdit(image)">
-            <media-upload-modal
-              :visible="mediaUploadModalVisible"
+            <image-update-modal
+              ref="imageUpdateModal"
               section="GALLERY"
-              :media="image"
-              @upload:cancelled="mediaUploadModalVisible = false"
-              @form:success="handleEditSuccess"
-              @form:error="mediaUploadModalVisible = false"
+              includePostFields
             />
             <cv-button
               id="edit-button"
               size="small"
-              @click="mediaUploadModalVisible = true"
+              @click="openImageModal(image)"
             >
               Edit
             </cv-button>
@@ -135,7 +132,11 @@
 </template>
 
 <script>
-import { AwLogo, ConfirmDeleteModal } from "@/app/global/components";
+import {
+  AwLogo,
+  ConfirmDeleteModal,
+  ImageUpdateModal,
+} from "@/app/global/components";
 import { mapState } from "vuex";
 import {
   shadowDomFixedHeightOffset,
@@ -150,7 +151,7 @@ export default {
   components: {
     AwLogo,
     ConfirmDeleteModal,
-    MediaUploadModal: () => import("../media-upload-modal"),
+    ImageUpdateModal,
   },
   mixins: [
     shadowDomFixedHeightOffset,
@@ -172,9 +173,6 @@ export default {
       required: false,
     },
   },
-  data: () => ({
-    mediaUploadModalVisible: false,
-  }),
   computed: {
     ...mapState({
       river: (state) => state.RiverDetail.data,
@@ -198,9 +196,14 @@ export default {
     },
   },
   methods: {
-    handleEditSuccess() {
-      this.mediaUploadModalVisible = false;
-      this.$emit("photoModified");
+    async openImageModal(image) {
+      const ok = await this.$refs.imageUpdateModal.show({
+        media: image,
+      });
+
+      if (ok) {
+        this.$emit("photoModified");
+      }
     },
     async triggerPhotoDelete(photo) {
       const ok = await this.$refs.confirmDeleteModal.show({

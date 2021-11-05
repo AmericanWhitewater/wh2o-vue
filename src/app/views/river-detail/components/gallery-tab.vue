@@ -9,10 +9,7 @@
           <div class="bx--row">
             <div class="bx--col">
               <div class="toolbar-wrapper">
-                <cv-button
-                  v-if="user && user.uid"
-                  @click="mediaUploadModalVisible = true"
-                >
+                <cv-button v-if="user && user.uid" @click="openImageModal">
                   Upload
                 </cv-button>
               </div>
@@ -48,12 +45,10 @@
         </template>
       </template>
     </layout>
-    <media-upload-modal
-      :visible="mediaUploadModalVisible"
+    <image-update-modal
+      ref="imageUpdateModal"
       section="GALLERY"
-      @upload:cancelled="mediaUploadModalVisible = false"
-      @form:success="uploadSuccess"
-      @form:error="mediaUploadModalVisible = false"
+      includePostFields
     />
   </div>
 </template>
@@ -62,7 +57,8 @@ import { mapState, mapGetters } from "vuex";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block";
 import ImageGallery from "@/app/views/river-detail/components/image-gallery/image-gallery.vue";
 import { Layout } from "@/app/global/layout";
-import { TablePagination } from "@/app/global/components";
+import { ImageUpdateModal, TablePagination } from "@/app/global/components";
+
 export default {
   name: "gallery-tab",
   components: {
@@ -70,11 +66,10 @@ export default {
     Layout,
     ImageGallery,
     TablePagination,
-    MediaUploadModal: () => import("./media-upload-modal"),
+    ImageUpdateModal,
   },
   data: () => ({
     selectedRapids: [],
-    mediaUploadModalVisible: false,
     currentlyLoadedImagesFor: null,
   }),
   computed: {
@@ -96,10 +91,6 @@ export default {
     loadRapids(routeId) {
       this.$store.dispatch("RiverRapids/getProperty", routeId);
     },
-    uploadSuccess() {
-      this.mediaUploadModalVisible = false;
-      this.loadMedia();
-    },
     loadMedia(val) {
       this.loadRapids(this.reachId);
 
@@ -112,6 +103,13 @@ export default {
       this.$store.dispatch("RiverGallery/getProperty", data);
 
       this.currentlyLoadedImagesFor = this.reachId;
+    },
+    async openImageModal() {
+      const ok = await this.$refs.imageUpdateModal.show();
+
+      if (ok) {
+        this.loadMedia();
+      }
     },
   },
   // this ensures that gallery images are retrieved when you move between
