@@ -168,10 +168,10 @@ export default {
       // but graphql API blows up if we submit an empty string, so need to
       // convert to null before submission
       if (
-        this.postFormData.metric_id === "" ||
-        this.postFormData.metric_id === "null"
+        this.formData.metric_id === "" ||
+        this.formData.metric_id === "null"
       ) {
-        this.postFormData.metric_id = null;
+        this.formData.metric_id = null;
       }
 
       try {

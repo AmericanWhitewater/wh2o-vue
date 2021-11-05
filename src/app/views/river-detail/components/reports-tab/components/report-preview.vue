@@ -35,7 +35,7 @@
         class="bx--col-sm-12 bx--col-md-3 inside thumbnail pb-spacing-sm"
       >
         <img
-          :src="imageURI(report.photos[0], 'medium')"
+          :src="imageURI(report.photos[0], 'thumb')"
           :alt="report.photos[0].caption"
         >
       </div>

@@ -204,6 +204,7 @@ export default {
       .gallery-navigation-buttons {
         bottom: 0;
         display: flex;
+        flex-direction: row;
         justify-content: space-between;
         left: 0;
         position: absolute;
