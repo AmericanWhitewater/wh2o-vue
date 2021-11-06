@@ -46,7 +46,7 @@
       class="mb-spacing-md"
     />
 
-    <div v-if="images.length" class="bx--grid">
+    <div class="bx--grid">
       <div class="bx--row">
         <div class="bx--col-sm-12 bx--col-md-3">
           <cv-file-uploader
