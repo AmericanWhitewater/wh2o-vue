@@ -12,9 +12,7 @@
           <cv-link :to="{ name: 'reports-tab' }"> Trip Reports </cv-link>
         </cv-breadcrumb-item>
         <cv-breadcrumb-item>
-          <cv-link href="">
-            {{ report.id }}
-          </cv-link>
+          <cv-link> {{ report.title || "Untitled Report" }} </cv-link>
         </cv-breadcrumb-item>
       </cv-breadcrumb>
     </div>
