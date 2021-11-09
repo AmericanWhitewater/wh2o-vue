@@ -1,7 +1,7 @@
 <template>
   <div class="bx--grid">
     <div class="bx--row">
-      <div class="bx--col-sm-12 bx--col-md-3">
+      <div class="bx--col">
         <cv-file-uploader
           ref="fileUploader"
           data-modal-primary-focus
@@ -12,26 +12,54 @@
           @change="setFile"
         />
       </div>
-      <figure
-        v-for="(image, index) in images"
-        :key="index"
-        class="
-          bx--col-sm-12 bx--col-md-2 bx--col-lg-3 bx--col-max-3
-          mb-spacing-lg
-          image-hover
-        "
-      >
+    </div>
+    <div
+      v-for="(image, index) in images"
+      :key="index"
+      class="bx--row bx--tile mb-sm"
+    >
+      <figure class="bx--col-sm-4 bx--col-md-3">
         <img
           :src="imageURI(image, 'thumb')"
           :alt="formatAltText(image)"
           class="image-thumbnail"
         >
-        <figcaption>
-          <cv-button size="small" kind="danger" @click="clickDelete(image)"
-            >Remove</cv-button
-          >
-        </figcaption>
       </figure>
+      <div class="bx--col-sm-3 bx--col-md-4">
+        <cv-text-input
+          v-model="image.subject"
+          class="mb-spacing-md"
+          label="Subject"
+        />
+        <cv-text-input
+          v-model="image.caption"
+          class="mb-spacing-md"
+          label="Caption"
+        />
+        <cv-dropdown
+          v-if="rapids && rapids.length"
+          v-model="image.poi_id"
+          class="mb-spacing-md"
+          label="Rapid"
+        >
+          <cv-dropdown-item
+            v-for="(rapid, index) in rapids"
+            :key="index"
+            :value="rapid.id"
+          >
+            {{ rapid.name }}
+          </cv-dropdown-item>
+        </cv-dropdown>
+      </div>
+      <div class="bx--col-sm-1 bx--col-md-1">
+        <cv-button
+          size="small"
+          kind="danger"
+          class="remove-image-button"
+          @click="clickDelete(image)"
+          >Remove</cv-button
+        >
+      </div>
     </div>
     <confirm-delete-modal ref="confirmDeleteModal" />
   </div>
@@ -39,7 +67,7 @@
 
 <script>
 import { ConfirmDeleteModal } from "@/app/global/components";
-import { photoFileUpdate, deletePhoto } from "@/app/services";
+import { photoFileUpdate, updatePhoto, deletePhoto } from "@/app/services";
 import { assetUrl, imageHelpers } from "@/app/global/mixins";
 import { mapState } from "vuex";
 
@@ -49,7 +77,6 @@ export default {
     ConfirmDeleteModal,
   },
   mixins: [assetUrl, imageHelpers],
-
   props: {
     post: {
       type: Object,
@@ -66,6 +93,7 @@ export default {
   computed: {
     ...mapState({
       user: (state) => state.User.data,
+      rapids: (state) => state.RiverRapids.data,
     }),
   },
   methods: {
@@ -124,6 +152,20 @@ export default {
         }
       }
     },
+    // submits each photo sub-form to save the photo fields from each photo
+    async submitImages() {
+      this.images.forEach(async (image) => {
+        // image is the whole image object
+        // we just want to submit the fields that are being updated
+        const formSubmission = {
+          id: image.id,
+          subject: image.subject,
+          poi_id: image.poi_id,
+          caption: image.caption,
+        };
+        await updatePhoto(formSubmission);
+      });
+    },
   },
   mounted() {
     this.images = this.photos;
@@ -133,8 +175,8 @@ export default {
 
 <style lang="scss">
 .reports-tab {
-  .bx--file-browse-btn {
-    max-width: unset;
+  .remove-image-button {
+    padding-right: 12px;
   }
 
   .bx--btn-set {

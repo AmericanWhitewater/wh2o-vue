@@ -138,6 +138,9 @@ export default {
 
       try {
         const result = await updatePost(this.formData);
+        // graphql doesn't accept embedded photo data, so the multi-photo
+        // upload component iterates through each one with new requests
+        await this.$refs.multiPhotoUploader.submitImages();
         this.formPending = false;
 
         if (!result.errors) {
