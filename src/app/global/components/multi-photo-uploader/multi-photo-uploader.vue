@@ -73,13 +73,11 @@ export default {
       if (input && input.length) {
         input.forEach(async (f) => {
           await this.uploadImage(f.file);
+          this.$refs.fileUploader.internalFiles.pop();
         });
-        this.$refs.fileUploader.clear();
       }
     },
     async uploadImage(file) {
-      this.formPending = true;
-
       try {
         const photoPost = {
           photo: {
@@ -108,7 +106,6 @@ export default {
           kind: "error",
         });
       }
-      this.formPending = false;
     },
     async clickDelete(photo) {
       const ok = await this.$refs.confirmDeleteModal.show({
@@ -150,7 +147,35 @@ export default {
       box-shadow: 0;
     }
   }
+
+  .bx--file__state-container {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+
+    &:after {
+      content: " ";
+      display: block;
+      width: 64px;
+      height: 64px;
+      margin: 8px;
+      border-radius: 50%;
+      border: 6px solid rgb(0, 0, 0);
+      border-color: rgb(0, 0, 0) transparent rgb(0, 0, 0) transparent;
+      animation: upload-spinner 1.2s linear infinite;
+    }
+  }
 }
+
+@keyframes upload-spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 figure.image-hover {
   position: relative;
   text-align: center;
