@@ -36,20 +36,21 @@
           class="mb-spacing-md"
           label="Caption"
         />
-        <cv-dropdown
+        <cv-select
           v-if="rapids && rapids.length"
           v-model="image.poi_id"
           class="mb-spacing-md"
           label="Rapid"
         >
-          <cv-dropdown-item
+          <cv-select-option value>Choose an option</cv-select-option>
+          <cv-select-option
             v-for="(rapid, index) in rapids"
             :key="index"
             :value="rapid.id"
           >
             {{ rapid.name }}
-          </cv-dropdown-item>
-        </cv-dropdown>
+          </cv-select-option>
+        </cv-select>
       </div>
       <div class="bx--col-sm-1 bx--col-md-1">
         <cv-button
@@ -160,7 +161,7 @@ export default {
         const formSubmission = {
           id: image.id,
           subject: image.subject,
-          poi_id: image.poi_id,
+          poi_id: image.poi_id || null, // selector returns "" instead of null which breaks graphql
           caption: image.caption,
         };
         await updatePhoto(formSubmission);

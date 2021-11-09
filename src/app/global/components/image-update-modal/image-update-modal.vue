@@ -79,21 +79,22 @@
           </cv-select>
         </template>
 
-        <cv-dropdown
+        <cv-select
           v-if="rapids && rapids.length"
           v-model="formData.photo.poi_id"
           :disabled="formPending || !user"
           class="mb-spacing-md"
           label="Rapid"
         >
-          <cv-dropdown-item
+          <cv-select-option value>Choose an option</cv-select-option>
+          <cv-select-option
             v-for="(rapid, index) in rapids"
             :key="index"
             :value="rapid.id"
           >
             {{ rapid.name }}
-          </cv-dropdown-item>
-        </cv-dropdown>
+          </cv-select-option>
+        </cv-select>
         <cv-text-area
           v-model="formData.photo.description"
           label="Description"
@@ -259,6 +260,10 @@ export default {
           this.formData.post.metric_id === "null"
         ) {
           this.formData.post.metric_id = null;
+        }
+
+        if (this.formData.photo.poi_id === "") {
+          this.formData.photo.poi_id = null;
         }
 
         // if POST fields are in the form, update the post
