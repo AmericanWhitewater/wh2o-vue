@@ -20,12 +20,8 @@
       <cv-button
         v-if="canEdit(report)"
         size="small"
-        @keydown.enter="
-          $router.push({ name: 'edit-report', params: { reportId: report.id } })
-        "
-        @click.exact="
-          $router.push({ name: 'edit-report', params: { reportId: report.id } })
-        "
+        @keydown.enter="clickEdit"
+        @click.exact="clickEdit"
       >
         Edit
       </cv-button>
@@ -70,6 +66,13 @@ export default {
         this.$store.dispatch("RiverReports/deleteProperty", this.report.id);
         this.$router.push({ name: "reports-tab" });
       }
+    },
+    clickEdit() {
+      this.$emit("clickedEdit");
+      this.$router.push({
+        name: "edit-report",
+        params: { reportId: this.report.id },
+      });
     },
   },
 };

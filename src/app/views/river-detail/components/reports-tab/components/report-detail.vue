@@ -3,7 +3,7 @@
   <div v-else class="bx--grid">
     <div class="bx--row">
       <div class="bx--col">
-        <report-header :report="report" />
+        <report-header :report="report" @clickedEdit="resetCache" />
       </div>
     </div>
     <div class="bx--row mt-lg mb-lg">
@@ -72,7 +72,6 @@ export default {
   computed: {
     ...mapState({
       user: (state) => state.User.data,
-      editMode: (state) => state.Global.editMode,
     }),
     reportId() {
       return this.$route.params.reportId;
@@ -96,7 +95,11 @@ export default {
       },
     },
   },
-  methods: {},
+  methods: {
+    resetCache() {
+      delete reportsCache[this.report.id];
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
