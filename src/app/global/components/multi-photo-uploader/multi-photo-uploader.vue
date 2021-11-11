@@ -113,6 +113,11 @@ export default {
             id: "",
             author: this.user?.uname,
             photo_date: this.post.post_date,
+            // need to include these fields to avoid gql automatically
+            // populating with "n/a"
+            description: "",
+            subject: "",
+            caption: "",
           },
           fileinput: {
             file: file,
