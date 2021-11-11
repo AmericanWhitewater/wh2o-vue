@@ -61,12 +61,14 @@
       </cv-select>
     </template>
 
-    <cv-text-area
-      v-model="formData.detail"
-      label="Description"
-      theme="light"
-      class="mb-spacing-md"
-    />
+    <div class="mb-spacing-md cv-text-area bx--form-item">
+      <label class="bx--label">Report Detail</label>
+      <content-editor
+        :content="!formData.detail ? ' ' : formData.detail"
+        show-control-bar
+        @content:updated="formData.detail = $event"
+      />
+    </div>
 
     <multi-photo-uploader
       ref="multiPhotoUploader"
@@ -82,7 +84,7 @@
   </div>
 </template>
 <script>
-import { MultiPhotoUploader } from "@/app/global/components";
+import { MultiPhotoUploader, ContentEditor } from "@/app/global/components";
 import { mapState } from "vuex";
 import { gaugeHelpers } from "@/app/global/mixins";
 import { updatePost } from "@/app/services";
@@ -92,6 +94,7 @@ export default {
   name: "report-form",
   components: {
     MultiPhotoUploader,
+    ContentEditor,
   },
   mixins: [gaugeHelpers],
   props: {

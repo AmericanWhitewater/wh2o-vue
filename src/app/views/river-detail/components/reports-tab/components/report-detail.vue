@@ -8,7 +8,6 @@
     </div>
     <div class="bx--row mt-lg mb-lg">
       <div class="bx--col-sm-12 bx--col-md">
-        <p class="mb-md" v-text="report ? report.detail : ''" />
         <div class="bx--data-table-container mb-spacing-md">
           <table class="bx--data-table bx--data-table--zebra">
             <tbody>
@@ -34,6 +33,7 @@
             </tbody>
           </table>
         </div>
+        <div class="report-detail" v-html="report.detail" />
       </div>
       <div class="bx--col-sm-12 bx--col-md">
         <image-gallery :images="report.photos" gallery-type="report-detail" />
