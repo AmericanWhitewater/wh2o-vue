@@ -30,7 +30,7 @@
               </tr>
               <tr>
                 <td>Reading</td>
-                <td>{{ report.reading || "n/a" }}</td>
+                <td>{{ gaugeReading(report) }}</td>
               </tr>
             </tbody>
           </table>
@@ -46,7 +46,10 @@
 import { mapState } from "vuex";
 import ImageGallery from "@/app/views/river-detail/components/image-gallery/image-gallery.vue";
 import ReportHeader from "./report-header";
-import { objectPermissionsHelpersMixin } from "@/app/global/mixins";
+import {
+  objectPermissionsHelpersMixin,
+  gaugeHelpers,
+} from "@/app/global/mixins";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block";
 import { getReport } from "@/app/services";
 
@@ -61,7 +64,7 @@ export default {
     ReportHeader,
     UtilityBlock,
   },
-  mixins: [objectPermissionsHelpersMixin],
+  mixins: [objectPermissionsHelpersMixin, gaugeHelpers],
   props: {},
   data: () => ({
     report: null,
@@ -74,9 +77,6 @@ export default {
     }),
     reportId() {
       return this.$route.params.reportId;
-    },
-    gaugeReading() {
-      return `${this.report?.reading}${this.report?.metric?.unit}`;
     },
   },
   watch: {

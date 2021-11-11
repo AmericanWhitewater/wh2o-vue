@@ -143,6 +143,7 @@ import {
   objectPermissionsHelpersMixin,
   assetUrl,
   imageHelpers,
+  gaugeHelpers,
 } from "@/app/global/mixins";
 import { deletePhoto } from "@/app/services";
 
@@ -158,6 +159,7 @@ export default {
     objectPermissionsHelpersMixin,
     assetUrl,
     imageHelpers,
+    gaugeHelpers,
   ],
   props: {
     image: {
