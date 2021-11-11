@@ -47,7 +47,7 @@
         <cv-text-input
           v-model="formData.photo.caption"
           class="mb-spacing-md"
-          label="Caption"
+          label="Title"
           :disabled="formPending || !user"
         />
         <cv-text-input

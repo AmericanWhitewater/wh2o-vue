@@ -29,7 +29,7 @@
         <cv-text-input
           v-model="image.caption"
           class="mb-spacing-md"
-          label="Caption"
+          label="Title"
         />
         <cv-text-input
           v-model="image.subject"
