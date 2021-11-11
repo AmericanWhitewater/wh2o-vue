@@ -16,21 +16,20 @@
                 <td>Reporter</td>
                 <td>{{ report.user.uname || "n/a" }}</td>
               </tr>
-              <tr>
-                <td>Gauge</td>
+              <tr v-if="report.reading">
+                <td>Flow</td>
                 <td>
-                  <router-link
-                    v-if="report.gauge && report.gauge.name"
-                    :to="`/gage-detail/${report.gauge.id}`"
-                  >
-                    {{ report.gauge.name }}
-                  </router-link>
-                  <template v-if="!report.gauge"> n/a </template>
+                  {{ gaugeReading(report) }}
+                  <template v-if="report.gauge && report.gauge.name">
+                    at
+                    <router-link
+                      v-if="report.gauge && report.gauge.name"
+                      :to="`/gage-detail/${report.gauge.id}`"
+                    >
+                      {{ report.gauge.name }}
+                    </router-link>
+                  </template>
                 </td>
-              </tr>
-              <tr>
-                <td>Reading</td>
-                <td>{{ gaugeReading(report) }}</td>
               </tr>
             </tbody>
           </table>
@@ -97,6 +96,7 @@ export default {
       },
     },
   },
+  methods: {},
 };
 </script>
 <style lang="scss" scoped>

@@ -18,13 +18,35 @@ export const gaugeHelpers = {
     },
   },
   methods: {
-    // can be called on any object that has both `reading` and `metric` on it
-    gaugeReading: (obj) => {
-      if (obj.reading && obj.metric && obj.metric.unit) {
-        return `${obj.reading}${obj.metric.unit}`;
+    visualReadingLabel: (val) => {
+      if (val < 0.0) {
+        return "Low";
+      } else if (val > 0 && val < 0.33) {
+          return "Low Runnable";
+      } else if (val > 0.33 && val < 0.66) {
+          return "Runnable";
+      } else if (val > 0.66 && val < 1.0) {
+          return "High Runnable";
+      } else if (val > 1.0) {
+          return "Too High";
       } else {
-        return "n/a";
+          return "n/a";
       }
-    }
+    },
+
+    gaugeReading(obj) {
+      let output;
+      if (obj.reading && obj.metric && obj.metric.unit) {
+        // this is a special metric for visual estimates
+        if (obj.metric.id === "1") {
+          output = this.visualReadingLabel(obj.reading);
+        } else {
+          output = `${obj.reading}${obj.metric.unit}`;
+        }
+      } else {
+        output = "n/a";
+      }
+      return output;
+    },
   }
 };

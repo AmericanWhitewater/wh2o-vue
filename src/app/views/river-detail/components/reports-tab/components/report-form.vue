@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="report-form">
     <cv-text-input
       v-model="formData.title"
       label="Title"
@@ -15,29 +15,51 @@
       class="mb-spacing-md"
     />
 
-    <div class="bx--row">
-      <cv-number-input
-        v-model="formData.reading"
-        label="Flow"
-        class="mb-spacing-md bx--col-sm-12 bx--col-md-4"
-      />
-      <div class="bx--col-sm-12 bx--col-md-4">
-        <cv-select
-          v-if="formData.reading"
-          v-model="formData.metric_id"
-          label="Gage Metric"
-        >
-          <cv-select-option
-            v-for="(g, index) in metricOptions"
-            :key="index"
-            :value="String(g.id)"
-            :label="g.label"
-          />
-        </cv-select>
-      </div>
-    </div>
+    <cv-select v-model="formData.gauge_id" label="Gage" class="mb-spacing-md">
+      <cv-select-option value="">None</cv-select-option>
+      <cv-select-option
+        v-for="(g, index) in gages"
+        :key="index"
+        :value="String(g.gauge.id)"
+      >
+        {{ g.gauge.name }}
+      </cv-select-option>
+    </cv-select>
 
-    <!-- TODO: add a gauge selector? !-->
+    <template v-if="formData.gauge_id">
+      <div class="bx--row">
+        <cv-number-input
+          v-model="formData.reading"
+          label="Flow"
+          class="mb-spacing-md bx--col-sm-12 bx--col-md-4"
+        />
+        <div v-if="formData.gauge_id" class="bx--col-sm-12 bx--col-md-4">
+          <cv-select v-model="formData.metric_id" label="Gage Metric">
+            <cv-select-option
+              v-for="(g, index) in metricOptions"
+              :key="index"
+              :value="String(g.id)"
+            >
+              {{ g.label }}
+            </cv-select-option>
+          </cv-select>
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      <cv-select
+        v-model="formData.reading"
+        label="Describe the flow"
+        class="mb-spacing-md"
+      >
+        <cv-select-option value="">Choose an option</cv-select-option>
+        <cv-select-option value="-1">Low</cv-select-option>
+        <cv-select-option value="0.1">Low Runnable</cv-select-option>
+        <cv-select-option value="0.45">Runnable</cv-select-option>
+        <cv-select-option value="0.8">High Runnable</cv-select-option>
+        <cv-select-option value="1.5">Too High</cv-select-option>
+      </cv-select>
+    </template>
 
     <cv-text-area
       v-model="formData.detail"
@@ -98,6 +120,7 @@ export default {
   computed: {
     ...mapState({
       user: (state) => state.User.data,
+      gages: (state) => state.RiverGages.data?.gauges ?? [],
     }),
     reachId() {
       return this.$route.params.id;
@@ -113,10 +136,23 @@ export default {
       }
     },
   },
+  watch: {
+    "formData.gauge_id": function (newVal, oldVal) {
+      // if switching between gauges, do nothing
+      // if switching from gauge to no gauge or vice versa,
+      // update reading and metric_id accordingly
+      if (newVal && (oldVal === "" || oldVal === undefined)) {
+        this.formData.reading = "";
+        const selectedGage = this.gages.find((x) => x.gauge.id === newVal);
+        this.formData.metric_id = `${selectedGage?.gauge_metric}`;
+      } else if (!newVal && oldVal) {
+        this.formData.reading = "";
+        this.formData.metric_id = "1";
+      }
+    },
+  },
   methods: {
-    async handleSubmit() {
-      this.formPending = true;
-
+    processFormData() {
       // since user is a state property, it can't always be populated
       // immediately when the component is mounted, so we insure it's
       // set here before submission
@@ -129,12 +165,17 @@ export default {
       // carbon select won't allow an option that doesn't set model to ""
       // but graphql API blows up if we submit an empty string, so need to
       // convert to null before submission
-      if (
-        this.formData.metric_id === "" ||
-        this.formData.metric_id === "null"
-      ) {
+      if (this.formData.metric_id === "") {
         this.formData.metric_id = null;
       }
+      if (this.formData.gauge_id === "") {
+        this.formData.gauge_id = null;
+      }
+    },
+    async handleSubmit() {
+      this.formPending = true;
+
+      this.processFormData();
 
       try {
         const result = await updatePost(this.formData);
@@ -192,8 +233,17 @@ export default {
             this.report[key],
             "YYYY-MM-DD HH:mm:ss"
           ).format("YYYY-MM-DD");
+        } else if (key === "gauge_id") {
+          this.formData[key] = this.report.gauge?.id;
+        } else if (key === "metric_id") {
+          this.formData[key] = this.report.metric?.id;
         } else {
           this.formData[key] = this.report[key];
+        }
+
+        // avoid cv-select throwing a warning about putting a number in a string value
+        if (!this.formData.gauge_id && this.formData.reading) {
+          this.formData.reading = `${this.formData.reading}`;
         }
       });
     }
@@ -201,4 +251,9 @@ export default {
 };
 </script>
 <style lang="scss">
+.report-form {
+  .bx--select-input {
+    width: 100%;
+  }
+}
 </style>
