@@ -16,7 +16,7 @@
     <div
       v-for="(image, index) in images"
       :key="index"
-      class="bx--row bx--tile mb-sm"
+      class="bx--row bx--tile mb-sm image-form"
     >
       <figure class="bx--col-sm-4 bx--col-md-3">
         <img
@@ -27,14 +27,19 @@
       </figure>
       <div class="bx--col-sm-3 bx--col-md-4">
         <cv-text-input
+          v-model="image.caption"
+          class="mb-spacing-md"
+          label="Caption"
+        />
+        <cv-text-input
           v-model="image.subject"
           class="mb-spacing-md"
           label="Subject"
         />
-        <cv-text-input
-          v-model="image.caption"
+        <cv-text-area
+          v-model="image.description"
+          label="Description"
           class="mb-spacing-md"
-          label="Caption"
         />
         <cv-select
           v-if="rapids && rapids.length"
@@ -168,6 +173,7 @@ export default {
           subject: image.subject,
           poi_id: image.poi_id || null, // selector returns "" instead of null which breaks graphql
           caption: image.caption,
+          description: image.description,
         };
         await updatePhoto(formSubmission);
       });
@@ -183,6 +189,10 @@ export default {
 .reports-tab {
   .remove-image-button {
     padding-right: 12px;
+  }
+
+  .image-form .bx--text-area__wrapper {
+    height: 8rem;
   }
 
   .bx--btn-set {
