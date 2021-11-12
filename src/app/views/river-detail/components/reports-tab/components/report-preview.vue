@@ -39,10 +39,12 @@
       </div>
       <div class="bx--col-sm-4 bx--col-md-3 report-thumbnail">
         <template v-if="report.photos && report.photos[0]">
-          <img
-            :src="imageURI(report.photos[0], 'thumb')"
-            :alt="report.photos[0].caption"
-          >
+          <div>
+            <img
+              :src="imageURI(report.photos[0], 'thumb')"
+              :alt="report.photos[0].caption"
+            >
+          </div>
         </template>
         <template v-else>
           <utility-block state="content" theme="dark" text="No images" />
