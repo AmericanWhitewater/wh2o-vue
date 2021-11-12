@@ -35,7 +35,7 @@
                       <div class="bx--type-caption">
                         {{ formatDate(alert.post_date, "ll") }}
                         <template v-if="alert.user">
-                          - {{ alert.user.contact.name }}
+                          - {{ alert.user.name }}
                         </template>
                       </div>
                       <hr v-if="!editMode" >

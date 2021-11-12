@@ -12,11 +12,11 @@
           <div class="bx--col-auto">
             <user-avatar
               :avatar-u-r-i="`${baseUrl}${data.image.uri.big || data.image.uri.medium}`"
-              :username="data.uname"
+              :username="data.name"
             />
           </div>
           <div class="bx--col">
-            <h2 v-text="data.uname" />
+            <h2 v-text="data.name" />
             <h3 v-text="data.email" />
           </div>
         </div>
