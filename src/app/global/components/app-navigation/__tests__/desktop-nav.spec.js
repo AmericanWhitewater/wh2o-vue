@@ -41,7 +41,7 @@ describe('desktop-nav.vue', () => {
     expect(wrapper.find('#account-btn').exists()).toBe(false)
   })
   it('shows account button when user logged in', () => {
-    mockStore.state.User.data = { uname: 'johnDoe' }
+    mockStore.state.User.data = { name: 'johnDoe' }
     const wrapper = createWrapper(DesktopNav, options)
     expect(wrapper.find('#login-btn').exists()).toBe(false)
     expect(wrapper.find('#account-btn').exists()).toBe(true)

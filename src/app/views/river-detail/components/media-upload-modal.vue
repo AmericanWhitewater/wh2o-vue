@@ -347,8 +347,8 @@ export default {
           metric_id: String(this.media.metric_id),
         });
       } else {
-        if (this.user && this.user.uname) {
-          this.formData.photo.author = this.user.uname;
+        if (this.user && this.user.name) {
+          this.formData.photo.author = this.user.name;
         }
 
         this.formData.id = `${this.$randomId()}`;

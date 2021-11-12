@@ -4,11 +4,11 @@
       <div class="bx--col-sm-12 bx--col-md-1">
         <user-avatar
           :avatar-u-r-i="formatURI(comment.user.image.uri.big)"
-          :username="comment.user.uname"
+          :username="comment.user.name"
         />
       </div>
       <div class="bx--col-sm-3 bx--col-lg-11">
-        <h5 class="mr-spacing-sm" v-text="comment.user.uname" />
+        <h5 class="mr-spacing-sm" v-text="comment.user.name" />
         <h6
           class="date mb-spacing-xs"
           v-text="formatDate(comment.post_date, 'll')"

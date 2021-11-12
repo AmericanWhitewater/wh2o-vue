@@ -7,6 +7,7 @@ export async function getUser() {
                   me {
                     uid
                     email
+                    name
                     mobile_profile
                     gauge_notification {
                       gauge_id
@@ -19,7 +20,6 @@ export async function getUser() {
                         thumb
                       }
                     }
-                    uname
                   }
                 }
               `,
