@@ -85,9 +85,12 @@ export default {
     },
     reportPreview() {
       // truncate to first 100 words
-      let output = this.report.detail.split(" ").splice(0, 99).join(" ");
-      if (this.report.detail.length > output.length) {
-        output += "...";
+      let output;
+      if (this.report.detail) {
+        output = this.report.detail.split(" ").splice(0, 99).join(" ");
+        if (this.report.detail.length > output.length) {
+          output += "...";
+        }
       }
       return output;
     },
