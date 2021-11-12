@@ -36,7 +36,7 @@
         <div class="report-detail" v-html="report.detail" />
       </div>
       <div class="bx--col-sm-12 bx--col-md">
-        <image-gallery :images="report.photos" gallery-type="report-detail" />
+        <image-gallery :images="reportPhotos" gallery-type="report-detail" />
       </div>
     </div>
   </div>
@@ -75,6 +75,21 @@ export default {
     }),
     reportId() {
       return this.$route.params.reportId;
+    },
+    // in a workaround to deal with the relationship between posts and photos,
+    // the image-gallery component takes photos that have a number of post attributes
+    // augmented onto them. So we have to do that augmentation here.
+    // in the main gallery, the service/state that retrieve the photos does that work
+    // but here, the photos are coming back as part of the report object
+    reportPhotos() {
+      return this.report?.photos?.map((p) => {
+        return {
+          ...p,
+          reading: this.report.reading,
+          gauge: this.report.gauge,
+          metric: this.report.metric,
+        };
+      });
     },
   },
   watch: {

@@ -26,6 +26,7 @@ export async function getReport(id) {
                           medium
                           thumb
                         }
+                        file_size
                       }
                       author
                       caption
