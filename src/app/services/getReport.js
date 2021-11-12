@@ -43,7 +43,7 @@ export async function getReport(id) {
                     }
                     user {
                       uid
-                      uname
+                      name
                       image {
                         uri {
                           big

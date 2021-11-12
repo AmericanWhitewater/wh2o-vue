@@ -116,7 +116,7 @@ export default {
         const photoPost = {
           photo: {
             id: "",
-            author: this.user?.uname,
+            author: this.user?.name,
             photo_date: this.post.post_date,
             // need to include these fields to avoid gql automatically
             // populating with "n/a"

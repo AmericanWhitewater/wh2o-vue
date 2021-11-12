@@ -13,7 +13,7 @@
             <tbody>
               <tr>
                 <td>Reporter</td>
-                <td>{{ report.user.uname || "n/a" }}</td>
+                <td>{{ report.user.name || "n/a" }}</td>
               </tr>
               <tr v-if="report.reading">
                 <td>Flow</td>

@@ -12,7 +12,7 @@
           </div>
           <div class="bx--col-sm-2 bx--col-md-6">
             <h5 class="mr-spacing-sm">
-              {{ report.user.uname }} - {{ report.title }}
+              {{ report.user.name }} - {{ report.title }}
             </h5>
             <h6
               class="date mb-spacing-xs"

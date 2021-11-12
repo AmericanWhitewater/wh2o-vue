@@ -33,7 +33,7 @@ export async function getReachReports(id) {
                     }
                     user {
                       uid
-                      uname
+                      name
                       image {
                         uri {
                           big
