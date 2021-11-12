@@ -13,7 +13,7 @@ export async function getProjects() {
             short_name
             user {
               uid
-              uname
+              name
             }
           }
         paginatorInfo {

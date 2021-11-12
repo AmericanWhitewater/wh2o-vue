@@ -4,7 +4,7 @@ import PostUpdateModal from '@/app/global/components/post-update-modal/post-upda
 
 const mockUser = {
   uid: '123',
-  uname: 'foo',
+  name: 'foo bar',
   uemail: 'bar@aol.com'
 }
 
@@ -95,7 +95,7 @@ describe('CommentsSection', () => {
   })
 
   it('sends comment edited toast when comment successfully edited', async () => {
-    const post = { id: '101250363', title: null, detail: 'how is there absolutely zero beta on this run?', post_date: '2013-06-27 00:00:00', revision: 23592, post_type: 'COMMENT', user: { uname: 'circuitmonkey', uid: '151431', image: { uri: { thumb: null, medium: null, big: '/resources/images/contacts/151431.jpg' } } } }
+    const post = { id: '101250363', title: null, detail: 'how is there absolutely zero beta on this run?', post_date: '2013-06-27 00:00:00', revision: 23592, post_type: 'COMMENT', user: { name: 'circuitmonkey', uid: '151431', image: { uri: { thumb: null, medium: null, big: '/resources/images/contacts/151431.jpg' } } } }
 
     mockStore.state.User.data = mockUser
 

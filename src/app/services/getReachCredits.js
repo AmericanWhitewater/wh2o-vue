@@ -11,10 +11,7 @@ export async function getReachCredits(id) {
                         id
                         revision
                         sk {
-                            uname
-                            contact {
-                                name  
-                            }
+                            name
                         }
                         revision_comment
                         edited

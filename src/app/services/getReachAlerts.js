@@ -20,11 +20,8 @@ export async function getReachAlerts(id) {
                   result
                 }
                 user {
-                  uname
+                  name
                   uid
-                  contact {
-                    name
-                  }
                   image {
                     uri {
                       thumb

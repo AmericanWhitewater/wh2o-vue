@@ -65,7 +65,7 @@ describe('mobile-nav.vue', () => {
   })
 
   it('should show logout button when user logged in', async () => {
-    mockStore.state.User.data = { uid: '123', uname: 'paddleDood420' }
+    mockStore.state.User.data = { uid: '123', name: 'paddleDood420' }
 
     const wrapper = createWrapper(MobileNav, options)
 

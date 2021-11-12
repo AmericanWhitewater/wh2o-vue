@@ -38,7 +38,7 @@ export async function getReach(id) {
                     id
                     post {
                       user {
-                        uname
+                        name
                         uid
                       }
                     }
