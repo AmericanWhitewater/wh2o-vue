@@ -17,13 +17,6 @@ export const imageHelpers = {
       }
       return this.formatDate(image.photo_date, "ll");
     },
-    gaugeReading(image) {
-      if (image.reading && image.metric && image.metric.unit) {
-        return `${image.reading}${image.metric.unit}`;
-      } else {
-        return "n/a";
-      }
-    },
     formatFileSize(image) {
       if (image.image.file_size) {
         return this.formatBytes(image.image.file_size);

@@ -46,6 +46,7 @@ export default {
               permissions: post.permissions,
               reading: post.reading,
               gauge: post.gauge,
+              metric: post.metric,
               metric_id: post.metric_id,
               post_date: post.post_date
             }

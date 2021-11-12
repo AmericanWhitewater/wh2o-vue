@@ -1,10 +1,7 @@
 <template>
   <div :class="[theme, 'user-avatar']">
     <template v-if="avatarURI">
-      <img
-        :src="avatarURI"
-        alt=""
-      >
+      <img :src="avatarURI" alt="" >
     </template>
     <template v-else>
       <h2>{{ letter }}</h2>
@@ -13,31 +10,30 @@
 </template>
 <script>
 export default {
-  name: 'user-avatar',
+  name: "user-avatar",
   props: {
-    avatarURI: {
-      type: String,
-      required: false
-    },
-    username: {
-      type: String,
-      required: true
+    user: {
+      type: Object,
+      required: true,
     },
     theme: {
       type: String,
       required: false,
-      validator: val => ['light', 'dark'].indexOf(val) > -1
-    }
+      validator: (val) => ["light", "dark"].indexOf(val) > -1,
+    },
   },
   computed: {
-    letter () {
-      if (this.username) {
-        return this.username.charAt(0).toUpperCase()
+    avatarURI() {
+      return this.imageURI(this.user, "big");
+    },
+    letter() {
+      if (this.user.name) {
+        return this.user.name.charAt(0).toUpperCase();
       }
-      return null
-    }
-  }
-}
+      return null;
+    },
+  },
+};
 </script>
 <style lang="scss">
 .user-avatar {

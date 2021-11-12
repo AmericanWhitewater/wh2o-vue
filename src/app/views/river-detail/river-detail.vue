@@ -87,11 +87,12 @@
               hide-text
             />
             <div
-              @click.exact="$router.push(`/river-detail/${$route.params.id}/map`)"
+              @click.exact="
+                $router.push(`/river-detail/${$route.params.id}/map`)
+              "
             >
               <transition :name="transitionName" mode="out-in">
                 <map-banner
-                
                   v-if="activeTabKey !== 'map' && !loading && reach"
                   :title="reach.river"
                   :subtitle="reach.section"
@@ -187,7 +188,7 @@
                 <cv-button
                   :class="[
                     path === 'main' ? 'no-border-top' : '',
-                    activeTabKey === path ? 'is-active' : '',
+                    pathIsActiveTab(path) ? 'is-active' : '',
                   ]"
                   kind="ghost"
                   @click.exact="switchTab(path)"
@@ -200,7 +201,12 @@
             <template v-if="editMode">
               <div style="width: 100%; border-top: 1px solid #ccc" />
               <a
-                class="cv-button mt-spacing-md mb-spacing-md bx--btn bx--btn--tertiary bx--btn--sm"
+                class="
+                  cv-button
+                  mt-spacing-md
+                  mb-spacing-md
+                  bx--btn bx--btn--tertiary bx--btn--sm
+                "
                 :href="
                   formatLinkUrl(
                     `/content/Linker/edit/source/river/id/${reachId}/`
@@ -264,6 +270,7 @@ export default {
     main: "General",
     flow: "Flow",
     map: "Map",
+    reports: "Trip Reports",
     gallery: "Gallery",
     news: "News",
     accidents: "Accidents",
@@ -322,6 +329,12 @@ export default {
         ]);
       }
     },
+    pathIsActiveTab(path) {
+      return (
+        path === this.activeTabKey ||
+        (path === "reports" && this.activeTabKey.includes("report"))
+      );
+    },
     loadReachData() {
       this.$store.dispatch("RiverDetail/setRefId", this.reachId);
       this.$store.dispatch("RiverEvents/getProperty", this.reachId);
@@ -329,6 +342,7 @@ export default {
       this.$store.dispatch("RiverAlerts/getProperty", this.reachId);
       this.$store.dispatch("RiverGages/getProperty", this.reachId);
       this.$store.dispatch("RiverRapids/getProperty", this.reachId);
+      this.$store.dispatch("RiverReports/getProperty", this.reachId);
     },
     toggleEditMode() {
       if (this.user) {

@@ -5,7 +5,10 @@ describe('user-avatar.vue', () => {
   it('exists', () => {
     const wrapper = createWrapper(UserAvatar, {
       propsData: {
-        username: 'churchBro'
+        user: {
+          name: 'churchBro',
+          image: { uri: { big: null, medium: null, thumb: null } },
+        }
       }
     })
 
