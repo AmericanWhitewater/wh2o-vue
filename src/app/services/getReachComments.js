@@ -20,7 +20,7 @@ export async function getReachComments(id) {
                   result
                 }
                 user {
-                  uname
+                  name
                   uid
                   image {
                     uri {

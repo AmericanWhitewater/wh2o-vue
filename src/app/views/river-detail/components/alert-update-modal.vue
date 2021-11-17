@@ -26,118 +26,116 @@
           class="mb-spacing-md"
         />
       </template>
-      <template slot="secondary-button">
-        Cancel
-      </template>
-      <template slot="primary-button"
-                @click.exact="submitAlert"
-                @keydown.enter="submitAlert">
+      <template slot="secondary-button"> Cancel </template>
+      <template
+        slot="primary-button"
+        @click.exact="submitAlert"
+        @keydown.enter="submitAlert"
+      >
         Submit
       </template>
     </cv-modal>
   </div>
 </template>
 <script>
-import http from '@/app/http'
-import { shadowDomFixedHeightOffset } from '@/app/global/mixins'
+import { shadowDomFixedHeightOffset } from "@/app/global/mixins";
+import { updatePost } from "@/app/services";
 
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 export default {
-  name: 'alert-update-modal',
+  name: "alert-update-modal",
   mixins: [shadowDomFixedHeightOffset],
   props: {
     visible: {
       type: Boolean,
-      required: true
+      required: true,
     },
     alertId: {
       type: String,
-      required: false
-    }
+      required: false,
+    },
   },
   data: () => ({
     formData: {
       id: this.$randomId(),
-      post: {
-        user_id: null,
-        detail: null,
-        post_date: null,
-        post_type: 'WARNING',
-        reach_id: null
-      }
-    }
+      user_id: null,
+      detail: null,
+      post_date: null,
+      post_type: "WARNING",
+      reach_id: null,
+    },
   }),
   computed: {
     ...mapState({
-      user: state => state.User.data,
-      alerts: state => state.RiverAlerts.data
+      user: (state) => state.User.data,
+      alerts: (state) => state.RiverAlerts.data,
     }),
-    activeAlert () {
+    activeAlert() {
       if (this.alertId) {
-        return this.alerts.find(a => a.id === this.alertId)
+        return this.alerts.find((a) => a.id === this.alertId);
       }
-      return null
-    }
+      return null;
+    },
   },
   methods: {
-    setFormData () {
-      const today = new Date()
-
-      this.formData.post.post_date = today.toISOString()
+    setFormData() {
+      const today = new Date();
+      this.formData.post.post_date = today.toISOString();
 
       if (this.alertId) {
-        this.formData.id = this.alertId
-        this.formData.post.title = this.activeAlert.title
-        this.formData.post.detail = this.activeAlert.detail
+        this.formData.id = this.alertId;
+        this.formData.title = this.activeAlert.title;
+        this.formData.detail = this.activeAlert.detail;
       }
     },
-    handleCancel () {
-      this.$emit('update:cancelled')
+    handleCancel() {
+      this.$emit("update:cancelled");
     },
-    submitAlert () {
-      
+    async submitAlert() {
       if (this.user) {
-        this.formData.post.user_id = this.user.uid
+        this.formData.user_id = this.user.uid;
 
-        this.$emit('update:submitted')
-        http
-          .post('/graphql', {
-            query: `
-            mutation ($id:ID!, $post: PostInput!) {
-                post:postUpdate(id: $id, post:$post)  {
-                id
-              }
-            }`,
-            variables: this.formData
-          })
-          .then(r => {
-            this.formData.post.detail = ''
-            this.formData.post.title = ''
-            if (!r.errors) {
-              this.$store.dispatch('Global/sendToast', {
-                title: 'Alert Submitted',
-                kind: 'success',
-                override: true,
-                contrast: false,
-                action: false,
-                autoHide: true
-              })
-              this.$store.dispatch(
-                'RiverAlerts/getProperty',
-                this.$route.params.id
-              )
-            }
-          })
-          .catch(e => {
-            this.formData.detail = ''
-            // eslint-disable-next-line no-console
-            console.log('e :', e)
-          })
+        this.$emit("update:submitted");
+        try {
+          this.formData.detail = "";
+          this.formData.title = "";
+
+          const result = await updatePost(this.formData);
+          if (!result.errors) {
+            this.$store.dispatch("Global/sendToast", {
+              title: "Alert Submitted",
+              kind: "success",
+              override: true,
+              contrast: false,
+              action: false,
+              autoHide: true,
+            });
+            this.$store.dispatch(
+              "RiverAlerts/getProperty",
+              this.$route.params.id
+            );
+          } else {
+            this.handleError(result.errors);
+          }
+        } catch (error) {
+          this.handleError(error);
+        }
       }
-    }
+    },
+    handleError(errors) {
+      this.$store.dispatch("Global/sendToast", {
+        kind: "error",
+        title: "Error",
+        subtitle:
+          "Failed to save alert: " +
+          Object.keys(errors)
+            .map((x) => errors[x]?.message ?? "")
+            .join(","),
+      });
+    },
   },
-  mounted () {
-    this.setFormData()
-  }
-}
+  mounted() {
+    this.setFormData();
+  },
+};
 </script>

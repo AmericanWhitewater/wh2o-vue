@@ -3,8 +3,11 @@ import { assetBaseUrl, baseUrl } from '@/app/environment'
 export const assetUrl = {
   methods: {
     assetUrl: (assetPath) => {
-      const basePath = assetBaseUrl || ''
-      return `${basePath}${assetPath}`
+      if (assetPath) {
+        const basePath = assetBaseUrl || ''
+        return `${basePath}${assetPath}`
+      }
+      return null;
     },
 
     formatLinkUrl: (path) => {
