@@ -48,6 +48,19 @@
         :min="0"
         :mobile="windowWidth <= $options.breakpoints.md"
       />
+      <cv-text-input
+        v-model="formData.permiturl"
+        class="mb-spacing-md"
+        label="Permit URL"
+        :mobile="windowWidth <= $options.breakpoints.md"
+      />
+      <cv-text-input
+        v-model="formData.permitinfo"
+        class="mb-spacing-md"
+        label="Permit Information"
+
+        :mobile="windowWidth <= $options.breakpoints.md"
+      />
     </template>
     <template slot="secondary-button">
       Cancel
@@ -85,7 +98,7 @@ export default {
     },
     submitForm () {
       this.$emit('edit:submit')
-     
+
       this.$store.dispatch('RiverDetail/updateProperty', {
           id: this.$route.params.id,
           reach: {
@@ -94,7 +107,10 @@ export default {
             class: this.formData.class,
             length: Number(this.formData.length),
             avggradient: Number(this.formData.avggradient),
-            maxgradient: Number(this.formData.maxgradient)
+            maxgradient: Number(this.formData.maxgradient),
+            permitinfo: this.formData.permitinfo,
+            permiturl: this.formData.permiturl
+
           }
         })
 

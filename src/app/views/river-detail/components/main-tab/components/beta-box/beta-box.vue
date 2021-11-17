@@ -37,6 +37,21 @@
             </template>
           </td>
         </tr>
+        <tr v-if="river && river.permitinfo && river.permiturl">
+          <td>Permit</td>
+          <td class="river-avggradient">
+            <template v-if="!loading">
+              <div>{{
+                  river && river.permitinfo
+                }}
+              </div>
+              <a :href="river.permiturl">Permit Site</a>
+            </template>
+            <template v-else>
+              <cv-skeleton-text/>
+            </template>
+          </td>
+        </tr>
         <tr>
           <td>Gage</td>
           <template v-if="!loading">
@@ -208,15 +223,15 @@ export default {
     },
     gagesWithGage () {
       return (this.gages?.filter(x => x.gauge) ?? []).sort((a, b) => {
-        //sort by primary over secondary
+            //sort by primary over secondary
             if (a.delay_update - b.delay_update) {
               return a.delay_update - b.delay_update
               // sort by updated last
             } else {
-              return a.epoch - b.epoch;
+              return a.epoch - b.epoch
             }
           }
-        )
+      )
 
     },
 
@@ -238,11 +253,10 @@ export default {
       if (!releaseDate) return ''
 
       const today = new Date()
-      today.setHours(0, 0, 0, 0);
-      today.setDate(today.getDate() + 1);
+      today.setHours(0, 0, 0, 0)
+      today.setDate(today.getDate() + 1)
 
-
-      if (releaseDate.substring(0,10) < today.toISOString().substring(0,10)) {
+      if (releaseDate.substring(0, 10) < today.toISOString().substring(0, 10)) {
         return 'Latest Release'
       }
 

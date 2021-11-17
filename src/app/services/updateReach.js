@@ -11,6 +11,8 @@ export async function updateReach(data) {
                   length,
                   avggradient,
                   maxgradient,
+                  permiturl,
+                  permitinfo,
                   status
                 }
               }
