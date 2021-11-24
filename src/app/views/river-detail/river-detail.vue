@@ -162,22 +162,23 @@
                   <component :is="notificationIcon" />
                 </cv-button>
               </div>
-              <cv-dropdown
+              <cv-select
                 v-if="windowWidth < $options.breakpoints.lg"
                 v-model="activeTabKey"
-                class="tab-dropdown"
+                class="tab-dropdown cv-select-without-label"
                 theme="light"
+                label=""
                 @change="switchTab"
                 @click="$emit('dropdown:open')"
               >
-                <cv-dropdown-item
+                <cv-select-option
                   v-for="(label, path) in $options.tabs"
                   :key="path"
                   :value="path"
                 >
                   {{ label }}
-                </cv-dropdown-item>
-              </cv-dropdown>
+                </cv-select-option>
+              </cv-select>
             </div>
             <ul v-if="windowWidth >= $options.breakpoints.lg">
               <li v-for="(label, path) in $options.tabs" :key="path">
