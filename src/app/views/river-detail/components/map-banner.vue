@@ -9,9 +9,7 @@
             id="nwi-map-banner"
             ref="nwiMapBanner"
             style="height:400px; cursor: pointer;"
-          />
-          <nwi-basemap-toggle
-            :offset-right="false"
+            @click.exact="$router.push(`/river-detail/${$route.params.id}/map`)"
           />
         </div>
       </template>
@@ -60,7 +58,6 @@ export default {
       return geom ? lineString(geom) : null
     },
     ...mapState({
-      mapStyle: state => state.RiverIndex.mapStyle,
       reach: state => state.RiverDetail.data,
       editMode: state => state.Global.editMode
     }),
@@ -82,7 +79,7 @@ export default {
       mapboxgl.accessToken = mapboxAccessToken
       const mapProps = {
         container: this.$refs.nwiMapBanner,
-        style: this.baseMapUrl,
+        style: this.baseMapUrlFor("topo"),
         bounds: this.startingBounds,
         fitBoundsOptions: { padding: 80 },
         interactive: false

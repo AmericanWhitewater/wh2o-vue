@@ -86,11 +86,7 @@
               theme="dark"
               hide-text
             />
-            <div
-              @click.exact="
-                $router.push(`/river-detail/${$route.params.id}/map`)
-              "
-            >
+            <div>
               <transition :name="transitionName" mode="out-in">
                 <map-banner
                   v-if="activeTabKey !== 'map' && !loading && reach"
