@@ -61,15 +61,15 @@
     </section>
     <div id="nhd-editor-container">
       <div class="nhd-editor-mode-switcher">
-        <cv-dropdown v-model="mapEditMode">
-          <cv-dropdown-item value="automatic">
+        <cv-select v-model="mapEditMode" label="" class="cv-select-without-label">
+          <cv-select-option value="automatic">
             Automatic - AW
-          </cv-dropdown-item>
-          <cv-dropdown-item value="automatic-nldi">
+          </cv-select-option>
+          <cv-select-option value="automatic-nldi">
             Automatic - NLDI
-          </cv-dropdown-item>
-          <cv-dropdown-item value="manual"> Manual </cv-dropdown-item>
-        </cv-dropdown>
+          </cv-select-option>
+          <cv-select-option value="manual"> Manual </cv-select-option>
+        </cv-select>
       </div>
       <div v-if="currentGeom" class="nhd-editor-clear-map">
         <cv-button
@@ -447,7 +447,7 @@ export default {
     width: 11rem;
     z-index: 1;
 
-    .bx--dropdown {
+    .bx--select-input {
       border-radius: 3px;
     }
 
