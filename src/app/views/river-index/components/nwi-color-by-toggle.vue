@@ -2,16 +2,18 @@
   <div
     class="nwi-color-by-toggle"
   >
-    <cv-dropdown
+    <cv-select
       v-model="colorBy"
+      label=""
+      class="cv-select-without-label"
     >
-      <cv-dropdown-item value="difficulty">
+      <cv-select-option value="difficulty">
         Difficulty
-      </cv-dropdown-item>
-      <cv-dropdown-item value="currentFlow">
+      </cv-select-option>
+      <cv-select-option value="currentFlow">
         Flow
-      </cv-dropdown-item>
-    </cv-dropdown>
+      </cv-select-option>
+    </cv-select>
   </div>
 </template>
 
@@ -44,12 +46,9 @@ export default {
   z-index: 1;
   display: block;
 
-  .bx--dropdown {
+  .bx--select-input {
     border-radius: 3px;
   }
 
-  button.bx--dropdown-text {
-    cursor: pointer;
-  }
 }
 </style>
