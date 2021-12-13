@@ -7,6 +7,8 @@ export async function getReach(id) {
               {
                 reach(id: ${id}) {
                   avggradient
+                  permiturl
+                  permitinfo
                   id
                   class
                   description

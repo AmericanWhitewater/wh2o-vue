@@ -52,14 +52,11 @@
         v-model="formData.permiturl"
         class="mb-spacing-md"
         label="Permit URL"
-        :mobile="windowWidth <= $options.breakpoints.md"
       />
       <cv-text-input
         v-model="formData.permitinfo"
         class="mb-spacing-md"
         label="Permit Information"
-
-        :mobile="windowWidth <= $options.breakpoints.md"
       />
     </template>
     <template slot="secondary-button">
