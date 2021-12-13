@@ -16,20 +16,19 @@
       Edit Beta Box
     </template>
     <template slot="content">
-      <cv-dropdown
+      <cv-select
         v-model="formData.class"
-        class="cv-dropdown mb-spacing-md"
+        class="mb-spacing-md"
         label="Difficulty"
-        theme="light"
       >
-        <cv-dropdown-item
+        <cv-select-option
           v-for="(item, index) in reachClasses"
           :key="index"
           :value="item"
         >
           {{ item }}
-        </cv-dropdown-item>
-      </cv-dropdown>
+        </cv-select-option>
+      </cv-select>
       <cv-number-input
         v-model="formData.avggradient"
         class="mb-spacing-md"

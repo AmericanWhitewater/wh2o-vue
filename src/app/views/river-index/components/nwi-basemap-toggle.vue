@@ -2,16 +2,18 @@
   <div
     class="nwi-basemap-toggle"
   >
-    <cv-dropdown
+    <cv-select
       v-model="baseMap"
+      label=""
+      class="cv-select-without-label"
     >
-      <cv-dropdown-item value="topo">
+      <cv-select-option value="topo">
         Topo
-      </cv-dropdown-item>
-      <cv-dropdown-item value="satellite">
+      </cv-select-option>
+      <cv-select-option value="satellite">
         Satellite
-      </cv-dropdown-item>
-    </cv-dropdown>
+      </cv-select-option>
+    </cv-select>
   </div>
 </template>
 
@@ -38,17 +40,12 @@ export default {
   top: 0.5rem;
   right: 0.5rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  width: 7rem;
   position: absolute;
   z-index: 1;
   display: block;
 
-  .bx--dropdown {
+  .bx--select-input {
     border-radius: 3px;
-  }
-
-  button.bx--dropdown-text {
-    cursor: pointer;
   }
 }
 </style>
