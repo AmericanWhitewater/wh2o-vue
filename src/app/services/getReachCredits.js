@@ -15,11 +15,6 @@ export async function getReachCredits(id) {
                   }
                   revision_comment
                   edited
-                  permissions {
-                    domain
-                    permission
-                    result
-                  }
                 }
               }
             }
