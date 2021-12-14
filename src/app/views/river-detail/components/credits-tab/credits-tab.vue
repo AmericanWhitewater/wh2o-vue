@@ -67,9 +67,6 @@ export default {
     },
   },
   methods: {
-    loadData() {
-      this.$store.dispatch("RiverCredits/getProperty", this.reachId);
-    },
     async triggerEditRevision(version) {
       const newRevisionComment = await this.$refs.editRevisionModal.show({
         version: version,
@@ -82,9 +79,6 @@ export default {
         });
       }
     },
-  },
-  created() {
-    this.loadData();
   },
 };
 </script>
