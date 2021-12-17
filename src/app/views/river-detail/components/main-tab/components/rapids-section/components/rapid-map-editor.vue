@@ -137,10 +137,11 @@ export default {
         if (this.geom && this.geom.coordinates && this.geom.coordinates.length === 2) {
           this.renderPOI(this.geom)
         } else {
-          this.map.once('click', async (e) => {
-            await this.renderPOI(point(e.lngLat).geometry)
-            this.emitPOILocation()
-          })
+          this.map.once("click", async (e) => {
+            const newPoint = point([e.lngLat.lng, e.lngLat.lat]);
+            await this.renderPOI(newPoint.geometry);
+            this.emitPOILocation();
+          });
         }
       })
     },
