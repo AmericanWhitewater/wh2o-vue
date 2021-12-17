@@ -16,7 +16,13 @@ export async function updateReach(data) {
                   geom,
                   ploc,
                   tloc,
-                  length
+                  length,
+                  revision,
+                  revision_comment,
+                  edited,
+                  sk {
+                    name
+                  }
                 }
               }
             `,

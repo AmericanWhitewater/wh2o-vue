@@ -13,6 +13,14 @@ export default {
   },
   mutations: {
     ...mutations,
+    ['UPDATE_SUCCESS'](state, payload) {
+      // just overwrite the fields that have changed
+      const newReach = Object.assign({}, state.data, payload);
+      Object.assign(state, {
+        loading: false,
+        data: newReach
+      });
+    },
     ['DATA_RESET'](state) {
       Object.assign(state, {
         error: false,
@@ -72,8 +80,9 @@ export default {
             href: `/river-detail/${id}/credits`
           }, { root: true });
 
-          // ensure revisions are reloaded
-          context.dispatch("RiverCredits/getProperty", id, { root: true });
+          // prepend the new revision to the revisions list to avoid a refresh
+          // of revisions which is a slow query
+          context.dispatch("RiverCredits/createProperty", result.data.reachUpdate, { root: true });
         }
       } catch (error) {
         context.commit('UPDATE_ERROR', error);
