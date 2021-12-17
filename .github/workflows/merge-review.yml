@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: setup docker image
-        uses: docker://node:12.18.3
+        uses: docker://node:12
 
       - uses: actions/checkout@v2
 
