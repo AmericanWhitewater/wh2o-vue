@@ -14,7 +14,7 @@
             <div class="bx--row">
               <div class="bx--col">
                 <cv-button
-                  v-if="canEdit(reach)"
+                  v-if="canEdit(version)"
                   size="small"
                   kind="secondary"
                   class="revision-edit"
@@ -61,7 +61,6 @@ export default {
       loading: (state) => state.RiverCredits.loading,
       error: (state) => state.RiverCredits.error,
       credits: (state) => state.RiverCredits.data,
-      reach: (state) => state.RiverDetail.data,
     }),
     reachId() {
       return this.$route.params.id;

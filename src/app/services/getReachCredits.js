@@ -13,6 +13,11 @@ export async function getReachCredits(id) {
                   sk {
                       name
                   }
+                  permissions {
+                    domain
+                    permission
+                    result
+                  }
                   revision_comment
                   edited
                 }
