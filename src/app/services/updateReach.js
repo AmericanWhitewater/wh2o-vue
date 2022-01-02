@@ -7,6 +7,7 @@ export async function updateReach(data) {
                 reachUpdate(id: $id, reach: $reach) {
                   river,
                   section,
+                  altname,
                   class,
                   length,
                   avggradient,
