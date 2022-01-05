@@ -80,9 +80,8 @@ export default {
             href: `/river-detail/${id}/credits`
           }, { root: true });
 
-          // prepend the new revision to the revisions list to avoid a refresh
-          // of revisions which is a slow query
-          context.dispatch("RiverCredits/createProperty", result.data.reachUpdate, { root: true });
+          // refresh credits list to include new revision
+          context.dispatch("RiverCredits/getProperty", id, { root: true });
         }
       } catch (error) {
         context.commit('UPDATE_ERROR', error);
