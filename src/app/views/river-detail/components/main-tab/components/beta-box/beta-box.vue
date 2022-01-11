@@ -37,15 +37,11 @@
             </template>
           </td>
         </tr>
-        <tr v-if="river && river.permitinfo && river.permiturl">
+        <tr v-if="river && (river.permitinfo || river.permiturl)">
           <td>Permit</td>
           <td class="river-avggradient">
             <template v-if="!loading">
-              <div>{{
-                  river && river.permitinfo
-                }}
-              </div>
-              <a :href="river.permiturl">Permit Site</a>
+              <a :href="river.permiturl">{{ river.permitinfo || river.permiturl }}</a>
             </template>
             <template v-else>
               <cv-skeleton-text/>

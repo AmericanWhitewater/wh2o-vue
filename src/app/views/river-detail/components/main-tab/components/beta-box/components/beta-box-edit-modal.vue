@@ -97,17 +97,11 @@ export default {
 
       this.$store.dispatch('RiverDetail/updateProperty', {
           id: this.$route.params.id,
-          reach: {
-            river: this.formData.river,
-            section: this.formData.section,
-            class: this.formData.class,
-            length: Number(this.formData.length),
-            avggradient: Number(this.formData.avggradient),
-            maxgradient: Number(this.formData.maxgradient),
-            permitinfo: this.formData.permitinfo,
-            permiturl: this.formData.permiturl
-
-          }
+          class: this.formData.class,
+          avggradient: Number(this.formData.avggradient),
+          maxgradient: Number(this.formData.maxgradient),
+          permitinfo: this.formData.permitinfo,
+          permiturl: this.formData.permiturl
         })
 
          this.$parent.editModalVisible = false
