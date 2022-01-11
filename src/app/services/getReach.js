@@ -53,6 +53,7 @@ export async function getReach(id) {
                   }
                   river
                   section
+                  altname
                 }
               }
             

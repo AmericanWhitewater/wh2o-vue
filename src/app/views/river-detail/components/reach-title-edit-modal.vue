@@ -20,6 +20,11 @@
           label="Section"
           class="mb-spacing-md"
         />
+        <cv-text-input
+          v-model="formData.altname"
+          class="mb-spacing-md"
+          label="Alt River Name"
+        />
       </template>
       <template slot="secondary-button"> Cancel </template>
       <template slot="primary-button"> Submit </template>
@@ -57,14 +62,9 @@ export default {
       this.$nextTick(() => {
         this.$store.dispatch("RiverDetail/updateProperty", {
           id: this.$route.params.id,
-          reach: {
-            river: this.formData.river,
-            section: this.formData.section,
-            class: this.formData.class,
-            length: this.formData.length,
-            avggradient: this.formData.avggradient,
-            maxgradient: this.formData.maxgradient,
-          },
+          river: this.formData.river,
+          section: this.formData.section,
+          altname: this.formData.altname,
         });
       });
     },

@@ -40,6 +40,7 @@
                     <strong>{{ displayReachTitle(reach) }}</strong>
                     <br >
                     {{ reach.properties.section }}
+                    <span v-if="reach.properties.altname">({{ reach.properties.altname }})</span>
                   </router-link>
                 </td>
                 <td>{{ displayGaugeReading(reach) }}</td>
