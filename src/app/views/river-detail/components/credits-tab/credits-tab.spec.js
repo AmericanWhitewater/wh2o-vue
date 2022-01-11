@@ -1,4 +1,4 @@
-import CreditsTab from '@/app/views/river-detail/components/credits-tab.vue'
+import CreditsTab from '@/app/views/river-detail/components/credits-tab/credits-tab.vue'
 import { createWrapper } from '@/utils'
 
 const mockRoute = {

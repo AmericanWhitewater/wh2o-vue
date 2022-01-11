@@ -38,4 +38,4 @@ export * from "./updatePhoto";
 export * from "./updatePost";
 export * from "./updateRapid";
 export * from "./updateReach";
-export * from "./updateReachGeom";
+export * from "./updateReachRevision";
