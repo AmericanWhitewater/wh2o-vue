@@ -17,7 +17,7 @@
                   {{ reach.river }}
                 </h1>
 
-                <h4 class="mb-spacing-md" v-text="reach.section" />
+                <h4 class="mb-spacing-md" v-text="reachSubtitle" />
               </div>
               <div>
                 <div class="bx--row">
@@ -91,7 +91,7 @@
                 <map-banner
                   v-if="activeTabKey !== 'map' && !loading && reach"
                   :title="reach.river"
-                  :subtitle="reach.section"
+                  :subtitle="reachSubtitle"
                 >
                   <div
                     v-if="editMode"
@@ -281,6 +281,14 @@ export default {
       editMode: (state) => state.Global.editMode,
       user: (state) => state.User.data,
     }),
+    reachSubtitle() {
+      let subtitle = "";
+      subtitle += this.reach.section;
+      if (this.reach.altname) {
+        subtitle += ` (${this.reach.altname})`;
+      }
+      return subtitle;
+    },
     reachId() {
       return this.$route.params.id;
     },

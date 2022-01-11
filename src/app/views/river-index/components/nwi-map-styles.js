@@ -136,7 +136,11 @@ export default {
         type: 'symbol',
         minzoom: 11,
         layout: {
-          'text-field': ['concat', ['get', 'river'], ':\n', ['get', 'section']],
+          'text-field': ['concat', ['get', 'river'], ':\n', ['get', 'section'], [
+            "case",
+            ['>', ['length', ['get', 'altname']], 0], ['concat', ' (', ['get', 'altname'], ')'],
+            ''
+          ]],
           'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
           'text-size': ['interpolate', ['linear'], ['zoom'], 13, 15, 18, 20],
           'text-line-height': 1,
