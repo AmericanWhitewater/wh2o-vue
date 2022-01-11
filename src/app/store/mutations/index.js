@@ -52,6 +52,14 @@ export default {
     })
   },
 
+  [types.UPDATE_ERROR] (state, payload) {
+    Object.assign(state, {
+      loading: false,
+      data: null,
+      error: payload || true
+    })
+  },
+
   [types.DATA_RESET] (state) {
     Object.assign(state, {
       loading: false,
