@@ -62,11 +62,9 @@ export default {
       this.$nextTick(() => {
         this.$store.dispatch("RiverDetail/updateProperty", {
           id: this.$route.params.id,
-          reach: {
-            river: this.formData.river,
-            section: this.formData.section,
-            altname: this.formData.altname,
-          },
+          river: this.formData.river,
+          section: this.formData.section,
+          altname: this.formData.altname,
         });
       });
     },

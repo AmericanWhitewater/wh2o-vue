@@ -115,7 +115,7 @@ export default [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('@/app/views/river-detail/components/credits-tab.vue')
+        component: () => import('@/app/views/river-detail/components/credits-tab/credits-tab.vue')
       },
       {
         path: 'news',
