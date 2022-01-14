@@ -4,7 +4,7 @@
     <h2 class="mb-spacing-md">
       River Description
     </h2>
-    <template v-if="loading || updatePending">
+    <template v-if="loading">
       <cv-skeleton-text
         class="cv-skeleton-text"
         paragraph
@@ -83,7 +83,6 @@
 import { mapState } from 'vuex'
 // the content editor needs to be directly imported?
 import ContentEditor from '@/app/global/components/content-editor/content-editor.vue'
-import http from '@/app/http'
 import PageDescription from '@/app/global/components/page-description/page-description'
 
 export default {
@@ -93,7 +92,6 @@ export default {
     PageDescription
   },
   data: () => ({
-    updatePending: false,
     error: false,
     refreshedDescription: '',
     updatedDescription: null,
@@ -128,39 +126,10 @@ export default {
     },
     submitForm () {
       if (this.updatedDescription) {
-        this.updatePending = true
-
-        http.post('/graphql', {
-          query: `
-          mutation  {
-            reachUpdate(id: ${this.reachId}, reach:{ description: "${this.$cleanContent(this.updatedDescription)}"}) {
-              description
-            }
-          }
-        `
-        }).then(r => {
-          this.refreshedDescription = r.data.data.reachUpdate.description
-          this.updatePending = false
-          this.$store.dispatch('Global/sendToast', {
-            title: 'Description Updated',
-            kind: 'success',
-            override: true,
-            contrast: false,
-            action: false,
-            autoHide: true
-          })
-        }).catch(() => {
-          this.updatePending = false
-          this.error = true
-          this.$store.dispatch('Global/sendToast', {
-            title: 'Update Failed',
-            kind: 'error',
-            override: true,
-            contrast: false,
-            action: false,
-            autoHide: true
-          })
-        })
+        this.$store.dispatch('RiverDetail/updateProperty', {
+          id: this.$route.params.id,
+          description: this.$cleanContent(this.updatedDescription)
+        });
       }
     },
     handleUpdate (v) {

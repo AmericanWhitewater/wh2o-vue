@@ -61,7 +61,7 @@ export default {
 </script>
 
 <style lang="scss">
-.credits-tab .short-text-area .bx--text-area__wrapper {
+.short-text-area .bx--text-area__wrapper {
   height: 8rem;
 }
 </style>
