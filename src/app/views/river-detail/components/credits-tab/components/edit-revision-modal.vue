@@ -6,13 +6,13 @@
     @modal-hidden="_cancel()"
     @modal-shown="setModalOffset"
   >
-    <template slot="title"> Edit Revision Comment </template>
+    <template slot="title"> Specify revision comment </template>
     <template slot="content">
       <cv-text-area
         v-model="revisionComment"
         label="Revision comment"
         theme="light"
-        class="mb-spacing-md"
+        class="mb-spacing-md short-text-area"
       />
     </template>
     <template slot="secondary-button"> Cancel </template>
@@ -60,5 +60,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.short-text-area .bx--text-area__wrapper {
+  height: 8rem;
+}
 </style>

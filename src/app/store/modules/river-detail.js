@@ -69,18 +69,9 @@ export default {
               }, { root: true });
           }
 
-          // suggest the user go update the revision message
-          context.dispatch('Global/sendToast', {
-            title: '',
-            label: 'Set revision comment to explain your changes',
-            kind: 'info',
-            contrast: false,
-            action: true,
-            autoHide: false,
-            href: `/river-detail/${id}/credits`
-          }, { root: true });
-
           // refresh credits list to include new revision
+          // river-detail component watches for changes and will pop up a form
+          // prompting users to set the revision comment
           context.dispatch("RiverCredits/getProperty", id, { root: true });
         }
       } catch (error) {
