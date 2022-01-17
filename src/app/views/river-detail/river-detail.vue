@@ -108,6 +108,7 @@
               :visible="editGeometryModalVisible"
               @edit:cancelled="editGeometryModalVisible = false"
             />
+            <edit-revision-modal ref="editRevisionModal" />
           </div>
         </div>
       </div>
@@ -236,6 +237,7 @@ import {
   ReachTitleEditModal,
   GeometryEditModal,
 } from "./components";
+import EditRevisionModal from "./components/credits-tab/components/edit-revision-modal";
 import {
   checkWindow,
   shadowDomFixedHeightOffset,
@@ -250,6 +252,7 @@ export default {
     MapBanner,
     GeometryEditModal,
     ReachTitleEditModal,
+    EditRevisionModal,
   },
   mixins: [
     checkWindow,
@@ -280,6 +283,7 @@ export default {
       alerts: (state) => state.RiverAlerts.data,
       editMode: (state) => state.Global.editMode,
       user: (state) => state.User.data,
+      credits: (state) => state.RiverCredits.data,
     }),
     reachSubtitle() {
       let subtitle = "";
@@ -308,6 +312,18 @@ export default {
   watch: {
     reachId() {
       this.loadReachData();
+    },
+    // this function monitors reach revisions
+    // when a new revision is made, it prompts the user to populate
+    // a revision comment
+    credits(newCredits, oldCredits) {
+      if (
+        newCredits &&
+        oldCredits &&
+        newCredits.length - oldCredits.length === 1
+      ) {
+        this.triggerEditRevision(newCredits[0]);
+      }
     },
   },
   methods: {
@@ -372,6 +388,18 @@ export default {
       this.$store.dispatch("RiverDetail/deleteReach", reachId);
       this.deleteCommentModalVisible = false;
       this.$router.push("/river-index");
+    },
+    async triggerEditRevision(version) {
+      const newRevisionComment = await this.$refs.editRevisionModal.show({
+        version: version,
+      });
+      if (newRevisionComment && version) {
+        await this.$store.dispatch("RiverCredits/updateProperty", {
+          id: this.reachId,
+          comment: newRevisionComment,
+          revision: version.revision,
+        });
+      }
     },
   },
   created() {

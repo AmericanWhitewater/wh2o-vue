@@ -18,7 +18,8 @@ export async function updateReach(data) {
                   geom,
                   ploc,
                   tloc,
-                  length
+                  length,
+                  description
 
                 }
               }
