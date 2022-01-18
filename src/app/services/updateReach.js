@@ -14,7 +14,7 @@ export async function updateReach(data) {
                   maxgradient,
                   permiturl,
                   permitinfo,
-                  status
+                  status,
                   geom,
                   ploc,
                   tloc,
