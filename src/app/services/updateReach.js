@@ -12,11 +12,15 @@ export async function updateReach(data) {
                   length,
                   avggradient,
                   maxgradient,
+                  permiturl,
+                  permitinfo,
                   status,
                   geom,
                   ploc,
                   tloc,
-                  length
+                  length,
+                  description
+
                 }
               }
             `,
