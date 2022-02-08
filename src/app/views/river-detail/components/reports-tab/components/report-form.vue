@@ -109,7 +109,7 @@ export default {
         id: null,
         detail: null,
         gauge_id: null,
-        metric_id: "2",
+        metric_id: "1",
         post_date: null,
         post_type: null,
         reach_id: null,
