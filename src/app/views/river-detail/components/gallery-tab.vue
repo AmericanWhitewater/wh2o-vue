@@ -57,7 +57,8 @@ import { mapState, mapGetters } from "vuex";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block";
 import ImageGallery from "@/app/views/river-detail/components/image-gallery/image-gallery.vue";
 import { Layout } from "@/app/global/layout";
-import { ImageUpdateModal, TablePagination } from "@/app/global/components";
+import { TablePagination } from "@/app/global/components";
+import ImageUpdateModal from "./image-gallery/image-update-modal";
 
 export default {
   name: "gallery-tab",

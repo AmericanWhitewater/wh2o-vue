@@ -132,11 +132,7 @@
 </template>
 
 <script>
-import {
-  AwLogo,
-  ConfirmDeleteModal,
-  ImageUpdateModal,
-} from "@/app/global/components";
+import { AwLogo, ConfirmDeleteModal } from "@/app/global/components";
 import { mapState } from "vuex";
 import {
   shadowDomFixedHeightOffset,
@@ -146,6 +142,7 @@ import {
   gaugeHelpers,
 } from "@/app/global/mixins";
 import { deletePhoto } from "@/app/services";
+import ImageUpdateModal from "./image-update-modal";
 
 export default {
   name: "image-detail",
