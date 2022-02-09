@@ -109,7 +109,7 @@ export default {
         id: null,
         detail: null,
         gauge_id: null,
-        metric_id: "2",
+        metric_id: "1",
         post_date: null,
         post_type: null,
         reach_id: null,
@@ -140,18 +140,25 @@ export default {
     },
   },
   watch: {
-    "formData.gauge_id": function (newVal, oldVal) {
-      // if switching between gauges, do nothing
-      // if switching from gauge to no gauge or vice versa,
-      // update reading and metric_id accordingly
-      if (newVal && (oldVal === "" || oldVal === undefined)) {
-        this.formData.reading = "";
-        const selectedGage = this.gages.find((x) => x.gauge.id === newVal);
-        this.formData.metric_id = `${selectedGage?.gauge_metric}`;
-      } else if (!newVal && oldVal) {
-        this.formData.reading = "";
-        this.formData.metric_id = "1";
-      }
+    "formData.gauge_id": {
+      handler: function (newVal, oldVal) {
+        // if switching between gauges, do nothing
+        // if switching from gauge to no gauge or vice versa,
+        // update reading and metric_id accordingly
+        if (newVal && (oldVal === "" || oldVal === undefined)) {
+          this.formData.reading = "";
+          const selectedGage = this.gages.find((x) => x.gauge.id === newVal);
+          this.formData.metric_id = `${selectedGage?.gauge_metric}`;
+        } else if (!newVal) {
+          // ensure metric_id is set properly whenever there is no gauge
+          this.formData.metric_id = "1";
+          if (oldVal) {
+            // revert reading to empty if we just changed from gauge to no gauge
+            this.formData.reading = "";
+          }
+        }
+      },
+      immediate: true,
     },
   },
   methods: {
