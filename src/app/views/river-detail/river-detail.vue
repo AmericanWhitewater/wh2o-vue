@@ -364,7 +364,7 @@ export default {
       this.$store.dispatch("RiverAlerts/getProperty", this.reachId);
       this.$store.dispatch("RiverGages/getProperty", this.reachId);
       this.$store.dispatch("RiverRapids/getProperty", this.reachId);
-      this.$store.dispatch("RiverReports/getProperty", this.reachId);
+      this.$store.dispatch("RiverReports/getProperty", { id: this.reachId });
     },
     toggleEditMode() {
       if (this.user) {

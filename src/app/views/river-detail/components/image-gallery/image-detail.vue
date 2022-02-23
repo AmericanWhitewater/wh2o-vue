@@ -238,10 +238,9 @@ export default {
           // TODO: incorporate this into state-based image mutation so that we don't need to reload the gallery
           this.$emit("photoModified");
           // refresh reports so if they navigate to reports, the new image shows
-          this.$store.dispatch(
-            "RiverReports/getProperty",
-            this.$route.params.id
-          );
+          this.$store.dispatch("RiverReports/getProperty", {
+            id: this.$route.params.id,
+          });
           this.$store.dispatch("Global/sendToast", {
             title: "Media assigned to trip report",
             kind: "success",
