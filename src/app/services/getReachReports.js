@@ -1,9 +1,8 @@
-import http from "@/app/http"
+import http from "@/app/http";
 
 export async function getReachReports(id) {
-
   return http
-    .post('graphql', {
+    .post("graphql", {
       query: `
         query {
             posts(
@@ -31,6 +30,11 @@ export async function getReachReports(id) {
                         }
                       }
                     }
+                    permissions {
+                      domain
+                      permission
+                      result
+                    }
                     user {
                       uid
                       name
@@ -45,7 +49,7 @@ export async function getReachReports(id) {
                   }
             }
           }
-    `
+    `,
     })
-    .then(res => res.data.data.posts.data)
+    .then((res) => res.data.data.posts.data);
 }

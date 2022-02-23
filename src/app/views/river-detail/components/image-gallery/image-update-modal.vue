@@ -39,17 +39,38 @@
           :disabled="formPending || !user"
         />
         <cv-text-input
-          v-model="formData.photo.subject"
-          class="mb-spacing-md"
-          label="Subject"
-          :disabled="formPending || !user"
-        />
-        <cv-text-input
           v-model="formData.photo.caption"
           class="mb-spacing-md"
           label="Title"
           :disabled="formPending || !user"
         />
+        <cv-text-input
+          v-model="formData.photo.subject"
+          class="mb-spacing-md"
+          label="Subject"
+          :disabled="formPending || !user"
+        />
+
+        <!--
+          only display this on photo edit, and if the photo already
+          belongs to a trip report, this field should be disabled
+          it is meant to be used to incorporate single PHOTO_POST photos
+          into trip reports
+        !-->
+        <cv-select
+          v-if="availableReports"
+          v-model="formData.post_id"
+          :disabled="formData.post.post_type === 'JOURNAL'"
+          label="Assign to Trip Report"
+        >
+          <cv-select-option
+            v-for="(g, index) in availableReports"
+            :key="index"
+            :value="String(g.id)"
+            :label="g.title + ' - ' + formatDate(g.post_date, 'll')"
+          />
+        </cv-select>
+
         <cv-text-input
           v-model="formData.photo.photo_date"
           label="Photo Date"
@@ -111,6 +132,7 @@ import {
   assetUrl,
   shadowDomFixedHeightOffset,
   gaugeHelpers,
+  objectPermissionsHelpersMixin,
 } from "@/app/global/mixins";
 import { updatePost, updatePhoto, photoFileUpdate } from "@/app/services";
 import { mapState } from "vuex";
@@ -154,7 +176,12 @@ function initialState() {
 
 export default {
   name: "image-update-modal",
-  mixins: [shadowDomFixedHeightOffset, assetUrl, gaugeHelpers],
+  mixins: [
+    shadowDomFixedHeightOffset,
+    assetUrl,
+    gaugeHelpers,
+    objectPermissionsHelpersMixin,
+  ],
   props: {
     section: {
       type: String,
@@ -171,6 +198,7 @@ export default {
   computed: {
     ...mapState({
       rapids: (state) => state.RiverRapids.data,
+      reports: (state) => state.RiverReports.data,
       user: (state) => state.User.data,
     }),
     modalTitle() {
@@ -192,6 +220,10 @@ export default {
       } else {
         return null;
       }
+    },
+    // filter reports for the ones that the user has permissions to edit
+    availableReports() {
+      return this.reports?.filter((x) => this.canEdit(x));
     },
   },
   methods: {
@@ -332,6 +364,7 @@ export default {
           id: this.media.post_id,
           reach_id: this.media.reach_id,
           post_date: this.media.post_date,
+          post_type: this.media.post_type,
           reading: this.media.reading,
           metric_id: String(this.media.metric_id),
         });

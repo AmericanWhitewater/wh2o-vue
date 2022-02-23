@@ -1,8 +1,8 @@
-import http from "@/app/http"
+import http from "@/app/http";
 
 export async function getReachGallery(data) {
   return http
-    .post('/graphql', {
+    .post("/graphql", {
       query: `
                 query {
                   posts(
@@ -17,6 +17,7 @@ export async function getReachGallery(data) {
                         reach_id
                         metric_id
                         post_date
+                        post_type
                         permissions {
                           domain
                           permission
@@ -59,7 +60,7 @@ export async function getReachGallery(data) {
                       }
                   
                     }  
-                  }`
+                  }`,
     })
-    .then(res => res.data)
+    .then((res) => res.data);
 }
