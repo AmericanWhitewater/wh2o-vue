@@ -31,6 +31,11 @@ export async function getReachReports(id) {
                         }
                       }
                     }
+                    permissions {
+                      domain
+                      permission
+                      result
+                    }
                     user {
                       uid
                       name

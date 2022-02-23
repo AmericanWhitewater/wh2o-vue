@@ -113,6 +113,17 @@
             >
               Edit
             </cv-button>
+            <template v-if="!hasTripReport && availableReports">
+              <assign-to-report-modal ref="assignToReportModal" />
+              <cv-button
+                id="assign-to-report-button"
+                kind="secondary"
+                size="small"
+                @click="triggerAssignToReportModal"
+              >
+                Assign to report
+              </cv-button>
+            </template>
           </div>
           <div v-if="canDelete(image)">
             <confirm-delete-modal ref="confirmDeleteModal" />
@@ -132,11 +143,7 @@
 </template>
 
 <script>
-import {
-  AwLogo,
-  ConfirmDeleteModal,
-  ImageUpdateModal,
-} from "@/app/global/components";
+import { AwLogo, ConfirmDeleteModal } from "@/app/global/components";
 import { mapState } from "vuex";
 import {
   shadowDomFixedHeightOffset,
@@ -145,7 +152,9 @@ import {
   imageHelpers,
   gaugeHelpers,
 } from "@/app/global/mixins";
-import { deletePhoto } from "@/app/services";
+import { updatePhoto, deletePhoto } from "@/app/services";
+import ImageUpdateModal from "./image-update-modal";
+import AssignToReportModal from "./assign-to-report-modal";
 
 export default {
   name: "image-detail",
@@ -153,6 +162,7 @@ export default {
     AwLogo,
     ConfirmDeleteModal,
     ImageUpdateModal,
+    AssignToReportModal,
   },
   mixins: [
     shadowDomFixedHeightOffset,
@@ -179,8 +189,8 @@ export default {
     ...mapState({
       river: (state) => state.RiverDetail.data,
       rapids: (state) => state.RiverRapids.data,
+      reports: (state) => state.RiverReports.data,
     }),
-
     imageRapid() {
       if (this.image && this.image.poi_id) {
         return this.rapids.find((rapid) => rapid.id === this.image.poi_id);
@@ -196,6 +206,13 @@ export default {
     reachLocation() {
       return `${this.river?.river}, ${this.river?.section}`;
     },
+    hasTripReport() {
+      return this.image.post_type === "JOURNAL";
+    },
+    // filter reports for the ones that the user has permissions to edit
+    availableReports() {
+      return this.reports?.filter((x) => this.canEdit(x));
+    },
   },
   methods: {
     async openImageModal(image) {
@@ -205,6 +222,44 @@ export default {
 
       if (ok) {
         this.$emit("photoModified");
+      }
+    },
+    async triggerAssignToReportModal() {
+      const selectedReport = await this.$refs.assignToReportModal.show();
+
+      if (selectedReport) {
+        // assign this image to the report
+        try {
+          await updatePhoto({
+            id: this.image.id,
+            post_id: selectedReport,
+          });
+
+          // TODO: incorporate this into state-based image mutation so that we don't need to reload the gallery
+          this.$emit("photoModified");
+          // refresh reports so if they navigate to reports, the new image shows
+          this.$store.dispatch(
+            "RiverReports/getProperty",
+            this.$route.params.id
+          );
+          this.$store.dispatch("Global/sendToast", {
+            title: "Media assigned to trip report",
+            kind: "success",
+          });
+        } catch (error) {
+          /* eslint-disable-next-line no-console */
+          console.log("error :>> ", error);
+          this.$emit("form:error");
+          this.$store.dispatch("Global/sendToast", {
+            title:
+              "There was an error -" +
+              (error?.message ||
+                Object.keys(error)
+                  .map((x) => error[x])
+                  .join(",")),
+            kind: "error",
+          });
+        }
       }
     },
     async triggerPhotoDelete(photo) {
