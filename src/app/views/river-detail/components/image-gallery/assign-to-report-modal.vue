@@ -69,7 +69,10 @@ export default {
         report.post_date
       )}`;
     },
-    show() {
+    show(opts = {}) {
+      if (opts.postId) {
+        this.selectedReport = opts.postId;
+      }
       this.$refs.modalWrapper.show();
 
       return new Promise((resolve, reject) => {
