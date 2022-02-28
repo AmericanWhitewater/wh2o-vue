@@ -113,7 +113,7 @@
             >
               Edit
             </cv-button>
-            <template v-if="!hasTripReport && availableReports">
+            <template v-if="availableReports">
               <assign-to-report-modal ref="assignToReportModal" />
               <cv-button
                 id="assign-to-report-button"
@@ -206,9 +206,6 @@ export default {
     reachLocation() {
       return `${this.river?.river}, ${this.river?.section}`;
     },
-    hasTripReport() {
-      return this.image.post_type === "JOURNAL";
-    },
     // filter reports for the ones that the user has permissions to edit
     availableReports() {
       return this.reports?.filter((x) => this.canEdit(x));
@@ -225,7 +222,9 @@ export default {
       }
     },
     async triggerAssignToReportModal() {
-      const selectedReport = await this.$refs.assignToReportModal.show();
+      const selectedReport = await this.$refs.assignToReportModal.show({
+        postId: this.image.post_id,
+      });
 
       if (selectedReport) {
         // assign this image to the report
