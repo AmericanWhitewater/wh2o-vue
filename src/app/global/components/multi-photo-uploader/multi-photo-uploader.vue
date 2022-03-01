@@ -171,6 +171,7 @@ export default {
         const formSubmission = {
           id: image.id,
           subject: image.subject,
+          photo_date: this.post.post_date,
           poi_id: image.poi_id || null, // selector returns "" instead of null which breaks graphql
           caption: image.caption,
           description: image.description,
