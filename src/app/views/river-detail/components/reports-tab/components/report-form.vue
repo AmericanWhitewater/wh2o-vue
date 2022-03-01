@@ -200,10 +200,9 @@ export default {
             title: "Success",
             subtitle: "Report saved.",
           });
-          this.$store.dispatch(
-            "RiverReports/getProperty",
-            this.$route.params.id
-          );
+          this.$store.dispatch("RiverReports/getProperty", {
+            id: this.$route.params.id,
+          });
 
           this.$router.push({ name: "reports-tab" });
         } else {

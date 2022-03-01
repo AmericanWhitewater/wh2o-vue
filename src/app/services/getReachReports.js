@@ -1,6 +1,6 @@
 import http from "@/app/http"
 
-export async function getReachReports(id) {
+export async function getReachReports(id, pagination) {
 
   return http
     .post('graphql', {
@@ -8,8 +8,8 @@ export async function getReachReports(id) {
         query {
             posts(
               reach_id: "${id}",
-              first: 100,
-              page: 1,
+              first: ${pagination.perPage},
+              page: ${pagination.page},
               post_types:[JOURNAL],
               orderBy: {field: POST_DATE, order: DESC}
               ) {
@@ -48,9 +48,17 @@ export async function getReachReports(id) {
                       }
                     }
                   }
+
+                  paginatorInfo {
+                    count
+                    perPage
+                    currentPage
+                    lastPage
+                    total
+                  }
             }
           }
     `
     })
-    .then(res => res.data.data.posts.data)
+    .then(res => res.data)
 }
