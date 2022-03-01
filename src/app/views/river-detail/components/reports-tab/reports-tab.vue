@@ -19,7 +19,7 @@
               </cv-button>
             </div>
           </div>
-          <template v-if="loading && !reports">
+          <template v-if="loading">
             <utility-block
               class="reports-loading"
               state="loading"
@@ -32,6 +32,18 @@
               :key="index"
               :report="item"
             />
+
+            <div class="bx--row">
+              <div class="bx--col">
+                <table-pagination
+                  v-if="pagination"
+                  :number-of-items="pagination.total"
+                  :page="pagination.currentPage"
+                  :perPage="pagination.perPage"
+                  @change="changePage"
+                />
+              </div>
+            </div>
           </template>
         </template>
       </template>
@@ -41,6 +53,7 @@
 <script>
 import { mapState } from "vuex";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block";
+import TablePagination from "@/app/global/components/table-pagination/table-pagination";
 import { objectPermissionsHelpersMixin } from "@/app/global/mixins";
 import { Layout } from "@/app/global/layout";
 import { ReportPreview } from "./components";
@@ -49,6 +62,7 @@ export default {
   components: {
     Layout,
     UtilityBlock,
+    TablePagination,
     ReportPreview,
   },
   mixins: [objectPermissionsHelpersMixin],
@@ -57,6 +71,7 @@ export default {
       user: (state) => state.User.data,
       editMode: (state) => state.Global.editMode,
       reports: (state) => state.RiverReports.data,
+      pagination: (state) => state.RiverReports.pagination,
       loading: (state) => state.RiverReports.loading,
     }),
     // TODO: this is a bit brittle, would be good to come up with better strategy
@@ -70,10 +85,20 @@ export default {
       return this.$route.name === "edit-report";
     },
   },
-  methods: {},
+  methods: {
+    changePage(newPaginator) {
+      this.$store.dispatch("RiverReports/getProperty", {
+        id: this.$route.params.id,
+        perPage: newPaginator.length,
+        page: newPaginator.page,
+      });
+    },
+  },
   created() {
     if (!this.reports) {
-      this.$store.dispatch("RiverReports/getProperty", this.$route.params.id);
+      this.$store.dispatch("RiverReports/getProperty", {
+        id: this.$route.params.id,
+      });
     }
   },
 };
