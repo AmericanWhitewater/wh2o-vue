@@ -48,24 +48,21 @@ const router = new VueRouter({
     } else {
       /**
        * @description check to see if user is navigating to river-detail for first time.
-       * if yes, then reset the scroll position to top of screen, if not, keep scroll position
-       * where it is. better UX when switching between river-detail tabs.
+       * if yes, then reset the scroll position to top of screen, if not, 
+       * default scroll position to top of main detail display (below map banner)
        *
        */
-      const riverDetailRouteNames = [
-        "flow-tab",
-        "main-tab",
-        "map-tab",
-        "gallery-tab",
-        "accidents-tab",
-        "credits-tab",
-        "news-tab",
-      ];
-      if (
-        riverDetailRouteNames.indexOf(to.name) !== -1 &&
-        riverDetailRouteNames.indexOf(from.name) !== -1
-      ) {
-        return;
+      if (to.fullPath.includes("river-detail") && to.params.id === from.params.id && to.name !== from.name) {
+        // as far as I can tell, normal scrollBehavior using a selector doesn't work because
+        // our app is embedded inside a shadow DOM, so instead, we're hardcoding offsets to ensure
+        // users end up at the top of each tab they navigate to
+        let offset;
+        if (to.name === "map-tab") {
+          offset = 50;
+        } else {
+          offset = 450;
+        }
+        return { x: 0, y: offset, behavior: "smooth" };
       }
       return { x: 0, y: 0 };
     }

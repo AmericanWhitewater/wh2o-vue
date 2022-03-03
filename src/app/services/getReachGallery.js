@@ -17,6 +17,7 @@ export async function getReachGallery(data) {
                         reach_id
                         metric_id
                         post_date
+                        post_type
                         permissions {
                           domain
                           permission

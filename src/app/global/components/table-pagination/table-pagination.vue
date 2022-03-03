@@ -156,6 +156,7 @@ export default {
     pageSizesLabel: { type: String, default: 'Items per page:' },
     numberOfItems: { type: Number, default: Infinity },
     page: Number,
+    perPage: Number,
     pageSizes: { type: Array, default: () => [10, 20, 30, 40, 50] }
   },
   data () {
@@ -267,7 +268,7 @@ export default {
     }
   },
   mounted () {
-    this.pageSizeValue = newPageSizeValue(this.pageSizes)
+    this.pageSizeValue = this.perPage || newPageSizeValue(this.pageSizes)
     this.pageCount = newPageCount(this.numberOfItems, this.pageSizeValue)
     this.pageValue = newPageValue(this.page, this.pageCount)
     this.pages = newPagesArray(this.pageCount)
