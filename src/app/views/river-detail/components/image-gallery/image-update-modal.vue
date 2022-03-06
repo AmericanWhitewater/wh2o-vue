@@ -332,6 +332,7 @@ export default {
           id: this.media.post_id,
           reach_id: this.media.reach_id,
           post_date: this.media.post_date,
+          post_type: this.media.post_type,
           reading: this.media.reading,
           metric_id: String(this.media.metric_id),
         });
