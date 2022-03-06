@@ -52,7 +52,13 @@ const router = new VueRouter({
        * default scroll position to top of main detail display (below map banner)
        *
        */
-      if (to.fullPath.includes("river-detail") && to.params.id === from.params.id && to.name !== from.name) {
+      if (to.fullPath.includes("river-detail") && to.params.id === from.params.id) {
+        // if we are moving between gallery main view and gallery detail, retain existing zoom
+        const galleryRoutes = ['gallery-tab', 'gallery-detail'];
+        if (galleryRoutes.includes(to.name) && galleryRoutes.includes(from.name)) {
+          return;
+        }
+
         // as far as I can tell, normal scrollBehavior using a selector doesn't work because
         // our app is embedded inside a shadow DOM, so instead, we're hardcoding offsets to ensure
         // users end up at the top of each tab they navigate to
