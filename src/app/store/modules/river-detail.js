@@ -1,7 +1,7 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
 import wkx from "wkx";
-import {updateReach, getReach, deleteReach, updateReachGeom} from "@/app/services"
+import {updateReach, getReach, deleteReach } from "@/app/services"
 
 export default {
   namespaced: true,
@@ -13,21 +13,12 @@ export default {
   },
   mutations: {
     ...mutations,
-    ['GEOM_UPDATE_REQUEST'](state) {
-      Object.assign(state, { loading: true, error: null });
-    },
-
-    ['GEOM_UPDATE_SUCCESS'](state, payload) {
-      state.loading = false;
-      Object.assign(state.data, {
-        ...payload,
-      });
-    },
-
-    ['GEOM_UPDATE_ERROR'](state, payload) {
+    ['UPDATE_SUCCESS'](state, payload) {
+      // just overwrite the fields that have changed
+      const newReach = Object.assign({}, state.data, payload);
       Object.assign(state, {
-        error: payload || true,
         loading: false,
+        data: newReach
       });
     },
     ['DATA_RESET'](state) {
@@ -46,20 +37,45 @@ export default {
   actions: {
     ...actions,
     async updateProperty(context, data) {
-      context.commit('DATA_REQUEST');
+      context.commit('UPDATE_REQUEST');
       try {
-        const result = await updateReach(data)
-        
-        if (result.errors) {
-          context.commit('DATA_ERROR', result.errors);
-        } else {
+        const payload = Object.assign({}, data);
+        const id = data.id;
+        delete payload.id;
+        if (data.geom) {
+          Object.assign(payload, {
+            geom: wkx.Geometry.parseGeoJSON(data.geom).toWkt(),
+            ploc: `${data.ploc[0]} ${data.ploc[1]}`,
+            tloc: `${data.tloc[0]} ${data.tloc[1]}`,
+          });
+        }
 
-          context.commit('DATA_SUCCESS', result.data.reachUpdate);
+        const result = await updateReach({
+          id: id,
+          reach: payload
+        });
+
+        if (result.errors) {
+          context.commit('UPDATE_ERROR', result.errors);
+        } else {
+          context.commit('UPDATE_SUCCESS', result.data.reachUpdate);
+          if (payload.geom) {
+            context.dispatch('Global/sendToast', {
+                title: 'Geometry updated. It may take up to 5 minutes for your changes to appear in the national map.',
+                kind: 'info',
+                contrast: false,
+                action: false,
+                autoHide: false
+              }, { root: true });
+          }
+
+          // refresh credits list to include new revision
+          // river-detail component watches for changes and will pop up a form
+          // prompting users to set the revision comment
+          context.dispatch("RiverCredits/getProperty", id, { root: true });
         }
       } catch (error) {
-        context.commit('DATA_ERROR', error);
-      } finally {
-        context.commit('DATA_LOADING', false)
+        context.commit('UPDATE_ERROR', error);
       }
     },
     async getProperty(context, id) {
@@ -74,42 +90,6 @@ export default {
         }
       } catch (error) {
         context.commit('DATA_ERROR', error)
-      }
-    },
-    async updateGeom(context, geomData) {
-      context.commit('GEOM_UPDATE_REQUEST');
-
-      const payloadData = {
-        geom: wkx.Geometry.parseGeoJSON(geomData.geom).toWkt(),
-        ploc: `${geomData.ploc[0]} ${geomData.ploc[1]}`,
-        tloc: `${geomData.tloc[0]} ${geomData.tloc[1]}`,
-        length: geomData.length,
-      };
-
-      const data = {
-        id: context.state.data.id,
-        ...payloadData,
-      }
-
-      try {
-        const result = await updateReachGeom(data)
-
-        if (result.data.errors) {
-          context.commit('GEOM_UPDATE_ERROR', result.data.errors);
-        } else {
-          context.commit('GEOM_UPDATE_SUCCESS', result.data.reachUpdate);
-          context.dispatch('Global/sendToast', {
-            title: 'Geometry updated. It may take up to 5 minutes for your changes to show in the national map.',
-            kind: 'info',
-            override: true,
-            contrast: false,
-            action: false,
-            autoHide: true
-          }, { root: true });
-        }
-
-      } catch (error) {
-        context.commit('GEOM_UPDATE_ERROR', error);
       }
     },
     async deleteReach(context, data) {

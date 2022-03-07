@@ -16,20 +16,19 @@
       Edit Beta Box
     </template>
     <template slot="content">
-      <cv-dropdown
+      <cv-select
         v-model="formData.class"
-        class="cv-dropdown mb-spacing-md"
+        class="mb-spacing-md"
         label="Difficulty"
-        theme="light"
       >
-        <cv-dropdown-item
+        <cv-select-option
           v-for="(item, index) in reachClasses"
           :key="index"
           :value="item"
         >
           {{ item }}
-        </cv-dropdown-item>
-      </cv-dropdown>
+        </cv-select-option>
+      </cv-select>
       <cv-number-input
         v-model="formData.avggradient"
         class="mb-spacing-md"
@@ -47,6 +46,16 @@
         :max="4132"
         :min="0"
         :mobile="windowWidth <= $options.breakpoints.md"
+      />
+      <cv-text-input
+        v-model="formData.permiturl"
+        class="mb-spacing-md"
+        label="Permit URL"
+      />
+      <cv-text-input
+        v-model="formData.permitinfo"
+        class="mb-spacing-md"
+        label="Permit Information"
       />
     </template>
     <template slot="secondary-button">
@@ -85,17 +94,14 @@ export default {
     },
     submitForm () {
       this.$emit('edit:submit')
-     
+
       this.$store.dispatch('RiverDetail/updateProperty', {
           id: this.$route.params.id,
-          reach: {
-            river: this.formData.river,
-            section: this.formData.section,
-            class: this.formData.class,
-            length: Number(this.formData.length),
-            avggradient: Number(this.formData.avggradient),
-            maxgradient: Number(this.formData.maxgradient)
-          }
+          class: this.formData.class,
+          avggradient: Number(this.formData.avggradient),
+          maxgradient: Number(this.formData.maxgradient),
+          permitinfo: this.formData.permitinfo,
+          permiturl: this.formData.permiturl
         })
 
          this.$parent.editModalVisible = false

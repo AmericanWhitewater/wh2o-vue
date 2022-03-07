@@ -17,7 +17,7 @@
                   {{ reach.river }}
                 </h1>
 
-                <h4 class="mb-spacing-md" v-text="reach.section" />
+                <h4 class="mb-spacing-md" v-text="reachSubtitle" />
               </div>
               <div>
                 <div class="bx--row">
@@ -86,26 +86,29 @@
               theme="dark"
               hide-text
             />
-            <transition :name="transitionName" mode="out-in">
-              <map-banner
-                v-if="activeTabKey !== 'map' && !loading && reach"
-                :title="reach.river"
-                :subtitle="reach.section"
-              >
-                <div
-                  v-if="editMode"
-                  class="edit-overlay"
-                  @click="editGeometryModalVisible = true"
+            <div>
+              <transition :name="transitionName" mode="out-in">
+                <map-banner
+                  v-if="activeTabKey !== 'map' && !loading && reach"
+                  :title="reach.river"
+                  :subtitle="reachSubtitle"
                 >
-                  <h3>Edit Reach Geometry</h3>
-                </div>
-              </map-banner>
-            </transition>
+                  <div
+                    v-if="editMode"
+                    class="edit-overlay"
+                    @click="editGeometryModalVisible = true"
+                  >
+                    <h3>Edit Reach Geometry</h3>
+                  </div>
+                </map-banner>
+              </transition>
+            </div>
             <geometry-edit-modal
               v-if="editMode && !loading"
               :visible="editGeometryModalVisible"
               @edit:cancelled="editGeometryModalVisible = false"
             />
+            <edit-revision-modal ref="editRevisionModal" />
           </div>
         </div>
       </div>
@@ -160,29 +163,30 @@
                   <component :is="notificationIcon" />
                 </cv-button>
               </div>
-              <cv-dropdown
+              <cv-select
                 v-if="windowWidth < $options.breakpoints.lg"
                 v-model="activeTabKey"
-                class="tab-dropdown"
+                class="tab-dropdown cv-select-without-label"
                 theme="light"
+                label=""
                 @change="switchTab"
                 @click="$emit('dropdown:open')"
               >
-                <cv-dropdown-item
+                <cv-select-option
                   v-for="(label, path) in $options.tabs"
                   :key="path"
                   :value="path"
                 >
                   {{ label }}
-                </cv-dropdown-item>
-              </cv-dropdown>
+                </cv-select-option>
+              </cv-select>
             </div>
             <ul v-if="windowWidth >= $options.breakpoints.lg">
               <li v-for="(label, path) in $options.tabs" :key="path">
                 <cv-button
                   :class="[
                     path === 'main' ? 'no-border-top' : '',
-                    activeTabKey === path ? 'is-active' : '',
+                    pathIsActiveTab(path) ? 'is-active' : '',
                   ]"
                   kind="ghost"
                   @click.exact="switchTab(path)"
@@ -195,7 +199,12 @@
             <template v-if="editMode">
               <div style="width: 100%; border-top: 1px solid #ccc" />
               <a
-                class="cv-button mt-spacing-md mb-spacing-md bx--btn bx--btn--tertiary bx--btn--sm"
+                class="
+                  cv-button
+                  mt-spacing-md
+                  mb-spacing-md
+                  bx--btn bx--btn--tertiary bx--btn--sm
+                "
                 :href="
                   formatLinkUrl(
                     `/content/Linker/edit/source/river/id/${reachId}/`
@@ -228,6 +237,7 @@ import {
   ReachTitleEditModal,
   GeometryEditModal,
 } from "./components";
+import EditRevisionModal from "./components/credits-tab/components/edit-revision-modal";
 import {
   checkWindow,
   shadowDomFixedHeightOffset,
@@ -242,6 +252,7 @@ export default {
     MapBanner,
     GeometryEditModal,
     ReachTitleEditModal,
+    EditRevisionModal,
   },
   mixins: [
     checkWindow,
@@ -259,6 +270,7 @@ export default {
     main: "General",
     flow: "Flow",
     map: "Map",
+    reports: "Trip Reports",
     gallery: "Gallery",
     news: "News",
     accidents: "Accidents",
@@ -271,7 +283,16 @@ export default {
       alerts: (state) => state.RiverAlerts.data,
       editMode: (state) => state.Global.editMode,
       user: (state) => state.User.data,
+      credits: (state) => state.RiverCredits.data,
     }),
+    reachSubtitle() {
+      let subtitle = "";
+      subtitle += this.reach.section;
+      if (this.reach.altname) {
+        subtitle += ` (${this.reach.altname})`;
+      }
+      return subtitle;
+    },
     reachId() {
       return this.$route.params.id;
     },
@@ -291,6 +312,18 @@ export default {
   watch: {
     reachId() {
       this.loadReachData();
+    },
+    // this function monitors reach revisions
+    // when a new revision is made, it prompts the user to populate
+    // a revision comment
+    credits(newCredits, oldCredits) {
+      if (
+        newCredits &&
+        oldCredits &&
+        newCredits.length - oldCredits.length === 1
+      ) {
+        this.triggerEditRevision(newCredits[0]);
+      }
     },
   },
   methods: {
@@ -317,13 +350,21 @@ export default {
         ]);
       }
     },
+    pathIsActiveTab(path) {
+      return (
+        path === this.activeTabKey ||
+        (path === "reports" && this.activeTabKey.includes("report"))
+      );
+    },
     loadReachData() {
       this.$store.dispatch("RiverDetail/setRefId", this.reachId);
       this.$store.dispatch("RiverEvents/getProperty", this.reachId);
       this.$store.dispatch("RiverDetail/getProperty", this.reachId);
+      this.$store.dispatch("RiverCredits/getProperty", this.reachId);
       this.$store.dispatch("RiverAlerts/getProperty", this.reachId);
       this.$store.dispatch("RiverGages/getProperty", this.reachId);
       this.$store.dispatch("RiverRapids/getProperty", this.reachId);
+      this.$store.dispatch("RiverReports/getProperty", { id: this.reachId });
     },
     toggleEditMode() {
       if (this.user) {
@@ -347,6 +388,18 @@ export default {
       this.$store.dispatch("RiverDetail/deleteReach", reachId);
       this.deleteCommentModalVisible = false;
       this.$router.push("/river-index");
+    },
+    async triggerEditRevision(version) {
+      const newRevisionComment = await this.$refs.editRevisionModal.show({
+        version: version,
+      });
+      if (newRevisionComment && version) {
+        await this.$store.dispatch("RiverCredits/updateProperty", {
+          id: this.reachId,
+          comment: newRevisionComment,
+          revision: version.revision,
+        });
+      }
     },
   },
   created() {

@@ -77,7 +77,8 @@ export default {
     submitForm () {
       this.$emit('edit:submitted')
       this.$parent.editGeometryModalVisible = false
-      this.$store.dispatch('RiverDetail/updateGeom', {
+      this.$store.dispatch('RiverDetail/updateProperty', {
+        id: this.$route.params.id,
         geom: this.geom.geometry,
         ploc: this.geom.geometry.coordinates[0],
         tloc: this.geom.geometry.coordinates.slice(-1)[0],

@@ -56,7 +56,7 @@
     >
       <template #form-fields="formData">
         <cv-text-area
-          v-model="formData.formData.post.detail"
+          v-model="formData.formData.detail"
           label="Message"
           theme="light"
           class="mb-spacing-md"

@@ -43,6 +43,44 @@ export default [
         component: () => import('@/app/views/river-detail/components/map-tab/map-tab.vue')
       },
       {
+        path: 'reports',
+        name: 'reports-tab',
+        meta: {
+          crumbLabel: 'Trip Reports',
+          transitionName: 'slide'
+        },
+        component: () => import('@/app/views/river-detail/components/reports-tab/reports-tab.vue'),
+        children: [
+          {
+            path: 'new',
+            name: 'new-report',
+            meta: {
+              crumbLabel: 'New Trip Report',
+              transitionName: 'slide'
+            },
+            component: () => import('@/app/views/river-detail/components/reports-tab/components/new-report.vue')
+          },
+          {
+            path: ':reportId/edit',
+            name: 'edit-report',
+            meta: {
+              crumbLabel: 'Edit Trip Report',
+              transitionName: 'slide'
+            },
+            component: () => import('@/app/views/river-detail/components/reports-tab/components/edit-report.vue')
+          },
+          {
+            path: ':reportId',
+            name: 'report-detail',
+            meta: {
+              crumbLabel: 'Trip Report',
+              transitionName: 'slide'
+            },
+            component: () => import('@/app/views/river-detail/components/reports-tab/components/report-detail.vue'),
+          },
+        ]
+      },
+      {
         path: 'gallery',
         name: 'gallery-tab',
         meta: {
@@ -50,17 +88,16 @@ export default [
           transitionName: 'slide'
         },
         component: () => import('@/app/views/river-detail/components/gallery-tab.vue'),
-        children: [
+      },
+      {
+        path: 'gallery/:imageId',
+        name: 'gallery-detail',
+        meta: 
           {
-            path: ':photoId',
-            name: 'photo-detail',
-            meta: {
-              crumbLabel: 'Photo',
-              transitionName: 'slide'
-            },
-            component:  () => import('@/app/views/river-detail/components/image-gallery/image-gallery.vue')
-          }
-        ]
+            crumbLabel: 'Photo',
+            transitionName: 'slide'
+          },
+          component: () => import('@/app/views/river-detail/components/gallery-tab.vue'),
       },
       {
         path: 'accidents',
@@ -78,7 +115,7 @@ export default [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('@/app/views/river-detail/components/credits-tab.vue')
+        component: () => import('@/app/views/river-detail/components/credits-tab/credits-tab.vue')
       },
       {
         path: 'news',

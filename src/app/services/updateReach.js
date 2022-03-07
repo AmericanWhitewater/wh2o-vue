@@ -7,11 +7,20 @@ export async function updateReach(data) {
                 reachUpdate(id: $id, reach: $reach) {
                   river,
                   section,
+                  altname,
                   class,
                   length,
                   avggradient,
                   maxgradient,
-                  status
+                  permiturl,
+                  permitinfo,
+                  status,
+                  geom,
+                  ploc,
+                  tloc,
+                  length,
+                  description
+
                 }
               }
             `,

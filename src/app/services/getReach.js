@@ -7,6 +7,8 @@ export async function getReach(id) {
               {
                 reach(id: ${id}) {
                   avggradient
+                  permiturl
+                  permitinfo
                   id
                   class
                   description
@@ -38,7 +40,7 @@ export async function getReach(id) {
                     id
                     post {
                       user {
-                        uname
+                        name
                         uid
                       }
                     }
@@ -51,6 +53,7 @@ export async function getReach(id) {
                   }
                   river
                   section
+                  altname
                 }
               }
             
