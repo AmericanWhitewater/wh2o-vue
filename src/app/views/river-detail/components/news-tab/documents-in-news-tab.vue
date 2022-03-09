@@ -1,5 +1,5 @@
 <template>
-  
+
         <layout name="layout-full-width" class="mb-lg">
       <template #main>
         <hr >
@@ -24,7 +24,6 @@
                     <div class="bx--col-sm-12 bx--col-md-8 mb-spacing-xs">
                       <h4> {{ document.title }} </h4>
                       <div class="bx--type-caption">
-                        <a :href="document.uri">{{document.uri}}</a>
                         {{ document.edit_date }}
                         <template v-if="document.author">
                           - {{ document.author.name }}
@@ -32,12 +31,16 @@
                       </div>
                       <hr>
                     </div>
-                    
+
                   </header>
                   <main class="document-detail">
                     <p v-if="document.abstract" v-text="document.abstract.slice(0, 300)" />
                     <p v-else>This document has no message</p>
                   </main>
+                  <form method="get" :action="document.uri">
+                  <cv-button >download</cv-button>
+                  </form>
+
                 </div>
               </cv-tile>
             </div>
@@ -72,7 +75,7 @@ export default {
       data:(state) => state.RiverEvents.data,
       documentsLoading: (state) => state.RiverEvents.loading,
       documentsError: (state) => state.RiverEvents.error,
-      
+
     }),
     documents() {
       if(this && this.data){
@@ -83,7 +86,7 @@ export default {
     },
   },
   created() {
-   
+
       if (!this.documents) {
         this.$store.dispatch("RiverEvents/getProperty", this.$route.params.id);
       }
