@@ -330,11 +330,11 @@ export default {
 
         Object.assign(this.formData.post, {
           id: this.media.post_id,
-          reach_id: this.media.reach_id,
-          post_date: this.media.post_date,
-          post_type: this.media.post_type,
-          reading: this.media.reading,
-          metric_id: String(this.media.metric_id),
+          reach_id: this.media.post.reach_id,
+          post_date: this.media.post.post_date,
+          post_type: this.media.post.post_type,
+          reading: this.media.post.reading,
+          metric_id: String(this.media.post.metric_id),
         });
       } else {
         if (this.user && this.user.name) {
