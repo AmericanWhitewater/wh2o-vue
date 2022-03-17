@@ -224,7 +224,7 @@ export default {
     },
     async triggerAssignToReportModal() {
       const selectedReport = await this.$refs.assignToReportModal.show({
-        postId: this.image.post_id,
+        postId: this.image.post.id,
       });
 
       if (selectedReport) {

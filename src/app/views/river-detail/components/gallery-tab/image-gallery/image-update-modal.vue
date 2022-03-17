@@ -325,11 +325,11 @@ export default {
           poi_id: this.media.poi_id,
           poi_name: this.media.poi_name,
           subject: this.media.subject,
-          post_id: this.media.post_id,
+          post_id: this.media.post.id,
         });
 
         Object.assign(this.formData.post, {
-          id: this.media.post_id,
+          id: this.media.post.id,
           reach_id: this.media.post.reach_id,
           post_date: this.media.post.post_date,
           post_type: this.media.post.post_type,
