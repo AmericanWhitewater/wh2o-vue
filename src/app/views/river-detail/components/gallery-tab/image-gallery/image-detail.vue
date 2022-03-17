@@ -267,7 +267,7 @@ export default {
         message: "Are you sure you want to delete this photo?",
       });
       if (ok) {
-        // TODO: refactor to use state (along with 'news-tab.vue')
+        // TODO: refactor to use state
         try {
           this.$router.push({ name: "gallery-tab" });
 

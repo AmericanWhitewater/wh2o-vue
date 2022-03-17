@@ -21,7 +21,7 @@ export default {
       Object.assign(state, { loading: false, pagination: payload })
     },
     ['SET_INDEX'](state, payload) {
-      Object.assign(state, { loading: false, galleryIndex: payload })
+      Object.assign(state, { galleryIndex: payload })
     }
   },
   actions: {
@@ -29,9 +29,7 @@ export default {
     async getIndex(context, reachId) {
       // because we have canonical URLs for photos within gallery mode, we need
       // an index of the gallery images by ID to determine what page of the gallery to display
-      // when a reach gallery is first loaded, we have to load the index
-      context.commit('DATA_REQUEST')
-      
+      // when a reach gallery is first loaded, we have to load the index      
       try {
         const result = await getReachGalleryIndex(reachId)
         if (!result.errors) {

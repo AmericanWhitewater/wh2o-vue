@@ -22,6 +22,7 @@ export async function getReachGallery(id, pagination) {
                 subject
 
                 post {
+                  id
                   metric_id
                   post_date
                   post_type
