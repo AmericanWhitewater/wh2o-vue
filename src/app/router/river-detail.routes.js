@@ -87,7 +87,7 @@ export default [
           crumbLabel: 'River Detail',
           transitionName: 'slide'
         },
-        component: () => import('@/app/views/river-detail/components/gallery-tab.vue'),
+        component: () => import('@/app/views/river-detail/components/gallery-tab/gallery-tab.vue'),
       },
       {
         path: 'gallery/:imageId',
@@ -97,7 +97,7 @@ export default [
             crumbLabel: 'Photo',
             transitionName: 'slide'
           },
-          component: () => import('@/app/views/river-detail/components/gallery-tab.vue'),
+          component: () => import('@/app/views/river-detail/components/gallery-tab/gallery-tab.vue'),
       },
       {
         path: 'accidents',

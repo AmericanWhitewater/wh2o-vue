@@ -3,11 +3,11 @@
     <div class="bx--grid">
       <div class="bx--row">
         <image-detail
-          v-if="activeImage"
-          :image="activeImage"
+          v-if="detailImage"
+          :image="detailImage"
           :nextImage="nextImage"
           :prevImage="prevImage"
-          @navigateToImage="(img) => (activeImage = img)"
+          @navigateToImage="$emit('navigateToImage', $event)"
           @photoModified="$emit('photoModified', $event)"
         />
         <template v-if="images.length">
@@ -23,7 +23,7 @@
               :src="imageURI(image, 'thumb')"
               :alt="formatAltText(image)"
               class="image-thumbnail"
-              @click.exact="activeImage = image"
+              @click.exact="$emit('navigateToImage', image)"
             >
           </div>
         </template>
@@ -61,16 +61,16 @@ export default {
     images: {
       type: Array,
       required: true,
-      default: () => [],
     },
-    galleryType: {
-      type: String,
-      default: () => "gallery-tab",
+    imageIndex: {
+      type: Array,
+      required: false,
+    },
+    detailImage: {
+      type: Object,
+      required: false,
     },
   },
-  data: () => ({
-    activeImage: null,
-  }),
   computed: {
     ...mapState({
       river: (state) => state.RiverDetail.data,
@@ -86,32 +86,24 @@ export default {
       }
     },
     nextImage() {
-      if (this.activeImage) {
-        const index = this.images.findIndex(
-          (x) => x.id === this.activeImage.id
-        );
-        return index < this.images.length - 1 ? this.images[index + 1] : null;
+      if (this.imageIndex && this.detailImage) {
+        const index = this.imageIndex.indexOf(this.detailImage.id);
+        return index < this.imageIndex.length - 1
+          ? { id: this.imageIndex[index + 1] }
+          : null;
       }
       return null;
     },
     prevImage() {
-      if (this.activeImage) {
-        const index = this.images.findIndex(
-          (x) => x.id === this.activeImage.id
-        );
-        return index > 0 ? this.images[index - 1] : null;
+      if (this.imageIndex && this.detailImage) {
+        const index = this.imageIndex.indexOf(this.detailImage.id);
+        return index > 0 ? { id: this.imageIndex[index - 1] } : null;
       }
       return null;
     },
-    // the gallery tab uses routing to create canonical links for images
-    // other uses of the gallery do not route to specific images
-    // so we use this to condition the behavior just to the gallery tab
-    galleryTab() {
-      return this.galleryType === "gallery-tab";
-    },
   },
   watch: {
-    activeImage(newImage, oldImage) {
+    detailImage(newImage, oldImage) {
       if (newImage) {
         if (!oldImage) {
           // lightbox newly opening
@@ -121,31 +113,11 @@ export default {
            */
           document.body.classList.add("bx--body--with-modal-open");
         }
-
-        // we are navigating to a new image and if we're in the gallery tab,
-        // we need to use the router to do this
-        // need to avoid attempting to route when the page is opened already on the
-        // gallery-detail route though
-        if (this.galleryTab && this.routeImage?.id !== newImage.id) {
-          this.$router.push({
-            name: "gallery-detail",
-            params: { imageId: newImage.id },
-          });
-        }
       } else {
         // lightbox closing
         document.body.classList.remove("bx--body--with-modal-open");
-
-        if (this.galleryTab) {
-          this.$router.push({ name: "gallery-tab" });
-        }
       }
     },
-  },
-  mounted() {
-    if (this.routeImage) {
-      this.activeImage = this.routeImage;
-    }
   },
 };
 </script>
