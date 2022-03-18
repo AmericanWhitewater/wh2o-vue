@@ -5,7 +5,7 @@
         <template v-if="loading">
           <utility-block state="loading" class="mb-sm" />
         </template>
-        <template v-else-if="media">
+        <template v-else-if="galleryPhotos">
           <div class="bx--row">
             <div class="bx--col">
               <div class="toolbar-wrapper">
@@ -18,9 +18,11 @@
           <div class="bx--row">
             <div class="bx--col">
               <image-gallery
-                :images="media"
-                gallery-type="gallery-tab"
+                :images="galleryPhotos"
+                :imageIndex="galleryIndex"
+                :detailImage="detailImage"
                 @photoModified="loadMedia"
+                @navigateToImage="navigateToImage"
               />
             </div>
           </div>
@@ -29,8 +31,8 @@
               <table-pagination
                 :number-of-items="pagination.total"
                 :page="pagination.currentPage"
-                :pagination="pagination"
-                @change="loadMedia"
+                :perPage="pagination.perPage"
+                @change="changePage"
               />
             </div>
           </div>
@@ -53,9 +55,9 @@
   </div>
 </template>
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState } from "vuex";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block";
-import ImageGallery from "@/app/views/river-detail/components/image-gallery/image-gallery.vue";
+import ImageGallery from "./image-gallery/image-gallery.vue";
 import { Layout } from "@/app/global/layout";
 import { TablePagination } from "@/app/global/components";
 import ImageUpdateModal from "./image-gallery/image-update-modal";
@@ -78,32 +80,73 @@ export default {
       loading: (state) => state.RiverGallery.loading,
       error: (state) => state.RiverGallery.error,
       pagination: (state) => state.RiverGallery.pagination,
-      rapids: (state) => state.RiverRapids.data,
+      galleryPhotos: (state) => state.RiverGallery.data,
+      galleryIndex: (state) => state.RiverGallery.galleryIndex,
       user: (state) => state.User.data,
-    }),
-    ...mapGetters({
-      media: "RiverGallery/media",
     }),
     reachId() {
       return this.$route.params.id;
     },
+    detailImageId() {
+      return this.$route.params.imageId;
+    },
+    detailImage() {
+      return this.galleryPhotos.find(
+        (image) => image.id === this.detailImageId
+      );
+    },
+  },
+  watch: {
+    // when the index loads, if we are viewing a specific image, navigate to the
+    // correct gallery page for that image
+    galleryIndex() {
+      if (this.detailImageId) {
+        this.loadPageOfImageId(this.detailImageId);
+      }
+    },
   },
   methods: {
-    loadRapids(routeId) {
-      this.$store.dispatch("RiverRapids/getProperty", routeId);
+    loadPageOfImageId(imageId) {
+      const imageIndex = this.galleryIndex.indexOf(imageId);
+      const page = Math.ceil((imageIndex + 1) / this.pagination.perPage);
+      this.changePage({
+        length: this.pagination.perPage,
+        page: page,
+      });
     },
-    loadMedia(val) {
-      this.loadRapids(this.reachId);
+    changePage(newPaginator) {
+      this.$store.dispatch("RiverGallery/getProperty", {
+        id: this.reachId,
+        perPage: newPaginator.length,
+        page: newPaginator.page,
+      });
+    },
+    loadMedia() {
+      // ensure reach rapids are loaded so images can display their info
+      this.$store.dispatch("RiverRapids/getProperty", this.reachId);
 
-      const data = {
-        reach_id: this.reachId,
-        per_page: val ? val.length : 10,
-        page: val ? val.page : 1,
-      };
+      // load image index
+      this.$store.dispatch("RiverGallery/getIndex", this.reachId);
 
-      this.$store.dispatch("RiverGallery/getProperty", data);
+      this.$store.dispatch("RiverGallery/getProperty", {
+        id: this.reachId,
+      });
 
       this.currentlyLoadedImagesFor = this.reachId;
+    },
+    navigateToImage(image) {
+      if (image) {
+        // if we're not currently on the image's page, load it
+        if (!this.galleryPhotos.filter((img) => img.id === image.id).length) {
+          this.loadPageOfImageId(image.id);
+        }
+        this.$router.push({
+          name: "gallery-detail",
+          params: { imageId: image.id },
+        });
+      } else {
+        this.$router.push({ name: "gallery-tab" });
+      }
     },
     async openImageModal() {
       const ok = await this.$refs.imageUpdateModal.show();

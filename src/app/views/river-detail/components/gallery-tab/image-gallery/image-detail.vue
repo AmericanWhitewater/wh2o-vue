@@ -80,17 +80,18 @@
           </div>
           <div class="mb-spacing-md">
             <h6>Level</h6>
-            <span v-text="gaugeReading(image)" />
+            <span v-text="gaugeReading(image.post)" />
             <cv-link
               v-if="
-                image.reading &&
-                image.gauge &&
-                image.gauge.id &&
-                image.gauge.name
+                image.post &&
+                image.post.reading &&
+                image.post.gauge &&
+                image.post.gauge.id &&
+                image.post.gauge.name
               "
-              :to="`/gage-detail/${image.gauge.id}`"
+              :to="`/gage-detail/${image.post.gauge.id}`"
             >
-              at {{ image.gauge.name }}
+              at {{ image.post.gauge.name }}
             </cv-link>
           </div>
           <div class="mb-spacing-md">
@@ -223,7 +224,7 @@ export default {
     },
     async triggerAssignToReportModal() {
       const selectedReport = await this.$refs.assignToReportModal.show({
-        postId: this.image.post_id,
+        postId: this.image.post.id,
       });
 
       if (selectedReport) {
@@ -266,7 +267,7 @@ export default {
         message: "Are you sure you want to delete this photo?",
       });
       if (ok) {
-        // TODO: refactor to use state (along with 'news-tab.vue')
+        // TODO: refactor to use state
         try {
           this.$router.push({ name: "gallery-tab" });
 
