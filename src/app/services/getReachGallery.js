@@ -1,66 +1,65 @@
 import http from "@/app/http"
 
-export async function getReachGallery(data) {
+export async function getReachGallery(id, pagination) {
   return http
     .post('/graphql', {
       query: `
-                query {
-                  posts(
-                    first: ${data.per_page},
-                    post_types: [JOURNAL,PHOTO_POST],
-                    reach_id: "${data.reach_id}", 
-                    page: ${data.page}, 
-                    orderBy: {field: REVISION, order: DESC}
-                    ) {
-                      data {
-                        id
-                        reach_id
-                        metric_id
-                        post_date
-                        post_type
-                        permissions {
-                          domain
-                          permission
-                          result
-                        }
-                        metric {
-                          name
-                          unit
-                        }
-                        gauge {
-                          id
-                          name
-                        }
-                        reading
-                        photos {
-                          image {
-                            uri {
-                              thumb
-                              medium
-                              big
-                            }
-                            file_size
-                          }
-                          id
-                          author
-                          caption
-                          description
-                          photo_date
-                          poi_name
-                          poi_id
-                          subject
-                        }
-                      }
-                      paginatorInfo {
-                        count
-                        perPage
-                        currentPage
-                        lastPage
-                        total
-                      }
-                  
-                    }  
-                  }`
+        query {
+          reach(id: ${id}) {
+            photos(
+              first: ${pagination.perPage},
+              page: ${pagination.page}, 
+              orderBy: {field: DATE, order: DESC}
+            ) {
+              data {
+                id
+                author
+                caption
+                description
+                photo_date
+                poi_name
+                poi_id
+                subject
+
+                post {
+                  id
+                  metric_id
+                  post_date
+                  post_type
+                  reading
+                  metric {
+                    name
+                    unit
+                  }
+                  gauge {
+                    id
+                    name
+                  }
+                }
+                permissions {
+                  domain
+                  permission
+                  result
+                }
+                image {
+                  uri {
+                    thumb
+                    medium
+                    big
+                  }
+                  file_size
+                }
+              }
+              paginatorInfo {
+                count
+                perPage
+                currentPage
+                lastPage
+                total
+              }
+            }  
+          }
+        }`
     })
     .then(res => res.data)
 }
