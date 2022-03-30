@@ -121,6 +121,7 @@
           </div>
         </section>
       </template>
+
     </layout>
     <post-update-modal
       :post="activeAlert"
@@ -150,6 +151,7 @@
     <confirm-delete-modal
       ref="confirmDeleteModal"
     />
+    <DocumentsInNewsTab/>
   </div>
 </template>
 <script>
@@ -162,6 +164,7 @@ import {
   ConfirmDeleteModal,
   PostUpdateModal,
 } from "@/app/global/components";
+import DocumentsInNewsTab from "./documents-in-news-tab.vue"
 import { deletePost } from "@/app/services";
 export default {
   name: "news-tab",
@@ -171,6 +174,7 @@ export default {
     ArticleCard,
     ConfirmDeleteModal,
     PostUpdateModal,
+    DocumentsInNewsTab
   },
   mixins: [objectPermissionsHelpersMixin],
   data: () => ({
