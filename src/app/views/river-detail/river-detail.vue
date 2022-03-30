@@ -272,7 +272,7 @@ export default {
     map: "Map",
     reports: "Trip Reports",
     gallery: "Gallery",
-    news: "News",
+    news: "News and Info",
     accidents: "Accidents",
     credits: "Contributors",
   },

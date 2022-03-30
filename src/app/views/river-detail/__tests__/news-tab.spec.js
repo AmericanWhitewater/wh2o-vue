@@ -23,6 +23,11 @@ const mockStore = {
       data: null,
       loading: null
     },
+    RiverEvents: {
+      error: null,
+      data: null,
+      loading: null
+    },
     Global: {
       editMode: false
     }
@@ -43,7 +48,8 @@ const options = {
       }
     },
     stubs: {
-      ArticleCard
+      ArticleCard,
+      DocumentsInNewsTab: "<div class='stub'></div>"
     }
   }
 }
