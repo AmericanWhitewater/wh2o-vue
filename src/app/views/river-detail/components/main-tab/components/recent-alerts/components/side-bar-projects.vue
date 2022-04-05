@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar-projects">
+  <div class="sidebar-projects bx--col-sm-12 bx--col-md-4">
     <span class="header-row">
       <h4 class="mb-spacing-sm">Projects</h4>
     </span>
@@ -17,7 +17,7 @@
         :key="i + 3 * 4"
         class="bx--row mb-spacing-xs sidebar-project"
       >
-        <div class="bx--col-sm-12 bx--col-md-5">
+        <div>
           <div class="pt-spacing-sm pb-spacing-md">
             <cv-link :href="projectUrl(project)">
               <h5

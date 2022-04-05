@@ -36,15 +36,15 @@
         <div class="report-detail" v-html="report.detail" />
       </div>
       <div class="bx--col-sm-12 bx--col-md">
-        <image-gallery :images="reportPhotos" gallery-type="report-detail" />
+        <report-image-gallery :images="reportPhotos" />
       </div>
     </div>
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
-import ImageGallery from "@/app/views/river-detail/components/image-gallery/image-gallery.vue";
 import ReportHeader from "./report-header";
+import ReportImageGallery from "./report-image-gallery";
 import {
   objectPermissionsHelpersMixin,
   gaugeHelpers,
@@ -59,7 +59,7 @@ const reportsCache = {};
 export default {
   name: "report-detail",
   components: {
-    ImageGallery,
+    ReportImageGallery,
     ReportHeader,
     UtilityBlock,
   },
@@ -76,18 +76,18 @@ export default {
     reportId() {
       return this.$route.params.reportId;
     },
-    // in a workaround to deal with the relationship between posts and photos,
-    // the image-gallery component takes photos that have a number of post attributes
-    // augmented onto them. So we have to do that augmentation here.
-    // in the main gallery, the service/state that retrieve the photos does that work
-    // but here, the photos are coming back as part of the report object
+    // in the gallery tab, the images are retrieved with post data inside them
+    // it's the inverse here, so we're modifying to match the image-detail component
+    // to match the structure
     reportPhotos() {
       return this.report?.photos?.map((p) => {
         return {
           ...p,
-          reading: this.report.reading,
-          gauge: this.report.gauge,
-          metric: this.report.metric,
+          post: {
+            reading: this.report.reading,
+            gauge: this.report.gauge,
+            metric: this.report.metric,
+          },
         };
       });
     },

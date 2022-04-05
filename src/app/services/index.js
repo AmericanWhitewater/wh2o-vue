@@ -25,6 +25,7 @@ export * from "./getReachCredits";
 export * from "./getReachEvents";
 export * from "./getReachGages";
 export * from "./getReachGallery";
+export * from "./getReachGalleryIndex";
 export * from "./getReachMap";
 export * from "./getReachNews";
 export * from "./getReachProjects";
