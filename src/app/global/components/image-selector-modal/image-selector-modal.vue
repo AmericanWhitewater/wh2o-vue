@@ -11,9 +11,9 @@
       <template v-if="loading">
         <utility-block state="loading" class="mb-sm" />
       </template>
-      <div v-else-if="media" class="flex-row bx--row">
+      <div v-else-if="images && images.length" class="flex-row bx--row">
         <div
-          v-for="(image, index) in media"
+          v-for="(image, index) in images"
           :key="index"
           :class="'flex-cell' + isSelectedClass(image)"
           @click="selectImage(image)"
@@ -30,14 +30,20 @@
           </div>
         </div>
       </div>
+      <template v-else>
+        <utility-block
+          state="content"
+          text="No images - add some in the gallery tab"
+        />
+      </template>
       <div class="bx--row">
         <div class="bx--col">
           <table-pagination
-            v-if="pagination"
+            v-if="images && images.length"
             :number-of-items="pagination.total"
             :page="pagination.currentPage"
-            :pagination="pagination"
-            @change="loadMedia"
+            :pagination="pagination.perPage"
+            @change="changePage"
           />
         </div>
       </div>
@@ -48,7 +54,7 @@
 </template>
 <script>
 import { shadowDomFixedHeightOffset, assetUrl } from "@/app/global/mixins";
-import { mapGetters, mapState } from "vuex";
+import { mapState } from "vuex";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block";
 import TablePagination from "@/app/global/components/table-pagination/table-pagination";
 
@@ -66,12 +72,10 @@ export default {
     selectedImage: null,
   }),
   computed: {
-    ...mapGetters({
-      media: "RiverGallery/media",
-    }),
     ...mapState({
       loading: (state) => state.RiverGallery.loading,
       pagination: (state) => state.RiverGallery.pagination,
+      images: (state) => state.RiverGallery.data,
     }),
     reachId() {
       return this.$route.params.id;
@@ -79,7 +83,10 @@ export default {
   },
   methods: {
     show(opts) {
-      this.loadMedia();
+      this.changePage({
+        perPage: 10,
+        page: 1,
+      });
 
       this.$refs.modalWrapper.show();
 
@@ -92,13 +99,12 @@ export default {
         this.rejectPromise = reject;
       });
     },
-    loadMedia(opts) {
-      const data = {
-        reach_id: this.reachId,
-        per_page: opts ? opts.length : 10,
-        page: opts ? opts.page : 1,
-      };
-      this.$store.dispatch("RiverGallery/getProperty", data);
+    changePage(newPaginator) {
+      this.$store.dispatch("RiverGallery/getProperty", {
+        id: this.reachId,
+        perPage: newPaginator.length,
+        page: newPaginator.page,
+      });
     },
     selectImage(image) {
       this.selectedImage = image;
