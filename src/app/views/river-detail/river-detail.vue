@@ -12,57 +12,53 @@
               </div>
             </header>
             <header v-else-if="reach" class="bx--tile">
-              <div>
+              <div class="reach-header-info">
                 <h1>
                   {{ reach.river }}
                 </h1>
-
                 <h4 class="mb-spacing-md" v-text="reachSubtitle" />
-              </div>
-              <div>
-                <div class="bx--row">
+                <template v-if="editMode && !loading">
                   <cv-button
-                    v-if="editMode"
                     id="edit-title"
                     size="small"
                     kind="secondary"
                     @click="editReachTitleModalVisible = true"
                   >
-                    Edit
+                    Edit Name
                   </cv-button>
-                </div>
-                <div class="bx--row">
-                  <cv-button
-                    v-if="editMode && canDelete(reach)"
-                    size="small"
-                    kind="danger"
-                    @click.exact="deleteReachModalVisible = true"
-                    @keydown.enter="deleteReachModalVisible = true"
-                  >
-                    Delete
-                  </cv-button>
-                  <cv-modal
-                    ref="modalWrapper"
-                    :visible="deleteReachModalVisible"
-                    @modal-shown="setModalOffset"
-                    @secondary-click="deleteReachModalVisible = false"
-                    @modal-hidden="deleteReachModalVisible = false"
-                    @primary-click="handleDelete(reach.id)"
-                  >
-                    <template slot="title"> Confirm Delete </template>
-                    <template slot="content">
-                      Are you sure you want to delete this reach?
-                    </template>
-                    <template slot="secondary-button"> Cancel </template>
-                    <template slot="primary-button"> Submit </template>
-                  </cv-modal>
-                </div>
-
-                <reach-title-edit-modal
-                  v-if="editMode && !loading"
-                  :visible="editReachTitleModalVisible"
-                  @edit:cancelled="editReachTitleModalVisible = false"
-                />
+                  <template v-if="canDelete(reach)">
+                    <hr>
+                    <cv-button
+                      size="small"
+                      kind="danger"
+                      @click.exact="deleteReachModalVisible = true"
+                      @keydown.enter="deleteReachModalVisible = true"
+                    >
+                      Delete Reach
+                    </cv-button>
+                    <cv-modal
+                      ref="modalWrapper"
+                      :visible="deleteReachModalVisible"
+                      @modal-shown="setModalOffset"
+                      @secondary-click="deleteReachModalVisible = false"
+                      @modal-hidden="deleteReachModalVisible = false"
+                      @primary-click="handleDelete(reach.id)"
+                    >
+                      <template slot="title"> Confirm Delete </template>
+                      <template slot="content">
+                        Are you sure you want to delete this reach?
+                      </template>
+                      <template slot="secondary-button"> Cancel </template>
+                      <template slot="primary-button"> Submit </template>
+                    </cv-modal>
+                  </template>
+                  <reach-title-edit-modal
+                    :visible="editReachTitleModalVisible"
+                    @edit:cancelled="editReachTitleModalVisible = false"
+                  />
+                </template>
+              </div>
+              <div>
                 <div v-if="reach.photo">
                   <img
                     class="reach--photo"
@@ -427,3 +423,10 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.reach-header-info {
+  display: flex;
+  flex-direction: column;
+}
+</style>
