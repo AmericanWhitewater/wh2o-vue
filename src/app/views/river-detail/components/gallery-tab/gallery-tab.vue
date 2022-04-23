@@ -9,8 +9,11 @@
           <div class="bx--row">
             <div class="bx--col">
               <div class="toolbar-wrapper">
-                <cv-button v-if="user && user.uid" @click="openImageModal">
-                  Upload
+                <cv-button
+                  v-if="user && user.uid"
+                  @click.exact="$router.push({ name: 'new-report' })"
+                >
+                  + Upload Photos
                 </cv-button>
               </div>
             </div>
@@ -47,11 +50,6 @@
         </template>
       </template>
     </layout>
-    <image-update-modal
-      ref="imageUpdateModal"
-      section="GALLERY"
-      includePostFields
-    />
   </div>
 </template>
 <script>
@@ -60,7 +58,6 @@ import UtilityBlock from "@/app/global/components/utility-block/utility-block";
 import ImageGallery from "./image-gallery/image-gallery.vue";
 import { Layout } from "@/app/global/layout";
 import { TablePagination } from "@/app/global/components";
-import ImageUpdateModal from "./image-gallery/image-update-modal";
 
 export default {
   name: "gallery-tab",
@@ -69,7 +66,6 @@ export default {
     Layout,
     ImageGallery,
     TablePagination,
-    ImageUpdateModal,
   },
   data: () => ({
     selectedRapids: [],
@@ -146,13 +142,6 @@ export default {
         });
       } else {
         this.$router.push({ name: "gallery-tab" });
-      }
-    },
-    async openImageModal() {
-      const ok = await this.$refs.imageUpdateModal.show();
-
-      if (ok) {
-        this.loadMedia();
       }
     },
   },
