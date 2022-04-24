@@ -348,7 +348,7 @@ export default {
     },
 
     activeGage () {
-      return this.gages ? this.gages.find(g => g.gauge.id === this.activeGageId) : null
+      return this.gages ? this.gagesWithGage.find(g => g.gauge.id === this.activeGageId) : null
     },
     activeMetric () {
       if (this.metrics) {
