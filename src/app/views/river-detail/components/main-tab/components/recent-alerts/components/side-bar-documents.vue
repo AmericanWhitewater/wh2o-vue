@@ -12,10 +12,10 @@
       </div>
     </template>
     <template v-else-if="document">
-    
+
         <div>
           <div class="pt-spacing-sm pb-spacing-md">
-            <cv-link :href="document.document">
+            <cv-link :href="document.uri">
               <h5
                 class="mb-spacing-2xs"
               >
