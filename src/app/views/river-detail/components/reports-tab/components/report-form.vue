@@ -18,7 +18,7 @@
     <cv-select v-model="formData.gauge_id" label="Gage" class="mb-spacing-md">
       <cv-select-option value="">None</cv-select-option>
       <cv-select-option
-        v-for="(g, index) in gages"
+        v-for="(g, index) in gagesWithGage"
         :key="index"
         :value="String(g.gauge.id)"
       >
@@ -137,6 +137,17 @@ export default {
       } else {
         return null;
       }
+    },
+    gagesWithGage() {
+      return (this.gages?.filter((x) => x.gauge) ?? []).sort((a, b) => {
+        //sort by primary over secondary
+        if (a.delay_update - b.delay_update) {
+          return a.delay_update - b.delay_update;
+          // sort by updated last
+        } else {
+          return a.epoch - b.epoch;
+        }
+      });
     },
   },
   watch: {

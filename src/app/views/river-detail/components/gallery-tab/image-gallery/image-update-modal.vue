@@ -12,25 +12,9 @@
 
     <template slot="content">
       <div class="media-upload-form">
-        <template v-if="editing">
-          <img :src="imageURI(media, 'thumb')" class="mb-spacing-sm" >
+        <template v-if="media">
+          <img :src="imageURI(media, 'thumb')" class="mb-spacing-sm">
         </template>
-        <template v-else-if="previewUrl">
-          <img :src="previewUrl" class="mb-spacing-sm" >
-        </template>
-        <template v-else>
-          <cv-file-uploader
-            v-if="!previewUrl"
-            ref="fileUploader"
-            data-modal-primary-focus
-            dropTargetLabel="Drag and drop here or click to select (10mb max)"
-            accepts=".jpg,.png"
-            class="mb-spacing-md"
-            :disabled="formPending || !user"
-            @change="setFile"
-          />
-        </template>
-
         <cv-text-input
           v-model="formData.photo.author"
           class="mb-spacing-md"
@@ -112,7 +96,7 @@ import {
   shadowDomFixedHeightOffset,
   gaugeHelpers,
 } from "@/app/global/mixins";
-import { updatePost, updatePhoto, photoFileUpdate } from "@/app/services";
+import { updatePost, updatePhoto } from "@/app/services";
 import { mapState } from "vuex";
 import moment from "moment";
 
@@ -215,36 +199,6 @@ export default {
     _cancel() {
       this.resolvePromise(false);
     },
-    async uploadFile() {
-      // this is only called when there is no image (i.e. create not edit)
-      // meaning, as of now, this is only called when there is no post
-      // if this modal were to be used to add photos to a post at some point,
-      // it would need to reconfigure this method to save the photo to the post
-      this.formPending = true;
-      try {
-        const result = await photoFileUpdate(this.$apollo, this.formData);
-
-        this.formData.post.id = result.post_id;
-        this.formData.photo.post_id = result.post_id;
-        const today = new Date();
-        this.formData.post.post_date = today.toISOString();
-        this.formData.post.reach_id = this.$route.params.id;
-        this.previewUrl = this.imageURI(result, "thumb");
-      } catch (error) {
-        /* eslint-disable-next-line no-console */
-        console.log("error :>> ", error);
-        this.$store.dispatch("Global/sendToast", {
-          title:
-            "Upload Failed -" +
-            (error?.message ||
-              Object.keys(error)
-                .map((x) => error[x])
-                .join(",")),
-          kind: "error",
-        });
-      }
-      this.formPending = false;
-    },
     // TODO: refactor this to use state so that when it submits, state is updated
     // with the results rather than having to trigger a full gallery reload
     async submitForm() {
@@ -296,16 +250,10 @@ export default {
         });
       }
     },
-    setFile(input) {
-      if (input && input.length) {
-        this.formData.fileinput.file = input[0].file;
-        this.uploadFile();
-      }
-    },
     setInitialFormData(opts = {}) {
       Object.assign(this.$data, initialState());
 
-      // if media is set, this is an edit request
+      // if media is set, this is an edit request -- currently always true
       if (opts.media) {
         this.media = opts.media;
 
@@ -356,12 +304,3 @@ export default {
   }
 }
 </style>
-
-<docs>
-
-## note
-
-keep `data-modal-primary-focus` on file uploader component otherwise buttons will be focused.
-primary objective to upload, keep attention at top of screen.
-
-</docs>
