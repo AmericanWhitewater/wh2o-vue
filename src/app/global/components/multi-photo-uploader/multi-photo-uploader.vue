@@ -94,7 +94,10 @@ export default {
     },
   },
   data: function () {
-    return { images: [] };
+    return {
+      images: [],
+      uploadingImages: [],
+    };
   },
   computed: {
     ...mapState({
@@ -106,8 +109,15 @@ export default {
     async setFile(input) {
       if (input && input.length) {
         input.forEach(async (f) => {
-          await this.uploadImage(f.file);
-          this.$refs.fileUploader.internalFiles.pop();
+          if (!this.uploadingImages.includes(f)) {
+            this.uploadingImages.push(f);
+            await this.uploadImage(f.file);
+            this.$refs.fileUploader.internalFiles.splice(
+              this.$refs.fileUploader.internalFiles.indexOf(f),
+              1
+            );
+            this.uploadingImages.splice(this.uploadingImages.indexOf(f), 1);
+          }
         });
       }
     },
