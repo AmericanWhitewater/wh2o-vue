@@ -9,7 +9,7 @@ export async function getReachGallery(id, pagination) {
             photos(
               first: ${pagination.perPage},
               page: ${pagination.page}, 
-              orderBy: {field: DATE, order: DESC}
+              orderBy: [{field: DATE, order: DESC}, {field: POST_DATE, order: DESC}, {field: CREATED_DATE, order: DESC}]
             ) {
               data {
                 id
