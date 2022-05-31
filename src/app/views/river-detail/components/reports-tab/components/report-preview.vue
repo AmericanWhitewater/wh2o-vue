@@ -56,7 +56,6 @@
 
 <script>
 import { UserAvatar, UtilityBlock } from "@/app/global/components";
-
 import {
   shadowDomFixedHeightOffset,
   objectPermissionsHelpersMixin,
