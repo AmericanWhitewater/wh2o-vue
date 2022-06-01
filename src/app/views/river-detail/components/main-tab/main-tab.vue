@@ -9,7 +9,7 @@
         <recent-alerts />
         <river-description />
         <rapids-section />
-        <comments-section />
+        <reports-section />
       </template>
     </layout>
   </div>
@@ -20,7 +20,7 @@ import {
   RecentAlerts,
   RapidsSection,
   RiverDescription,
-  CommentsSection,
+  ReportsSection,
   BetaBox
 } from './components'
 
@@ -30,7 +30,7 @@ export default {
     BetaBox,
     RecentAlerts,
     RapidsSection,
-    CommentsSection,
+    ReportsSection,
     RiverDescription,
     Layout
   }
