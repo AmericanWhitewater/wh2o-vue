@@ -12,12 +12,19 @@
               text="loading gages..."
           />
         </template>
-        <template v-else-if="gages && gages.length">
+        <template v-else-if="delays && delays.length">
           <div class="mb-lg">
             <hr>
             <h2 class="mb-spacing-md">
               Gage Summary
             </h2>
+            <div v-if="editMode">
+              <a
+                  class="cv-button mb-spacing-md bx--btn bx--btn--tertiary bx--btn--sm"
+                  :href="formatLinkUrl(`/content/StreamTeam/edit-correlations/?reach_id=${$route.params.id}`)"
+                  target="_blank"
+              >Edit Flows</a>
+            </div>
 
             <div v-for="(delay,index) in delays" :key="`d${delay}`">
               <h4 v-if="index===0">Primary Reporting</h4>
@@ -101,13 +108,6 @@
                         >
                           Gage Detail
                         </cv-button>
-                        <div>
-                          <a v-if="editMode"
-                             class="cv-button mb-spacing-md bx--btn bx--btn--tertiary bx--btn--sm"
-                             :href="formatLinkUrl(`/content/StreamTeam/edit-correlations/?reach_id=${$route.params.id}`)"
-                             target="_blank"
-                          >Edit Flows</a>
-                        </div>
                         <level-legend
                             :gauge="activeGage.gauge"
                             :ranges="rangeForGageID(gage.gauge.id)"
