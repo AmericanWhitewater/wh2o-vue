@@ -5,30 +5,19 @@ export async function getReachEvents(id) {
     .post('graphql', {
       query: `
         query {
-            linker(source: RIVER, id: "${id}") {    
-              __typename,
-              data {   
-                __typename
-                ... on Event {        
-                  id,
-                  category
+            reach(id: "${id}") {
+              events 
+              {
+                id,
+                category
                 title,
-                  dates { id,event_date,min,max,id,metric_id,start_time,end_time }      
-                }
-                ... on Document {
-                  
-                  short_name
-                  abstract
-                  document
-                  title
-                  uri
-                  author {
-                    name
-                  }
-                }
+                dates { id,event_date,min,max,id,metric_id,start_time,end_time }  
+             
               }
+                 
+         
             }
         }`
     })
-    .then(res => res.data.data.linker)
+    .then(res => res.data.data.reach.events)
 }

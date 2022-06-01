@@ -87,23 +87,7 @@ export default {
      * @return {*[]}
      */
     events: (state) => {
-      if (state && state.data && state.data.length) {
-        const results = state.data.filter(
-          (item) =>
-            !!item.data &&
-            item.data.length &&
-            item.data[0]?.__typename === "Event"
-        );
-
-        if (results.length) {
-          let rv = [];
-          // unroll event arrays into rv
-          Array.prototype.push.apply(rv, ...results.map((x) => x.data));
-          return rv;
-        }
-      }
-      //otherwise no events.
-      return [];
+      return state.data ?? []
     },
     // this will return all events that are releases associated with a river.
     releaseEvents: (state, getters) => {
@@ -124,7 +108,7 @@ export default {
       if(getters.releaseDates){
         const thisYearsDates = getters.releaseDates
         .filter(release => new Date(release.event_date).getFullYear() === state.year)
-        
+
         const dataSource = []
 
         for(let i = 0; i < thisYearsDates.length; i++){
@@ -140,25 +124,11 @@ export default {
 
         return dataSource
       }
-      
+
       return [[]]
     },
 
-    documents: (state) => {
-      if (state && state.data && state.data.length) {
-        const results = state.data.filter(
-          (item) =>
-            !!item.data &&
-            item.data.length &&
-            item.data[0]?.__typename === "Document"
-        );
-        const response = results[0]?.data
-        if (response?.length) {
-          return response;
-        }
-      }
-      return [];
-    }
+
   },
 };
 

@@ -79,7 +79,7 @@ export default {
     }),
     documents() {
       if(this && this.data){
-        return this.$store.getters['RiverEvents/documents']
+        return this.$store.getters['RiverLinker/documents']
       } else {
         return []
       }
@@ -88,7 +88,7 @@ export default {
   created() {
 
       if (!this.documents) {
-        this.$store.dispatch("RiverEvents/getProperty", this.$route.params.id);
+        this.$store.dispatch("RiverLinker/getProperty", this.$route.params.id);
       }
   },
 };
