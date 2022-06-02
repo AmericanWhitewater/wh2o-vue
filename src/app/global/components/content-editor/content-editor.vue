@@ -103,7 +103,12 @@ export default {
     });
     this.$emit("editor:activated");
   },
+  deactivated() {
+    tinymce.remove(this._editor);
+    this.$emit("editor:deactivated");
+  },
   destroyed() {
+    tinymce.remove(this._editor);
     this.$emit("editor:destroyed");
   },
 };
