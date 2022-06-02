@@ -4,7 +4,7 @@
   >
     <hr>
     <h2 class="mb-spacing-md">
-      Reports
+      Trip Reports
     </h2>
     <cv-button
       id="new-report"
