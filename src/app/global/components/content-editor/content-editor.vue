@@ -77,14 +77,38 @@ export default {
     // because we are operating inside the Shadow DOM, the tinymce-vue component doesn't
     // work, so we're using tinymce directly and have to hook up the content-change events
     // on our own
+
+    // transitions cause some weird behavior here. Basically, `mounted` is called every
+    // time this component is visited. Sometimes, that happens before a transition is complete
+    // -- meaning the element isn't actually visible, so tinymce breaks.
+    // activated is called in the scenarios where mounted doesn't work, so by having both of them
+    // here, it seems to work in all situations.
+    if (
+      this.$refs.editor.offsetWidth > 0 ||
+      this.$refs.editor.offsetHeight > 0
+    ) {
+      tinymce.init({
+        target: this.$refs.editor,
+        ...this.editorConfig,
+        setup: this.setup,
+      });
+    }
+    this.$emit("editor:mounted");
+  },
+  activated() {
     tinymce.init({
       target: this.$refs.editor,
       ...this.editorConfig,
       setup: this.setup,
     });
-    this.$emit("editor:mounted");
+    this.$emit("editor:activated");
+  },
+  deactivated() {
+    tinymce.remove(this._editor);
+    this.$emit("editor:deactivated");
   },
   destroyed() {
+    tinymce.remove(this._editor);
     this.$emit("editor:destroyed");
   },
 };
