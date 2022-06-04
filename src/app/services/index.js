@@ -1,6 +1,5 @@
 export * from "./createRapid";
 export * from "./createReach";
-export * from "./deleteComment";
 export * from "./deletePhoto";
 export * from "./deletePost";
 export * from "./deleteRapid";
@@ -20,7 +19,6 @@ export * from "./getRapids";
 export * from "./getReach";
 export * from "./getReachAccidents";
 export * from "./getReachAlerts";
-export * from "./getReachComments";
 export * from "./getReachCredits";
 export * from "./getReachEvents";
 export * from "./getReachDocuments";
