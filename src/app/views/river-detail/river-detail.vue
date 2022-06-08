@@ -382,7 +382,6 @@ export default {
     },
     async handleDelete(reachId) {
       this.$store.dispatch("RiverDetail/deleteReach", reachId);
-      this.deleteCommentModalVisible = false;
       this.$router.push("/river-index");
     },
     async triggerEditRevision(version) {
