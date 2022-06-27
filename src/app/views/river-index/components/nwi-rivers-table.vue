@@ -214,6 +214,7 @@ export default {
         if (reach.readingsummary.metric) {
           readingSummaryProps.gage_0_unit = reach.readingsummary.metric.unit;
         }
+        readingSummaryProps.gage_0_estimated = reach.readingsummary.gauge_estimated;
         if (reach.readingsummary.reading) {
           const reading = reach.readingsummary.reading;
           if (reading > 1) {
