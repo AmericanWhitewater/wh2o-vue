@@ -177,6 +177,7 @@ export default {
     displayGaugeReading(reach) {
       if (reach.properties.gage_0_reading) {
         return [
+          (reach.properties.gage_0_estimated ? '~' : ''),
           parseFloat(reach.properties.gage_0_reading.toFixed(2)),
           reach.properties.gage_0_unit,
         ].join(" ");
