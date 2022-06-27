@@ -154,7 +154,7 @@ export default {
       }
       if (this.enumeratedRanges?.length) {
         const legend = this.legendItems.map(x => x.color_class)
-        const rangesRepresented = uniq([...this.enumeratedRanges.map(x => x.min_class), ...this.enumeratedRanges.map(x => x.max_class)])
+        const rangesRepresented = uniq([...this.enumeratedRanges.map(x => x.class)])
         const rangesMissing = difference(legend, rangesRepresented)
         if (rangesMissing.indexOf('below-recommended') >= 0) {
           rv.hasMin = false
@@ -176,17 +176,13 @@ export default {
 
       const mins = x => ({
         val: x.min,
-        class: rangeToClass(x.range_min),
-        min_class: rangeToClass(x.range_min),
-        max_class: rangeToClass(x.range_max),
+        class: rangeToClass(x.range_min, x.range_max),
         range: x
       })
 
       const maxs = x => ({
         val: x.max,
-        class: rangeToClass(x.range_max),
-        min_class: rangeToClass(x.range_min),
-        max_class: rangeToClass(x.range_max),
+        class: rangeToClass(x.range_min, x.range_max),
         range: x
       })
       return [...this.filteredRanges.map(mins), ...this.filteredRanges.map(maxs)].sort((x, y) => y.val - x.val)
