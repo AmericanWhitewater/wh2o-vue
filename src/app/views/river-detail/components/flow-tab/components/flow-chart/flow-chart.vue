@@ -222,8 +222,7 @@ export default {
         if(graphRanges.length)
         {
           let graphBackgrounds = [
-              ...graphRanges.map(x=>({class:rangeToClass(x.range_min), min:x.min,max:x.min+((x.max-x.min)/2)})),
-              ...graphRanges.map(x=>({class:rangeToClass(x.range_max), min:x.min+((x.max-x.min)/2),max:x.max}))]
+              ...graphRanges.map(x=>({class:rangeToClass(x.range_min, x.range_max), min:x.min,max:x.max}))]
            graphBackgrounds = [
               ...graphBackgrounds,
               {

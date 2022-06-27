@@ -63,21 +63,22 @@ export function getEmptyReading() {
   };
 }
 
-export function rangeToClass(range) {
-  switch (range[0]) {
+export function rangeToClass(minRange, maxRange) {
+  // this could be *way* simpler but the backend defines duplicate ranges with different "R" values
+  // so we need to try to match them here
+  switch (minRange[0]) {
     case "R":
-      switch (range[1]) {
+      switch (minRange[1]) {
         case "0":
-        case "1":
-        case "2":
-          return "low-runnable";
-        case "3":
+          if (maxRange[1] === "9") {
+            return "runnable";
+          } else {
+            return "low-runnable";
+          }
         case "4":
-        case "5":
           return "runnable";
+        case "5":
         case "6":
-        case "7":
-        case "8":
           return "high-runnable";
       }
       return "runnable";
@@ -93,11 +94,11 @@ export function classToColor(c) {
     case "below-recommended":
       return "#FF8785";
     case "low-runnable":
-      return "#59E78D";
+      return "#1fd561";
     case "runnable":
       return "#59E78D";
     case "high-runnable":
-      return "#59E78D";
+      return "#9cf1bb";
     case "above-recommended":
       return "#68DFE9";
   }
