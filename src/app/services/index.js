@@ -21,6 +21,7 @@ export * from "./getReachAccidents";
 export * from "./getReachAlerts";
 export * from "./getReachCredits";
 export * from "./getReachEvents";
+export * from "./getReachDocuments";
 export * from "./getReachGages";
 export * from "./getReachGallery";
 export * from "./getReachGalleryIndex";
