@@ -41,7 +41,7 @@ export default {
   },
   created () {
     if (!this.data) {
-      this.$store.dispatch('Documents/getProperty', 'documents')
+      this.$store.dispatch('RiverLinker/getProperty', 'documents')
     }
   }
 }

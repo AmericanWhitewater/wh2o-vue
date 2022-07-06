@@ -183,7 +183,7 @@ export default {
     },
     pageOfPages () {
       const { pages, items } = this.ofNPagesProps
-      // console.log(this.pageValue, this.pageCount);
+
       if (items !== Infinity) {
         return `of ${pages} pages`
       }

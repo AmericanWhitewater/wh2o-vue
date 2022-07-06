@@ -27,7 +27,7 @@
               v-if="document.abstract.length > 200"
               ref="abstract"
               class="abstract-content"
-            
+
             >
               <span v-html="document.abstract.slice(0, 200)"/>
               ...
@@ -82,7 +82,7 @@ export default {
       error: state => state.RiverEvents.error,
     }),
     document() {
-      const allDocuments = this.$store.getters['RiverEvents/documents']
+      const allDocuments = this.$store.getters['RiverLinker/documents']
       if(allDocuments.length === 1){
         return {...allDocuments[0], isOnlyDocument: true}
       }
@@ -107,7 +107,7 @@ export default {
   },
   methods: {
     loadData () {
-      this.$store.dispatch('RiverEvents/getProperty', this.$route.params.id)
+      this.$store.dispatch('RiverLinker/getProperty', this.$route.params.id)
     },
     formatURI(input) {
       if (input) {
@@ -116,6 +116,6 @@ export default {
       return null;
     },
   }
-  
+
 }
 </script>
