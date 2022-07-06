@@ -145,3 +145,32 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+@import '@/app/assets/scss/base/_typography';
+
+.description-content {
+  @include carbon--type-style("body-long-02");
+
+  p {
+    margin-bottom: 1.25rem;
+    a {
+      @extend .bx--link;
+    }
+  }
+
+  @include carbon--breakpoint("lg") {
+    padding-right: $spacing-xl;
+  }
+
+  @include carbon--breakpoint("max") {
+    max-width: 80%;
+  }
+}
+
+p {
+
+  @include carbon--type-style('expressive-heading-03')
+}
+
+</style>

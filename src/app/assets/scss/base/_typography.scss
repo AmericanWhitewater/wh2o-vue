@@ -84,6 +84,7 @@ html {
 
     &:hover {
       color: $hover-primary-text;
+      text-decoration: underline;
     }
   }
 }

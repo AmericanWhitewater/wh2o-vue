@@ -55,7 +55,7 @@
                 v-if="gages && gages.length && reachGage && reachGage.gauge"
                 class="river-gages"
             >
-              <a :href="formatLinkUrl(`content/gauge/detail-new/${reachGage.gauge.id || ''}`)">{{
+              <a class="bx--link" :href="formatLinkUrl(`content/gauge/detail-new/${reachGage.gauge.id || ''}`)">{{
                   reachGage.gauge && reachGage.gauge.name
                       ? $titleCase(reachGage.gauge.name)
                       : 'n/a'
