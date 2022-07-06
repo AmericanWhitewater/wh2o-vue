@@ -8,7 +8,7 @@ export async function getReachGalleryIndex(id) {
           reach(id: ${id}) {
             photos(
               first: 2500,
-              orderBy: [{field: DATE, order: DESC}, {field: POST_DATE, order: DESC}, {field: CREATED_DATE, order: DESC}],
+              orderBy: [{field: REVISION, order: DESC}],
               page: 1
             ) {
               data {
