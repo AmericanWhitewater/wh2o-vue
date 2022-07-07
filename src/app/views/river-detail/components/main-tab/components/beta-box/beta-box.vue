@@ -55,7 +55,7 @@
                 v-if="gages && gages.length && reachGage && reachGage.gauge"
                 class="river-gages"
             >
-              <a :href="formatLinkUrl(`content/gauge/detail-new/${reachGage.gauge.id || ''}`)">{{
+              <a class="bx--link" :href="formatLinkUrl(`content/gauge/detail-new/${reachGage.gauge.id || ''}`)">{{
                   reachGage.gauge && reachGage.gauge.name
                       ? $titleCase(reachGage.gauge.name)
                       : 'n/a'
@@ -78,7 +78,7 @@
           <td>Flow Range</td>
           <template v-if="!loading">
             <td
-                v-if="reachGage "
+                v-if="reachGage"
                 class="flow-range"
             >
               {{ formatFlowRange(reachGage.rmin, reachGage.rmax, reachGage.gauge_metric) }}
@@ -108,6 +108,7 @@
                 v-if="reachGage"
                 class="river-flow-rate"
             >
+              {{ readingIsEstimated ? '~' : '' }}
               {{ formatReading(reachGage.gauge_reading, reachGage.gauge_metric) }}
               {{ formatMetric(reachGage.gauge_metric) }}
               <cv-tag
@@ -203,6 +204,9 @@ export default {
       gages: state => state.RiverGages.data?.gauges ?? [],
       metrics: state => state.RiverGages.data?.metrics ?? []
     }),
+    readingIsEstimated() {
+      return this.river?.readingsummary?.gauge_estimated
+    },
     /**
      * Event date or null
      */
@@ -232,7 +236,6 @@ export default {
     },
 
     reachGage () {
-
       if (this.river && this.river.readingsummary && this.gages) {
         return this.gages.find(g => g.gauge.id.toString() === this.river.readingsummary.gauge_id.toString())
       }

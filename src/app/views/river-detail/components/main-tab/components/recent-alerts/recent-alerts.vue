@@ -42,11 +42,11 @@ export default {
       alerts: state => state.RiverAlerts.data,
       articles: state => state.RiverNews.data,
       projects: state => state.RiverProjects.data,
-    
+
     }),
     documents() {
       if(this.$store.getters){
-        return this.$store.getters['RiverEvents/documents']
+        return this.$store.getters['RiverLinker/documents']
       } else {
         return []
       }
@@ -60,7 +60,7 @@ export default {
       this.$store.dispatch('RiverAlerts/getProperty', this.$route.params.id)
       this.$store.dispatch('RiverNews/getProperty', this.$route.params.id)
       this.$store.dispatch('RiverProjects/getProperty', this.$route.params.id)
-      this.$store.dispatch('RiverEvents/getProperty', this.$route.params.id)
+      this.$store.dispatch('RiverLinker/getProperty', this.$route.params.id)
     }
   }
 }
