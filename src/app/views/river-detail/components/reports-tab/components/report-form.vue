@@ -46,21 +46,21 @@
         </div>
       </div>
     </template>
-    <template>
-      <cv-select
-        v-model="formData.observation"
-        label="Describe the flow"
-        class="mb-spacing-md"
+
+    <cv-select
+      v-model="formData.observation"
+      label="Describe the flow"
+      class="mb-spacing-md"
+    >
+      <cv-select-option value="">Choose an option</cv-select-option>
+      <cv-select-option
+        v-for="(v, index) in Object.keys(observationEnum)"
+        :key="index"
+        :value="v"
+        >{{ observationEnum[v] }}</cv-select-option
       >
-        <cv-select-option value="">Choose an option</cv-select-option>
-        <cv-select-option
-          v-for="(v, index) in Object.keys(observationEnum)"
-          :key="index"
-          :value="v"
-          >{{ observationEnum[v] }}</cv-select-option
-        >
-      </cv-select>
-    </template>
+    </cv-select>
+    <flow-range-help-modal />
 
     <div class="mb-spacing-md cv-text-area bx--form-item">
       <label class="bx--label">Report Detail</label>
@@ -85,7 +85,11 @@
   </div>
 </template>
 <script>
-import { MultiPhotoUploader, ContentEditor } from "@/app/global/components";
+import {
+  MultiPhotoUploader,
+  ContentEditor,
+  FlowRangeHelpModal,
+} from "@/app/global/components";
 import { mapState } from "vuex";
 import { gaugeHelpers } from "@/app/global/mixins";
 import { updatePost } from "@/app/services";
@@ -96,6 +100,7 @@ export default {
   components: {
     MultiPhotoUploader,
     ContentEditor,
+    FlowRangeHelpModal,
   },
   mixins: [gaugeHelpers],
   props: {

@@ -18,10 +18,10 @@ export const gaugeHelpers = {
     },
     observationEnum() {
       return {
-          "-1": "Low",
-          "0.1": "Low Runnable",
-          "0.45": "Runnable",
-          "0.8": "High Runnable",
+          "-1": "Too Low",
+          "0.1": "Low Flow",
+          "0.45": "Medium Flow",
+          "0.8": "High Flow",
           "1.5": "Too High"        
       }
     }

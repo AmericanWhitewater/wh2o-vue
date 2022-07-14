@@ -31,7 +31,7 @@
                 </td>
               </tr>
               <tr v-if="report.observation">
-                <td>Flow</td>
+                <td>Flow (<flow-range-help-modal short-prompt-text />)</td>
                 <td>
                   {{ observationEnum[report.observation] }}
                 </td>
@@ -55,7 +55,7 @@ import {
   objectPermissionsHelpersMixin,
   gaugeHelpers,
 } from "@/app/global/mixins";
-import UtilityBlock from "@/app/global/components/utility-block/utility-block";
+import { FlowRangeHelpModal, UtilityBlock } from "@/app/global/components";
 import { getReport } from "@/app/services";
 
 // caching reports in the component so that users don't have to wait for another
@@ -68,6 +68,7 @@ export default {
     ReportImageGallery,
     ReportHeader,
     UtilityBlock,
+    FlowRangeHelpModal,
   },
   mixins: [objectPermissionsHelpersMixin, gaugeHelpers],
   props: {},
