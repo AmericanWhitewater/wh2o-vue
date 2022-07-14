@@ -14,6 +14,7 @@ export async function updatePost(data) {
           title
           gauge_id
           metric_id
+          observation
           post_date
           post_type
           reach_id

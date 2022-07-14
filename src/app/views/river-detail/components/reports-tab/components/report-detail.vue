@@ -16,7 +16,7 @@
                 <td>{{ report.user.name || "n/a" }}</td>
               </tr>
               <tr v-if="report.reading">
-                <td>Flow</td>
+                <td>Gauge Reading</td>
                 <td>
                   {{ gaugeReading(report) }}
                   <template v-if="report.gauge && report.gauge.name">
@@ -28,6 +28,12 @@
                       {{ report.gauge.name }}
                     </router-link>
                   </template>
+                </td>
+              </tr>
+              <tr v-if="report.observation">
+                <td>Flow</td>
+                <td>
+                  {{ observationEnum[report.observation] }}
                 </td>
               </tr>
             </tbody>
