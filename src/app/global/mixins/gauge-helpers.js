@@ -29,13 +29,13 @@ export const gaugeHelpers = {
   methods: {
     visualReadingLabel: (val) => {
       if (val < 0.0) {
-        return "Low";
+        return "Too Low";
       } else if (val > 0 && val < 0.33) {
-          return "Low Runnable";
+          return "Low Flow";
       } else if (val > 0.33 && val < 0.66) {
-          return "Runnable";
+          return "Medium Flow";
       } else if (val > 0.66 && val < 1.0) {
-          return "High Runnable";
+          return "High Flow";
       } else if (val > 1.0) {
           return "Too High";
       } else {
