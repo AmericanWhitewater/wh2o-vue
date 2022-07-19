@@ -16,7 +16,7 @@
                 <td>{{ report.user.name || "n/a" }}</td>
               </tr>
               <tr v-if="report.reading">
-                <td>Flow</td>
+                <td>Gauge Reading</td>
                 <td>
                   {{ gaugeReading(report) }}
                   <template v-if="report.gauge && report.gauge.name">
@@ -28,6 +28,12 @@
                       {{ report.gauge.name }}
                     </router-link>
                   </template>
+                </td>
+              </tr>
+              <tr v-if="report.observation">
+                <td>Flow (<flow-range-help-modal short-prompt-text />)</td>
+                <td>
+                  {{ observationEnum[report.observation] }}
                 </td>
               </tr>
             </tbody>
@@ -49,7 +55,7 @@ import {
   objectPermissionsHelpersMixin,
   gaugeHelpers,
 } from "@/app/global/mixins";
-import UtilityBlock from "@/app/global/components/utility-block/utility-block";
+import { FlowRangeHelpModal, UtilityBlock } from "@/app/global/components";
 import { getReport } from "@/app/services";
 
 // caching reports in the component so that users don't have to wait for another
@@ -62,6 +68,7 @@ export default {
     ReportImageGallery,
     ReportHeader,
     UtilityBlock,
+    FlowRangeHelpModal,
   },
   mixins: [objectPermissionsHelpersMixin, gaugeHelpers],
   props: {},

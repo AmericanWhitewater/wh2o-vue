@@ -16,17 +16,26 @@ export const gaugeHelpers = {
           label: m.name === "Flow" ? "CFS" : m.name,
         }));
     },
+    observationEnum() {
+      return {
+          "-1": "Too Low",
+          "0.1": "Low Flow",
+          "0.45": "Medium Flow",
+          "0.8": "High Flow",
+          "1.5": "Too High"        
+      }
+    }
   },
   methods: {
     visualReadingLabel: (val) => {
       if (val < 0.0) {
-        return "Low";
+        return "Too Low";
       } else if (val > 0 && val < 0.33) {
-          return "Low Runnable";
+          return "Low Flow";
       } else if (val > 0.33 && val < 0.66) {
-          return "Runnable";
+          return "Medium Flow";
       } else if (val > 0.66 && val < 1.0) {
-          return "High Runnable";
+          return "High Flow";
       } else if (val > 1.0) {
           return "Too High";
       } else {

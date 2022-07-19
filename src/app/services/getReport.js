@@ -18,6 +18,7 @@ export async function getReport(id) {
                     post_type
                     post_date
                     reach_id
+                    observation
                     photos {
                       id
                       image {
