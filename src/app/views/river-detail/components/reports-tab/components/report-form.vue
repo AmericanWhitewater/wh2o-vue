@@ -46,20 +46,21 @@
         </div>
       </div>
     </template>
-    <template v-else>
-      <cv-select
-        v-model="formData.reading"
-        label="Describe the flow"
-        class="mb-spacing-md"
+
+    <cv-select
+      v-model="formData.observation"
+      label="Describe the flow"
+      class="mb-spacing-md"
+    >
+      <cv-select-option value="">Choose an option</cv-select-option>
+      <cv-select-option
+        v-for="(v, index) in Object.keys(observationEnum)"
+        :key="index"
+        :value="v"
+        >{{ observationEnum[v] }}</cv-select-option
       >
-        <cv-select-option value="">Choose an option</cv-select-option>
-        <cv-select-option value="-1">Low</cv-select-option>
-        <cv-select-option value="0.1">Low Runnable</cv-select-option>
-        <cv-select-option value="0.45">Runnable</cv-select-option>
-        <cv-select-option value="0.8">High Runnable</cv-select-option>
-        <cv-select-option value="1.5">Too High</cv-select-option>
-      </cv-select>
-    </template>
+    </cv-select>
+    <flow-range-help-modal />
 
     <div class="mb-spacing-md cv-text-area bx--form-item">
       <label class="bx--label">Report Detail</label>
@@ -84,7 +85,11 @@
   </div>
 </template>
 <script>
-import { MultiPhotoUploader, ContentEditor } from "@/app/global/components";
+import {
+  MultiPhotoUploader,
+  ContentEditor,
+  FlowRangeHelpModal,
+} from "@/app/global/components";
 import { mapState } from "vuex";
 import { gaugeHelpers } from "@/app/global/mixins";
 import { updatePost } from "@/app/services";
@@ -95,6 +100,7 @@ export default {
   components: {
     MultiPhotoUploader,
     ContentEditor,
+    FlowRangeHelpModal,
   },
   mixins: [gaugeHelpers],
   props: {
@@ -109,6 +115,7 @@ export default {
         id: null,
         detail: null,
         gauge_id: null,
+        observation: null,
         metric_id: "1",
         post_date: null,
         post_type: null,
@@ -186,12 +193,11 @@ export default {
       // carbon select won't allow an option that doesn't set model to ""
       // but graphql API blows up if we submit an empty string, so need to
       // convert to null before submission
-      if (this.formData.metric_id === "") {
-        this.formData.metric_id = null;
-      }
-      if (this.formData.gauge_id === "") {
-        this.formData.gauge_id = null;
-      }
+      ["metric_id", "gauge_id", "observation", "reading"].forEach((field) => {
+        if (this.formData[field] === "") {
+          this.formData[field] = null;
+        }
+      });
     },
     async handleSubmit() {
       this.formPending = true;
@@ -262,8 +268,8 @@ export default {
         }
 
         // avoid cv-select throwing a warning about putting a number in a string value
-        if (!this.formData.gauge_id && this.formData.reading) {
-          this.formData.reading = `${this.formData.reading}`;
+        if (this.formData.observation) {
+          this.formData.observation = `${this.formData.observation}`;
         }
       });
     }

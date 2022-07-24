@@ -20,6 +20,7 @@ export async function getReachReports(id, pagination) {
                     reading
                     post_date
                     reach_id
+                    observation
                     photos {
                       url
                       id

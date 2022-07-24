@@ -43,7 +43,7 @@
                     <span v-if="reach.properties.altname">({{ reach.properties.altname }})</span>
                   </router-link>
                 </td>
-                <td>{{ displayGaugeReading(reach) }}</td>
+                <td class="level">{{ displayGaugeReading(reach) }}</td>
                 <td>
                   <zoom-in16
                     v-if="reach.geometry"
@@ -337,6 +337,10 @@ export default {
         padding-bottom: 0.5rem;
 
         padding-top: 0.5rem;
+
+        .level {
+          white-space: nowrap;
+        }
 
         &:nth-child(1) {
           &[class*="low"],
