@@ -28,7 +28,8 @@
 
             <div v-for="(delay,index) in delays" :key="`d${delay}`">
               <h4 v-if="index===0">Primary Reporting</h4>
-              <h4 v-else>Backup #{{index}} if Primary doesn't update for {{ parseInt(delay / (60 * 60)).toFixed(1) }} hours </h4>
+              <h4 v-else>Backup #{{ index }} if Primary doesn't update for {{ parseInt(delay / (60 * 60)).toFixed(1) }}
+                hours </h4>
               <div v-for="gage in gagesWithGage.filter(x=>parseInt(x.delay_update)===parseInt(delay))"
                    :key="`${gage.gauge.id}-${gage.gauge_metric}`">
                 <gage-summary
@@ -225,8 +226,8 @@ import {
   GageLinkModal,
   GageReadings,
   LevelLegend,
-  ReleasesTable,
-  ReleasesCalendar
+  ReleasesCalendar,
+  ReleasesTable
 } from './components'
 import GageSummary from './components/gage-summary'
 import { GageChartConfig } from './utils/gage-chart-config'
@@ -240,7 +241,8 @@ import ContentEditor from '@/app/global/components/content-editor/content-editor
 import { getEmptyMetric, getEmptyReading } from '@/app/global/lib/gages'
 import { uniq } from 'lodash/array'
 
-const flowviewCalendar = 2; const flowviewTable = 1;
+const flowviewCalendar = 2
+const flowviewTable = 1
 
 export default {
   name: 'flow-tab',
@@ -286,8 +288,8 @@ export default {
       const lastReadings = []
       //
       if (this.readings?.length
-          && this.readings[0].gauge_id == this.activeGage?.gauge?.id
-          && this.activeGage?.gauge_metric == this.activeMetric?.id) {
+          && this.readings[0].gauge_id === this.activeGage?.gauge?.id
+          && this.activeGage?.gauge_metric === this.activeMetric?.id) {
 
         const ag = this.activeGage
         lastReadings.push({
@@ -304,15 +306,21 @@ export default {
 
     gagesWithGage () {
       return (this.gages?.filter(x => x.gauge) ?? []).sort((a, b) => {
-        //sort by primary over secondary
+            if (a.excluded && !b.excluded) {
+              return 1
+            }
+            if (!a.excluded && b.excluded) {
+              return -1
+            }
+            //sort by primary over secondary
             if (a.delay_update - b.delay_update) {
               return a.delay_update - b.delay_update
               // sort by updated last
             } else {
-              return a.epoch - b.epoch;
+              return a.epoch - b.epoch
             }
           }
-        )
+      )
 
     },
 
@@ -359,8 +367,7 @@ export default {
   }
   ,
   watch: {
-    error(val)
-    {
+    error (val) {
       if (val) {
         this.$store.dispatch('Global/sendToast', {
           title: 'Failed to load readings',
@@ -369,13 +376,11 @@ export default {
       }
     }
     ,
-    gagesWithGage(u)
-    {
+    gagesWithGage (u) {
       if (u && u.length && !this.activeGage) {
         this.setActive(u[0])
       }
     },
-
 
     gagesError (val) {
       if (val) {
