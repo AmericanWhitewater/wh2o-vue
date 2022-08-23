@@ -204,7 +204,7 @@ export default {
       gages: state => state.RiverGages.data?.gauges ?? [],
       metrics: state => state.RiverGages.data?.metrics ?? []
     }),
-    readingIsEstimated() {
+    readingIsEstimated () {
       return this.river?.readingsummary?.gauge_estimated
     },
     /**
@@ -222,7 +222,8 @@ export default {
       return this.$route.params.id
     },
     gagesWithGage () {
-      return (this.gages?.filter(x => x.gauge) ?? []).sort((a, b) => {
+      return (this.gages?.filter(x => x.gauge && !x.excluded) ?? []).sort((a, b) => {
+
             //sort by primary over secondary
             if (a.delay_update - b.delay_update) {
               return a.delay_update - b.delay_update
@@ -236,6 +237,7 @@ export default {
     },
 
     reachGage () {
+
       if (this.river && this.river.readingsummary && this.gages) {
         return this.gages.find(g => g.gauge.id.toString() === this.river.readingsummary.gauge_id.toString())
       }
