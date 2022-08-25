@@ -195,7 +195,9 @@ export default {
           'text-justify': 'left',
           'text-anchor': 'left',
           'text-offset': [0.75, 0],
-          'icon-offset': [-12, 0]
+          'icon-offset': [-12, 0],
+          'icon-allow-overlap': true,
+          'text-allow-overlap': true
         },
         paint: {
           'text-halo-width': 1,
