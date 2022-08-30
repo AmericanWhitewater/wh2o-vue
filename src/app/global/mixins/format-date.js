@@ -12,7 +12,7 @@ export const formatDate = {
 
       // we have bad data that we've assigned 1900-01-01 to in order
       // to differentiate it.
-      if (momDate.isSame('1900-01-01', 'day')) {
+      if (momDate.isBefore('1910-01-01', 'day')) {
         return 'Unknown Date'
       }
       return momDate.format(format || 'll')
