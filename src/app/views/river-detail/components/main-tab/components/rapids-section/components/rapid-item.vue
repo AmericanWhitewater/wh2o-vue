@@ -40,17 +40,25 @@
                 <img :src="imageURI(rapid.photo, 'medium')" :alt="rapid.name">
               </div>
               <div v-else class="inside empty-block pb-spacing-sm">
-                
-                  <h6>No Image</h6>
-                
+                <h6>No Image</h6>
               </div>
-              <cv-button
-                v-if="editMode"
-                size="small"
-                kind="tertiary"
-                @click="triggerImageSelect"
-                >Select image</cv-button
-              >
+              <div v-if="editMode" class="rapid-image-actions">
+                <cv-button
+                  v-if="editMode"
+                  size="small"
+                  kind="secondary"
+                  @click="triggerImageSelect"
+                  >Select image</cv-button
+                >
+                <cv-button
+                  v-if="editMode && rapid.photo && rapid.photo.image"
+                  size="small"
+                  kind="danger"
+                  @click="triggerRemoveImage"
+                  >Remove</cv-button
+                >
+              </div>
+
               <div class="inside">
                 <cv-button
                   v-if="
@@ -173,6 +181,9 @@ export default {
     triggerImageSelect() {
       this.$emit("rapid:imageSelect", this.rapid);
     },
+    triggerRemoveImage() {
+      this.$emit("rapid:removeImage", this.rapid);
+    },
     handleToggleEditMode() {
       this.$store.dispatch("Global/toggleEditMode", !this.editMode);
     },
@@ -189,6 +200,11 @@ export default {
 .rapid-item {
   &.form-visible {
     outline: 3px solid $brand-01;
+  }
+
+  .rapid-image-actions {
+    align-items: center;
+    display: flex;
   }
 
   .bx--tile {
