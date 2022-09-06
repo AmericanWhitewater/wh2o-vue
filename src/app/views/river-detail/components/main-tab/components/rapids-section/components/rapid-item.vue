@@ -28,7 +28,7 @@
           @rapid:delete="triggerDelete"
         />
       </div>
-      <hr class="ui-03" >
+      <hr class="ui-03">
       <template>
         <div class="bx--row pt-spacing-xs">
           <div class="bx--col-sm-12 bx--col-lg-5">
@@ -184,3 +184,75 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.rapid-item {
+  &.form-visible {
+    outline: 3px solid $brand-01;
+  }
+
+  .bx--tile {
+    margin: $spacing-md 0;
+
+    .upload-prompt {
+      display: block;
+      width: 100%;
+    }
+
+    .thumbnail {
+      margin-bottom: 1rem;
+      max-height: 250px;
+      min-height: 250px;
+      width: 100%;
+
+      .empty-block {
+        align-items: center;
+        background-color: $ui-03;
+        display: flex;
+        flex-flow: column nowrap;
+        height: 250px;
+        justify-content: center;
+        width: 100%;
+      }
+
+      img {
+        background-color: $ui-05;
+        height: 250px;
+        object-fit: cover;
+        width: 100%;
+      }
+    }
+  }
+
+  .bx--tile--is-expanded {
+    .bx--tile-content {
+      .bx--tile-content__below-the-fold {
+        border-top: solid 1px $ui-03;
+        margin-top: $spacing-sm;
+        padding-bottom: $spacing-lg;
+        padding-top: 1rem;
+      }
+    }
+  }
+
+  .bx--tile--expandable:hover {
+    background-color: darken($ui-02, 0.05);
+  }
+}
+
+.rapid-meta {
+  @include carbon--type-style("code-01");
+}
+
+.description {
+  @include carbon--type-style("body-long-02");
+}
+
+.top-bar {
+  @include carbon--breakpoint("lg") {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+</style>
