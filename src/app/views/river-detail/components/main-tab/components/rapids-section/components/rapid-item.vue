@@ -39,10 +39,10 @@
               >
                 <img :src="imageURI(rapid.photo, 'medium')" :alt="rapid.name">
               </div>
-              <div v-else class="inside thumbnail pb-spacing-sm">
-                <div class="empty-block">
+              <div v-else class="inside empty-block pb-spacing-sm">
+                
                   <h6>No Image</h6>
-                </div>
+                
               </div>
               <cv-button
                 v-if="editMode"
@@ -201,19 +201,8 @@ export default {
 
     .thumbnail {
       margin-bottom: 1rem;
-      max-height: 250px;
-      min-height: 250px;
+      height: 250px;
       width: 100%;
-
-      .empty-block {
-        align-items: center;
-        background-color: $ui-03;
-        display: flex;
-        flex-flow: column nowrap;
-        height: 250px;
-        justify-content: center;
-        width: 100%;
-      }
 
       img {
         background-color: $ui-05;
@@ -221,6 +210,18 @@ export default {
         object-fit: cover;
         width: 100%;
       }
+    }
+
+    .empty-block {
+      align-items: center;
+      background-color: $ui-03;
+      display: flex;
+      flex-flow: column nowrap;
+      height: unset;
+      padding-top: $spacing-lg;
+      padding-bottom: $spacing-lg;
+      justify-content: center;
+      width: 100%;
     }
   }
 
