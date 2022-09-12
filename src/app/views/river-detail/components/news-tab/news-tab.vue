@@ -102,11 +102,7 @@
                   class="bx--col-sm-12 bx--col-md-8 bx--col-lg-8 bx--col-max-6 mb-spacing-lg"
                 >
                   <article-card
-                    :title="$titleCase(article.title)"
-                    :article-class="article.id"
-                    :article-id="String(article.id)"
-                    :author="article.author"
-                    :read-time="estReadingTime(article.contents)"
+                    :article="article"
                   />
                 </div>
               </div>
