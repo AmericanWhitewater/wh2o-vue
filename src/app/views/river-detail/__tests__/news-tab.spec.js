@@ -31,6 +31,9 @@ const mockStore = {
       editMode: false
     }
   },
+  getters: {
+    'RiverLinker/documents': []
+  },
   dispatch: jest.fn()
 }
 
@@ -91,23 +94,25 @@ describe('NewsTab', () => {
     expect(wrapper.find('.alerts-empty').exists()).toBe(true)
   })
 
-  it('it loads artles and alerts when not previously loaded', async () => {
+  it('it loads articles, alerts, docs when not previously loaded', async () => {
     // eslint-disable-next-line no-unused-vars
     const wrapper = createWrapper(NewsTab, options)
 
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
+    expect(mockStore.dispatch).toHaveBeenCalledWith(
       'RiverNews/getProperty', riverId
     )
-    expect(mockStore.dispatch).toHaveBeenNthCalledWith(2,
+    expect(mockStore.dispatch).toHaveBeenCalledWith(
       'RiverAlerts/getProperty', riverId
     )
+    expect(mockStore.dispatch).toHaveBeenCalledWith('RiverLinker/getProperty', riverId)
 
-    expect(mockStore.dispatch).toHaveBeenCalledTimes(2)
+    expect(mockStore.dispatch).toHaveBeenCalledTimes(3)
   })
 
-  it('doesnt attempt to load alerts and articles when previously loaded', async () => {
+  it('doesnt attempt to load alerts, articles, docs when previously loaded', async () => {
     mockStore.state.RiverAlerts.data = [{ alert: 'look out' }]
     mockStore.state.RiverNews.data = articles
+    mockStore.state.RiverEvents.data = []
     // eslint-disable-next-line no-unused-vars
     const wrapper = createWrapper(NewsTab, options)
     expect(mockStore.dispatch).toHaveBeenCalledTimes(0)

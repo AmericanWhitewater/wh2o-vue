@@ -24,23 +24,34 @@
                     <div class="bx--col-sm-12 bx--col-md-8 mb-spacing-xs">
                       <h4> {{ document.title }} </h4>
                       <div class="bx--type-caption">
-                        {{ document.edit_date }}
-                        <template v-if="document.author">
-                          - {{ document.author.name }}
+                        <span v-if="document.edit_date" v-text="formatDate(document.edit_date)" />
+                        <template v-if="document.edit_date && document.author">
+                          - 
                         </template>
+                        <span v-if="document.author" v-text="document.author.name" />
                       </div>
                       <hr>
                     </div>
 
                   </header>
                   <main class="document-detail">
-                    <p v-if="document.abstract" v-text="document.abstract.slice(0, 300)" />
-                    <p v-else>This document has no message</p>
+                    <p v-if="document.abstract" v-text="document.abstract" />
+                    <p v-else>This document has no description.</p>
                   </main>
-                  <form method="get" :action="document.uri">
-                  <cv-button >download</cv-button>
-                  </form>
-
+                  <footer class="document-card-footer">
+                    <cv-link :href="documentUrl(document)">
+                      <cv-button
+                      kind="primary"
+                      size="small"
+                      >View</cv-button>
+                    </cv-link>
+                    <cv-link :href="document.uri">
+                      <cv-button
+                        kind="secondary"
+                        size="small"
+                      >Download</cv-button>
+                    </cv-link>
+                  </footer>
                 </div>
               </cv-tile>
             </div>
@@ -58,8 +69,6 @@
 </template>
 
 <script>
-
-
 import { mapState } from "vuex";
 import { Layout } from "@/app/global/layout";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block";
@@ -81,15 +90,19 @@ export default {
       if(this && this.data){
         return this.$store.getters['RiverLinker/documents']
       } else {
-        return []
+        return null
       }
     },
   },
+  methods: {
+    documentUrl(document) {
+      return `/content/Document/view/?id=${document.id}`
+    }
+  },
   created() {
-
-      if (!this.documents) {
-        this.$store.dispatch("RiverLinker/getProperty", this.$route.params.id);
-      }
+    if (!this.documents) {
+      this.$store.dispatch("RiverLinker/getProperty", this.$route.params.id);
+    }
   },
 };
 </script>
