@@ -160,11 +160,10 @@ import UtilityBlock from "@/app/global/components/utility-block/utility-block";
 import { objectPermissionsHelpersMixin } from "@/app/global/mixins";
 import { Layout } from "@/app/global/layout";
 import {
-  ArticleCard,
   ConfirmDeleteModal,
   PostUpdateModal,
 } from "@/app/global/components";
-import DocumentsInNewsTab from "./documents-in-news-tab.vue"
+import { ArticleCard, DocumentsInNewsTab } from "./components"
 import { deletePost } from "@/app/services";
 export default {
   name: "news-tab",
