@@ -28,7 +28,7 @@
           @rapid:delete="triggerDelete"
         />
       </div>
-      <hr class="ui-03" >
+      <hr class="ui-03">
       <template>
         <div class="bx--row pt-spacing-xs">
           <div class="bx--col-sm-12 bx--col-lg-5">
@@ -39,18 +39,26 @@
               >
                 <img :src="imageURI(rapid.photo, 'medium')" :alt="rapid.name">
               </div>
-              <div v-else class="inside thumbnail pb-spacing-sm">
-                <div class="empty-block">
-                  <h6>No Image</h6>
-                </div>
+              <div v-else class="inside empty-block pb-spacing-sm">
+                <h6>No Image</h6>
               </div>
-              <cv-button
-                v-if="editMode"
-                size="small"
-                kind="tertiary"
-                @click="triggerImageSelect"
-                >Select image</cv-button
-              >
+              <div v-if="editMode" class="rapid-image-actions">
+                <cv-button
+                  v-if="editMode"
+                  size="small"
+                  kind="secondary"
+                  @click="triggerImageSelect"
+                  >Select image</cv-button
+                >
+                <cv-button
+                  v-if="editMode && rapid.photo && rapid.photo.image"
+                  size="small"
+                  kind="danger"
+                  @click="triggerRemoveImage"
+                  >Remove</cv-button
+                >
+              </div>
+
               <div class="inside">
                 <cv-button
                   v-if="
@@ -173,6 +181,9 @@ export default {
     triggerImageSelect() {
       this.$emit("rapid:imageSelect", this.rapid);
     },
+    triggerRemoveImage() {
+      this.$emit("rapid:removeImage", this.rapid);
+    },
     handleToggleEditMode() {
       this.$store.dispatch("Global/toggleEditMode", !this.editMode);
     },
@@ -184,3 +195,81 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.rapid-item {
+  &.form-visible {
+    outline: 3px solid $brand-01;
+  }
+
+  .rapid-image-actions {
+    align-items: center;
+    display: flex;
+  }
+
+  .bx--tile {
+    margin: $spacing-md 0;
+
+    .upload-prompt {
+      display: block;
+      width: 100%;
+    }
+
+    .thumbnail {
+      margin-bottom: 1rem;
+      height: 250px;
+      width: 100%;
+
+      img {
+        background-color: $ui-05;
+        height: 250px;
+        object-fit: cover;
+        width: 100%;
+      }
+    }
+
+    .empty-block {
+      align-items: center;
+      background-color: $ui-03;
+      display: flex;
+      flex-flow: column nowrap;
+      height: unset;
+      padding-top: $spacing-lg;
+      padding-bottom: $spacing-lg;
+      justify-content: center;
+      width: 100%;
+    }
+  }
+
+  .bx--tile--is-expanded {
+    .bx--tile-content {
+      .bx--tile-content__below-the-fold {
+        border-top: solid 1px $ui-03;
+        margin-top: $spacing-sm;
+        padding-bottom: $spacing-lg;
+        padding-top: 1rem;
+      }
+    }
+  }
+
+  .bx--tile--expandable:hover {
+    background-color: darken($ui-02, 0.05);
+  }
+}
+
+.rapid-meta {
+  @include carbon--type-style("code-01");
+}
+
+.description {
+  @include carbon--type-style("body-long-02");
+}
+
+.top-bar {
+  @include carbon--breakpoint("lg") {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+</style>

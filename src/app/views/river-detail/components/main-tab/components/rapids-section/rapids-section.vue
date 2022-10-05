@@ -29,6 +29,7 @@
             @rapid:edit="triggerEdit"
             @rapid:delete="triggerDelete"
             @rapid:imageSelect="triggerImageSelect"
+            @rapid:removeImage="triggerRemoveImage"
           />
         </div>
       </template>
@@ -117,6 +118,18 @@ export default {
           id: rapid.id,
           photo_id: selectedImage.id,
         });
+      }
+    },
+    async triggerRemoveImage(rapid) {
+      const ok = await this.$refs.confirmDeleteModal.show({
+        title: "Remove Image",
+        message: `Are you sure you want to remove the image from "${rapid.name}"?`,
+      });
+      if (ok && rapid) {
+        await this.$store.dispatch("RiverRapids/updateRapid", {
+          id: rapid.id,
+          photo_id: null
+        })
       }
     },
     openModal() {

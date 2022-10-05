@@ -56,7 +56,7 @@ export default {
   }),
   computed: {
     ...mapState({
-      reports: (state) => state.RiverReports.data,
+      reports: (state) => state.RiverGallery.availableReports,
     }),
     // filter reports for the ones that the user has permissions to edit
     availableReports() {
@@ -65,9 +65,9 @@ export default {
   },
   methods: {
     reportDisplayName(report) {
-      return `${report.title} - ${report.user?.name} - ${this.formatDate(
-        report.post_date
-      )}`;
+      return `${report.title ? report.title : "Untitled Report"} - ${
+        report.user?.name
+      } - ${this.formatDate(report.post_date)}`;
     },
     show(opts = {}) {
       if (opts.postId) {
