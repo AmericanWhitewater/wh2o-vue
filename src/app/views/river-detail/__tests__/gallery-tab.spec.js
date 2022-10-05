@@ -63,7 +63,7 @@ describe('GalleryTab', () => {
     const wrapper = createWrapper(GalleryTab, options)
     wrapper.vm.loadMedia()
 
-    expect(mockStore.dispatch).toBeCalledTimes(3)
+    expect(mockStore.dispatch).toBeCalledTimes(4)
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(3,
       'RiverGallery/getProperty',
       {

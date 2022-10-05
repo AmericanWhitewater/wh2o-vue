@@ -19,4 +19,3 @@ export { default as TablePagination } from './table-pagination/table-pagination.
 export { default as UserAvatar } from './user-avatar/user-avatar.vue'
 export { default as UtilityBlock } from './utility-block/utility-block.vue'
 export { default as icon } from './app-icon/app-icon.vue'
-export { default as ArticleCard } from './article-card/article-card.vue'

@@ -102,11 +102,7 @@
                   class="bx--col-sm-12 bx--col-md-8 bx--col-lg-8 bx--col-max-6 mb-spacing-lg"
                 >
                   <article-card
-                    :title="$titleCase(article.title)"
-                    :article-class="article.id"
-                    :article-id="String(article.id)"
-                    :author="article.author"
-                    :read-time="estReadingTime(article.contents)"
+                    :article="article"
                   />
                 </div>
               </div>
@@ -160,11 +156,10 @@ import UtilityBlock from "@/app/global/components/utility-block/utility-block";
 import { objectPermissionsHelpersMixin } from "@/app/global/mixins";
 import { Layout } from "@/app/global/layout";
 import {
-  ArticleCard,
   ConfirmDeleteModal,
   PostUpdateModal,
 } from "@/app/global/components";
-import DocumentsInNewsTab from "./documents-in-news-tab.vue"
+import { ArticleCard, DocumentsInNewsTab } from "./components"
 import { deletePost } from "@/app/services";
 export default {
   name: "news-tab",

@@ -33,10 +33,6 @@ export default {
     },
   },
   getters: {
-
-
-
-
     documents: (state) => {
       if (state && state.data && state.data.length) {
 

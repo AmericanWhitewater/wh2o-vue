@@ -1,6 +1,6 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
-import { getReachGallery, getReachGalleryIndex } from '@/app/services'
+import { getReachGallery, getReachGalleryIndex, getAllReachReports } from '@/app/services'
 
 export default {
   namespaced: true,
@@ -13,7 +13,8 @@ export default {
       perPage: 10,
       currentPage: 1
     },
-    galleryIndex: []
+    galleryIndex: [],
+    availableReports: []
   },
   mutations: {
     ...mutations,
@@ -22,6 +23,9 @@ export default {
     },
     ['SET_INDEX'](state, payload) {
       Object.assign(state, { galleryIndex: payload })
+    },
+    ['SET_AVAILABLE_REPORTS'](state, payload) {
+      Object.assign(state, { availableReports: payload })
     }
   },
   actions: {
@@ -34,6 +38,21 @@ export default {
         const result = await getReachGalleryIndex(reachId)
         if (!result.errors) {
           context.commit('SET_INDEX', result.data.reach.photos.data.flatMap((img) => img.id))
+        } else {
+          context.commit('DATA_ERROR', result.errors)
+        }
+      } catch (error) {
+        context.commit('DATA_ERROR', error)
+      }
+    },
+    async getAvailableReports(context, reachId) {
+      // because we have canonical URLs for photos within gallery mode, we need
+      // an index of the gallery images by ID to determine what page of the gallery to display
+      // when a reach gallery is first loaded, we have to load the index      
+      try {
+        const result = await getAllReachReports(reachId)
+        if (!result.errors) {
+          context.commit('SET_AVAILABLE_REPORTS', result.data.posts.data)
         } else {
           context.commit('DATA_ERROR', result.errors)
         }

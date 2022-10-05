@@ -10,7 +10,9 @@ export async function getReachDocuments(id) {
               data {   
                 __typename
                 ... on Document {
+                  id
                   short_name
+                  edit_date
                   abstract
                   document
                   title

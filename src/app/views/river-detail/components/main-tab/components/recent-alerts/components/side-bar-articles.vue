@@ -69,10 +69,10 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { baseUrl } from '@/app/environment'
-
+import { articleHelper } from "@/app/global/mixins";
 export default {
   name: 'sidebar-articles',
+  mixins: [articleHelper],
   computed: {
     ...mapState({
       loading: state => state.RiverNews.loading,
@@ -85,17 +85,5 @@ export default {
       this.$emit('articles:change')
     }
   },
-  methods: {
-    articleThumb (article) {
-      if (article) {
-        const uri = article.image.uri.thumb || article.image.uri.medium || article.image.uri.big
-        return `${baseUrl}${uri}`
-      }
-      return null
-    },
-    articleUrl (article) {
-      return `/content/Article/view/article_id/${article.id}/`
-    }
-  }
 }
 </script>

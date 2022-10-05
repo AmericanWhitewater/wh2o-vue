@@ -128,6 +128,9 @@ export default {
         id: this.reachId,
       });
 
+      // get list of reports that users can assign images to
+      this.$store.dispatch("RiverGallery/getAvailableReports", this.reachId);
+
       this.currentlyLoadedImagesFor = this.reachId;
     },
     navigateToImage(image) {
