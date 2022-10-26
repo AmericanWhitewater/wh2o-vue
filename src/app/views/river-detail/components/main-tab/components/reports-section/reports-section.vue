@@ -7,6 +7,7 @@
       Trip Reports
     </h2>
     <cv-button
+      v-if="user"
       id="new-report"
       kind="secondary"
       size="small"
