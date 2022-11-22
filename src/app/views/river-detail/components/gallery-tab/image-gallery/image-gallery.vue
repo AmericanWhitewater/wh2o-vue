@@ -20,7 +20,7 @@
             "
           >
             <img
-              :src="imageURI(image, 'thumb')"
+              :src="imageURI(image, 'medium')"
               :alt="formatAltText(image)"
               class="image-thumbnail"
               @click.exact="$emit('navigateToImage', image)"
