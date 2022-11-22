@@ -13,7 +13,7 @@
     <template slot="content">
       <div class="media-upload-form">
         <template v-if="media">
-          <img :src="imageURI(media, 'thumb')" class="mb-spacing-sm">
+          <img :src="imageURI(media, 'medium')" class="mb-spacing-sm">
         </template>
         <cv-text-input
           v-model="formData.photo.author"

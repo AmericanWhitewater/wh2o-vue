@@ -4,7 +4,7 @@ export const articleHelper = {
   methods: {
     articleThumb (article) {
       if (article && article.image && article.image.uri) {
-        const uri = article.image.uri.thumb || article.image.uri.medium || article.image.uri.big
+        const uri = article.image.uri.medium || article.image.uri.thumb || article.image.uri.big
         return `${baseUrl}${uri}`
       }
       return null
