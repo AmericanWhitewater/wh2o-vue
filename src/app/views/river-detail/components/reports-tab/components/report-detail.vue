@@ -88,14 +88,14 @@ export default {
     // to match the structure
     reportPhotos() {
       return this.report?.photos?.map((p) => {
-        return {
-          ...p,
-          post: {
-            reading: this.report.reading,
-            gauge: this.report.gauge,
-            metric: this.report.metric,
-          },
-        };
+          return {
+            ...p,
+            post: {
+              reading: this.report.reading,
+              gauge: this.report.gauge,
+              metric: this.report.metric,
+            },
+          };
       });
     },
   },
@@ -112,6 +112,7 @@ export default {
           this.report = reportsCache[newVal];
         } else {
           this.report = await getReport(this.reportId);
+          this.report.photos.sort((a,b) => (new Date(a.created_at) - new Date(b.created_at)));
           reportsCache[this.report.id] = this.report;
         }
       },

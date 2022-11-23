@@ -21,6 +21,7 @@ export async function getReport(id) {
                     observation
                     photos {
                       id
+                      created_at
                       image {
                         uri {
                           big

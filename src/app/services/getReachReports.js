@@ -22,6 +22,7 @@ export async function getReachReports(id, pagination) {
                     reach_id
                     observation
                     photos {
+                      created_at
                       url
                       id
                       image {
