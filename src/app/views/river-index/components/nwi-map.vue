@@ -108,11 +108,6 @@ export default {
     startingBounds: {
       type: Array
     },
-    // if true, attempts to get user location and zooms to it when map initializes
-    centerOnUserLocation: {
-      type: Boolean,
-      default: false
-    },
     // order of source layers matters -- add last to have display on top
     sourceLayers: {
       type: Array,
@@ -436,7 +431,7 @@ export default {
       const mapProps = {
         container: this.$refs.mapContainer,
         style: this.baseMapUrl,
-        trackUserLocation: true,
+        trackUserLocation: false,
         touchPitch: false,
         dragRotate: false
       }
@@ -448,14 +443,6 @@ export default {
       } else {
         mapProps.center = this.center
         mapProps.zoom = this.startingZoom
-        if (this.centerOnUserLocation && 'geolocation' in navigator) {
-          navigator.geolocation.getCurrentPosition(position => {
-            this.map.flyTo({
-              center: [position.coords.longitude, position.coords.latitude],
-              zoom: 9
-            })
-          })
-        }
       }
       this.map = new mapboxgl.Map({
         ...mapProps,
