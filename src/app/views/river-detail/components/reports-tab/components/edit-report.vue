@@ -49,6 +49,10 @@ export default {
       immediate: true,
       handler: async function (newVal) {
         this.report = await getReport(newVal);
+        // new photos are added at the top for ease of use, so we want
+        // this order to be created_at DESC, the inverse of when it's displayed
+        this.report.photos.sort((a,b) => (new Date(b.created_at) - new Date(a.created_at)));
+
       },
     },
   },

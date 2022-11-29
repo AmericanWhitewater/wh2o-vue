@@ -31,6 +31,9 @@ export default {
           page: payload.page || context.state.pagination?.currentPage || 1
         })
         if (!result.errors) {
+          result.data.posts.data.forEach((report) => {
+            report.photos.sort((a,b) => (new Date(a.created_at) - new Date(b.created_at)));
+          });
           context.commit('DATA_SUCCESS', result.data.posts.data)
           context.commit('PAGINATION', result.data.posts.paginatorInfo)
         } else {
