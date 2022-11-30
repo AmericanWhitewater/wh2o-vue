@@ -58,6 +58,8 @@ import {
 import { FlowRangeHelpModal, UtilityBlock } from "@/app/global/components";
 import { getReport } from "@/app/services";
 
+import moment from "moment";
+
 // caching reports in the component so that users don't have to wait for another
 // request if they browse back to a report they just looked at
 const reportsCache = {};
@@ -112,7 +114,7 @@ export default {
           this.report = reportsCache[newVal];
         } else {
           this.report = await getReport(this.reportId);
-          this.report.photos.sort((a,b) => (new Date(a.created_at) - new Date(b.created_at)));
+          this.report.photos.sort((a,b) => (moment(a.created_at) - moment(b.created_at)));
           reportsCache[this.report.id] = this.report;
         }
       },
