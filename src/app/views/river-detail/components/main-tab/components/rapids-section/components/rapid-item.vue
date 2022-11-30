@@ -99,15 +99,7 @@
                   This rapid does not have a description.
                   <br>
                   <template v-if="!user">
-                    <cv-button
-                      kind="secondary"
-                      size="small"
-                      class="mt-spacing-md"
-                      @keydown.enter="$router.push('/user/access/login')"
-                      @click.exact="$router.push('/user/access/login')"
-                    >
-                      Log in to add one.
-                    </cv-button>
+                    <login-button buttonClass="mt-spacing-md" buttonText="Log in to add one" />
                   </template>
                   <template v-if="user && !editMode">
                     <cv-button
@@ -131,12 +123,14 @@
 </template>
 <script>
 import RapidIconBar from "./rapid-icon-bar";
+import { LoginButton } from "@/app/global/components";
 import { assetUrl } from "@/app/global/mixins";
 
 export default {
   name: "rapids-item",
   components: {
     RapidIconBar,
+    LoginButton,
   },
   mixins: [assetUrl],
   props: {
