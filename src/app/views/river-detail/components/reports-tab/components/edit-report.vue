@@ -22,6 +22,8 @@ import { ReportForm } from "./";
 import { getReport } from "@/app/services";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block";
 
+import moment from 'moment';
+
 export default {
   name: "edit-report",
   components: {
@@ -51,7 +53,7 @@ export default {
         this.report = await getReport(newVal);
         // new photos are added at the top for ease of use, so we want
         // this order to be created_at DESC, the inverse of when it's displayed
-        this.report.photos.sort((a,b) => (new Date(b.created_at) - new Date(a.created_at)));
+        this.report.photos.sort((a,b) => (moment(b.created_at) - moment(a.created_at)));
 
       },
     },
