@@ -6,17 +6,24 @@
     <h2 class="mb-spacing-md">
       Trip Reports
     </h2>
-    <cv-button
-      v-if="user"
-      id="new-report"
-      kind="secondary"
-      size="small"
-      class="mb-spacing-xl"
-      :disabled="loading"
-      @click.exact="navigateToNewReportForm"
-    >
-      + New Report
-    </cv-button>
+    <template v-if="user">
+      <cv-button
+        id="new-report"
+        kind="secondary"
+        size="small"
+        class="mb-spacing-xl"
+        :disabled="loading"
+        @click.exact="navigateToNewReportForm"
+      >
+        + New Report
+      </cv-button>
+    </template>
+    <template v-else>
+      <login-button
+        buttonClass="mb-spacing-xl"
+        buttonText="Log in to add a report"
+      />
+    </template>
     <template v-if="loading">
       <utility-block state="loading" />
     </template>
@@ -46,13 +53,14 @@
 </template>
 
 <script>
-import UtilityBlock from '@/app/global/components/utility-block/utility-block'
+import { LoginButton, UtilityBlock } from '@/app/global/components';
 import { getReachReports } from '@/app/services'
 import { mapState } from 'vuex'
 import { ReportPreview } from "@/app/views/river-detail/components/reports-tab/components";
 export default {
   name: 'reports-section',
   components: {
+    LoginButton,
     UtilityBlock,
     ReportPreview
   },

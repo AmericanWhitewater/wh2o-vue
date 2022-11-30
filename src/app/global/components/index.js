@@ -9,6 +9,7 @@ export { default as EditModeToggle } from './edit-mode-toggle/edit-mode-toggle.v
 export { default as FeatureCard } from './feature-card/feature-card.vue'
 export { default as FlowRangeHelpModal } from './flow-range-help-modal/flow-range-help-modal.vue'
 export { default as ImageSelectorModal } from './image-selector-modal/image-selector-modal.vue'
+export { default as LoginButton } from './login-button/login-button.vue'
 export { default as MultiPhotoUploader } from './multi-photo-uploader/multi-photo-uploader.vue'
 export { default as PageBanner } from './page-banner/page-banner.vue'
 export { default as PageDescription } from './page-description/page-description.vue'
