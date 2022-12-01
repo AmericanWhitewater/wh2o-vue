@@ -47,7 +47,7 @@
       <utility-block state="error" />
     </template>
     <template v-else>
-      <utility-block state="content" />
+      <utility-block state="content" text="No reports"/>
     </template>
   </section>
 </template>
@@ -57,6 +57,9 @@ import { LoginButton, UtilityBlock } from '@/app/global/components';
 import { getReachReports } from '@/app/services'
 import { mapState } from 'vuex'
 import { ReportPreview } from "@/app/views/river-detail/components/reports-tab/components";
+
+import moment from 'moment';
+
 export default {
   name: 'reports-section',
   components: {
@@ -92,6 +95,9 @@ export default {
       const result = await getReachReports(this.$route.params.id, { perPage: 3, page: 1 })
 
       if (!result.errors) {
+        result.data.posts.data.forEach((report) => {
+          report.photos.sort((a,b) => (moment(a.created_at) - moment(b.created_at)));
+        });
         this.moreReportsExist = (result.data.posts.paginatorInfo.total > result.data.posts.paginatorInfo.perPage)
         this.reports = result.data.posts.data
       } else {
