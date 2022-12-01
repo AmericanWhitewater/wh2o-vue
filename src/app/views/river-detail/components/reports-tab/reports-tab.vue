@@ -10,13 +10,17 @@
           <div class="bx--row">
             <div class="bx--col mb-spacing-md"><h2>Trip Reports</h2></div>
             <div class="bx--col">
-              <cv-button
-                v-if="user"
-                size="small"
-                @click.exact="$router.push({ name: 'new-report' })"
-              >
-                + New Trip Report
-              </cv-button>
+              <template v-if="user">
+                <cv-button
+                  size="small"
+                  @click.exact="$router.push({ name: 'new-report' })"
+                >
+                  + New Trip Report
+                </cv-button>
+              </template>
+              <template v-else>
+                <login-button buttonText="Log in to add a report" />
+              </template>
             </div>
           </div>
           <template v-if="loading">
@@ -52,8 +56,7 @@
 </template>
 <script>
 import { mapState } from "vuex";
-import UtilityBlock from "@/app/global/components/utility-block/utility-block";
-import TablePagination from "@/app/global/components/table-pagination/table-pagination";
+import { LoginButton, TablePagination, UtilityBlock } from "@/app/global/components";
 import { objectPermissionsHelpersMixin } from "@/app/global/mixins";
 import { Layout } from "@/app/global/layout";
 import { ReportPreview } from "./components";
@@ -61,6 +64,7 @@ export default {
   name: "reports-tab",
   components: {
     Layout,
+    LoginButton,
     UtilityBlock,
     TablePagination,
     ReportPreview,

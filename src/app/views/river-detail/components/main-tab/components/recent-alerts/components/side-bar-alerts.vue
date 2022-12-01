@@ -2,15 +2,21 @@
   <div class="sidebar-alerts mb-spacing-md">
     <span class="header-row">
       <h4 class="mb-spacing-sm">Alerts</h4>
-      <cv-button
-        id="new-alert"
-        kind="secondary"
-        :disabled="loading"
-        size="small"
-        class="mb-spacing-sm"
-        @click.exact="openModal"
-        @keydown.enter="newAlertModalVisible = true"
-      >New Alert</cv-button>
+      <template v-if="user">
+        <cv-button
+          id="new-alert"
+          kind="secondary"
+          :disabled="loading"
+          size="small"
+          class="mb-spacing-sm"
+          @click.exact="openModal"
+          @keydown.enter="newAlertModalVisible = true"
+          >+ New Alert</cv-button
+        >
+      </template>
+      <template v-else>
+        <login-button buttonClass="mb-spacing-sm" buttonText="Log in to add an alert" />
+      </template>
     </span>
     <template v-if="loading">
       <cv-inline-loading state="loading" />
@@ -58,11 +64,12 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import PostUpdateModal from '@/app/global/components/post-update-modal/post-update-modal'
+import { LoginButton, PostUpdateModal } from '@/app/global/components'
 export default {
   name: 'sidebar-alerts',
   components: {
-    PostUpdateModal
+    PostUpdateModal,
+    LoginButton
   },
   data: () => ({
     newAlertModalVisible: false

@@ -6,16 +6,24 @@
     <h2 class="mb-spacing-md">
       Trip Reports
     </h2>
-    <cv-button
-      id="new-report"
-      kind="secondary"
-      size="small"
-      class="mb-spacing-xl"
-      :disabled="loading"
-      @click.exact="navigateToNewReportForm"
-    >
-      + New Report
-    </cv-button>
+    <template v-if="user">
+      <cv-button
+        id="new-report"
+        kind="secondary"
+        size="small"
+        class="mb-spacing-xl"
+        :disabled="loading"
+        @click.exact="navigateToNewReportForm"
+      >
+        + New Report
+      </cv-button>
+    </template>
+    <template v-else>
+      <login-button
+        buttonClass="mb-spacing-xl"
+        buttonText="Log in to add a report"
+      />
+    </template>
     <template v-if="loading">
       <utility-block state="loading" />
     </template>
@@ -39,19 +47,23 @@
       <utility-block state="error" />
     </template>
     <template v-else>
-      <utility-block state="content" />
+      <utility-block state="content" text="No reports"/>
     </template>
   </section>
 </template>
 
 <script>
-import UtilityBlock from '@/app/global/components/utility-block/utility-block'
+import { LoginButton, UtilityBlock } from '@/app/global/components';
 import { getReachReports } from '@/app/services'
 import { mapState } from 'vuex'
 import { ReportPreview } from "@/app/views/river-detail/components/reports-tab/components";
+
+import moment from 'moment';
+
 export default {
   name: 'reports-section',
   components: {
+    LoginButton,
     UtilityBlock,
     ReportPreview
   },
@@ -83,6 +95,9 @@ export default {
       const result = await getReachReports(this.$route.params.id, { perPage: 3, page: 1 })
 
       if (!result.errors) {
+        result.data.posts.data.forEach((report) => {
+          report.photos.sort((a,b) => (moment(a.created_at) - moment(b.created_at)));
+        });
         this.moreReportsExist = (result.data.posts.paginatorInfo.total > result.data.posts.paginatorInfo.perPage)
         this.reports = result.data.posts.data
       } else {

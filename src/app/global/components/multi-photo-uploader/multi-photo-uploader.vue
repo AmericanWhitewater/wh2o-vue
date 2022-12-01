@@ -20,7 +20,7 @@
     >
       <figure class="bx--col-sm-4 bx--col-md-3">
         <img
-          :src="imageURI(image, 'thumb')"
+          :src="imageURI(image, 'medium')"
           :alt="formatAltText(image)"
           class="image-thumbnail"
         >

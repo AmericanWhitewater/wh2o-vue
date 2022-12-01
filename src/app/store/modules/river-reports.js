@@ -1,6 +1,7 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
 import { getReachReports, deletePost } from '@/app/services'
+import moment from 'moment'
 
 export default {
   namespaced: true,
@@ -31,6 +32,9 @@ export default {
           page: payload.page || context.state.pagination?.currentPage || 1
         })
         if (!result.errors) {
+          result.data.posts.data.forEach((report) => {
+            report.photos.sort((a,b) => (moment(a.created_at) - moment(b.created_at)));
+          });
           context.commit('DATA_SUCCESS', result.data.posts.data)
           context.commit('PAGINATION', result.data.posts.paginatorInfo)
         } else {
