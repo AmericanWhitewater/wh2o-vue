@@ -4,6 +4,11 @@ export const assetUrl = {
   methods: {
     assetUrl: (assetPath) => {
       if (assetPath) {
+        if(assetPath.match(/^http/i))
+        {
+          return assetPath;
+        }
+
         const basePath = assetBaseUrl || ''
         return `${basePath}${assetPath}`
       }
