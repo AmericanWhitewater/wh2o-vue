@@ -121,7 +121,7 @@
     "not ie <= 8"
   ],
   "engines": {
-    "node": "~12"
+    "node": "~14"
   },
   "gitHooks": {
     "pre-commit": "lint-staged && npm run test:unit"
