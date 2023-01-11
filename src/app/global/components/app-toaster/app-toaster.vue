@@ -1,5 +1,5 @@
 <template>
-  <div class="app-toaster">
+  <div ref="toastWrapper" class="app-toaster">
     <div class="bx--grid">
       <div class="bx--row bx--no-gutter--left">
         <div class="bx--col">
@@ -35,6 +35,9 @@
 </template>
 <script>
 import { mapState } from "vuex";
+
+import { laravelDeploy } from '@/app/environment'
+
 /**
  * @displayName App Toaster
  */
@@ -108,9 +111,28 @@ export default {
       }
       this.$store.dispatch("Global/closeToast", index);
     },
+    setToastWrapperOffset() {
+      this.$nextTick(() => {
+        let top;
+        if (window.scrollY > 0) {
+          top = window.scrollY + 10;
+        } else {
+          top = 10
+        }
+        this.$refs.toastWrapper.style = `top: ${top}px;`
+      })
+    }
   },
   created() {
     document.addEventListener("swUpdated", this.showRefreshUI, { once: true });
+    // position:fixed doesn't work properly within the shadow DOM mount
+    // this mimics the logic for the modal-specific shadow-dom-fixed-height-offset
+    // to properly position the toast notification
+    if (laravelDeploy) {
+      window.addEventListener('scroll', () => {
+        this.setToastWrapperOffset();
+      });
+    }
     //navigator.serviceWorker only exists when either https://... or http://localhost/...
     navigator && navigator.serviceWorker && navigator.serviceWorker.addEventListener("controllerchange", () => {
       if (this.refreshing) return;

@@ -4,15 +4,20 @@
       <template #main>
         <hr >
         <h2 class="mb-spacing-md">Alerts</h2>
-        <cv-button
-          class="mb-spacing-xl"
-          size="small"
-          :disabled="alertsLoading"
-          @click.exact="initiatePostUpdate()"
-          @keydown.enter="initiatePostUpdate()"
-        >
-          New Alert
-        </cv-button>
+        <template v-if="user">
+          <cv-button
+            class="mb-spacing-xl"
+            size="small"
+            :disabled="alertsLoading"
+            @click.exact="initiatePostUpdate()"
+            @keydown.enter="initiatePostUpdate()"
+          >
+            + New Alert
+          </cv-button>
+        </template>
+        <template v-else>
+          <login-button buttonClass="mb-spacing-sm" buttonText="Log in to add an alert" />
+        </template>
         <template v-if="alertsLoading && !alerts">
           <utility-block
             class="alerts-loading"
@@ -157,6 +162,7 @@ import { objectPermissionsHelpersMixin } from "@/app/global/mixins";
 import { Layout } from "@/app/global/layout";
 import {
   ConfirmDeleteModal,
+  LoginButton,
   PostUpdateModal,
 } from "@/app/global/components";
 import { ArticleCard, DocumentsInNewsTab } from "./components"
@@ -166,6 +172,7 @@ export default {
   components: {
     UtilityBlock,
     Layout,
+    LoginButton,
     ArticleCard,
     ConfirmDeleteModal,
     PostUpdateModal,
