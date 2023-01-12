@@ -2,7 +2,6 @@ import Vue from 'vue'
 import { CarbonIconsVue } from '@carbon/icons-vue'
 
 import AddAlt32 from '@carbon/icons-vue/es/add--alt/32.js'
-import AppSwitcher20 from '@carbon/icons-vue/es/app-switcher/20.js'
 import ArrowRight16 from '@carbon/icons-vue/es/arrow--right/16.js'
 import ArrowRight20 from '@carbon/icons-vue/es/arrow--right/20.js'
 import ArrowRight32 from '@carbon/icons-vue/es/arrow--right/32.js'
@@ -63,7 +62,6 @@ import ZoomPan24 from '@carbon/icons-vue/es/watson-health/zoom-pan/32.js'
  */
 export const components = {
   AddAlt32,
-  AppSwitcher20,
   ArrowRight16,
   ArrowRight20,
   ArrowRight32,

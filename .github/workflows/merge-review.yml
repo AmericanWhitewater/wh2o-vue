@@ -16,9 +16,6 @@ jobs:
         with:
           node-version: 14
 
-      - name: Use latest NPM
-        run: npm install -g npm
-
       - name: NPM Install
         run: npm ci
 
