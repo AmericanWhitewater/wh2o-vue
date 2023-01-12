@@ -6,12 +6,10 @@ This app is an interactive whitewater river map and guide which provides flow da
 
 ## Quick Start
 
-1. `npm config set registry https://npm.americanwhitewater.org`
-  	- Note if you're working on other projects on the same machine, run `npm config set registry https://registry.npmjs.org/` to reset npm to the default registry.
-2. `npm ci`
-3. `cp .env.example .env`
+1. `npm ci`
+2. `cp .env.example .env`
   	- Get variables from team member
-4. `npm run dev`
+3. `npm run dev`
 
 App will be available at `http://localhost:8080`
 
