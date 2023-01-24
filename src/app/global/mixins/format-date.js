@@ -8,6 +8,8 @@ export const formatDate = {
       let momDate;
       if (!moment.isMoment(date)) {
         momDate = moment(date, 'YYYY-MM-DD HH:mm:ss')
+      } else {
+        momDate = date;
       }
 
       // we have bad data that we've assigned 1900-01-01 to in order
