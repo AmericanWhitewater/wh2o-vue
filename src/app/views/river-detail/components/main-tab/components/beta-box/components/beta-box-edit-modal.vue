@@ -36,7 +36,6 @@
         step="1"
         :max="4132"
         :min="0"
-        :mobile="windowWidth <= $options.breakpoints.md"
       />
       <cv-number-input
         v-model="formData.maxgradient"
@@ -45,7 +44,6 @@
         step="1"
         :max="4132"
         :min="0"
-        :mobile="windowWidth <= $options.breakpoints.md"
       />
       <cv-text-input
         v-model="formData.permiturl"

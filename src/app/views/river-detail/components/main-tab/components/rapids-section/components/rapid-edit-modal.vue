@@ -37,7 +37,6 @@
           step=".01"
           :max="4132"
           :min="0"
-          :mobile="windowWidth <= $options.breakpoints.md"
           :disabled="formPending"
         />
         <cv-number-input
