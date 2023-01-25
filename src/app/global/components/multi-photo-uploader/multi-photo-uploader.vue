@@ -4,8 +4,9 @@
       <div class="bx--col">
         <cv-file-uploader
           ref="fileUploader"
+          label="Photos"
           data-modal-primary-focus
-          dropTargetLabel="Drag and drop here or click to select (10mb max)"
+          dropTargetLabel="Drag and drop photos here or click to select (10mb max)"
           accepts=".jpg,.png"
           class="mb-spacing-md"
           multiple
