@@ -116,10 +116,6 @@ export default {
   .report-thumbnail {
     justify-content: right;
     display: flex;
-
-    #utility-block {
-      min-height: unset;
-    }
   }
 }
 </style>
