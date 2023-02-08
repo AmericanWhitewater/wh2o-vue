@@ -4,13 +4,9 @@
     :class="[`utility-block-${state}`, theme]"
     :style="`height:${height}px`"
   >
-    <div class="utility-block" >
+    <div class="utility-block">
       <template v-if="!blank">
-        <h2
-          v-if="title"
-          class="utility-block-title"
-          v-text="title"
-        />
+        <h2 v-if="title" class="utility-block-title" v-text="title" />
         <p
           v-if="text && state === 'content'"
           class="utility-block-text"
@@ -36,43 +32,42 @@
  * @displayName Utility Block
  */
 export default {
-  name: 'utility-block',
+  name: "utility-block",
   props: {
     blank: {
       type: Boolean,
-      required: false
+      required: false,
     },
     text: {
       type: String,
-      required: false
+      required: false,
     },
     height: {
       type: String,
-      required: false
+      required: false,
     },
     title: {
       type: String,
-      required: false
+      required: false,
     },
     hideText: {
       type: Boolean,
-      required: false
+      required: false,
     },
     state: {
       type: String,
       required: false,
-      validator: value =>
-        ['loading', 'error', 'complete', 'content'].indexOf(value) !== -1
+      validator: (value) =>
+        ["loading", "error", "complete", "content"].indexOf(value) !== -1,
     },
     theme: {
       type: String,
       required: false,
-      default: 'light',
-      validator: value =>
-        ['light', 'dark'].indexOf(value) !== -1
-    }
-  }
-}
+      default: "light",
+      validator: (value) => ["light", "dark"].indexOf(value) !== -1,
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
 .utility-block-wrapper {
@@ -86,7 +81,6 @@ export default {
   &.light {
     background-color: $ui-02;
   }
-
 }
 
 .utility-block {
@@ -96,7 +90,6 @@ export default {
   justify-content: center;
   flex-flow: column nowrap;
 
-
   .bx--inline-loading {
     justify-content: center;
     @include carbon--type-style("code-01");
@@ -104,6 +97,5 @@ export default {
   .utility-block-text {
     @include carbon--type-style("code-02");
   }
-
 }
 </style>
