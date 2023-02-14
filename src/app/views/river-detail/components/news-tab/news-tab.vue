@@ -88,7 +88,7 @@
 
     <layout name="layout-full-width">
       <template #main>
-        <section class="map-tab">
+        <section class="news-tab">
           <div class="articles">
             <hr >
             <h2 class="mb-spacing-sm">Articles</h2>
