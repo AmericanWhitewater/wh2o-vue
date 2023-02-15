@@ -205,7 +205,6 @@ export default {
       this.formData.description = description;
     },
     async submitForm() {
-      this.ensureDifficultyPopulated();
       this.$emit("edit:submitted");
       let message;
       // different actions for *new* POI vs. updated POI
