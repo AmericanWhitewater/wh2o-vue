@@ -1,38 +1,12 @@
 const poiClasses = {
   data: () => ({
-    poiClasses: [
-      {
-        value: 'I',
-        label: 'I',
-        name: 'I'
-      },
-      {
-        value: 'II',
-        label: 'II',
-        name: 'II'
-      },
-      {
-        value: 'III',
-        label: 'III',
-        name: 'III'
-      },
-      {
-        value: 'IV',
-        label: 'IV',
-        name: 'IV'
-      },
-      {
-        value: 'V',
-        label: 'V',
-        name: 'V'
-      },
-      {
-        value: 'V+',
-        label: 'V+',
-        name: 'V+'
-      }
-    ]
-  })
-}
+    poiClasses: ['N/A','I','I+','II-','II','II+','III-','III','III+','IV-','IV','IV+','V-','V','V+','VI']
+  }),
+  computed: {
+    poiClassOptions() {
+      return this.poiClasses.map(x => ({ name: x, value: x, label: x}))
+    }
+  }
+};
 
-export default poiClasses
+export default poiClasses;

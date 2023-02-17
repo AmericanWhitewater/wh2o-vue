@@ -86,10 +86,10 @@ describe("FlowTab", () => {
 
     const wrapper = createWrapper(FlowTab, options);
 
-    expect(wrapper.find("#utility-block .utility-block-title").text()).toBe(
+    expect(wrapper.find(".utility-block-wrapper .utility-block-title").text()).toBe(
       "No Gages"
     );
-    expect(wrapper.find("#utility-block .utility-block-text").text()).toBe(
+    expect(wrapper.find(".utility-block-wrapper .utility-block-text").text()).toBe(
       "this reach doesn't have any associated gages"
     );
   });
