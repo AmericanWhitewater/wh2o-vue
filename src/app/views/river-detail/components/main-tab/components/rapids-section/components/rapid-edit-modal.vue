@@ -58,15 +58,18 @@
           step=".0000001"
           :disabled="formPending"
         />
-        <cv-combo-box
+        <cv-select
           v-model="formData.difficulty"
           class="mb-spacing-md"
           title="Class"
           auto-filter
-          label="I - V+"
-          :options="poiClassOptions"
+          label="Difficuty (I - V+)"
           :disabled="formPending"
-        />
+        >
+          <cv-select-option v-for="(opt,index) in poiClasses" :key="index" :value="opt">
+            {{ opt }}
+          </cv-select-option>
+        </cv-select>
         <cv-multi-select
           v-model="formData.character"
           class="mb-spacing-md"
@@ -175,7 +178,7 @@ export default {
     ],
     formData: {
       name: "",
-      difficulty: "",
+      difficulty: "N/A",
       distance: null,
       description: "",
       character: [],
