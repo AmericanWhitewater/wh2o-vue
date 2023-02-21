@@ -42,5 +42,9 @@ export default {
   top: 0;
   width: 100%;
   z-index: 2;
+
+  &:hover {
+    background-color: rgba($ui-03, 0.75);
+  }
 }
 </style>
