@@ -19,13 +19,10 @@
           theme="dark"
         />
       </template>
-      <div
-        v-if="editMode"
-        class="edit-overlay"
+      <edit-block-overlay
+        title="Edit Reach Geometry"
         @click="openGeometryEditModal"
-      >
-        <h3>Edit Reach Geometry</h3>
-      </div>
+      />
       <geometry-edit-modal
         v-if="canEdit(reach)"
         ref="geometryEditModal"
@@ -43,11 +40,12 @@ import {
 } from '@/app/environment'
 import GeometryEditModal from '@/app/views/river-detail/components/geometry-edit-modal/geometry-edit-modal.vue';
 import { basemapToggleMixin, mapHelpersMixin, objectPermissionsHelpersMixin } from '@/app/global/mixins'
-import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
+import { EditBlockOverlay, UtilityBlock } from '@/app/global/components'
 
 export default {
   name: 'map-banner',
   components: {
+    EditBlockOverlay,
     GeometryEditModal,
     UtilityBlock
   },
@@ -182,22 +180,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .edit-overlay {
-    align-items: center;
-    background-color: rgba($ui-02, 0.75);
-    cursor: pointer;
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    z-index: 2;
-  }
-
-  .map-wrapper {
-    width: 100%;
-    position: relative;
-  }
+.map-wrapper {
+  width: 100%;
+  position: relative;
+}
 </style>

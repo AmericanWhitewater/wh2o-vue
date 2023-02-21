@@ -75,13 +75,16 @@
               hide-text
             />
             <div v-if="!loading && reach" v-show="activeTabKey !== 'map'" class="reach-banner">
-                <div v-if="reach && reach.photo">
+                <div v-if="(reach && reach.photo) || editMode" class="featured-image">
                   <img
-                    class="reach-photo"
+                    v-if="reach.photo"
                     :src="assetUrl(reach.photo.image.uri.big)"
-                    @click.exact="switchTab('gallery')"
-                    @keydown.exact="switchTab('gallery')"
                   >
+                  <edit-block-overlay
+                    :title="reach.photo ? 'Change Featured Image' : 'Add Featured Image'"
+                    @click="triggerImageSelect()"
+                  />
+                  <image-selector-modal v-if="editMode" ref="featuredImageSelectorModal" />
                 </div>
                 <map-banner :reach="reach" :editMode="editMode" />
             </div>
@@ -208,7 +211,7 @@
 </template>
 <script>
 import { mapState } from "vuex";
-import UtilityBlock from "@/app/global/components/utility-block/utility-block.vue";
+import { EditBlockOverlay, ImageSelectorModal, UtilityBlock } from '@/app/global/components'
 import {
   MapBanner,
   ReachTitleEditModal,
@@ -224,6 +227,8 @@ import { appLocalStorage } from "@/app/global/services";
 export default {
   name: "river-detail",
   components: {
+    EditBlockOverlay,
+    ImageSelectorModal,
     UtilityBlock,
     MapBanner,
     ReachTitleEditModal,
@@ -374,6 +379,19 @@ export default {
         });
       }
     },
+    async triggerImageSelect() {
+      const selectedImage = await this.$refs.featuredImageSelectorModal.show({
+        title: "Select an image",
+        selectedImage: this.reach.photo,
+      });
+      if (selectedImage) {
+        // do reach update
+        await this.$store.dispatch("RiverDetail/updateProperty", {
+          id: this.reach.id,
+          photo_id: selectedImage.id
+        });
+      }
+    }
   },
   created() {
     this.$router.beforeEach((to, from, next) => {
@@ -417,12 +435,18 @@ export default {
   @include carbon--breakpoint("md") {
     flex-flow: row nowrap;
   }
-  .reach-photo {
-    cursor: pointer;
-    height: 100%;
-    max-height: 400px;
-    object-fit: cover;
-    object-position: center;
+
+  .featured-image {
+    position: relative;
+    min-width: 30%;
+    max-width: 50%;
+
+    img {
+      height: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      object-position: center;
+    }
   }
 }
 </style>
