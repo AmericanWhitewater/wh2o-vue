@@ -1,14 +1,10 @@
 import bbox from '@turf/bbox'
-import { mapState } from 'vuex'
 import { lineString, point, featureCollection } from '@turf/helpers'
 import buffer from '@turf/buffer'
 
+// these methods require this.reach and/or this.rapids to be set
 export const mapHelpersMixin = {
   computed: {
-    ...mapState({
-      reach: state => state.RiverDetail.data,
-      rapids: state => state.RiverRapids.data
-    }),
     reachGeom () {
       // TODO: get graphql API to return a linestring or geojson instead of this text
       const geom = this.reach?.geom?.split(',').map(d => d.split(' ').map(y => parseFloat(y)))

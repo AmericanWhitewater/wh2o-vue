@@ -158,6 +158,8 @@ export default {
     },
     ...mapState({
       mapStyle: (state) => state.RiverIndex.mapStyle,
+      reach: state => state.RiverDetail.data,
+      rapids: state => state.RiverRapids.data,
     }),
     startingBounds() {
       return this.reachStartingBounds;
