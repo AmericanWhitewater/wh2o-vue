@@ -74,7 +74,7 @@
               theme="dark"
               hide-text
             />
-            <div v-if="activeTabKey !== 'map' && !loading && reach" class="reach-banner">
+            <div v-if="!loading && reach" v-show="activeTabKey !== 'map'" class="reach-banner">
                 <div v-if="reach && reach.photo">
                   <img
                     class="reach-photo"
