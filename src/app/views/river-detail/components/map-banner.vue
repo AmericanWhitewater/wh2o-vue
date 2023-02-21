@@ -173,5 +173,6 @@ export default {
 
   .map-wrapper {
     width: 100%;
+    position: relative;
   }
 </style>
