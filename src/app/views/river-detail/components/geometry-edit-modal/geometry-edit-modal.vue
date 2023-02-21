@@ -1,37 +1,32 @@
 <template>
-  <div :class="[{'visible':visible},'geometry-editor-modal']">
-    <cv-modal
-      ref="modalWrapper"
-      :visible="visible"
-      size="large"
-      @modal-shown="setModalOffset"
-      @secondary-click="handleCancel"
-      @primary-click="submitForm"
-      @modal-hidden="handleCancel"
-    >
-      <template slot="title">
-        Edit Reach Geometry
-      </template>
-      <template slot="content">
-        <geometry-editor
-          :key="geomEditorKey"
-          @updatedGeom="updateReachGeom"
-        />
-      </template>
-      <template slot="secondary-button">
-        Cancel
-      </template>
-      <template slot="primary-button">
-        Submit
-      </template>
-    </cv-modal>
-  </div>
+  <cv-modal
+    ref="modalWrapper"
+    size="large"
+    class="geometry-edit-modal"
+    @modal-shown="setModalOffset"
+    @primary-click="_confirm()"
+    @modal-hidden="_cancel()"
+  >
+    <template slot="title">
+      Edit Reach Geometry
+    </template>
+    <template slot="content">
+      <geometry-editor
+        :key="geomEditorKey"
+        @updatedGeom="updateReachGeom"
+      />
+    </template>
+    <template slot="secondary-button">
+      Cancel
+    </template>
+    <template slot="primary-button">
+      Submit
+    </template>
+  </cv-modal>
 </template>
 <script>
-import { mapState } from 'vuex'
-import { checkWindow, shadowDomFixedHeightOffset } from '@/app/global/mixins'
+import { checkWindow, mapHelpersMixin, shadowDomFixedHeightOffset } from '@/app/global/mixins'
 import GeometryEditor from './components/geometry-editor.vue'
-import { lineString } from '@turf/helpers'
 import turfLength from '@turf/length'
 
 export default {
@@ -40,25 +35,19 @@ export default {
     GeometryEditor
   },
   /** @todo revisit adding checkWindow mixin performance considerations */
-  mixins: [checkWindow, shadowDomFixedHeightOffset],
+  mixins: [checkWindow, mapHelpersMixin, shadowDomFixedHeightOffset],
   props: {
-    visible: {
-      type: Boolean,
-      required: true
+    reach: {
+      type: Object,
+      required: false
     }
   },
   data: () => ({
-    geom: null
+    geom: null,
+    resolvePromise: undefined,
+    rejectPromise: undefined,
   }),
   computed: {
-    ...mapState({
-      data: state => state.RiverDetail.data
-    }),
-    reachGeom () {
-      // TODO: get graphql API to return a linestring or geojson instead of this text
-      const geom = this.data?.geom?.split(',').map(d => d.split(' ').map(e => parseFloat(e)))
-      return geom ? lineString(geom, {}, { id: 'reachGeom' }) : null
-    },
     reachLength () {
       if (this.geom) {
         return Number(turfLength(this.geom, { units: 'miles' }).toPrecision(2))
@@ -67,14 +56,21 @@ export default {
       }
     },
     geomEditorKey () {
-      return `geomEditor${this.data?.id}`
+      return `geomEditor${this.reach?.id}`
     }
   },
   methods: {
     updateReachGeom (newGeom) {
       this.geom = newGeom
     },
-    submitForm () {
+    show() {
+      this.$refs.modalWrapper.show();
+      return new Promise((resolve, reject) => {
+        this.resolvePromise = resolve;
+        this.rejectPromise = reject;
+      });
+    },
+    _confirm () {
       this.$emit('edit:submitted')
       this.$parent.editGeometryModalVisible = false
       this.$store.dispatch('RiverDetail/updateProperty', {
@@ -85,7 +81,7 @@ export default {
         length: this.reachLength
       })
     },
-    handleCancel () {
+    _cancel () {
       this.$emit('edit:cancelled')
     }
   },
@@ -94,3 +90,12 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.geometry-edit-modal {
+  .bx--modal-content {
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+</style>

@@ -83,21 +83,8 @@
                     @keydown.exact="switchTab('gallery')"
                   >
                 </div>
-                <map-banner :reach="reach">
-                  <div
-                    v-if="editMode"
-                    class="edit-overlay"
-                    @click="editGeometryModalVisible = true"
-                  >
-                    <h3>Edit Reach Geometry</h3>
-                  </div>
-                </map-banner>
+                <map-banner :reach="reach" :editMode="editMode" />
             </div>
-            <geometry-edit-modal
-              v-if="editMode && !loading"
-              :visible="editGeometryModalVisible"
-              @edit:cancelled="editGeometryModalVisible = false"
-            />
             <edit-revision-modal ref="editRevisionModal" />
           </div>
         </div>
@@ -225,7 +212,6 @@ import UtilityBlock from "@/app/global/components/utility-block/utility-block.vu
 import {
   MapBanner,
   ReachTitleEditModal,
-  GeometryEditModal,
 } from "./components";
 import EditRevisionModal from "./components/credits-tab/components/edit-revision-modal";
 import {
@@ -240,7 +226,6 @@ export default {
   components: {
     UtilityBlock,
     MapBanner,
-    GeometryEditModal,
     ReachTitleEditModal,
     EditRevisionModal,
   },
@@ -250,7 +235,6 @@ export default {
     shadowDomFixedHeightOffset,
   ],
   data: () => ({
-    editGeometryModalVisible: false,
     editReachTitleModalVisible: false,
     deleteReachModalVisible: false,
     bookmarked: false,

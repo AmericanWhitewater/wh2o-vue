@@ -19,7 +19,18 @@
           theme="dark"
         />
       </template>
-      <slot />
+      <div
+        v-if="editMode"
+        class="edit-overlay"
+        @click="openGeometryEditModal"
+      >
+        <h3>Edit Reach Geometry</h3>
+      </div>
+      <geometry-edit-modal
+        v-if="canEdit(reach)"
+        ref="geometryEditModal"
+        :reach="reach"
+      />
     </div>
 </template>
 <script>
@@ -30,15 +41,17 @@ import NwiMapStyles from '@/app/views/river-index/components/nwi-map-styles'
 import {
   mapboxAccessToken
 } from '@/app/environment'
-import { basemapToggleMixin, mapHelpersMixin } from '@/app/global/mixins'
+import GeometryEditModal from '@/app/views/river-detail/components/geometry-edit-modal/geometry-edit-modal.vue';
+import { basemapToggleMixin, mapHelpersMixin, objectPermissionsHelpersMixin } from '@/app/global/mixins'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 
 export default {
   name: 'map-banner',
   components: {
+    GeometryEditModal,
     UtilityBlock
   },
-  mixins: [basemapToggleMixin, mapHelpersMixin],
+  mixins: [basemapToggleMixin, mapHelpersMixin, objectPermissionsHelpersMixin],
   props: {
     loading: {
       type: Boolean,
@@ -47,6 +60,10 @@ export default {
     reach: {
       type: Object,
       required: false
+    },
+    editMode: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
@@ -142,6 +159,14 @@ export default {
         layout: NwiMapStyles.sourceLayers.access.access.layout,
         paint: NwiMapStyles.sourceLayers.access.access.paint
       })
+    },
+    async openGeometryEditModal() {
+      const ok = await this.$refs.geometryEditModal.show({
+
+      });
+      if (ok) {
+        this.$emit("geomModified");
+      }
     }
   },
   mounted () {
