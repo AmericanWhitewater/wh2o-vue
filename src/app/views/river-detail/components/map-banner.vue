@@ -1,5 +1,4 @@
 <template>
-  <div class="page-banner">
     <div class="map-wrapper">
       <template v-if="reach && reachGeom">
         <div
@@ -22,7 +21,6 @@
       </template>
       <slot />
     </div>
-  </div>
 </template>
 <script>
 import bbox from '@turf/bbox'
@@ -59,7 +57,6 @@ export default {
     },
     ...mapState({
       reach: state => state.RiverDetail.data,
-      editMode: state => state.Global.editMode
     }),
     startingBounds () {
       if (this.reachGeom) {
@@ -68,9 +65,6 @@ export default {
       return null
     },
     mapUnavailableText () {
-      if (this.editMode) {
-        return ''
-      }
       return 'No geospatial data available'
     }
   },
@@ -163,43 +157,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.page-banner {
-  position: relative;
-
-  header {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-    padding: $spacing-sm $spacing-md;
-
-    h1 {
-
-      @include carbon--breakpoint("sm") {
-
-        @include carbon--type-style("productive-heading-03");
-      }
-
-      @include carbon--breakpoint("md") {
-
-        @include carbon--type-style("productive-heading-04");
-      }
-    }
-
-    h4 {
-
-      @include carbon--breakpoint("sm") {
-
-        @include carbon--type-style("productive-heading-02");
-        margin-bottom: $spacing-xs;
-      }
-
-      @include carbon--breakpoint("md") {
-
-        @include carbon--type-style("productive-heading-03");
-      }
-    }
-  }
-
   .edit-overlay {
     align-items: center;
     background-color: rgba($ui-02, 0.75);
@@ -217,5 +174,4 @@ export default {
   .map-wrapper {
     width: 100%;
   }
-}
 </style>

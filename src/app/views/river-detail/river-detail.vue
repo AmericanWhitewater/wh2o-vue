@@ -17,6 +17,8 @@
                   {{ reach.river }}
                 </h1>
                 <h4 class="mb-spacing-md" v-text="reachSubtitle" />
+              </div>
+              <div>
                 <template v-if="editMode && !loading">
                   <cv-button
                     id="edit-title"
@@ -58,16 +60,6 @@
                   />
                 </template>
               </div>
-              <div>
-                <div v-if="reach.photo">
-                  <img
-                    class="reach--photo"
-                    :src="assetUrl(reach.photo.image.uri.big)"
-                    @click.exact="switchTab('gallery')"
-                    @keydown.exact="switchTab('gallery')"
-                  >
-                </div>
-              </div>
             </header>
             <header v-else class="bx--tile">
               <div>
@@ -82,13 +74,16 @@
               theme="dark"
               hide-text
             />
-            <div>
-              <transition :name="transitionName" mode="out-in">
-                <map-banner
-                  v-if="activeTabKey !== 'map' && !loading && reach"
-                  :title="reach.river"
-                  :subtitle="reachSubtitle"
-                >
+            <div v-if="activeTabKey !== 'map' && !loading && reach" class="reach-banner">
+                <div v-if="reach && reach.photo">
+                  <img
+                    class="reach-photo"
+                    :src="assetUrl(reach.photo.image.uri.big)"
+                    @click.exact="switchTab('gallery')"
+                    @keydown.exact="switchTab('gallery')"
+                  >
+                </div>
+                <map-banner>
                   <div
                     v-if="editMode"
                     class="edit-overlay"
@@ -97,7 +92,6 @@
                     <h3>Edit Reach Geometry</h3>
                   </div>
                 </map-banner>
-              </transition>
             </div>
             <geometry-edit-modal
               v-if="editMode && !loading"
@@ -426,6 +420,25 @@ export default {
 <style lang="scss">
 .reach-header-info {
   display: flex;
+  
   flex-direction: column;
+}
+
+.reach-banner {
+  display: flex;
+  @include carbon--breakpoint("sm") {
+    flex-flow: column nowrap;
+  }
+
+  @include carbon--breakpoint("md") {
+    flex-flow: row nowrap;
+  }
+  .reach-photo {
+    cursor: pointer;
+    height: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    object-position: center;
+  }
 }
 </style>
