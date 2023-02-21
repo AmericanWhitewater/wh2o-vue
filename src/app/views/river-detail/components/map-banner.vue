@@ -26,7 +26,6 @@
 import bbox from '@turf/bbox'
 import { lineString, point, featureCollection } from '@turf/helpers'
 import mapboxgl from 'mapbox-gl'
-import { mapState } from 'vuex'
 import NwiMapStyles from '@/app/views/river-index/components/nwi-map-styles'
 import {
   mapboxAccessToken
@@ -44,6 +43,10 @@ export default {
     loading: {
       type: Boolean,
       required: false
+    },
+    reach: {
+      type: Object,
+      required: false
     }
   },
   data: () => ({
@@ -55,9 +58,6 @@ export default {
       const geom = this.reach?.geom?.split(',').map(d => d.split(' '))
       return geom ? lineString(geom) : null
     },
-    ...mapState({
-      reach: state => state.RiverDetail.data,
-    }),
     startingBounds () {
       if (this.reachGeom) {
         return bbox(this.reachGeom)

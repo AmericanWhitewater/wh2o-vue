@@ -83,7 +83,7 @@
                     @keydown.exact="switchTab('gallery')"
                   >
                 </div>
-                <map-banner>
+                <map-banner :reach="reach">
                   <div
                     v-if="editMode"
                     class="edit-overlay"
