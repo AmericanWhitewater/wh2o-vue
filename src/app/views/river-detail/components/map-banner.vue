@@ -162,3 +162,60 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.page-banner {
+  position: relative;
+
+  header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: $spacing-sm $spacing-md;
+
+    h1 {
+
+      @include carbon--breakpoint("sm") {
+
+        @include carbon--type-style("productive-heading-03");
+      }
+
+      @include carbon--breakpoint("md") {
+
+        @include carbon--type-style("productive-heading-04");
+      }
+    }
+
+    h4 {
+
+      @include carbon--breakpoint("sm") {
+
+        @include carbon--type-style("productive-heading-02");
+        margin-bottom: $spacing-xs;
+      }
+
+      @include carbon--breakpoint("md") {
+
+        @include carbon--type-style("productive-heading-03");
+      }
+    }
+  }
+
+  .edit-overlay {
+    align-items: center;
+    background-color: rgba($ui-02, 0.75);
+    cursor: pointer;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+  }
+
+  .map-wrapper {
+    width: 100%;
+  }
+}
+</style>

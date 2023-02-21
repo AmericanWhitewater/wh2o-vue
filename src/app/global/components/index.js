@@ -11,7 +11,6 @@ export { default as FlowRangeHelpModal } from './flow-range-help-modal/flow-rang
 export { default as ImageSelectorModal } from './image-selector-modal/image-selector-modal.vue'
 export { default as LoginButton } from './login-button/login-button.vue'
 export { default as MultiPhotoUploader } from './multi-photo-uploader/multi-photo-uploader.vue'
-export { default as PageBanner } from './page-banner/page-banner.vue'
 export { default as PageDescription } from './page-description/page-description.vue'
 export { default as PostUpdateModal } from './post-update-modal/post-update-modal'
 export { default as ResourceCard } from './resource-card/resource-card.vue'
