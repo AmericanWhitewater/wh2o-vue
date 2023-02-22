@@ -422,7 +422,6 @@ export default {
 <style lang="scss">
 .reach-header-info {
   display: flex;
-  
   flex-direction: column;
 }
 
@@ -438,24 +437,18 @@ export default {
     flex-flow: row nowrap;
   }
 
+  &>* {
+    flex: 1 1;
+  }
+
   .featured-image {
     position: relative;
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
-
-    @include carbon--breakpoint("sm") {
-      max-width: 100%;
-      height: auto;
-    }
-
-    @include carbon--breakpoint("md") {
-      max-width: 50%;
-      height: 400px;
-    }
 
     & img {
-      max-height: 100%;
+      max-height: 400px;
       margin: auto;
     }
   }
