@@ -84,8 +84,8 @@
                     :title="reach.photo ? 'Change Featured Image' : 'Add Featured Image'"
                     @click="triggerImageSelect()"
                   />
-                  <image-selector-modal v-if="editMode" ref="featuredImageSelectorModal" />
                 </div>
+                <image-selector-modal v-if="editMode" ref="featuredImageSelectorModal" />
                 <map-banner :reach="reach" :editMode="editMode" />
             </div>
             <edit-revision-modal ref="editRevisionModal" />
@@ -441,7 +441,7 @@ export default {
     min-width: 30%;
     max-width: 50%;
 
-    img {
+    & img {
       height: 100%;
       max-height: 400px;
       object-fit: cover;
