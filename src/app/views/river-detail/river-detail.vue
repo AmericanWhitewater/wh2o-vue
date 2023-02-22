@@ -428,6 +428,8 @@ export default {
 
 .reach-banner {
   display: flex;
+  gap: 0.5rem;
+  background-color: $ui-02;
   @include carbon--breakpoint("sm") {
     flex-flow: column nowrap;
   }
@@ -438,14 +440,23 @@ export default {
 
   .featured-image {
     position: relative;
-    min-width: 30%;
-    max-width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @include carbon--breakpoint("sm") {
+      max-width: 100%;
+      height: auto;
+    }
+
+    @include carbon--breakpoint("md") {
+      max-width: 50%;
+      height: 400px;
+    }
 
     & img {
-      height: 100%;
-      max-height: 400px;
-      object-fit: cover;
-      object-position: center;
+      max-height: 100%;
+      margin: auto;
     }
   }
 }
