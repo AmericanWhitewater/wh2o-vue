@@ -181,6 +181,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .map-wrapper {
+  flex: 1 1 auto;
+  min-width: 200px;
   position: relative;
 }
 </style>

@@ -429,23 +429,17 @@ export default {
   display: flex;
   gap: 0.5rem;
   background-color: $ui-02;
-  @include carbon--breakpoint("sm") {
-    flex-flow: column nowrap;
-  }
-
-  @include carbon--breakpoint("md") {
-    flex-flow: row nowrap;
-  }
-
-  &>* {
-    flex: 1 1;
-  }
+  flex-flow: row wrap;
 
   .featured-image {
     position: relative;
     align-items: center;
     display: flex;
     flex-direction: column;
+
+    @include carbon--breakpoint("md") {
+      min-width: 533px; // maximizes use of space for standard 4:3 landscape photos
+    }
 
     & img {
       max-height: 400px;
