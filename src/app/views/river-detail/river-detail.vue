@@ -437,12 +437,10 @@ export default {
     display: flex;
     flex-direction: column;
 
-    @include carbon--breakpoint("md") {
-      min-width: 533px; // maximizes use of space for standard 4:3 landscape photos
-    }
-
     & img {
-      max-height: 400px;
+      @include carbon--breakpoint("lg") {
+        max-height: 400px;
+      }
       margin: auto;
     }
   }
