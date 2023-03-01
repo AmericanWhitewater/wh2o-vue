@@ -17,6 +17,8 @@
                   {{ reach.river }}
                 </h1>
                 <h4 class="mb-spacing-md" v-text="reachSubtitle" />
+              </div>
+              <div>
                 <template v-if="editMode && !loading">
                   <cv-button
                     id="edit-title"
@@ -58,16 +60,6 @@
                   />
                 </template>
               </div>
-              <div>
-                <div v-if="reach.photo">
-                  <img
-                    class="reach--photo"
-                    :src="assetUrl(reach.photo.image.uri.big)"
-                    @click.exact="switchTab('gallery')"
-                    @keydown.exact="switchTab('gallery')"
-                  >
-                </div>
-              </div>
             </header>
             <header v-else class="bx--tile">
               <div>
@@ -82,28 +74,20 @@
               theme="dark"
               hide-text
             />
-            <div>
-              <transition :name="transitionName" mode="out-in">
-                <map-banner
-                  v-if="activeTabKey !== 'map' && !loading && reach"
-                  :title="reach.river"
-                  :subtitle="reachSubtitle"
-                >
-                  <div
-                    v-if="editMode"
-                    class="edit-overlay"
-                    @click="editGeometryModalVisible = true"
+            <div v-if="!loading && reach" v-show="activeTabKey !== 'map'" class="reach-banner">
+                <div v-if="(reach && reach.photo) || editMode" class="featured-image">
+                  <img
+                    v-if="reach.photo"
+                    :src="assetUrl(reach.photo.image.uri.big)"
                   >
-                    <h3>Edit Reach Geometry</h3>
-                  </div>
-                </map-banner>
-              </transition>
+                  <edit-block-overlay
+                    :title="reach.photo ? 'Change Featured Image' : 'Add Featured Image'"
+                    @click="triggerImageSelect()"
+                  />
+                </div>
+                <image-selector-modal v-if="editMode" ref="featuredImageSelectorModal" />
+                <map-banner :reach="reach" :editMode="editMode" />
             </div>
-            <geometry-edit-modal
-              v-if="editMode && !loading"
-              :visible="editGeometryModalVisible"
-              @edit:cancelled="editGeometryModalVisible = false"
-            />
             <edit-revision-modal ref="editRevisionModal" />
           </div>
         </div>
@@ -227,11 +211,10 @@
 </template>
 <script>
 import { mapState } from "vuex";
-import UtilityBlock from "@/app/global/components/utility-block/utility-block.vue";
+import { EditBlockOverlay, ImageSelectorModal, UtilityBlock } from '@/app/global/components'
 import {
   MapBanner,
   ReachTitleEditModal,
-  GeometryEditModal,
 } from "./components";
 import EditRevisionModal from "./components/credits-tab/components/edit-revision-modal";
 import {
@@ -244,9 +227,10 @@ import { appLocalStorage } from "@/app/global/services";
 export default {
   name: "river-detail",
   components: {
+    EditBlockOverlay,
+    ImageSelectorModal,
     UtilityBlock,
     MapBanner,
-    GeometryEditModal,
     ReachTitleEditModal,
     EditRevisionModal,
   },
@@ -256,7 +240,6 @@ export default {
     shadowDomFixedHeightOffset,
   ],
   data: () => ({
-    editGeometryModalVisible: false,
     editReachTitleModalVisible: false,
     deleteReachModalVisible: false,
     bookmarked: false,
@@ -396,6 +379,19 @@ export default {
         });
       }
     },
+    async triggerImageSelect() {
+      const selectedImage = await this.$refs.featuredImageSelectorModal.show({
+        title: "Select an image",
+        selectedImage: this.reach.photo,
+      });
+      if (selectedImage) {
+        // do reach update
+        await this.$store.dispatch("RiverDetail/updateProperty", {
+          id: this.reach.id,
+          photo_id: selectedImage.id
+        });
+      }
+    }
   },
   created() {
     this.$router.beforeEach((to, from, next) => {
@@ -427,5 +423,26 @@ export default {
 .reach-header-info {
   display: flex;
   flex-direction: column;
+}
+
+.reach-banner {
+  display: flex;
+  gap: 0.5rem;
+  background-color: $ui-02;
+  flex-flow: row wrap;
+
+  .featured-image {
+    position: relative;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+
+    & img {
+      @include carbon--breakpoint("lg") {
+        max-height: 400px;
+      }
+      margin: auto;
+    }
+  }
 }
 </style>

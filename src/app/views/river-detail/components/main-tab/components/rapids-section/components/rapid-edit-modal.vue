@@ -187,7 +187,8 @@ export default {
   }),
   computed: {
     ...mapState({
-      rapids: (state) => state.RiverRapids.data,
+      reach: state => state.RiverDetail.data,
+      rapids: state => state.RiverRapids.data,
     }),
     activeRapid() {
       return this.rapidId

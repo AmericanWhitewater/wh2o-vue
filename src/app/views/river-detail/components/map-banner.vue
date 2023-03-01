@@ -1,5 +1,4 @@
 <template>
-  <div class="page-banner">
     <div class="map-wrapper">
       <template v-if="reach && reachGeom">
         <div
@@ -20,32 +19,49 @@
           theme="dark"
         />
       </template>
-      <slot />
+      <edit-block-overlay
+        title="Edit Reach Geometry"
+        @click="openGeometryEditModal"
+      />
+      <geometry-edit-modal
+        v-if="canEdit(reach)"
+        ref="geometryEditModal"
+        :reach="reach"
+      />
     </div>
-  </div>
 </template>
 <script>
 import bbox from '@turf/bbox'
 import { lineString, point, featureCollection } from '@turf/helpers'
 import mapboxgl from 'mapbox-gl'
-import { mapState } from 'vuex'
 import NwiMapStyles from '@/app/views/river-index/components/nwi-map-styles'
 import {
   mapboxAccessToken
 } from '@/app/environment'
-import { basemapToggleMixin, mapHelpersMixin } from '@/app/global/mixins'
-import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
+import GeometryEditModal from '@/app/views/river-detail/components/geometry-edit-modal/geometry-edit-modal.vue';
+import { basemapToggleMixin, mapHelpersMixin, objectPermissionsHelpersMixin } from '@/app/global/mixins'
+import { EditBlockOverlay, UtilityBlock } from '@/app/global/components'
 
 export default {
   name: 'map-banner',
   components: {
+    EditBlockOverlay,
+    GeometryEditModal,
     UtilityBlock
   },
-  mixins: [basemapToggleMixin, mapHelpersMixin],
+  mixins: [basemapToggleMixin, mapHelpersMixin, objectPermissionsHelpersMixin],
   props: {
     loading: {
       type: Boolean,
       required: false
+    },
+    reach: {
+      type: Object,
+      required: false
+    },
+    editMode: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
@@ -57,10 +73,6 @@ export default {
       const geom = this.reach?.geom?.split(',').map(d => d.split(' '))
       return geom ? lineString(geom) : null
     },
-    ...mapState({
-      reach: state => state.RiverDetail.data,
-      editMode: state => state.Global.editMode
-    }),
     startingBounds () {
       if (this.reachGeom) {
         return bbox(this.reachGeom)
@@ -68,9 +80,6 @@ export default {
       return null
     },
     mapUnavailableText () {
-      if (this.editMode) {
-        return ''
-      }
       return 'No geospatial data available'
     }
   },
@@ -148,6 +157,14 @@ export default {
         layout: NwiMapStyles.sourceLayers.access.access.layout,
         paint: NwiMapStyles.sourceLayers.access.access.paint
       })
+    },
+    async openGeometryEditModal() {
+      const ok = await this.$refs.geometryEditModal.show({
+
+      });
+      if (ok) {
+        this.$emit("geomModified");
+      }
     }
   },
   mounted () {
@@ -162,3 +179,10 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.map-wrapper {
+  flex: 1 1 auto;
+  min-width: 200px;
+  position: relative;
+}
+</style>
