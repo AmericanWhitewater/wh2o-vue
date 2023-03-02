@@ -75,7 +75,7 @@
               hide-text
             />
             <div v-if="!loading && reach" v-show="activeTabKey !== 'map'" class="reach-banner">
-                <div v-if="(reach && reach.photo) || editMode" class="featured-image">
+                <div v-if="(reach && reach.photo) || editMode" :class="reach.photo ? 'featured-image' : 'featured-image no-image'">
                   <img
                     v-if="reach.photo"
                     :src="assetUrl(reach.photo.image.uri.big)"
@@ -436,6 +436,14 @@ export default {
     align-items: center;
     display: flex;
     flex-direction: column;
+
+    &.no-image {
+      width: 100%;
+      @include carbon--breakpoint("lg") {
+        width: 50%;
+      }
+      min-height: 10rem;
+    }
 
     & img {
       @include carbon--breakpoint("lg") {
