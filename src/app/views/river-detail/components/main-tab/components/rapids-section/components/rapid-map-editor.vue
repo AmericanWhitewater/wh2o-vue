@@ -58,7 +58,9 @@ export default {
   }),
   computed: {
     ...mapState({
-      mapStyle: state => state.RiverIndex.mapStyle
+      mapStyle: state => state.RiverIndex.mapStyle,
+      reach: state => state.RiverDetail.data,
+      rapids: (state) => state.RiverRapids.data,
     }),
     bboxAroundRapid () {
       if (this.geom && this.geom.coordinates && this.geom.coordinates.length === 2) {

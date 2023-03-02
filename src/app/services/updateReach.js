@@ -19,7 +19,17 @@ export async function updateReach(data) {
                   ploc,
                   tloc,
                   length,
-                  description
+                  description,
+                  photo_id,
+                  photo {
+                    id
+                    image {
+                      uri {
+                        medium
+                        big
+                      }
+                    }
+                  }
 
                 }
               }

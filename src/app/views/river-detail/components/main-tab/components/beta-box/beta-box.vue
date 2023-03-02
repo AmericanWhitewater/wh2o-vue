@@ -162,13 +162,10 @@
         </tr>
       </table>
     </div>
-    <div
-        v-if="editMode"
-        class="edit-overlay"
-        @click="editModalVisible = true"
-    >
-      <h3>Edit Beta Box</h3>
-    </div>
+    <edit-block-overlay
+      title="Edit Beta Box"
+      @click="editModalVisible = true"
+    />
     <beta-box-edit-modal
         v-if="editMode && !loading"
         :key="editBetaBoxKey"
@@ -181,6 +178,7 @@ import { mapState } from 'vuex'
 import { humanReadable } from '@/app/global/services/human-readable'
 import { BetaBoxEditModal } from './components'
 import { formatReadingWithFormat } from '@/app/global/lib/gages'
+import { EditBlockOverlay } from '@/app/global/components'
 
 /**
  * @todo if reach has multiple gages, add dropdown to
@@ -190,7 +188,8 @@ import { formatReadingWithFormat } from '@/app/global/lib/gages'
 export default {
   name: 'beta-box',
   components: {
-    BetaBoxEditModal
+    BetaBoxEditModal,
+    EditBlockOverlay
   },
   data: () => ({
     editModalVisible: false,
@@ -315,3 +314,24 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.beta-box {
+  max-width: 100%;
+  position: relative;
+
+  td {
+    background-color: transparent;
+    vertical-align: middle;
+  }
+
+  tr {
+
+    @include ease;
+
+    &:hover,
+    &:focus {
+      background-color: $ui-02;
+    }
+  }
+}
+</style>

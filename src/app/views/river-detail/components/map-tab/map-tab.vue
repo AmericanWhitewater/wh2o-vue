@@ -57,7 +57,8 @@ export default {
       data: state => state.RiverMap.data,
       riverLoading: state => state.RiverDetail.loading,
       riverError: state => state.RiverDetail.error,
-      riverData: state => state.RiverDetail.data
+      reach: state => state.RiverDetail.data,
+      rapids: state => state.RiverRapids.data,
     }),
     reachId () {
       return parseInt(this.$route.params.id, 10)
