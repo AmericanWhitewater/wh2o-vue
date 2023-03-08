@@ -163,7 +163,7 @@ export default {
         // if switching between gauges, do nothing
         // if switching from gauge to no gauge or vice versa,
         // update reading and metric_id accordingly
-        if (newVal && (oldVal === "" || oldVal === undefined)) {
+        if (newVal && (!oldVal || oldVal === undefined)) {
           this.formData.reading = "";
           const selectedGage = this.gages.find((x) => x.gauge.id === newVal);
           this.formData.metric_id = `${selectedGage?.gauge_metric}`;
