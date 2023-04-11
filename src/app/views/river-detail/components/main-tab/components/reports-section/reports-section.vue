@@ -76,7 +76,18 @@ export default {
   computed: {
     ...mapState({
       user: state => state.User.data
-    })
+    }),
+    reachId() {
+      return this.$route.params.id;
+    },
+  },
+  watch: {
+    reachId: {
+      immediate: true,
+      handler: function () {
+        this.loadReports();
+      }
+    }
   },
   methods: {
     navigateToNewReportForm () {
@@ -92,7 +103,7 @@ export default {
     async loadReports () {
       this.loading = true
 
-      const result = await getReachReports(this.$route.params.id, { perPage: 3, page: 1 })
+      const result = await getReachReports(this.reachId, { perPage: 3, page: 1 })
 
       if (!result.errors) {
         result.data.posts.data.forEach((report) => {
@@ -106,9 +117,6 @@ export default {
 
       this.loading = false
     },
-  },
-  mounted() {
-    this.loadReports()
   }
 }
 </script>
