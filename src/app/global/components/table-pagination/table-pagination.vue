@@ -287,4 +287,21 @@ export default {
     bottom: 0;
   }
 }
+
+// overriding specific carbon component CSS that hides pagination on mobile
+@media (max-width: 41.98rem) {
+  .bx--pagination {
+    .bx--pagination__left, .bx--pagination__right {
+      & > * {
+        display: block;
+      }
+    }
+
+    .bx--pagination__right {
+      .bx--pagination__text, .bx--pagination__button {
+        display: none;
+      }
+    }
+  }
+}
 </style>
