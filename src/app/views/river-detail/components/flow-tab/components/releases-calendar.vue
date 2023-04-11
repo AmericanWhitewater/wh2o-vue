@@ -1,5 +1,5 @@
 <template>
-  <section v-if="data && releases && releases.length" class='mt-lg mb-lg'>
+  <section v-if="data && calendarData && calendarData.length" class='mt-lg mb-lg'>
     <hr>
     <h2 class="mb-sm">
       Release Calendar
@@ -31,9 +31,6 @@ export default {
       data: state => state.RiverEvents.data,
       year: state => state.RiverEvents.year,
     }),
-    releases() {
-      return this.$store.getters['RiverEvents/releaseDates']
-    },
     calendarData() {
       return this.$store.getters['RiverEvents/calendarData']
     },

@@ -7,7 +7,7 @@ export default {
   state: {
     error: false,
     loading: false,
-    data: null,
+    data: [],
     year: new Date().getFullYear(),
   },
   mutations: {
@@ -36,21 +36,11 @@ export default {
     },
   },
   getters: {
-    // this will return all event dates with the parent event tucked into "event", sorted descending by date.
-    releaseDates: (state, getters) => {
-      let intermediate = [];
+    upcomingReleases: (state, getters) => {
+      const todayDate = new Date();
+      todayDate.setHours(0, 0, 0);
 
-      if (getters.releaseEvents?.length) {
-        getters.releaseEvents.forEach((re) => {
-          intermediate = intermediate.concat(
-            re.dates.map((y) => ({ ...y, event: re }))
-          );
-        });
-        return intermediate.sort((a, b) =>
-          b.event_date.localeCompare(a.event_date)
-        );
-      }
-      return [];
+      return getters.releases.filter(x => x.event_date >= todayDate);
     },
 
     /**
@@ -60,72 +50,42 @@ export default {
      * @return {null}
      */
     nextOrClosestReleaseDate: (state, getters) => {
-      if (getters.releaseDates?.length) {
         const todayDate = new Date();
         todayDate.setHours(0, 0, 0);
 
-        const today = todayDate.toISOString().substring(0, 10);
-        const index = getters.releaseDates.findIndex(
-          (x) => x.event_date?.substring(0, 10) < today
+        const releases = getters.releases;
+        const index = releases.findIndex(
+          (x) => x.event_date >= todayDate
         );
-        //case of next release
-        if (index >= 1) {
-          return getters.releaseDates[index - 1];
-        } //case lots of old releases, show the last one
-        else if (index == 0) {
-          return getters.releaseDates[index];
+        // no future releases found, show the latest release we have
+        if (index == -1) {
+          return releases[releases.length-1];
+        } else {
+          return releases[index];
         }
-        // every release date new so get the one closest to today's date.
-        return getters.releaseDates[getters.releaseDates.length - 1];
-      }
-      return null;
     },
 
-    /**
-     * Returns all release events, cleaned up from the state object and concatenated together
-     * @param state
-     * @return {*[]}
-     */
-    events: (state) => {
-      return state.data ?? []
+    // returns releases with the parent event tucked into "event", sorted ascending by date
+    releases: (state) => {
+      return state.data.filter(
+        x => x.category === "CAT_RELEASE"
+      ).flatMap(x => x.dates).map(x => ({
+        ...x,
+        event_date: new Date(x.event_date)
+      })).sort((a, b) =>
+        a.event_date > b.event_date
+      );
     },
-    // this will return all events that are releases associated with a river.
-    releaseEvents: (state, getters) => {
-      if (getters.events) {
-        //eliminate linked resources down to release events for the river.
-        const results = getters.events.filter(
-          (item) => item.category === "CAT_RELEASE"
-        );
 
-        if (results) {
-          return results;
-        }
-      }
-
-      return [];
-    },
     calendarData: (state, getters) => {
-      if(getters.releaseDates){
-        const thisYearsDates = getters.releaseDates
-        .filter(release => new Date(release.event_date).getFullYear() === state.year)
-
-        const dataSource = []
-
-        for(let i = 0; i < thisYearsDates.length; i++){
-          dataSource.push({
-            startDate: new Date(thisYearsDates[i].event_date),
-            endDate: new Date(thisYearsDates[i].event_date),
-            startTime: thisYearsDates[i].start_time,
-            endTime: thisYearsDates[i].end_time,
-            minFlow: thisYearsDates[i].min,
-            maxFlow: thisYearsDates[i].min
-          })
-        }
-
-        return dataSource
-      }
-
-      return [[]]
+      return getters.releases.map(x => ({
+        startDate: x.event_date,
+        endDate: x.event_date,
+        startTime: x.start_time,
+        endTime: x.end_time,
+        minFlow: x.min,
+        maxFlow: x.min
+      }));
     },
 
 
