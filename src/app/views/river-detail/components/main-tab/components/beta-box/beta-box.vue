@@ -143,7 +143,7 @@
           <td>{{ getReleaseFieldLabel(releaseDate.event_date) }}</td>
           <td>
             <router-link :to="`/river-detail/${reachId}/flow`">
-              {{ formatDate(releaseDate.event_date, 'LL') }}
+              {{ releaseDate.event_date.toDateString() }}
             </router-link>
           </td>
         </tr>
@@ -210,7 +210,6 @@ export default {
      * Event date or null
      */
     releaseDate () {
-
       return this.$store.getters['RiverEvents/nextOrClosestReleaseDate']
     },
 
@@ -246,7 +245,7 @@ export default {
   methods: {
     /**
      *
-     * @param releaseDate - string e.g. "2007-01-01T11:33:00+0"
+     * @param releaseDate - Date
      * @return "Latest" or "Next"
      */
     getReleaseFieldLabel (releaseDate) {
@@ -256,7 +255,7 @@ export default {
       today.setHours(0, 0, 0, 0)
       today.setDate(today.getDate() + 1)
 
-      if (releaseDate.substring(0, 10) < today.toISOString().substring(0, 10)) {
+      if (releaseDate < today) {
         return 'Latest Release'
       }
 
