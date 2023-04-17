@@ -3,7 +3,7 @@ test.todo('revive tests')
 // import { createWrapper } from '@/utils'
 // import RiverDetail from '../river-detail.vue'
 
-// jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+// jest.mock('maplibre-gl/dist/maplibre-gl', () => ({
 //   Map: () => ({})
 // }))
 

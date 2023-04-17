@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import mapboxgl from 'mapbox-gl'
+import maplibregl from 'maplibre-gl'
 import bbox from '@turf/bbox'
 import debounce from 'lodash.debounce'
 import {
@@ -427,7 +427,7 @@ export default {
       })
     },
     mountMap () {
-      mapboxgl.accessToken = this.mapboxAccessToken
+      maplibregl.accessToken = this.mapboxAccessToken
       const mapProps = {
         container: this.$refs.mapContainer,
         style: this.baseMapUrl,
@@ -444,7 +444,7 @@ export default {
         mapProps.center = this.center
         mapProps.zoom = this.startingZoom
       }
-      this.map = new mapboxgl.Map({
+      this.map = new maplibregl.Map({
         ...mapProps,
         transformRequest: (url, resourceType) => {
           // requests for tiles need to match session csrf token.
@@ -459,7 +459,7 @@ export default {
       })
 
       this.map.addControl(
-          new mapboxgl.NavigationControl({ showCompass: true }),
+          new maplibregl.NavigationControl({ showCompass: true }),
           'bottom-left'
       )
 

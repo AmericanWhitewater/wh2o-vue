@@ -1,7 +1,7 @@
 import AccidentsTab from '@/app/views/river-detail/components/accidents-tab.vue'
 import { createWrapper } from '@/utils'
 
-jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+jest.mock('maplibre-gl/dist/maplibre-gl', () => ({
   Map: () => ({})
 }))
 

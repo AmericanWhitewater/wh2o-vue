@@ -7,7 +7,7 @@ import pointToLineDistance from '@turf/point-to-line-distance'
 import { lineString } from '@turf/helpers'
 import Graph from 'graph-data-structure'
 
-// this is a class so it can be initialized with the mapboxgljs map object
+// this is a class so it can be initialized with the maplibregljs map object
 // then continue to use it to populate and refresh the graph and lines caches
 class NHDTilesService {
   constructor(map) {

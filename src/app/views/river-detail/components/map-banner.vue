@@ -33,7 +33,7 @@
 <script>
 import bbox from '@turf/bbox'
 import { lineString, point, featureCollection } from '@turf/helpers'
-import mapboxgl from 'mapbox-gl'
+import maplibregl from 'maplibre-gl'
 import NwiMapStyles from '@/app/views/river-index/components/nwi-map-styles'
 import {
   mapboxAccessToken
@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     mountMap () {
-      mapboxgl.accessToken = mapboxAccessToken
+      maplibregl.accessToken = mapboxAccessToken
       const mapProps = {
         container: this.$refs.nwiMapBanner,
         style: this.baseMapUrlFor("topo"),
@@ -94,7 +94,7 @@ export default {
         interactive: false
       }
 
-      this.map = new mapboxgl.Map(mapProps)
+      this.map = new maplibregl.Map(mapProps)
       this.map.on('styledata', this.loadReach)
     },
     loadReach () {

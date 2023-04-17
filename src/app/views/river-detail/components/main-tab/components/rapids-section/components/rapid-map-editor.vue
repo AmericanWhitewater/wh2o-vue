@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import mapboxgl from 'mapbox-gl'
+import maplibregl from 'maplibre-gl'
 import { mapState } from 'vuex'
 import { basemapToggleMixin, mapHelpersMixin } from '@/app/global/mixins'
 import {
@@ -123,7 +123,7 @@ export default {
       }
     },
     mountMap () {
-      mapboxgl.accessToken = mapboxAccessToken
+      maplibregl.accessToken = mapboxAccessToken
       const mapProps = {
         container: this.$refs.rapidMapEditor,
         style: this.baseMapUrl,
@@ -131,7 +131,7 @@ export default {
         fitBoundsOptions: { padding: this.boundsPadding }
       }
 
-      this.map = new mapboxgl.Map(mapProps)
+      this.map = new maplibregl.Map(mapProps)
 
       this.map.on('styledata', this.loadReach)
       this.map.on('load', () => {
@@ -151,7 +151,7 @@ export default {
       this.$emit('poiMoved', this.pointOfInterest.getLngLat())
     },
     async renderPOI (geometry) {
-      this.pointOfInterest = new mapboxgl.Marker({
+      this.pointOfInterest = new maplibregl.Marker({
         draggable: true
       }).setLngLat(geometry.coordinates)
         .addTo(this.map)

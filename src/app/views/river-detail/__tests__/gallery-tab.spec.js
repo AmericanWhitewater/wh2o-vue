@@ -1,7 +1,7 @@
 import GalleryTab from '@/app/views/river-detail/components/gallery-tab/gallery-tab.vue'
 import { createWrapper } from '@/utils'
 
-jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+jest.mock('maplibre-gl/dist/maplibre-gl', () => ({
   Map: () => ({})
 }))
 
