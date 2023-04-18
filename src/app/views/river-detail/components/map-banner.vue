@@ -35,9 +35,6 @@ import bbox from '@turf/bbox'
 import { lineString, point, featureCollection } from '@turf/helpers'
 import maplibregl from 'maplibre-gl'
 import NwiMapStyles from '@/app/views/river-index/components/nwi-map-styles'
-import {
-  mapboxAccessToken
-} from '@/app/environment'
 import GeometryEditModal from '@/app/views/river-detail/components/geometry-edit-modal/geometry-edit-modal.vue';
 import { basemapToggleMixin, mapHelpersMixin, objectPermissionsHelpersMixin } from '@/app/global/mixins'
 import { EditBlockOverlay, UtilityBlock } from '@/app/global/components'
@@ -85,13 +82,13 @@ export default {
   },
   methods: {
     mountMap () {
-      maplibregl.accessToken = mapboxAccessToken
       const mapProps = {
         container: this.$refs.nwiMapBanner,
         style: this.baseMapUrlFor("topo"),
         bounds: this.startingBounds,
         fitBoundsOptions: { padding: 80 },
-        interactive: false
+        interactive: false,
+        attributionControl: false
       }
 
       this.map = new maplibregl.Map(mapProps)
@@ -168,7 +165,7 @@ export default {
     }
   },
   mounted () {
-    if (mapboxAccessToken && this.reachGeom) {
+    if (this.reachGeom) {
       this.mountMap()
     }
   },

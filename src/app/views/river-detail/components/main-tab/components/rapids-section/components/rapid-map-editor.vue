@@ -27,9 +27,6 @@
 import maplibregl from 'maplibre-gl'
 import { mapState } from 'vuex'
 import { basemapToggleMixin, mapHelpersMixin } from '@/app/global/mixins'
-import {
-  mapboxAccessToken
-} from '@/app/environment'
 import debounce from 'lodash.debounce'
 
 import { point } from '@turf/helpers'
@@ -123,12 +120,12 @@ export default {
       }
     },
     mountMap () {
-      maplibregl.accessToken = mapboxAccessToken
       const mapProps = {
         container: this.$refs.rapidMapEditor,
         style: this.baseMapUrl,
         bounds: this.startingBounds,
-        fitBoundsOptions: { padding: this.boundsPadding }
+        fitBoundsOptions: { padding: this.boundsPadding },
+        attributionControl: false
       }
 
       this.map = new maplibregl.Map(mapProps)
@@ -194,14 +191,12 @@ export default {
     }
   },
   mounted () {
-    if (mapboxAccessToken) {
-      this.mountMap()
+    this.mountMap()
 
-      this.debouncedEmitPOILocation = debounce(this.emitPOILocation, 200, {
-        leading: false,
-        trailing: true
-      })
-    }
+    this.debouncedEmitPOILocation = debounce(this.emitPOILocation, 200, {
+      leading: false,
+      trailing: true
+    })
   },
   beforeDestroy() {
     if(this.map) {

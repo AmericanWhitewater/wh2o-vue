@@ -262,6 +262,7 @@ export default {
         bounds: this.startingBounds,
         fitBoundsOptions: { padding: 80 },
         minZoom: 5,
+        attributionControl: false
       };
       this.map = new maplibregl.Map(mapProps);
 

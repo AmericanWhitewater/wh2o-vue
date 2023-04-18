@@ -3,30 +3,22 @@
     id="nwi-map-container"
     :style="`height:${containerHeight};`"
   >
-    <template v-if="mapboxAccessToken">
-      <div
-        ref="mapContainer"
-        class="nwi-map"
-      />
-      <nwi-map-legend
-        v-if="includeLegend"
-        :color-by="colorBy"
-      />
-      <nwi-map-controls
-        :map-controls="mapControls"
-        :fullscreen-target="fullscreenTarget"
-      />
-      <nwi-result-counter
-        v-if="!hideResultCounter"
-        :loading="mapDataLoading"
-      />
-    </template>
-    <template v-else>
-      <utility-block
-        state="error"
-        text="insert one token to continue"
-      />
-    </template>
+    <div
+      ref="mapContainer"
+      class="nwi-map"
+    />
+    <nwi-map-legend
+      v-if="includeLegend"
+      :color-by="colorBy"
+    />
+    <nwi-map-controls
+      :map-controls="mapControls"
+      :fullscreen-target="fullscreenTarget"
+    />
+    <nwi-result-counter
+      v-if="!hideResultCounter"
+      :loading="mapDataLoading"
+    />
   </div>
 </template>
 
@@ -42,10 +34,8 @@ import {
 } from '.'
 import { basemapToggleMixin } from '@/app/global/mixins'
 import { mapState } from 'vuex'
-import UtilityBlock from '@/app/global/components/utility-block/utility-block.vue'
 import {
   laravelDeploy,
-  mapboxAccessToken,
   nwiTileServer
 } from '@/app/environment'
 
@@ -58,7 +48,6 @@ export default {
   name: 'nwi-map',
   components: {
     NwiMapLegend,
-    UtilityBlock,
     NwiMapControls,
     NwiResultCounter
   },
@@ -126,7 +115,6 @@ export default {
   data () {
     return {
       mapDataLoading: false,
-      mapboxAccessToken: mapboxAccessToken,
       map: null
     }
   },
@@ -207,22 +195,6 @@ export default {
     }
   },
   methods: {
-    // can be used to make tweaks to the mapbox base styles after loading
-    modifyMapboxBaseStyle () {
-      if (this.map.getLayer('satellite')) {
-        this.map.setPaintProperty('satellite', 'raster-opacity', [
-          'interpolate',
-          ['linear'],
-          ['zoom'],
-          0,
-          0.5,
-          11,
-          0.5,
-          12,
-          1
-        ])
-      }
-    },
     attachMouseEvents (layer) {
       this.map.on('mouseenter', layer, this.mouseenterFeature)
       this.map.on('mouseleave', layer, this.mouseleaveFeature)
@@ -427,13 +399,13 @@ export default {
       })
     },
     mountMap () {
-      maplibregl.accessToken = this.mapboxAccessToken
       const mapProps = {
         container: this.$refs.mapContainer,
         style: this.baseMapUrl,
         trackUserLocation: false,
         touchPitch: false,
-        dragRotate: false
+        dragRotate: false,
+        attributionControl: false
       }
       if (this.startingBounds) {
         mapProps.bounds = this.startingBounds
@@ -464,7 +436,6 @@ export default {
       )
 
       this.map.on('styledata', this.loadAWMapData)
-      this.map.on('styledata', this.modifyMapboxBaseStyle)
 
       // this is a kind of weird solution to the fact that once in a blue moon,
       // our app CSS doesn't finish loading before the map is mounted, which causes
@@ -509,14 +480,10 @@ export default {
     }
   },
   mounted () {
-    if (this.mapboxAccessToken) {
-      this.mountMap()
-    }
+    this.mountMap()
   },
   created () {
-    if (this.mapboxAccessToken) {
-      this.initMap()
-    }
+    this.initMap()
   },
   beforeDestroy() {
     if(this.map) {
