@@ -20,9 +20,9 @@ export const basemapToggleMixin = {
     baseMapUrlFor(mapType) {
       let basemapStyle;
       if (mapType === "satellite") {
-        basemapStyle = "ArcGIS:Imagery:Standard"
+        basemapStyle = "ArcGIS:Imagery"
       } else { // mapType == "topo"
-        basemapStyle = "ArcGIS:Topographic:Base"
+        basemapStyle = "ArcGIS:Topographic"
       }
       return `https://basemaps-api.arcgis.com/arcgis/rest/services/styles/${basemapStyle}?type=style&token=${arcgisApiKey}`;
     }
