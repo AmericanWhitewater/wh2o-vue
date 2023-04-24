@@ -1,7 +1,7 @@
 import { createWrapper } from '@/utils'
 import ArticleDetail from '../components/article-detail.vue'
 
-jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+jest.mock('maplibre-gl/dist/maplibre-gl', () => ({
   Map: () => ({})
 }))
 

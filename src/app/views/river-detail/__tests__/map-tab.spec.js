@@ -1,7 +1,7 @@
 import { createWrapper } from '@/utils'
 import MapTab from '@/app/views/river-detail/components/map-tab/map-tab.vue'
 
-jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+jest.mock('maplibre-gl/dist/maplibre-gl', () => ({
   Map: () => ({})
 }))
 

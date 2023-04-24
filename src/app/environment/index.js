@@ -9,6 +9,7 @@
  */
 
 const {
+  VUE_APP_ARCGIS_API_KEY,
   VUE_APP_LARAVEL_DEPLOY,
   VUE_APP_WP_API_URL,
   VUE_APP_NWI_TILE_SERVER,
@@ -23,6 +24,7 @@ const {
 } = process.env
 
 const environment = NODE_ENV.toLowerCase()
+const arcgisApiKey = VUE_APP_ARCGIS_API_KEY
 const apiBaseUrl = VUE_APP_API_BASE_URL
 const appBaseUrl = VUE_APP_BASE_URL
 const assetBaseUrl = STATIC_ASSET_URL || VUE_APP_API_BASE_URL
@@ -36,6 +38,7 @@ const baseUrl = VUE_APP_LINK_BASE_URL
 
 export {
   environment,
+  arcgisApiKey,
   apiBaseUrl,
   appBaseUrl,
   assetBaseUrl,

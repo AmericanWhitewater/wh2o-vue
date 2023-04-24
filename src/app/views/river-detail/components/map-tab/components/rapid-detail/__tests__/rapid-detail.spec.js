@@ -1,7 +1,7 @@
 import { createWrapper } from '@/utils'
 import RapidDetail from '../rapid-detail.vue'
 
-jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+jest.mock('maplibre-gl/dist/maplibre-gl', () => ({
   Map: () => ({})
 }))
 

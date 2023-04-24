@@ -1,7 +1,7 @@
 import { createWrapper } from '@/utils'
 import NewsPage from '../news-page.vue'
 
-jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+jest.mock('maplibre-gl/dist/maplibre-gl', () => ({
   Map: () => ({})
 }))
 
