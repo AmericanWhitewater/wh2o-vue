@@ -9,8 +9,8 @@
       size="small"
       :disabled="loading"
       kind="secondary"
-      @click.exact="openModal"
-      @keydown.enter="openModal"
+      @click.exact="openRapidModal()"
+      @keydown.enter="openRapidModal()"
     >
       Add Feature
     </cv-button>
@@ -26,7 +26,7 @@
             :key="index"
             :rapid="rapid"
             :first-p-o-i="index === 0 ? true : false"
-            @rapid:edit="triggerEdit"
+            @rapid:edit="openRapidModal"
             @rapid:delete="triggerDelete"
             @rapid:imageSelect="triggerImageSelect"
             @rapid:removeImage="triggerRemoveImage"
@@ -42,11 +42,7 @@
     </template>
     <rapid-edit-modal
       v-if="editMode"
-      :key="currentlyEditingRapid ? currentlyEditingRapid.id : reachId"
-      :rapid-id="currentlyEditingRapid ? currentlyEditingRapid.id : null"
-      :rapid-modal-visible="rapidModalVisible"
-      @edit:cancelled="closeEditModal()"
-      @edit:success="closeEditModal()"
+      ref="rapidEditModal"
     />
     <confirm-delete-modal v-if="editMode" ref="confirmDeleteModal" />
     <image-selector-modal v-if="editMode" ref="imageSelectorModal" />
@@ -69,8 +65,7 @@ export default {
     ImageSelectorModal,
   },
   data: () => ({
-    rapidModalVisible: false,
-    currentlyEditingRapid: null,
+  currentlyEditingRapid: null,
     formData: {
       files: [],
       name: "",
@@ -93,10 +88,6 @@ export default {
     },
   },
   methods: {
-    triggerEdit(rapid) {
-      this.currentlyEditingRapid = rapid;
-      this.rapidModalVisible = true;
-    },
     async triggerDelete(rapid) {
       const ok = await this.$refs.confirmDeleteModal.show({
         title: "Delete Rapid",
@@ -132,9 +123,11 @@ export default {
         })
       }
     },
-    openModal() {
+    async openRapidModal(rapid) {
       if (this.user) {
-        this.rapidModalVisible = true;
+        await this.$refs.rapidEditModal.show({
+          rapid: rapid
+        });
       } else {
         this.$store.dispatch("Global/sendToast", {
           title: "Must Log In",
@@ -148,17 +141,7 @@ export default {
     },
     deleteRapid(rapid) {
       this.$store.dispatch("RiverRapids/deleteRapid", rapid.id);
-    },
-    closeEditModal() {
-      // ensure that actual modal hide() lifecycle completes
-      // basically, if the key changes too quickly, the modal hide()
-      // action doesn't complete so this class "bx--body--with-modal-open"
-      // doesn't get removed from the body *which prevents scrolling*
-      this.rapidModalVisible = false;
-      this.$nextTick(() => {
-        this.currentlyEditingRapid = null;
-      });
-    },
+    }
   },
 };
 </script>
