@@ -1,4 +1,4 @@
 #!/bin/bash
 npm i
 rm -rf dist/*
-node ./scripts/dev-laravel.js
+node ./server_conf/dev-laravel.js
