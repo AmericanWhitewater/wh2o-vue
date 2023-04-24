@@ -105,6 +105,7 @@ export default {
     },
     snapMode: {
       handler () {
+        this.snapPOIToReach();
         this.conditionallyBindSnapHandler()
       }
     },
@@ -148,7 +149,11 @@ export default {
           this.map.once("click", async (e) => {
             const newPoint = point([e.lngLat.lng, e.lngLat.lat]);
             await this.renderPOI(newPoint.geometry);
-            this.emitPOILocation();
+            if (this.snapMode) {
+              this.snapPOIToReach();
+            } else { // snap function already emits location
+              this.emitPOILocation();
+            }
           });
         }
       })
