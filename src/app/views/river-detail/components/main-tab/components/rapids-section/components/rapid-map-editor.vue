@@ -95,6 +95,12 @@ export default {
             }
           }
         }
+      },
+    },
+    reachGeom: {
+      deep: true,
+      handler () {
+        this.loadReachSource();
       }
     },
     snapMode: {
@@ -158,16 +164,25 @@ export default {
       this.pointOfInterest.on('dragend', this.debouncedEmitPOILocation)
       this.conditionallyBindSnapHandler()
     },
-    loadReach () {
+    loadReachSource () {
       if (this.reachGeom) {
-        if (this.map.getSource('reachGeom') === undefined) {
+        // if the source is already present, replace the data
+        const source = this.map.getSource('reachGeom');
+        if (source !== undefined) {
+          source.setData(this.reachGeom);
+        } else {
           this.map.addSource('reachGeom', {
             type: 'geojson',
             data: {
               ...this.reachGeom
             }
-          })
+          });
         }
+      }
+    },
+    loadReach () {
+      if (this.reachGeom) {
+        this.loadReachSource();
         if (this.map.getLayer('reachGeom') === undefined) {
           this.map.addLayer({
             id: 'reachGeom',
