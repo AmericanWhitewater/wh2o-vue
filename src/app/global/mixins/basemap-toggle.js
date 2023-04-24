@@ -1,4 +1,5 @@
 import NwiBasemapToggle from "@/app/views/river-index/components/nwi-basemap-toggle.vue";
+import { arcgisApiKey } from "@/app/environment";
 
 export const basemapToggleMixin = {
   computed: {
@@ -17,14 +18,13 @@ export const basemapToggleMixin = {
   },
   methods: {
     baseMapUrlFor(mapType) {
-      if (mapType === "topo") {
-        return "mapbox://styles/mapbox/outdoors-v11";
-      } else if (mapType === "satellite") {
-        // custom version of `satellite-v8` that includes icons that already exist in `outdoors-v11`
-        return "mapbox://styles/americanwhitewater/ck1h4j4hm2bts1cpueefclrrn";
-      } else {
-        return "mapbox://styles/mapbox/outdoors-v11";
+      let basemapStyle;
+      if (mapType === "satellite") {
+        basemapStyle = "ArcGIS:Imagery"
+      } else { // mapType == "topo"
+        basemapStyle = "ArcGIS:Topographic"
       }
+      return `https://basemaps-api.arcgis.com/arcgis/rest/services/styles/${basemapStyle}?type=style&token=${arcgisApiKey}`;
     }
   }
 };

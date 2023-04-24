@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import mapboxgl from "mapbox-gl";
+import maplibregl from "maplibre-gl";
 import { mapState } from "vuex";
 import { mapboxAccessToken } from "@/app/environment";
 import NwiBasemapToggle from "@/app/views/river-index/components/nwi-basemap-toggle.vue";
@@ -255,15 +255,16 @@ export default {
       this.renderDrawFeatures();
     },
     mountMap() {
-      mapboxgl.accessToken = mapboxAccessToken;
+      maplibregl.accessToken = mapboxAccessToken
       const mapProps = {
         container: this.$refs.nhdEditor,
         style: this.baseMapUrl,
         bounds: this.startingBounds,
         fitBoundsOptions: { padding: 80 },
         minZoom: 5,
+        attributionControl: false
       };
-      this.map = new mapboxgl.Map(mapProps);
+      this.map = new maplibregl.Map(mapProps);
 
       this.draw = new MapboxDraw({
         displayControlsDefault: false,

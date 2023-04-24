@@ -6,7 +6,7 @@ export default {
         minzoom: 11,
         layout: {
           'text-field': ['concat', 'AW Project: ', ['get', 'name']],
-          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+          'text-font': ['Arial Unicode MS Regular'],
           'text-size': ['interpolate', ['linear'], ['zoom'], 13, 15, 18, 20],
           'text-line-height': 1,
           'text-max-width': 17.5,
@@ -75,7 +75,7 @@ export default {
         minzoom: 11,
         layout: {
           'text-field': ['concat', ['get', 'river'], ':\n', ['get', 'section']],
-          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+          'text-font': ['Arial Unicode MS Regular'],
           'text-size': ['interpolate', ['linear'], ['zoom'], 13, 15, 18, 20],
           'text-line-height': 1,
           'text-max-width': 17.5,
@@ -99,29 +99,31 @@ export default {
         minzoom: 8,
         layout: {
           'text-field': ['to-string', ['get', 'class']],
-          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+          'text-font': ['Arial Unicode MS Regular'],
           'text-size': 10,
           'icon-ignore-placement': true,
           'icon-image': [
             'match',
             ['length', ['get', 'class']],
             1,
-            'default-2',
+            'Road/Rectangle white black/2',
             2,
-            'default-2',
+            'Road/Rectangle white black/2',
             3,
-            'default-3',
+            'Road/Rectangle white black/3',
             4,
-            'default-4',
+            'Road/Rectangle white black/4',
             5,
-            'default-4',
+            'Road/Rectangle white black/5',
             6,
-            'default-5',
+            'Road/Rectangle white black/6',
             7,
-            'default-5',
-            8,
-            'default-5',
-            'default-6'
+            'Road/Rectangle white black/7',
+            'Road/Rectangle white black/7'
+          ],
+          'icon-size': ['case',
+            ['>=', ['length', ['get', 'class']], 8], 1.1,
+            1
           ],
           'icon-rotation-alignment': 'viewport',
           'text-offset': [0, -0.5],
@@ -141,7 +143,7 @@ export default {
             ['>', ['length', ['get', 'altname']], 0], ['concat', ' (', ['get', 'altname'], ')'],
             ''
           ]],
-          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Regular'],
+          'text-font': ['Arial Unicode MS Regular'],
           'text-size': ['interpolate', ['linear'], ['zoom'], 13, 15, 18, 20],
           'text-line-height': 1,
           'text-max-width': 17.5,
@@ -172,7 +174,7 @@ export default {
             ['concat', ['get', 'name'], ' (', ['get', 'difficulty'], ')'],
             ['get', 'name']
           ],
-          'text-font': ['DIN Offc Pro Regular', 'Arial Unicode MS Regular'],
+          'text-font': ['Arial Unicode MS Regular'],
           'text-size': 14,
           'icon-image': [
             'case',

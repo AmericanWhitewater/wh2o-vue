@@ -44,7 +44,7 @@ export default {
 
  <style lang="scss">
 @import "/assets/scss/app";
-@import "~mapbox-gl/dist/mapbox-gl.css";
+@import "~maplibre-gl/dist/maplibre-gl.css";
 
 .slide-left-enter-active,
 .slide-left-leave-active,

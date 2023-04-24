@@ -2,7 +2,7 @@ import { createWrapper } from '@/utils'
 import NwiMapSearch from '@/app/views/river-index/components/nwi-map-search.vue'
 import { SearchBar } from '@/app/global/components'
 
-jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+jest.mock('maplibre-gl/dist/maplibre-gl', () => ({
   Map: () => ({})
 }))
 

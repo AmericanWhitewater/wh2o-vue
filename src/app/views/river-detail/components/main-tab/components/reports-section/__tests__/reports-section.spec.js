@@ -1,7 +1,7 @@
 import ReportsSection from '../reports-section.vue'
 import { createWrapper } from '@/utils'
 
-jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
+jest.mock('maplibre-gl/dist/maplibre-gl', () => ({
   Map: () => ({})
 }))
 

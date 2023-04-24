@@ -24,12 +24,9 @@
 </template>
 
 <script>
-import mapboxgl from 'mapbox-gl'
+import maplibregl from 'maplibre-gl'
 import { mapState } from 'vuex'
 import { basemapToggleMixin, mapHelpersMixin } from '@/app/global/mixins'
-import {
-  mapboxAccessToken
-} from '@/app/environment'
 import debounce from 'lodash.debounce'
 
 import { point } from '@turf/helpers'
@@ -123,15 +120,15 @@ export default {
       }
     },
     mountMap () {
-      mapboxgl.accessToken = mapboxAccessToken
       const mapProps = {
         container: this.$refs.rapidMapEditor,
         style: this.baseMapUrl,
         bounds: this.startingBounds,
-        fitBoundsOptions: { padding: this.boundsPadding }
+        fitBoundsOptions: { padding: this.boundsPadding },
+        attributionControl: false
       }
 
-      this.map = new mapboxgl.Map(mapProps)
+      this.map = new maplibregl.Map(mapProps)
 
       this.map.on('styledata', this.loadReach)
       this.map.on('load', () => {
@@ -151,7 +148,7 @@ export default {
       this.$emit('poiMoved', this.pointOfInterest.getLngLat())
     },
     async renderPOI (geometry) {
-      this.pointOfInterest = new mapboxgl.Marker({
+      this.pointOfInterest = new maplibregl.Marker({
         draggable: true
       }).setLngLat(geometry.coordinates)
         .addTo(this.map)
@@ -194,14 +191,12 @@ export default {
     }
   },
   mounted () {
-    if (mapboxAccessToken) {
-      this.mountMap()
+    this.mountMap()
 
-      this.debouncedEmitPOILocation = debounce(this.emitPOILocation, 200, {
-        leading: false,
-        trailing: true
-      })
-    }
+    this.debouncedEmitPOILocation = debounce(this.emitPOILocation, 200, {
+      leading: false,
+      trailing: true
+    })
   },
   beforeDestroy() {
     if(this.map) {
