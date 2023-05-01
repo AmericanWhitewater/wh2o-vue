@@ -2,11 +2,9 @@
   <div class="rapid-edit-modal">
     <cv-modal
       ref="modalWrapper"
-      :visible="rapidModalVisible"
       size="large"
-      @secondary-click="handleCancel"
-      @primary-click="submitForm"
-      @modal-hidden="handleCancel"
+      @primary-click="_confirm()"
+      @modal-hidden="_cancel()"
       @modal-shown="setModalOffset"
     >
       <template slot="title">
@@ -77,7 +75,7 @@
           title="Characteristics"
         />
         <ContentEditor
-          v-if="renderEditor"
+          :key="rapidId"
           :content="formData.description"
           label="Description"
           placeholder=" "
@@ -118,18 +116,7 @@ export default {
     shadowDomFixedHeightOffset,
     mapHelpersMixin,
   ],
-  props: {
-    rapidModalVisible: {
-      type: Boolean,
-      required: true,
-    },
-    rapidId: {
-      type: String,
-      required: false,
-    },
-  },
   data: () => ({
-    renderEditor: false,
     formPending: false,
     editorToolbar: "undo redo | bold italic | removeformat",
     poiCharacteristics: [
@@ -183,17 +170,12 @@ export default {
       character: [],
       geom: { coordinates: [], type: "point" },
     },
+    activeRapid: null
   }),
   computed: {
     ...mapState({
       reach: state => state.RiverDetail.data,
-      rapids: state => state.RiverRapids.data,
     }),
-    activeRapid() {
-      return this.rapidId
-        ? this.rapids.find((r) => r.id === this.rapidId)
-        : null;
-    },
     rapidOnMap() {
       return (
         this.activeRapid?.rloc || this.formData.geom.coordinates.length > 0
@@ -202,10 +184,39 @@ export default {
     modalTitle() {
       return this.activeRapid ? "Edit Feature" : "New Feature";
     },
+    rapidId() {
+      return this.activeRapid?.id;
+    }
   },
   methods: {
     descriptionUpdated(description) {
       this.formData.description = description;
+    },
+    emptyFormData() {
+      return {
+        name: "",
+        difficulty: "N/A",
+        distance: null,
+        description: "",
+        character: [],
+        geom: { coordinates: [], type: "point" },
+      };
+    },
+    show(opts) {
+      this.activeRapid = opts.rapid;
+      this.setInitialFormData(opts.rapid);
+      this.$refs.modalWrapper.show();
+      return new Promise((resolve, reject) => {
+        this.resolvePromise = resolve;
+        this.rejectPromise = reject;
+      });
+    },
+    async _confirm() {
+      await this.submitForm();
+      this.resolvePromise({
+        rapid: this.formData.rapid
+      });
+      this.$refs.modalWrapper.hide();
     },
     async submitForm() {
       this.$emit("edit:submitted");
@@ -253,33 +264,34 @@ export default {
         );
       }
     },
-    handleCancel() {
-      this.$emit("edit:cancelled");
+    _cancel() {
+      this.resolvePromise(false);
     },
-  },
-  mounted() {
-    if (this.activeRapid) {
-      this.formData = Object.assign(this.formData, this.activeRapid);
-      if (this.activeRapid.rloc) {
-        const coords = this.activeRapid.rloc
-          .split(" ")
-          .map((x) => parseFloat(x));
-        this.formData.geom = point(coords).geometry;
+    setInitialFormData(rapid) {
+      if (rapid) {
+        this.formData = Object.assign(this.formData, rapid);
+        if (rapid.rloc) {
+          const coords = rapid.rloc
+            .split(" ")
+            .map((x) => parseFloat(x));
+          this.formData.geom = point(coords).geometry;
+        }
+        const distance = rapid.distance;
+        // if distance is present, use it to calculate the point
+        // otherwise, allow user to create the point by clicking
+        if (
+          !this.formData.geom.coordinates.length &&
+          this.reachGeom &&
+          distance
+        ) {
+          this.formData.geom = along(this.reachGeom, distance, {
+            units: "miles",
+          }).geometry;
+        }
+      } else {
+        this.formData = this.emptyFormData();
       }
-      const distance = this.activeRapid.distance;
-      // if distance is present, use it to calculate the point
-      // otherwise, allow user to create the point by clicking
-      if (
-        !this.formData.geom.coordinates.length &&
-        this.reachGeom &&
-        distance
-      ) {
-        this.formData.geom = along(this.reachGeom, distance, {
-          units: "miles",
-        }).geometry;
-      }
-    }
-    this.renderEditor = true;
+    },
   },
 };
 </script>

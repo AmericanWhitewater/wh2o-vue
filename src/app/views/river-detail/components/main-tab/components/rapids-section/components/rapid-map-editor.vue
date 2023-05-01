@@ -51,7 +51,8 @@ export default {
     // TODO: we may want to default snapMode on or off depending
     // on whether the point is *already* snapped to the line
     snapMode: true,
-    map: null
+    map: null,
+    pointOfInterest: null
   }),
   computed: {
     ...mapState({
@@ -73,6 +74,10 @@ export default {
         return 80
       }
       return 0
+    },
+    // returns true if geom prop is a defined point
+    pointPassed () {
+      return this.geom && this.geom.coordinates && this.geom.coordinates.length === 2
     }
   },
   watch: {
@@ -82,20 +87,35 @@ export default {
       deep: true,
       immediate: true,
       handler (newVal) {
+        // if the marker already exists, either remove it or update its location
         if (this.pointOfInterest) {
-          const oldCoords = this.pointOfInterest.getLngLat()
-          if (oldCoords.lng !== newVal.coordinates[0] || oldCoords.lat !== newVal.coordinates[1]) {
-            this.pointOfInterest.setLngLat([newVal.coordinates[0], newVal.coordinates[1]])
-            // ensure it snaps if the coords have been changed upstream
-            if (this.snapMode) {
-              this.snapPOIToReach()
+          if (!this.pointPassed) {
+            this.pointOfInterest.remove();
+            this.pointOfInterest = null;
+          } else {
+            const oldCoords = this.pointOfInterest.getLngLat()
+            if (oldCoords.lng !== newVal.coordinates[0] || oldCoords.lat !== newVal.coordinates[1]) {
+              this.pointOfInterest.setLngLat([newVal.coordinates[0], newVal.coordinates[1]])
+              // ensure it snaps if the coords have been changed upstream
+              if (this.snapMode) {
+                this.snapPOIToReach()
+              }
             }
           }
+        } else if (this.pointPassed) { // if there's no marker but there is a point prop
+          this.renderPOI(this.geom);
         }
+      },
+    },
+    reachGeom: {
+      deep: true,
+      handler () {
+        this.loadReachSource();
       }
     },
     snapMode: {
       handler () {
+        this.snapPOIToReach();
         this.conditionallyBindSnapHandler()
       }
     },
@@ -119,6 +139,19 @@ export default {
         }
       }
     },
+    bindMapClickHandler () {
+      this.map.on("click", async (e) => {
+        if (!this.pointOfInterest) { // does nothing if a point already exists
+          const newPoint = point([e.lngLat.lng, e.lngLat.lat]);
+          await this.renderPOI(newPoint.geometry);
+          if (this.snapMode) {
+            this.snapPOIToReach();
+          } else { // snap function already emits location
+            this.emitPOILocation();
+          }
+        }
+      });
+    },
     mountMap () {
       const mapProps = {
         container: this.$refs.rapidMapEditor,
@@ -133,14 +166,9 @@ export default {
       this.map.on('styledata', this.loadReach)
       this.map.on('load', () => {
         this.loadReach()
-        if (this.geom && this.geom.coordinates && this.geom.coordinates.length === 2) {
+        this.bindMapClickHandler();
+        if (this.pointPassed) {
           this.renderPOI(this.geom)
-        } else {
-          this.map.once("click", async (e) => {
-            const newPoint = point([e.lngLat.lng, e.lngLat.lat]);
-            await this.renderPOI(newPoint.geometry);
-            this.emitPOILocation();
-          });
         }
       })
     },
@@ -155,16 +183,25 @@ export default {
       this.pointOfInterest.on('dragend', this.debouncedEmitPOILocation)
       this.conditionallyBindSnapHandler()
     },
-    loadReach () {
+    loadReachSource () {
       if (this.reachGeom) {
-        if (this.map.getSource('reachGeom') === undefined) {
+        // if the source is already present, replace the data
+        const source = this.map.getSource('reachGeom');
+        if (source !== undefined) {
+          source.setData(this.reachGeom);
+        } else {
           this.map.addSource('reachGeom', {
             type: 'geojson',
             data: {
               ...this.reachGeom
             }
-          })
+          });
         }
+      }
+    },
+    loadReach () {
+      if (this.reachGeom) {
+        this.loadReachSource();
         if (this.map.getLayer('reachGeom') === undefined) {
           this.map.addLayer({
             id: 'reachGeom',
