@@ -50,7 +50,7 @@ export const gaugeHelpers = {
         if (obj.metric.id === "1") {
           output = this.visualReadingLabel(obj.reading);
         } else {
-          output = `${obj.reading}${obj.metric.unit}`;
+          output = `${obj.reading} ${obj.metric.unit}`;
         }
       } else {
         output = "n/a";
