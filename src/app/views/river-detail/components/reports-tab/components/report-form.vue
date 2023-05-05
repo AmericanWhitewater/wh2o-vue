@@ -194,7 +194,7 @@ export default {
       // but graphql API blows up if we submit an empty string, so need to
       // convert to null before submission
       ["metric_id", "gauge_id", "observation", "reading"].forEach((field) => {
-        if (this.formData[field] === "") {
+        if (this.formData[field] === "" || this.formData[field] === "undefined") {
           this.formData[field] = null;
         }
       });
