@@ -14,6 +14,8 @@ const {
   VUE_APP_WP_API_URL,
   VUE_APP_NWI_TILE_SERVER,
   VUE_APP_MAPBOX_ACCESS_TOKEN,
+  VUE_APP_SATELLITE_MAP_LAYER_ID,
+  VUE_APP_TOPO_MAP_LAYER_ID,
   VUE_APP_BASE_URL,
   VUE_APP_CLIENT_ID,
   VUE_APP_CLIENT_SECRET,
@@ -25,6 +27,8 @@ const {
 
 const environment = NODE_ENV.toLowerCase()
 const arcgisApiKey = VUE_APP_ARCGIS_API_KEY
+const satelliteMapLayerId = VUE_APP_SATELLITE_MAP_LAYER_ID
+const topoMapLayerId = VUE_APP_TOPO_MAP_LAYER_ID
 const apiBaseUrl = VUE_APP_API_BASE_URL
 const appBaseUrl = VUE_APP_BASE_URL
 const assetBaseUrl = STATIC_ASSET_URL || VUE_APP_API_BASE_URL
@@ -48,5 +52,7 @@ export {
   clientId,
   clientSecret,
   laravelDeploy,
-  baseUrl
+  baseUrl,
+  satelliteMapLayerId,
+  topoMapLayerId
 }
