@@ -156,6 +156,9 @@ export default {
         }
       });
     },
+    availableGageIds() {
+      return this.gagesWithGage.map(x => x.gauge.id);
+    }
   },
   watch: {
     "formData.gauge_id": {
@@ -260,7 +263,12 @@ export default {
             "YYYY-MM-DD HH:mm:ss"
           ).format("YYYY-MM-DD");
         } else if (key === "gauge_id") {
-          this.formData[key] = this.report.gauge?.id;
+          // there are some situations where reports are associated with gauges that are no
+          // longer associated with the reach. That causes problems with the form
+          // because the dropdown doesn't display that gauge. Ensure we avoid that situation
+          if (this.availableGageIds.includes(this.report.gauge?.id)) {
+            this.formData[key] = this.report.gauge?.id;
+          }
         } else if (key === "metric_id") {
           this.formData[key] = this.report.metric?.id;
         } else {
