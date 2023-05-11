@@ -55,6 +55,7 @@ export default {
         plugins: ["paste", "link", "lists"],
         menubar: false,
         height: 400,
+        convert_urls: false
       },
     };
   },
