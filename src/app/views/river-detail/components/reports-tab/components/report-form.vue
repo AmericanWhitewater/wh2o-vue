@@ -15,7 +15,7 @@
       class="mb-spacing-md"
     />
 
-    <cv-select v-model="formData.gauge_id" label="Gage" class="mb-spacing-md">
+    <cv-select v-model="formData.gauge_id" label="Gage" class="mb-spacing-md" @change="changeGauge">
       <cv-select-option value="">None</cv-select-option>
       <cv-select-option
         v-for="(g, index) in gagesWithGage"
@@ -156,30 +156,28 @@ export default {
         }
       });
     },
-  },
-  watch: {
-    "formData.gauge_id": {
-      handler: function (newVal, oldVal) {
-        // if switching between gauges, do nothing
-        // if switching from gauge to no gauge or vice versa,
-        // update reading and metric_id accordingly
-        if (newVal && (!oldVal || oldVal === undefined)) {
-          this.formData.reading = "";
-          const selectedGage = this.gages.find((x) => x.gauge.id === newVal);
-          this.formData.metric_id = `${selectedGage?.gauge_metric}`;
-        } else if (!newVal) {
-          // ensure metric_id is set properly whenever there is no gauge
-          this.formData.metric_id = "1";
-          if (oldVal) {
-            // revert reading to empty if we just changed from gauge to no gauge
-            this.formData.reading = "";
-          }
-        }
-      },
-      immediate: true,
-    },
+    availableGageIds() {
+      return this.gagesWithGage.map(x => x.gauge.id);
+    }
   },
   methods: {
+    changeGauge(newVal, oldVal) {
+      // if switching between gauges, do nothing
+      // if switching from gauge to no gauge or vice versa,
+      // update reading and metric_id accordingly
+      if (newVal && (!oldVal || oldVal === undefined)) {
+        this.formData.reading = "";
+        const selectedGage = this.gages.find((x) => x.gauge.id === newVal);
+        this.formData.metric_id = `${selectedGage?.gauge_metric}`;
+      } else if (!newVal) {
+        // ensure metric_id is set properly whenever there is no gauge
+        this.formData.metric_id = "1";
+        if (oldVal) {
+          // revert reading to empty if we just changed from gauge to no gauge
+          this.formData.reading = "";
+        }
+      }
+    },
     processFormData() {
       // since user is a state property, it can't always be populated
       // immediately when the component is mounted, so we insure it's
@@ -194,7 +192,7 @@ export default {
       // but graphql API blows up if we submit an empty string, so need to
       // convert to null before submission
       ["metric_id", "gauge_id", "observation", "reading"].forEach((field) => {
-        if (this.formData[field] === "") {
+        if (this.formData[field] === "" || this.formData[field] === "undefined") {
           this.formData[field] = null;
         }
       });
@@ -260,7 +258,12 @@ export default {
             "YYYY-MM-DD HH:mm:ss"
           ).format("YYYY-MM-DD");
         } else if (key === "gauge_id") {
-          this.formData[key] = this.report.gauge?.id;
+          // there are some situations where reports are associated with gauges that are no
+          // longer associated with the reach. That causes problems with the form
+          // because the dropdown doesn't display that gauge. Ensure we avoid that situation
+          if (this.availableGageIds.includes(this.report.gauge?.id)) {
+            this.formData[key] = this.report.gauge?.id;
+          }
         } else if (key === "metric_id") {
           this.formData[key] = this.report.metric?.id;
         } else {

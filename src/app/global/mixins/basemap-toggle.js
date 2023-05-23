@@ -1,5 +1,5 @@
 import NwiBasemapToggle from "@/app/views/river-index/components/nwi-basemap-toggle.vue";
-import { arcgisApiKey } from "@/app/environment";
+import { arcgisApiKey, satelliteMapLayerId, topoMapLayerId } from "@/app/environment";
 
 export const basemapToggleMixin = {
   computed: {
@@ -20,9 +20,9 @@ export const basemapToggleMixin = {
     baseMapUrlFor(mapType) {
       let basemapStyle;
       if (mapType === "satellite") {
-        basemapStyle = "ArcGIS:Imagery"
+        basemapStyle = satelliteMapLayerId || "ArcGIS:Imagery"
       } else { // mapType == "topo"
-        basemapStyle = "ArcGIS:Topographic"
+        basemapStyle = topoMapLayerId || "ArcGIS:Topographic"
       }
       return `https://basemaps-api.arcgis.com/arcgis/rest/services/styles/${basemapStyle}?type=style&token=${arcgisApiKey}`;
     }
