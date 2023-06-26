@@ -65,11 +65,14 @@ export default {
       required: true,
       default: () => []
     },
-
     metric: {
       type: Object,
       required: false,
       default: () => getEmptyMetric()
+    },
+    current: {
+      type: Number,
+      required: false
     }
   },
   computed: {
@@ -85,10 +88,8 @@ export default {
             Number(a) + Number(reading), 0
         )
 
-
-
         return {
-          current: this.format(this.readings[this.readings.length-1].reading),
+          current: this.format(this.current || this.readings[this.readings.length-1].reading),
           min: this.format(Math.min(...data)),
           max: this.format(Math.max(...data)),
           avg: this.format((readingsSum / data.length))
