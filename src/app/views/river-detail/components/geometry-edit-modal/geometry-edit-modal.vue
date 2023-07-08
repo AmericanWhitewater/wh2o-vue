@@ -12,6 +12,7 @@
     </template>
     <template slot="content">
       <geometry-editor
+        v-if="modalVisible"
         :key="geomEditorKey"
         @updatedGeom="updateReachGeom"
       />
@@ -46,6 +47,7 @@ export default {
     geom: null,
     resolvePromise: undefined,
     rejectPromise: undefined,
+    modalVisible: false
   }),
   computed: {
     reachLength () {
@@ -65,6 +67,7 @@ export default {
     },
     show() {
       this.$refs.modalWrapper.show();
+      this.modalVisible = true;
       return new Promise((resolve, reject) => {
         this.resolvePromise = resolve;
         this.rejectPromise = reject;
@@ -82,6 +85,7 @@ export default {
       })
     },
     _cancel () {
+      this.modalVisible = false
       this.$emit('edit:cancelled')
     }
   },
