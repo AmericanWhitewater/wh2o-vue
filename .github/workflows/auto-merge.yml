@@ -1,0 +1,13 @@
+name: Auto merge
+on:
+  pull_request:
+jobs:
+  auto-merge:
+    name: Auto-merge dependabot PRs
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ahmadnassri/action-dependabot-auto-merge@v2
+        with:
+          target: minor
+          github-token: '${{ secrets.WH2O_TOKEN }}'
