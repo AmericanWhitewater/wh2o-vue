@@ -1,3 +1,4 @@
+# Auto-approve dependabot PRs
 name: Auto approve
 on: pull_request
 jobs:

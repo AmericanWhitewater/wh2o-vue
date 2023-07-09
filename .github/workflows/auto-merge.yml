@@ -1,3 +1,5 @@
+# This workflow will auto-merge all dependabot PRs that are targeting a minor version bump
+# and pass CI checks.
 name: Auto merge
 on:
   pull_request:
