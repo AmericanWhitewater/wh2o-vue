@@ -1,6 +1,7 @@
 name: Merge Review Test Build
 
 on:
+  workflow_dispatch: # temp for local testing
   pull_request:
     branches:
       - development
@@ -9,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.5.0
@@ -17,7 +18,7 @@ jobs:
           node-version: 14
 
       - name: NPM Install
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Linting
         run: npm run lint
@@ -27,3 +28,8 @@ jobs:
 
       - name: NPM Build
         run: npm run build
+
+      - name: Create New Version
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # replace GITHUB_TOKEN with access token that has required permissions
