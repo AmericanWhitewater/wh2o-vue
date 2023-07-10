@@ -1,7 +1,6 @@
 name: Merge Review Test Build
 
 on:
-  workflow_dispatch: # temp for local testing
   pull_request:
     branches:
       - development

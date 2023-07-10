@@ -1,5 +1,5 @@
 module.exports = {
-    branches: ["development","semver-release"], // semver-release is temporary for local testing
+    branches: ["development"],
     repositoryUrl: "git@github.com:AmericanWhitewater/wh2o-vue.git",
     plugins: [
         "@semantic-release/commit-analyzer",
