@@ -65,13 +65,13 @@
                                 class="mb-md"
                                 :metric="activeMetric"
                                 :metrics="metrics"
-                                :current="lastReading || 0"
+                                :current="lastReading"
 
                             />
                             <flow-stats
                                 :readings="readingsWithLast"
                                 :loading="loading"
-                                :current="lastReading || 0"
+                                :current="lastReading"
                                 :metric="activeMetric"
                             />
                           </div>
