@@ -34,7 +34,7 @@ export default {
     },
   },
   metaInfo: {
-    title: "American Whitewater",
+    title: "Canadian Whitewater",
   },
   created() {
     this.$store.dispatch("User/getProperty");
