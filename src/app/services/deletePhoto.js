@@ -1,7 +1,7 @@
-import http from "@/app/http"
+import { laravelClient } from "@/app/http"
 
 export async function deletePhoto(id) {
-  return http.post('/graphql', {
+  return laravelClient.post('/graphql', {
     query: `
           mutation ($id:ID!) {
             photoDelete(id: $id)  {

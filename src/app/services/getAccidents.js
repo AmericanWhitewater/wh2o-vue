@@ -1,7 +1,7 @@
-import http from "@/app/http"
+import { laravelClient } from "@/app/http"
 
 export async function getAccidents() {
-  return http.post('graphql', {
+  return laravelClient.post('graphql', {
     query: `
       query { 
         accidents(first: 25, orderBy: {field: ACCIDENT_DATE, order: ASC}, page: 1) {

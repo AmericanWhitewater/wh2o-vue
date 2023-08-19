@@ -1,8 +1,8 @@
-import http from "@/app/http"
+import { laravelClient } from "@/app/http"
 
 export async function getReachReports(id, pagination) {
 
-  return http
+  return laravelClient
     .post('graphql', {
       query: `
         query {

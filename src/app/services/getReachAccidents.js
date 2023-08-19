@@ -1,9 +1,9 @@
-import http from "@/app/http"
+import { laravelClient } from "@/app/http"
 import moment from 'moment'
 
 export async function getReachAccidents(id) {
 
-  return http.post('graphql', {
+  return laravelClient.post('graphql', {
     query: `
       query {
         reach(id: ${id}) {

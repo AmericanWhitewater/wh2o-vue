@@ -1,7 +1,7 @@
-import http from "@/app/http"
+import { laravelClient } from "@/app/http"
 
 export async function getDocument(id) {
-  return http.post('graphql', {
+  return laravelClient.post('graphql', {
     query: `
        query { 
           document(id: ID!) {

@@ -236,7 +236,7 @@ import { mapState } from 'vuex'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { checkWindow } from '@/app/global/mixins'
 import cloneDeep from 'lodash/cloneDeep.js'
-import http from '@/app/http'
+import { laravelClient } from '@/app/http'
 import ContentEditor from '@/app/global/components/content-editor/content-editor.vue'
 import { getEmptyMetric, getEmptyReading } from '@/app/global/lib/gages'
 import { uniq } from 'lodash/array'
@@ -405,7 +405,7 @@ export default {
       if (this.updatedDescription && this.river.id) {
         this.updatePending = true
 
-        http.post('/graphql', {
+        laravelClient.post('/graphql', {
           query: `
           mutation  {
             reachUpdate(id: ${this.river.id}, reach:{ gaugeinfo: "${this.$cleanContent(this.updatedDescription)}"}) {

@@ -1,7 +1,7 @@
-import http from "@/app/http"
+import { laravelClient } from "@/app/http"
 
 export async function getAffiliates() {
-  return http.post('graphql', {
+  return laravelClient.post('graphql', {
     query: `
       query {
         affiliates(first: 25, page: 1) {

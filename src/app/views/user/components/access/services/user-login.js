@@ -1,7 +1,7 @@
-import http from '@/app/http'
+import { laravelClient } from '@/app/http'
 
 export function userLogin (data) {
-  return http.post('/oauth/token', data).then(response => {
+  return laravelClient.post('/oauth/token', data).then(response => {
     return response.data
   })
 }
