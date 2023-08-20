@@ -7,8 +7,6 @@ export * from "./deleteReach";
 export * from "./getAccidents";
 export * from "./getAffiliates";
 export * from "./getAllReachReports";
-export * from "./getArticle";
-export * from "./getArticles";
 export * from "./getDocument";
 export * from "./getDocuments";
 export * from "./getEvents";

@@ -97,16 +97,6 @@
               </cv-button>
 
               <cv-button
-                id="news-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/news').catch(() => {})"
-                @keydown.enter="$router.push('/news').catch(() => {})"
-              >
-                News
-              </cv-button>
-              <cv-button
                 v-if="!user"
                 id="login-btn"
                 kind="primary"

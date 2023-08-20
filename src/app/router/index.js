@@ -13,7 +13,6 @@ import gagesRoutes from './gages.routes'
 import affiliatesRoutes from './affiliates.routes'
 import riverIndexRoutes from "./river-index.routes"
 import riverDetailRoutes from "./river-detail.routes"
-import newsPageRoutes from "./news-page.routes"
 import userRoutes from "./user.routes"
 
 Vue.use(VueRouter);
@@ -25,7 +24,6 @@ const routes = [
   ...gagesRoutes,
   ...documentsRoutes,
   ...accidentsRoutes,
-  ...newsPageRoutes,
   ...riverDetailRoutes,
   ...riverIndexRoutes,
   ...staticRoutes,
