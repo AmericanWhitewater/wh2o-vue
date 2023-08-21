@@ -40,9 +40,8 @@ export default {
     ...mapState({
       loading: state => state.RiverAlerts.loading,
       alerts: state => state.RiverAlerts.data,
-      articles: state => state.RiverNews.data,
-      projects: state => state.RiverProjects.data,
-
+      articles: state => state.RiverArticles.data,
+      projects: state => state.RiverProjects.data
     }),
     documents() {
       if(this.$store.getters){
@@ -58,7 +57,7 @@ export default {
   methods: {
     loadData () {
       this.$store.dispatch('RiverAlerts/getProperty', this.$route.params.id)
-      this.$store.dispatch('RiverNews/getProperty', this.$route.params.id)
+      this.$store.dispatch('RiverArticles/getProperty', this.$route.params.id)
       this.$store.dispatch('RiverProjects/getProperty', this.$route.params.id)
       this.$store.dispatch('RiverLinker/getProperty', this.$route.params.id)
     }

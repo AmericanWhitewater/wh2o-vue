@@ -8,7 +8,7 @@ const mockStore = {
       data: null,
       loading: null
     },
-    RiverNews: {
+    RiverArticles: {
       data: null
     },
     RiverProjects: {
@@ -55,7 +55,7 @@ describe('RecentAlerts.vue', () => {
     )
 
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(2,
-      'RiverNews/getProperty', riverId
+      'RiverArticles/getProperty', riverId
     )
   })
 })

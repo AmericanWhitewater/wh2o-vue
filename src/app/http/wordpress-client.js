@@ -2,7 +2,7 @@ import axios from 'axios'
 import { wpApiUrl } from '@/app/environment'
 
 const config = {
-  baseUrl: wpApiUrl
+  baseURL: wpApiUrl
 };
 
 const http = axios.create(config);
