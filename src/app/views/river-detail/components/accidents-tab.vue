@@ -13,6 +13,7 @@
           <page-description
             description="If someone gets hurt on a river, or you read about a whitewater-related injury, please report it to American Whitewater. Don't worry about multiple submissions from other witnesses, as our safety editors will turn multiple witness reports into a single unified accident report."
           >
+          <!-- TODO: add link to new accident form !-->
             <cv-button
               kind="secondary"
               size="small"
@@ -40,29 +41,30 @@
                     v-for="(a, index) in accidents"
                     :key="index"
                   >
-                    <td v-text="formatDate(a.accident_date, 'll')" />
-                    <td v-text="a.water_level" />
+                    <td v-text="formatDate(a.date, 'll')" />
+                    <td v-text="a['water-level']" />
                     <td>
-                      {{ accidentResult(a.type) }}
+                      {{ a['injury-type'] }}
                     </td>
                     <td>
                       <cv-list>
                         <cv-list-item
-                          v-for="(c, i) in a.causes"
+                          v-for="(c, i) in a['cause-code']"
                           :key="i"
                         >
-                          {{ c.cause }}
+                          {{ c }}
                         </cv-list-item>
                       </cv-list>
                     </td>
                     <td>
-                      <cv-button
-                        small
-                        kind="tertiary"
-                        @click.exact="viewAccident(a.id)"
-                      >
-                        Full Report
-                      </cv-button>
+                      <a :href="a.link" target="_blank">
+                        <cv-button
+                          small
+                          kind="tertiary"
+                        >
+                          Full Report
+                        </cv-button>
+                      </a>
                     </td>
                   </tr>
                 </template>
@@ -130,22 +132,6 @@ export default {
         'RiverAccidents/getProperty',
         this.riverId
       )
-    },
-    viewAccident (accidentId) {
-      this.goToLink(this.formatLinkUrl(`/content/Accident/detail/accidentid/${accidentId}`))
-    },
-
-    accidentResult (result) {
-      switch (result) {
-        case 'F':
-          return 'Fatality'
-        case 'M':
-          return 'Near Miss/Rescue'
-        case 'I':
-          return 'Injury'
-        default:
-          return 'n/a'
-      }
     }
   },
   created () {

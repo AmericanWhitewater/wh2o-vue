@@ -1,37 +1,10 @@
-import { laravelClient } from "@/app/http"
-import moment from 'moment'
+import { wpClient } from "@/app/http"
 
 export async function getReachAccidents(id) {
 
-  return laravelClient.post('graphql', {
-    query: `
-      query {
-        reach(id: ${id}) {
-          accidents(first: 20, page: 1) {
-            data {
-              accident_date
-              water_level
-              status
-              type
-              factors {
-                factor
-              }
-              injuries {
-                injury
-              }
-              causes {
-                cause
-              }
-              id
-            }
-          }
-        }
-      }`
-  }).then(res => {
-    const data = res.data.data.reach.accidents.data.map(a => {
-      a.accident_date = moment(a.accident_date, 'YYYY-MM-DD HH:mm:ss')
-      return a
-    }).sort((a, b) => b.accident_date.unix() - a.accident_date.unix())
-    return data
-  })
+  return wpClient.get('accidents', {
+    params: {
+      reach: id
+    }
+  }).then(res => res.data);
 }
