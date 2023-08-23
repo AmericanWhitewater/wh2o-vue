@@ -8,7 +8,6 @@ import staticRoutes from '@/app/views/static-routes/static-routes'
 import gageDetailRoutes from './gage-detail.routes'
 import projectsRoutes from './projects.routes'
 import documentsRoutes from './documents.routes'
-import accidentsRoutes from './accidents.routes'
 import gagesRoutes from './gages.routes'
 import affiliatesRoutes from './affiliates.routes'
 import riverIndexRoutes from "./river-index.routes"
@@ -23,7 +22,6 @@ const routes = [
   ...projectsRoutes,
   ...gagesRoutes,
   ...documentsRoutes,
-  ...accidentsRoutes,
   ...riverDetailRoutes,
   ...riverIndexRoutes,
   ...staticRoutes,

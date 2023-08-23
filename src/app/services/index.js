@@ -4,7 +4,6 @@ export * from "./deletePhoto";
 export * from "./deletePost";
 export * from "./deleteRapid";
 export * from "./deleteReach";
-export * from "./getAccidents";
 export * from "./getAffiliates";
 export * from "./getAllReachReports";
 export * from "./getDocument";
