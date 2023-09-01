@@ -15,7 +15,8 @@
     "snapshot:update": " vue-cli-service test:unit --updateSnapshot",
     "watch-static": "vue-cli-service build --watch --no-clean",
     "lint:js": "eslint './src/**/*.js' './src/**/*.vue' --fix",
-    "lint:scss": "stylelint './src/**/*.{scss, vue}' --syntax scss --fix"
+    "lint:scss": "stylelint './src/**/*.{scss, vue}' --syntax scss --fix",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@apollo/client": "^3.2.1",
@@ -51,18 +52,15 @@
     "geojson-rbush": "^3.1.2",
     "graph-data-structure": "^1.12.0",
     "graphql": "^15.3.0",
-    "jest-transform-graphql": "^2.1.0",
     "lodash": "^4.17.20",
     "maplibre-gl": "^1.15.3",
     "moment": "^2.29.4",
     "nanoid": "^3.3.4",
     "rbush-knn": "^3.0.1",
     "register-service-worker": "^1.7.1",
-    "sass": "^1.53.0",
     "screenfull": "^5.0.2",
     "scroll-into-view-if-needed": "^2.2.24",
     "tinymce": "^5.10.7",
-    "typescript": "^4.0.5",
     "v-year-calendar": "^1.0.2",
     "vue": "^2.6.11",
     "vue-check-view": "^0.3.0",
@@ -75,6 +73,10 @@
     "wkx": "^0.5.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "17.6.6",
+    "@commitlint/config-conventional": "17.6.6",
+    "@semantic-release/changelog": "6.0.3",
+    "@semantic-release/git": "10.0.1",
     "@sentry/browser": "^5.19.2",
     "@sentry/integrations": "^5.21.0",
     "@typescript-eslint/eslint-plugin": "^4.6.1",
@@ -98,17 +100,21 @@
     "eslint-plugin-vue": "^7.0.0",
     "flush-promises": "^1.0.2",
     "graphql-tag": "^2.10.4",
+    "husky": "8.0.3",
     "jest-transform-stub": "^2.0.0",
+    "jest-transform-graphql": "^2.1.0",
     "lint-staged": "^10.2.4",
     "prettier": "^2.0.5",
     "sass-loader": "^8.0.2",
+    "sass": "^1.53.0",
+    "semantic-release": "19.0.5",
     "stylelint": "^13.3.3",
     "stylelint-order": "^4.1.0",
     "stylelint-scss": "^3.17.2",
+    "typescript": "^4.0.5",
     "vue-apollo": "^3.0.3",
     "vue-cli-plugin-apollo": "^0.22.2",
-    "vue-template-compiler": "^2.6.11",
-    "yorkie": "^2.0.0"
+    "vue-template-compiler": "^2.6.11"
   },
   "postcss": {
     "plugins": {
@@ -122,9 +128,5 @@
   ],
   "engines": {
     "node": "~14"
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged && npm run test:unit"
-  },
-  "homepage": "https://github.com/drewalth/wh2o-vue"
+  }
 }
