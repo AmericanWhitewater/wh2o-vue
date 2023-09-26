@@ -36,8 +36,13 @@ import { basemapToggleMixin } from '@/app/global/mixins'
 import { mapState } from 'vuex'
 import {
   laravelDeploy,
-  nwiTileServer
+  nwiTileServer,
+  nwiTileServerTokenEndpoint,
 } from '@/app/environment'
+import axios from 'axios'
+
+
+let tileserverToken = null;
 
 const fitBoundsOptions = {
   padding: 80,
@@ -398,7 +403,23 @@ export default {
         })
       })
     },
-    mountMap () {
+    async genTileserverToken() {
+      if (tileserverToken) {
+        return tileserverToken;
+      }
+      const response = await axios.get(nwiTileServerTokenEndpoint);
+      if (response.status !== 200) {
+        /* eslint-disable-next-line no-console */
+        console.error('NWI tokenfetch failed');
+      }
+      tileserverToken = response.data['token'];
+      return tileserverToken;
+    },
+    async mountMap() {
+      if (this.map !== null) {
+        return;
+      }
+      const tileserverToken = await this.genTileserverToken();
       const mapProps = {
         container: this.$refs.mapContainer,
         style: this.baseMapUrl,
@@ -421,14 +442,14 @@ export default {
         transformRequest: (url, resourceType) => {
           // requests for tiles need to match session csrf token.
           if (resourceType === 'Tile' && new URL(nwiTileServer).origin === new URL(url).origin) {
-
             return ({
               url,
-              headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name=\'csrf-token\']')?.getAttribute('content') }
-            })
+              headers: { 'tileserver-authorization': tileserverToken },
+              credentials: 'include'
+            });
           }
         }
-      })
+      });
 
       this.map.addControl(
           new maplibregl.NavigationControl({ showCompass: true }),
@@ -479,11 +500,9 @@ export default {
       )
     }
   },
-  mounted () {
-    this.mountMap()
-  },
-  created () {
+  async mounted () {
     this.initMap()
+    await this.mountMap();
   },
   beforeDestroy() {
     if(this.map) {
