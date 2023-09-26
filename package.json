@@ -36,6 +36,7 @@
     "@turf/nearest-point-on-line": "^6.0.2",
     "@turf/point-to-line-distance": "^6.0.0",
     "@turf/polygon-to-line": "^6.0.3",
+    "@vitejs/plugin-vue": "^4.3.4",
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",
     "apollo-link": "^1.2.14",
@@ -61,15 +62,11 @@
     "scroll-into-view-if-needed": "^2.2.24",
     "tinymce": "^5.10.7",
     "typescript": "^4.0.5",
-    "v-year-calendar": "^1.0.2",
     "vite": "^4.4.9",
     "vue-check-view": "^0.3.0",
-    "vue-gtag": "^1.6.2",
     "vue-meta": "^2.3.3",
     "vue-router": "^3.1.6",
     "vue-sanitize": "^0.2.0",
-    "vue-social-sharing": "^2.4.7",
-    "vuex": "^3.5.1",
     "wkx": "^0.5.0"
   },
   "devDependencies": {
