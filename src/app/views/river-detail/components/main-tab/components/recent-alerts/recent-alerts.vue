@@ -41,15 +41,9 @@ export default {
       loading: state => state.RiverAlerts.loading,
       alerts: state => state.RiverAlerts.data,
       articles: state => state.RiverArticles.data,
+      documents: state => state.RiverDocuments.data,
       projects: state => state.RiverProjects.data
     }),
-    documents() {
-      if(this.$store.getters){
-        return this.$store.getters['RiverLinker/documents']
-      } else {
-        return []
-      }
-    },
     anythingPresent () {
       return (this.alerts && this.alerts.length) || (this.articles && this.articles.length) || (this.projects && this.projects.length)|| (this.documents && this.documents.length)
     }
@@ -59,7 +53,7 @@ export default {
       this.$store.dispatch('RiverAlerts/getProperty', this.$route.params.id)
       this.$store.dispatch('RiverArticles/getProperty', this.$route.params.id)
       this.$store.dispatch('RiverProjects/getProperty', this.$route.params.id)
-      this.$store.dispatch('RiverLinker/getProperty', this.$route.params.id)
+      this.$store.dispatch('RiverDocuments/getProperty', this.$route.params.id)
     }
   }
 }

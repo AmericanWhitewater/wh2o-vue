@@ -14,6 +14,10 @@ const mockStore = {
     RiverProjects: {
       data: null,
       loading: null
+    },
+    RiverDocuments: {
+      data: [],
+      loading: null
     }
   }
 }

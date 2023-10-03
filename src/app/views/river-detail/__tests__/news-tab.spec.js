@@ -44,12 +44,13 @@ const mockStore = {
       data: null,
       loading: null
     },
+    RiverDocuments: {
+      data: [],
+      loading: null
+    },
     Global: {
       editMode: false
     }
-  },
-  getters: {
-    'RiverLinker/documents': []
   },
   dispatch: jest.fn()
 }
@@ -121,9 +122,7 @@ describe('NewsTab', () => {
     expect(mockStore.dispatch).toHaveBeenCalledWith(
       'RiverAlerts/getProperty', riverId
     )
-    expect(mockStore.dispatch).toHaveBeenCalledWith('RiverLinker/getProperty', riverId)
-
-    expect(mockStore.dispatch).toHaveBeenCalledTimes(3)
+    expect(mockStore.dispatch).toHaveBeenCalledTimes(2)
   })
 
   it('doesnt attempt to load alerts, articles, docs when previously loaded', async () => {
