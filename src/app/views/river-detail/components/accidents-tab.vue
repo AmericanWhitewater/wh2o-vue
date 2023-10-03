@@ -42,20 +42,9 @@
                     :key="index"
                   >
                     <td v-text="formatDate(a.date, 'll')" />
-                    <td v-text="a['water-level']" />
-                    <td>
-                      {{ a['injury-type'] }}
-                    </td>
-                    <td>
-                      <cv-list>
-                        <cv-list-item
-                          v-for="(c, i) in a['cause-code']"
-                          :key="i"
-                        >
-                          {{ c }}
-                        </cv-list-item>
-                      </cv-list>
-                    </td>
+                    <td v-text="a['water-level'].join(', ')" />
+                    <td v-text="a['injury-type'].join(', ')" />
+                    <td v-text="a['cause-code'].join(', ')" />
                     <td>
                       <a :href="a.link" target="_blank">
                         <cv-button
