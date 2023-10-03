@@ -64,17 +64,6 @@
               </cv-button>
 
               <cv-button
-                id="documents-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/documents').catch(() => {})"
-                @keydown.enter="$router.push('/documents').catch(() => {})"
-              >
-                Documents
-              </cv-button>
-
-              <cv-button
                 id="map-btn"
                 kind="ghost"
                 size="small"
