@@ -9,8 +9,6 @@ export * from "./getAllReachReports";
 export * from "./getEvents";
 export * from "./getGage";
 export * from "./getGageReadings";
-export * from "./getProject";
-export * from "./getProjects";
 export * from "./getRapids";
 export * from "./getReach";
 export * from "./getReachAccidents";

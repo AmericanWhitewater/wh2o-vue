@@ -6,7 +6,6 @@ import {laravelDeploy} from "@/app/environment"
 import staticRoutes from '@/app/views/static-routes/static-routes'
 
 import gageDetailRoutes from './gage-detail.routes'
-import projectsRoutes from './projects.routes'
 import gagesRoutes from './gages.routes'
 import affiliatesRoutes from './affiliates.routes'
 import riverIndexRoutes from "./river-index.routes"
@@ -18,7 +17,6 @@ Vue.use(VueRouter);
 const routes = [
   ...gageDetailRoutes,
   ...affiliatesRoutes,
-  ...projectsRoutes,
   ...gagesRoutes,
   ...riverDetailRoutes,
   ...riverIndexRoutes,
