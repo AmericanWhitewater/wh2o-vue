@@ -15,13 +15,18 @@ export default {
     ...actions,
     async getProperty(context, id) {
       context.commit('DATA_REQUEST')
+
       try {
         const result = await getReachProjects(id)
-        const projects = result.data.linker.find(x => x.type === 'PROJECT').data
+
+        if (!result.errors) {
+          context.commit('DATA_SUCCESS', result)
+        } else {
+          context.commit('DATA_ERROR', result.errors[0].message)
+        }
         
-        context.commit('DATA_SUCCESS', projects)
       } catch (error) {
-        // console.log('error :>> ', error);
+        context.commit('DATA_ERROR', error)
       }
 
     }

@@ -1,23 +1,11 @@
-import { laravelClient } from "@/app/http" 
+import { wpClient } from "@/app/http" 
 
 export async function getReachProjects(id) {
-  return laravelClient
-    .post('graphql/', {
-      query: `
-      {
-        linker(source: RIVER, id: "${id}") {
-          type
-          data {
-            __typename
-            ... on Project {
-              id
-              name
-              description
-            }
-          }
-        }
+  return wpClient
+    .get('projects', {
+      params: {
+        reach: id
       }
-      `
     })
     .then(res => res.data)
 }
