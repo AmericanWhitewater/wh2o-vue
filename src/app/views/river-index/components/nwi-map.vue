@@ -437,11 +437,13 @@ export default {
         mapProps.center = this.center
         mapProps.zoom = this.startingZoom
       }
+      console.log('creating map');
       this.map = new maplibregl.Map({
         ...mapProps,
         transformRequest: (url, resourceType) => {
           // requests for tiles need to match session csrf token.
           if (resourceType === 'Tile' && new URL(nwiTileServer).origin === new URL(url).origin) {
+            console.log('transforming request');
             return ({
               url,
               headers: { 'tileserver-authorization': tileserverToken },
@@ -450,6 +452,7 @@ export default {
           }
         }
       });
+      console.log('finsihd creating map');
 
       this.map.addControl(
           new maplibregl.NavigationControl({ showCompass: true }),
