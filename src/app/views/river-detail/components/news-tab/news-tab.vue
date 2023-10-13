@@ -187,9 +187,9 @@ export default {
   }),
   computed: {
     ...mapState({
-      articlesLoading: (state) => state.RiverNews.loading,
-      articlesError: (state) => state.RiverNews.error,
-      articles: (state) => state.RiverNews.data,
+      articlesLoading: (state) => state.RiverArticles.loading,
+      articlesError: (state) => state.RiverArticles.error,
+      articles: (state) => state.RiverArticles.data,
       alertsLoading: (state) => state.RiverAlerts.loading,
       alertsError: (state) => state.RiverAlerts.error,
       alerts: (state) => state.RiverAlerts.data,
@@ -214,7 +214,7 @@ export default {
     },
     async handleUpdateSuccess() {
       this.postUpdateModalVisible = false;
-      await this.$store.dispatch("RiverNews/getProperty", this.$route.params.id);
+      await this.$store.dispatch("RiverArticles/getProperty", this.$route.params.id);
       await this.$store.dispatch("RiverAlerts/getProperty", this.$route.params.id);
       this.$store.dispatch("Global/sendToast", {
         title: this.successToastTitle,
@@ -269,7 +269,7 @@ export default {
   },
   created() {
     if (!this.articles) {
-        this.$store.dispatch("RiverNews/getProperty", this.$route.params.id);
+        this.$store.dispatch("RiverArticles/getProperty", this.$route.params.id);
       }
 
       if (!this.alerts) {

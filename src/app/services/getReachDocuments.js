@@ -1,29 +1,9 @@
-import http from "@/app/http"
+import { wpClient } from "@/app/http"
 
 export async function getReachDocuments(id) {
-  return http
-    .post('graphql', {
-      query: `
-        query {
-            linker(source: RIVER, id: "${id}") {    
-              __typename,
-              data {   
-                __typename
-                ... on Document {
-                  id
-                  short_name
-                  edit_date
-                  abstract
-                  document
-                  title
-                  uri
-                  author {
-                    name
-                  }
-                }
-              }
-            }
-        }`
-    })
-    .then(res => res.data.data.linker)
+  return wpClient.get('resources', {
+    params: {
+      reach: id
+    }
+  }).then(res => res.data);
 }

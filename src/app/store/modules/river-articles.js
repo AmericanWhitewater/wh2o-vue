@@ -1,5 +1,5 @@
 import mutations from '@/app/store/mutations'
-import { getReachNews } from '@/app/services'
+import { getReachArticles } from '@/app/services'
 import moment from 'moment'
 
 export default {
@@ -16,10 +16,11 @@ export default {
       context.commit('DATA_REQUEST')
 
       try {
-        const result = await getReachNews(id)
+        const result = await getReachArticles(id)
+
         if (!result.errors) {
-          const sortedArticles = result.data.getRiverArticles.articles.sort((a, b) =>
-            moment(b.posted_date, 'YYYY-MM-DD HH:mm:ss') - moment(a.posted_date, 'YYYY-MM-DD HH:mm:ss')
+          const sortedArticles = result.sort((a, b) =>
+            moment(b.date, 'YYYY-MM-DDTHH:mm:ss') - moment(a.date, 'YYYY-MM-DDTHH:mm:ss')
           )
           context.commit('DATA_SUCCESS', sortedArticles)
         } else {

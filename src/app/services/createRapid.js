@@ -1,4 +1,4 @@
-import http from "@/app/http"
+import { laravelClient } from "@/app/http"
 
 export async function createRapid(data) {
   let rloc;
@@ -7,7 +7,7 @@ export async function createRapid(data) {
     rloc = `${data.geom.coordinates[0]} ${data.geom.coordinates[1]}`;
   }
 
-  return http.post('graphql', {
+  return laravelClient.post('graphql', {
     query: `
                 mutation ($id:ID!, $poi: POIInput!) {
                   poiUpdate(id: $id, poi: $poi) {

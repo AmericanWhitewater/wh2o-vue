@@ -24,40 +24,33 @@
       <div
         v-for="(article, i) in articles.slice(0, 1)"
         :key="i + 3 * 4"
-        class="bx--row mb-spacing-xs"
-       
+        class="bx--row mb-spacing-xs bx--tile--clickable"
       >
-        <div class="bx--col-sm-12 bx--col-md-2">
-          <img
-            class="article-thumb"
-            :src="articleThumb(article)"
-            :alt="article.title"
-          >
-        </div>
-        <div class="bx--col-sm-12 bx--col-md-6">
-          <div class="pt-spacing-sm pb-spacing-md">
-            <h5
-              class="mb-spacing-2xs sidebar-title"
-              @click.exact="readArticle(article)"
-              @keydown.enter="readArticle(article)"
-              v-text="$titleCase(article.title)"
-            />
-            <div
-              ref="abstract"
-              class="abstract-content"
+        <a :href="article.link" target="_blank">
+          <div v-if="article.featured_image_src_square" class="bx--col-sm-12 bx--col-md-2">
+            <img
+              class="article-thumb"
+              :src="article.featured_image_src_square"
+              :alt="article.title"
             >
-              <div class="read-more-container">
-                <span v-html="article.abstract"/>
-                <cv-link 
-                  :href="articleUrl(article)"
-                  class="read-more">
-                  ... Read More
-                </cv-link>
+          </div>
+          <div class="bx--col-sm-12 bx--col-md-6">
+            <div class="pt-spacing-sm pb-spacing-md">
+              <h5
+                class="mb-spacing-2xs sidebar-title"
+                v-text="$titleCase(article.title.rendered)"
+              />
+              <div
+                ref="abstract"
+                class="abstract-content"
+              >
+                <div class="read-more-container">
+                  <span v-html="article.excerpt.rendered"/>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        
+        </a>
       </div>
     </template>
     <template v-else>
@@ -69,15 +62,13 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { articleHelper } from "@/app/global/mixins";
 export default {
   name: 'sidebar-articles',
-  mixins: [articleHelper],
   computed: {
     ...mapState({
-      loading: state => state.RiverNews.loading,
-      error: state => state.RiverNews.error,
-      articles: state => state.RiverNews.data
+      loading: state => state.RiverArticles.loading,
+      error: state => state.RiverArticles.error,
+      articles: state => state.RiverArticles.data
     })
   },
   watch: {

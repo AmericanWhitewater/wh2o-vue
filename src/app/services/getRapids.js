@@ -1,7 +1,7 @@
-import http from "@/app/http"
+import { laravelClient } from "@/app/http"
 
 export async function getRapids(id) {
-  return http
+  return laravelClient
     .post('graphql', {
       query: `
                   query {
