@@ -45,8 +45,8 @@
 </template>
 <script>
 import { shadowDomFixedHeightOffset, gaugeHelpers } from "@/app/global/mixins";
-import http from '@/app/http'
-import debounce from 'lodash.debounce'
+import { trpcClient } from '@/app/services';
+import debounce from 'lodash.debounce';
 
 export default {
   name: "add-gauge-modal",
@@ -69,7 +69,10 @@ export default {
       });
     },
     _confirm() {
-      this.resolvePromise(true);
+      this.resolvePromise({
+        gaugeId: this.selectedGauge,
+        metricId: this.gaugeMetric
+      });
       this.$refs.modalWrapper.hide()
     },
     _cancel() {
@@ -79,10 +82,11 @@ export default {
       if (query.length === 0) {
         this.searchResults = []
       } else if (query.length > 4) {
-        http.get(`/ui/lookup/LookupGaugeInfo/?name=${query}`)
-          .then(r => {
-            this.searchResults = r.data?.items;
-          });
+        const gauges = await trpcClient.getGaugesForSelect.query({ query: query, numToFetch: 50 });
+        this.searchResults = gauges.map(g => ({
+          name: `${g.name} (${g.source}-${g.sourceID}) [${g.state}]`,
+          value: g.gaugeID
+        }));
       }
     }
   },
