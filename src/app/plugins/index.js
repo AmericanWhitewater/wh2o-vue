@@ -1,4 +1,3 @@
-export * from "./apollo-client";
 export * from "./network-status";
 export * from "./random-id";
 export * from "./sentry";
