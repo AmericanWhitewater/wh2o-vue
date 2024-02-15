@@ -47,7 +47,6 @@ import Moment from 'moment'
 import { mapState } from 'vuex'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { formatReadingWithFormat, getEmptyMetric } from '@/app/global/lib/gages'
-import { cloneDeep } from '@apollo/client/utilities'
 
 export default {
   name: 'gage-readings',
@@ -85,6 +84,39 @@ export default {
     }
   },
   created () {
+  }
+}
+
+// Copied from Apollo to avoid having a dependency.
+function cloneDeep(value) {
+  return cloneDeepHelper(value);
+}
+function cloneDeepHelper(val, seen) {
+  switch (Object.prototype.toString.call(val)) {
+    case "[object Array]": {
+      seen = seen || new Map;
+      if (seen.has(val))
+        return seen.get(val);
+      var copy_1 = val.slice(0);
+      seen.set(val, copy_1);
+      copy_1.forEach(function (child, i) {
+        copy_1[i] = cloneDeepHelper(child, seen);
+      });
+      return copy_1;
+    }
+    case "[object Object]": {
+      seen = seen || new Map;
+      if (seen.has(val))
+        return seen.get(val);
+      var copy_2 = Object.create(Object.getPrototypeOf(val));
+      seen.set(val, copy_2);
+      Object.keys(val).forEach(function (key) {
+        copy_2[key] = cloneDeepHelper(val[key], seen);
+      });
+      return copy_2;
+    }
+    default:
+      return val;
   }
 }
 </script>

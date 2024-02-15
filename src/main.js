@@ -6,21 +6,17 @@ import "./app/plugins";
 import "./app/filters";
 import "./registerServiceWorker";
 
-import apolloProvider from "./app/plugins/apollo-client";
-
 import App from './app/app.vue'
 import router from './app/router'
 import store from './app/store'
 import {laravelDeploy} from './app/environment'
 
-import VueApollo from "vue-apollo";
 
 Vue.config.devtools = process.env.NODE_ENV === "development";
 Vue.config.productionTip = false;
 
 Vue.use(CarbonComponents);
 Vue.use(VueMeta);
-Vue.use(VueApollo);
 
 let mountPoint;
 
@@ -66,7 +62,6 @@ if (laravelDeploy) {
 export const wh2o = new Vue({
   router,
   store,
-  apolloProvider,
   shadowRoot: setShadowRoot ? mountPoint.parentNode : false,
   render: (h) => h(App),
 }).$mount(mountPoint);

@@ -74,7 +74,7 @@
 
 <script>
 import { ConfirmDeleteModal } from "@/app/global/components";
-import { photoFileUpdate, updatePhoto, deletePhoto } from "@/app/services";
+import { updatePhoto, deletePhoto } from "@/app/services";
 import { assetUrl, imageHelpers } from "@/app/global/mixins";
 import { mapState } from "vuex";
 
@@ -141,8 +141,9 @@ export default {
             section_id: this.post.id,
           },
         };
-        const result = await photoFileUpdate(this.$apollo, photoPost);
-        this.images.unshift(result);
+        !!photoPost;
+        throw new Error('no photo uploads');
+        //this.images.unshift(result);
       } catch (error) {
         /* eslint-disable-next-line no-console */
         console.log("error :>> ", error);
