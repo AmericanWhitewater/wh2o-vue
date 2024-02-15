@@ -5,7 +5,6 @@ export * from "./sentry";
 export * from "./carbon-icons";
 export * from "./vue-sanitize";
 export * from "./vue-check-view";
-export * from "./vue-gtag";
 export * from "./vue-sanitize";
 export * from "./vue-social-sharing";
 export * from "./network-status";
