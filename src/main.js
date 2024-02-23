@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueMeta from "vue-meta";
 import CarbonComponents from "@carbon/vue";
+import VueMatomo from 'vue-matomo';
 
 import "./app/plugins";
 import "./app/filters";
@@ -21,6 +22,11 @@ Vue.config.productionTip = false;
 Vue.use(CarbonComponents);
 Vue.use(VueMeta);
 Vue.use(VueApollo);
+Vue.use(VueMatomo, {
+  host: 'https://americanwhitewater.matomo.cloud/',
+  siteId: window.origin.includes('beta') ? 2 : 1,
+  router: router,
+});
 
 let mountPoint;
 

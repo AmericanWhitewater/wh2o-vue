@@ -1,3 +1,4 @@
+set -e
 branch=${1:-main}
 git checkout $branch
 git pull origin $branch
