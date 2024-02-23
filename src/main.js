@@ -24,7 +24,8 @@ Vue.use(VueMeta);
 Vue.use(VueApollo);
 Vue.use(VueMatomo, {
   host: 'https://americanwhitewater.matomo.cloud/',
-  siteId: 1
+  siteId: window.origin.includes('beta') ? 2 : 1,
+  router: router,
 });
 
 let mountPoint;
