@@ -17,22 +17,24 @@
           :key="index"
           class="bx--tile"
         >
+        <div class="header-row">
           <h3>{{ corr.gaugeInfo.name }} ({{ corr.gaugeInfo.gaugeSource }}-{{  corr.gaugeInfo.gaugeSourceIdentifier }})</h3>
-          <hr>
-          <h4>Correlation</h4>
-          <p v-if="corr.correlationDetails.ok && !corr.correlationDetails.value">
-            No correlation defined.
-          </p>
-          <p v-else-if="!corr.correlationDetails.ok">
-            This is legacy data that was properly defined and is not compatible with our new gauge data structures. Please re-create the correlation.
-          </p>
-          <div v-else>
-            {{ corr.correlationDetails.value }}
+          <cv-button
+                id="delete-button"
+                kind="danger"
+                size="small"
+                @click="triggerCorrelationDelete(corr)"
+              >
+                X
+            </cv-button>
           </div>
+          <flow-bands :correlationDetails="corr.correlationDetails" />
+          
         </div>
       </template>
     </layout>
     <add-gauge-modal ref="addGaugeModal" />
+    <confirm-delete-modal ref="confirmDeleteModal" />
   </div>
 </template>
 
@@ -42,13 +44,16 @@ import { trpcClient } from '@/app/services';
 import { Layout } from '@/app/global/layout'
 import { gaugeHelpers } from '@/app/global/mixins'
 import { mapState } from 'vuex'
-import { AddGaugeModal } from './components'
+import { AddGaugeModal, FlowBands } from './components'
+import { ConfirmDeleteModal } from '@/app/global/components';
 
 export default {
   name: 'edit-flows',
   components: {
     Layout,
-    AddGaugeModal
+    AddGaugeModal,
+    ConfirmDeleteModal,
+    FlowBands
   },
   mixins: [gaugeHelpers],
   data: () => ({
@@ -87,7 +92,27 @@ export default {
 
         this.gaugeCorrelations.push(newCorr);
       }
-    }
+    },
+    async triggerCorrelationDelete(corr) {
+      const ok = await this.$refs.confirmDeleteModal.show({
+        title: "Delete Gauge Correlation",
+        message: "This will delete the correlation between this reach and this gauge. Are you sure?",
+      });
+
+      if (ok) {
+        await trpcClient.deleteGaugeCorrelationFromReach.mutate({
+          reachID: this.reachId,
+          gaugeSource: corr.gaugeInfo.gaugeSource,
+          gaugeSourceIdentifier: corr.gaugeInfo.gaugeSourceIdentifier
+        });
+
+        // update gauges displaying
+        this.gaugeCorrelations = this.gaugeCorrelations.filter(function(x) {
+          return !(x.gaugeInfo.gaugeSource === corr.gaugeInfo.gaugeSource &&
+            x.gaugeInfo.gaugeSourceIdentifier === corr.gaugeInfo.gaugeSourceIdentifier);
+        });
+      }
+    },
   },
   beforeMount () {
     // as of now, this is the only place in the app that we're actually checking
