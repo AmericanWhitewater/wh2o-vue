@@ -13,26 +13,26 @@
           </cv-button>
         </div>
 
-        <div v-for="(gauge, index) in gauges"
+        <div v-for="(corr, index) in gaugeCorrelations"
           :key="index"
           class="bx--tile"
         >
-          <h3>{{ gauge.gauge.name }} ({{ gauge.gauge.source }})</h3>
+          <h3>{{ corr.gaugeInfo.name }} ({{ corr.gaugeInfo.gaugeSource }}-{{  corr.gaugeInfo.gaugeSourceIdentifier }})</h3>
           <hr>
           <h4>Correlation</h4>
-          <p v-if="gauge.result.ok && !gauge.result.value">
+          <p v-if="corr.correlationDetails.ok && !corr.correlationDetails.value">
             No correlation defined.
           </p>
-          <p v-else-if="!gauge.result.ok">
+          <p v-else-if="!corr.correlationDetails.ok">
             This is legacy data that was properly defined and is not compatible with our new gauge data structures. Please re-create the correlation.
           </p>
           <div v-else>
-            {{ gauge.result.value }}
+            {{ corr.correlationDetails.value }}
           </div>
         </div>
       </template>
     </layout>
-    <add-gauge-modal ref="addGaugeModal" :reachTargetId="reachTargetId" />
+    <add-gauge-modal ref="addGaugeModal" />
   </div>
 </template>
 
@@ -52,7 +52,7 @@ export default {
   },
   mixins: [gaugeHelpers],
   data: () => ({
-    gauges: [],
+    gaugeCorrelations: [],
     loading: true
   }),
   computed: {
@@ -62,28 +62,30 @@ export default {
     reachId() {
       return this.$route.params.id;
     },
-    reachTargetId() {
-      return this.reachCorrelationGauge?.id;
-    }
   },
   watch: {
     reachId: {
       immediate: true,
       async handler() {
-        this.gauges = await trpcClient.getGaugeCorrelationsForReach.query({ reachID: this.reachId });
+        this.gaugeCorrelations = await trpcClient.getGaugeCorrelationAndGaugeInfoForReach.query({ reachID: this.reachId });
       }
     }
   },
   methods: {
     async openGaugeModal() {
-      const newGauge = await this.$refs.addGaugeModal.show({});
+      const { gaugeSource, gaugeSourceIdentifier, metric } = await this.$refs.addGaugeModal.show({});
 
-      if (newGauge) {
-        await trpcClient.addGaugeToReach.mutation({
+      if (gaugeSource && gaugeSourceIdentifier && metric) {
+        const payload = {
           reachID: this.reachId,
-          gaugeID: newGauge.id,
-          metricId: newGauge.metricId 
-        });
+          gaugeSource: gaugeSource,
+          gaugeSourceIdentifier: gaugeSourceIdentifier,
+          flowMetric: metric,
+          correlationDetails: null
+        }
+        const newCorr = await trpcClient.upsertGaugeCorrelationToReach.mutate(payload);
+
+        this.gaugeCorrelations.push(newCorr);
       }
     }
   },

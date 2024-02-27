@@ -22,8 +22,8 @@
             v-for="(g, index) in searchResults"
             :key="index"
             v-model="selectedGauge"
-            :value="g.value.toString()"
-            :label="g.name"
+            :value="`${g.gaugeSource}-${g.gaugeSourceIdentifier}`"
+            :label="`${g.name} (${g.gaugeSource}-${g.gaugeSourceIdentifier}) [${g.state}]`" 
           />
         </cv-radio-group>
       </div>
@@ -33,7 +33,7 @@
           <cv-select-option
             v-for="(m, index) in metricOptions"
             :key="index"
-            :value="m.id"
+            :value="m.label.toLowerCase()"
             >{{ m.label }}
           </cv-select-option>
         </cv-select>
@@ -54,7 +54,7 @@ export default {
   data: () => ({
     searchResults: [],
     selectedGauge: null,
-    gaugeMetric: "2"
+    gaugeMetric: "cfs"
   }),
   methods: {
     show(opts = {}) {
@@ -69,9 +69,11 @@ export default {
       });
     },
     _confirm() {
+      const [source, sourceID] = this.selectedGauge.split('-');
       this.resolvePromise({
-        gaugeId: this.selectedGauge,
-        metricId: this.gaugeMetric
+        gaugeSource: source,
+        gaugeSourceIdentifier: sourceID,
+        metric: this.gaugeMetric
       });
       this.$refs.modalWrapper.hide()
     },
@@ -82,11 +84,7 @@ export default {
       if (query.length === 0) {
         this.searchResults = []
       } else if (query.length > 4) {
-        const gauges = await trpcClient.getGaugesForSelect.query({ query: query, numToFetch: 50 });
-        this.searchResults = gauges.map(g => ({
-          name: `${g.name} (${g.source}-${g.sourceID}) [${g.state}]`,
-          value: g.gaugeID
-        }));
+        this.searchResults = await trpcClient.getGaugesForSelect.query({ query: query, numToFetch: 50 });
       }
     }
   },
