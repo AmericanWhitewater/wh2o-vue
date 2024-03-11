@@ -13,28 +13,14 @@
           </cv-button>
         </div>
 
-        <div v-for="(corr, index) in gaugeCorrelations"
-          :key="index"
-          class="bx--tile"
-        >
-        <div class="header-row">
-          <h3>{{ corr.gaugeInfo.name }} ({{ corr.gaugeInfo.gaugeSource }}-{{  corr.gaugeInfo.gaugeSourceIdentifier }})</h3>
-          <cv-button
-                id="delete-button"
-                kind="danger"
-                size="small"
-                @click="triggerCorrelationDelete(corr)"
-              >
-                X
-            </cv-button>
-          </div>
-          <flow-bands :correlationDetails="corr.correlationDetails" />
-          
-        </div>
+        <correlation-details v-for="(corr, index) in gaugeCorrelations"
+          :key="`corr-${index}`"
+          :correlation="corr"
+          @deleted="removeDeletedCorrelation"
+        />
       </template>
     </layout>
     <add-gauge-modal ref="addGaugeModal" />
-    <confirm-delete-modal ref="confirmDeleteModal" />
   </div>
 </template>
 
@@ -44,16 +30,14 @@ import { trpcClient } from '@/app/services';
 import { Layout } from '@/app/global/layout'
 import { gaugeHelpers } from '@/app/global/mixins'
 import { mapState } from 'vuex'
-import { AddGaugeModal, FlowBands } from './components'
-import { ConfirmDeleteModal } from '@/app/global/components';
+import { AddGaugeModal, CorrelationDetails } from './components'
 
 export default {
   name: 'edit-flows',
   components: {
     Layout,
     AddGaugeModal,
-    ConfirmDeleteModal,
-    FlowBands
+    CorrelationDetails
   },
   mixins: [gaugeHelpers],
   data: () => ({
@@ -71,8 +55,8 @@ export default {
   watch: {
     reachId: {
       immediate: true,
-      async handler() {
-        this.gaugeCorrelations = await trpcClient.getGaugeCorrelationAndGaugeInfoForReach.query({ reachID: this.reachId });
+      handler() {
+        this.refreshCorrelations();
       }
     }
   },
@@ -93,26 +77,21 @@ export default {
         this.gaugeCorrelations.push(newCorr);
       }
     },
-    async triggerCorrelationDelete(corr) {
-      const ok = await this.$refs.confirmDeleteModal.show({
-        title: "Delete Gauge Correlation",
-        message: "This will delete the correlation between this reach and this gauge. Are you sure?",
+    async refreshCorrelations() {
+      this.loading = true;
+      const correlations = await trpcClient.getGaugeCorrelationAndGaugeInfoForReach.query({ reachID: this.reachId });
+      this.gaugeCorrelations = correlations.map(x => {
+        x.editing = false;
+        return x;
       });
-
-      if (ok) {
-        await trpcClient.deleteGaugeCorrelationFromReach.mutate({
-          reachID: this.reachId,
-          gaugeSource: corr.gaugeInfo.gaugeSource,
-          gaugeSourceIdentifier: corr.gaugeInfo.gaugeSourceIdentifier
-        });
-
-        // update gauges displaying
-        this.gaugeCorrelations = this.gaugeCorrelations.filter(function(x) {
+      this.loading = false;
+    },
+    removeDeletedCorrelation(corr) {
+      this.gaugeCorrelations = this.gaugeCorrelations.filter(function(x) {
           return !(x.gaugeInfo.gaugeSource === corr.gaugeInfo.gaugeSource &&
             x.gaugeInfo.gaugeSourceIdentifier === corr.gaugeInfo.gaugeSourceIdentifier);
         });
-      }
-    },
+    }
   },
   beforeMount () {
     // as of now, this is the only place in the app that we're actually checking
