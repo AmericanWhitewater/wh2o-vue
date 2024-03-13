@@ -16,7 +16,7 @@
             >{{ m.label }}
           </cv-select-option>
         </cv-select>
-        <label v-else for="flowMetric">Flow Metric: {{ correlationDetails.value.flowMetric }}</label>
+        <label v-else for="flowMetric">Flow Metric: {{ correlationDetails.data.flowMetric }}</label>
       </div>
       <div>
         <cv-button
@@ -56,11 +56,13 @@
     </div>
     <div>
       <h4>Boating flow ranges</h4>
-      <p v-if="!correlationDetails || !correlationDetails.value">
+      <p v-if="!correlationDetails || !correlationDetails.data">
         No ranges defined.
       </p>
-      <p v-else-if="!correlationDetails.ok">
-        This is legacy data that was properly defined and is not compatible with our new gauge data structures. Please re-create the correlation.
+      <p v-else-if="errors">
+        <ul class="error-list">
+          <li v-for="(e, i) in errors" :key="`error-${i}`" v-text="e" />
+        </ul>
       </p>
       <div v-else>
         <div class="ranges">
@@ -135,6 +137,7 @@ export default {
         highRunnableAdjustedGrade: null,
         belowRecommendedRangeComment: null
       },
+      errors: [],
       editing: false,
       ranges: [
         {
@@ -182,6 +185,14 @@ export default {
   computed: {
     correlationDetails() {
       return this.correlation?.correlationDetails;
+    },
+    gaugeCorrelationInfo() {
+      return {
+        reachID: this.correlation?.reachID,
+        gaugeSource: this.correlation?.gaugeSource,
+        gaugeSourceIdentifier: this.correltaion?.gaugeSourceIdentifier,
+        correlationDetails: this.localCorrelationDetails
+      }
     }
   },
   watch: {
@@ -194,9 +205,14 @@ export default {
   },
   methods: {
     async saveCorrelation() {
-      // TODO: wire up save as well as error handling
-      // await trpcClient.upsertGaugeCorrelationToReach.mutate(corr);
-      this.editing = false;
+      const updatedCorr = await trpcClient.upsertGaugeCorrelationToReach.mutate(this.gaugeCorrelationInfo);
+      // TODO: actually handle whatever a save error looks like
+      if (updatedCorr.errors) {
+        this.errors = [...updatedCorr.errors];
+      } else {
+        this.$emit('saved', updatedCorr);
+        this.editing = false;
+      }
     },
     async triggerCorrelationDelete() {
       const ok = await this.$refs.confirmDeleteModal.show({
@@ -220,8 +236,9 @@ export default {
       this.editing = false;
     },
     resetCorrelationDetailsEdits() {
-      if (this.correlation && this.correlation.correlationDetails && this.correlation.correlationDetails.value) {
-        Object.assign(this.localCorrelationDetails, this.correlation.correlationDetails.value);
+      if (this.correlationDetails && this.correlationDetails.data) {
+        Object.assign(this.localCorrelationDetails, this.correlationDetails.data);
+        this.errors = [...this.correlationDetails.errors];
       }
     }
   }

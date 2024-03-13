@@ -16,6 +16,7 @@
         <correlation-details v-for="(corr, index) in gaugeCorrelations"
           :key="`corr-${index}`"
           :correlation="corr"
+          @saved="updateSavedCorrelation"
           @deleted="removeDeletedCorrelation"
         />
       </template>
@@ -91,6 +92,12 @@ export default {
           return !(x.gaugeInfo.gaugeSource === corr.gaugeInfo.gaugeSource &&
             x.gaugeInfo.gaugeSourceIdentifier === corr.gaugeInfo.gaugeSourceIdentifier);
         });
+    },
+    updateSavedCorrelation(corr) {
+      // update in place with the saved correlation so we don't need to refresh from the db
+      const editedCorr = this.gaugeCorrelations.find((x) => x.gaugeInfo.gaugeSource === corr.gaugeInfo.gaugeSource &&
+        x.gaugeInfo.gaugeSourceIdentifier === corr.gaugeInfo.gaugeSourceIdentifier);
+      Object.assign(editedCorr, corr);
     }
   },
   beforeMount () {
