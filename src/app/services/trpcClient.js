@@ -1,4 +1,5 @@
 import { createTRPCClient, httpBatchLink } from '@trpc/client';
+import transformer from 'trpc-transformer';
 
 import { trpcApiUrl } from '@/app/environment'
 
@@ -11,7 +12,8 @@ export const trpcClient = createTRPCClient({
           ...options,
           credentials: 'include',
         });
-      },    
+      },
+      transformer
     }),
   ],
 });
