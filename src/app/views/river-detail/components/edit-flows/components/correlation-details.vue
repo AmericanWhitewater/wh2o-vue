@@ -16,7 +16,7 @@
             >{{ m.label }}
           </cv-select-option>
         </cv-select>
-        <label v-else for="flowMetric">Flow Metric: {{ correlationDetails.data.flowMetric }}</label>
+        <label v-else for="flowMetric">Flow Metric: {{ correlationDetails.data ? correlationDetails.data.flowMetric : "none set" }}</label>
       </div>
       <div>
         <cv-button
@@ -56,22 +56,22 @@
     </div>
     <div>
       <h4>Boating flow ranges</h4>
-      <p v-if="!correlationDetails || !correlationDetails.data">
-        No ranges defined.
-      </p>
-      <p v-else-if="errors">
+      <p v-if="errors">
         <ul class="error-list">
           <li v-for="(e, i) in errors" :key="`error-${i}`" v-text="e" />
         </ul>
+      </p>
+      <p v-if="!editing && (!correlationDetails || !correlationDetails.data)">
+        No ranges defined.
       </p>
       <div v-else>
         <div class="ranges">
           <div v-for="(range, i) in ranges" :key="`range-${i}`" :class="`range-indicator ${range.rangeClass}`">
             <div v-if="range.inflectionPointField" class="inflection-point">
               <label :for="range.inflectionPointField">{{ range.inflectionPointFieldLabel }}:</label>
-              <span v-if="!editing">{{ correlationDetails.value[range.inflectionPointField] }}</span>
+              <span v-if="!editing">{{ correlationDetails.data[range.inflectionPointField] }}</span>
               <input v-else v-model="$data.localCorrelationDetails[range.inflectionPointField]" type="text" class="bx--text-input">
-              <span>{{ editing ? localCorrelationDetails.flowMetric : correlationDetails.value.flowMetric }}</span>
+              <span>{{ editing ? localCorrelationDetails.flowMetric : correlationDetails.data.flowMetric }}</span>
             </div>
             <div class="range-fields">
               <div v-if="editing">
@@ -188,12 +188,15 @@ export default {
     },
     gaugeCorrelationInfo() {
       return {
-        reachID: this.correlation?.reachID,
-        gaugeSource: this.correlation?.gaugeSource,
-        gaugeSourceIdentifier: this.correltaion?.gaugeSourceIdentifier,
+        reachID: this.reachId,
+        gaugeSource: this.correlation?.gaugeInfo.gaugeSource,
+        gaugeSourceIdentifier: this.correlation?.gaugeInfo.gaugeSourceIdentifier,
         correlationDetails: this.localCorrelationDetails
       }
-    }
+    },
+    reachId() {
+      return this.$route.params.id;
+    },
   },
   watch: {
     correlation: {
@@ -205,13 +208,15 @@ export default {
   },
   methods: {
     async saveCorrelation() {
-      const updatedCorr = await trpcClient.upsertGaugeCorrelationToReach.mutate(this.gaugeCorrelationInfo);
-      // TODO: actually handle whatever a save error looks like
-      if (updatedCorr.errors) {
-        this.errors = [...updatedCorr.errors];
-      } else {
+      // TODO: implement some kind of real error handling strategy in these calls
+      // TODO: make backend accept null values for unset vars, or refactor to not send them
+      // TODO: investigate why we are getting "USGS" as gauge source when the backend validates it as "usgs"
+      try {
+        const updatedCorr = await trpcClient.upsertGaugeCorrelationToReach.mutate(this.gaugeCorrelationInfo);
         this.$emit('saved', updatedCorr);
         this.editing = false;
+      } catch (error) {
+        this.errors = [error];
       }
     },
     async triggerCorrelationDelete() {
@@ -223,8 +228,8 @@ export default {
       if (ok) {
         await trpcClient.deleteGaugeCorrelationFromReach.mutate({
           reachID: this.reachId,
-          gaugeSource: this.gaugeInfo.gaugeSource,
-          gaugeSourceIdentifier: this.gaugeInfo.gaugeSourceIdentifier
+          gaugeSource: this.correlation.gaugeInfo.gaugeSource,
+          gaugeSourceIdentifier: this.correlation.gaugeInfo.gaugeSourceIdentifier
         });
 
         // update gauges displaying on upstream component
