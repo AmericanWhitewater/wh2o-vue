@@ -9,7 +9,6 @@
     />
     <nwi-map-legend
       v-if="includeLegend"
-      :color-by="colorBy"
     />
     <nwi-map-controls
       :map-controls="mapControls"
@@ -75,11 +74,6 @@ export default {
       type: Number,
       required: false
     },
-    // defines the color scheme for the reach-segments layer
-    initialColorBy: {
-      type: String,
-      default: 'difficulty'
-    },
     // if present, causes the map to zoom to the geometry of this feature
     featureToCenter: {
       type: Object,
@@ -109,7 +103,7 @@ export default {
     // passes list of desired toolbar controls into the NwiMapControls component
     mapControls: {
       type: Array,
-      default: () => ['baseMap', 'colorBy', 'fullscreen']
+      default: () => ['baseMap', 'fullscreen']
     }
   },
   data () {
@@ -122,7 +116,6 @@ export default {
     ...mapState({
       mapStyle: state => state.RiverIndex.mapStyle,
       mapBounds: state => state.RiverIndex.mapBounds,
-      colorBy: state => state.RiverIndex.mapColorBy,
       mouseoveredFeature: state => state.RiverIndex.mouseoveredFeature
     }),
     containerHeight () {
@@ -164,9 +157,6 @@ export default {
         }
       }
     },
-    colorBy (newVal) {
-      this.updateMapColorScheme(newVal)
-    },
     // centers the map on a given feature
     featureToCenter (feature) {
       if (feature) {
@@ -188,7 +178,7 @@ export default {
     detailReachId () {
       this.adjustMapForDetailReach()
       // this has to be re-called since we're changing paint props again
-      this.updateMapColorScheme(this.colorBy)
+      this.updateMapColorScheme()
     },
     startingBounds (newBounds) {
       this.map.fitBounds(newBounds, fitBoundsOptions)
@@ -217,37 +207,21 @@ export default {
     mouseoverFeature (feature) {
       this.$store.dispatch('RiverIndex/mouseOverFeature', feature)
     },
-    updateMapColorScheme (newScheme) {
-      const colors = Object.values(NwiMapStyles.colorSchemes[newScheme])
-      let colorScheme
-      if (newScheme === 'difficulty') {
-        colorScheme = [
-          'case',
-          ['>', ['get', 'difficulty'], 6],
-          colors[3],
-          ['>', ['get', 'difficulty'], 4],
-          colors[2],
-          ['>', ['get', 'difficulty'], 2],
-          colors[1],
-          ['<=', ['get', 'difficulty'], 2],
-          colors[0],
-          '#53789a'
-        ]
-      } else if (newScheme === 'currentFlow') {
-        colorScheme = [
-          'match',
-          ['get', 'condition'],
-          'low',
-          colors[1],
-          'med',
-          colors[2],
-          'high',
-          colors[3],
-          colors[0]
-        ]
-      } else {
-        colorScheme = '#53789a'
-      }
+    updateMapColorScheme () {
+      const colors = Object.values(NwiMapStyles.colorSchemes["difficulty"])
+      let colorScheme;
+      colorScheme = [
+        'case',
+        ['>', ['get', 'difficulty'], 6],
+        colors[3],
+        ['>', ['get', 'difficulty'], 4],
+        colors[2],
+        ['>', ['get', 'difficulty'], 2],
+        colors[1],
+        ['<=', ['get', 'difficulty'], 2],
+        colors[0],
+        '#53789a'
+      ]
       if (this.sourceLayers.includes('reach-segments')) {
         this.map.setPaintProperty('reachSegments', 'line-color', colorScheme)
         this.map.setPaintProperty('reachSegmentDashes', 'line-color', colorScheme)
@@ -314,7 +288,7 @@ export default {
           this.adjustMapForDetailReach()
         }
 
-        this.updateMapColorScheme(this.colorBy)
+        this.updateMapColorScheme()
 
         // the assumption when you set `sourceLayers` prop is that the last layer
         // displays on top. Unfortunately, when attaching mouse events, we want
