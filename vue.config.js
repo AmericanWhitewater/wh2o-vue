@@ -142,12 +142,26 @@ module.exports = {
     appleMobileWebAppStatusBarStyle: "black",
   },
   chainWebpack: (config) => {
+    config.resolve
+    .extensions
+      .prepend('.mjs')
+
     config.module
       .rule("file")
       .test(/\.(png|mp4|jpe?g|gif)$/i)
       .use("file-loader")
       .loader("file-loader")
       .end();
+
+      config.module
+      .rule('mjs')
+      .test(/\.mjs$/)
+      .include
+        .add(/node_modules/)
+        .end()
+      .use("babel-loader")
+        .loader("babel-loader")
+        .end()
 
     config
       .plugin("IgnoreNotFoundExportPlugin")
