@@ -48,96 +48,47 @@
             </template>
           </td>
         </tr>
-        <tr>
-          <td>Gage</td>
-          <template v-if="!loading">
-            <td
-                v-if="gages && gages.length && reachGage && reachGage.gauge"
-                class="river-gages"
-            >
-              <a class="bx--link" :href="formatLinkUrl(`content/gauge/detail-new/${reachGage.gauge.id || ''}`)">{{
-                  reachGage.gauge && reachGage.gauge.name
-                      ? $titleCase(reachGage.gauge.name)
-                      : 'n/a'
-                }}</a>
-            </td>
-            <td
-                v-else
-                class="river-gages"
-            >
-              n/a
-            </td>
-          </template>
-          <template v-else>
+        <template v-if="loading">
+          <tr>
             <td class="river-gages">
               <cv-skeleton-text/>
             </td>
-          </template>
-        </tr>
-        <tr>
-          <td>Flow Range</td>
-          <template v-if="!loading">
-            <td
-                v-if="reachGage"
-                class="flow-range"
-            >
-              {{ formatFlowRange(reachGage.rmin, reachGage.rmax, reachGage.gauge_metric) }}
+          </tr>
+        </template>
+        <template v-else-if="gaugeCorrelation && gaugeCorrelation.gaugeInfo">
+          <tr>
+            <td>Gauge</td>
+            <td class="river-gages">
+              <!-- TODO: re-add link to gauge detail page once it exists -->
+              <a class="bx--link">{{ $titleCase(gaugeCorrelation.gaugeInfo.name) }}</a>
             </td>
-            <td
-                v-else
-                class="flow-range"
-            >
-              n/a
-            </td>
-          </template>
-          <template v-else>
+          </tr>
+          <tr v-if="gaugeCorrelation.correlationDetails && gaugeCorrelation.correlationDetails.data">
+            <td>Flow Range</td>
             <td class="flow-range">
-              <cv-skeleton-text/>
+              {{ gaugeCorrelation.correlationDetails.data.beginLowRunnable }} - {{ gaugeCorrelation.correlationDetails.data.endHighRunnable }}
+              {{ gaugeCorrelation.correlationDetails.data.flowMetric }}
             </td>
-          </template>
-        </tr>
-        <tr>
-          <td>
-            Flow Rate
-            <template v-if="reachGage">
-              as of {{ formatTime(reachGage.updated * 1000) }}
-            </template>
-          </td>
-          <template v-if="!loading">
-            <td
-                v-if="reachGage"
-                class="river-flow-rate"
-            >
-              {{ readingIsEstimated ? '~' : '' }}
-              {{ formatReading(reachGage.gauge_reading, reachGage.gauge_metric) }}
-              {{ formatMetric(reachGage.gauge_metric) }}
-              <cv-tag
-                  v-if="reachGage.adjusted_reach_class"
-                  kind="cool-gray"
-                  :label="reachGage.adjusted_reach_class"
-              />
-              <cv-tag
-                  v-if="formatTag(reachGage)"
-                  :kind="formatTag(reachGage).kind"
-                  :label="formatTag(reachGage).label"
-              />
-              <template v-if="reachGage.gauge_perfect">
-                👍
-              </template>
+          </tr>
+          <tr v-if="gaugeCorrelation.status">
+            <td>
+              Flow Rate
+              as of {{ formatDateTime(gaugeCorrelation.status.latestReading.dateTime) }}
             </td>
-            <td
-                v-else
-                class="river-flow-rate"
-            >
-              n/a
-            </td>
-          </template>
-          <template v-else>
             <td class="river-flow-rate">
-              <cv-skeleton-text/>
+              {{ gaugeCorrelation.status.latestReading.value }} {{ gaugeCorrelation.status.metric }}
+              <cv-tag
+                  v-if="adjustedReachGrade"
+                  kind="cool-gray"
+                  :label="adjustedReachGrade"
+              />
+              <cv-tag
+                  :kind="statusTagColor(gaugeCorrelation.status.status)"
+                  :label="gaugeCorrelation.status.status.replace('-', ' ')"
+              />
             </td>
-          </template>
-        </tr>
+          </tr>
+        </template>
         <!-- "Next/Last" Release + date if the release exists -->
         <tr v-if="releaseDate ">
           <td>{{ getReleaseFieldLabel(releaseDate.event_date) }}</td>
@@ -177,14 +128,9 @@
 import { mapState } from 'vuex'
 import { humanReadable } from '@/app/global/services/human-readable'
 import { BetaBoxEditModal } from './components'
-import { formatReadingWithFormat } from '@/app/global/lib/gages'
 import { EditBlockOverlay } from '@/app/global/components'
+import { reachClient } from '@/app/services'
 
-/**
- * @todo if reach has multiple gages, add dropdown to
- * gage tr, v-model+watch+fetch.gageActions.FETCH_GAGE_DATA and make other table values reactive
- *
- */
 export default {
   name: 'beta-box',
   components: {
@@ -193,18 +139,28 @@ export default {
   },
   data: () => ({
     editModalVisible: false,
-    formData: {}
+    formData: {},
+    reachDetail: null,
   }),
   computed: {
     ...mapState({
       loading: state => state.RiverDetail.loading,
       river: state => state.RiverDetail.data,
       editMode: state => state.Global.editMode,
-      gages: state => state.RiverGages.data?.gauges ?? [],
-      metrics: state => state.RiverGages.data?.metrics ?? []
     }),
-    readingIsEstimated () {
-      return this.river?.readingsummary?.gauge_estimated
+    // TODO: decide how to handle secondary gauges. do we fall back if primary isn't reporting?
+    gaugeCorrelation () {
+      if (this.reachDetail?.detail?.correlations) {
+        return this.reachDetail.detail.correlations.find(x => x.isPrimary);
+      }
+      return null;
+    },
+    adjustedReachGrade () {
+      if (this.gaugeCorrelation && this.gaugeCorrelation.status && this.gaugeCorrelation.correlationDetails) {
+        const adjustedGradeKey = this.gaugeCorrelation.status.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
+        return this.gaugeCorrelation.correlationDetails.data[`${adjustedGradeKey}AdjustedGrade`];
+      }
+      return null;
     },
     /**
      * Event date or null
@@ -219,27 +175,14 @@ export default {
     reachId () {
       return this.$route.params.id
     },
-    gagesWithGage () {
-      return (this.gages?.filter(x => x.gauge && !x.excluded) ?? []).sort((a, b) => {
-
-            //sort by primary over secondary
-            if (a.delay_update - b.delay_update) {
-              return a.delay_update - b.delay_update
-              // sort by updated last
-            } else {
-              return a.epoch - b.epoch
-            }
-          }
-      )
-
-    },
-
-    reachGage () {
-
-      if (this.river && this.river.readingsummary && this.gages) {
-        return this.gages.find(g => g.gauge.id.toString() === this.river.readingsummary.gauge_id.toString())
+  },
+  watch: {
+    reachId: {
+      immediate: true,
+      async handler(reachId) {
+        // retrieves gauge correlation information from new modernized gauge API
+        this.reachDetail = await reachClient.reachDetail.query({ reachID: reachId });
       }
-      return this.gagesWithGage[0]
     }
   },
   methods: {
@@ -261,54 +204,19 @@ export default {
 
       return 'Next Release'
     },
-    formatTime (input) {
-
-      if (isNaN(input)) {
-        return ('')
-      }
-      return humanReadable(input)
+    formatDateTime (input) {
+      const now = new Date();
+      const readingTime = new Date(input);
+      return humanReadable(now.getTime() - readingTime.getTime())
     },
-    formatFlowRange (min, max, metricID) {
-      if (min && max) {
-        return `${this.formatReading(min, metricID)} – ${this.formatReading(max, metricID)} ${this.formatMetric(metricID)}`
+    statusTagColor(status) {
+      if (status === 'below-recommended') {
+        return 'red';
+      } else if (status === 'above-recommended') {
+        return 'blue';
+      } else {
+        return 'green';
       }
-      return 'n/a'
-    },
-    getMetric (metricID) {
-      if (metricID && this.metrics?.length) {
-        return this.metrics.find(m => m.id === metricID.toString())
-      }
-      return null
-    },
-    formatMetric (metricId) {
-      if (this.metrics) {
-        return this.getMetric(metricId)?.unit || 'n/a'
-      }
-      return 'n/a'
-    },
-    formatReading (reading, metricID) {
-      return formatReadingWithFormat(reading, this.getMetric(metricID)?.format || '')
-    },
-    formatTag (gage) {
-      if (gage && gage.rmin && gage.rmax && gage.gauge_reading) {
-        if (gage.gauge_reading < gage.rmin) {
-          return ({
-            kind: 'red',
-            label: 'Below Recommended'
-          })
-        } else if (gage.gauge_reading > gage.rmax) {
-          return ({
-            kind: 'blue',
-            label: 'Above Recommended'
-          })
-        } else {
-          return ({
-            kind: 'green',
-            label: 'Runnable'
-          })
-        }
-      }
-      return null
     }
   }
 }
