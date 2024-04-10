@@ -3,11 +3,10 @@ import transformer from 'trpc-transformer';
 
 import { reachApiUrl } from '@/app/environment'
 
-
 export const reachClient = createTRPCClient({
   links: [
     httpBatchLink({
-      url: reachApiUrl,
+      url: reachApiUrl || "", // github actions fails tests without this
       fetch(url, options) {
         return fetch(url, {
           ...options,
