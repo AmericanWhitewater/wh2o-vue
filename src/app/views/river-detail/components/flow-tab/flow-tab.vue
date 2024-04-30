@@ -5,18 +5,18 @@
         class="mb-lg"
     >
       <template #main>
-        <template v-if="gagesLoading">
+        <template v-if="gaugesLoading">
           <utility-block
               class="mb-lg"
               state="loading"
-              text="loading gages..."
+              text="loading gauges..."
           />
         </template>
-        <template v-else-if="delays && delays.length">
+        <template v-else-if="gaugeCorrelations && gaugeCorrelations.length">
           <div class="mb-lg">
             <hr>
             <h2 class="mb-spacing-md">
-              Gage Summary
+              Gauge Summary
             </h2>
             <div v-if="editMode">
               <a
@@ -26,32 +26,44 @@
               >Edit Flows</a>
             </div>
 
-            <div v-for="(delay,index) in delays" :key="`d${delay}`">
-              <h4 v-if="index===0">Primary Reporting</h4>
-              <h4 v-else>Backup #{{ index }} if Primary doesn't update for {{ parseInt(delay / (60 * 60)).toFixed(1) }}
-                hours </h4>
-              <div v-for="gage in gagesWithGage.filter(x=>parseInt(x.delay_update)===parseInt(delay))"
-                   :key="`${gage.gauge.id}-${gage.gauge_metric}`">
-                <gage-summary
-                    :selected="activeGage && activeMetric && activeGage.gauge && parseInt(activeGage.gauge.id)===parseInt(gage.gauge.id) "
-                    :metrics="metrics" :gage="gage" @select="setActive(gage)">
-                  <template #unselected>
-                    <div v-if="gage.gauge_comment"><em>{{ gage.gauge_comment }}</em></div>
-                  </template>
-
+            <div v-for="(gauge,index) in gaugeCorrelations" :key="`corr-${index}`">
+              <h4 v-if="gauge.isPrimary">Primary Reporting</h4>
+              <div :class="[{'selected':activeGaugeIndex===index},getClass(gauge)]" class="gauge-grid" @click.stop='setActive(index)'>
+                <div class="gauge-name">{{ gauge.gaugeInfo.name }}</div>
+                <div class='gauge-reading-header header'>Reading</div>
+                <div class="gauge-range-header header">Range</div>
+                <div class="gauge-class-header header">Difficulty</div>
+                <div v-if="gauge.status" :class="`gauge-reading background`">
+                  {{ gauge.status.latestReading.value }} {{ gauge.status.metric }}
+                  @ {{ formatDate(new Date(gauge.status.latestReading.dateTime)) }}
+                </div>
+                <div v-if="gauge.correlationDetails.data" class="gauge-range">
+                  {{ gauge.correlationDetails.data.beginLowRunnable }} - {{ gauge.correlationDetails.data.endHighRunnable }}
+                  {{ gauge.correlationDetails.data.flowMetric }}
+                </div>
+                <div class="gauge-class">
+                  <span v-if="adjustedReachGrade(gauge)">
+                    Adjusted Class {{ adjustedReachGrade(gauge) }}
+                  </span>
+                </div>
+                <div class="range-comment background">
+                  <span v-if="adjustedReachComment(gauge)">{{ adjustedReachComment(gauge) }}</span>
+                </div>
+                <div v-if="activeGaugeIndex === index" class="gauge-chart-container background">
                   <layout
                       name="layout-two-thirds"
-                      class="mb-lg"
+                      class="mb-lg background"
                   >
                     <template #main>
-                      <template v-if="loading">
+                      <template v-if="gauge.loading">
                         <utility-block
                             class="mb-lg"
-                            state="loading"
-                            text="loading readings..."
+                            state="content"
+                            title="loading..."
+                            text="loading gauge readings..."
                         />
                       </template>
-                      <template v-else-if="readingsWithLast && readingsWithLast.length">
+                      <template v-else-if="gauge.readings">
                         <div
                             v-if="viewMode === 'chart'"
                             style="max-width: 100%; "
@@ -59,20 +71,18 @@
                         >
                           <div :style="chartSize">
                             <flow-chart
-                                :gages="[gage]"
-                                :readings="readingsWithLast"
-                                :ranges="ranges"
+                                :gauge-correlation="gauge"
+                                :readings="gauge.readings"
+                                :timeScale="gauge.historyTimeScale"
                                 class="mb-md"
-                                :metric="activeMetric"
-                                :metrics="metrics"
-                                :current="lastReading"
+                                :metric="gauge.requestedMetric"
+                                :current="gauge.status.latestReading.value"
 
                             />
                             <flow-stats
-                                :readings="readingsWithLast"
-                                :loading="loading"
-                                :current="lastReading"
-                                :metric="activeMetric"
+                                :readings="gauge.readings"
+                                :loading="gauge.loading"
+                                :metric="gauge.requestedMetric"
                             />
                           </div>
                         </div>
@@ -88,60 +98,66 @@
                             text="no gage readings for your chosen parameters, please try again"
                         />
                       </template>
-
                     </template>
+
                     <template #sidebar>
-                      <template v-if="gagesLoading">
+                      <template v-if="gaugesLoading">
                         <cv-skeleton-text headline/>
                       </template>
-                      <template v-else-if="activeGage">
-                        <h4
-                            class="mb-spacing-sm"
-                            v-text="$titleCase(activeGage.gauge.name)"
-                        />
-                        <div v-if="activeGage.gauge_comment"><em>{{ activeGage.gauge_comment }}</em></div>
+                      <template v-else>
                         <cv-button
                             class="mb-spacing-sm"
                             kind="tertiary"
                             size="small"
-                            @click.exact="go(`/content/gauge/detail-new/${activeGage.gauge.id}`)"
-                            @keydown.enter="go(`/content/gauge/detail-new/${activeGage.gauge.id}`)"
-                        >
+                            @click.exact="go(`/content/gauge/detail-new/`)"
+                            @keydown.enter="go(`/content/gauge/detail-new/`)"
+                        > <!-- TODO: update gauge detail links -->
                           Gage Detail
                         </cv-button>
                         <level-legend
-                            :gauge="activeGage.gauge"
-                            :ranges="rangeForGageID(gage.gauge.id)"
-                            :metric="activeMetric"
+                            v-if="correlationMatchesMetric(gauge)"
+                            :gaugeCorrelation="gauge"
                         />
-                        <gage-chart-controls
-                            v-if="activeGage && activeGage.gauge && activeMetric"
-                            :gauge-id="activeGage.gauge.id"
-                            :metric-id="Number(activeMetric.id)"
-                            :metrics="metrics"
-                            :gages="[activeGage]"
-                            @viewModeChange="viewMode = $event"
-                            @gage-change="setActiveGageId"
-                            @metric-change="setActiveMetricId"
-                        />
-                      </template>
-                      <template v-else>
-                        <cv-button
-                            v-if="editMode"
-                            @click.exact="handleOpenGageModal"
-                        >
-                          Add Gage
-                        </cv-button>
+
+                        <div class="gauge-chart-controls">
+                          <cv-dropdown
+                            v-model="gauge.historyTimeScale"
+                            label="Data Timespan"
+                            class="mb-spacing-md"
+                            @change="getReadings(gauge)"
+                          >
+                            <cv-dropdown-item value="24h">
+                              Day
+                            </cv-dropdown-item>
+                            <cv-dropdown-item value="week">
+                              Week
+                            </cv-dropdown-item> <!-- TODO: request API respond to "month"? -->
+                            <cv-dropdown-item value="year">
+                              Year
+                            </cv-dropdown-item>
+                          </cv-dropdown>
+
+                          <cv-dropdown
+                            v-model="gauge.requestedMetric"
+                            label="Data Metric"
+                            class="mb-spacing-md"
+                            @change="getReadings(gauge)">
+                            <!-- TODO: can this be populated programmatically? need holistic think about metrics -->
+                            <cv-dropdown-item value="cfs">
+                              cfs
+                            </cv-dropdown-item>
+                            <cv-dropdown-item value="stage-height-ft">
+                              stage (ft)
+                            </cv-dropdown-item>
+                          </cv-dropdown>
+                        </div>
+
                       </template>
                     </template>
-
                   </layout>
-                </gage-summary>
+                </div>
               </div>
-
             </div>
-
-
           </div>
 
         </template>
@@ -151,55 +167,15 @@
                class="cv-button mb-spacing-md bx--btn bx--btn--tertiary bx--btn--sm"
                :href="formatLinkUrl(`/content/StreamTeam/edit-correlations/?reach_id=${$route.params.id}`)"
                target="_blank"
-            >Edit Flows</a>
+            >Edit Flows</a><!-- TODO: edit flows interface -->
           </div>
 
           <utility-block
               state="content"
-              title="No Gages"
-              text="this reach doesn't have any associated gages"
+              title="No Gauges"
+              text="this reach doesn't have any associated gauges"
           />
         </template>
-        <div class="mb-lg">
-          <hr>
-          <h2 class="mb-spacing-md">
-            Gage Description
-          </h2>
-          <template v-if="!editMode">
-            <div
-                v-if="sanitizedDescription "
-                class="gage-description"
-                v-html="sanitizedDescription"
-            />
-            <div
-                v-else
-                class="gage-description"
-            >
-              This gage does not have a description.
-            </div>
-          </template>
-          <template v-else>
-            <content-editor
-                :content="
-            sanitizedDescription ? sanitizedDescription : 'start typing...'
-          "
-                show-control-bar
-                @content:updated="handleUpdate"
-                @editor:destroyed="handleEditorDestroy"
-            />
-            <cv-button
-                class="mt-spacing-sm"
-                @click.exact="submitForm"
-                @keydown.enter="submitForm"
-            >
-              Submit
-            </cv-button>
-          </template>
-
-
-        </div>
-
-
       </template>
     </layout>
 
@@ -222,24 +198,19 @@
 import {
   FlowChart,
   FlowStats,
-  GageChartControls,
   GageLinkModal,
   GageReadings,
   LevelLegend,
   ReleasesCalendar,
   ReleasesTable
 } from './components'
-import GageSummary from './components/gage-summary'
 import { GageChartConfig } from './utils/gage-chart-config'
 import { Layout } from '@/app/global/layout'
 import { mapState } from 'vuex'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { checkWindow } from '@/app/global/mixins'
-import cloneDeep from 'lodash/cloneDeep.js'
-import http from '@/app/http'
-import ContentEditor from '@/app/global/components/content-editor/content-editor.vue'
-import { getEmptyMetric, getEmptyReading } from '@/app/global/lib/gages'
-import { uniq } from 'lodash/array'
+
+import { gaugeClient, reachClient } from '@/app/services'
 
 const flowviewCalendar = 2
 const flowviewTable = 1
@@ -247,87 +218,37 @@ const flowviewTable = 1
 export default {
   name: 'flow-tab',
   components: {
-    ContentEditor,
     GageLinkModal,
     FlowChart,
-    GageChartControls,
     GageReadings,
     Layout,
     UtilityBlock,
     LevelLegend,
     FlowStats,
     ReleasesTable,
-    ReleasesCalendar,
-    GageSummary
+    ReleasesCalendar
   },
   mixins: [GageChartConfig, checkWindow],
   data: () => ({
-    activeGageId: '',
+    activeGaugeIndex: 0,
     selectedTimespan: 'h:mm a',
     viewMode: 'chart',
     activeMetricId: '',
-    refreshedDescription: '',
-    updatedDescription: '',
-    releaseView: 1
+    releaseView: 1,
+    reachDetail: null, // TODO: pass this info in as a prop so it's only requested once in all components
+    gaugeCorrelations: [],
+    gaugesLoading: false
   }),
   computed: {
     ...mapState({
       river: state => state.RiverDetail.data,
-      readings: state => state.GageReadings?.data,
-      loading: state => state.GageReadings.loading,
-      error: state => state.GageReadings.error,
-      gages: state => state.RiverGages.data?.gauges ?? [],
       ranges: state => state.RiverGages.data?.ranges ?? [],
-      gagesLoading: state => state.RiverGages.loading,
-      gagesError: state => state.RiverGages.error,
       editMode: state => state.Global.editMode,
       metrics: state => state.RiverGages.data?.metrics ?? [],
     }),
-
-    readingsWithLast () {
-      const lastReadings = []
-      //
-      if (this.readings?.length
-          && this.readings[0].gauge_id === this.activeGage?.gauge?.id
-          && this.activeGage?.gauge_metric === this.activeMetric?.id) {
-
-        const ag = this.activeGage
-        lastReadings.push({
-          ...getEmptyReading(),
-          gauge_id: ag.gauge.id,
-          metric: ag.gauge_metric,
-          reading: ag.gauge_reading,
-          updated: ag.epoch
-        })
-      }
-      return ([...(this.readings?.length ? this.readings : []), ...lastReadings].filter(x => x.metric == this.activeMetric.id).sort((x, y) => x.updated - y.updated))
-
+    reachId () {
+      return this.$route.params.id
     },
-
-    gagesWithGage () {
-      return (this.gages?.filter(x => x.gauge) ?? []).sort((a, b) => {
-            if (a.excluded && !b.excluded) {
-              return 1
-            }
-            if (!a.excluded && b.excluded) {
-              return -1
-            }
-            //sort by primary over secondary
-            if (a.delay_update - b.delay_update) {
-              return a.delay_update - b.delay_update
-              // sort by updated last
-            } else {
-              return a.epoch - b.epoch
-            }
-          }
-      )
-
-    },
-
-    delays () {
-      return (uniq(this.gagesWithGage.map(x => x.delay_update)))
-    },
-
     chartSize () {
       if (this.windowWidth > this.$options.breakpoints.md) {
         return null
@@ -335,124 +256,75 @@ export default {
         return 'position:relative;width:' + this.$options.breakpoints.sm * 2 + 'px'
       }
     },
-    lastReading () {
-      if (this.activeGage && Number(this.activeGage.gauge_metric) === Number(this.activeMetricId)) {
-        return this.activeGage.gauge_reading
-      }
-      if (this.activeGage
-          && Number(this.activeGage.gauge_metric) !== Number(this.activeMetricId)
-          && this.readings.length > 0
-      ) {
-        // here we return the most recent "reading" from our new readings set
-        // can't directly operate on this.readings because it will mutate the array
-        const lastReading = cloneDeep(this.readingsWithLast).sort((a, b) => a - b)[0].reading
-        return Number(lastReading)
-      }
-
-      return null
-    },
-    sanitizedDescription () {
-      return this.$cleanContent(this.refreshedDescription || (this.river?.gaugeinfo ?? ''))
-    },
-
-    activeGage () {
-      return this.gages ? this.gagesWithGage.find(g => g.gauge.id === this.activeGageId) : null
-    },
-    activeMetric () {
-      if (this.metrics) {
-        return this.metrics.find(m => m.id.toString() === this.activeMetricId.toString()) ?? getEmptyMetric()
-      }
-      return null
-    }
   }
   ,
   watch: {
-    error (val) {
-      if (val) {
-        this.$store.dispatch('Global/sendToast', {
-          title: 'Failed to load readings',
-          kind: 'error'
-        })
-      }
-    }
-    ,
-    gagesWithGage (u) {
-      if (u && u.length && !this.activeGage) {
-        this.setActive(u[0])
+    reachId: {
+      immediate: true,
+      async handler(reachId) {
+        this.gaugesLoading = true;
+        // retrieves gauge correlation information from new modernized gauge API
+        this.reachDetail = await reachClient.reachDetail.query({ reachID: reachId });
+        const correlations = this.reachDetail?.detail?.correlations.map(c => {
+          return {
+            ...c,
+            requestedMetric: c.correlationDetails?.data?.flowMetric,
+            historyTimeScale: '24h',
+            readings: [],
+            loading: true
+          };
+        });
+        this.gaugeCorrelations = correlations;
+        this.gaugesLoading = false;
+        this.gaugeCorrelations.forEach(this.getReadings);
       }
     },
-
-    gagesError (val) {
-      if (val) {
-        this.$store.dispatch('Global/sendToast', {
-          title: 'Failed to load readings',
-          kind: 'error'
-        })
-      }
-    }
   },
   methods: {
-    handleUpdate (v) {
-      this.updatedDescription = v
-    },
-    handleEditorDestroy () {
-      this.updatedDescription = ''
-    },
-    rangeForGageID (id) {
-      return (this.ranges.filter(x => parseInt(x.gauge_id) === parseInt(id)).sort(x => x.min - x.max))
-    },
-    submitForm () {
-      if (this.updatedDescription && this.river.id) {
-        this.updatePending = true
-
-        http.post('/graphql', {
-          query: `
-          mutation  {
-            reachUpdate(id: ${this.river.id}, reach:{ gaugeinfo: "${this.$cleanContent(this.updatedDescription)}"}) {
-              gaugeinfo
-            }
-          }
-        `
-        }).then(r => {
-          this.refreshedDescription = r.data.data.reachUpdate.gaugeinfo
-
-          this.updatePending = false
-          this.$store.dispatch('Global/sendToast', {
-            title: 'Description Updated',
-            kind: 'success',
-            override: true,
-            contrast: false,
-            action: false,
-            autoHide: true
-          })
-        }).catch(() => {
-          this.updatePending = false
-          this.error = true
-          this.$store.dispatch('Global/sendToast', {
-            title: 'Update Failed',
-            kind: 'error',
-            override: true,
-            contrast: false,
-            action: false,
-            autoHide: true
-          })
-        })
+    getClass (gauge) {
+      const status = gauge.status?.status;
+      if (status === "below-recommended") {
+        return ('too-lo')
+      } else if (status === "low-runnable") {
+        return ('lo')
+      } else if (status === "medium-runnable") {
+        return ('med')
+      } else if (status === "high-runnable") {
+        return ('hi')
+      } else if (status === "above-recommended") {
+        return ('too-hi')
       }
     },
-
-    setActiveGageId (id) {
-      this.activeGageId = id
+    adjustedReachGrade(gauge) { // TODO: refactor to avoid duplication with beta-box
+      if (gauge && gauge.status && gauge.correlationDetails) {
+        const adjustedGradeKey = gauge.status.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
+        return gauge.correlationDetails.data[`${adjustedGradeKey}AdjustedGrade`];
+      }
+      return null;
     },
-
-    setActive (gage) {
-      this.setActiveGageId(gage.gauge.id)
-      this.setActiveMetricId(gage.gauge_metric)
+    adjustedReachComment(gauge) {
+      if (gauge && gauge.status && gauge.correlationDetails) {
+        const adjustedKey = gauge.status.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
+        return gauge.correlationDetails.data[`${adjustedKey}RangeComment`];
+      }
+      return null;
     },
-    setActiveMetricId (id) {
-      this.activeMetricId = id
+    correlationMatchesMetric(gauge) {
+      return gauge && gauge.correlationDetails && gauge.correlationDetails.data &&
+        gauge.correlationDetails.data.flowMetric === this.activeMetric;
     },
-    handleOpenGageModal () {
-      this.$refs.gageLinkModal.open()
+    async getReadings(gauge) {
+      gauge.loading = true;
+      gauge.readings = await gaugeClient.gaugeReadingsHistory.query({
+        desiredMetric: gauge.requestedMetric || 'cfs',
+        timePeriod: gauge.historyTimeScale || '24h',
+        gaugeSource: gauge.gaugeInfo.gaugeSource,
+        gaugeSourceIdentifier: gauge.gaugeInfo.gaugeSourceIdentifier
+      });
+      gauge.loading = false;
+    },
+    setActive (index) {
+      this.activeGaugeIndex = index;
     },
     calendarView () {
       this.releaseView = flowviewCalendar
@@ -461,11 +333,57 @@ export default {
       this.releaseView = flowviewTable
     }
   },
-  created () {
-    this.$store.dispatch('RiverGages/getProperty', this.$route.params.id)
-  }
 }
 </script>
 <style lang="scss">
+.gauge-grid {
+  padding-left: .75em;
+  padding-right: .75em;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding-bottom: 1em;
+  cursor: pointer;
 
+  .gauge-name {
+    font-size: x-large;
+  }
+
+  .gauge-name,
+  .header {
+    font-weight: bolder;
+  }
+
+  .gauge-name,
+  .gauge-meta,
+  .gauge-chart-container,
+  .range-comment {
+    grid-column: 1/4;
+  }
+
+  &.selected {
+    border: darkgreen thin solid;
+    margin-bottom: .5em;
+    margin-top: .5em;
+  }
+
+  &.too-lo {
+    border-left: $flow-low 1em solid;
+  }
+
+  &.too-hi {
+    border-left: $flow-high 1em solid;
+  }
+
+  &.lo {
+    border-left: $low-runnable 1em solid;
+  }
+
+  &.med {
+    border-left: $med-runnable 1em solid;
+  }
+
+  &.hi {
+    border-left: $high-runnable 1em solid;
+  }
+}
 </style>
