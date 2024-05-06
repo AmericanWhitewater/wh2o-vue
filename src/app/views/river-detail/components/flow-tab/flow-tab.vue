@@ -310,8 +310,8 @@ export default {
       return null;
     },
     correlationMatchesMetric(gauge) {
-      return gauge && gauge.correlationDetails && gauge.correlationDetails.data &&
-        gauge.correlationDetails.data.flowMetric === this.activeMetric;
+     return gauge && gauge.correlationDetails && gauge.correlationDetails.data &&
+        gauge.correlationDetails.data.flowMetric === gauge.requestedMetric;
     },
     async getReadings(gauge) {
       gauge.loading = true;
