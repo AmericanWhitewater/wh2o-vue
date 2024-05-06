@@ -87,7 +87,7 @@
                           </div>
                         </div>
                         <div v-else>
-                          <gage-readings :metrics="metrics"/>
+                          <gauge-readings :readings="gauge.readings" :metric="gauge.requestedMetric" />
                         </div>
                       </template>
                       <template v-else>
@@ -150,6 +150,19 @@
                               stage (ft)
                             </cv-dropdown-item>
                           </cv-dropdown>
+
+                          <cv-radio-button
+                              v-model="viewMode"
+                              name="chart"
+                              label="Chart"
+                              value="chart"
+                          />
+                          <cv-radio-button
+                              v-model="viewMode"
+                              name="table"
+                              label="Table"
+                              value="table"
+                          />
                         </div>
 
                       </template>
@@ -190,7 +203,6 @@
         <releases-calendar @tableView="tableView"/>
       </template>
     </layout>
-    <gage-link-modal ref="gageLinkModal"/>
   </div>
 </template>
 
@@ -198,8 +210,7 @@
 import {
   FlowChart,
   FlowStats,
-  GageLinkModal,
-  GageReadings,
+  GaugeReadings,
   LevelLegend,
   ReleasesCalendar,
   ReleasesTable
@@ -218,9 +229,8 @@ const flowviewTable = 1
 export default {
   name: 'flow-tab',
   components: {
-    GageLinkModal,
     FlowChart,
-    GageReadings,
+    GaugeReadings,
     Layout,
     UtilityBlock,
     LevelLegend,
@@ -233,7 +243,6 @@ export default {
     activeGaugeIndex: 0,
     selectedTimespan: 'h:mm a',
     viewMode: 'chart',
-    activeMetricId: '',
     releaseView: 1,
     reachDetail: null, // TODO: pass this info in as a prop so it's only requested once in all components
     gaugeCorrelations: [],
@@ -242,9 +251,7 @@ export default {
   computed: {
     ...mapState({
       river: state => state.RiverDetail.data,
-      ranges: state => state.RiverGages.data?.ranges ?? [],
       editMode: state => state.Global.editMode,
-      metrics: state => state.RiverGages.data?.metrics ?? [],
     }),
     reachId () {
       return this.$route.params.id
