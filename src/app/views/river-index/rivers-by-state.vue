@@ -29,7 +29,13 @@
                     <span v-if="reach.altname">({{ reach.altname }})</span>
                   </router-link>
                 </td>
-                <td>N/A</td>
+                <td>
+                  <span v-if="reach.loading">loading...</span>
+                  <span v-else-if="reach.correlation && reach.correlation.status">
+                    {{ correlation.status.latestReading.value }} {{ correlation.status.metric }}
+                  </span>
+                  <span v-else>n/a</span>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -51,6 +57,7 @@ export default {
   data: () => ({
     loading: true,
     allReachStubs: [],
+    reaches: []
   }),
   computed: {
     ...mapState({
@@ -62,20 +69,30 @@ export default {
     state() {
       return this.states.find(x => x.shortkey === this.stateCode);
     },
-    reaches() {
-      return this.allReachStubs.filter(x => x.states.includes(this.state.gmi)).sort((a,b) => {
-        if (a.river > b.river) {
-          return 1;
-        } else if (a.river < b.river) {
-          return -1;
-        } else {
-          if (a.section >= b.section) {
+  },
+  watch: {
+    async allReachStubs(newStubs) {
+      // TODO: need to run the below code *after* state and states are populated
+      if (this.states) {
+        this.reaches = newStubs.filter(x => x.states.includes(this.state.gmi)).sort((a,b) => {
+          if (a.river > b.river) {
             return 1;
-          } else {
+          } else if (a.river < b.river) {
             return -1;
+          } else {
+            if (a.section >= b.section) {
+              return 1;
+            } else {
+              return -1;
+            }
           }
-        }
-      });
+        });
+        this.reaches.forEach(async r => {
+          this.$set(r.loading, true);
+          this.$set(r.correlation, await reachClient.primaryGaugeStub.query({ reachID: `${r.id}` }));
+          r.loading = false;
+        })
+      }
     }
   },
   async created () {
