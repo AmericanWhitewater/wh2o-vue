@@ -88,26 +88,11 @@ ul {
   li {
     margin-bottom: $spacing-xs;
 
-    .above-recommended {
-      fill: $flow-high;
+    @each $class, $color in $flow-map {
+      .#{$class} {
+        fill: $color;
+      }
     }
-
-    .high-runnable {
-      fill: $high-runnable;
-    }
-
-    .runnable {
-      fill: $med-runnable;
-    }
-
-    .low-runnable {
-      fill: $low-runnable;
-    }
-
-    .below-recommended {
-      fill: $flow-low;
-    }
-
     svg {
       margin-right: 8px;
       vertical-align: top;
