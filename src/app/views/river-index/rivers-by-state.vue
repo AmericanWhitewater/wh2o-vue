@@ -7,7 +7,7 @@
             {{ state.name }}
           </h2>
 
-          <table class="bx--data-table bx--data-table--zebra">
+          <table class="bx--data-table">
             <thead>
               <tr class="bx--table-header-label">
                 <th>
@@ -15,10 +15,11 @@
                   <br>Section
                 </th>
                 <th>Latest Flow</th>
+                <th>Updated As Of</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="reach in reaches" :key="reach.id">
+              <tr v-for="reach in reaches" :key="reach.id" :class="`${classForGaugeCorrelation(reach.correlation)} reach`">
                 <td>
                   <router-link :to="`/river-detail/${reach.id}/main`">
                     <strong>
@@ -31,10 +32,15 @@
                 </td>
                 <td>
                   <span v-if="reach.loading">loading...</span>
-                  <span v-else-if="reach.correlation && reach.correlation.status">
-                    {{ correlation.status.latestReading.value }} {{ correlation.status.metric }}
-                  </span>
-                  <span v-else>n/a</span>
+                  <strong v-else-if="reach.correlation && reach.correlation.status">
+                    {{ reach.correlation.status.latestReading.value }} {{ reach.correlation.status.metric }}
+                  </strong>
+                </td>
+                <td>
+                  <div v-if="reach.correlation && reach.correlation.status">
+                    {{ displayGaugeCorrelationLatestReadingTime(reach.correlation) }} ago
+                    <cv-tag v-if="reach.correlation.status.status === 'stale'" kind="stale" label="! data is stale" />
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -47,7 +53,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { getStateList } from "@/app/services"
 import { reachClient } from '@/app/services'
 import { reachApiHelper } from '@/app/global/mixins';
 
@@ -57,12 +63,10 @@ export default {
   data: () => ({
     loading: true,
     allReachStubs: [],
-    reaches: []
+    reaches: [],
+    states: []
   }),
   computed: {
-    ...mapState({
-      states: state => state.RiverIndex.usStates.concat(state.RiverIndex.intlStates)
-    }),
     stateCode() {
       return this.$route.params.state;
     },
@@ -72,9 +76,9 @@ export default {
   },
   watch: {
     async allReachStubs(newStubs) {
-      // TODO: need to run the below code *after* state and states are populated
-      if (this.states) {
-        this.reaches = newStubs.filter(x => x.states.includes(this.state.gmi)).sort((a,b) => {
+      let reaches;
+      if (this.state) {
+        reaches = newStubs.filter(x => x.states.includes(this.state.gmi)).sort((a,b) => {
           if (a.river > b.river) {
             return 1;
           } else if (a.river < b.river) {
@@ -86,22 +90,45 @@ export default {
               return -1;
             }
           }
-        });
+        }).map(r => ({
+          ...r,
+          loading: true,
+          correlation: null
+        }));
+        this.reaches = reaches;
         this.reaches.forEach(async r => {
-          this.$set(r.loading, true);
-          this.$set(r.correlation, await reachClient.primaryGaugeStub.query({ reachID: `${r.id}` }));
-          r.loading = false;
-        })
+          try {
+            r.correlation = await reachClient.primaryGaugeStub.query({ reachID: `${r.id}` });
+          } finally {
+            r.loading = false;
+          }
+        });
+
       }
     }
   },
   async created () {
     this.loading = true;
     // TODO: can we reduce/remove reliance on laravel state list?
-    this.$store.dispatch('RiverIndex/fetchStates');
+    const stateResults = await getStateList();
+    this.states = stateResults.data.data.states.data;
     // TODO: replace this with state specific query
     this.allReachStubs = await reachClient.allReachStubs.query();
     this.loading = false;
   }
 }
 </script>
+<style lang="scss">
+@each $class, $color in $flow-map {
+  tr.reach.#{$class} td {
+    background-color: $color;
+  }
+}
+.bx--tag--stale {
+  background-color: #dfe3e6;
+
+  :hover > & {
+    background-color: $stale;
+  }
+}
+</style>

@@ -73,7 +73,7 @@
           <tr v-if="gaugeCorrelation.status">
             <td>
               Flow Rate
-              as of {{ formatDateTime(gaugeCorrelation.status.latestReading.dateTime) }}
+              as of {{ displayGaugeCorrelationLatestReadingTime(gaugeCorrelation) }}
             </td>
             <td class="river-flow-rate">
               {{ gaugeCorrelation.status.latestReading.value }} {{ gaugeCorrelation.status.metric }}
@@ -83,7 +83,7 @@
                   :label="adjustedReachGrade"
               />
               <cv-tag
-                  :kind="statusTagColor(gaugeCorrelation.status.status)"
+                  :kind="gaugeCorrelation.status.status"
                   :label="gaugeCorrelation.status.status.replace('-', ' ')"
               />
             </td>
@@ -126,10 +126,10 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { humanReadable } from '@/app/global/services/human-readable'
 import { BetaBoxEditModal } from './components'
 import { EditBlockOverlay } from '@/app/global/components'
 import { reachClient } from '@/app/services'
+import { reachApiHelper } from '@/app/global/mixins'
 
 export default {
   name: 'beta-box',
@@ -137,6 +137,7 @@ export default {
     BetaBoxEditModal,
     EditBlockOverlay
   },
+  mixins: [reachApiHelper],
   data: () => ({
     editModalVisible: false,
     formData: {},
@@ -204,20 +205,6 @@ export default {
 
       return 'Next Release'
     },
-    formatDateTime (input) {
-      const now = new Date();
-      const readingTime = new Date(input);
-      return humanReadable(now.getTime() - readingTime.getTime())
-    },
-    statusTagColor(status) {
-      if (status === 'below-recommended') {
-        return 'red';
-      } else if (status === 'above-recommended') {
-        return 'blue';
-      } else {
-        return 'green';
-      }
-    }
   }
 }
 </script>
@@ -238,6 +225,12 @@ export default {
     &:hover,
     &:focus {
       background-color: $ui-02;
+    }
+  }
+
+  @each $class, $color in $flow-map {
+    .bx--tag--#{$class} {
+      background-color: $color;
     }
   }
 }
