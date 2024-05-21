@@ -25,10 +25,10 @@ export const reachApiHelper = {
       return gradeString;
     },
     classForGaugeCorrelation(correlation) {
-      if (correlation && correlation.status) {
+      if (correlation && correlation.status && correlation.status.status) {
         return correlation.status.status; // TODO: not 100% sure if this works atm
       }
-      return '';
+      return 'unk';
     },
     displayGaugeCorrelationLatestReadingTime(correlation) {
       if (correlation && correlation.status && correlation.status.latestReading) {
