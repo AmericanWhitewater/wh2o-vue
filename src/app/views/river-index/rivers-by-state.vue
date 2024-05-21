@@ -31,7 +31,13 @@
                   </router-link>
                 </td>
                 <td>
-                  <span v-if="reach.loading">loading...</span>
+                  <template v-if="reach.loading">
+                    <cv-inline-loading
+                      small
+                      state="loading"
+                      loading-text=""
+                    />
+                  </template>
                   <strong v-else-if="reach.correlation && reach.correlation.status">
                     {{ reach.correlation.status.latestReading.value }} {{ reach.correlation.status.metric }}
                   </strong>
