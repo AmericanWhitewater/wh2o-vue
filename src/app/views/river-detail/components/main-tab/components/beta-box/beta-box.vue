@@ -221,7 +221,6 @@ export default {
     },
     gagesWithGage () {
       return (this.gages?.filter(x => x.gauge && !x.excluded) ?? []).sort((a, b) => {
-
             //sort by primary over secondary
             if (a.delay_update - b.delay_update) {
               return a.delay_update - b.delay_update
@@ -235,9 +234,8 @@ export default {
     },
 
     reachGage () {
-
-      if (this.river && this.river.readingsummary && this.gages) {
-        return this.gages.find(g => g.gauge.id.toString() === this.river.readingsummary.gauge_id.toString())
+      if (this.river && this.river.readingsummary) {
+        return this.gagesWithGage.find(g => g.gauge.id.toString() === this.river.readingsummary.gauge_id.toString())
       }
       return this.gagesWithGage[0]
     }
