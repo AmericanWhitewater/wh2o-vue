@@ -67,7 +67,7 @@
             <td>Flow Range</td>
             <td class="flow-range">
               {{ gaugeCorrelation.correlationDetails.data.beginLowRunnable }} - {{ gaugeCorrelation.correlationDetails.data.endHighRunnable }}
-              {{ gaugeCorrelation.correlationDetails.data.flowMetric }}
+              {{ correlationMetrics[gaugeCorrelation.correlationDetails.data.flowMetric].unit }}
             </td>
           </tr>
           <tr v-if="gaugeCorrelation.status">
@@ -76,7 +76,7 @@
               as of {{ displayGaugeCorrelationLatestReadingTime(gaugeCorrelation) }}
             </td>
             <td class="river-flow-rate">
-              {{ gaugeCorrelation.status.latestReading.value }} {{ gaugeCorrelation.status.metric }}
+              {{ gaugeCorrelation.status.latestReading.value }} {{ correlationMetrics[gaugeCorrelation.status.metric].unit }}
               <cv-tag
                   v-if="adjustedReachGrade(gaugeCorrelation)"
                   kind="cool-gray"

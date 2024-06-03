@@ -16,7 +16,7 @@
         </svg>
 
         <span v-html="entry.gtOrLtSymbol" />
-        <em>{{  entry.value }} {{ correlationDetails.flowMetric }}</em>
+        <em>{{  entry.value }} {{ correlationMetrics[correlationDetails.flowMetric].unit }}</em>
         {{ entry.label }}
         <div class="range-description">
           <span v-if="entry.adjustedComment" v-text="entry.adjustedComment" />
@@ -27,8 +27,11 @@
   </div>
 </template>
 <script>
+import { reachApiHelper } from '@/app/global/mixins';
+
 export default {
   name: 'level-legend',
+  mixins: [reachApiHelper],
   props: {
     gaugeCorrelation: {
       type: Object,

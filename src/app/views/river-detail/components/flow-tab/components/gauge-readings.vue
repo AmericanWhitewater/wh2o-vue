@@ -21,7 +21,7 @@
             :key="`${index}`"
             :value="`${index}`"
         >
-          <td v-text="`${r.value} ${metric}`"/>
+          <td v-text="`${r.value} ${metric.unit}`"/>
           <td>{{ formatDate(r) }}</td>
         </tr>
         </tbody>
@@ -33,16 +33,15 @@
 import moment from 'moment'
 
 export default {
-  name: 'gage-readings',
+  name: 'gauge-readings',
   props: {
     readings: {
       type: Array,
       required: true
     },
     metric: {
-      type: String,
-      required: true,
-      default: 'cfs'
+      type: Object,
+      required: true
     }
   },
   data: () => ({
@@ -51,7 +50,7 @@ export default {
   }),
   methods: {
     formatReading (reading) {
-      return `${reading.value} ${this.metric}`
+      return `${reading.value} ${this.metric.unit}`
     },
     formatDate (reading) {
       return moment(reading.dateTime).format('MM/DD hh:mm a')

@@ -51,7 +51,7 @@
                     />
                   </template>
                   <template v-else-if="reach.correlation && reach.correlation.status">
-                    {{ reach.correlation.status.latestReading.value }} {{ reach.correlation.status.metric }}
+                    {{ reach.correlation.status.latestReading.value }} {{ correlationMetrics[reach.correlation.status.metric].unit }}
                     <cv-tooltip
                       v-if="reach.correlation.status.status === 'stale'"
                       tip="reading is out of date"

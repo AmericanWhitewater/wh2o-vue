@@ -39,7 +39,7 @@
                     />
                   </template>
                   <strong v-else-if="reach.correlation && reach.correlation.status">
-                    {{ reach.correlation.status.latestReading.value }} {{ reach.correlation.status.metric }}
+                    {{ reach.correlation.status.latestReading.value }} {{ correlationMetrics[reach.correlation.status.metric].unit }}
                   </strong>
                 </td>
                 <td>

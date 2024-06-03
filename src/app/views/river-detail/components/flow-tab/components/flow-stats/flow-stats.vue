@@ -64,9 +64,8 @@ export default {
       default: () => []
     },
     metric: {
-      type: String,
-      required: true,
-      default: () => 'cfs'
+      type: Object,
+      required: true
     },
   },
   computed: {
@@ -90,7 +89,7 @@ export default {
   },
   methods: {
     formatWithMetric(value) {
-      return `${value} ${this.metric}`
+      return `${value} ${this.metric.unit}`
     }
   }
 }

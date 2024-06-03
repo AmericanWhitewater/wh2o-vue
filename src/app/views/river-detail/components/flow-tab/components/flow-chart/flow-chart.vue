@@ -32,9 +32,8 @@ export default {
       required: true
     },
     metric: {
-      type: String,
-      required: true,
-      default: 'cfs'
+      type: Object,
+      required: true
     }
   },
   data: () => ({
@@ -138,7 +137,7 @@ export default {
           callbacks: {
                 label: function(tooltipItem, data) {
                     let label = data.datasets[tooltipItem.datasetIndex].label || '';
-                    return( `${label} ${tooltipItem.value} ${otherthis.metric}`);
+                    return( `${label} ${tooltipItem.value} ${otherthis.metric.unit}`);
                 }
             }
 
@@ -181,7 +180,7 @@ export default {
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: this.metric,
+              labelString: this.metric.name,
               bounds: 'data',
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
               fontSize: 14
@@ -195,7 +194,7 @@ export default {
               suggestedMax: this.yMax,
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
               fontSize: 14,
-              callback: (value)=>`${value} ${otherthis.metric}`
+              callback: (value)=>`${value} ${otherthis.metric.unit}`
             },
             beforeBuildTicks: () => {
               chartOptions.scales.yAxes[0].ticks.min = 100
@@ -204,7 +203,7 @@ export default {
         }
       }
 
-      if (this.gaugeCorrelationHasRange && this.metric === this.correlationDetails.flowMetric) {
+      if (this.gaugeCorrelationHasRange && this.metric.key === this.correlationDetails.flowMetric) {
         let graphBackgrounds = [
           {
             min: Number.MIN_SAFE_INTEGER,

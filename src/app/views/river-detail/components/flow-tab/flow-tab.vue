@@ -34,7 +34,7 @@
                 <div class="gauge-range-header header">Range</div>
                 <div class="gauge-class-header header">Difficulty</div>
                 <div v-if="gauge.status" :class="`gauge-reading background`">
-                  {{ gauge.status.latestReading.value }} {{ gauge.status.metric }}
+                  {{ gauge.status.latestReading.value }} {{ correlationMetrics[gauge.status.metric].unit }}
                   @ {{ formatDate(new Date(gauge.status.latestReading.dateTime)) }}
                 </div>
                 <div v-if="gauge.correlationDetails.data" class="gauge-range">
@@ -75,19 +75,19 @@
                                 :readings="gauge.readings"
                                 :timeScale="gauge.historyTimeScale"
                                 class="mb-md"
-                                :metric="gauge.requestedMetric"
+                                :metric="correlationMetrics[gauge.requestedMetric]"
                                 :current="gauge.status.latestReading.value"
 
                             />
                             <flow-stats
                                 :readings="gauge.readings"
                                 :loading="gauge.loading"
-                                :metric="gauge.requestedMetric"
+                                :metric="correlationMetrics[gauge.requestedMetric]"
                             />
                           </div>
                         </div>
                         <div v-else>
-                          <gauge-readings :readings="gauge.readings" :metric="gauge.requestedMetric" />
+                          <gauge-readings :readings="gauge.readings" :metric="correlationMetrics[gauge.requestedMetric]" />
                         </div>
                       </template>
                       <template v-else>
@@ -142,12 +142,8 @@
                             label="Data Metric"
                             class="mb-spacing-md"
                             @change="getReadings(gauge)">
-                            <!-- TODO: can this be populated programmatically? need holistic think about metrics -->
-                            <cv-dropdown-item value="cfs">
-                              cfs
-                            </cv-dropdown-item>
-                            <cv-dropdown-item value="stage-height-ft">
-                              stage (ft)
+                            <cv-dropdown-item v-for="metric, key in correlationMetrics" :key="`metric-${key}`" :value="key">
+                              {{ metric.name }}
                             </cv-dropdown-item>
                           </cv-dropdown>
 
@@ -317,7 +313,7 @@ export default {
     async getReadings(gauge) {
       gauge.loading = true;
       gauge.readings = await gaugeClient.gaugeReadingsHistory.query({
-        desiredMetric: gauge.requestedMetric || 'cfs',
+        desiredMetric: gauge.requestedMetric || this.correlationMetrics.cfs.key,
         timePeriod: gauge.historyTimeScale || '24h',
         gaugeSource: gauge.gaugeInfo.gaugeSource,
         gaugeSourceIdentifier: gauge.gaugeInfo.gaugeSourceIdentifier
