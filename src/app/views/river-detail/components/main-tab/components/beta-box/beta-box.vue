@@ -128,7 +128,6 @@
 import { mapState } from 'vuex'
 import { BetaBoxEditModal } from './components'
 import { EditBlockOverlay } from '@/app/global/components'
-import { reachClient } from '@/app/services'
 import { reachApiHelper } from '@/app/global/mixins'
 
 export default {
@@ -138,10 +137,15 @@ export default {
     EditBlockOverlay
   },
   mixins: [reachApiHelper],
+  props: {
+    reachDetail: {
+      type: Object,
+      required: false
+    }
+  },
   data: () => ({
     editModalVisible: false,
     formData: {},
-    reachDetail: null,
   }),
   computed: {
     ...mapState({
@@ -149,7 +153,6 @@ export default {
       river: state => state.RiverDetail.data,
       editMode: state => state.Global.editMode,
     }),
-    // TODO: decide how to handle secondary gauges. do we fall back if primary isn't reporting?
     gaugeCorrelation () {
       if (this.reachDetail?.detail?.correlations) {
         return this.reachDetail.detail.correlations.find(x => x.isPrimary);
@@ -169,15 +172,6 @@ export default {
     reachId () {
       return this.$route.params.id
     },
-  },
-  watch: {
-    reachId: {
-      immediate: true,
-      async handler(reachId) {
-        // retrieves gauge correlation information from new modernized gauge API
-        this.reachDetail = await reachClient.reachDetail.query({ reachID: reachId });
-      }
-    }
   },
   methods: {
     /**

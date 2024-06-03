@@ -221,7 +221,7 @@ import { mapState } from 'vuex'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { checkWindow, reachApiHelper } from '@/app/global/mixins'
 
-import { gaugeClient, reachClient } from '@/app/services'
+import { gaugeClient } from '@/app/services'
 
 const flowviewCalendar = 2
 const flowviewTable = 1
@@ -239,12 +239,17 @@ export default {
     ReleasesCalendar
   },
   mixins: [GageChartConfig, checkWindow, reachApiHelper],
+  props: {
+    reachDetail: {
+      type: Object,
+      required: false
+    }
+  },
   data: () => ({
     activeGaugeIndex: 0,
     selectedTimespan: 'h:mm a',
     viewMode: 'chart',
     releaseView: 1,
-    reachDetail: null, // TODO: pass this info in as a prop so it's only requested once in all components
     gaugeCorrelations: [],
     gaugesLoading: false
   }),
@@ -266,23 +271,26 @@ export default {
   }
   ,
   watch: {
-    reachId: {
+    reachDetail: {
       immediate: true,
-      async handler(reachId) {
+      async handler(reachDetail) {
         this.gaugesLoading = true;
-        // retrieves gauge correlation information from new modernized gauge API
-        this.reachDetail = await reachClient.reachDetail.query({ reachID: reachId });
-        const correlations = this.reachDetail?.detail?.correlations.map(c => {
-          return {
-            ...c,
-            requestedMetric: c.correlationDetails?.data?.flowMetric,
-            historyTimeScale: '24h',
-            readings: [],
-            loading: true
-          };
-        });
+        let correlations = [];
+        if (reachDetail?.detail?.correlations) {
+          correlations = reachDetail?.detail?.correlations.map(c => {
+            return {
+              ...c,
+              requestedMetric: c.correlationDetails?.data?.flowMetric,
+              historyTimeScale: '24h',
+              readings: [],
+              loading: true
+            };
+          });
+        }
+
         this.gaugeCorrelations = correlations;
         this.gaugesLoading = false;
+
         this.gaugeCorrelations.forEach(this.getReadings);
       }
     },
