@@ -126,11 +126,7 @@ export default {
 </script>
 <style lang="scss">
 .bx--tag--stale {
-  background-color: #dfe3e6;
-
-  :hover > & {
-    background-color: $stale;
-  }
+  background-color: $flow-warning;
 }
 
 #rivers-by-state {

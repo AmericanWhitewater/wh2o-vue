@@ -9,16 +9,16 @@ $flow-medium: #59E78D;
 $high-runnable: lighten($flow-medium, 15%);
 $med-runnable: $flow-medium;
 $low-runnable: darken($flow-medium, 15%);
-$stale: #ffcc00;
+$flow-warning: #ffcc00;
 
 // maps flow classes to their color
 $flow-map: (
   "above-recommended": $flow-high,
   "high-runnable": $high-runnable,
-  "runnable": $med-runnable,
+  "medium-runnable": $med-runnable,
   "low-runnable": $low-runnable,
   "below-recommended": $flow-low,
-  "stale": $stale
+  "stale": #dfe3e6 // use ui-03 for unknown/stale
 );
 
 // high contrast/accessibility flow colors

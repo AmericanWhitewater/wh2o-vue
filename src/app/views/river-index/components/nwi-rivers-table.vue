@@ -3,7 +3,7 @@
     <template v-if="searchLoading">
       <utility-block state="loading" />
     </template>
-    <template v-else-if="reachesInTable && reachesInTable.length > 0">
+    <template v-else-if="reaches && reaches.length > 0">
       <div class="bx--data-table-container river-index">
         <table class="bx--data-table river-table">
           <thead>
@@ -17,24 +17,19 @@
             </tr>
           </thead>
           <tbody>
-            <template v-if="reachesInTable && reachesInTable.length > 0">
+            <template v-if="reaches && reaches.length > 0">
               <tr
-                v-for="reach in reachesInTable"
+                v-for="reach in reaches"
                 :key="reach.id"
                 :ref="`reach-${reach.id}`"
                 :class="[
                   mouseoveredFeature && reach.id === mouseoveredFeature.properties.id ? 'active' : '',
-                  classForGaugeCorrelation(reach.correlation)
+                  classForGaugeCorrelation(reachFlows[reach.id].correlation)
                 ]"
                 @mouseover="debouncedMouseover(reach.feature)"
                 @mouseleave="debouncedMouseover()"
               >
-                <td
-                  :class="[
-                    `${classForGaugeCorrelation(reach.correlation)}`,
-                    'river-name-section',
-                  ]"
-                >
+                <td class="river-name-section">
                   <router-link :to="`/river-detail/${reach.id}/main`">
                     <strong>{{ displayReachTitle(reach) }}</strong>
                     <br >
@@ -43,17 +38,17 @@
                   </router-link>
                 </td>
                 <td class="level">
-                  <template v-if="reach.loading">
+                  <template v-if="reachFlows[reach.id].loading">
                     <cv-inline-loading
                       small
                       state="loading"
                       loading-text=""
                     />
                   </template>
-                  <template v-else-if="reach.correlation && reach.correlation.status">
-                    {{ reach.correlation.status.latestReading.value }} {{ correlationMetrics[reach.correlation.status.metric].unit }}
+                  <template v-else-if="reachFlows[reach.id].correlation && reachFlows[reach.id].correlation.status">
+                    {{ reachFlows[reach.id].correlation.status.latestReading.value }} {{ correlationMetrics[reachFlows[reach.id].correlation.status.metric].unit }}
                     <cv-tooltip
-                      v-if="reach.correlation.status.status === 'stale'"
+                      v-if="reachFlows[reach.id].correlation.status.status === 'stale'"
                       tip="reading is out of date"
                       direction="left"
                     >
@@ -121,7 +116,7 @@ export default {
   data: () => ({
     windowWidth: 0,
     mq: Breakpoints,
-    reachesInTable: []
+    reachFlows: {}
   }),
   computed: {
     ...mapState({
@@ -217,20 +212,19 @@ export default {
     },
     // update reactive data property with map or search results whenever they change
     reaches(newReaches) {
-      this.reachesInTable = [...newReaches];
-    },
-    // retrieve flow information for table reaches
-    reachesInTable(newReaches) {
-      // TODO: use new query that retrieves correlation data with batch of IDs
       newReaches.forEach(async r => {
-        r.loading = true;
-        try {
-          r.correlation = await reachClient.primaryGaugeStub.query({ reachID: `${r.id}` });
-        } finally {
-          r.loading = false;
+        if (!this.reachFlows[r.id]) {
+          this.reachFlows[r.id] = {
+            loading: true
+          };
+          try {
+            this.reachFlows[r.id].correlation = await reachClient.primaryGaugeStub.query({ reachID: `${r.id}` });
+          } finally {
+            this.reachFlows[r.id].loading = false;
+          }
         }
       })
-    }
+    },
   },
   methods: {
     displayReachTitle(reach) {
@@ -313,36 +307,34 @@ export default {
     cursor: pointer;
   }
 
-  &.river-table {
-    tr.stale button.cv-tooltip {
-      background-color: $stale;
-      padding: 0 0.47rem;
-      border-radius: 1rem;
+  tr.stale button.cv-tooltip {
+    background-color: $flow-warning;
+    padding: 0 0.47rem;
+    border-radius: 1rem;
+  }
+
+  tr {
+    @include ease;
+    // lines up header background with borders from the rows
+    border-left: 0.5rem solid $ui-03;
+
+    .level {
+      white-space: nowrap;
     }
 
-    tr {
-      @include ease;
-      // lines up header background with borders from the rows
-      border-left: 0.5rem solid $ui-03;
-
-      .level {
-        white-space: nowrap;
-      }
-
-      td {
-        padding: 0.5rem 0;
-        &:first-child {
-          @each $class, $color in $flow-map {
-            &.#{$class} {
-              border-left: 0.5rem solid $color;
-            }
-          }
+    @each $class, $color in $flow-map {
+      &.#{$class} {
+        td:first-child {
+          border-left: 0.5rem solid $color;
         }
       }
+    }
+    td {
+      padding: 0.5rem 0;
+    }
 
-      &.active, &.active td {
-        background: #e5e5e5;
-      }
+    &.active, &.active td {
+      background: #e5e5e5;
     }
   }
 }
