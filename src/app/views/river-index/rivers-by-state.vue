@@ -30,7 +30,7 @@
                     <span v-if="reach.altname">({{ reach.altname }})</span>
                   </router-link>
                 </td>
-                <td>
+                <td class="reach-flow">
                   <template v-if="reach.loading">
                     <cv-inline-loading
                       small
@@ -125,16 +125,34 @@ export default {
 }
 </script>
 <style lang="scss">
-@each $class, $color in $flow-map {
-  tr.reach.#{$class} td {
-    background-color: $color;
-  }
-}
 .bx--tag--stale {
   background-color: #dfe3e6;
 
   :hover > & {
     background-color: $stale;
+  }
+}
+
+#rivers-by-state {
+  thead {
+    position: sticky;
+    top: 51px;
+  }
+
+  tr {
+    border-left: 0.5rem solid $ui-03;
+
+    @each $class, $color in $flow-map {
+      &.#{$class} {
+        td:first-child {
+          border-left: 0.5rem solid $color;
+        }
+
+        td.reach-flow {
+          background: $color;
+        }
+      }
+    }
   }
 }
 </style>
