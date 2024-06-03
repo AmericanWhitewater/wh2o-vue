@@ -72,7 +72,7 @@ export default {
   computed: {
     stats () {
       if (this.readings.length) {
-        const data = this.readings.map(r => r.value.toNumber()) // TODO: figure out plan for decimal.js stuff...
+        const data = this.readings.map(r => r.value.toNumber())
 
         const readingsSum = data.reduce((a, reading) =>
             Number(a) + Number(reading), 0

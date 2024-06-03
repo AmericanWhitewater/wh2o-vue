@@ -43,36 +43,36 @@ export default {
       if (!this.correlationDetails) {
         return [];
       }
-      return [{ // TODO: sort out how to deal with Decimal.Js object
-        value: this.correlationDetails.endHighRunnable?.toFixed(2),
+      return [{
+        value: this.correlationDetails.endHighRunnable?.toNumber(),
         colorClass: 'above-recommended',
         gtOrLtSymbol: "&gt;",
         label: "Above Recommended",
         adjustedComment: this.correlationDetails.aboveRecommendedRangeComment,
         adjustedGrade: null
       }, {
-        value: this.correlationDetails.beginHighRunnable?.toFixed(2),
+        value: this.correlationDetails.beginHighRunnable?.toNumber(),
         colorClass: 'high-runnable',
         gtOrLtSymbol: "&gt;",
         label: "High Runnable",
         adjustedComment: this.correlationDetails.highRunnableRangeComment,
         adjustedGrade: this.correlationDetails.highRunnableAdjustedGrade,
       }, {
-        value: this.correlationDetails.beginMediumRunnable?.toFixed(2),
+        value: this.correlationDetails.beginMediumRunnable?.toNumber(),
         colorClass: 'runnable',
         gtOrLtSymbol: "&gt;",
         label: "Medium Runnable",
         adjustedComment: this.correlationDetails.mediumRunnableRangeComment,
         adjustedGrade: null
       }, {
-        value: this.correlationDetails.beginLowRunnable?.toFixed(2),
+        value: this.correlationDetails.beginLowRunnable?.toNumber(),
         colorClass: 'low-runnable',
         gtOrLtSymbol: "&gt;",
         label: "Low Recommended",
         adjustedComment: this.correlationDetails.lowRunnableRangeComment,
         adjustedGrade: this.correlationDetails.lowRunnableAdjustedGrade,
       }, {
-        value: this.correlationDetails.beginLowRunnable?.toFixed(2),
+        value: this.correlationDetails.beginLowRunnable?.toNumber(),
         colorClass: 'below-recommended',
         gtOrLtSymbol: "&lt;",
         label: "Below Recommended",
