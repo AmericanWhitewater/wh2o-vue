@@ -78,9 +78,9 @@
             <td class="river-flow-rate">
               {{ gaugeCorrelation.status.latestReading.value }} {{ gaugeCorrelation.status.metric }}
               <cv-tag
-                  v-if="adjustedReachGrade"
+                  v-if="adjustedReachGrade(gaugeCorrelation)"
                   kind="cool-gray"
-                  :label="adjustedReachGrade"
+                  :label="adjustedReachGrade(gaugeCorrelation)"
               />
               <cv-tag
                   :kind="gaugeCorrelation.status.status"
@@ -153,13 +153,6 @@ export default {
     gaugeCorrelation () {
       if (this.reachDetail?.detail?.correlations) {
         return this.reachDetail.detail.correlations.find(x => x.isPrimary);
-      }
-      return null;
-    },
-    adjustedReachGrade () {
-      if (this.gaugeCorrelation && this.gaugeCorrelation.status && this.gaugeCorrelation.correlationDetails) {
-        const adjustedGradeKey = this.gaugeCorrelation.status.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
-        return this.gaugeCorrelation.correlationDetails.data[`${adjustedGradeKey}AdjustedGrade`];
       }
       return null;
     },

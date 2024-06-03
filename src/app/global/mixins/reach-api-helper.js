@@ -30,6 +30,20 @@ export const reachApiHelper = {
       }
       return 'unk';
     },
+    adjustedReachGrade(correlation) {
+      if (correlation && correlation.status && correlation.correlationDetails) {
+        const adjustedGradeKey = correlation.status.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
+        return correlation.correlationDetails.data[`${adjustedGradeKey}AdjustedGrade`];
+      }
+      return null;
+    },
+    adjustedReachComment(correlation) {
+      if (correlation && correlation.status && correlation.correlationDetails) {
+        const adjustedKey = correlation.status.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
+        return correlation.correlationDetails.data[`${adjustedKey}RangeComment`];
+      }
+      return null;
+    },
     displayGaugeCorrelationLatestReadingTime(correlation) {
       if (correlation && correlation.status && correlation.status.latestReading) {
         const now = new Date();

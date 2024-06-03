@@ -219,7 +219,7 @@ import { GageChartConfig } from './utils/gage-chart-config'
 import { Layout } from '@/app/global/layout'
 import { mapState } from 'vuex'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
-import { checkWindow } from '@/app/global/mixins'
+import { checkWindow, reachApiHelper } from '@/app/global/mixins'
 
 import { gaugeClient, reachClient } from '@/app/services'
 
@@ -238,7 +238,7 @@ export default {
     ReleasesTable,
     ReleasesCalendar
   },
-  mixins: [GageChartConfig, checkWindow],
+  mixins: [GageChartConfig, checkWindow, reachApiHelper],
   data: () => ({
     activeGaugeIndex: 0,
     selectedTimespan: 'h:mm a',
@@ -301,20 +301,6 @@ export default {
       } else if (status === "above-recommended") {
         return ('too-hi')
       }
-    },
-    adjustedReachGrade(gauge) { // TODO: refactor to avoid duplication with beta-box
-      if (gauge && gauge.status && gauge.correlationDetails) {
-        const adjustedGradeKey = gauge.status.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
-        return gauge.correlationDetails.data[`${adjustedGradeKey}AdjustedGrade`];
-      }
-      return null;
-    },
-    adjustedReachComment(gauge) {
-      if (gauge && gauge.status && gauge.correlationDetails) {
-        const adjustedKey = gauge.status.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
-        return gauge.correlationDetails.data[`${adjustedKey}RangeComment`];
-      }
-      return null;
     },
     correlationMatchesMetric(gauge) {
      return gauge && gauge.correlationDetails && gauge.correlationDetails.data &&
