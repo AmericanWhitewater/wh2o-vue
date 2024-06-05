@@ -16,7 +16,7 @@
         </svg>
 
         <span v-html="entry.gtOrLtSymbol" />
-        <em>{{  entry.value }} {{ correlationMetrics[correlationDetails.flowMetric].unit }}</em>
+        <em>{{  entry.value }} {{ correlationMetrics[correlationDetails.metric].unit }}</em>
         {{ entry.label }}
         <div class="range-description">
           <span v-if="entry.adjustedComment" v-text="entry.adjustedComment" />

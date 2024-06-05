@@ -67,7 +67,7 @@
             <td>Flow Range</td>
             <td class="flow-range">
               {{ gaugeCorrelation.correlationDetails.data.beginLowRunnable }} - {{ gaugeCorrelation.correlationDetails.data.endHighRunnable }}
-              {{ correlationMetrics[gaugeCorrelation.correlationDetails.data.flowMetric].unit }}
+              {{ correlationMetrics[gaugeCorrelation.correlationDetails.data.metric].unit }}
             </td>
           </tr>
           <tr v-if="gaugeCorrelation.status">

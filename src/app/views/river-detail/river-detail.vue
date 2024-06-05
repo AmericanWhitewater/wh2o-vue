@@ -245,7 +245,7 @@ export default {
     deleteReachModalVisible: false,
     bookmarked: false,
     transitionName: "fade",
-    reachDetail: null
+    reachDetail: {}
   }),
   tabs: {
     main: "General",

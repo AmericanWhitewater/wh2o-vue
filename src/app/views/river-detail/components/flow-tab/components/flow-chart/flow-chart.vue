@@ -203,7 +203,7 @@ export default {
         }
       }
 
-      if (this.gaugeCorrelationHasRange && this.metric.key === this.correlationDetails.flowMetric) {
+      if (this.gaugeCorrelationHasRange && this.metric.key === this.correlationDetails.metric) {
         let graphBackgrounds = [
           {
             min: Number.MIN_SAFE_INTEGER,

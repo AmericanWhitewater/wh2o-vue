@@ -39,7 +39,7 @@
                 </div>
                 <div v-if="gauge.correlationDetails.data" class="gauge-range">
                   {{ gauge.correlationDetails.data.beginLowRunnable }} - {{ gauge.correlationDetails.data.endHighRunnable }}
-                  {{ gauge.correlationDetails.data.flowMetric }}
+                  {{ correlationMetrics[gauge.correlationDetails.data.metric].unit }}
                 </div>
                 <div class="gauge-class">
                   <span v-if="adjustedReachGrade(gauge)">
@@ -276,7 +276,7 @@ export default {
           correlations = reachDetail?.detail?.correlations.map(c => {
             return {
               ...c,
-              requestedMetric: c.correlationDetails?.data?.flowMetric,
+              requestedMetric: c.correlationDetails?.data?.metric,
               historyTimeScale: '24h',
               readings: [],
               loading: true
@@ -308,7 +308,7 @@ export default {
     },
     correlationMatchesMetric(gauge) {
      return gauge && gauge.correlationDetails && gauge.correlationDetails.data &&
-        gauge.correlationDetails.data.flowMetric === gauge.requestedMetric;
+        gauge.correlationDetails.data.metric === gauge.requestedMetric;
     },
     async getReadings(gauge) {
       gauge.loading = true;
