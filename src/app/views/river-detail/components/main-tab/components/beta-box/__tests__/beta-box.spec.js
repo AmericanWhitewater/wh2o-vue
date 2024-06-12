@@ -94,6 +94,7 @@ describe("FlowTab", () => {
         {
           rmin: 50,
           rmax: 100,
+          rc: -0.25,
           gauge_reading: 25,
           last_gauge_reading: 25,
           gauge_metric: "2",
@@ -110,13 +111,14 @@ describe("FlowTab", () => {
       "Below Recommended"
     );
   });
-  it("shows runnable tag when flow rate too low", () => {
+  it("shows medium runnable tag when flow rate good", () => {
     river.loading = false;
     mockStore.state.RiverGages.data = {
       gauges: [
         {
           rmin: 50,
           rmax: 100,
+          rc: 0.5,
           gauge_reading: 75,
           last_gauge_reading: 75,
           gauge_metric: "2",
@@ -129,15 +131,16 @@ describe("FlowTab", () => {
     const wrapper = createWrapper(BetaBox, options);
 
     expect(wrapper.findAll(".cv-tag").length).toBe(1);
-    expect(wrapper.find(".cv-tag .bx--tag__label").text()).toBe("Runnable");
+    expect(wrapper.find(".cv-tag .bx--tag__label").text()).toBe("Medium Runnable");
   });
-  it("shows above recommended tag when flow rate too low", () => {
+  it("shows above recommended tag when flow rate too high", () => {
     river.loading = false;
     mockStore.state.RiverGages.data = {
       gauges: [
         {
           rmin: 50,
           rmax: 100,
+          rc: 1.25,
           gauge_reading: 150,
           last_gauge_reading: 150,
           gauge_metric: "2",

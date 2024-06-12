@@ -117,13 +117,11 @@
                   :label="reachGage.adjusted_reach_class"
               />
               <cv-tag
-                  v-if="formatTag(reachGage)"
-                  :kind="formatTag(reachGage).kind"
-                  :label="formatTag(reachGage).label"
+                  v-if="reachGage && reachGage.rc"
+                  kind="gray"
+                  :class="formatFlowTag(reachGage).class"
+                  :label="formatFlowTag(reachGage).label"
               />
-              <template v-if="reachGage.gauge_perfect">
-                👍
-              </template>
             </td>
             <td
                 v-else
@@ -287,26 +285,36 @@ export default {
     formatReading (reading, metricID) {
       return formatReadingWithFormat(reading, this.getMetric(metricID)?.format || '')
     },
-    formatTag (gage) {
-      if (gage && gage.rmin && gage.rmax && gage.gauge_reading) {
-        if (gage.gauge_reading < gage.rmin) {
+    formatFlowTag (gauge) {
+      if (gauge && gauge.rc) {
+        if (gauge.rc < 0) {
           return ({
-            kind: 'red',
+            class: 'below-recommended',
             label: 'Below Recommended'
-          })
-        } else if (gage.gauge_reading > gage.rmax) {
+          });
+        } else if (gauge.rc < 0.33) {
           return ({
-            kind: 'blue',
-            label: 'Above Recommended'
-          })
+            class: 'low-runnable',
+            label: 'Low Runnable'
+          });
+        } else if (gauge.rc < 0.66) {
+          return ({
+            class: 'med-runnable',
+            label: 'Medium Runnable'
+          });
+        } else if (gauge.rc < 1) {
+          return ({
+            class: 'high-runnable',
+            label: 'High Runnable'
+          });
         } else {
           return ({
-            kind: 'green',
-            label: 'Runnable'
+            class: 'above-recommended',
+            label: 'Above Recommended'
           })
         }
       }
-      return null
+      return {};
     }
   }
 }
@@ -328,6 +336,24 @@ export default {
     &:hover,
     &:focus {
       background-color: $ui-02;
+    }
+  }
+
+  .bx--tag {
+    &.below-recommended {
+      background-color: $flow-low;
+    }
+    &.low-runnable {
+      background-color: $low-runnable;
+    }
+    &.med-runnable {
+      background-color: $med-runnable;
+    }
+    &.high-runnable {
+      background-color: $high-runnable;
+    }
+    &.above-recommended {
+      background-color: $flow-high;
     }
   }
 }
