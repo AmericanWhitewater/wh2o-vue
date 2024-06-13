@@ -104,21 +104,11 @@ export default {
           if (rec.isGt && rec.isLt) {
             rec.exclude = true
           } else {
-
             // don't show range comments if the last value showed them.
             if (item.range && (!this.enumeratedRanges[i - 1] ||
                 !isEqual(item?.range, this.enumeratedRanges[i - 1]?.range))) {
               rec.showRange = !!item.range
-
             }
-            //this.enumeratedRanges[i + 1] && console.log(this.formatValue(item.val), this.formatValue(this.enumeratedRanges[i + 1].val))
-            // don't show line if range top of last was the same as range bottom of this
-            if (item.val && (!this.enumeratedRanges[i + 1] || this.formatValue(item.val) === this.formatValue(this.enumeratedRanges[i + 1].val))) {
-
-              rec.exclude = true
-
-            }
-
           }
 
           rv.push(rec)
