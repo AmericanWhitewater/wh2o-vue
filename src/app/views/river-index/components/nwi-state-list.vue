@@ -21,8 +21,8 @@
             v-for="st in usStates"
             :key="st.gmi"
           >
-            <td><router-link :to="`/river-index/state/${st.shortkey}`">{{ st.name }}</router-link></td>
-            <td><router-link :to="`/river-index/state/${st.shortkey}`">{{ st.num_rivers }}</router-link></td>
+            <td><router-link :to="`/river-index/state/${st.gmi}`">{{ st.name }}</router-link></td>
+            <td><router-link :to="`/river-index/state/${st.gmi}`">{{ st.num_rivers }}</router-link></td>
           </tr>
         </tbody>
       </table>
@@ -41,8 +41,8 @@
             v-for="st in intlStates"
             :key="st.gmi"
           >
-            <td><router-link :to="`/river-index/state/${st.shortkey}`">{{ st.name }}</router-link></td>
-            <td><router-link :to="`/river-index/state/${st.shortkey}`">{{ st.num_rivers }}</router-link></td>
+            <td><router-link :to="`/river-index/state/${st.gmi}`">{{ st.name }}</router-link></td>
+            <td><router-link :to="`/river-index/state/${st.gmi}`">{{ st.num_rivers }}</router-link></td>
           </tr>
         </tbody>
       </table>

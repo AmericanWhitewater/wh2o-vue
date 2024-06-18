@@ -51,7 +51,10 @@ export const reachApiHelper = {
     renderCombinedDifficultyGradeSchema(difficulty) {
       if (!difficulty) {
         return "unknown";
+      } else if (typeof(difficulty) === 'string') {
+        return difficulty;
       }
+
       let gradeString = `${gradeMap[difficulty.defaultGrade.grade]}`;
       if (difficulty.defaultGrade.adjustment) {
         gradeString += difficulty.defaultGrade.adjustment;
@@ -66,29 +69,29 @@ export const reachApiHelper = {
       return gradeString;
     },
     classForGaugeCorrelation(correlation) {
-      if (correlation && correlation.status && correlation.status.status) {
-        return correlation.status.status; // TODO: not 100% sure if this works atm
+      if (correlation && correlation.status) {
+        return correlation.status; // TODO: not 100% sure if this works atm
       }
       return 'unk';
     },
     adjustedReachGrade(correlation) {
-      if (correlation && correlation.status && correlation.correlationDetails) {
-        const adjustedGradeKey = correlation.status.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
+      if (correlation && correlation.correlationDetails) {
+        const adjustedGradeKey = correlation.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
         return correlation.correlationDetails.data[`${adjustedGradeKey}AdjustedGrade`];
       }
       return null;
     },
     adjustedReachComment(correlation) {
-      if (correlation && correlation.status && correlation.correlationDetails) {
-        const adjustedKey = correlation.status.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
+      if (correlation && correlation.correlationDetails) {
+        const adjustedKey = correlation.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
         return correlation.correlationDetails.data[`${adjustedKey}RangeComment`];
       }
       return null;
     },
     displayGaugeCorrelationLatestReadingTime(correlation) {
-      if (correlation && correlation.status && correlation.status.latestReading) {
+      if (correlation && correlation.status && correlation.latestReading) {
         const now = new Date();
-        const readingTime = new Date(correlation.status.latestReading.dateTime);
+        const readingTime = new Date(correlation.latestReading.dateTime);
         return humanReadable(now.getTime() - readingTime.getTime())
       }
       return '';

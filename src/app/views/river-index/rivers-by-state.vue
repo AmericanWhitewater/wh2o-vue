@@ -2,8 +2,8 @@
   <div class="bx--grid">
     <div class="bx--row">
       <div class="bx--col">
-        <div v-if="state" id="rivers-by-state">
-          <h2 class="mb-spacing-sm">
+        <div id="rivers-by-state">
+          <h2 v-if="state" class="mb-spacing-sm">
             {{ state.name }}
           </h2>
 
@@ -31,27 +31,22 @@
                   </router-link>
                 </td>
                 <td class="reach-flow">
-                  <template v-if="reach.loading">
-                    <cv-inline-loading
-                      small
-                      state="loading"
-                      loading-text=""
-                    />
-                  </template>
-                  <strong v-else-if="reach.correlation && reach.correlation.status">
-                    {{ reach.correlation.status.latestReading.value }} {{ correlationMetrics[reach.correlation.status.metric].unit }}
+                  <strong v-if="reach.correlation && reach.correlation.status">
+                    {{ reach.correlation.latestReading.value }} {{ correlationMetrics[reach.correlation.metric].unit }}
                   </strong>
                 </td>
                 <td>
-                  <div v-if="reach.correlation && reach.correlation.status">
+                  <div v-if="reach.correlation">
                     {{ displayGaugeCorrelationLatestReadingTime(reach.correlation) }} ago
-                    <cv-tag v-if="reach.correlation.status.status === 'stale'" kind="stale" label="! data is stale" />
+                    <cv-tag v-if="reach.correlation.status === 'stale'" class="stale" label="! data is stale" />
                   </div>
                 </td>
               </tr>
             </tbody>
           </table>
-
+          <template v-if="loading">
+            <utility-block state="loading" hide-text />
+          </template>
         </div>
       </div>
     </div>
@@ -62,13 +57,14 @@
 import { getStateList } from "@/app/services"
 import { reachClient } from '@/app/services'
 import { reachApiHelper } from '@/app/global/mixins';
+import UtilityBlock from "@/app/global/components/utility-block/utility-block.vue";
 
 export default {
   name: 'rivers-by-state',
+  components: { UtilityBlock },
   mixins: [reachApiHelper],
   data: () => ({
     loading: true,
-    allReachStubs: [],
     reaches: [],
     states: []
   }),
@@ -77,55 +73,29 @@ export default {
       return this.$route.params.state;
     },
     state() {
-      return this.states.find(x => x.shortkey === this.stateCode);
+      return this.states.find(x => x.gmi === this.stateCode);
     },
-  },
-  watch: {
-    async allReachStubs(newStubs) {
-      let reaches;
-      if (this.state) {
-        reaches = newStubs.filter(x => x.states.includes(this.state.gmi)).sort((a,b) => {
-          if (a.river > b.river) {
-            return 1;
-          } else if (a.river < b.river) {
-            return -1;
-          } else {
-            if (a.section >= b.section) {
-              return 1;
-            } else {
-              return -1;
-            }
-          }
-        }).map(r => ({
-          ...r,
-          loading: true,
-          correlation: null
-        }));
-        this.reaches = reaches;
-        this.reaches.forEach(async r => {
-          try {
-            r.correlation = await reachClient.primaryGaugeStub.query({ reachID: `${r.id}` });
-          } finally {
-            r.loading = false;
-          }
-        });
-
-      }
-    }
   },
   async created () {
     this.loading = true;
     // TODO: can we reduce/remove reliance on laravel state list?
+    // still needed to display name of state (not just AW state code which is in URL)
     const stateResults = await getStateList();
     this.states = stateResults.data.data.states.data;
-    // TODO: replace this with state specific query
-    this.allReachStubs = await reachClient.allReachStubs.query();
+
+    // map here just makes the template code more straightforward so we're not doing `reach.reach.name`
+    const reachSummary = await reachClient.stateView.query({ state: this.stateCode });
+    this.reaches = reachSummary.map(r => ({
+        ...r.reach,
+        correlation: r.correlation
+      })
+    );
     this.loading = false;
   }
 }
 </script>
 <style lang="scss">
-.bx--tag--stale {
+.bx--tag.stale {
   background-color: $flow-warning;
 }
 
