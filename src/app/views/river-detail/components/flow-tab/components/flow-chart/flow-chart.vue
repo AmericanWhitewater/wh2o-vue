@@ -8,7 +8,7 @@ import moment from 'moment'
 import Decimal from 'decimal.js';
 import { buildChart } from './build-chart'
 import { checkWindow } from '@/app/global/mixins'
-import { classToColor } from '@/app/global/lib/gages'
+
 export default {
   name: 'flow-chart',
   mixins: [checkWindow],
@@ -55,8 +55,7 @@ export default {
     },
     gaugeCorrelationHasRange() {
       const details = this.correlationDetails;
-      return details && details.beginLowRunnable && details.beginMediumRunnable && details.beginHighRunnable &&
-        details.endHighRunnable;
+      return details && details.beginLowRunnable && details.endHighRunnable;
     },
     yMax() {
       return Decimal.max(...this.readings.map(r => r.value)) * 1.25;
@@ -209,34 +208,63 @@ export default {
             min: Number.MIN_SAFE_INTEGER,
             max: this.correlationDetails.beginLowRunnable,
             class: 'below-recommended'
-          },
-          {
+          }
+        ];
+        // per our migration plan some reaches will only have beginLowRunnable and endHighRunnable defined, not all five
+        // handle this situation by establishing a "runnable" state rather than low/med/high
+        if (!this.correlationDetails.beginMediumRunnable && !this.correlationDetails.beginHighRunnable) {
+          graphBackgrounds.push({
             min: this.correlationDetails.beginLowRunnable,
-            max: this.correlationDetails.beginMediumRunnable,
-            class: 'low-runnable'
-          },
-          {
-            min: this.correlationDetails.beginMediumRunnable,
-            max: this.correlationDetails.beginHighRunnable,
-            class: 'medium-runnable'
-          },
-          {
-            min: this.correlationDetails.beginHighRunnable,
             max: this.correlationDetails.endHighRunnable,
-            class: 'high-runnable'
-          },
-          {
+            class: 'medium-runnable'
+          });
+        } else {
+          graphBackgrounds.push({
+              min: this.correlationDetails.beginLowRunnable,
+              max: this.correlationDetails.beginMediumRunnable,
+              class: 'low-runnable'
+            },
+            {
+              min: this.correlationDetails.beginMediumRunnable,
+              max: this.correlationDetails.beginHighRunnable,
+              class: 'medium-runnable'
+            },
+            {
+              min: this.correlationDetails.beginHighRunnable,
+              max: this.correlationDetails.endHighRunnable,
+              class: 'high-runnable'
+            }
+          );
+        }
+        graphBackgrounds.push({
             min: this.correlationDetails.endHighRunnable,
             max: Number.MAX_SAFE_INTEGER,
             class: 'above-recommended'
           }
-        ]
+        );
 
-        chartOptions.graphRange = graphBackgrounds.map(x => ({...x, color: classToColor(x.class) }));
+        chartOptions.graphRange = graphBackgrounds.map(x => ({...x, color: this.classToColor(x.class) }));
       }
 
       buildChart(ctx, this.chartLabels, this.readings.map(r => r.value), chartOptions)
 
+    },
+    // this duplicates logic that is elsewhere defined by scss in
+    // $flow-map in _variables.scss
+    classToColor(cssClass) {
+      switch (cssClass) {
+        case "below-recommended":
+          return "#FF8785";
+        case "low-runnable":
+          return "#1fd561";
+        case "medium-runnable":
+          return "#59E78D";
+        case "high-runnable":
+          return "#9cf1bb";
+        case "above-recommended":
+          return "#68DFE9";
+      }
+      return "";
     }
   },
   mounted () {
