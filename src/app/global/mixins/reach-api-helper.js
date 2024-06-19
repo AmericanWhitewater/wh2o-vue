@@ -4,6 +4,8 @@
 
 import { humanReadable } from '@/app/global/services/human-readable';
 
+const gradeMap = ['N/A', 'I', 'II', 'III', 'IV', 'V', 'VI']
+
 // this is duped from API because of our lack of typescript:
 // https://github.com/AmericanWhitewater/aw-components/blob/main/js-packages/flobot/src/history/reader.ts
 const correlationMetrics = {
@@ -132,12 +134,21 @@ export const reachApiHelper = {
     renderLegacyDifficulty(difficulty) {
       return this.apiGradeEnum[difficulty];
     },
+    renderModernDifficultySchema(difficulty) {
+      if (!difficulty) {
+        return '';
+      } else if (typeof(difficulty) === 'string') {
+        return difficulty;
+      }
+
+      return gradeMap[difficulty.grade] + difficulty.adjustment;
+    },
     // these take a full correlation object with correlationDetails
     adjustedReachGrade(correlation) {
       // accounting for both null and undefined status
       if (correlation && correlation.status && correlation.correlationDetails) {
         const adjustedGradeKey = correlation.status.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
-        return correlation.correlationDetails.data[`${adjustedGradeKey}AdjustedGrade`];
+        return this.renderModernDifficultySchema(correlation.correlationDetails.data[`${adjustedGradeKey}AdjustedGrade`]);
       }
       return null;
     },
