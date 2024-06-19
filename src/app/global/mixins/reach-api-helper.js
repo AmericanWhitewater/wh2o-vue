@@ -141,7 +141,7 @@ export const reachApiHelper = {
         return difficulty;
       }
 
-      return gradeMap[difficulty.grade] + difficulty.adjustment;
+      return gradeMap[difficulty.grade] + (difficulty.adjustment || "");
     },
     // these take a full correlation object with correlationDetails
     adjustedReachGrade(correlation) {

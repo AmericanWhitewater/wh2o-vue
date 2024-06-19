@@ -24,7 +24,11 @@
         {{ entry.label }}
         <div class="range-description">
           <span v-if="entry.adjustedComment" v-text="entry.adjustedComment" />
-          <span v-if="entry.adjustedGrade" v-text="entry.adjustedGrade" />
+          <cv-tag
+            v-if="entry.adjustedGrade"
+            kind="cool-gray"
+            :label="renderModernDifficultySchema(entry.adjustedGrade)"
+          />
         </div>
       </li>
     </ul>
