@@ -4,8 +4,6 @@
 
 import { humanReadable } from '@/app/global/services/human-readable';
 
-const gradeMap = ['N/A', 'I', 'II', 'III', 'IV', 'V', 'VI']
-
 // this is duped from API because of our lack of typescript:
 // https://github.com/AmericanWhitewater/aw-components/blob/main/js-packages/flobot/src/history/reader.ts
 const correlationMetrics = {
@@ -41,32 +39,98 @@ const correlationMetrics = {
       // }
 // };
 
-export const reachApiHelper = {
-  computed: {
-    correlationMetrics() {
-      return correlationMetrics;
-    }
-  },
-  methods: {
-    renderCombinedDifficultyGradeSchema(difficulty) {
-      if (!difficulty) {
-        return "unknown";
-      } else if (typeof(difficulty) === 'string') {
-        return difficulty;
-      }
+const apiGradeEnum = {
+  "I": "I",
+ "IstandoutII":             "I(II)",
+ "IstandoutIII":            "I(III)",
+ "IstandoutIV":             "I(IV)",
+ "IstandoutV":              "I(V)",
+ "IstandoutVplus":          "I(V+)",
+ "ItoII":                   "I-II",
+ "ItoIIstandoutIII":        "I-II(III)",
+ "ItoIIstandoutIV":         "I-II(IV)",
+ "ItoIIstandoutV":          "I-II(V)",
+ "ItoIIstandoutVplus":      "I-II(V+)",
+ "II":                      "II",
+ "IIstandoutIII":           "II(III)",
+ "IIstandoutIV":            "II(IV)",
+ "IIstandoutV":             "II(V)",
+ "IIstandoutVplus":         "II(V+)",
+ "ItoIIplusstandoutIII":    "I-II+(III)",
+ "ItoIIplusstandoutIV":     "I-II+(IV)",
+ "ItoIIplusstandoutV":      "I-II+(V)",
+ "ItoIIplusstandoutVplus":  "I-II+(V+)",
+ "IIplus":                  "II+",
+ "IIplusstandoutIII":       "II+(III)",
+ "IIplusstandoutIV":        "II+(IV)",
+ "IIplusstandoutV":         "II+(V)",
+ "IIplusstandoutVplus":     "II+(V+)",
+ "ItoIII":                  "I-III",
+ "ItoIIIstandoutIV":        "I-III(IV)",
+ "ItoIIIstandoutV":         "I-III(V)",
+ "ItoIIIstandoutVplus":     "I-III(V+)",
+ "IItoIII":                 "II-III",
+ "IItoIIIstandoutIV":       "II-III(IV)",
+ "IItoIIIstandoutV":        "II-III(V)",
+ "IItoIIIstandoutVplus":    "II-III(V+)",
+ "III":                     "III",
+ "ItoIIIplus":              "I-III+",
+ "ItoIIIplusstandoutIV":    "I-III+(IV)",
+ "ItoIIIplusstandoutV":     "I-III+(V)",
+ "ItoIIIplusstandoutVplus": "I-III+(V+)",
+ "IItoIIIplus":             "II-III+",
+ "IItoIIIplusstandoutIV":   "II-III+(IV)",
+ "IItoIIIplusstandoutV":    "II-III+(V)",
+ "IItoIIIplusstandoutVplus":"II-III+(V+)",
+ "IIIplus":                 "III+",
+ "IIIplusstandoutIV":       "III+(IV)",
+ "IIIplusstandoutV":        "III+(V)",
+ "IIIplusstandoutVplus":    "III+(V+)",
+ "ItoIV":                   "I-IV",
+ "ItoIVstandoutV":          "I-IV(V)",
+ "ItoIVstandoutVplus":      "I-IV(V+)",
+ "IItoIV":                  "II-IV",
+ "IItoIVstandoutV":         "II-IV(V)",
+ "IItoIVstandoutVplus":     "II-IV(V+)",
+ "IIItoIV":                 "III-IV",
+ "IIItoIVstandoutV":        "III-IV(V)",
+ "IIItoIVstandoutVplus":    "III-IV(V+)",
+ "IV":                      "IV",
+ "IVstandoutV":             "IV(V)",
+ "IVstandoutVplus":         "IV(V+)",
+ "ItoIVplus":               "I-IV+",
+ "ItoIVplusstandoutV":      "I-IV+(V)",
+ "ItoIVplusstandoutVplus":  "I-IV+(V+)",
+ "IItoIVplus":              "II-IV+",
+ "IItoIVplusstandoutV":     "II-IV+(V)",
+ "IItoIVplusstandoutVplus": "II-IV+(V+)",
+ "IIItoIVplus":             "III-IV+",
+ "IIItoIVplusstandoutV":    "III-IV+(V)",
+ "IIItoIVplusstandoutVplus":"III-IV+(V+)",
+ "IVplus":                  "IV+",
+ "ItoV":                    "I-V",
+ "ItoVstandoutVplus":       "I-V(V+)",
+ "IItoV":                   "II-V",
+ "IItoVstandoutVplus":      "II-V(V+)",
+ "IIItoV":                  "III-V",
+ "IIItoVstandoutVplus":     "III-V(V+)",
+ "IVtoV":                   "IV-V",
+ "IVtoVstandoutVplus":      "IV-V(V+)",
+ "V":                       "V",
+ "IItoVplus":               "II-V+",
+ "IIItoVplus":              "III-V+",
+ "IVtoVplus":               "IV-V+",
+ "Vplus":                   "V+",
+}
 
-      let gradeString = `${gradeMap[difficulty.defaultGrade.grade]}`;
-      if (difficulty.defaultGrade.adjustment) {
-        gradeString += difficulty.defaultGrade.adjustment;
-      }
-      if (difficulty.standoutGrade) {
-        gradeString += ` (${gradeMap[difficulty.standoutGrade.grade]}`;
-        if (difficulty.standoutGrade.adjustment) {
-          gradeString += difficulty.standoutGrade.adjustment;
-        }
-        gradeString += ")";
-      }
-      return gradeString;
+export const reachApiHelper = {
+  data: () => ({
+    correlationMetrics,
+    apiGradeEnum,
+  }),
+  methods: {
+    renderLegacyDifficulty(difficulty) {
+      return this.apiGradeEnum[difficulty];
     },
     // these take a full correlation object with correlationDetails
     adjustedReachGrade(correlation) {
