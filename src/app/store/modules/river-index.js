@@ -9,7 +9,6 @@ const initialState = {
   error: null,
   userLocation: null,
   mapStyle: 'topo',
-  mapColorBy: 'difficulty',
   fullscreen: null,
   mapBounds: null,
   mouseoveredFeature: null,
@@ -44,9 +43,6 @@ export default {
     ['MAP_STYLE'](state, payload) {
       Object.assign(state, { loading: false, mapStyle: payload })
     },
-    ['MAP_COLOR_BY'](state, payload) {
-      Object.assign(state, { loading: false, mapColorBy: payload })
-    },
     ['MAP_BOUNDS'](state, payload) {
       Object.assign(state, { loading: false, mapBounds: payload })
     },
@@ -80,9 +76,6 @@ export default {
     },
     setMapStyle(context, data) {
       context.commit('MAP_STYLE', data)
-    },
-    setMapColorBy(context, data) {
-      context.commit('MAP_COLOR_BY', data)
     },
     setMapBounds(context, data) {
       context.commit('MAP_BOUNDS', data)

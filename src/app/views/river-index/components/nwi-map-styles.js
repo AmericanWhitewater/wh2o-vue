@@ -358,12 +358,6 @@ export default {
       'III-III+': 'blue',
       'IV-IV+': 'black',
       'V-V+': 'red'
-    },
-    currentFlow: {
-      unknown: '#f5f5f5',
-      low: '#ff8684',
-      running: '#59e68d',
-      'too high': '#5dace1'
     }
   }
 }
