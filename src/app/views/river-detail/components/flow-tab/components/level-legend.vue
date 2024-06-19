@@ -14,9 +14,13 @@
             <rect width="16" height="16" rx="1" ry="1" fill=""/>
           </g>
         </svg>
-
-        <span v-html="entry.gtOrLtSymbol" />
-        <em>{{  entry.value }} {{ correlationMetrics[correlationDetails.metric].unit }}</em>
+        <em>
+          {{ 
+            `${!entry.to ? "&gt;" : ''}${entry.from ? entry.from : "&lt;" }` +
+            `${(entry.to && entry.from) ? '-' : '' }` + (entry.to || '') +
+            correlationMetrics[correlationDetails.metric].unit
+          }}
+        </em>
         {{ entry.label }}
         <div class="range-description">
           <span v-if="entry.adjustedComment" v-text="entry.adjustedComment" />
@@ -47,9 +51,9 @@ export default {
         return [];
       }
       let entries = [{
-        value: this.correlationDetails.endHighRunnable?.toNumber(),
+        from: this.correlationDetails.endHighRunnable?.toNumber(),
+        to: undefined,
         colorClass: 'above-recommended',
-        gtOrLtSymbol: "&gt;",
         label: "Above Recommended",
         adjustedComment: this.correlationDetails.aboveRecommendedRangeComment,
         adjustedGrade: null
@@ -59,45 +63,45 @@ export default {
         // per our migration plan some reaches will only have beginLowRunnable and endHighRunnable defined, not all five
         // handle this situation by establishing a "runnable" state rather than low/med/high
         entries.push({
-          value: this.correlationDetails.beginLowRunnable?.toNumber(),
+          from: this.correlationDetails.beginLowRunnable?.toNumber(),
+          to: this.correlationDetails.endHighRunnable?.toNumber(),
           colorClass: 'medium-runnable',
-          gtOrLtSymbol: "&gt;",
           label: "Runnable",
           adjustedComment: null,
           adjustedGrade: null
         });
       } else {
         entries.push({
-          value: this.correlationDetails.beginHighRunnable?.toNumber(),
+          from: this.correlationDetails.beginHighRunnable?.toNumber(),
+          to: this.correlationDetails.endHighRunnable?.toNumber(),
           colorClass: 'high-runnable',
-          gtOrLtSymbol: "&gt;",
           label: "High Runnable",
           adjustedComment: this.correlationDetails.highRunnableRangeComment,
           adjustedGrade: this.correlationDetails.highRunnableAdjustedGrade,
         }, {
-          value: this.correlationDetails.beginMediumRunnable?.toNumber(),
+          from: this.correlationDetails.beginMediumRunnable?.toNumber(),
+          to: this.correlationDetails.beginHighRunnable?.toNumber(),
           colorClass: 'medium-runnable',
-          gtOrLtSymbol: "&gt;",
           label: "Medium Runnable",
           adjustedComment: this.correlationDetails.mediumRunnableRangeComment,
           adjustedGrade: null
         }, {
-          value: this.correlationDetails.beginLowRunnable?.toNumber(),
+          from: this.correlationDetails.beginLowRunnable?.toNumber(),
+          to: this.correlationDetails.beginMediumRunnable?.toNumber(),
           colorClass: 'low-runnable',
-          gtOrLtSymbol: "&gt;",
           label: "Low Runnable",
           adjustedComment: this.correlationDetails.lowRunnableRangeComment,
           adjustedGrade: this.correlationDetails.lowRunnableAdjustedGrade,
         });
       }
       entries.push({
-        value: this.correlationDetails.beginLowRunnable?.toNumber(),
+        from: undefined,
+        to: this.correlationDetails.beginLowRunnable?.toNumber(),
         colorClass: 'below-recommended',
-        gtOrLtSymbol: "&lt;",
         label: "Below Recommended",
         adjustedComment: this.correlationDetails.belowRecommendedRangeComment,
       });
-      return entries.filter(x => x.value);
+      return entries;
     },
   },
 }
