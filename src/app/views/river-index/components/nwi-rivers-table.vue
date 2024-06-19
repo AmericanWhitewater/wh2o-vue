@@ -24,7 +24,7 @@
                 :ref="`reach-${reach.id}`"
                 :class="[
                   mouseoveredFeature && reach.id === mouseoveredFeature.properties.id ? 'active' : '',
-                  classForGaugeCorrelation(reachFlows[reach.id].correlation)
+                  reachFlows[reach.id].correlation ? cssClassForGaugeCorrelation(reachFlows[reach.id].correlation.status) : ''
                 ]"
                 @mouseover="debouncedMouseover(reach.feature)"
                 @mouseleave="debouncedMouseover()"

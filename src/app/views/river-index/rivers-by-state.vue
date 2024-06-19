@@ -28,7 +28,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="reach in reaches" :key="reach.id" :class="`${classForGaugeCorrelation(reach.correlation)} reach`" @click="$router.push(`/river-detail/${reach.id}/main`)">
+              <tr v-for="reach in reaches" :key="reach.id" :class="`${cssClassForGaugeCorrelation(reach.correlation)} reach`" @click="$router.push(`/river-detail/${reach.id}/main`)">
                 <td>
                   <strong>
                     {{ [reach.river, renderCombinedDifficultyGradeSchema(reach.class)].join(" - ") }}

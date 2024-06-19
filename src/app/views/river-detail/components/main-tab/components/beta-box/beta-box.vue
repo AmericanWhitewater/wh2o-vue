@@ -73,7 +73,7 @@
           <tr v-if="gaugeCorrelation.status">
             <td>
               Flow Rate
-              as of {{ displayGaugeCorrelationLatestReadingTime(gaugeCorrelation) }}
+              as of {{ displayGaugeCorrelationLatestReadingTime(gaugeCorrelation.status) }}
             </td>
             <td class="river-flow-rate">
               {{ gaugeCorrelation.status.latestReading.value }} {{ correlationMetrics[gaugeCorrelation.status.metric].unit }}
