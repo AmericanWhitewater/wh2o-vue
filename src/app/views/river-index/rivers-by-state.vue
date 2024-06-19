@@ -96,7 +96,20 @@ export default {
         ...r.reach,
         correlation: r.correlation
       })
-    );
+    ).sort((a, b) => {
+      if (a.river > b.river) {
+        return 1;
+      } else if (b.river > a.river) {
+        return -1;
+      } else {
+        if (a.section > b.section) {
+          return 1;
+        } else if (b.section > a.section) {
+          return -1;
+        }
+      }
+      return 0;
+    });
     this.loading = false;
   }
 }
