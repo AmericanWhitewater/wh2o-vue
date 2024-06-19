@@ -218,7 +218,7 @@ export default {
           {
             min: this.correlationDetails.beginMediumRunnable,
             max: this.correlationDetails.beginHighRunnable,
-            class: 'runnable'
+            class: 'medium-runnable'
           },
           {
             min: this.correlationDetails.beginHighRunnable,

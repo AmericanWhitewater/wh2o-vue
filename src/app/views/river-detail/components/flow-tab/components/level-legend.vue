@@ -62,7 +62,7 @@ export default {
         adjustedGrade: this.correlationDetails.highRunnableAdjustedGrade,
       }, {
         value: this.correlationDetails.beginMediumRunnable?.toNumber(),
-        colorClass: 'runnable',
+        colorClass: 'medium-runnable',
         gtOrLtSymbol: "&gt;",
         label: "Medium Runnable",
         adjustedComment: this.correlationDetails.mediumRunnableRangeComment,
