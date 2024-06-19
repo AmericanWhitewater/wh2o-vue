@@ -95,7 +95,7 @@
                             class="mb-lg"
                             state="content"
                             title="No results"
-                            text="no gage readings for your chosen parameters, please try again"
+                            text="no gauge readings for your chosen parameters, please try again"
                         />
                       </template>
                     </template>
@@ -112,7 +112,7 @@
                             @click.exact="go(`/content/gauge/detail-new/`)"
                             @keydown.enter="go(`/content/gauge/detail-new/`)"
                         > <!-- TODO: update gauge detail links -->
-                          Gage Detail
+                          Gauge Detail
                         </cv-button>
                         <level-legend
                             v-if="correlationMatchesMetric(gauge)"
@@ -277,7 +277,7 @@ export default {
             return {
               ...c,
               requestedMetric: c.correlationDetails?.data?.metric,
-              historyTimeScale: '24h',
+              historyTimeScale: 'week',
               readings: [],
               loading: true
             };

@@ -256,11 +256,11 @@ export default {
         case "below-recommended":
           return "#FF8785";
         case "low-runnable":
-          return "#1fd561";
+          return "#9cf1bb";
         case "medium-runnable":
           return "#59E78D";
         case "high-runnable":
-          return "#9cf1bb";
+          return "#1fd561";
         case "above-recommended":
           return "#68DFE9";
       }
