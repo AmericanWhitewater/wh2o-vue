@@ -33,7 +33,6 @@ export * from "./getReport";
 export * from "./getReachReports";
 export * from "./getStateList";
 export * from "./getUser";
-export * from "./photoFileUpdate";
 export * from "./searchReachMap";
 export * from "./updatePhoto";
 export * from "./updatePost";
