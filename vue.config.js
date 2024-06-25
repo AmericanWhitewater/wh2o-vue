@@ -150,8 +150,18 @@ module.exports = {
       .rule("file")
       .test(/\.(png|mp4|jpe?g|gif)$/i)
       .use("file-loader")
-      .loader("file-loader")
-      .end();
+        .loader("file-loader")
+        .end();
+
+    config.module
+      .rule('mjs')
+      .test(/\.mjs$/)
+      .include
+        .add(/node_modules/)
+        .end()
+      .use("babel-loader")
+        .loader("babel-loader")
+        .end()
 
       config.module
       .rule('mjs')

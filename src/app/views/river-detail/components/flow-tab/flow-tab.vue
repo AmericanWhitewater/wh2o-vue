@@ -19,11 +19,11 @@
               Gauge Summary
             </h2>
             <div v-if="editMode">
-              <a
-                  class="cv-button mb-spacing-md bx--btn bx--btn--tertiary bx--btn--sm"
-                  :href="formatLinkUrl(`/content/StreamTeam/edit-correlations/?reach_id=${$route.params.id}`)"
-                  target="_blank"
-              >Edit Flows</a>
+              <cv-button
+                  class="mb-spacing-md"
+                  size="small"
+                  @click.exact="$router.replace(`/river-detail/${$route.params.id}/edit-flows`)"
+              >Edit Flows</cv-button>
             </div>
 
             <div v-for="(gauge,index) in gaugeCorrelations" :key="`corr-${index}`">
@@ -332,6 +332,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss">
 .gauge-grid {
   padding-left: .75em;

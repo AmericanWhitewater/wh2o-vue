@@ -22,6 +22,7 @@ const {
   VUE_APP_CLIENT_ID,
   VUE_APP_CLIENT_SECRET,
   VUE_APP_API_BASE_URL,
+  VUE_APP_TRPC_API_URL,
   STATIC_ASSET_URL,
   NODE_ENV = '',
   VUE_APP_LINK_BASE_URL
@@ -43,6 +44,7 @@ const nwiTileServer = VUE_APP_NWI_TILE_SERVER
 const cmsBaseUrl = VUE_APP_WP_API_URL
 const laravelDeploy = Boolean(VUE_APP_LARAVEL_DEPLOY)
 const baseUrl = VUE_APP_LINK_BASE_URL
+const trpcApiUrl = VUE_APP_TRPC_API_URL
 
 export {
   environment,
@@ -60,5 +62,6 @@ export {
   reachApiUrl,
   gaugeApiUrl,
   satelliteMapLayerId,
-  topoMapLayerId
+  topoMapLayerId,
+  trpcApiUrl
 }
