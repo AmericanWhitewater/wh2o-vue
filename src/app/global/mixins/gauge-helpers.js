@@ -57,5 +57,9 @@ export const gaugeHelpers = {
       }
       return output;
     },
-  }
+    
+    metricLabel(metricId) {
+      return this.metrics.find(m => m.id.toString() === metricId.toString())?.unit
+    }  
+  },
 };

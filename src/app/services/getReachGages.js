@@ -5,7 +5,6 @@ export async function getReachGages(id) {
     .post("/graphql", {
       query: `{
         getGaugeInformationForReachID(id: ${id}) {
-        
         metrics {
                         name
                         unit
@@ -31,6 +30,7 @@ export async function getReachGages(id) {
               rc
               epoch
               time_adjustment,
+              targetid,
               gauge_reading
               gauge_metric
               gauge_comment

@@ -25,6 +25,15 @@ export default [
         component: () => import('@/app/views/river-detail/components/main-tab/main-tab.vue')
       },
       {
+        path: 'edit-flows',
+        name: 'edit-flows',
+        meta: {
+          crumbLabel: 'Edit Flows',
+          transitionName: 'slide'
+        },
+        component: () => import('@/app/views/river-detail/components/edit-flows/edit-flows.vue')
+      },
+      {
         path: 'flow',
         name: 'flow-tab',
         meta: {

@@ -40,3 +40,4 @@ export * from "./updatePost";
 export * from "./updateRapid";
 export * from "./updateReach";
 export * from "./updateReachRevision";
+export * from "./trpcClient";
