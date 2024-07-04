@@ -4,9 +4,7 @@
   "private": true,
   "author": "American Whitewater",
   "scripts": {
-    "serve": "vue-cli-service serve --public localhost:9669 --port 9669",
-    "dev": "vue-cli-service serve",
-    "dev:laravel": "vue-cli-service serve --public localhost:9669 --port 9669",
+    "serve": "vue-cli-service serve --public https://rivers.americanwhitewater.local --port 8080",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
