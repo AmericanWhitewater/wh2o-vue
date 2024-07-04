@@ -84,8 +84,8 @@
               />
               <cv-tag
                   :class="gaugeCorrelation.status.status"
-                  :label="gaugeCorrelation.status.status.replace('-', ' ')"
-              />
+                  :label="gaugeCorrelation.status.status.replace('-', ' ').replace('migration', '')"
+              /> <!-- TODO: reference to "migration" above handles existing legacy migration-runnable data -->
             </td>
           </tr>
         </template>

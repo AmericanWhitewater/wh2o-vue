@@ -16,6 +16,7 @@ $flow-map: (
   "above-recommended": $flow-high,
   "high-runnable": $high-runnable,
   "medium-runnable": $med-runnable,
+  "migration-runnable": $med-runnable, // TODO: a temporary solution for handling legacy data
   "low-runnable": $low-runnable,
   "below-recommended": $flow-low,
   "stale": #dfe3e6 // use ui-03 for unknown/stale
