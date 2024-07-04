@@ -83,7 +83,7 @@
                   :label="adjustedReachGrade(gaugeCorrelation)"
               />
               <cv-tag
-                  :kind="gaugeCorrelation.status.status"
+                  :class="gaugeCorrelation.status.status"
                   :label="gaugeCorrelation.status.status.replace('-', ' ')"
               />
             </td>
@@ -216,7 +216,7 @@ export default {
   }
 
   @each $class, $color in $flow-map {
-    .bx--tag--#{$class} {
+    .bx--tag.#{$class} {
       background-color: $color;
     }
   }
