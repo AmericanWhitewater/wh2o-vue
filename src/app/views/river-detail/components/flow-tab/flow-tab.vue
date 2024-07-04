@@ -334,6 +334,12 @@ export default {
 </script>
 
 <style lang="scss">
+.bx--radio-button-wrapper:not(:last-of-type) {
+  // carbon defaults this to 1 rem, which causes
+  // the radio buttons to be offset in our use
+  margin-right: 0;
+}
+
 .gauge-grid {
   padding-left: .75em;
   padding-right: .75em;
