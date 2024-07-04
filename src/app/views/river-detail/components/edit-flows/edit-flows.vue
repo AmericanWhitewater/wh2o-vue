@@ -93,11 +93,13 @@ export default {
             x.gaugeInfo.gaugeSourceIdentifier === corr.gaugeInfo.gaugeSourceIdentifier);
         });
     },
-    updateSavedCorrelation(corr) {
+    updateSavedCorrelation() {
+      // just reload all correlations as "isPrimary" changes can affect all of them
+      this.refreshCorrelations();
       // update in place with the saved correlation so we don't need to refresh from the db
-      const editedCorr = this.gaugeCorrelations.find((x) => x.gaugeInfo.gaugeSource === corr.gaugeInfo.gaugeSource &&
-        x.gaugeInfo.gaugeSourceIdentifier === corr.gaugeInfo.gaugeSourceIdentifier);
-      Object.assign(editedCorr, corr);
+      // const editedCorr = this.gaugeCorrelations.find((x) => x.gaugeInfo.gaugeSource === corr.gaugeInfo.gaugeSource &&
+      //   x.gaugeInfo.gaugeSourceIdentifier === corr.gaugeInfo.gaugeSourceIdentifier);
+      // Object.assign(editedCorr, corr);
     }
   },
   beforeMount () {

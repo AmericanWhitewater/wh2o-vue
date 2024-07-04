@@ -1,22 +1,29 @@
 <template>
-  <div class="bx--tile">
-    <div class="header-row">
+  <div class="bx--tile correlation-details">
+    <div class="mb-xs">
+      <h3>{{ correlation.gaugeInfo.name }} ({{ correlation.gaugeInfo.gaugeSource }}-{{  correlation.gaugeInfo.gaugeSourceIdentifier }})</h3>
+    </div>
+    <div class="gauge-subheader">
       <div>
-        <h3>Gauge: {{ correlation.gaugeInfo.name }} ({{ correlation.gaugeInfo.gaugeSource }}-{{  correlation.gaugeInfo.gaugeSourceIdentifier }})</h3>
         <cv-select
           v-if="editing"
-          v-model="localCorrelationDetails.flowMetric"
+          v-model="localCorrelationDetails.metric"
           inline
           label="Flow Metric"
         >
           <cv-select-option
-            v-for="(m, index) in metricOptions"
-            :key="index"
-            :value="m.label.toLowerCase()"
-            >{{ m.label }}
+            v-for="metric in correlationMetrics"
+            :key="metric.key"
+            :value="metric.key"
+            >{{ metric.name }}
           </cv-select-option>
         </cv-select>
-        <label v-else for="flowMetric">Flow Metric: {{ correlationDetails.data ? correlationDetails.data.flowMetric : "none set" }}</label>
+        <label v-else for="metric">Flow Metric: {{ correlationDetails.data ? correlationDetails.data.metric : "none set" }}</label>
+
+        <div>
+          <label for="isPrimary">Primary Gauge</label>
+          <input v-model="isPrimary" type="checkbox" :disabled="!editing" >
+        </div>
       </div>
       <div>
         <cv-button
@@ -56,10 +63,23 @@
     </div>
     <div>
       <h4>Boating flow ranges</h4>
-      <p v-if="errors">
+      <div v-if="errors" class="errors">
+        <h6>Errors</h6>
+        <p>
+          <em>
+            We recently made major updates to our technical gauge infrastructure. We weren't able to migrate
+            all of the old data to the new system; these errors represent issues found during the migration process
+            and can be fixed by editing the range here with the new system.
+          </em>
+        </p>
         <ul class="error-list">
           <li v-for="(e, i) in errors" :key="`error-${i}`" v-text="e" />
         </ul>
+      </div>
+      <p>
+        <em>
+          Note: all range values are now required.
+        </em>
       </p>
       <p v-if="!editing && (!correlationDetails || !correlationDetails.data)">
         No ranges defined.
@@ -70,8 +90,8 @@
             <div v-if="range.inflectionPointField" class="inflection-point">
               <label :for="range.inflectionPointField">{{ range.inflectionPointFieldLabel }}:</label>
               <span v-if="!editing">{{ correlationDetails.data[range.inflectionPointField] }}</span>
-              <input v-else v-model="$data.localCorrelationDetails[range.inflectionPointField]" type="text" class="bx--text-input">
-              <span>{{ editing ? localCorrelationDetails.flowMetric : correlationDetails.data.flowMetric }}</span>
+              <input v-else v-model.number="$data.localCorrelationDetails[range.inflectionPointField]" type="text" class="bx--text-input">
+              <span>{{ editing ? localCorrelationDetails.metric : correlationDetails.data.metric }}</span>
             </div>
             <div class="range-fields">
               <div v-if="editing">
@@ -107,14 +127,14 @@
 <script>
 import { gaugeClient } from '@/app/services';
 import { ConfirmDeleteModal } from '@/app/global/components';
-import { gaugeHelpers } from '@/app/global/mixins'
+import { reachApiHelper } from '@/app/global/mixins'
 
 export default {
   name: 'correlation-details',
   components: {
     ConfirmDeleteModal
   },
-  mixins: [gaugeHelpers],
+  mixins: [reachApiHelper],
   props: {
     correlation: {
       type: Object
@@ -124,19 +144,20 @@ export default {
       // vue 2 doesn't detect when new props are added to an object,
       // so we need to enumerate all props for the watcher to work properly
       localCorrelationDetails: {
+        metric: null,
+        belowRecommendedRangeComment: null,
+        lowRunnableRangeComment: null,
+        mediumRunnableRangeComment: null,
+        highRunnableRangeComment: null,
         aboveRecommendedRangeComment: null,
-        flowMetric: null,
+        lowRunnableAdjustedGrade: null,
+        highRunnableAdjustedGrade: null,
         beginLowRunnable: null,
         beginMediumRunnable: null,
         beginHighRunnable: null,
         endHighRunnable: null,
-        lowRunnableRangeComment: null,
-        mediumRunnableRangeComment: null,
-        highRunnableRangeComment: null,
-        lowRunnableAdjustedGrade: null,
-        highRunnableAdjustedGrade: null,
-        belowRecommendedRangeComment: null
       },
+      isPrimary: undefined,
       errors: [],
       editing: false,
       ranges: [
@@ -191,6 +212,7 @@ export default {
         reachID: this.reachId,
         gaugeSource: this.correlation?.gaugeInfo.gaugeSource,
         gaugeSourceIdentifier: this.correlation?.gaugeInfo.gaugeSourceIdentifier,
+        isPrimary: this.isPrimary,
         correlationDetails: this.localCorrelationDetails
       }
     },
@@ -243,107 +265,144 @@ export default {
     resetCorrelationDetailsEdits() {
       if (this.correlationDetails && this.correlationDetails.data) {
         Object.assign(this.localCorrelationDetails, this.correlationDetails.data);
+        ['beginLowRunnable', 'beginMediumRunnable', 'beginHighRunnable', 'endHighRunnable'].forEach(k => {
+          // API gives us decimal.js objects, but gets upset if we return them...
+          if (this.localCorrelationDetails[k] && typeof(this.localCorrelationDetails[k]) === 'object') {
+            this.localCorrelationDetails[k] = this.localCorrelationDetails[k].toNumber();
+          }
+        });
+        this.isPrimary = this.correlation.isPrimary;
         this.errors = [...this.correlationDetails.errors];
       }
     }
   }
 }
 </script>
-<style lang="scss" scoped>
-.ranges {
-  align-items: center;
-  flex-direction: column;
-  display: flex;
-  justify-content: space-between;
+<style lang="scss">
+.correlation-details {
+  .gauge-subheader {
+    display: flex;
+    justify-content: space-between;
 
-  .range-indicator {
-    border-left: solid 3rem;
-    width: 100%;
-    position: relative;
-    @include carbon--breakpoint("lg") {
-      height: 4rem;
-    }
-    // smaller screens
-    height: 10rem;
-
-    &.below-recommended {
-      border-color: $flow-low;
-      background: transparentize($flow-low, 0.4);
-    }
-    &.low-runnable {
-      border-color: $low-runnable;
-      background: transparentize($low-runnable, 0.4);
-    }
-    &.medium-runnable {
-      border-color: $med-runnable;
-      background: transparentize($med-runnable, 0.4);
-    }
-    &.high-runnable {
-      border-color: $high-runnable;
-      background: transparentize($high-runnable, 0.4);
-    }
-    &.above-recommended {
-      border-color: $flow-high;
-      background: transparentize($flow-high, 0.4);
-    }
-
-
-    .band-label {
-      position: absolute;
-      top: 0;
-      right: 0;
-      padding: 2px;
-      color: white;
-    }
-
-    .range-fields {
-      float: right;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: flex-end;
-      text-align: right;
-      height: 100%;
-
-      @include carbon--breakpoint("lg") {
-        padding-bottom:0;
-      }
-      // smaller screens
-      padding-bottom:1rem;
-
-      input.range-comment {
-        width: 16rem;
-      }
-
-      input.range-adjusted-grade {
-        margin-left: 5px;
-        width: 4rem;
-      }
-    }
-
-    .inflection-point {
-      position: absolute;
-      bottom: -1rem;
-      left: -3rem;
-      background: transparentize(#f4f7fb, 0.4);
-      display: block;
-      padding: 5px;
-      z-index: 1000;
-
-      label {
-        margin-right: 0.5rem;
-      }
-
-      input {
-        text-align: center;
-        background: white;
-        color: black;
-        width: 6rem;
-        height: 1rem;
-        line-height: 1rem;
-      }
+    // carbon sets this transparent, but since it's on a grey background we to set it white
+    .cv-select .bx--select-input__wrapper select {
+      background-color: white;
     }
   }
 
+  .errors {
+    padding: 1rem;
+    margin: 1rem;
+    background: rgba(255,0,0,0.25);
+
+    h6 {
+      min-width: 30%;
+    }
+
+    em {
+      font-size: 0.75rem;
+    }
+
+    ul {
+      margin-left: 2rem;
+      list-style-type: disc;
+    }
+  }
+
+  .ranges {
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    justify-content: space-between;
+
+    .range-indicator {
+      border-left: solid 3rem;
+      width: 100%;
+      position: relative;
+      @include carbon--breakpoint("lg") {
+        height: 4rem;
+      }
+      // smaller screens
+      height: 10rem;
+
+      &.below-recommended {
+        border-color: $flow-low;
+        background: transparentize($flow-low, 0.4);
+      }
+      &.low-runnable {
+        border-color: $low-runnable;
+        background: transparentize($low-runnable, 0.4);
+      }
+      &.medium-runnable {
+        border-color: $med-runnable;
+        background: transparentize($med-runnable, 0.4);
+      }
+      &.high-runnable {
+        border-color: $high-runnable;
+        background: transparentize($high-runnable, 0.4);
+      }
+      &.above-recommended {
+        border-color: $flow-high;
+        background: transparentize($flow-high, 0.4);
+      }
+
+
+      .band-label {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 2px;
+        color: white;
+      }
+
+      .range-fields {
+        float: right;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-end;
+        text-align: right;
+        height: 100%;
+
+        @include carbon--breakpoint("lg") {
+          padding-bottom:0;
+        }
+        // smaller screens
+        padding-bottom:1rem;
+
+        input.range-comment {
+          width: 16rem;
+        }
+
+        input.range-adjusted-grade {
+          margin-left: 5px;
+          width: 4rem;
+        }
+      }
+
+      .inflection-point {
+        position: absolute;
+        bottom: -1rem;
+        left: -3rem;
+        background: transparentize(#f4f7fb, 0.4);
+        display: block;
+        padding: 5px;
+        z-index: 1000;
+
+        label {
+          margin-right: 0.5rem;
+        }
+
+        input {
+          text-align: center;
+          background: white;
+          color: black;
+          width: 6rem;
+          height: 1rem;
+          line-height: 1rem;
+        }
+      }
+    }
+  }
 }
 </style>
