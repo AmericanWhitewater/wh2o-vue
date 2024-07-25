@@ -24,7 +24,7 @@
                 :ref="`reach-${reach.id}`"
                 :class="[
                   mouseoveredFeature && reach.id === mouseoveredFeature.properties.id ? 'active' : '',
-                  reachFlows[reach.id].correlation ? cssClassForGaugeCorrelation(reachFlows[reach.id].correlation.status) : ''
+                  (reachFlows[reach.id] && reachFlows[reach.id].correlation) ? cssClassForGaugeCorrelation(reachFlows[reach.id].correlation) : ''
                 ]"
                 @mouseover="debouncedMouseover(reach.feature)"
                 @mouseleave="debouncedMouseover()"
@@ -38,17 +38,17 @@
                   </router-link>
                 </td>
                 <td class="level">
-                  <template v-if="reachFlows[reach.id].loading">
+                  <template v-if="reachFlows[reach.id] && reachFlows[reach.id].loading">
                     <cv-inline-loading
                       small
                       state="loading"
                       loading-text=""
                     />
                   </template>
-                  <template v-else-if="reachFlows[reach.id].correlation && reachFlows[reach.id].correlation.status">
-                    {{ reachFlows[reach.id].correlation.status.latestReading.value }} {{ correlationMetrics[reachFlows[reach.id].correlation.status.metric].unit }}
+                  <template v-else-if="reachFlows[reach.id] && reachFlows[reach.id].correlation">
+                    {{ reachFlows[reach.id].correlation.latestReading.value }} {{ correlationMetrics[reachFlows[reach.id].correlation.metric].unit }}
                     <cv-tooltip
-                      v-if="reachFlows[reach.id].correlation.status.status === 'stale'"
+                      v-if="reachFlows[reach.id].correlation.status === 'stale'"
                       tip="reading is out of date"
                       direction="left"
                     >
@@ -211,22 +211,36 @@ export default {
       }
     },
     // update reactive data property with map or search results whenever they change
-    reaches(newReaches) {
-      newReaches.forEach(async r => {
-        if (!this.reachFlows[r.id]) {
-          this.reachFlows[r.id] = {
-            loading: true
-          };
-          try {
-            this.reachFlows[r.id].correlation = await reachClient.primaryGaugeStub.query({ reachID: `${r.id}` });
-          } finally {
-            this.reachFlows[r.id].loading = false;
-          }
-        }
-      })
+    async reaches(newReaches) {
+      this.debouncedGetFlows(newReaches);
     },
   },
   methods: {
+    async getFlows(reaches) {
+      const reachIDsToQuery = reaches.map(r => r.id.toString()).filter(id => !this.reachFlows[id]);
+      if (reachIDsToQuery.length > 0) {
+        reachIDsToQuery.forEach(id => this.reachFlows[id] = { loading: true });
+        try {
+          // batch request if it's over 150 reaches as the API request sometimes fails if it's too big
+          // we know there is a max of 300 from nwi-map.vue#250
+          const newReachFlows = await reachClient.getReachTableByIDs.query({ reachIDs: reachIDsToQuery.slice(0,150) });
+          if (reachIDsToQuery.length > 150) {
+            const addlReachFlows = await reachClient.getReachTableByIDs.query({ reachIDs: reachIDsToQuery.slice(150, 300) });
+            newReachFlows.push(...addlReachFlows);
+          }
+          newReachFlows.forEach(rf => {
+            this.reachFlows[rf.reach.id].correlation = rf.correlation;
+          });
+        } catch(e) {
+          // eslint-disable-next-line no-console
+          console.error(e);
+        } finally {
+          reachIDsToQuery.forEach(id => {
+            this.reachFlows[id].loading = false;
+          });
+        }
+      }
+    },
     displayReachTitle(reach) {
       return [reach.river, reach.difficulty].join(" - ");
     },
@@ -242,6 +256,7 @@ export default {
   },
   created() {
     this.debouncedMouseover = debounce(this.mouseoverFeature, 200);
+    this.debouncedGetFlows = debounce(this.getFlows, 500);
   },
   mounted() {
     this.windowWidth = window.innerWidth;
