@@ -18,7 +18,7 @@
             >{{ metric.name }}
           </cv-select-option>
         </cv-select>
-        <label v-else for="metric">Flow Metric: {{ correlationDetails.data ? correlationDetails.data.metric : "none set" }}</label>
+        <label v-else for="metric">Flow Metric: {{ correlationDetails ? correlationDetails.metric : "none set" }}</label>
 
         <div>
           <label for="isPrimary">Primary Gauge</label>
@@ -63,8 +63,7 @@
     </div>
     <div>
       <h4>Boating flow ranges</h4>
-      <div v-if="errors" class="errors">
-        <h6>Errors</h6>
+      <div v-if="correlation.migrationErrorExplanation" class="migration-errors">
         <p>
           <em>
             We recently made major updates to our technical gauge infrastructure. We weren't able to migrate
@@ -72,6 +71,10 @@
             and can be fixed by editing the range here with the new system.
           </em>
         </p>
+        <p>{{ correlation.migrationErrorExplanation }}</p>
+      </div>
+      <div v-if="errors.length" class="errors">
+        <h6>Please fix the errors below</h6>
         <ul class="error-list">
           <li v-for="(e, i) in errors" :key="`error-${i}`" v-text="e" />
         </ul>
@@ -81,7 +84,7 @@
           Note: all range values are now required.
         </em>
       </p>
-      <p v-if="!editing && (!correlationDetails || !correlationDetails.data)">
+      <p v-if="!editing && (!correlationDetails)">
         No ranges defined.
       </p>
       <div v-else>
@@ -89,32 +92,40 @@
           <div v-for="(range, i) in ranges" :key="`range-${i}`" :class="`range-indicator ${range.rangeClass}`">
             <div v-if="range.inflectionPointField" class="inflection-point">
               <label :for="range.inflectionPointField">{{ range.inflectionPointFieldLabel }}:</label>
-              <span v-if="!editing">{{ correlationDetails.data[range.inflectionPointField] }}</span>
+              <span v-if="!editing">{{ correlationDetails[range.inflectionPointField] }}</span>
               <input v-else v-model.number="$data.localCorrelationDetails[range.inflectionPointField]" type="text" class="bx--text-input">
-              <span>{{ editing ? localCorrelationDetails.metric : correlationDetails.data.metric }}</span>
-            </div>
-            <div class="range-fields">
-              <div v-if="editing">
-                <label :for="range.rangeCommentField" class="bx--label">Range comment:</label>
-                <input
-                  v-model="$data.localCorrelationDetails[range.rangeCommentField]"
-                  class="bx--text-input range-comment">
-                <template v-if="range.adjustedGradeField">
-                  <label :for="range.adjustedGradeField" class="bx--label">Change difficulty with flow:</label>
-                  <input
-                    v-model="$data.localCorrelationDetails[range.adjustedGradeField]"
-                    class="bx--text-input range-adjusted-grade">
-                </template>
-              </div>
-              <div v-else>
-                <label :for="range.rangeCommentField" class="bx--label">{{ $data.localCorrelationDetails[range.rangeCommentField] }}</label>
-              </div>
+              <span>{{ editing ? localCorrelationDetails.metric : correlationDetails.metric }}</span>
             </div>
             <div class="band-label">
               {{ range.label }}
               <span v-if="$data.localCorrelationDetails[range.adjustedGradeField] && !editing" class="grade-adjustment">
                 ({{ correlationDetails.value[range.adjustedGradeField] }})
               </span>
+            </div>
+            <div class="range-fields">
+              <template v-if="editing">
+                <cv-text-input v-model="$data.localCorrelationDetails[range.rangeCommentField]" label="Range comment" class="range-comment" inline />
+                <template v-if="range.adjustedGradeField">
+                  <cv-select
+                    v-model="range.adjustedGradeField"
+                    label="Change difficulty with flow"
+                    class="range-adjusted-grade"
+                    inline
+                    size="sm"
+                  >
+                    <cv-select-option
+                      v-for="item in reachClasses"
+                      :key="item"
+                      :value="item"
+                    >
+                      {{ item }}
+                    </cv-select-option>
+                  </cv-select>
+                </template>
+              </template>
+              <template v-else>
+                <label :for="range.rangeCommentField" class="bx--label">{{ $data.localCorrelationDetails[range.rangeCommentField] }}</label>
+              </template>
             </div>
           </div>
         </div>
@@ -127,14 +138,14 @@
 <script>
 import { gaugeClient } from '@/app/services';
 import { ConfirmDeleteModal } from '@/app/global/components';
-import { reachApiHelper } from '@/app/global/mixins'
+import { reachApiHelper, reachClasses } from '@/app/global/mixins'
 
 export default {
   name: 'correlation-details',
   components: {
     ConfirmDeleteModal
   },
-  mixins: [reachApiHelper],
+  mixins: [reachApiHelper, reachClasses],
   props: {
     correlation: {
       type: Object
@@ -263,8 +274,8 @@ export default {
       this.editing = false;
     },
     resetCorrelationDetailsEdits() {
-      if (this.correlationDetails && this.correlationDetails.data) {
-        Object.assign(this.localCorrelationDetails, this.correlationDetails.data);
+      if (this.correlationDetails) {
+        Object.assign(this.localCorrelationDetails, this.correlationDetails);
         ['beginLowRunnable', 'beginMediumRunnable', 'beginHighRunnable', 'endHighRunnable'].forEach(k => {
           // API gives us decimal.js objects, but gets upset if we return them...
           if (this.localCorrelationDetails[k] && typeof(this.localCorrelationDetails[k]) === 'object') {
@@ -272,7 +283,8 @@ export default {
           }
         });
         this.isPrimary = this.correlation.isPrimary;
-        this.errors = [...this.correlationDetails.errors];
+        // TODO: handle save errors
+        // this.errors = [...this.correlationDetails.errors];
       }
     }
   }
@@ -280,14 +292,21 @@ export default {
 </script>
 <style lang="scss">
 .correlation-details {
+    f4f7fb
   .gauge-subheader {
-    display: flex;
-    justify-content: space-between;
-
     // carbon sets this transparent, but since it's on a grey background we to set it white
     .cv-select .bx--select-input__wrapper select {
       background-color: white;
     }
+
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .migration-errors {
+    padding: 1rem;
+    margin: 1rem;
+    background: #fdd13a; // matches carbon warning color
   }
 
   .errors {
@@ -320,7 +339,7 @@ export default {
       width: 100%;
       position: relative;
       @include carbon--breakpoint("lg") {
-        height: 4rem;
+        height: 7.5rem;
       }
       // smaller screens
       height: 10rem;
@@ -356,27 +375,34 @@ export default {
       }
 
       .range-fields {
+        margin-top:23px;
         float: right;
         display: flex;
-        flex-direction: row;
-        justify-content: center;
+        flex-direction: column;
+        justify-content: space-between;
         align-items: flex-end;
         text-align: right;
-        height: 100%;
+        height: calc(100% - 23px);
 
-        @include carbon--breakpoint("lg") {
-          padding-bottom:0;
+        .bx--form-item.bx--text-input-wrapper {
+          flex-direction: row;
+          align-items: center;
+
+          .bx--label {
+            text-align: left;
+            margin: 0 0.5rem 0 0;
+            white-space: nowrap;
+          }
         }
-        // smaller screens
-        padding-bottom:1rem;
 
-        input.range-comment {
+        input.range-comment {          
           width: 16rem;
         }
 
-        input.range-adjusted-grade {
-          margin-left: 5px;
-          width: 4rem;
+        // carbon sets this transparent, but since it's on a colored background we to set it grey
+        // to match the (carbon) text inputs next to it
+        .cv-select .bx--select-input__wrapper select {
+          background-color: #f4f7fb;
         }
       }
 

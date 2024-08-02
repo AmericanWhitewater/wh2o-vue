@@ -80,7 +80,7 @@ export default {
     },
     async refreshCorrelations() {
       this.loading = true;
-      const correlations = await gaugeClient.getGaugeCorrelationAndGaugeInfoForReach.query({ reachID: this.reachId });
+      const correlations = await gaugeClient.getModernDBGaugeCorrelationAndGaugeInfoForReach.query({ reachID: this.reachId });
       this.gaugeCorrelations = correlations.map(x => {
         x.editing = false;
         return x;
