@@ -84,7 +84,7 @@
           Note: all range values are now required.
         </em>
       </p>
-      <p v-if="!editing && (!correlationDetails)">
+      <p v-if="!correlationDetails && !editing">
         No ranges defined.
       </p>
       <div v-else>
@@ -93,38 +93,37 @@
             <div v-if="range.inflectionPointField" class="inflection-point">
               <label :for="range.inflectionPointField">{{ range.inflectionPointFieldLabel }}:</label>
               <span v-if="!editing">{{ correlationDetails[range.inflectionPointField] }}</span>
-              <input v-else v-model.number="$data.localCorrelationDetails[range.inflectionPointField]" type="text" class="bx--text-input">
+              <input v-else v-model.number="localCorrelationDetails[range.inflectionPointField]" type="text" class="bx--text-input">
               <span>{{ editing ? localCorrelationDetails.metric : correlationDetails.metric }}</span>
             </div>
             <div class="band-label">
               {{ range.label }}
-              <span v-if="$data.localCorrelationDetails[range.adjustedGradeField] && !editing" class="grade-adjustment">
-                ({{ correlationDetails.value[range.adjustedGradeField] }})
-              </span>
+              <cv-tag v-if="correlationDetails[range.adjustedDifficultyField] && !editing" :label="apiGradeEnum[correlationDetails[range.adjustedDifficultyField]]" />
             </div>
             <div class="range-fields">
               <template v-if="editing">
-                <cv-text-input v-model="$data.localCorrelationDetails[range.rangeCommentField]" label="Range comment" class="range-comment" inline />
-                <template v-if="range.adjustedGradeField">
+                <cv-text-input v-model="localCorrelationDetails[range.rangeCommentField]" label="Range comment" class="range-comment" inline />
+                <template v-if="range.adjustedDifficultyField">
                   <cv-select
-                    v-model="range.adjustedGradeField"
+                    v-model="localCorrelationDetails[range.adjustedDifficultyField]"
                     label="Change difficulty with flow"
                     class="range-adjusted-grade"
                     inline
-                    size="sm"
                   >
                     <cv-select-option
-                      v-for="item in reachClasses"
-                      :key="item"
-                      :value="item"
+                      v-for="k,v in apiGradeEnum"
+                      :key="v"
+                      :value="v"
                     >
-                      {{ item }}
+                      {{ k }}
                     </cv-select-option>
                   </cv-select>
                 </template>
               </template>
               <template v-else>
-                <label :for="range.rangeCommentField" class="bx--label">{{ $data.localCorrelationDetails[range.rangeCommentField] }}</label>
+                <label v-if="correlationDetails[range.rangeCommentField]" :for="range.rangeCommentField" class="bx--label">
+                  {{ correlationDetails[range.rangeCommentField] }}
+                </label>
               </template>
             </div>
           </div>
@@ -138,14 +137,14 @@
 <script>
 import { gaugeClient } from '@/app/services';
 import { ConfirmDeleteModal } from '@/app/global/components';
-import { reachApiHelper, reachClasses } from '@/app/global/mixins'
+import { reachApiHelper } from '@/app/global/mixins'
 
 export default {
   name: 'correlation-details',
   components: {
     ConfirmDeleteModal
   },
-  mixins: [reachApiHelper, reachClasses],
+  mixins: [reachApiHelper],
   props: {
     correlation: {
       type: Object
@@ -161,8 +160,8 @@ export default {
         mediumRunnableRangeComment: null,
         highRunnableRangeComment: null,
         aboveRecommendedRangeComment: null,
-        lowRunnableAdjustedGrade: null,
-        highRunnableAdjustedGrade: null,
+        lowRunnableAdjustedDifficulty: null,
+        highRunnableAdjustedDifficulty: null,
         beginLowRunnable: null,
         beginMediumRunnable: null,
         beginHighRunnable: null,
@@ -178,7 +177,7 @@ export default {
           inflectionPointField: "endHighRunnable",
           inflectionPointFieldLabel: "Upper limit of high runnable",
           rangeCommentField: "aboveRecommendedRangeComment",
-          adjustedGradeField: null
+          adjustedDifficultyField: null
         },
         {
           rangeClass: "high-runnable",
@@ -186,7 +185,7 @@ export default {
           inflectionPointField: "beginHighRunnable",
           inflectionPointFieldLabel: "Upper limit of medium runnable",
           rangeCommentField: "highRunnableRangeComment",
-          adjustedGradeField: "highRunnableAdjustedGrade"
+          adjustedDifficultyField: "highRunnableAdjustedDifficulty"
         },
         {
           rangeClass: "medium-runnable",
@@ -194,7 +193,7 @@ export default {
           inflectionPointField: "beginMediumRunnable",
           inflectionPointFieldLabel: "Upper limit of low runnable",
           rangeCommentField: "mediumRunnableRangeComment",
-          adjustedGradeField: null
+          adjustedDifficultyField: null
         },
         {
           rangeClass: "low-runnable",
@@ -202,7 +201,7 @@ export default {
           inflectionPointField: "beginLowRunnable",
           inflectionPointFieldLabel: "Lower limit of runnable",
           rangeCommentField: "lowRunnableRangeComment",
-          adjustedGradeField: "lowRunnableAdjustedGrade"
+          adjustedDifficultyField: "lowRunnableAdjustedDifficulty"
         },
         {
           rangeClass: "below-recommended",
@@ -210,7 +209,7 @@ export default {
           inflectionPointField: null,
           inflectionPointFieldLabel: null,
           rangeCommentField: "belowRecommendedRangeComment",
-          adjustedGradeField: null
+          adjustedDifficultyField: null
         },
       ]
   }),
@@ -223,7 +222,7 @@ export default {
         reachID: this.reachId,
         gaugeSource: this.correlation?.gaugeInfo.gaugeSource,
         gaugeSourceIdentifier: this.correlation?.gaugeInfo.gaugeSourceIdentifier,
-        isPrimary: this.isPrimary,
+        forcePrimary: this.isPrimary ? 'force-primary' : null,
         correlationDetails: this.localCorrelationDetails
       }
     },
@@ -249,6 +248,7 @@ export default {
         this.$emit('saved', updatedCorr);
         this.editing = false;
       } catch (error) {
+        // TODO: log this somehow, or get better errors returned from backend?
         this.errors = [error];
       }
     },
@@ -379,7 +379,7 @@ export default {
         float: right;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: space-evenly;
         align-items: flex-end;
         text-align: right;
         height: calc(100% - 23px);
@@ -387,6 +387,10 @@ export default {
         .bx--form-item.bx--text-input-wrapper {
           flex-direction: row;
           align-items: center;
+
+          .bx--text-input__field-wrapper {
+            min-width: 15rem;
+          }
 
           .bx--label {
             text-align: left;
