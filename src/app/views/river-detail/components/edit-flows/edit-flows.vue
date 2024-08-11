@@ -71,6 +71,7 @@ export default {
           gaugeSource: gaugeSource,
           gaugeSourceIdentifier: gaugeSourceIdentifier,
           flowMetric: metric,
+          forcePrimary: null,
           correlationDetails: null
         }
         const newCorr = await gaugeClient.upsertGaugeCorrelationToReach.mutate(payload);

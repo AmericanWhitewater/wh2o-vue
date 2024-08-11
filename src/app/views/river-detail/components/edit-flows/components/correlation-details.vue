@@ -1,5 +1,5 @@
 <template>
-  <div class="bx--tile correlation-details">
+  <div class="bx--tile correlation-details mb-spacing-lg">
     <div class="mb-xs">
       <h3>{{ correlation.gaugeInfo.name }} ({{ correlation.gaugeInfo.gaugeSource }}-{{  correlation.gaugeInfo.gaugeSourceIdentifier }})</h3>
     </div>

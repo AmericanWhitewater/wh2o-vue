@@ -23,7 +23,7 @@
             :key="index"
             v-model="selectedGauge"
             :value="`${g.gaugeSource}-${g.gaugeSourceIdentifier}`"
-            :label="`${g.name} (${g.gaugeSource}-${g.gaugeSourceIdentifier}) [${g.state}]`" 
+            :label="`${g.name} (${g.gaugeSource}-${g.gaugeSourceIdentifier})`" 
           />
         </cv-radio-group>
       </div>
@@ -31,10 +31,10 @@
       <div v-if="selectedGauge" class="gauge-details">
         <cv-select v-model="gaugeMetric" label="Gauge metric to use">
           <cv-select-option
-            v-for="(m, index) in metricOptions"
-            :key="index"
-            :value="m.label.toLowerCase()"
-            >{{ m.label }}
+            v-for="metric, key in correlationMetrics"
+            :key="`metric-${key}`"
+            :value="key"
+            >{{ metric.name }}
           </cv-select-option>
         </cv-select>
       </div>
@@ -44,13 +44,13 @@
   </cv-modal>
 </template>
 <script>
-import { shadowDomFixedHeightOffset, gaugeHelpers } from "@/app/global/mixins";
+import { reachApiHelper, shadowDomFixedHeightOffset, gaugeHelpers } from "@/app/global/mixins";
 import { gaugeClient } from '@/app/services';
 import debounce from 'lodash.debounce';
 
 export default {
   name: "add-gauge-modal",
-  mixins: [gaugeHelpers, shadowDomFixedHeightOffset],
+  mixins: [gaugeHelpers, reachApiHelper, shadowDomFixedHeightOffset],
   data: () => ({
     searchResults: [],
     selectedGauge: null,
