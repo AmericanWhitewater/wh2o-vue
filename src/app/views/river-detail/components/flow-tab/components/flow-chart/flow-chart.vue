@@ -51,7 +51,7 @@ export default {
       }
     },
     correlationDetails() {
-      return this.gaugeCorrelation?.correlationDetails?.data;
+      return this.gaugeCorrelation?.correlationDetails;
     },
     gaugeCorrelationHasRange() {
       const details = this.correlationDetails;

@@ -48,7 +48,7 @@ export default {
   },
   computed: {
     correlationDetails() {
-      return this.gaugeCorrelation?.correlationDetails?.data;
+      return this.gaugeCorrelation?.correlationDetails;
     },
     legendEntries() {
       if (!this.correlationDetails) {

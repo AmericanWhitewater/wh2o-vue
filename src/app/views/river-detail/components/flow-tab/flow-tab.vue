@@ -37,17 +37,14 @@
                   {{ gauge.status.latestReading.value }} {{ correlationMetrics[gauge.status.metric].unit }}
                   @ {{ formatDate(new Date(gauge.status.latestReading.dateTime)) }}
                 </div>
-                <div v-if="gauge.correlationDetails.data" class="gauge-range">
-                  {{ gauge.correlationDetails.data.beginLowRunnable }} - {{ gauge.correlationDetails.data.endHighRunnable }}
-                  {{ correlationMetrics[gauge.correlationDetails.data.metric].unit }}
+                <div v-if="gauge.correlationDetails" class="gauge-range">
+                  {{ gauge.correlationDetails.beginLowRunnable }} - {{ gauge.correlationDetails.endHighRunnable }}
+                  {{ correlationMetrics[gauge.correlationDetails.metric].unit }}
                 </div>
                 <div class="gauge-class">
                   <span v-if="adjustedReachGrade(gauge)">
                     Adjusted Class {{ adjustedReachGrade(gauge) }}
                   </span>
-                </div>
-                <div class="range-comment background">
-                  <span v-if="adjustedReachComment(gauge)">{{ adjustedReachComment(gauge) }}</span>
                 </div>
                 <div v-if="activeGaugeIndex === index" class="gauge-chart-container background">
                   <layout
@@ -63,7 +60,7 @@
                             text="loading gauge readings..."
                         />
                       </template>
-                      <template v-else-if="gauge.readings">
+                      <template v-else-if="gauge.readings && gauge.readings.length">
                         <div
                             v-if="viewMode === 'chart'"
                             style="max-width: 100%; "
@@ -276,7 +273,7 @@ export default {
           correlations = reachDetail?.detail?.correlations.map(c => {
             return {
               ...c,
-              requestedMetric: c.correlationDetails?.data?.metric,
+              requestedMetric: c.correlationDetails?.metric,
               historyTimeScale: 'week',
               readings: [],
               loading: true
@@ -307,8 +304,8 @@ export default {
       }
     },
     correlationMatchesMetric(gauge) {
-     return gauge && gauge.correlationDetails && gauge.correlationDetails.data &&
-        gauge.correlationDetails.data.metric === gauge.requestedMetric;
+     return gauge && gauge.correlationDetails &&
+        gauge.correlationDetails.metric === gauge.requestedMetric;
     },
     async getReadings(gauge) {
       gauge.loading = true;

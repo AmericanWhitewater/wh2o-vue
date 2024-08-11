@@ -148,7 +148,7 @@ export const reachApiHelper = {
       // accounting for both null and undefined status
       if (correlation && correlation.status && correlation.correlationDetails) {
         const adjustedGradeKey = correlation.status.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
-        return this.renderModernDifficultySchema(correlation.correlationDetails.data[`${adjustedGradeKey}AdjustedGrade`]);
+        return this.renderModernDifficultySchema(correlation.correlationDetails[`${adjustedGradeKey}AdjustedGrade`]);
       }
       return null;
     },
@@ -156,7 +156,7 @@ export const reachApiHelper = {
       // accounting for both null and undefined status
       if (correlation && correlation.status && correlation.correlationDetails) {
         const adjustedKey = correlation.status.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
-        return correlation.correlationDetails.data[`${adjustedKey}RangeComment`];
+        return correlation.correlationDetails[`${adjustedKey}RangeComment`];
       }
       return null;
     },
