@@ -59,8 +59,9 @@
           <tr>
             <td>Gauge</td>
             <td class="river-gages">
-              <!-- TODO: re-add link to gauge detail page once it exists -->
-              <a class="bx--link">{{ $titleCase(gaugeCorrelation.gaugeInfo.name) }}</a>
+              <cv-link @click.exact="$router.replace(`/river-detail/${$route.params.id}/flow`)">
+                {{ $titleCase(gaugeCorrelation.gaugeInfo.name) }}
+              </cv-link>
             </td>
           </tr>
           <tr v-if="gaugeCorrelation.correlationDetails && gaugeCorrelation.correlationDetails.data">
