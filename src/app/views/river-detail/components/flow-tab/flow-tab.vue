@@ -102,15 +102,28 @@
                         <cv-skeleton-text headline/>
                       </template>
                       <template v-else>
-                        <cv-button
-                            class="mb-spacing-sm"
-                            kind="tertiary"
-                            size="small"
-                            @click.exact="go(`/content/gauge/detail-new/`)"
-                            @keydown.enter="go(`/content/gauge/detail-new/`)"
-                        > <!-- TODO: update gauge detail links -->
-                          Gauge Detail
-                        </cv-button>
+                        <div v-if="gauge.gaugeInfo.externalSourceLinks" class="gauge-links">
+                          <cv-link v-if="gauge.gaugeInfo.externalSourceLinks.sourceLink" 
+                            :href="gauge.gaugeInfo.externalSourceLinks.sourceLink.url"
+                            target="_blank">
+                            <cv-button
+                              class="mb-spacing-sm"
+                              kind="tertiary"
+                              size="small"
+                              >{{ gauge.gaugeInfo.externalSourceLinks.sourceLink.text }}
+                            </cv-button>
+                          </cv-link>
+                          <cv-link v-if="gauge.gaugeInfo.externalSourceLinks.secondaryLink"
+                            :href="gauge.gaugeInfo.externalSourceLinks.secondaryLink.url"
+                            target="_blank">
+                            <cv-button
+                              class="mb-spacing-sm"
+                              kind="tertiary"
+                              size="small"
+                              >{{ gauge.gaugeInfo.externalSourceLinks.secondaryLink.text }}
+                            </cv-button>
+                          </cv-link>
+                        </div>
                         <level-legend
                             v-if="correlationMatchesMetric(gauge)"
                             :gaugeCorrelation="gauge"
