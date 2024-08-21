@@ -20,9 +20,11 @@
           <tr
             v-for="st in usStates"
             :key="st.gmi"
+            class="state-row"
+            @click.exact="$router.push(`/river-index/state/${st.gmi}`)"
           >
-            <td><router-link :to="`/river-index/state/${st.gmi}`">{{ st.name }}</router-link></td>
-            <td><router-link :to="`/river-index/state/${st.gmi}`">{{ st.num_rivers }}</router-link></td>
+            <td>{{ st.name }}</td>
+            <td>{{ st.num_rivers }}</td>
           </tr>
         </tbody>
       </table>
@@ -40,9 +42,11 @@
           <tr
             v-for="st in intlStates"
             :key="st.gmi"
+            class="state-row"
+            @click.exact="$router.push(`/river-index/state/${st.gmi}`)"
           >
-            <td><router-link :to="`/river-index/state/${st.gmi}`">{{ st.name }}</router-link></td>
-            <td><router-link :to="`/river-index/state/${st.gmi}`">{{ st.num_rivers }}</router-link></td>
+            <td>{{ st.name }}</td>
+            <td>{{ st.num_rivers }}</td>
           </tr>
         </tbody>
       </table>
@@ -68,8 +72,11 @@ export default {
   }
 }
 </script>
-<style type="text/scss">
-    .nwi-state-list {
-        overflow-y: hidden;
-    }
+<style lang="scss">
+  .nwi-state-list {
+      overflow-y: hidden;
+  }
+  tr.state-row {
+    cursor: pointer;
+  }
 </style>
