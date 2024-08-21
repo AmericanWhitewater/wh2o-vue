@@ -110,6 +110,9 @@
                     class="range-adjusted-difficulty"
                     inline
                   >
+                    <cv-select-option value="">
+                      N/A
+                    </cv-select-option>
                     <cv-select-option
                       v-for="k,v in apiGradeEnum"
                       :key="v"
@@ -217,13 +220,18 @@ export default {
     correlationDetails() {
       return this.correlation?.correlationDetails;
     },
-    gaugeCorrelationInfo() {
+    processedGaugeCorrelation() {
+      const processedDetails = Object.assign({}, this.localCorrelationDetails);
+      ["lowRunnableAdjustedDifficulty", "highRunnableAdjustedDifficulty"].forEach(field => {
+        processedDetails[field] = processedDetails[field].length ? processedDetails[field] : null;
+      });
+
       return {
         reachID: this.reachId,
         gaugeSource: this.correlation?.gaugeInfo.gaugeSource,
         gaugeSourceIdentifier: this.correlation?.gaugeInfo.gaugeSourceIdentifier,
         forcePrimary: this.isPrimary ? 'force-primary' : null,
-        correlationDetails: this.localCorrelationDetails
+        correlationDetails: processedDetails
       }
     },
     reachId() {
@@ -244,7 +252,7 @@ export default {
       // TODO: make backend accept null values for unset vars, or refactor to not send them
       // TODO: investigate why we are getting "USGS" as gauge source when the backend validates it as "usgs"
       try {
-        const updatedCorr = await gaugeClient.upsertGaugeCorrelationToReach.mutate(this.gaugeCorrelationInfo);
+        const updatedCorr = await gaugeClient.upsertGaugeCorrelationToReach.mutate(this.processedGaugeCorrelation);
         this.$emit('saved', updatedCorr);
         this.editing = false;
       } catch (error) {
