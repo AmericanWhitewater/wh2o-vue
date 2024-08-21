@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { appLocalStorage } from '@/app/global/services'
+import { appLocalStorage, eventBus } from '@/app/global/services'
 import { gaugeClient } from '@/app/services';
 import { Layout } from '@/app/global/layout'
 import { gaugeHelpers } from '@/app/global/mixins'
@@ -97,6 +97,7 @@ export default {
     updateSavedCorrelation() {
       // just reload all correlations as "isPrimary" changes can affect all of them
       this.refreshCorrelations();
+      eventBus.$emit('updatedReach') // tells river-detail to refresh the reach
       // update in place with the saved correlation so we don't need to refresh from the db
       // const editedCorr = this.gaugeCorrelations.find((x) => x.gaugeInfo.gaugeSource === corr.gaugeInfo.gaugeSource &&
       //   x.gaugeInfo.gaugeSourceIdentifier === corr.gaugeInfo.gaugeSourceIdentifier);

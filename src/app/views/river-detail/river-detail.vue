@@ -222,7 +222,7 @@ import {
   shadowDomFixedHeightOffset,
   objectPermissionsHelpersMixin,
 } from "@/app/global/mixins";
-import { appLocalStorage } from "@/app/global/services";
+import { appLocalStorage, eventBus } from "@/app/global/services";
 import { reachClient } from '@/app/services';
 
 export default {
@@ -293,9 +293,8 @@ export default {
   watch: {
     reachId: {
       immediate: true,
-      async handler(reachId) {
+      async handler() {
         this.loadReachData();
-        this.reachDetail = await reachClient.reachDetail.query({ reachID: reachId })
       }
     },
     // this function monitors reach revisions
@@ -341,7 +340,7 @@ export default {
         (path === "reports" && this.activeTabKey.includes("report"))
       );
     },
-    loadReachData() {
+    async loadReachData() {
       this.$store.dispatch("RiverDetail/setRefId", this.reachId);
       this.$store.dispatch("RiverEvents/getProperty", this.reachId);
       this.$store.dispatch("RiverDetail/getProperty", this.reachId);
@@ -350,6 +349,10 @@ export default {
       this.$store.dispatch("RiverGages/getProperty", this.reachId);
       this.$store.dispatch("RiverRapids/getProperty", this.reachId);
       this.$store.dispatch("RiverReports/getProperty", { id: this.reachId });
+      this.refreshReachDetails();
+    },
+    async refreshReachDetails() {
+      this.reachDetail = await reachClient.reachDetail.query({ reachID: this.reachId })
     },
     toggleEditMode() {
       if (this.user) {
@@ -412,6 +415,10 @@ export default {
 
       next();
     });
+
+    eventBus.$on('updatedReach', () => {
+      this.refreshReachDetails();
+  });
   },
   mounted() {
     let bookmarks = appLocalStorage.getItem("wh2o-river-bookmarks");
