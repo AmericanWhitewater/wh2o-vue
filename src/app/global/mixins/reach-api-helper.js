@@ -144,11 +144,11 @@ export const reachApiHelper = {
       return gradeMap[difficulty.grade] + (difficulty.adjustment || "");
     },
     // these take a full correlation object with correlationDetails
-    adjustedReachGrade(correlation) {
+    adjustedReachDifficulty(correlation) {
       // accounting for both null and undefined status
       if (correlation && correlation.status && correlation.correlationDetails) {
-        const adjustedGradeKey = correlation.status.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
-        return this.renderModernDifficultySchema(correlation.correlationDetails[`${adjustedGradeKey}AdjustedGrade`]);
+        const adjustedDifficultyKey = correlation.status.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
+        return apiGradeEnum[correlation.correlationDetails[`${adjustedDifficultyKey}AdjustedDifficulty`]];
       }
       return null;
     },

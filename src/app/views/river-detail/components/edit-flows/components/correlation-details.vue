@@ -107,7 +107,7 @@
                   <cv-select
                     v-model="localCorrelationDetails[range.adjustedDifficultyField]"
                     label="Change difficulty with flow"
-                    class="range-adjusted-grade"
+                    class="range-adjusted-difficulty"
                     inline
                   >
                     <cv-select-option

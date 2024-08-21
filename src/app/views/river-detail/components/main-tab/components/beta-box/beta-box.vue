@@ -79,9 +79,9 @@
             <td class="river-flow-rate">
               {{ gaugeCorrelation.status.latestReading.value }} {{ correlationMetrics[gaugeCorrelation.status.metric].unit }}
               <cv-tag
-                  v-if="adjustedReachGrade(gaugeCorrelation)"
+                  v-if="adjustedReachDifficulty(gaugeCorrelation)"
                   kind="cool-gray"
-                  :label="adjustedReachGrade(gaugeCorrelation)"
+                  :label="adjustedReachDifficulty(gaugeCorrelation)"
               />
               <cv-tag
                   :class="gaugeCorrelation.status.status"

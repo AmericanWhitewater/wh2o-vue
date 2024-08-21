@@ -23,7 +23,7 @@
                   class="mb-spacing-md"
                   size="small"
                   @click.exact="$router.replace(`/river-detail/${$route.params.id}/edit-flows`)"
-              >Edit Flows</cv-button>
+              >Edit Gauges</cv-button>
             </div>
 
             <div v-for="(gauge,index) in gaugeCorrelations" :key="`corr-${index}`">
@@ -32,7 +32,12 @@
                 <div class="gauge-name">{{ gauge.gaugeInfo.name }}</div>
                 <div class='gauge-reading-header header'>Reading</div>
                 <div class="gauge-range-header header">Range</div>
-                <div class="gauge-class-header header">Difficulty</div>
+                <div class="gauge-class-header header">
+                  <!-- need this header to space the two rows properly, but only want to show it if data is actually there -->
+                  <template v-if="adjustedReachDifficulty(gauge)">
+                    Difficulty at this level
+                  </template>
+                </div>
                 <div v-if="gauge.status" :class="`gauge-reading background`">
                   {{ gauge.status.latestReading.value }} {{ correlationMetrics[gauge.status.metric].unit }}
                   @ {{ formatDate(new Date(gauge.status.latestReading.dateTime)) }}
@@ -41,10 +46,8 @@
                   {{ gauge.correlationDetails.beginLowRunnable }} - {{ gauge.correlationDetails.endHighRunnable }}
                   {{ correlationMetrics[gauge.correlationDetails.metric].unit }}
                 </div>
-                <div class="gauge-class">
-                  <span v-if="adjustedReachGrade(gauge)">
-                    Adjusted Class {{ adjustedReachGrade(gauge) }}
-                  </span>
+                <div v-if="adjustedReachDifficulty(gauge)" class="gauge-class">
+                  <cv-tag kind="cool-gray" :label="adjustedReachDifficulty(gauge)" />
                 </div>
                 <div v-if="activeGaugeIndex === index" class="gauge-chart-container background">
                   <layout
@@ -103,6 +106,7 @@
                       </template>
                       <template v-else>
                         <div v-if="gauge.gaugeInfo.externalSourceLinks" class="gauge-links">
+                          <h6 class="mb-spacing-sm">View at source:</h6>
                           <cv-link v-if="gauge.gaugeInfo.externalSourceLinks.sourceLink" 
                             :href="gauge.gaugeInfo.externalSourceLinks.sourceLink.url"
                             target="_blank">

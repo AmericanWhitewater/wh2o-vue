@@ -23,11 +23,11 @@
         </em>
         {{ entry.label }}
         <div class="range-description">
-          <span v-if="entry.adjustedComment" v-text="entry.adjustedComment" />
+          <span v-if="entry.adjustedComment" class="mr-spacing-sm" v-text="entry.adjustedComment" />
           <cv-tag
-            v-if="entry.adjustedGrade"
+            v-if="entry.adjustedDifficulty"
             kind="cool-gray"
-            :label="renderModernDifficultySchema(entry.adjustedGrade)"
+            :label="apiGradeEnum[entry.adjustedDifficulty]"
           />
         </div>
       </li>
@@ -60,7 +60,7 @@ export default {
         colorClass: 'above-recommended',
         label: "Above Recommended",
         adjustedComment: this.correlationDetails.aboveRecommendedRangeComment,
-        adjustedGrade: null
+        adjustedDifficulty: null
       }];
 
       if (!this.correlationDetails.beginMediumRunnable && !this.correlationDetails.beginHighRunnable) {
@@ -72,7 +72,7 @@ export default {
           colorClass: 'medium-runnable',
           label: "Runnable",
           adjustedComment: null,
-          adjustedGrade: null
+          adjustedDifficulty: null
         });
       } else {
         entries.push({
@@ -81,21 +81,21 @@ export default {
           colorClass: 'high-runnable',
           label: "High Runnable",
           adjustedComment: this.correlationDetails.highRunnableRangeComment,
-          adjustedGrade: this.correlationDetails.highRunnableAdjustedGrade,
+          adjustedDifficulty: this.correlationDetails.highRunnableAdjustedDifficulty,
         }, {
           from: this.correlationDetails.beginMediumRunnable?.toNumber(),
           to: this.correlationDetails.beginHighRunnable?.toNumber(),
           colorClass: 'medium-runnable',
           label: "Medium Runnable",
           adjustedComment: this.correlationDetails.mediumRunnableRangeComment,
-          adjustedGrade: null
+          adjustedDifficulty: null
         }, {
           from: this.correlationDetails.beginLowRunnable?.toNumber(),
           to: this.correlationDetails.beginMediumRunnable?.toNumber(),
           colorClass: 'low-runnable',
           label: "Low Runnable",
           adjustedComment: this.correlationDetails.lowRunnableRangeComment,
-          adjustedGrade: this.correlationDetails.lowRunnableAdjustedGrade,
+          adjustedDifficulty: this.correlationDetails.lowRunnableAdjustedDifficulty,
         });
       }
       entries.push({
