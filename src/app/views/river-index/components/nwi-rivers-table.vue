@@ -5,6 +5,7 @@
     </template>
     <template v-else-if="reaches && reaches.length > 0">
       <div class="bx--data-table-container river-index">
+        <nwi-level-legend :top=-2 />
         <table class="bx--data-table river-table">
           <thead>
             <tr>
@@ -90,6 +91,7 @@
 </template>
 
 <script>
+import NwiLevelLegend from './nwi-level-legend.vue';
 import { lineString } from "@turf/helpers";
 import debounce from "lodash.debounce";
 import ZoomIn16 from "@carbon/icons-vue/lib/zoom--in/16";
@@ -99,11 +101,13 @@ import { reachClient } from "@/app/services";
 import { reachApiHelper } from "@/app/global/mixins";
 import { mapState } from "vuex";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block.vue";
+
 export default {
   name: "nwi-rivers-table",
   components: {
     ZoomIn16,
     UtilityBlock,
+    NwiLevelLegend
   },
   mixins: [reachApiHelper],
   props: {
@@ -287,7 +291,7 @@ export default {
 
   th {
     position: sticky;
-    top: -5px;
+    top: calc(3rem - 2px);
   }
 
   th,

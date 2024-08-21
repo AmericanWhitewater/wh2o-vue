@@ -7,14 +7,8 @@
             {{ state.name }} River List
           </h2>
 
-          <div class="level-legend">
-            <div class="legend-label"><h6>Level Legend</h6></div>
-            <div class="below-recommended"><h6>Below Recommended</h6></div>
-            <div class="low-runnable"><h6>Low Runnable</h6></div>
-            <div class="medium-runnable"><h6>Medium Runnable</h6></div>
-            <div class="high-runnable"><h6>High Runnable</h6></div>
-            <div class="above-recommended"><h6>Above Recommended</h6></div>
-          </div>
+          <!-- 51px is the header height. TODO: will need to change when modular header comes in -->
+          <nwi-level-legend :top=51 />
 
           <table class="bx--data-table">
             <thead>
@@ -64,11 +58,12 @@
 import { getStateList } from "@/app/services"
 import { reachClient } from '@/app/services'
 import { reachApiHelper } from '@/app/global/mixins';
+import { NwiLevelLegend } from './components';
 import UtilityBlock from "@/app/global/components/utility-block/utility-block.vue";
 
 export default {
   name: 'rivers-by-state',
-  components: { UtilityBlock },
+  components: { NwiLevelLegend, UtilityBlock },
   mixins: [reachApiHelper],
   data: () => ({
     loading: true,
@@ -142,41 +137,6 @@ export default {
 
     &.reach {
       cursor: pointer;
-    }
-  }
-
-  .level-legend {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: 3rem; // same as .bx--data-table tr
-    position: sticky;
-    top: 51px;
-
-    div {
-      align-content: center;
-      text-align: center;
-      background: $ui-03;
-      overflow: hidden;
-
-      width: 20%; // small screens
-      &.legend-label {
-        display: none;
-      }
-
-      // normal screens
-      @include carbon--breakpoint("md") {
-        width: 16.67%;
-        &.legend-label {
-          display: block;
-        }
-      }
-
-      @each $class, $color in $flow-map {
-        &.#{$class} {
-          background: $color;
-        }
-      }
     }
   }
 }
