@@ -14,7 +14,9 @@
     <template slot="content">
       <cv-search
         label="start typing to search for a gauge"
-        @input="debouncedFetchGaugeOptions" />
+        autocorrect="off" spellcheck="false" autocomplete="off"
+        @input="debouncedFetchGaugeOptions"
+        />
 
       <div v-if="searchResults.length" class="gauge-list bx--tile mb-spacing-md">
         <cv-radio-group vertical="vertical">
