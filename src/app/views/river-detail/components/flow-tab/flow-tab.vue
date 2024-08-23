@@ -69,7 +69,7 @@
                             style="max-width: 100%; "
                             class="mb-spacing-sm"
                         >
-                          <div :style="chartSize">
+                          <div>
                             <flow-chart
                                 :gauge-correlation="gauge"
                                 :readings="gauge.readings"
@@ -270,13 +270,6 @@ export default {
     }),
     reachId () {
       return this.$route.params.id
-    },
-    chartSize () {
-      if (this.windowWidth > this.$options.breakpoints.md) {
-        return null
-      } else {
-        return 'position:relative;width:' + this.$options.breakpoints.sm * 2 + 'px'
-      }
     },
   }
   ,
