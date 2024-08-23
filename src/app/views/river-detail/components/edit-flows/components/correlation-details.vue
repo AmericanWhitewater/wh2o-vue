@@ -90,6 +90,9 @@
       <div v-else>
         <div class="ranges">
           <div v-for="(range, i) in ranges" :key="`range-${i}`" :class="`range-indicator ${range.rangeClass}`">
+            <div :class="['range-description', editing ? 'editing' : '']">
+              <p v-text="range.description" />
+            </div>
             <div v-if="range.inflectionPointField" class="inflection-point">
               <label :for="range.inflectionPointField">{{ range.inflectionPointFieldLabel }}:</label>
               <template v-if="editing">
@@ -185,7 +188,8 @@ export default {
           inflectionPointField: "endHighRunnable",
           inflectionPointFieldLabel: "Upper limit of high runnable",
           rangeCommentField: "aboveRecommendedRangeComment",
-          adjustedDifficultyField: null
+          adjustedDifficultyField: null,
+          description: "The river in this range is unacceptably high for a majority of paddlers, even those seeking a high water experience, and is above the recommended flow. Rivers that are too high may possess compounding risk factors, washed-out features that are no longer enjoyable, pollution and debris, or other factors that make them unappealing in this range for most paddlers."
         },
         {
           rangeClass: "high-runnable",
@@ -193,7 +197,8 @@ export default {
           inflectionPointField: "beginHighRunnable",
           inflectionPointFieldLabel: "Upper limit of medium runnable",
           rangeCommentField: "highRunnableRangeComment",
-          adjustedDifficultyField: "highRunnableAdjustedDifficulty"
+          adjustedDifficultyField: "highRunnableAdjustedDifficulty",
+          description: "The river in this range will typically offer paddlers a high challenge trip associated with more powerful, fast, and complex currents, relatively large waves and holes, and fewer eddies. Most paddlers seeking a high challenge, high water experience will enjoy the river in this range and would return in this range."
         },
         {
           rangeClass: "medium-runnable",
@@ -201,7 +206,8 @@ export default {
           inflectionPointField: "beginMediumRunnable",
           inflectionPointFieldLabel: "Upper limit of low runnable",
           rangeCommentField: "mediumRunnableRangeComment",
-          adjustedDifficultyField: null
+          adjustedDifficultyField: null,
+          description: "The river in this range offers paddlers a standard paddling experience, generally encompassing the optimal flow range for most paddlers and an experience true to the listed difficulty of the run. In this range the river will generally offer eddies and relatively moderate sized waves and holes, without the rock hits of low water or high velocities of high water."
         },
         {
           rangeClass: "low-runnable",
@@ -209,7 +215,8 @@ export default {
           inflectionPointField: "beginLowRunnable",
           inflectionPointFieldLabel: "Lower limit of runnable",
           rangeCommentField: "lowRunnableRangeComment",
-          adjustedDifficultyField: "lowRunnableAdjustedDifficulty"
+          adjustedDifficultyField: "lowRunnableAdjustedDifficulty",
+          description: "The river in this range offers a relatively technical paddling experience in which whitewater features like waves and holes are generally less powerful, avoiding rocks is more challenging, water velocities are lower, and the river may be shallow at times. Most paddlers seeking a technical experience will enjoy the river in this range and would return in this range."
         },
         {
           rangeClass: "below-recommended",
@@ -217,7 +224,8 @@ export default {
           inflectionPointField: null,
           inflectionPointFieldLabel: null,
           rangeCommentField: "belowRecommendedRangeComment",
-          adjustedDifficultyField: null
+          adjustedDifficultyField: null,
+          description: "The river in this range is below the recommended flow, indicating that even a majority of paddlers seeking a technical low-water paddling trip would not enjoy the river, would have difficulty navigating the river, and would be unlikely to return at this flow. Flows in this category are below the minimum acceptable flow for most people."
         },
       ]
   }),
@@ -443,6 +451,43 @@ export default {
           width: 6rem;
           height: 1rem;
           line-height: 1rem;
+        }
+      }
+
+      .range-description {
+        display: none; // hide on small screens
+        float: left;
+        margin-left: -3rem;
+        padding: 1.5rem 0;
+        max-width: 600px;
+
+        p {
+          font-size: 12px;
+          line-height: 1rem;
+          font-style: italic;
+        }
+
+        &.editing {
+          width: calc(100% - 300px);
+          
+          p {
+            font-size: 11px;
+          }
+        }
+
+        @include carbon--breakpoint("md") {
+          display: flex;
+          align-items: center;
+          height: 100%;
+          width: calc(100% - 160px);
+        }
+
+        @include carbon--breakpoint("lg") {
+          &.editing {
+            p {
+              font-size: 12px;
+            }
+          }
         }
       }
     }
