@@ -18,7 +18,7 @@
             >{{ metric.name }}
           </cv-select-option>
         </cv-select>
-        <label v-else for="metric">Flow Metric: {{ correlationDetails ? correlationDetails.metric : "none set" }}</label>
+        <label v-else for="metric">Flow Metric: {{ correlationDetails ? correlationMetrics[correlationDetails.metric].name : "none set" }}</label>
 
         <div>
           <label for="isPrimary">Primary Gauge</label>
@@ -92,13 +92,18 @@
           <div v-for="(range, i) in ranges" :key="`range-${i}`" :class="`range-indicator ${range.rangeClass}`">
             <div v-if="range.inflectionPointField" class="inflection-point">
               <label :for="range.inflectionPointField">{{ range.inflectionPointFieldLabel }}:</label>
-              <span v-if="!editing">{{ correlationDetails[range.inflectionPointField] }}</span>
-              <input v-else v-model.number="localCorrelationDetails[range.inflectionPointField]" type="text" class="bx--text-input">
-              <span>{{ editing ? localCorrelationDetails.metric : correlationDetails.metric }}</span>
+              <template v-if="editing">
+                <input v-model.number="localCorrelationDetails[range.inflectionPointField]" type="text" class="bx--text-input">
+                <span>{{ correlationMetrics[localCorrelationDetails.metric].name }}</span>
+              </template>
+              <template v-else>
+                <span>{{ correlationDetails[range.inflectionPointField] }} </span>
+                <span>{{ correlationMetrics[correlationDetails.metric].name }}</span>
+              </template>
             </div>
             <div class="band-label">
               {{ range.label }}
-              <cv-tag v-if="correlationDetails[range.adjustedDifficultyField] && !editing" :label="apiGradeEnum[correlationDetails[range.adjustedDifficultyField]]" />
+              <cv-tag v-if="!editing && correlationDetails[range.adjustedDifficultyField]" :label="apiGradeEnum[correlationDetails[range.adjustedDifficultyField]]" />
             </div>
             <div class="range-fields">
               <template v-if="editing">
@@ -157,7 +162,7 @@ export default {
       // vue 2 doesn't detect when new props are added to an object,
       // so we need to enumerate all props for the watcher to work properly
       localCorrelationDetails: {
-        metric: null,
+        metric: 'cfs', // default value
         belowRecommendedRangeComment: null,
         lowRunnableRangeComment: null,
         mediumRunnableRangeComment: null,

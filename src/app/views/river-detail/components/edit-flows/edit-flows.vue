@@ -63,14 +63,13 @@ export default {
   },
   methods: {
     async openGaugeModal() {
-      const { gaugeSource, gaugeSourceIdentifier, metric } = await this.$refs.addGaugeModal.show({});
+      const { gaugeSource, gaugeSourceIdentifier } = await this.$refs.addGaugeModal.show({});
 
-      if (gaugeSource && gaugeSourceIdentifier && metric) {
+      if (gaugeSource && gaugeSourceIdentifier) {
         const payload = {
           reachID: this.reachId,
           gaugeSource: gaugeSource,
           gaugeSourceIdentifier: gaugeSourceIdentifier,
-          flowMetric: metric,
           forcePrimary: null,
           correlationDetails: null
         }
@@ -85,7 +84,7 @@ export default {
       this.gaugeCorrelations = correlations.map(x => {
         x.editing = false;
         return x;
-      });
+      }).sort((a,b) => b.isPrimary - a.isPrimary);
       this.loading = false;
     },
     removeDeletedCorrelation(corr) {

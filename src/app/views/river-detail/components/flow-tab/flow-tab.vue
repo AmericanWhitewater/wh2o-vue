@@ -295,7 +295,7 @@ export default {
               readings: [],
               loading: true
             };
-          });
+          }).sort((a,b) => b.isPrimary - a.isPrimary);
         }
 
         this.gaugeCorrelations = correlations;

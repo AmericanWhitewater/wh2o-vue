@@ -29,17 +29,6 @@
           />
         </cv-radio-group>
       </div>
-
-      <div v-if="selectedGauge" class="gauge-details">
-        <cv-select v-model="gaugeMetric" label="Gauge metric to use">
-          <cv-select-option
-            v-for="metric, key in correlationMetrics"
-            :key="`metric-${key}`"
-            :value="key"
-            >{{ metric.name }}
-          </cv-select-option>
-        </cv-select>
-      </div>
     </template>
     <template slot="secondary-button"> Cancel </template>
     <template slot="primary-button"> OK </template>
@@ -75,7 +64,6 @@ export default {
       this.resolvePromise({
         gaugeSource: source,
         gaugeSourceIdentifier: sourceID,
-        metric: this.gaugeMetric
       });
       this.$refs.modalWrapper.hide()
     },
