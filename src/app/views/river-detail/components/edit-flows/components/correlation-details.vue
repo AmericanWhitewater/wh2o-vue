@@ -468,7 +468,7 @@ export default {
         }
 
         &.editing {
-          width: calc(100% - 300px);
+          width: calc(100% - 350px);
           
           p {
             font-size: 11px;
