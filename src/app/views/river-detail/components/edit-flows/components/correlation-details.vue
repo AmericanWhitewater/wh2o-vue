@@ -235,8 +235,11 @@ export default {
     },
     processedGaugeCorrelation() {
       const processedDetails = Object.assign({}, this.localCorrelationDetails);
-      ["lowRunnableAdjustedDifficulty", "highRunnableAdjustedDifficulty"].forEach(field => {
-        processedDetails[field] = processedDetails[field].length ? processedDetails[field] : null;
+      // send nulls instead of empty strings
+      Object.keys(this.localCorrelationDetails).forEach(field => {
+        if (typeof(processedDetails[field]) === "string") {
+          processedDetails[field] = processedDetails[field].length ? processedDetails[field] : null;
+        }
       });
 
       return {
