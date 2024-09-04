@@ -90,8 +90,9 @@
       <div v-else>
         <div class="ranges">
           <div v-for="(range, i) in ranges" :key="`range-${i}`" :class="`range-indicator ${range.rangeClass}`">
-            <div :class="['range-description', editing ? 'editing' : '']">
-              <p v-text="range.description" />
+            <div :class="['range-details', editing ? 'editing' : '']">
+              <h6>{{ range.label }}&nbsp;</h6>
+              <p class="description">{{ range.description }}</p>
             </div>
             <div v-if="range.inflectionPointField" class="inflection-point">
               <label :for="range.inflectionPointField">{{ range.inflectionPointFieldLabel }}:</label>
@@ -103,10 +104,6 @@
                 <span>{{ correlationDetails[range.inflectionPointField] }} </span>
                 <span>{{ correlationMetrics[correlationDetails.metric].name }}</span>
               </template>
-            </div>
-            <div class="band-label">
-              {{ range.label }}
-              <cv-tag v-if="!editing && correlationDetails[range.adjustedDifficultyField]" :label="apiGradeEnum[correlationDetails[range.adjustedDifficultyField]]" />
             </div>
             <div class="range-fields">
               <template v-if="editing">
@@ -132,6 +129,11 @@
                 </template>
               </template>
               <template v-else>
+                <label v-if="correlationDetails[range.adjustedDifficultyField]" class="bx--label">
+                  Adjusts to:
+                  <cv-tag v-if="correlationDetails[range.adjustedDifficultyField]" :label="apiGradeEnum[correlationDetails[range.adjustedDifficultyField]]" />
+                </label>
+                
                 <label v-if="correlationDetails[range.rangeCommentField]" :for="range.rangeCommentField" class="bx--label">
                   {{ correlationDetails[range.rangeCommentField] }}
                 </label>
@@ -184,7 +186,8 @@ export default {
       ranges: [
         {
           rangeClass: "above-recommended",
-          label: "above recommended",
+          label: "Above Recommended",
+          fromField: "endHighRunnable",
           inflectionPointField: "endHighRunnable",
           inflectionPointFieldLabel: "Upper limit of high runnable",
           rangeCommentField: "aboveRecommendedRangeComment",
@@ -193,7 +196,9 @@ export default {
         },
         {
           rangeClass: "high-runnable",
-          label: "high runnable",
+          label: "High Runnable",
+          fromField: "beginHighRunnable",
+          toField: "endHighRunnable",
           inflectionPointField: "beginHighRunnable",
           inflectionPointFieldLabel: "Upper limit of medium runnable",
           rangeCommentField: "highRunnableRangeComment",
@@ -202,7 +207,9 @@ export default {
         },
         {
           rangeClass: "medium-runnable",
-          label: "medium runnable",
+          label: "Medium Runnable",
+          fromField: "beginMediumRunnable",
+          endField: "beginHighRunnable",
           inflectionPointField: "beginMediumRunnable",
           inflectionPointFieldLabel: "Upper limit of low runnable",
           rangeCommentField: "mediumRunnableRangeComment",
@@ -211,7 +218,9 @@ export default {
         },
         {
           rangeClass: "low-runnable",
-          label: "low runnable",
+          label: "Low Runnable",
+          fromField: "beginLowRunnable",
+          toField: "beginMediumRunnable",
           inflectionPointField: "beginLowRunnable",
           inflectionPointFieldLabel: "Lower limit of runnable",
           rangeCommentField: "lowRunnableRangeComment",
@@ -220,7 +229,8 @@ export default {
         },
         {
           rangeClass: "below-recommended",
-          label: "below recommended",
+          label: "Below Recommended",
+          toField: "beginLowRunnable",
           inflectionPointField: null,
           inflectionPointFieldLabel: null,
           rangeCommentField: "belowRecommendedRangeComment",
@@ -399,14 +409,13 @@ export default {
       }
 
       .range-fields {
-        margin-top:23px;
         float: right;
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
         align-items: flex-end;
         text-align: right;
-        height: calc(100% - 23px);
+        height: 100%;
 
         .bx--form-item.bx--text-input-wrapper {
           flex-direction: row;
@@ -457,12 +466,19 @@ export default {
         }
       }
 
-      .range-description {
-        display: none; // hide on small screens
+      .range-details {
+
+        .description {
+          display: none; // hide on small screens
+        }
         float: left;
         margin-left: -3rem;
-        padding: 1.5rem 0;
         max-width: 600px;
+        padding: 1rem 0;
+
+        h6 {
+          display: inline-block;
+        }
 
         p {
           font-size: 12px;
@@ -479,8 +495,9 @@ export default {
         }
 
         @include carbon--breakpoint("md") {
-          display: flex;
-          align-items: center;
+          .description {
+            display: inline;
+          }
           height: 100%;
           width: calc(100% - 160px);
         }
