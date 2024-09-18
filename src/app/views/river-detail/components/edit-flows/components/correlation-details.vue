@@ -26,39 +26,46 @@
         </div>
       </div>
       <div>
-        <cv-button
-          v-if="editing"
-          kind="primary"
-          size="small"
-          @click.exact="saveCorrelation()"
-          @keydown.enter="saveCorrelation()">
-          Save
-        </cv-button>
-        <cv-button
-          v-else
-          kind="secondary"
-          size="small"
-          @click.exact="editing = true"
-          @keydown.enter="editing = true">
-          Edit
-        </cv-button>
-        <cv-button
-          v-if="editing"
-          kind="danger"
-          size="small"
-          @click="cancelCorrelationEdit()"
-          @keydown.enter="cancelCorrelationEdit()">
-          Cancel
-        </cv-button>
-        <cv-button
-          v-else
-          id="delete-button"
-          kind="danger"
-          size="small"
-          @click="triggerCorrelationDelete()"
-          @keydown.enter="triggerCorrelationDelete()">
-          Remove
-        </cv-button>
+        <template v-if="editing">
+          <cv-button
+            :disabled="saving"
+            kind="primary"
+            size="small"
+            @click.exact="saveCorrelation()"
+            @keydown.enter="saveCorrelation()"
+          >
+            Save
+          </cv-button>
+          <cv-button
+            kind="danger"
+            size="small"
+            @click="cancelCorrelationEdit()"
+            @keydown.enter="cancelCorrelationEdit()">
+            Cancel
+          </cv-button>
+          <cv-inline-loading
+            v-if="saving"
+            loading-text="Saving..."
+            state="loading"
+          />
+        </template>
+        <template v-else>
+          <cv-button
+            kind="secondary"
+            size="small"
+            @click.exact="editing = true"
+            @keydown.enter="editing = true">
+            Edit
+          </cv-button>
+          <cv-button
+            id="delete-button"
+            kind="danger"
+            size="small"
+            @click="triggerCorrelationDelete()"
+            @keydown.enter="triggerCorrelationDelete()">
+            Remove
+          </cv-button>
+        </template>
       </div>
     </div>
     <div>
@@ -181,6 +188,7 @@ export default {
         endHighRunnable: null,
       },
       isPrimary: undefined,
+      saving: false,
       errors: [],
       editing: false,
       ranges: [
@@ -274,9 +282,12 @@ export default {
   },
   methods: {
     async saveCorrelation() {
+      if (!this.validateForm()) {
+        return;
+      }
       // TODO: implement some kind of real error handling strategy in these calls
       // TODO: make backend accept null values for unset vars, or refactor to not send them
-      // TODO: investigate why we are getting "USGS" as gauge source when the backend validates it as "usgs"
+      this.saving = true;
       try {
         const updatedCorr = await gaugeClient.upsertGaugeCorrelationToReach.mutate(this.processedGaugeCorrelation);
         this.$emit('saved', updatedCorr);
@@ -285,6 +296,41 @@ export default {
         // TODO: log this somehow, or get better errors returned from backend?
         this.errors = [error];
       }
+      this.saving = false;
+    },
+    validateForm() {
+      this.errors = [];
+      // validate presence of inflection points
+      this.ranges.forEach(range => {
+        // skip for range that does not have inflection point
+        if (!range.inflectionPointField) {
+          return;
+        }
+
+        const inflectionPoint = this.localCorrelationDetails[range.inflectionPointField];
+        if (!inflectionPoint) {
+          this.errors.push(`${range.inflectionPointFieldLabel} must be set`)
+        } else if (isNaN(inflectionPoint)) {
+          this.errors.push(`${range.inflectionPointFieldLabel} must be a number`)
+        }
+      });
+
+      // confirm that the inflection points are in correct relation with each other
+      if (this.localCorrelationDetails.endHighRunnable <= this.localCorrelationDetails.beginHighRunnable) {
+        this.errors.push('Upper limit of high runnable must be greater than Upper limit of medium runnable');
+      }
+      if (this.localCorrelationDetails.beginHighRunnable <= this.localCorrelationDetails.beginMediumRunnable) {
+        this.errors.push('Upper limit of medium runnable must be greater than Upper limit of low runnable');
+      }
+      if (this.localCorrelationDetails.beginMediumRunnable <= this.localCorrelationDetails.beginLowRunnable) {
+        this.errors.push('Upper limit of low runnable must be greater than Lower limit of runnable');
+      }
+
+      if (this.errors.length) {
+        return false;
+      }
+
+      return true;
     },
     async triggerCorrelationDelete() {
       const ok = await this.$refs.confirmDeleteModal.show({
