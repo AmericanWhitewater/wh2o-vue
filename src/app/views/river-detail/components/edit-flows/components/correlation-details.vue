@@ -363,8 +363,6 @@ export default {
           }
         });
         this.isPrimary = this.correlation.isPrimary;
-        // TODO: handle save errors
-        // this.errors = [...this.correlationDetails.errors];
       }
     }
   }
