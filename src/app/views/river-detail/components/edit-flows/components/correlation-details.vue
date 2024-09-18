@@ -354,6 +354,8 @@ export default {
       this.editing = false;
     },
     resetCorrelationDetailsEdits() {
+      this.errors = [];
+      
       if (this.correlationDetails) {
         Object.assign(this.localCorrelationDetails, this.correlationDetails);
         ['beginLowRunnable', 'beginMediumRunnable', 'beginHighRunnable', 'endHighRunnable'].forEach(k => {
