@@ -186,11 +186,11 @@
         </template>
         <template v-else>
           <div>
-            <a v-if="editMode"
-               class="cv-button mb-spacing-md bx--btn bx--btn--tertiary bx--btn--sm"
-               :href="formatLinkUrl(`/content/StreamTeam/edit-correlations/?reach_id=${$route.params.id}`)"
-               target="_blank"
-            >Edit Flows</a><!-- TODO: edit flows interface -->
+            <cv-button v-if="editMode"
+              class="cv-button mb-spacing-md bx--btn bx--btn--tertiary bx--btn--sm"
+              target="_blank"
+              @click.exact="$router.replace(`/river-detail/${$route.params.id}/edit-flows`)"
+            >Edit Gauges</cv-button>
           </div>
 
           <utility-block
