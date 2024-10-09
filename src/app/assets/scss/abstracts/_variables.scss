@@ -6,9 +6,21 @@ $flow-low: #FF8785;
 $flow-medium: #59E78D;
 
 //this will make the colors easy to scale across the application.
-$high-runnable: lighten($flow-medium, 15%);
+$high-runnable: darken($flow-medium, 15%);
 $med-runnable: $flow-medium;
-$low-runnable: darken($flow-medium, 15%);
+$low-runnable: lighten($flow-medium, 15%);
+$flow-warning: #ffcc00;
+
+// maps flow classes to their color
+$flow-map: (
+  "above-recommended": $flow-high,
+  "high-runnable": $high-runnable,
+  "medium-runnable": $med-runnable,
+  "migration-runnable": $med-runnable, // TODO: a temporary solution for handling legacy data
+  "low-runnable": $low-runnable,
+  "below-recommended": $flow-low,
+  "stale": #dfe3e6 // use ui-03 for unknown/stale
+);
 
 // high contrast/accessibility flow colors
 $bw-flow-high:#AEB8B8;

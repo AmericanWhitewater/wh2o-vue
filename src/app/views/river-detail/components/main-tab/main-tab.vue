@@ -5,7 +5,7 @@
       class="mb-lg"
     >
       <template #main>
-        <beta-box />
+        <beta-box :reachDetail="reachDetail" />
         <recent-alerts />
         <river-description />
         <rapids-section />
@@ -33,6 +33,12 @@ export default {
     ReportsSection,
     RiverDescription,
     Layout
+  },
+  props: {
+    reachDetail: {
+      type: Object,
+      required: false
+    }
   }
 }
 </script>

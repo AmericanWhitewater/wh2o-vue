@@ -1,7 +1,7 @@
 <template>
   <div class="nwi-legend">
     <h5 class="bx--type-zeta">
-      {{ colorByTitle }}
+      Difficulty
     </h5>
     <div
       v-for="(color, label) in colorScheme"
@@ -19,25 +19,10 @@ import MapStyles from './nwi-map-styles'
 
 export default {
   name: 'nwi-map-legend',
-  props: {
-    colorBy: {
-      type: String,
-      required: true
-    }
-  },
   computed: {
     colorScheme () {
-      return MapStyles.colorSchemes[this.colorBy]
+      return MapStyles.colorSchemes["difficulty"]
     },
-    // this feels sort of silly but alternative is to write some kind of titlecase-ish
-    // method that is way more complex than this. If we add more color schemes it's something
-    // to consider.
-    colorByTitle () {
-      if (this.colorBy === 'currentFlow') {
-        return 'Current Flow'
-      }
-      return 'Difficulty'
-    }
   }
 }
 </script>

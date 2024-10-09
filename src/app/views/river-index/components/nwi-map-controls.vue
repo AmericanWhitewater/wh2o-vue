@@ -4,10 +4,6 @@
       v-if="controlEnabled('baseMap')"
       :style="getControlOffset('baseMap')"
     />
-    <nwi-color-by-toggle
-      v-if="controlEnabled('colorBy')"
-      :style="getControlOffset('colorBy')"
-    />
     <nwi-fullscreen-toggle
       v-if="controlEnabled('fullscreen')"
       :fullscreen-target="fullscreenTarget"
@@ -20,13 +16,11 @@
 import {
   NwiFullscreenToggle,
   NwiBasemapToggle,
-  NwiColorByToggle
 } from '.'
 export default {
   name: 'nwi-map-controls',
   components: {
     NwiBasemapToggle,
-    NwiColorByToggle,
     NwiFullscreenToggle
   },
   props: {
@@ -36,7 +30,7 @@ export default {
     },
     mapControls: {
       type: Array,
-      default: () => ['baseMap', 'colorBy', 'fullscreen']
+      default: () => ['baseMap', 'fullscreen']
     }
   },
   methods: {
@@ -50,9 +44,6 @@ export default {
       let offsetString = '0.5rem'
       if (this.controlEnabled('fullscreen')) {
         offsetString += ' + 50px'
-      }
-      if (control === 'baseMap' && this.controlEnabled('colorBy')) {
-        offsetString += ' + 8rem + 10px'
       }
       return `right: calc(${offsetString})`
     }
