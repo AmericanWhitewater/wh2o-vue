@@ -14,7 +14,7 @@
             <header v-else-if="reach" class="bx--tile">
               <div class="reach-header-info">
                 <h1>
-                  {{ reach.river }}
+                  {{ reachDetail.stub ? reachDetail.stub.river : '' }}
                 </h1>
                 <h4 class="mb-spacing-md" v-text="reachSubtitle" />
               </div>
@@ -44,7 +44,7 @@
                       @modal-shown="setModalOffset"
                       @secondary-click="deleteReachModalVisible = false"
                       @modal-hidden="deleteReachModalVisible = false"
-                      @primary-click="handleDelete(reach.id)"
+                      @primary-click="handleDelete(reachId)"
                     >
                       <template slot="title"> Confirm Delete </template>
                       <template slot="content">
@@ -201,7 +201,7 @@
         >
           <transition :name="transitionName" mode="out-in">
             <keep-alive exclude="beta-box-edit-modal,geometry-edit-modal">
-              <router-view />
+              <router-view :reach-detail="reachDetail" />
             </keep-alive>
           </transition>
         </main>
@@ -222,7 +222,8 @@ import {
   shadowDomFixedHeightOffset,
   objectPermissionsHelpersMixin,
 } from "@/app/global/mixins";
-import { appLocalStorage } from "@/app/global/services";
+import { appLocalStorage, eventBus } from "@/app/global/services";
+import { reachClient } from '@/app/services';
 
 export default {
   name: "river-detail",
@@ -244,6 +245,7 @@ export default {
     deleteReachModalVisible: false,
     bookmarked: false,
     transitionName: "fade",
+    reachDetail: {}
   }),
   tabs: {
     main: "General",
@@ -266,9 +268,9 @@ export default {
     }),
     reachSubtitle() {
       let subtitle = "";
-      subtitle += this.reach.section;
-      if (this.reach.altname) {
-        subtitle += ` (${this.reach.altname})`;
+      subtitle += this.reachDetail?.stub?.section;
+      if (this.reachDetail?.stub?.altname) {
+        subtitle += ` (${this.reachDetail?.stub?.altname})`;
       }
       return subtitle;
     },
@@ -289,8 +291,11 @@ export default {
     },
   },
   watch: {
-    reachId() {
-      this.loadReachData();
+    reachId: {
+      immediate: true,
+      async handler() {
+        this.loadReachData();
+      }
     },
     // this function monitors reach revisions
     // when a new revision is made, it prompts the user to populate
@@ -335,7 +340,7 @@ export default {
         (path === "reports" && this.activeTabKey.includes("report"))
       );
     },
-    loadReachData() {
+    async loadReachData() {
       this.$store.dispatch("RiverDetail/setRefId", this.reachId);
       this.$store.dispatch("RiverEvents/getProperty", this.reachId);
       this.$store.dispatch("RiverDetail/getProperty", this.reachId);
@@ -344,6 +349,10 @@ export default {
       this.$store.dispatch("RiverGages/getProperty", this.reachId);
       this.$store.dispatch("RiverRapids/getProperty", this.reachId);
       this.$store.dispatch("RiverReports/getProperty", { id: this.reachId });
+      this.refreshReachDetails();
+    },
+    async refreshReachDetails() {
+      this.reachDetail = await reachClient.reachDetail.query({ reachID: this.reachId })
     },
     toggleEditMode() {
       if (this.user) {
@@ -387,7 +396,7 @@ export default {
       if (selectedImage) {
         // do reach update
         await this.$store.dispatch("RiverDetail/updateProperty", {
-          id: this.reach.id,
+          id: this.reachId,
           photo_id: selectedImage.id
         });
       }
@@ -406,10 +415,12 @@ export default {
 
       next();
     });
+
+    eventBus.$on('updatedReach', () => {
+      this.refreshReachDetails();
+  });
   },
   mounted() {
-    this.loadReachData();
-
     let bookmarks = appLocalStorage.getItem("wh2o-river-bookmarks");
 
     if (bookmarks && bookmarks.includes(Number(this.$route.params.id))) {
