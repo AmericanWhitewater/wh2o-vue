@@ -88,19 +88,3 @@ export function rangeToClass(minRange, maxRange) {
       return "below-recommended";
   }
 }
-// copied from scss file :(
-export function classToColor(c) {
-  switch (c) {
-    case "below-recommended":
-      return "#FF8785";
-    case "low-runnable":
-      return "#1fd561";
-    case "runnable":
-      return "#59E78D";
-    case "high-runnable":
-      return "#9cf1bb";
-    case "above-recommended":
-      return "#68DFE9";
-  }
-  return "";
-}
