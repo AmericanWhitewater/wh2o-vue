@@ -40,8 +40,11 @@ export default {
     currentTimeScale: null
   }),
   computed: {
+    reversedReadings () {
+      return this.readings.slice().reverse();
+    },
     chartLabels () {
-      return this.readings.map(reading => moment(reading.dateTime).format('MM/DD hh:mm a'))
+      return this.reversedReadings.map(reading => moment(reading.dateTime).format('MM/DD hh:mm a'))
     },
     chartAspectRatio () {
       if (this.windowWidth >= this.$options.breakpoints.md) {
@@ -246,7 +249,7 @@ export default {
         chartOptions.graphRange = graphBackgrounds.map(x => ({...x, color: this.classToColor(x.class) }));
       }
 
-      buildChart(ctx, this.chartLabels, this.readings.map(r => r.value), chartOptions)
+      buildChart(ctx, this.chartLabels, this.reversedReadings.map(r => r.value), chartOptions)
 
     },
     // this duplicates logic that is elsewhere defined by scss in
