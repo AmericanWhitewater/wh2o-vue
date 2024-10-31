@@ -41,7 +41,7 @@
         <template v-if="report.photos && report.photos[0]">
           <div>
             <img
-              :src="imageURI(report.photos[0], 'medium')"
+              :src="assetUrl(`/images/images/medium/${report.photos[0].id}`)"
               :alt="report.photos[0].caption"
             >
           </div>

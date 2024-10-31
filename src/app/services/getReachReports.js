@@ -23,15 +23,7 @@ export async function getReachReports(id, pagination) {
                     observation
                     photos {
                       created_at
-                      url
                       id
-                      image {
-                        uri {
-                          big
-                          medium
-                          thumb
-                        }
-                      }
                     }
                     permissions {
                       domain
