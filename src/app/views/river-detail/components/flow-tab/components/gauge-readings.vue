@@ -17,7 +17,7 @@
         </thead>
         <tbody class="gage-data-table">
         <tr
-            v-for="(r, index) in reversedReadings"
+            v-for="(r, index) in readings"
             :key="`${index}`"
             :value="`${index}`"
         >
@@ -45,8 +45,7 @@ export default {
     }
   },
   data: () => ({
-    columns: ['Reading', 'Updated'],
-    reversedReadings: null
+    columns: ['Reading', 'Updated']
   }),
   methods: {
     formatReading (reading) {
@@ -56,9 +55,6 @@ export default {
       return moment(reading.dateTime).format('MM/DD hh:mm a')
     }
   },
-  created () {
-    this.reversedReadings = this.readings.slice().reverse();
-  }
 }
 </script>
 <style scoped lang="scss">
