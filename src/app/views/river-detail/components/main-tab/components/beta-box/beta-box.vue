@@ -84,6 +84,7 @@
                   :label="adjustedReachDifficulty(gaugeCorrelation)"
               />
               <cv-tag
+                  v-if="gaugeCorrelation.status.status"
                   :class="gaugeCorrelation.status.status"
                   :label="gaugeCorrelation.status.status.replace('-', ' ').replace('migration', '')"
               /> <!-- TODO: reference to "migration" above handles existing legacy migration-runnable data -->
