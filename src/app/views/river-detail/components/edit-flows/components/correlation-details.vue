@@ -174,7 +174,7 @@ export default {
       // vue 2 doesn't detect when new props are added to an object,
       // so we need to enumerate all props for the watcher to work properly
       localCorrelationDetails: {
-        metric: 'cfs', // default value
+        metric: 'cfs', // TODO: this does not save if none of the other details fields are set
         belowRecommendedRangeComment: null,
         lowRunnableRangeComment: null,
         mediumRunnableRangeComment: null,
@@ -252,25 +252,40 @@ export default {
       return this.correlation?.correlationDetails;
     },
     processedGaugeCorrelation() {
-      const processedDetails = Object.assign({}, this.localCorrelationDetails);
-      // send nulls instead of empty strings
-      Object.keys(this.localCorrelationDetails).forEach(field => {
-        if (typeof(processedDetails[field]) === "string") {
-          processedDetails[field] = processedDetails[field].length ? processedDetails[field] : null;
-        }
-      });
+      let processedDetails;
+      if (this.flowBandsFieldsSet) {
+        processedDetails = Object.assign({}, this.localCorrelationDetails);
+        // send nulls instead of empty strings
+        Object.keys(this.localCorrelationDetails).forEach(field => {
+          if (typeof(processedDetails[field]) === "string") {
+            processedDetails[field] = processedDetails[field].length ? processedDetails[field] : null;
+          }
+        });
+      }
 
       return {
         reachID: this.reachId,
         gaugeSource: this.correlation?.gaugeInfo.gaugeSource,
         gaugeSourceIdentifier: this.correlation?.gaugeInfo.gaugeSourceIdentifier,
         forcePrimary: this.isPrimary ? 'force-primary' : null,
-        correlationDetails: processedDetails
+        correlationDetails: processedDetails || null
       }
     },
     reachId() {
       return this.$route.params.id;
     },
+    flowBandsFieldsSet() {
+      let fieldsSet = false;
+      Object.keys(this.localCorrelationDetails).forEach(k => {
+        if (k === 'metric') {
+          return;
+        }
+        if (this.localCorrelationDetails[k] && this.localCorrelationDetails[k].length > 0) {
+          fieldsSet = true;
+        }
+      });
+      return fieldsSet;
+    }
   },
   watch: {
     correlation: {
@@ -300,30 +315,34 @@ export default {
     },
     validateForm() {
       this.errors = [];
-      // validate presence of inflection points
-      this.ranges.forEach(range => {
-        // skip for range that does not have inflection point
-        if (!range.inflectionPointField) {
-          return;
-        }
 
-        const inflectionPoint = this.localCorrelationDetails[range.inflectionPointField];
-        if (!inflectionPoint) {
-          this.errors.push(`${range.inflectionPointFieldLabel} must be set`)
-        } else if (isNaN(inflectionPoint)) {
-          this.errors.push(`${range.inflectionPointFieldLabel} must be a number`)
-        }
-      });
+      // if none of the range fields are set, allow request through to allow setting isPrimary
+      if (this.flowBandsFieldsSet) {
+        // validate presence of inflection points
+        this.ranges.forEach(range => {
+          // skip for range that does not have inflection point
+          if (!range.inflectionPointField) {
+            return;
+          }
 
-      // confirm that the inflection points are in correct relation with each other
-      if (this.localCorrelationDetails.endHighRunnable <= this.localCorrelationDetails.beginHighRunnable) {
-        this.errors.push('Upper limit of high runnable must be greater than Upper limit of medium runnable');
-      }
-      if (this.localCorrelationDetails.beginHighRunnable <= this.localCorrelationDetails.beginMediumRunnable) {
-        this.errors.push('Upper limit of medium runnable must be greater than Upper limit of low runnable');
-      }
-      if (this.localCorrelationDetails.beginMediumRunnable <= this.localCorrelationDetails.beginLowRunnable) {
-        this.errors.push('Upper limit of low runnable must be greater than Lower limit of runnable');
+          const inflectionPoint = this.localCorrelationDetails[range.inflectionPointField];
+          if (!inflectionPoint) {
+            this.errors.push(`${range.inflectionPointFieldLabel} must be set`)
+          } else if (isNaN(inflectionPoint)) {
+            this.errors.push(`${range.inflectionPointFieldLabel} must be a number`)
+          }
+        });
+
+        // confirm that the inflection points are in correct relation with each other
+        if (this.localCorrelationDetails.endHighRunnable <= this.localCorrelationDetails.beginHighRunnable) {
+          this.errors.push('Upper limit of high runnable must be greater than Upper limit of medium runnable');
+        }
+        if (this.localCorrelationDetails.beginHighRunnable <= this.localCorrelationDetails.beginMediumRunnable) {
+          this.errors.push('Upper limit of medium runnable must be greater than Upper limit of low runnable');
+        }
+        if (this.localCorrelationDetails.beginMediumRunnable <= this.localCorrelationDetails.beginLowRunnable) {
+          this.errors.push('Upper limit of low runnable must be greater than Lower limit of runnable');
+        }
       }
 
       if (this.errors.length) {
@@ -364,8 +383,9 @@ export default {
             this.localCorrelationDetails[k] = this.localCorrelationDetails[k].toNumber();
           }
         });
-        this.isPrimary = this.correlation.isPrimary;
       }
+
+      this.isPrimary = this.correlation.isPrimary;
     }
   }
 }
