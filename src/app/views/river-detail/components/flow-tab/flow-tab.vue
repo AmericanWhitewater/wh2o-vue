@@ -79,11 +79,6 @@
                                 :current="gauge.status.latestReading.value"
 
                             />
-                            <flow-stats
-                                :readings="gauge.readings"
-                                :loading="gauge.loading"
-                                :metric="correlationMetrics[gauge.requestedMetric]"
-                            />
                           </div>
                         </div>
                         <div v-else>
@@ -219,7 +214,6 @@
 <script>
 import {
   FlowChart,
-  FlowStats,
   GaugeReadings,
   LevelLegend,
   ReleasesCalendar,
@@ -244,7 +238,6 @@ export default {
     Layout,
     UtilityBlock,
     LevelLegend,
-    FlowStats,
     ReleasesTable,
     ReleasesCalendar
   },
