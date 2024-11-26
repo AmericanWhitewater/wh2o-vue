@@ -1,4 +1,4 @@
 # Proxy for wh2o-vue
-rivers.americanwhitewater.local {
+rivers.americanwhitewater.localhost:443 {
 	reverse_proxy localhost:8080
 }
