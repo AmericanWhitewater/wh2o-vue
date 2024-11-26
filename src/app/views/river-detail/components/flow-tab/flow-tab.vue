@@ -140,7 +140,10 @@
                             </cv-dropdown-item>
                             <cv-dropdown-item value="week">
                               Week
-                            </cv-dropdown-item> <!-- TODO: request API respond to "month"? -->
+                            </cv-dropdown-item>
+                            <cv-dropdown-item value="month">
+                              Month
+                            </cv-dropdown-item>
                             <cv-dropdown-item value="year">
                               Year
                             </cv-dropdown-item>
