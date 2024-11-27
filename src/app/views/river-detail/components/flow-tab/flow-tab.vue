@@ -38,9 +38,8 @@
                     Difficulty at this level
                   </template>
                 </div>
-                <div v-if="gauge.status" :class="`gauge-reading background`">
-                  {{ gauge.status.latestReading.value }} {{ correlationMetrics[gauge.status.metric].unit }}
-                  @ {{ formatDate(new Date(gauge.status.latestReading.dateTime)) }}
+                <div v-if="displayLatestReading(gauge)" :class="`gauge-reading background`">
+                  {{ displayLatestReading(gauge) }}
                 </div>
                 <div v-if="gauge.correlationDetails" class="gauge-range">
                   {{ gauge.correlationDetails.beginLowRunnable }} - {{ gauge.correlationDetails.endHighRunnable }}
@@ -76,8 +75,6 @@
                                 :timeScale="gauge.historyTimeScale"
                                 class="mb-md"
                                 :metric="correlationMetrics[gauge.requestedMetric]"
-                                :current="gauge.status.latestReading.value"
-
                             />
                           </div>
                         </div>
@@ -277,9 +274,13 @@ export default {
         let correlations = [];
         if (reachDetail?.detail?.correlations) {
           correlations = reachDetail?.detail?.correlations.map(c => {
+            // if metric isn't set (and corrDetails isn't set),
+            // infer default metric based on what data is available, defaulting to CFS
+            const requestedMetric = this.getCorrelationMetric(c);
+
             return {
               ...c,
-              requestedMetric: c.correlationDetails?.metric,
+              requestedMetric: requestedMetric,
               historyTimeScale: 'week',
               readings: [],
               loading: true
@@ -309,6 +310,17 @@ export default {
         return ('too-hi')
       }
     },
+    displayLatestReading(gauge) {
+      if (gauge.status) {
+        return `${gauge.status.latestReading.value} ${this.correlationMetrics[gauge.status.metric].unit}` +
+          ` @ ${this.formatDate(new Date(gauge.status.latestReading.dateTime))}`;
+      } else if (gauge.readings && gauge.readings.length) {
+        const reading = gauge.readings[0];
+        return `${reading.value} ${this.correlationMetrics[gauge.requestedMetric].unit}` +
+          ` @ ${this.formatDate(new Date(reading.dateTime))}`;
+      }
+      return null;
+    },
     correlationMatchesMetric(gauge) {
      return gauge && gauge.correlationDetails &&
         gauge.correlationDetails.metric === gauge.requestedMetric;
@@ -316,7 +328,7 @@ export default {
     async getReadings(gauge) {
       gauge.loading = true;
       gauge.readings = await gaugeClient.gaugeReadingsHistory.query({
-        desiredMetric: gauge.requestedMetric || this.correlationMetrics.cfs.key,
+        desiredMetric: gauge.requestedMetric,
         timePeriod: gauge.historyTimeScale || '24h',
         gaugeSource: gauge.gaugeInfo.gaugeSource,
         gaugeSourceIdentifier: gauge.gaugeInfo.gaugeSourceIdentifier

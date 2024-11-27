@@ -71,20 +71,20 @@
               {{ correlationMetrics[gaugeCorrelation.correlationDetails.data.metric].unit }}
             </td>
           </tr>
-          <tr v-if="gaugeCorrelation.status">
+          <tr v-if="gaugeCorrelation && getLatestReading(gaugeCorrelation)">
             <td>
               Flow Rate
-              as of {{ displayGaugeCorrelationLatestReadingTime(gaugeCorrelation.status) }}
+              as of {{ displayLatestReadingTime }}
             </td>
             <td class="river-flow-rate">
-              {{ gaugeCorrelation.status.latestReading.value }} {{ correlationMetrics[gaugeCorrelation.status.metric].unit }}
+              {{ getLatestReading(gaugeCorrelation).value }} {{ correlationMetrics[getCorrelationMetric(gaugeCorrelation)].unit }}
               <cv-tag
                   v-if="adjustedReachDifficulty(gaugeCorrelation)"
                   kind="cool-gray"
                   :label="adjustedReachDifficulty(gaugeCorrelation)"
               />
               <cv-tag
-                  v-if="gaugeCorrelation.status.status"
+                  v-if="gaugeCorrelation.status && gaugeCorrelation.status.status"
                   :class="gaugeCorrelation.status.status"
                   :label="gaugeCorrelation.status.status.replace('-', ' ').replace('migration', '')"
               /> <!-- TODO: reference to "migration" above handles existing legacy migration-runnable data -->
@@ -160,6 +160,10 @@ export default {
         return this.reachDetail.detail.correlations.find(x => x.isPrimary);
       }
       return null;
+    },
+    displayLatestReadingTime() {
+      const readingTime = new Date(this.getLatestReading(this.gaugeCorrelation).dateTime);
+      return this.timeSince(readingTime);
     },
     /**
      * Event date or null
