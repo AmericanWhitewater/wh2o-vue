@@ -25,7 +25,7 @@ export default {
       type: String,
       required: false,
       default: 'week',
-      validator: val => ['24h', 'week', 'year'].indexOf(val) > -1
+      validator: val => ['24h', 'week', 'month', 'year'].indexOf(val) > -1
     },
     readings: {
       type: Array,
