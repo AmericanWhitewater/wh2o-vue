@@ -25,14 +25,14 @@
               <tr v-for="reach in reaches" :key="reach.id" :class="`${cssClassForGaugeCorrelation(reach.correlation)} reach`" @click="$router.push(`/river-detail/${reach.id}/main`)">
                 <td>
                   <strong>
-                    {{ [reach.river, renderLegacyDifficulty(reach.class)].join(" - ") }}
+                    {{ [reach.river, reach.class].join(" - ") }}
                   </strong>
                   <br>
                   {{ reach.section }}
                   <span v-if="reach.altname">({{ reach.altname }})</span>
                 </td>
                 <td class="reach-flow">
-                  <strong v-if="reach.correlation && reach.correlation.status">
+                  <strong v-if="reach.correlation">
                     {{ reach.correlation.latestReading.value }} {{ correlationMetrics[reach.correlation.metric].unit }}
                   </strong>
                 </td>
