@@ -163,11 +163,40 @@ export const reachApiHelper = {
     // these take just the correlation status object
     displayGaugeCorrelationLatestReadingTime(status) {
       if (status && status.latestReading) {
-        const now = new Date();
         const readingTime = new Date(status.latestReading.dateTime);
-        return humanReadable(now.getTime() - readingTime.getTime())
+        return this.timeSince(readingTime);
       }
       return '';
+    },
+    // returns the metric from correlationDetails if it
+    // is set; if not, infers by checking gaugeInfo's latest
+    // readings and defaulting to CFS if available
+    getCorrelationMetric(gauge) {
+      if (gauge.correlationDetails && gauge.correlationDetails.metric) {
+        return gauge.correlationDetails.metric;
+      } else {
+        if (gauge.gaugeInfo.latestFlowReading) {
+          return this.correlationMetrics.cfs.key;
+        } else if (gauge.gaugeInfo.latestStageReading) {
+          return this.correlationMetrics.levelFT.key;
+        }
+      }
+      return null;
+    },
+    // returns latest reading from status if corrDetails are set
+    // otherwise, returns from gaugeInfo, defaulting to cfs
+    // if available and otherwise returning stage or null
+    getLatestReading(gauge) {
+      if (gauge.status) {
+        return gauge.status.latestReading;
+      } else {
+        return gauge.gaugeInfo.latestFlowReading ||
+          gauge.gaugeInfo.latestStageReading || null;
+      }
+    },
+    timeSince(dateTime) {
+      const now = new Date();
+      return humanReadable(now.getTime() - dateTime.getTime());
     },
     cssClassForGaugeCorrelation(status) {
       if (status && status.status) {
