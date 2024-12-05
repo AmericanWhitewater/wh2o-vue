@@ -5,21 +5,6 @@
     </div>
     <div class="gauge-subheader">
       <div>
-        <cv-select
-          v-if="editing"
-          v-model="localCorrelationDetails.metric"
-          inline
-          label="Flow Metric"
-        >
-          <cv-select-option
-            v-for="metric in correlationMetrics"
-            :key="metric.key"
-            :value="metric.key"
-            >{{ metric.name }}
-          </cv-select-option>
-        </cv-select>
-        <label v-else for="metric">Flow Metric: {{ correlationDetails ? correlationMetrics[correlationDetails.metric].name : "none set" }}</label>
-
         <div>
           <label for="isPrimary">Primary Gauge</label>
           <input v-model="isPrimary" type="checkbox" :disabled="!editing" >
@@ -91,6 +76,23 @@
           Note: all range values are now required.
         </em>
       </p>
+      <div>
+        <cv-select
+          v-if="editing"
+          v-model="localCorrelationDetails.metric"
+          inline
+          label="Flow Metric"
+        >
+          <cv-select-option
+            v-for="metric in correlationMetrics"
+            :key="metric.key"
+            :value="metric.key"
+            >{{ metric.name }}
+          </cv-select-option>
+        </cv-select>
+        <label v-else for="metric">Flow Metric: {{ correlationDetails ? correlationMetrics[correlationDetails.metric].name : "none set" }}</label>
+      </div>
+
       <p v-if="!correlationDetails && !editing">
         No ranges defined.
       </p>
@@ -280,7 +282,7 @@ export default {
         if (k === 'metric') {
           return;
         }
-        if (this.localCorrelationDetails[k] && this.localCorrelationDetails[k].length > 0) {
+        if (this.localCorrelationDetails[k]) {
           fieldsSet = true;
         }
       });
