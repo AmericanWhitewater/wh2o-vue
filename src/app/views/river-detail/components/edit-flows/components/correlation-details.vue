@@ -477,7 +477,6 @@ export default {
       }
 
       .range-fields {
-        float: right;
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
@@ -496,7 +495,6 @@ export default {
           .bx--label {
             text-align: left;
             margin: 0 0.5rem 0 0;
-            white-space: nowrap;
           }
         }
 
