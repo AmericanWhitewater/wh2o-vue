@@ -97,6 +97,7 @@ module.exports = {
   devServer: {
     // if these options aren't set HMR breaks and debugging remotely fails (say to local to VM)
     disableHostCheck: true,
+    host: 'localhost',
     headers: { "Access-Control-Allow-Origin": "*" },
     /**
      * disables linting overlay which disrupts workflow.
