@@ -3,13 +3,7 @@
     <div class="mb-xs">
       <h3>{{ correlation.gaugeInfo.name }} ({{ correlation.gaugeInfo.gaugeSource }}-{{  correlation.gaugeInfo.gaugeSourceIdentifier }})</h3>
     </div>
-    <div class="gauge-subheader">
-      <div>
-        <div>
-          <label for="isPrimary">Primary Gauge</label>
-          <input v-model="isPrimary" type="checkbox" :disabled="!editing" >
-        </div>
-      </div>
+    <div class="gauge-subheader mb-spacing-md">
       <div>
         <template v-if="editing">
           <cv-button
@@ -54,7 +48,6 @@
       </div>
     </div>
     <div>
-      <h4>Boating flow ranges</h4>
       <div v-if="correlation.migrationErrorExplanation" class="migration-errors">
         <p>
           <em>
@@ -71,26 +64,39 @@
           <li v-for="(e, i) in errors" :key="`error-${i}`" v-text="e" />
         </ul>
       </div>
-      <p>
-        <em>
-          Note: all range values are now required.
-        </em>
-      </p>
-      <div>
-        <cv-select
-          v-if="editing"
-          v-model="localCorrelationDetails.metric"
-          inline
-          label="Flow Metric"
-        >
-          <cv-select-option
-            v-for="metric in correlationMetrics"
-            :key="metric.key"
-            :value="metric.key"
-            >{{ metric.name }}
-          </cv-select-option>
-        </cv-select>
-        <label v-else for="metric">Flow Metric: {{ correlationDetails ? correlationMetrics[correlationDetails.metric].name : "none set" }}</label>
+
+      <div class="correlation-fields">
+        <div>
+          <label for="isPrimary" class="bx--label">Primary Gauge</label>
+          <input v-model="isPrimary" type="checkbox" :disabled="!editing" >
+        </div>
+
+
+        <hr>
+
+        <h4>Boating flow ranges</h4>
+        <p class="mb-spacing-md">
+          <em>
+            Note: all range values are now required and metric can only be set when flow ranges are set.
+          </em>
+        </p>
+
+        <div class="mb-spacing-sm">
+          <cv-select
+            v-if="editing"
+            v-model="localCorrelationDetails.metric"
+            inline
+            label="Flow Metric"
+          >
+            <cv-select-option
+              v-for="metric in correlationMetrics"
+              :key="metric.key"
+              :value="metric.key"
+              >{{ metric.name }}
+            </cv-select-option>
+          </cv-select>
+          <label v-else for="metric" class="bx--label">Flow Metric: {{ correlationDetails ? correlationMetrics[correlationDetails.metric].name : "none set" }}</label>
+        </div>
       </div>
 
       <p v-if="!correlationDetails && !editing">
@@ -427,6 +433,13 @@ export default {
     ul {
       margin-left: 2rem;
       list-style-type: disc;
+    }
+  }
+
+  .correlation-fields {
+    // carbon sets this transparent, but since it's on a grey background we need them visible
+    .cv-select .bx--select-input__wrapper select, .bx--text-input {
+      background-color: #ffffff;
     }
   }
 
