@@ -97,6 +97,11 @@
                         <cv-skeleton-text headline/>
                       </template>
                       <template v-else>
+                        <div v-if="gauge.comment" class="gauge-comment bx--tile bx--type-caption">
+                          <label class="bx--label">Correlation comment</label>
+                          <br>
+                          <span v-text="gauge.comment" />
+                        </div>
                         <div v-if="gauge.gaugeInfo.externalSourceLinks" class="gauge-links">
                           <h6 class="mb-spacing-sm">View at source:</h6>
                           <cv-link v-if="gauge.gaugeInfo.externalSourceLinks.sourceLink" 
