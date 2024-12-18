@@ -67,10 +67,17 @@
 
       <div class="correlation-fields">
         <div>
-          <label for="isPrimary" class="bx--label">Primary Gauge</label>
+          <label for="isPrimary" class="bx--label">Primary gauge</label>
           <input v-model="isPrimary" type="checkbox" :disabled="!editing" >
         </div>
 
+        <div class="mb-spacing-sm">
+          <cv-text-input v-if="editing" v-model="comment" label="Correlation comment:" class="correlation-comment" />
+          <template v-else-if="comment">
+            <label for="comment" class="bx--label">Correlation comment:</label>
+            <p v-text="comment" />
+          </template>
+        </div>
 
         <hr>
 
@@ -195,6 +202,7 @@ export default {
         beginHighRunnable: null,
         endHighRunnable: null,
       },
+      comment: null,
       isPrimary: undefined,
       saving: false,
       errors: [],
@@ -276,6 +284,7 @@ export default {
         gaugeSource: this.correlation?.gaugeInfo.gaugeSource,
         gaugeSourceIdentifier: this.correlation?.gaugeInfo.gaugeSourceIdentifier,
         forcePrimary: this.isPrimary ? 'force-primary' : null,
+        comment: this.comment,
         correlationDetails: processedDetails || null
       }
     },
@@ -394,6 +403,7 @@ export default {
       }
 
       this.isPrimary = this.correlation.isPrimary;
+      this.comment = this.correlation.comment;
     }
   }
 }
