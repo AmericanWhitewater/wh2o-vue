@@ -72,9 +72,9 @@
         </div>
 
         <div class="mb-spacing-sm">
-          <cv-text-input v-if="editing" v-model="comment" label="Correlation comment:" class="correlation-comment" />
+          <cv-text-input v-if="editing" v-model="comment" label="Correlation details (optional):" :helperText="commentHelperText" class="correlation-comment" />
           <template v-else-if="comment">
-            <label for="comment" class="bx--label">Correlation comment:</label>
+            <label for="comment" class="bx--label">Correlation details:</label>
             <p v-text="comment" />
           </template>
         </div>
@@ -261,7 +261,8 @@ export default {
           adjustedDifficultyField: null,
           description: "The river in this range is below the recommended flow, indicating that even a majority of paddlers seeking a technical low-water paddling trip would not enjoy the river, would have difficulty navigating the river, and would be unlikely to return at this flow. Flows in this category are below the minimum acceptable flow for most people."
         },
-      ]
+      ],
+      commentHelperText: "This comment will appear above the graph on the flow tab. Comments might include location of the gauge relative to the reach, time delays, tributary inputs, or other factors that affect the accuracy of the gage for this reach."
   }),
   computed: {
     correlationDetails() {

@@ -48,6 +48,11 @@
                 <div v-if="adjustedReachDifficulty(gauge)" class="gauge-class">
                   <cv-tag kind="cool-gray" :label="adjustedReachDifficulty(gauge)" />
                 </div>
+                <div v-if="gauge.comment" class="gauge-comment bx--tile bx--type-caption">
+                  <label class="bx--label">Correlation details: </label>
+                  <br>
+                  <span v-text="gauge.comment" />
+                </div>
                 <div v-if="activeGaugeIndex === index" class="gauge-chart-container background">
                   <layout
                       name="layout-two-thirds"
@@ -97,11 +102,6 @@
                         <cv-skeleton-text headline/>
                       </template>
                       <template v-else>
-                        <div v-if="gauge.comment" class="gauge-comment bx--tile bx--type-caption">
-                          <label class="bx--label">Correlation comment</label>
-                          <br>
-                          <span v-text="gauge.comment" />
-                        </div>
                         <div v-if="gauge.gaugeInfo.externalSourceLinks" class="gauge-links">
                           <h6 class="mb-spacing-sm">View at source:</h6>
                           <cv-link v-if="gauge.gaugeInfo.externalSourceLinks.sourceLink" 
@@ -177,6 +177,7 @@
 
                       </template>
                     </template>
+                    
                   </layout>
                 </div>
               </div>
@@ -380,6 +381,7 @@ export default {
   .gauge-name,
   .gauge-meta,
   .gauge-chart-container,
+  .gauge-comment,
   .range-comment {
     grid-column: 1/4;
   }
