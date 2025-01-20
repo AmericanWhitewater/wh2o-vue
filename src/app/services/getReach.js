@@ -13,7 +13,6 @@ export async function getReach(id) {
                   class
                   description
                   edited
-                  gaugeinfo
                   length
                   maxgradient
                   plat
