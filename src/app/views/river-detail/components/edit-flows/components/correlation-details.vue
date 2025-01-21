@@ -3,13 +3,7 @@
     <div class="mb-xs">
       <h3>{{ correlation.gaugeInfo.name }} ({{ correlation.gaugeInfo.gaugeSource }}-{{  correlation.gaugeInfo.gaugeSourceIdentifier }})</h3>
     </div>
-    <div class="gauge-subheader">
-      <div>
-        <div>
-          <label for="isPrimary">Primary Gauge</label>
-          <input v-model="isPrimary" type="checkbox" :disabled="!editing" >
-        </div>
-      </div>
+    <div class="gauge-subheader mb-spacing-md">
       <div>
         <template v-if="editing">
           <cv-button
@@ -54,7 +48,6 @@
       </div>
     </div>
     <div>
-      <h4>Boating flow ranges</h4>
       <div v-if="correlation.migrationErrorExplanation" class="migration-errors">
         <p>
           <em>
@@ -71,26 +64,46 @@
           <li v-for="(e, i) in errors" :key="`error-${i}`" v-text="e" />
         </ul>
       </div>
-      <p>
-        <em>
-          Note: all range values are now required.
-        </em>
-      </p>
-      <div>
-        <cv-select
-          v-if="editing"
-          v-model="localCorrelationDetails.metric"
-          inline
-          label="Flow Metric"
-        >
-          <cv-select-option
-            v-for="metric in correlationMetrics"
-            :key="metric.key"
-            :value="metric.key"
-            >{{ metric.name }}
-          </cv-select-option>
-        </cv-select>
-        <label v-else for="metric">Flow Metric: {{ correlationDetails ? correlationMetrics[correlationDetails.metric].name : "none set" }}</label>
+
+      <div class="correlation-fields">
+        <div>
+          <label for="isPrimary" class="bx--label">Primary gauge</label>
+          <input v-model="isPrimary" type="checkbox" :disabled="!editing" >
+        </div>
+
+        <div class="mb-spacing-sm">
+          <cv-text-input v-if="editing" v-model="comment" label="Correlation details (optional):" :helperText="commentHelperText" class="correlation-comment" />
+          <template v-else-if="comment">
+            <label for="comment" class="bx--label">Correlation details:</label>
+            <p v-text="comment" />
+          </template>
+        </div>
+
+        <hr>
+
+        <h4>Boating flow ranges</h4>
+        <p class="mb-spacing-md">
+          <em>
+            Note: all range values are now required and metric can only be set when flow ranges are set.
+          </em>
+        </p>
+
+        <div class="mb-spacing-sm">
+          <cv-select
+            v-if="editing"
+            v-model="localCorrelationDetails.metric"
+            inline
+            label="Flow Metric"
+          >
+            <cv-select-option
+              v-for="metric in correlationMetrics"
+              :key="metric.key"
+              :value="metric.key"
+              >{{ metric.name }}
+            </cv-select-option>
+          </cv-select>
+          <label v-else for="metric" class="bx--label">Flow Metric: {{ correlationDetails ? correlationMetrics[correlationDetails.metric].name : "none set" }}</label>
+        </div>
       </div>
 
       <p v-if="!correlationDetails && !editing">
@@ -189,6 +202,7 @@ export default {
         beginHighRunnable: null,
         endHighRunnable: null,
       },
+      comment: null,
       isPrimary: undefined,
       saving: false,
       errors: [],
@@ -247,7 +261,8 @@ export default {
           adjustedDifficultyField: null,
           description: "The river in this range is below the recommended flow, indicating that even a majority of paddlers seeking a technical low-water paddling trip would not enjoy the river, would have difficulty navigating the river, and would be unlikely to return at this flow. Flows in this category are below the minimum acceptable flow for most people."
         },
-      ]
+      ],
+      commentHelperText: "This comment will appear above the graph on the flow tab. Comments might include location of the gauge relative to the reach, time delays, tributary inputs, or other factors that affect the accuracy of the gage for this reach."
   }),
   computed: {
     correlationDetails() {
@@ -270,6 +285,7 @@ export default {
         gaugeSource: this.correlation?.gaugeInfo.gaugeSource,
         gaugeSourceIdentifier: this.correlation?.gaugeInfo.gaugeSourceIdentifier,
         forcePrimary: this.isPrimary ? 'force-primary' : null,
+        comment: this.comment,
         correlationDetails: processedDetails || null
       }
     },
@@ -388,6 +404,7 @@ export default {
       }
 
       this.isPrimary = this.correlation.isPrimary;
+      this.comment = this.correlation.comment;
     }
   }
 }
@@ -427,6 +444,13 @@ export default {
     ul {
       margin-left: 2rem;
       list-style-type: disc;
+    }
+  }
+
+  .correlation-fields {
+    // carbon sets this transparent, but since it's on a grey background we need them visible
+    .cv-select .bx--select-input__wrapper select, .bx--text-input {
+      background-color: #ffffff;
     }
   }
 
