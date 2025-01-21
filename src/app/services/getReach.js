@@ -1,4 +1,5 @@
 import http from "@/app/http";
+import { marked } from 'marked';
 
 export async function getReach(id) {
   return http
@@ -11,9 +12,8 @@ export async function getReach(id) {
                   permitinfo
                   id
                   class
-                  description
+                  description_md
                   edited
-                  gaugeinfo
                   length
                   maxgradient
                   plat
@@ -59,5 +59,14 @@ export async function getReach(id) {
             
             `,
     })
-    .then((res) => res.data);
+    .then((res) => {
+      if (!res.data.errors) {
+        // overwrite `description` with a parsed version of the markdown database field
+        // this allows us to read and render the markdown field while leaving the edit/update
+        // code unchanged
+        // TODO: move fully to the _md fields, including with a new editor
+        res.data.data.reach.description = marked.parse(res.data.data.reach.description_md)
+      }
+      return res.data;
+    });
 }

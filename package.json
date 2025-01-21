@@ -55,6 +55,7 @@
     "jest-transform-graphql": "^2.1.0",
     "lodash": "^4.17.20",
     "maplibre-gl": "^1.15.3",
+    "marked": "^4.3.0",
     "moment": "^2.29.4",
     "nanoid": "^3.3.4",
     "rbush-knn": "^3.0.1",

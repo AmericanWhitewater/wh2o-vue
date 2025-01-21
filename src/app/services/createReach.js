@@ -11,7 +11,6 @@ export async function createReach(data) {
             class
             county
             description
-            gaugeinfo
             geom
             id
             length
