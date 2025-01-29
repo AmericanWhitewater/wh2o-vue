@@ -67,10 +67,7 @@
                       <hr v-if="editMode" >
                     </div>
                   </header>
-                  <main class="alert-detail">
-                    <p v-if="alert.detail" v-text="alert.detail" />
-                    <p v-else>This alert has no message</p>
-                  </main>
+                  <main class="alert-detail user-generated-content" v-html="alert.detail" />
                 </div>
               </cv-tile>
             </div>

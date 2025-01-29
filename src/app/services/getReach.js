@@ -65,7 +65,7 @@ export async function getReach(id) {
         // this allows us to read and render the markdown field while leaving the edit/update
         // code unchanged
         // TODO: move fully to the _md fields, including with a new editor
-        res.data.data.reach.description = marked.parse(res.data.data.reach.description_md)
+        res.data.data.reach.description = marked.parse(res.data.data.reach.description_md || '')
       }
       return res.data;
     });

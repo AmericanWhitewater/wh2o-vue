@@ -17,13 +17,13 @@
           <div
             v-if="!descriptionExpanded && sanitizedDescription.length > 2000"
             ref="description"
-            class="description-content"
+            class="description-content user-generated-content"
             v-html="sanitizedDescription.slice(0, 2000) + '...'"
           />
           <div
             v-else
             ref="description"
-            class="description-content"
+            class="description-content user-generated-content"
             v-html="sanitizedDescription"
           />
           <cv-button

@@ -71,10 +71,13 @@ export async function getReport(id) {
     })
     .then(res => {
       const post = res.data.data.posts.data[0];
+      // overwrite `detail` with a parsed version of the markdown database field
+      // this allows us to read and render the markdown field while leaving the edit/update
+      // code unchanged
+      // TODO: move fully to the _md fields, including with a new editor
       if (post) {
-        post.detail = marked.parse(post.detail_md);
+        post.detail = marked.parse(post.detail_md || '');
       }
-      
       return post;
     })
 }

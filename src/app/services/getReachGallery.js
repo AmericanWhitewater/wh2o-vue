@@ -69,7 +69,7 @@ export async function getReachGallery(id, pagination) {
         // code unchanged
         // TODO: move fully to the _md fields, including with a new editor
         res.data.data.reach.photos.data.forEach((photo) => {
-          photo.description = marked.parse(photo.description_md);
+          photo.description = marked.parse(photo.description_md || '');
         });
       }
 

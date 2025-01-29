@@ -1,4 +1,5 @@
 import http from "@/app/http"
+import { marked } from 'marked';
 
 export async function getReachAlerts(id) {
 
@@ -41,7 +42,7 @@ export async function getReachAlerts(id) {
         // parity with mobile app, we still want to read the _md field
         // TODO: remodel alerts as separate from other post types
         res.data.data.posts.data.forEach((report) => {
-          report.detail = report.detail_md;
+          report.detail = marked.parse(report.detail_md || '');
         });
       }
 

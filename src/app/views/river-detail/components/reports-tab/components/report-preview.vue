@@ -34,7 +34,7 @@
           </div>
         </div>
         <div class="bx--row">
-          <div class="bx--col-sm-4" v-html="reportPreview" />
+          <div class="bx--col-sm-4 user-generated-content" v-html="reportPreview" />
         </div>
       </div>
       <div class="bx--col-sm-4 bx--col-md-3 report-thumbnail">
