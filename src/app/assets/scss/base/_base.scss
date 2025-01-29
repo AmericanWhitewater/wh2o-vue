@@ -22,3 +22,16 @@ img {
     padding-top: 0;
   }
 }
+
+// restore typical default browser list styles to user generated content
+.user-generated-content {
+  ul, ol {
+    display: block;
+    list-style: disc outside none;
+    margin: 1em 0;
+    padding: 0 0 0 40px;
+  }
+  ol { 
+      list-style-type: decimal;
+  }
+}
