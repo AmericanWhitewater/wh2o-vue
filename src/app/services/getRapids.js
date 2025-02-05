@@ -44,7 +44,7 @@ export async function getRapids(id) {
       // TODO: move fully to the _md fields, including with a new editor
       if (!res.data.errors) {
         res.data.data.reach.pois.forEach((poi) => {
-          poi.description = marked.parse(poi.description_md);
+          poi.description = marked.parse(poi.description_md || '');
         });
 
       }

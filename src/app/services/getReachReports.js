@@ -70,7 +70,7 @@ export async function getReachReports(id, pagination) {
         // code unchanged
         // TODO: move fully to the _md fields, including with a new editor
         res.data.data.posts.data.forEach((report) => {
-          report.detail = marked.parse(report.detail_md);
+          report.detail = marked.parse(report.detail_md || '');
         });
       }
 
