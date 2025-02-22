@@ -17,6 +17,7 @@ import {
   AppNavigation,
   AppCookieBanner,
 } from "./global/components";
+import { mapState } from 'vuex';
 
 export default {
   name: "app",
@@ -32,6 +33,18 @@ export default {
     laravelDeploy() {
       return this.$store.state.Global.laravelDeploy;
     },
+    ...mapState({
+      user: state => state.User.data,
+      loggedIn: state => state.User.loggedIn
+    })
+  },
+  watch: {
+    loggedIn(newVal) {
+      // if loggedIn updates to true, but gql-derived user remains false, reload the page
+      if (newVal && !this.user) {
+        window.location.reload();
+      }
+    }
   },
   metaInfo: {
     title: "American Whitewater",
