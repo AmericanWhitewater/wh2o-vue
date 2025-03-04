@@ -1,4 +1,5 @@
 import http from "@/app/http"
+import { marked } from 'marked';
 
 export async function getReachReports(id, pagination) {
 
@@ -14,7 +15,7 @@ export async function getReachReports(id, pagination) {
               orderBy: {field: POST_DATE, order: DESC}
               ) {
                  data {
-                    detail
+                    detail_md
                     id
                     title
                     reading
@@ -62,5 +63,18 @@ export async function getReachReports(id, pagination) {
           }
     `
     })
-    .then(res => res.data)
+    .then(res => {
+      if (!res.data.errors) {
+        // overwrite `detail` with a parsed version of the markdown database field
+        // this allows us to read and render the markdown field while leaving the edit/update
+        // code unchanged
+        // TODO: move fully to the _md fields, including with a new editor
+        res.data.data.posts.data.forEach((report) => {
+          report.detail = marked.parse(report.detail_md || '');
+        });
+      }
+
+      return res.data;
+    })
+    
 }

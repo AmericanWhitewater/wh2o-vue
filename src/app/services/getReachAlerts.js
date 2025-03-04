@@ -1,4 +1,5 @@
 import http from "@/app/http"
+import { marked } from 'marked';
 
 export async function getReachAlerts(id) {
 
@@ -10,7 +11,7 @@ export async function getReachAlerts(id) {
               data {
                 id
                 title
-                detail
+                detail_md
                 post_date
                 revision
                 post_type
@@ -34,5 +35,17 @@ export async function getReachAlerts(id) {
             }
           }`
     })
-    .then(res => res.data)
+    .then(res => {
+      if (!res.data.errors) {
+        // NOTE: we are *not* processing the _md field here because alerts are, in practice, plain text,
+        // and converting the field back from markdown to HTML adds <p> tags, but in the interest of
+        // parity with mobile app, we still want to read the _md field
+        // TODO: remodel alerts as separate from other post types
+        res.data.data.posts.data.forEach((report) => {
+          report.detail = marked.parse(report.detail_md || '');
+        });
+      }
+
+      return res.data;
+    })
 }

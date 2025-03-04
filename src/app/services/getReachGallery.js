@@ -1,4 +1,5 @@
 import http from "@/app/http"
+import { marked } from 'marked';
 
 export async function getReachGallery(id, pagination) {
   return http
@@ -15,7 +16,7 @@ export async function getReachGallery(id, pagination) {
                 id
                 author
                 caption
-                description
+                description_md
                 photo_date
                 poi_name
                 poi_id
@@ -61,5 +62,17 @@ export async function getReachGallery(id, pagination) {
           }
         }`
     })
-    .then(res => res.data)
+    .then(res => {
+      if (!res.data.errors) {
+        // overwrite `description` with a parsed version of the markdown database field
+        // this allows us to read and render the markdown field while leaving the edit/update
+        // code unchanged
+        // TODO: move fully to the _md fields, including with a new editor
+        res.data.data.reach.photos.data.forEach((photo) => {
+          photo.description = marked.parse(photo.description_md || '');
+        });
+      }
+
+      return res.data;
+    })
 }
