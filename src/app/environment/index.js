@@ -19,6 +19,7 @@ const {
   VUE_APP_BASE_URL,
   VUE_APP_REACH_API_URL,
   VUE_APP_GAUGE_API_URL,
+  VUE_APP_PROFILE_API_URL,
   VUE_APP_CLIENT_ID,
   VUE_APP_CLIENT_SECRET,
   VUE_APP_API_BASE_URL,
@@ -39,6 +40,7 @@ const clientId = VUE_APP_CLIENT_ID
 const clientSecret = VUE_APP_CLIENT_SECRET
 const reachApiUrl = VUE_APP_REACH_API_URL
 const gaugeApiUrl = VUE_APP_GAUGE_API_URL
+const profileApiUrl = VUE_APP_PROFILE_API_URL
 const mapboxAccessToken = VUE_APP_MAPBOX_ACCESS_TOKEN
 const nwiTileServer = VUE_APP_NWI_TILE_SERVER
 const cmsBaseUrl = VUE_APP_WP_API_URL
@@ -61,6 +63,7 @@ export {
   baseUrl,
   reachApiUrl,
   gaugeApiUrl,
+  profileApiUrl,
   satelliteMapLayerId,
   topoMapLayerId,
   trpcApiUrl
