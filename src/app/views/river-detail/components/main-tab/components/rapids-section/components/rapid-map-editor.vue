@@ -33,6 +33,7 @@ import { point } from '@turf/helpers'
 import buffer from '@turf/buffer'
 import bbox from '@turf/bbox'
 import nearestPointOnLine from '@turf/nearest-point-on-line'
+import booleanPointOnLine from '@turf/boolean-point-on-line'
 
 export default {
   name: 'rapid-map-editor',
@@ -48,8 +49,6 @@ export default {
     }
   },
   data: () => ({
-    // TODO: we may want to default snapMode on or off depending
-    // on whether the point is *already* snapped to the line
     snapMode: true,
     map: null,
     pointOfInterest: null
@@ -78,6 +77,9 @@ export default {
     // returns true if geom prop is a defined point
     pointPassed () {
       return this.geom && this.geom.coordinates && this.geom.coordinates.length === 2
+    },
+    isPointOffLine () {
+      return this.pointPassed && this.reachGeom && !booleanPointOnLine(this.geom, this.reachGeom, { epsilon: 5e-8 });
     }
   },
   watch: {
@@ -87,6 +89,10 @@ export default {
       deep: true,
       immediate: true,
       handler (newVal) {
+        // if editing a point that is unsnapped, set snap mode to false
+        if (this.isPointOffLine) {
+          this.snapMode = false;
+        }
         // if the marker already exists, either remove it or update its location
         if (this.pointOfInterest) {
           if (!this.pointPassed) {
@@ -114,8 +120,10 @@ export default {
       }
     },
     snapMode: {
-      handler () {
-        this.snapPOIToReach();
+      handler (newVal) {
+        if (newVal) {
+          this.snapPOIToReach();
+        }
         this.conditionallyBindSnapHandler()
       }
     },
@@ -228,7 +236,7 @@ export default {
     }
   },
   mounted () {
-    this.mountMap()
+    this.mountMap();
 
     this.debouncedEmitPOILocation = debounce(this.emitPOILocation, 200, {
       leading: false,
