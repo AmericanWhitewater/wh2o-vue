@@ -249,7 +249,7 @@ export default {
       });
     },
     updateFormDataGeom(newCoords) {
-      this.formData.geom.coordinates = [newCoords.lng, newCoords.lat];
+      this.formData.geom.coordinates = [newCoords.lng.toFixed(8), newCoords.lat.toFixed(8)];
       this.updateDistance();
     },
     updateDistance() {
