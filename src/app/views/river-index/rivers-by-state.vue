@@ -75,6 +75,12 @@ export default {
       return this.$route.params.state;
     },
     state() {
+      // this GMI column seems more versatile long-term because it protects from duplicate
+      // abbreviations, but we need to support redirects from the old AW state pages
+      // which means being able to accommodate shortkey, so we're conditionally checking both
+      if (this.stateCode.length === 2) {
+        return this.states.find(x => x.shortkey === this.stateCode);
+      } 
       return this.states.find(x => x.gmi === this.stateCode);
     },
   },
@@ -85,8 +91,13 @@ export default {
     const stateResults = await getStateList();
     this.states = stateResults.data.data.states.data;
 
+    // if URL uses shortkey, rewrite it with gmi so users see the new version
+    if (this.stateCode.length === 2) {
+      this.$router.replace(`/river-index/state/${this.state.gmi}`);
+    }
+
     // map here just makes the template code more straightforward so we're not doing `reach.reach.name`
-    const reachSummary = await reachClient.stateView.query({ state: this.stateCode });
+    const reachSummary = await reachClient.stateView.query({ state: this.state.gmi });
     this.reaches = reachSummary.map(r => ({
         ...r.reach,
         correlation: r.correlation
@@ -105,6 +116,7 @@ export default {
       }
       return 0;
     });
+
     this.loading = false;
   }
 }
