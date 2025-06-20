@@ -129,5 +129,5 @@
   "gitHooks": {
     "pre-commit": "lint-staged && npm run test:unit"
   },
-  "homepage": "https://github.com/drewalth/wh2o-vue"
+  "homepage": "https://github.com/AmericanWhitewater/wh2o-vue"
 }
