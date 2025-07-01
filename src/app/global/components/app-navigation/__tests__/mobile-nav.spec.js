@@ -108,13 +108,4 @@ describe('mobile-nav.vue', () => {
     expect(mockRouter.push).toBeCalledWith('/river-index')
   })
 
-  it('should navigate to news page when news button clicked', async () => {
-    const wrapper = createWrapper(MobileNav, options)
-
-    await wrapper.find('.nav-trigger').trigger('click')
-    await wrapper.find('.news-button').trigger('click')
-
-    expect(mockRouter.push).toBeCalledTimes(1)
-    expect(mockRouter.push).toBeCalledWith('/news')
-  })
 })

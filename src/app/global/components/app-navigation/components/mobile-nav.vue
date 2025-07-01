@@ -64,23 +64,28 @@
             kind="ghost"
             class="mb-spacing-xs map-button"
             @click.exact="viewRoute('/river-index')"
-            v-text="'Map'"
+            v-text="'River Map'"
           />
-          <cv-button
-            class="mb-spacing-xs news-button"
-            kind="ghost"
-            @click.exact="viewRoute('/news')"
-            v-text="'News'"
-          />
+          <a href="/">
+            <cv-button
+              id="return-to-wp-btn"
+              kind="ghost"
+              size="small"
+              class="header--btn"
+            >
+              Return to Main AW Website
+            </cv-button>
+          </a>
         </div>
         <div class="main-nav-items mb-md">
-          <cv-button
-            v-if="user"
-            kind="primary"
-            class="mb-spacing-lg"
-            @click.exact="viewRoute('/user/account/1/bookmarks')"
-            v-text="'My Account'"
-          />
+          <a href="/user/profile">
+            <cv-button
+              v-if="user"
+              kind="primary"
+              class="mb-spacing-lg"
+              v-text="'My Account'"
+            />
+          </a>
           <cv-button
             v-if="!user"
             id="login-button"
@@ -170,15 +175,6 @@ header {
     top: $mobile-nav-height;
     width: 300px;
     z-index: 3;
-    a {
-      color: $text-01;
-      display: block;
-      margin-left: $spacing-md;
-      text-decoration: none;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
   }
   .main-nav-items {
     display: flex;
