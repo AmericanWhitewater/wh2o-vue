@@ -4,7 +4,7 @@ export async function getReachAccidents(id) {
 
   return wpClient.get('accidents', {
     params: {
-      reach: id
+      reachid: id
     }
   }).then(res => res.data);
 }

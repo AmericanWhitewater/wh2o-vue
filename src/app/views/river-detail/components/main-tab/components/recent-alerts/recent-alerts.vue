@@ -59,7 +59,7 @@ export default {
       this.$store.dispatch('RiverAlerts/getProperty', this.$route.params.id)
       this.$store.dispatch('RiverArticles/getProperty', this.$route.params.id)
       this.$store.dispatch('RiverProjects/getProperty', this.$route.params.id)
-      this.$store.dispatch('RiverLinker/getProperty', this.$route.params.id)
+      this.$store.dispatch('RiverDocuments/getProperty', this.$route.params.id)
     },
     yearsAgo(yrs) {
       const d = new Date();
