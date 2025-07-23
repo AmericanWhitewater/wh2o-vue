@@ -31,61 +31,6 @@
             </div>
             <header>
               <cv-button
-                id="affiliates-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/affiliates').catch(() => {})"
-                @keydown.enter="$router.push('/affiliates').catch(() => {})"
-              >
-                Affiliates
-              </cv-button>
-
-              <cv-button
-                id="gages-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/gages').catch(() => {})"
-                @keydown.enter="$router.push('/gages').catch(() => {})"
-              >
-                Gages
-              </cv-button>
-
-              <cv-button
-                id="map-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/accidents').catch(() => {})"
-                @keydown.enter="$router.push('/accidents').catch(() => {})"
-              >
-                Accidents
-              </cv-button>
-
-              <cv-button
-                id="projects-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/projects').catch(() => {})"
-                @keydown.enter="$router.push('/projects').catch(() => {})"
-              >
-                Projects
-              </cv-button>
-
-              <cv-button
-                id="documents-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/documents').catch(() => {})"
-                @keydown.enter="$router.push('/documents').catch(() => {})"
-              >
-                Documents
-              </cv-button>
-
-              <cv-button
                 id="map-btn"
                 kind="ghost"
                 size="small"
@@ -93,19 +38,9 @@
                 @click.exact="$router.push('/river-index').catch(() => {})"
                 @keydown.enter="$router.push('/river-index').catch(() => {})"
               >
-                Map
+                Rivers
               </cv-button>
 
-              <cv-button
-                id="news-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/news').catch(() => {})"
-                @keydown.enter="$router.push('/news').catch(() => {})"
-              >
-                News
-              </cv-button>
               <cv-button
                 v-if="!user"
                 id="login-btn"
