@@ -22,8 +22,7 @@ const {
   VUE_APP_API_BASE_URL,
   STATIC_ASSET_URL,
   NODE_ENV = '',
-  VUE_APP_LINK_BASE_URL,
-  VUE_APP_NWI_TILE_SERVER_TOKEN_ENDPOINT
+  VUE_APP_LINK_BASE_URL
 } = process.env
 
 const environment = NODE_ENV.toLowerCase()
@@ -40,7 +39,6 @@ const nwiTileServer = VUE_APP_NWI_TILE_SERVER
 const wpApiUrl = VUE_APP_WP_API_URL
 const laravelDeploy = Boolean(VUE_APP_LARAVEL_DEPLOY)
 const baseUrl = VUE_APP_LINK_BASE_URL
-const nwiTileServerTokenEndpoint = VUE_APP_NWI_TILE_SERVER_TOKEN_ENDPOINT;
 
 export {
   environment,
@@ -56,6 +54,5 @@ export {
   laravelDeploy,
   baseUrl,
   satelliteMapLayerId,
-  topoMapLayerId,
-  nwiTileServerTokenEndpoint
+  topoMapLayerId
 }
