@@ -11,16 +11,13 @@ rm -rf /var/www/americanwhitewater.org/public/prev-vue-release
 mv /var/www/americanwhitewater.org/public/static /var/www/americanwhitewater.org/public/prev-vue-release
 mv dist /var/www/americanwhitewater.org/public/static
 
-# now build in modern non-Laravel mode for S3 hosting
-export VUE_APP_LARAVEL_DEPLOY=
-npm run build
-# this is set in the Jenkins job when the script is run
-if [ "$JENKINS_ENV" == "beta"]; then
+# now build in s3 mode for the modern build that bypasses Laravel
+if [[ "$JENKINS_ENV" == "beta"]]; then
   bucket="nwi-standalone-assets-beta"
-  export VUE_APP_BASE_URL=https://static-beta.americanwhitewater.org/
+  npm run builds3beta
 else
   bucket="nwi-standalone-assets"
-  export VUE_APP_BASE_URL=https://static.americanwhitewater.org/
+  npm run builds3prod
 fi
 
-aws s3 cp dist s3://$bucket/ --recursive
+aws s3 mv dist s3://$bucket/ --recursive
