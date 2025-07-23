@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import http from '@/app/http'
+import { laravelClient } from '@/app/http'
 export default {
   name: 'user-forgot',
   data: () => ({
@@ -50,7 +50,7 @@ export default {
   methods: {
     async submitForm () {
       this.formPending = true
-      await http.post('/graphql', {
+      await laravelClient.post('/graphql', {
         query: `
           mutation {
             forgotPassword(input: {email: "${this.username}"}) {

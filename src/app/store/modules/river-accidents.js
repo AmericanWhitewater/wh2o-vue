@@ -17,9 +17,7 @@ export default {
       try {
         const result = await getReachAccidents(id)
 
-        if (!result.errors) {
-          context.commit('DATA_SUCCESS', result)
-        }
+        context.commit('DATA_SUCCESS', result)
 
       } catch (error) {
         context.commit('DATA_ERROR', error)

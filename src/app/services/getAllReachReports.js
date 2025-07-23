@@ -1,9 +1,9 @@
-import http from "@/app/http"
+import { laravelClient } from "@/app/http"
 
 // returns a list of report titles and whether or not the user can edit them
 export async function getAllReachReports(id) {
 
-  return http
+  return laravelClient
     .post('graphql', {
       query: `
         query {

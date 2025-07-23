@@ -66,12 +66,6 @@
             @click.exact="viewRoute('/river-index')"
             v-text="'Map'"
           />
-          <cv-button
-            class="mb-spacing-xs news-button"
-            kind="ghost"
-            @click.exact="viewRoute('/news')"
-            v-text="'News'"
-          />
         </div>
         <div class="main-nav-items mb-md">
           <cv-button

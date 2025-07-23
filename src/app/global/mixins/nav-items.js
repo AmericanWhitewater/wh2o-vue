@@ -10,10 +10,6 @@ const navItems = {
             path: '/about'
           },
           {
-            label: 'News',
-            path: '/news'
-          },
-          {
             label: 'Safety',
             path: '/safety'
           }

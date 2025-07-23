@@ -8,11 +8,15 @@ const mockStore = {
       data: null,
       loading: null
     },
-    RiverNews: {
+    RiverArticles: {
       data: null
     },
     RiverProjects: {
       data: null,
+      loading: null
+    },
+    RiverDocuments: {
+      data: [],
       loading: null
     }
   }
@@ -55,7 +59,7 @@ describe('RecentAlerts.vue', () => {
     )
 
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(2,
-      'RiverNews/getProperty', riverId
+      'RiverArticles/getProperty', riverId
     )
   })
 })

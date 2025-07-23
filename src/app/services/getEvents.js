@@ -1,4 +1,4 @@
-import http from "@/app/http"
+import { laravelClient } from "@/app/http"
 
 export async function getEvents(category, id = '') {
 
@@ -6,7 +6,7 @@ export async function getEvents(category, id = '') {
     throw new Error('invalid event category')
   }
 
-  return http.post('graphql', {
+  return laravelClient.post('graphql', {
     query: `
           query {
              events(event_categories: ${category.toUpperCase()}, first: 25, reach_id: ID!) {

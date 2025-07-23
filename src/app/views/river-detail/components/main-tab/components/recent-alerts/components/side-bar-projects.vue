@@ -13,38 +13,23 @@
     </template>
     <template v-else-if="projects && projects.length > 0">
       <div
-        v-for="(project, i) in projects.slice(0, 1)"
+        v-for="(project, i) in projects.slice(0, 3)"
         :key="i + 3 * 4"
         class="bx--row mb-spacing-xs sidebar-project"
       >
         <div>
           <div class="pt-spacing-sm pb-spacing-md">
-            <cv-link :href="projectUrl(project)">
+            <cv-link :href="project.link">
               <h5
                 class="mb-spacing-2xs"
-              >
-                {{ $titleCase(project.name) }}
-              </h5>
+                v-text="project.title"
+              />
             </cv-link>
 
             <div
-              v-if="project.description.length > 200"
               ref="abstract"
               class="abstract-content"
-            
-            >
-              <span v-html="project.description.slice(0, 200)"/>
-              <cv-link 
-                :href="projectUrl(project)"
-                class="read-more">
-                ... Read More
-              </cv-link>
-            </div>
-            <div
-              v-else
-              ref="abstract"
-              class="abstract-content"
-              v-html="project.description"
+              v-html="project.excerpt.rendered"
             />
           </div>
         </div>
@@ -73,10 +58,30 @@ export default {
       this.$emit('projects:change')
     }
   },
-  methods: {
-    projectUrl (project) {
-      return `/content/Project/view/id/${project.id}/`
-    }
-  }
 }
 </script>
+
+<style lang="scss">
+.sidebar-projects {
+  display: inline-block;
+  align-content: start;
+  vertical-align: top;
+  .header-row {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .sidebar-project {
+
+    &:hover h5 {
+      text-decoration: underline;
+    }
+  }
+
+  .no-projects-msg {
+
+    @include carbon--type-style("code-02");
+  }
+}
+</style>
