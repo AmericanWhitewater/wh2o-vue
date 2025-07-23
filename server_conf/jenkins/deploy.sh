@@ -13,13 +13,14 @@ mv dist /var/www/americanwhitewater.org/public/static
 
 # now build in modern non-Laravel mode for S3 hosting
 export VUE_APP_LARAVEL_DEPLOY=
-export VUE_APP_BASE_URL=/
 npm run build
 # this is set in the Jenkins job when the script is run
 if [ "$JENKINS_ENV" == "beta"]; then
   bucket="nwi-standalone-assets-beta"
+  export VUE_APP_BASE_URL=https://static-beta.americanwhitewater.org/
 else
   bucket="nwi-standalone-assets"
+  export VUE_APP_BASE_URL=https://static.americanwhitewater.org/
 fi
 
 aws s3 cp dist s3://$bucket/ --recursive
