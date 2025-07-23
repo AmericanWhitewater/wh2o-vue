@@ -16,6 +16,62 @@ import "tinymce/plugins/lists";
 // Theme
 import "tinymce/themes/silver/theme";
 
+// need to apply site styles to TinyMCE editor, but TinyMCE only accepts this
+// either as an inline string of CSS or as a URL to a file. Generating a file
+// by messing with Webpack config proved to be quite difficult given the existing
+// shadow DOM configuration, so I've just captured the site styling for relevant tags
+// in this string. If we move away from Carbon without rebuilding the site (unlikely)
+// this will need to be revisited
+const editorStyles = `
+* {
+  font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5; // from .description-content
+
+  // these styles are from the browser reset
+  padding: 0;
+  border: 0;
+  margin: 0;
+  vertical-align: baseline;
+}
+h1 {
+  font-size: 36px;
+  font-weight: 300;
+  line-height: 46px;
+}
+h2 {
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 36px;
+}
+h3 {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 26px;
+}
+h4 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+}
+h5 {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+a {
+  text-decoration: none;
+  color: #537653; // also specific to .description-content in broader site
+}
+
+p {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  margin-bottom: 1.25rem; // from site styling for .description-content, not from carbon
+}
+`;
+
 export default {
   name: "content-editor",
   props: {
@@ -44,8 +100,7 @@ export default {
       type: String,
       default:
         "undo redo | formatselect | bold italic link | \
-           alignleft aligncenter alignright | \
-           bullist numlist outdent indent | removeformat",
+           bullist numlist | removeformat",
     },
   },
   data() {
@@ -55,7 +110,8 @@ export default {
         plugins: ["paste", "link", "lists"],
         menubar: false,
         height: 400,
-        convert_urls: false
+        convert_urls: false,
+        content_style: editorStyles
       },
     };
   },

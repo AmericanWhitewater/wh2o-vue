@@ -5,9 +5,6 @@ import { appLocalStorage } from "@/app/global/services";
 import {laravelDeploy} from "@/app/environment"
 import staticRoutes from '@/app/views/static-routes/static-routes'
 
-import gageDetailRoutes from './gage-detail.routes'
-import gagesRoutes from './gages.routes'
-import affiliatesRoutes from './affiliates.routes'
 import riverIndexRoutes from "./river-index.routes"
 import riverDetailRoutes from "./river-detail.routes"
 import userRoutes from "./user.routes"
@@ -15,9 +12,6 @@ import userRoutes from "./user.routes"
 Vue.use(VueRouter);
 
 const routes = [
-  ...gageDetailRoutes,
-  ...affiliatesRoutes,
-  ...gagesRoutes,
   ...riverDetailRoutes,
   ...riverIndexRoutes,
   ...staticRoutes,

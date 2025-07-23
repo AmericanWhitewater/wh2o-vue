@@ -31,28 +31,6 @@
             </div>
             <header>
               <cv-button
-                id="affiliates-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/affiliates').catch(() => {})"
-                @keydown.enter="$router.push('/affiliates').catch(() => {})"
-              >
-                Affiliates
-              </cv-button>
-
-              <cv-button
-                id="gages-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/gages').catch(() => {})"
-                @keydown.enter="$router.push('/gages').catch(() => {})"
-              >
-                Gages
-              </cv-button>
-
-              <cv-button
                 id="map-btn"
                 kind="ghost"
                 size="small"
@@ -60,7 +38,7 @@
                 @click.exact="$router.push('/river-index').catch(() => {})"
                 @keydown.enter="$router.push('/river-index').catch(() => {})"
               >
-                Map
+                Rivers
               </cv-button>
 
               <cv-button

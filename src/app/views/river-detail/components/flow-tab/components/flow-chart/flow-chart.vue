@@ -5,79 +5,67 @@
 </template>
 <script>
 import moment from 'moment'
+import Decimal from 'decimal.js';
 import { buildChart } from './build-chart'
 import { checkWindow } from '@/app/global/mixins'
-import { classToColor, formatReadingWithFormat, getEmptyMetric, rangeToClass } from '@/app/global/lib/gages'
+
 export default {
   name: 'flow-chart',
   mixins: [checkWindow],
   props: {
-    gages: {
-      type: Array,
+    gaugeCorrelation: {
+      type: Object,
       required: true
-    },
-    ranges: {
-      type: Array,
-      required: false,
-      default: ()=>[]
     },
     title: {
       type: String,
       required: false
     },
-    timeScales: {
+    timeScale: {
       type: String,
       required: false,
       default: 'week',
-      validator: val => ['day', 'week', 'month', 'year'].indexOf(val) > -1
+      validator: val => ['24h', 'week', 'month', 'year'].indexOf(val) > -1
     },
     readings: {
       type: Array,
       required: true
     },
-    metrics:{
-      type: Array,
-      required: true,
-      default: ()=>[],
+    metric: {
+      type: Object,
+      required: true
     }
-
   },
   data: () => ({
     currentTimeScale: null
   }),
   computed: {
-    chartMetric(){
-      return this.metrics.find(m => m.id === this.readings[0].metric.toString()) ?? getEmptyMetric()
+    reversedReadings () {
+      return this.readings.slice().reverse();
     },
     chartLabels () {
-      return this.readings.map(reading => moment(reading.updated, 'X').format('MM/DD hh:mm a'))
+      return this.reversedReadings.map(reading => moment(reading.dateTime).format('MM/DD hh:mm a'))
     },
-    activeGage () {
-      return this.gages.find(gage => Number(gage.gauge.id) === this.readings[0].gauge_id) ?? this.gages[0];
-    },
-    activeMetric () {
-      return this.metrics.find(m => Number(m.id) === this.readings[0].metric) ?? this.metrics[0];
-    },
-    formattedReadings () {
-      return this.readings.map(reading => formatReadingWithFormat(parseFloat(reading.reading),this.chartMetric.format,false))
-    },
-
     chartAspectRatio () {
       if (this.windowWidth >= this.$options.breakpoints.md) {
         return 16/9 // 16:9
       } else {
         return 4/3 // 4:3
       }
-    }
-  },
-  methods: {
-    getYMax () {
-      return Math.max(...this.formattedReadings) * 1.25
     },
-
-    getTimeScale (timeScale) {
+    correlationDetails() {
+      return this.gaugeCorrelation?.correlationDetails;
+    },
+    gaugeCorrelationHasRange() {
+      const details = this.correlationDetails;
+      return details && details.beginLowRunnable && details.endHighRunnable;
+    },
+    yMax() {
+      return Decimal.max(...this.readings.map(r => r.value)) * 1.25;
+    },
+    timeScaleBounds() {
       let start
-      switch (timeScale) {
+      switch (this.timeScale) {
         case 'year':
           start = moment().subtract(1, 'years').unix()
           break
@@ -98,7 +86,9 @@ export default {
         timeStart: Math.floor(start),
         timeEnd: Math.floor(moment().unix())
       }
-    },
+    }
+  },
+  methods: {
     renderChart () {
       const ctx = this.$refs.chartCanvas.getContext('2d')
       const otherthis = this; //refactor later
@@ -149,7 +139,7 @@ export default {
           callbacks: {
                 label: function(tooltipItem, data) {
                     let label = data.datasets[tooltipItem.datasetIndex].label || '';
-                    return( `${label} ${ formatReadingWithFormat(parseFloat(tooltipItem.value),otherthis.chartMetric.format)} ${otherthis.chartMetric.unit}`);
+                    return( `${label} ${tooltipItem.value} ${otherthis.metric.unit}`);
                 }
             }
 
@@ -179,20 +169,20 @@ export default {
               labelOffset: 20,
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
               fontSize: 13,
-              unit: this.timeScales,
+              unit: this.timeScale,
               displayFormats: {
                 day: 'h:mm A',
                 week: 'MM/DD h:mm A',
                 month: 'MM/DD',
                 year: 'MM/DD/YYYY'
               },
-              min: this.getTimeScale(this.readings).timeStart
+              min: this.timeScaleBounds.timeStart
             }
           }],
           yAxes: [{
             scaleLabel: {
               display: true,
-              labelString: this.chartMetric.name,
+              labelString: this.metric.name,
               bounds: 'data',
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
               fontSize: 14
@@ -203,44 +193,81 @@ export default {
             },
             ticks: {
               beginAtZero: true,
-              suggestedMax: this.getYMax(),
+              suggestedMax: this.yMax,
               fontFamily: "'IBM Plex Sans' , 'sans-serif'",
               fontSize: 14,
-              callback: (value)=>formatReadingWithFormat(parseFloat(value),otherthis.chartMetric.format)
+              callback: (value)=>`${value} ${otherthis.metric.unit}`
             },
             beforeBuildTicks: () => {
               chartOptions.scales.yAxes[0].ticks.min = 100
             }
           }]
         }
-
       }
 
-      if (this.formattedReadings && this.activeGage && this.activeMetric) {
-          const graphRanges = this.ranges.filter(x=>this.activeGage.gauge.id == x.gauge_id && x.gauge_metric == this.activeMetric.id);
-
-        if(graphRanges.length)
-        {
-          let graphBackgrounds = [
-              ...graphRanges.map(x=>({class:rangeToClass(x.range_min, x.range_max), min:x.min,max:x.max}))]
-           graphBackgrounds = [
-              ...graphBackgrounds,
-              {
-                min:Number.MIN_SAFE_INTEGER,
-                max:graphBackgrounds.map(x=>x.min).sort((a,b)=>a-b)[0],
-                class:'below-recommended'
-              },
-              {
-                max:Number.MAX_SAFE_INTEGER,
-                min:graphBackgrounds.map(x=>x.max).sort((a,b)=>b-a)[0],
-                class:'above-recommended'
-              }
-            ].map(x=>({...x,color:classToColor(x.class)}));
-          chartOptions.graphRange = graphBackgrounds;
+      if (this.gaugeCorrelationHasRange && this.metric.key === this.correlationDetails.metric) {
+        let graphBackgrounds = [
+          {
+            min: Number.MIN_SAFE_INTEGER,
+            max: this.correlationDetails.beginLowRunnable,
+            class: 'below-recommended'
+          }
+        ];
+        // per our migration plan some reaches will only have beginLowRunnable and endHighRunnable defined, not all five
+        // handle this situation by establishing a "runnable" state rather than low/med/high
+        if (!this.correlationDetails.beginMediumRunnable && !this.correlationDetails.beginHighRunnable) {
+          graphBackgrounds.push({
+            min: this.correlationDetails.beginLowRunnable,
+            max: this.correlationDetails.endHighRunnable,
+            class: 'medium-runnable'
+          });
+        } else {
+          graphBackgrounds.push({
+              min: this.correlationDetails.beginLowRunnable,
+              max: this.correlationDetails.beginMediumRunnable,
+              class: 'low-runnable'
+            },
+            {
+              min: this.correlationDetails.beginMediumRunnable,
+              max: this.correlationDetails.beginHighRunnable,
+              class: 'medium-runnable'
+            },
+            {
+              min: this.correlationDetails.beginHighRunnable,
+              max: this.correlationDetails.endHighRunnable,
+              class: 'high-runnable'
+            }
+          );
         }
+        graphBackgrounds.push({
+            min: this.correlationDetails.endHighRunnable,
+            max: Number.MAX_SAFE_INTEGER,
+            class: 'above-recommended'
+          }
+        );
 
-        buildChart(ctx, this.chartLabels, this.formattedReadings, chartOptions)
+        chartOptions.graphRange = graphBackgrounds.map(x => ({...x, color: this.classToColor(x.class) }));
       }
+
+      buildChart(ctx, this.chartLabels, this.reversedReadings.map(r => r.value), chartOptions)
+
+    },
+    // this duplicates logic that is elsewhere defined by scss in
+    // $flow-map in _variables.scss
+    classToColor(cssClass) {
+      switch (cssClass) {
+        case "below-recommended":
+          return "#FF8785";
+        case "low-runnable":
+          return "#9cf1bb";
+        case "medium-runnable":
+          return "#59E78D";
+        case "high-runnable":
+          return "#1fd561";
+        case "above-recommended":
+          return "#68DFE9";
+      }
+      return "";
     }
   },
   mounted () {

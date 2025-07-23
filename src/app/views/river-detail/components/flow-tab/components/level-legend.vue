@@ -1,265 +1,126 @@
-<!--
-takes a range[] (see getEmptyRange for model)
--->
 <template>
-  <div>
-    <div class="level-legend">
-      <h6 class="mb-spacing-sm">Level Legend</h6>
-      <ul v-if="ranges" class="level-legend-grid">
-
-        <li v-for="(item ) in chart"
-
-            :key="`${ item.level }${ item.range && item.range.min }${ item.range && item.range.max }${ item.color}`"
-            class="label bx--type-caption"
+  <div class="level-legend">
+    <h6 class="mb-spacing-sm">Level Legend</h6>
+    <ul class="level-legend-grid">
+      <li v-for="(entry,i) in legendEntries" :key="`legend-${i}`" class="label bx--type-caption">
+        <svg
+            :class="entry.colorClass"
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
         >
-          <range-box :color-class="item.color"/>
-          <span v-if="item.isGt">&gt;</span>
-          <span v-if="item.isLt">&lt;</span>
-          <em>{{ formatValue(item.level) }}</em>
-          {{ item.legend }}
-          <range-desc v-if="item.showRange" :range="item.range"/>
-        </li>
-
-
-      </ul>
-      <span v-else>
-        No runnable range defined on this gauge. Consider leaving a comment.
-      </span>
-    </div>
-
+          <g fill="">
+            <rect width="16" height="16" rx="1" ry="1" fill=""/>
+          </g>
+        </svg>
+        <em>
+          {{ 
+            `${!entry.to ? "&gt;" : ''}${entry.from ? entry.from : "&lt;" }` +
+            `${(entry.to && entry.from) ? '-' : '' }` + (entry.to || '') +
+            correlationMetrics[correlationDetails.metric].unit
+          }}
+        </em>
+        {{ entry.label }}
+        <div class="range-description">
+          <span v-if="entry.adjustedComment" class="mr-spacing-sm" v-text="entry.adjustedComment" />
+          <cv-tag
+            v-if="entry.adjustedDifficulty"
+            kind="cool-gray"
+            :label="apiGradeEnum[entry.adjustedDifficulty]"
+          />
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 <script>
-import RangeBox from './range-box'
-import RangeDesc from './range-desc'
-import { formatReadingWithFormat, rangeToClass } from '@/app/global/lib/gages'
-import { difference, uniq } from 'lodash/array'
-import { isEqual } from 'lodash'
+import { reachApiHelper } from '@/app/global/mixins';
 
 export default {
   name: 'level-legend',
-  components: {
-    RangeBox,
-    RangeDesc
-  },
+  mixins: [reachApiHelper],
   props: {
-    ranges: {
-      type: Array,
-      required: false,
-      default: () => []
-    },
-    metric: {
-      type: Object,
-      required: true
-    },
-    gauge: {
+    gaugeCorrelation: {
       type: Object,
       required: true
     }
   },
   computed: {
-
-    chart: function () {
-      const rv = []
-      //top down
-      if (!this.missingVals.hasMax) {
-        rv.push({
-          legend: this.findLegendItem('above-recommended').label,
-          color: 'above-recommended',
-          range: null,
-          level: this.missingVals.maxAmount,
-          showRange: false,
-          exclude: false,
-          isGt: true,
-          isLt: false
-        })
-      }
-
-      if (this.filteredRanges.filter(x => x.range_min.match(/R/)).length === 1) {
-        rv.push({
-          legend: this.findLegendItem('runnable').label,
-          color: 'runnable',
-          range: this.filteredRanges.filter(x => x.range_min.match(/R/))[0],
-          level: null,
-          showRange: true,
-          exclude: false,
-          isGt: false,
-          isLt: false
-        })
-      }
-        for (let i = 0; i < this.enumeratedRanges.length; i++) {
-          const item = this.enumeratedRanges[i]
-          const rec = {
-            legend: this.findLegendItem(item.class).label,
-            color: item.class,
-            range: item.range,
-            level: item.val,
-            showRange: false,
-            exclude: false,
-            isGt: i == 0 || (item.range && item.val == item.range.min),
-            isLt: i == this.enumeratedRanges.length - 1 || (item.range && item.val == item.range.max),
-
-          }
-
-          if (rec.isGt && rec.isLt) {
-            rec.exclude = true
-          } else {
-
-            // don't show range comments if the last value showed them.
-            if (item.range && (!this.enumeratedRanges[i - 1] ||
-                !isEqual(item?.range, this.enumeratedRanges[i - 1]?.range))) {
-              rec.showRange = !!item.range
-
-            }
-            //this.enumeratedRanges[i + 1] && console.log(this.formatValue(item.val), this.formatValue(this.enumeratedRanges[i + 1].val))
-            // don't show line if range top of last was the same as range bottom of this
-            if (item.val && (!this.enumeratedRanges[i + 1] || this.formatValue(item.val) === this.formatValue(this.enumeratedRanges[i + 1].val))) {
-
-              rec.exclude = true
-
-            }
-
-          }
-
-          rv.push(rec)
-        }
-
-
-      if (!this.missingVals.hasMin) {
-        rv.push({
-          legend: this.findLegendItem('below-recommended').label,
-          color: 'below-recommended',
-          range: null,
-          level: this.missingVals.minAmount,
-          showRange: false,
-          exclude: false,
-          isGt: false,
-          isLt: true
-        })
-      }
-      return rv.filter(x => !x.exclude)
-
+    correlationDetails() {
+      return this.gaugeCorrelation?.correlationDetails;
     },
-
-    /**
-     * Returns a min/max report to buffer the legend we produce.
-     * @return {{minAmount: number, hasMin: boolean, maxAmount: number, hasMax: boolean}}
-     */
-    missingVals: function () {
-      const rv = {
-        hasMin: true,
-        minAmount: 0,
-        hasMax: true,
-        maxAmount: 0
+    legendEntries() {
+      if (!this.correlationDetails) {
+        return [];
       }
-      if (this.enumeratedRanges?.length) {
-        const legend = this.legendItems.map(x => x.color_class)
-        const rangesRepresented = uniq([...this.enumeratedRanges.map(x => x.class)])
-        const rangesMissing = difference(legend, rangesRepresented)
-        if (rangesMissing.indexOf('below-recommended') >= 0) {
-          rv.hasMin = false
-          rv.minAmount = this.enumeratedRanges[this.enumeratedRanges.length - 1].val
-        }
-        if (rangesMissing.indexOf('above-recommended') >= 0) {
-          rv.hasMax = false
-          rv.maxAmount = this.enumeratedRanges[0].val
-        }
+      let entries = [{
+        from: this.correlationDetails.endHighRunnable?.toNumber(),
+        to: undefined,
+        colorClass: 'above-recommended',
+        label: "Above Recommended",
+        adjustedComment: this.correlationDetails.aboveRecommendedRangeComment,
+        adjustedDifficulty: null
+      }];
 
+      if (!this.correlationDetails.beginMediumRunnable && !this.correlationDetails.beginHighRunnable) {
+        // per our migration plan some reaches will only have beginLowRunnable and endHighRunnable defined, not all five
+        // handle this situation by establishing a "runnable" state rather than low/med/high
+        entries.push({
+          from: this.correlationDetails.beginLowRunnable?.toNumber(),
+          to: this.correlationDetails.endHighRunnable?.toNumber(),
+          colorClass: 'medium-runnable',
+          label: "Runnable",
+          adjustedComment: null,
+          adjustedDifficulty: null
+        });
+      } else {
+        entries.push({
+          from: this.correlationDetails.beginHighRunnable?.toNumber(),
+          to: this.correlationDetails.endHighRunnable?.toNumber(),
+          colorClass: 'high-runnable',
+          label: "High Runnable",
+          adjustedComment: this.correlationDetails.highRunnableRangeComment,
+          adjustedDifficulty: this.correlationDetails.highRunnableAdjustedDifficulty,
+        }, {
+          from: this.correlationDetails.beginMediumRunnable?.toNumber(),
+          to: this.correlationDetails.beginHighRunnable?.toNumber(),
+          colorClass: 'medium-runnable',
+          label: "Medium Runnable",
+          adjustedComment: this.correlationDetails.mediumRunnableRangeComment,
+          adjustedDifficulty: null
+        }, {
+          from: this.correlationDetails.beginLowRunnable?.toNumber(),
+          to: this.correlationDetails.beginMediumRunnable?.toNumber(),
+          colorClass: 'low-runnable',
+          label: "Low Runnable",
+          adjustedComment: this.correlationDetails.lowRunnableRangeComment,
+          adjustedDifficulty: this.correlationDetails.lowRunnableAdjustedDifficulty,
+        });
       }
-      return (rv)
-
+      entries.push({
+        from: undefined,
+        to: this.correlationDetails.beginLowRunnable?.toNumber(),
+        colorClass: 'below-recommended',
+        label: "Below Recommended",
+        adjustedComment: this.correlationDetails.belowRecommendedRangeComment,
+      });
+      return entries;
     },
-    filteredRanges: function () {
-      return (this.ranges.filter(x => x.gauge_metric == this.metric.id && x.gauge_id == this.gauge.id))
-    },
-    enumeratedRanges: function () {
-
-      const mins = x => ({
-        val: x.min,
-        class: rangeToClass(x.range_min, x.range_max),
-        range: x
-      })
-
-      const maxs = x => ({
-        val: x.max,
-        class: rangeToClass(x.range_min, x.range_max),
-        range: x
-      })
-      return [...this.filteredRanges.map(mins), ...this.filteredRanges.map(maxs)].sort((x, y) => y.val - x.val)
-    },
-    legendItems: () => [
-      {
-        label: 'Above Recommended',
-        color_class: 'above-recommended',
-      },
-      {
-        label: 'High Runnable',
-        color_class: 'high-runnable',
-      },
-      {
-        label: 'Runnable',
-        color_class: 'runnable',
-      },
-      {
-        label: 'Low Runnable',
-        color_class: 'low-runnable',
-      },
-      {
-        label: 'Below Recommended',
-        color_class: 'below-recommended',
-      },
-    ],
-
   },
-  methods: {
-    formatValue (n) {
-
-      if (isNaN(parseFloat(n))) {
-        return ``
-
-      }
-      return `${formatReadingWithFormat(n, this.metric?.format ?? '%2.2')} ${this.metric?.unit ?? ''} `
-
-    },
-    findLegendItem: function (i) {
-      return this.legendItems.find(x => x.color_class === i) ?? {
-        color_class: '',
-        label: ''
-      }
-
-    }
-
-  }
-
 }
 </script>
 <style lang="scss" scoped>
 
 ul {
-
   li {
     margin-bottom: $spacing-xs;
 
-    .above-recommended {
-      fill: $flow-high;
+    @each $class, $color in $flow-map {
+      .#{$class} {
+        fill: $color;
+      }
     }
-
-    .high-runnable {
-      fill: $high-runnable;
-    }
-
-    .runnable {
-      fill: $med-runnable;
-    }
-
-    .low-runnable {
-      fill: $low-runnable;
-    }
-
-    .below-recommended {
-      fill: $flow-low;
-    }
-
     svg {
       margin-right: 8px;
       vertical-align: top;

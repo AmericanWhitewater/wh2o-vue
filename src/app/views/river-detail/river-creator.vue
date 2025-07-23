@@ -155,7 +155,6 @@ export default {
       class: "none",
       county: null,
       description: null,
-      gaugeinfo: null,
       geom: null,
       length: null,
       permitinfo: null,

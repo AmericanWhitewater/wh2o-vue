@@ -249,7 +249,7 @@ export default {
       });
     },
     updateFormDataGeom(newCoords) {
-      this.formData.geom.coordinates = [newCoords.lng, newCoords.lat];
+      this.formData.geom.coordinates = [newCoords.lng.toFixed(8), newCoords.lat.toFixed(8)];
       this.updateDistance();
     },
     updateDistance() {
@@ -269,7 +269,14 @@ export default {
     },
     setInitialFormData(rapid) {
       if (rapid) {
-        this.formData = Object.assign(this.formData, rapid);
+        // doing this with Object.assign included properties not dealt with by this component
+        // causing odd behavior
+        this.formData.name = rapid.name;
+        this.formData.difficulty = rapid.difficulty;
+        this.formData.distance = rapid.distance;
+        this.formData.description = rapid.description;
+        this.formData.character = rapid.character;
+
         if (rapid.rloc) {
           const coords = rapid.rloc
             .split(" ")

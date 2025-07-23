@@ -14,3 +14,4 @@ export { default as poiClasses } from "./poi-classes";
 export * from "./global-mixins";
 export * from "./image-helpers";
 export * from "./gauge-helpers";
+export * from "./reach-api-helper";

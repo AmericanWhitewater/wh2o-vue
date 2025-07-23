@@ -39,7 +39,7 @@
             </tbody>
           </table>
         </div>
-        <div class="report-detail" v-html="report.detail" />
+        <div class="report-detail user-generated-content" v-html="report.detail" />
       </div>
       <div class="bx--col-sm-12 bx--col-md">
         <report-image-gallery :images="reportPhotos" />

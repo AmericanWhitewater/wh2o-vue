@@ -18,3 +18,4 @@ App will be available at `http://localhost:8080`
 1. `npm run build`
 
 Static files will be available in `dist/`
+

@@ -85,12 +85,12 @@
                 "
               >
                 <div
-                  class="description"
+                  class="description user-generated-content"
                   v-html="sanitizedDescription.slice(0, characterLimit) + '...'"
                 />
               </template>
               <template v-else>
-                <div class="description" v-html="sanitizedDescription" />
+                <div class="description user-generated-content" v-html="sanitizedDescription" />
               </template>
             </template>
             <template v-else>
