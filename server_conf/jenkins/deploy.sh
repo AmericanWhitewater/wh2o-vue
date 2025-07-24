@@ -12,7 +12,7 @@ mv /var/www/americanwhitewater.org/public/static /var/www/americanwhitewater.org
 mv dist /var/www/americanwhitewater.org/public/static
 
 # now build in s3 mode for the modern build that bypasses Laravel
-if [[ "$JENKINS_ENV" == "beta"]]; then
+if [[ "$JENKINS_ENV" = "beta" ]]; then
   bucket="nwi-standalone-assets-beta"
   npm run builds3beta
 else
