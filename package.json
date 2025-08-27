@@ -6,6 +6,8 @@
   "scripts": {
     "serve": "vue-cli-service serve --public https://rivers.americanwhitewater.localhost --port 8080",
     "build": "vue-cli-service build",
+    "builds3beta": "vue-cli-service build --mode s3beta",
+    "builds3prod": "vue-cli-service build --mode s3prod",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "build:modern": "vue-cli-service build --modern",
@@ -129,5 +131,5 @@
   "gitHooks": {
     "pre-commit": "lint-staged && npm run test:unit"
   },
-  "homepage": "https://github.com/drewalth/wh2o-vue"
+  "homepage": "https://github.com/AmericanWhitewater/wh2o-vue"
 }
