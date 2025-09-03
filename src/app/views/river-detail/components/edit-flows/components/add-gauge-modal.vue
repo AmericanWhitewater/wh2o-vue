@@ -36,7 +36,7 @@
 </template>
 <script>
 import { reachApiHelper, shadowDomFixedHeightOffset, gaugeHelpers } from "@/app/global/mixins";
-import { gaugeClient } from '@/app/services';
+import { gaugeClient } from '@/app/http';
 import debounce from 'lodash.debounce';
 
 export default {

@@ -27,7 +27,7 @@
 
 <script>
 import { appLocalStorage, eventBus } from '@/app/global/services'
-import { gaugeClient } from '@/app/services';
+import { gaugeClient } from '@/app/http';
 import { Layout } from '@/app/global/layout'
 import { gaugeHelpers } from '@/app/global/mixins'
 import { mapState } from 'vuex'
