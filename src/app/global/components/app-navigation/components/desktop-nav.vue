@@ -41,6 +41,17 @@
                 Rivers
               </cv-button>
 
+              <a href="/">
+                <cv-button
+                  id="return-to-wp-btn"
+                  kind="ghost"
+                  size="small"
+                  class="header--btn"
+                >
+                  Return to Main AW Website
+                </cv-button>
+              </a>
+
               <cv-button
                 v-if="!user"
                 id="login-btn"
@@ -56,21 +67,17 @@
               >
                 Login
               </cv-button>
-              <cv-button
-                v-if="user"
-                id="account-btn"
-                kind="tertiary"
-                size="small"
-                class="header--btn"
-                @click.exact="
-                  $router.push(`/user/account/${user && user.uid}/alerts`).catch(() => {})
-                "
-                @keydown.enter="
-                  $router.push(`/user/account/${user && user.uid}/alerts`).catch(() => {})
-                "
-              >
-                My Account
-              </cv-button>
+              <a href="/user/profile">
+                <cv-button
+                  v-if="user"
+                  id="account-btn"
+                  kind="tertiary"
+                  size="small"
+                  class="header--btn"
+                >
+                  My Account
+                </cv-button>
+              </a>
             </header>
           </div>
         </div>
