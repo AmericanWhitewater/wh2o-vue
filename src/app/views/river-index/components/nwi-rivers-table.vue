@@ -97,7 +97,7 @@ import debounce from "lodash.debounce";
 import ZoomIn16 from "@carbon/icons-vue/lib/zoom--in/16";
 import scrollIntoView from "scroll-into-view-if-needed";
 import { Breakpoints } from "@/app/global/services";
-import { reachClient } from "@/app/services";
+import { reachClient } from "@/app/http";
 import { reachApiHelper } from "@/app/global/mixins";
 import { mapState } from "vuex";
 import UtilityBlock from "@/app/global/components/utility-block/utility-block.vue";

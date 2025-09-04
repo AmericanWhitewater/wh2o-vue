@@ -1,7 +1,7 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
 import wkx from "wkx";
-import {updateReach, getReach, deleteReach } from "@/app/services"
+import { updateReach, getReach, getReachWPID, deleteReach } from "@/app/services"
 
 export default {
   namespaced: true,
@@ -82,8 +82,18 @@ export default {
       try {
         context.commit('DATA_REQUEST')
         const result = await getReach(id)
+        let wpID
+        try {
+          wpID = await getReachWPID(id)
+        } catch (error) {
+          context.commit('DATA_ERROR', `Failed to retrieve wpID: ${error}`)
+        }
 
         if (!result.errors) {
+          if (wpID) {
+            result.data.reach.wpID = wpID
+          }
+
           context.commit('DATA_SUCCESS', result.data.reach)
         } else {
           context.commit('DATA_ERROR', 'error')

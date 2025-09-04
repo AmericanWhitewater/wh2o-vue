@@ -231,7 +231,7 @@ import { mapState } from 'vuex'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import { checkWindow, reachApiHelper } from '@/app/global/mixins'
 
-import { gaugeClient } from '@/app/services'
+import { gaugeClient } from '@/app/http'
 
 const flowviewCalendar = 2
 const flowviewTable = 1

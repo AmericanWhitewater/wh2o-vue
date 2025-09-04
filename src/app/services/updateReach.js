@@ -1,7 +1,7 @@
-import http from "@/app/http"
+import { laravelClient } from "@/app/http"
 
 export async function updateReach(data) {
-  return http.post('graphql', {
+  return laravelClient.post('graphql', {
     query: `
               mutation ($id:ID!, $reach: ReachInput!) {
                 reachUpdate(id: $id, reach: $reach) {

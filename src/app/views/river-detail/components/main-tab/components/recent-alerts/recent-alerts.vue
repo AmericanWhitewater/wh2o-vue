@@ -1,7 +1,6 @@
 <template>
   <aside
     v-if="loading || anythingPresent"
-    v-view.once="loadData"
     class="mb-lg"
   >
     <cv-tile
@@ -40,34 +39,36 @@ export default {
     ...mapState({
       loading: state => state.RiverAlerts.loading,
       alerts: state => state.RiverAlerts.data,
-      articles: state => state.RiverNews.data,
+      articles: state => state.RiverArticles.data,
+      documents: state => state.RiverDocuments.data,
       projects: state => state.RiverProjects.data,
-
+      reach: state => state.RiverDetail.data
     }),
-    documents() {
-      if(this.$store.getters){
-        return this.$store.getters['RiverLinker/documents']
-      } else {
-        return []
-      }
-    },
     anythingPresent () {
       return (this.recentAlerts && this.recentAlerts.length) || (this.recentArticles && this.recentArticles.length) || (this.projects && this.projects.length)|| (this.documents && this.documents.length)
     },
     recentArticles() {
-      return this.articles?.filter(x => Date.parse(x.posted_date) >= this.yearsAgo(1));
+      return this.articles?.filter(x => Date.parse(x.date) >= this.yearsAgo(1));
     },
     recentAlerts() {
       return this.alerts?.filter(x => Date.parse(x.post_date) >= this.yearsAgo(2));
     },
   },
+  watch: {
+    reach: {
+      handler (newReach) {
+        this.$store.dispatch('RiverAlerts/getProperty', this.$route.params.id)
+
+        if (newReach && newReach.wpID) {
+          this.$store.dispatch('RiverArticles/getProperty', newReach.wpID)
+          this.$store.dispatch('RiverProjects/getProperty', newReach.wpID)
+          this.$store.dispatch('RiverDocuments/getProperty', newReach.wpID)
+        }
+      },
+      immediate: true
+    }
+  },
   methods: {
-    loadData () {
-      this.$store.dispatch('RiverAlerts/getProperty', this.$route.params.id)
-      this.$store.dispatch('RiverNews/getProperty', this.$route.params.id)
-      this.$store.dispatch('RiverProjects/getProperty', this.$route.params.id)
-      this.$store.dispatch('RiverLinker/getProperty', this.$route.params.id)
-    },
     yearsAgo(yrs) {
       const d = new Date();
       d.setFullYear(d.getFullYear() - yrs);

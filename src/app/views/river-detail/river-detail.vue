@@ -223,7 +223,7 @@ import {
   objectPermissionsHelpersMixin,
 } from "@/app/global/mixins";
 import { appLocalStorage, eventBus } from "@/app/global/services";
-import { reachClient } from '@/app/services';
+import { reachClient } from '@/app/http';
 
 export default {
   name: "river-detail",

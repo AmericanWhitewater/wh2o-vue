@@ -1,6 +1,5 @@
-import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
-import {getReachAccidents} from "@/app/services"
+import { getReachArticles } from '@/app/services'
 
 export default {
   namespaced: true,
@@ -12,13 +11,11 @@ export default {
   },
   mutations,
   actions: {
-    ...actions,
     async getProperty(context, wpID) {
       context.commit('DATA_REQUEST')
 
       try {
-        const result = await getReachAccidents(wpID)
-
+        const result = await getReachArticles(wpID)
         context.commit('DATA_SUCCESS', result)
 
       } catch (error) {
