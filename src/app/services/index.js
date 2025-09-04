@@ -25,6 +25,7 @@ export * from "./getReachReports";
 export * from "./getReport";
 export * from "./getStateList";
 export * from "./getUser";
+export * from "./getReachWPID";
 export * from "./photoFileUpdate";
 export * from "./searchReachMap";
 export * from "./updatePhoto";

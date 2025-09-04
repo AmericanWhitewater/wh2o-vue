@@ -1,6 +1,5 @@
 import mutations from '@/app/store/mutations'
 import { getReachArticles } from '@/app/services'
-import moment from 'moment'
 
 export default {
   namespaced: true,
@@ -12,20 +11,12 @@ export default {
   },
   mutations,
   actions: {
-    async getProperty(context, id) {
+    async getProperty(context, wpID) {
       context.commit('DATA_REQUEST')
 
       try {
-        const result = await getReachArticles(id)
-
-        if (!result.errors) {
-          const sortedArticles = result.sort((a, b) =>
-            moment(b.date, 'YYYY-MM-DDTHH:mm:ss') - moment(a.date, 'YYYY-MM-DDTHH:mm:ss')
-          )
-          context.commit('DATA_SUCCESS', sortedArticles)
-        } else {
-          context.commit('DATA_ERROR', result.errors[0].message)
-        }
+        const result = await getReachArticles(wpID)
+        context.commit('DATA_SUCCESS', result)
 
       } catch (error) {
         context.commit('DATA_ERROR', error)

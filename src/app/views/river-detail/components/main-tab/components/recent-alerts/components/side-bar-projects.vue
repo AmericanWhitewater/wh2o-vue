@@ -22,15 +22,17 @@
             <cv-link :href="project.link">
               <h5
                 class="mb-spacing-2xs"
-                v-text="project.title"
+                v-text="project.title.rendered"
               />
             </cv-link>
 
             <div
               ref="abstract"
               class="abstract-content"
-              v-html="project.excerpt.rendered"
             />
+              <div class="read-more-container">
+                <span v-html="project.content.rendered" />
+              </div>
           </div>
         </div>
       </div>

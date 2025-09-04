@@ -1,10 +1,10 @@
 import { wpClient } from "@/app/http" 
 
-export async function getReachProjects(id) {
+export async function getReachProjects(wpID) {
   return wpClient
-    .get('projects', {
+    .get('project', {
       params: {
-        reachid: id
+        reachid: wpID
       }
     })
     .then(res => res.data)

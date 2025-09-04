@@ -13,15 +13,18 @@ export default {
   mutations,
   actions: {
     ...actions,
-    async getProperty(context, id) {
+    async getProperty(context, wpID) {
+      context.commit('DATA_REQUEST')
+
       try {
-        const result = await getReachAccidents(id)
+        const result = await getReachAccidents(wpID)
 
         context.commit('DATA_SUCCESS', result)
 
       } catch (error) {
         context.commit('DATA_ERROR', error)
       }
+
     }
   }
 }

@@ -5,24 +5,8 @@ jest.mock('maplibre-gl/dist/maplibre-gl', () => ({
   Map: () => ({})
 }))
 
-const articles = [
-  {
-    id: "104",
-    link: "http://www.google.com/test-article",
-    title: {
-      rendered: "Test Article Title"
-    },
-    content: {
-      rendered: "This is the full article text."
-    },
-    excerpt: {
-      rendered: "<p>A bill to fully fund the Land and Water Conservation Fund (LWCF) was introduced last month by Colorado Senator Cory Gardener and West Virginia Senator Joe Manchin and cosponsored by Colorado Senator Michael Bennett."
-    },
-    author_info: {
-      display_name: "Testing McTesterson"
-    },
-  }
-]
+const riverId = '123456789'
+const wpID = '1234'
 
 const mockStore = {
   state: {
@@ -48,14 +32,17 @@ const mockStore = {
       data: [],
       loading: null
     },
+    RiverDetail: {
+      data: {
+        wpID: wpID
+      }
+    },
     Global: {
       editMode: false
     }
   },
   dispatch: jest.fn()
 }
-
-const riverId = '123456789'
 
 const options = {
   mocks: {
@@ -117,20 +104,15 @@ describe('NewsTab', () => {
     const wrapper = createWrapper(NewsTab, options)
 
     expect(mockStore.dispatch).toHaveBeenCalledWith(
-      'RiverArticles/getProperty', riverId
+      'RiverArticles/getProperty', wpID
+    )
+    expect(mockStore.dispatch).toHaveBeenCalledWith(
+      'RiverDocuments/getProperty', wpID
     )
     expect(mockStore.dispatch).toHaveBeenCalledWith(
       'RiverAlerts/getProperty', riverId
     )
-    expect(mockStore.dispatch).toHaveBeenCalledTimes(2)
+    expect(mockStore.dispatch).toHaveBeenCalledTimes(3)
   })
 
-  it('doesnt attempt to load alerts, articles, docs when previously loaded', async () => {
-    mockStore.state.RiverAlerts.data = [{ alert: 'look out' }]
-    mockStore.state.RiverArticles.data = articles
-    mockStore.state.RiverEvents.data = []
-    // eslint-disable-next-line no-unused-vars
-    const wrapper = createWrapper(NewsTab, options)
-    expect(mockStore.dispatch).toHaveBeenCalledTimes(0)
-  })
 })

@@ -71,7 +71,8 @@ export default {
   computed: {
     ...mapState({
       documents: (state) => state.RiverDocuments.data,
-      loading: (state) => state.RiverDocuments.loading
+      loading: (state) => state.RiverDocuments.loading,
+      reach: (state) => state.RiverDetail.data
     }),
   },
   methods: {
@@ -80,8 +81,8 @@ export default {
     },
   },
   created() {
-    if (!this.documents) {
-      this.$store.dispatch("RiverDocuments/getProperty", this.$route.params.id);
+    if (!this.documents && this.reach && this.reach.wpID) {
+      this.$store.dispatch("RiverDocuments/getProperty", this.reach.wpID);
     }
   },
 };

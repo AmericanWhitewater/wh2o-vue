@@ -1,9 +1,9 @@
 import { wpClient } from "@/app/http"
 
-export async function getReachDocuments(id) {
-  return wpClient.get('documents', {
+export async function getReachDocuments(wpID) {
+  return wpClient.get('document', {
     params: {
-      reachid: id
+      reachid: wpID
     }
   }).then(res => res.data);
 }

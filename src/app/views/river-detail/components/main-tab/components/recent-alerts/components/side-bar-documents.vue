@@ -54,7 +54,8 @@ export default {
   computed: {
     ...mapState({
       documents: state => state.RiverDocuments.data,
-      loading: state => state.RiverDocuments.loading
+      loading: state => state.RiverDocuments.loading,
+      reach: state => state.RiverDetail.data
     }),
     // TODO: the existing interface here only showed one document.
     // We may want to reassess the UX and display multiple ones since
@@ -63,11 +64,16 @@ export default {
       return this.documents[0]
     }
   },
-  methods: {
-    loadData () {
-      this.$store.dispatch('RiverDocuments/getProperty', this.$route.params.id)
-    },
-  }
+  watch: {
+    reach: {
+      handler (newReach) {
+        if (newReach && newReach.wpID) {
+          this.$store.dispatch('RiverDocuments/getProperty', newReach.wpID)
+        }
+      },
+      immediate: true
+    }
+  },
 
 }
 </script>

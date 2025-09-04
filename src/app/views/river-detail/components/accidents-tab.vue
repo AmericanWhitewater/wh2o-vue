@@ -109,22 +109,25 @@ export default {
     ...mapState({
       loading: state => state.RiverAccidents.loading,
       error: state => state.RiverAccidents.error,
-      accidents: state => state.RiverAccidents.data
+      accidents: state => state.RiverAccidents.data,
+      reach: state => state.RiverDetail.data
     }),
     riverId () {
       return parseInt(this.$route.params.id, 10)
     }
   },
-  methods: {
-    loadData () {
-      this.$store.dispatch(
-        'RiverAccidents/getProperty',
-        this.riverId
-      )
+  watch: {
+    reach: {
+      handler (newReach) {
+        if (newReach && newReach.wpID) {
+          this.$store.dispatch(
+            'RiverAccidents/getProperty',
+            newReach.wpID
+          );
+        }
+      },
+      immediate: true
     }
   },
-  created () {
-    this.loadData()
-  }
 }
 </script>

@@ -1,6 +1,9 @@
 import RecentAlerts from '../recent-alerts.vue'
 import { createWrapper } from '@/utils'
 
+const riverId = '123'
+const wpID = '234'
+
 const mockStore = {
   dispatch: jest.fn(),
   state: {
@@ -18,11 +21,14 @@ const mockStore = {
     RiverDocuments: {
       data: [],
       loading: null
+    },
+    RiverDetail: {
+      data: {
+        wpID: wpID
+      }
     }
   }
 }
-
-const riverId = '123'
 
 const mockRoute = {
   params: {
@@ -50,16 +56,15 @@ describe('RecentAlerts.vue', () => {
   */
 
   it('loads alerts and news articles in viewport', () => {
+    // eslint-disable-next-line no-unused-vars
     const wrapper = createWrapper(RecentAlerts, options)
-
-    wrapper.vm.loadData()
 
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(1,
       'RiverAlerts/getProperty', riverId
     )
 
     expect(mockStore.dispatch).toHaveBeenNthCalledWith(2,
-      'RiverArticles/getProperty', riverId
+      'RiverArticles/getProperty', wpID
     )
   })
 })
