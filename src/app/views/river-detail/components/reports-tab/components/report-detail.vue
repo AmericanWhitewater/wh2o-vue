@@ -78,6 +78,13 @@ export default {
     report: null,
     loading: true,
   }),
+  metaInfo() {
+    if (!this.report) return { title: 'American Whitewater' };
+    const formattedDate = moment(this.report.post_date).format('MMM D, YYYY');
+    return {
+      title: `${this.report.title} - ${formattedDate} | American Whitewater`
+    }
+  },
   computed: {
     ...mapState({
       user: (state) => state.User.data,

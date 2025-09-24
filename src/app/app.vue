@@ -34,7 +34,7 @@ export default {
     },
   },
   metaInfo: {
-    title: "American Whitewater",
+    title: "National Whitewater Inventory | American Whitewater",
   },
   created() {
     this.$store.dispatch("User/getProperty");
