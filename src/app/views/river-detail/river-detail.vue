@@ -257,6 +257,11 @@ export default {
     accidents: "Accidents",
     credits: "Contributors",
   },
+  metaInfo() {
+    return {
+      title: this.reachDetail?.stub ? `${this.reachDetail.stub.river} - ${this.reachDetail.stub.section} | American Whitewater` : 'American Whitewater'
+    }
+  },
   computed: {
     ...mapState({
       reach: (state) => state.RiverDetail.data,

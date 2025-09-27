@@ -2,7 +2,6 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 import { appLocalStorage } from "@/app/global/services";
-import {laravelDeploy} from "@/app/environment"
 import staticRoutes from '@/app/views/static-routes/static-routes'
 
 import riverIndexRoutes from "./river-index.routes"
@@ -20,7 +19,7 @@ const routes = [
 
 const router = new VueRouter({
   mode: "history",
-  base: laravelDeploy && "content/River/view",
+  base: "content/River/view",
   routes,
   /**
    *
