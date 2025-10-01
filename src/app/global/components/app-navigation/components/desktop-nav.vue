@@ -43,12 +43,45 @@
 
               <a href="/">
                 <cv-button
-                  id="return-to-wp-btn"
+                  id="explore-btn"
                   kind="ghost"
                   size="small"
                   class="header--btn"
                 >
-                  Return to Main AW Website
+                  Explore
+                </cv-button>
+              </a>
+
+              <a href="/">
+                <cv-button
+                  id="engage-btn"
+                  kind="ghost"
+                  size="small"
+                  class="header--btn"
+                >
+                  Engage
+                </cv-button>
+              </a>
+
+              <a href="https://membership.americanwhitewater.org/s/lightningmembership">
+                <cv-button
+                  id="support-btn"
+                  kind="ghost"
+                  size="small"
+                  class="header--btn"
+                >
+                  Support
+                </cv-button>
+              </a>
+
+              <a href="https://connect.clickandpledge.com/w/Form/c178a504-b0d6-486e-8d74-db507a71fad1">
+                <cv-button
+                  id="donate-btn"
+                  kind="ghost"
+                  size="small"
+                  class="header--btn"
+                >
+                  Donate
                 </cv-button>
               </a>
 

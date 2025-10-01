@@ -64,16 +64,42 @@
             kind="ghost"
             class="mb-spacing-xs map-button"
             @click.exact="viewRoute('/river-index')"
-            v-text="'River Map'"
+            v-text="'Rivers'"
           />
           <a href="/">
             <cv-button
-              id="return-to-wp-btn"
               kind="ghost"
               size="small"
-              class="header--btn"
+              class="mb-spacing-xs"
             >
-              Return to Main AW Website
+              Explore
+            </cv-button>
+          </a>
+          <a href="/">
+            <cv-button
+              kind="ghost"
+              size="small"
+              class="mb-spacing-xs"
+            >
+              Engage
+            </cv-button>
+          </a>
+          <a href="https://membership.americanwhitewater.org/s/lightningmembership">
+            <cv-button
+              kind="ghost"
+              size="small"
+              class="mb-spacing-xs"
+            >
+              Support
+            </cv-button>
+          </a>
+          <a href="https://connect.clickandpledge.com/w/Form/c178a504-b0d6-486e-8d74-db507a71fad1">
+            <cv-button
+              kind="ghost"
+              size="small"
+              class="mb-spacing-xs"
+            >
+              Donate
             </cv-button>
           </a>
         </div>
