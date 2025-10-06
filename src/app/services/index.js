@@ -34,6 +34,7 @@ export * from "./getReachReports";
 export * from "./getStateList";
 export * from "./getUser";
 export * from "./photoFileUpdate";
+export * from "./profileClient";
 export * from "./reachClient";
 export * from "./searchReachMap";
 export * from "./updatePhoto";
