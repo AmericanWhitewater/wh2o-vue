@@ -8,19 +8,14 @@
             class="tile-header mb-spacing-sm"
           >
             <h3>
-              <router-link
-                to="/user/access/login"
-                v-text="'Login'"
-              />
+              <a href="/login">Login</a>
             </h3>
             <span>
               <!-- need to work on this guy... -->
-              Or</span>
+              Or</span
+            >
             <h3>
-              <router-link
-                to="/user/access/register"
-                v-text="'Register'"
-              />
+              <a href="/register">Register</a>
             </h3>
           </div>
         </div>
@@ -37,8 +32,8 @@
 </template>
 <script>
 export default {
-  name: 'user-access'
-}
+  name: "user-access",
+};
 </script>
 <style lang="scss">
 // Not sure why style scoping isnt working properly.
