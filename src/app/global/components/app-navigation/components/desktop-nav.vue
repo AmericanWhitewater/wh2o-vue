@@ -85,21 +85,17 @@
                 </cv-button>
               </a>
 
-              <cv-button
-                v-if="!user"
-                id="login-btn"
-                kind="primary"
-                size="small"
-                class="header--btn"
-                @click.exact="
-                  $router.push('/user/access/login').catch(() => {})
-                "
-                @keydown.enter="
-                  $router.push('/user/access/login').catch(() => {})
-                "
-              >
-                Login
-              </cv-button>
+              <a href="/login">
+                <cv-button
+                  v-if="!user"
+                  id="login-btn"
+                  kind="primary"
+                  size="small"
+                  class="header--btn"
+                >
+                  Login
+                </cv-button>
+              </a>
               <a href="/user/profile">
                 <cv-button
                   v-if="user"
