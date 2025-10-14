@@ -87,7 +87,13 @@ function enableShadowCss(config) {
 }
 
 module.exports = {
+  /**
+   * Enable filename hashing for cache busting
+   * Adds content-based hashes to all generated assets (JS, CSS, etc.)
+   * When files change, the hash changes, forcing browsers to fetch new versions
+   */
   filenameHashing: true,
+
   /**
    * disables lint on save which disrupts workflow.
    * linting reserved for pre-commit git hook.
@@ -133,7 +139,8 @@ module.exports = {
     themeColor: "#5a6872",
     backgroundColor: "#537653",
     msTileColor: "#FFFFFF",
-    assetsVersion: Math.floor(Math.random() * 1000000000),
+    // Use timestamp for cache busting PWA assets
+    assetsVersion: Date.now().toString(),
     appleMobileWebAppCapable: "yes",
     workboxPluginMode: "InjectManifest",
     workboxOptions: {
