@@ -4,6 +4,7 @@ import { apiBaseUrl, environment } from '@/app/environment'
 
 const config = {
   baseURL: apiBaseUrl,
+  withCredentials: true,
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
     'Content-Type': 'application/json; charset=utf-8',
