@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar-projects bx--col-sm-12 bx--col-md-4">
+  <div class="sidebar-projects bx--col-sm-12">
     <span class="header-row">
       <h4 class="mb-spacing-sm">Projects</h4>
     </span>
@@ -15,9 +15,8 @@
       <div
         v-for="(project, i) in projects.slice(0, 3)"
         :key="i + 3 * 4"
-        class="bx--row mb-spacing-xs sidebar-project"
+        class="mb-spacing-xs sidebar-project"
       >
-        <div>
           <div class="pt-spacing-sm pb-spacing-md">
             <cv-link :href="project.link">
               <h5
@@ -31,10 +30,9 @@
               class="abstract-content"
             />
               <div class="read-more-container">
-                <span v-html="project.content.rendered" />
+                <span v-html="excerptText(project.content.rendered)" />
               </div>
           </div>
-        </div>
       </div>
     </template>
     <template v-else>
@@ -53,13 +51,22 @@ export default {
       loading: state => state.RiverProjects.loading,
       error: state => state.RiverProjects.error,
       projects: state => state.RiverProjects.data
-    })
+    }),
   },
   watch: {
     projects () {
       this.$emit('projects:change')
     }
   },
+  methods: {
+    excerptText(htmlString) {
+      let output = htmlString.split(" ").splice(0, 49).join(" ");
+      if (htmlString.length > output.length) {
+        output += " [...]";
+      }
+      return output;
+    },
+  }
 }
 </script>
 

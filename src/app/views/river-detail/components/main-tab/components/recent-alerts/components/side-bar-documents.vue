@@ -61,7 +61,10 @@ export default {
     // We may want to reassess the UX and display multiple ones since
     // we're displaying multiple of everything else...
     document() {
-      return this.documents[0]
+      if (this.documents.length > 0) {
+        return this.documents[0];
+      }
+      return null;
     }
   },
   watch: {

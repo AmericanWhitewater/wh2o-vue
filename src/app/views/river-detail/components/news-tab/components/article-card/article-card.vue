@@ -10,10 +10,10 @@
           v-html="article.title.rendered"
         />
         <div class="article-card-body">
-          <div v-if="article.featured_image_src_square" class="article-card-thumb">
+          <div v-if="article.featured_image_url" class="article-card-thumb">
             <img
               class="article-thumb"
-              :src="article.featured_image_src_square"
+              :src="article.featured_image_url"
               :alt="article.title.rendered"
             >
           </div>
@@ -24,11 +24,11 @@
             <div>
               <p
                 class="bx--article-card__author"
-                v-text="article.author_info.display_name"
+                v-text="article.acf.Byline"
               />
               <p
                 class="bx--article-card__date"
-                v-text="formatDate(article.date)"
+                v-text="formatDate(article.date_gmt)"
               />
               <p
                 class="bx--article-card__read-time"

@@ -26,6 +26,7 @@ export * from "./getReport";
 export * from "./getStateList";
 export * from "./getUser";
 export * from "./getReachWPID";
+export * from "./getWordpressMediaByID";
 export * from "./photoFileUpdate";
 export * from "./profileClient";
 export * from "./searchReachMap";
