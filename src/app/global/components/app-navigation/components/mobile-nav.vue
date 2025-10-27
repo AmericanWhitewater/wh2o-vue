@@ -2,16 +2,8 @@
   <header>
     <div class="bx--grid mobile-nav">
       <div class="bx--row">
-        <div
-          :class="[
-            { 'drawer-open': drawerOpen },
-            'bx--col content-area'
-          ]"
-        >
-          <span
-            id="logo-wrapper"
-            @click.exact="resetRouter"
-          >
+        <div :class="[{ 'drawer-open': drawerOpen }, 'bx--col content-area']">
+          <span id="logo-wrapper" @click.exact="resetRouter">
             <aw-logo />
           </span>
           <div>
@@ -25,7 +17,10 @@
             </cv-tooltip>
 
             <span
-              :class="[{ 'drawer-open': drawerOpen }, 'nav-trigger ml-spacing-md']"
+              :class="[
+                { 'drawer-open': drawerOpen },
+                'nav-trigger ml-spacing-md',
+              ]"
               @click.exact="drawerOpen = !drawerOpen"
             >
               <svg
@@ -55,25 +50,36 @@
       </div>
     </div>
     <transition name="slide">
-      <div
-        v-if="drawerOpen"
-        class="drawer pt-md"
-      >
+      <div v-if="drawerOpen" class="drawer pt-md">
         <div class="main-nav-items">
           <cv-button
             kind="ghost"
             class="mb-spacing-xs map-button"
             @click.exact="viewRoute('/river-index')"
-            v-text="'River Map'"
+            v-text="'Rivers'"
           />
           <a href="/">
-            <cv-button
-              id="return-to-wp-btn"
-              kind="ghost"
-              size="small"
-              class="header--btn"
-            >
-              Return to Main AW Website
+            <cv-button kind="ghost" size="small" class="mb-spacing-xs">
+              Explore
+            </cv-button>
+          </a>
+          <a href="/">
+            <cv-button kind="ghost" size="small" class="mb-spacing-xs">
+              Engage
+            </cv-button>
+          </a>
+          <a
+            href="https://membership.americanwhitewater.org/s/lightningmembership"
+          >
+            <cv-button kind="ghost" size="small" class="mb-spacing-xs">
+              Support
+            </cv-button>
+          </a>
+          <a
+            href="https://connect.clickandpledge.com/w/Form/c178a504-b0d6-486e-8d74-db507a71fad1"
+          >
+            <cv-button kind="ghost" size="small" class="mb-spacing-xs">
+              Donate
             </cv-button>
           </a>
         </div>
@@ -86,20 +92,12 @@
               v-text="'My Account'"
             />
           </a>
-          <cv-button
-            v-if="!user"
-            id="login-button"
-            kind="primary"
-            @click.exact="viewRoute('/user/access/login')"
-            v-text="'Login'"
-          />
-          <cv-button
-            v-else
-            id="logout-button"
-            kind="tertiary"
-            @click.exact="viewRoute('/user/access/logout')"
-            v-text="'Logout'"
-          />
+          <a v-if="!user" href="/login">
+            <cv-button id="login-button" kind="primary" v-text="'Login'" />
+          </a>
+          <a v-if="user" href="/logout">
+            <cv-button id="logout-button" kind="tertiary" v-text="'Logout'" />
+          </a>
         </div>
       </div>
     </transition>
@@ -113,39 +111,39 @@
   </header>
 </template>
 <script>
-import AwLogo from '@/app/global/components/logo-library/aw-logo'
+import AwLogo from "@/app/global/components/logo-library/aw-logo";
 export default {
-  name: 'mobile-nav',
+  name: "mobile-nav",
   components: {
-    'aw-logo': AwLogo
+    "aw-logo": AwLogo,
   },
   props: {
     offline: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   data: () => ({
     drawerOpen: false,
-    searchTerm: ''
+    searchTerm: "",
   }),
   computed: {
-    user () {
-      return this.$store.state.User.data
-    }
+    user() {
+      return this.$store.state.User.data;
+    },
   },
   methods: {
-    viewRoute (path) {
-      this.drawerOpen = false
-      this.$router.push(path).catch(() => {})
+    viewRoute(path) {
+      this.drawerOpen = false;
+      this.$router.push(path).catch(() => {});
     },
-    resetRouter () {
-      this.drawerOpen = false
+    resetRouter() {
+      this.drawerOpen = false;
       /* keep catch empty to avoid nav duplication error */
-      this.$router.push('/').catch(() => {})
-    }
-  }
-}
+      this.$router.push("/").catch(() => {});
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
 .mobile-nav {

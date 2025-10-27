@@ -159,6 +159,16 @@ import AssignToReportModal from "./assign-to-report-modal";
 
 export default {
   name: "image-detail",
+  metaInfo() {
+    if (!this.image) return {};
+    const fullCaption = this.image.caption || 'Untitled';
+    const caption = fullCaption.length > 40 ? fullCaption.substring(0, 37) + '...' : fullCaption;
+    const date = this.imageDate(this.image);
+    const location = this.reachLocation;
+    return {
+      title: `${caption} - ${date} - ${location} | American Whitewater`
+    };
+  },
   components: {
     AwLogo,
     ConfirmDeleteModal,

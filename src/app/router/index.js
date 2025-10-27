@@ -2,7 +2,6 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 import { appLocalStorage } from "@/app/global/services";
-import {laravelDeploy} from "@/app/environment"
 import staticRoutes from '@/app/views/static-routes/static-routes'
 
 import riverIndexRoutes from "./river-index.routes"
@@ -20,7 +19,7 @@ const routes = [
 
 const router = new VueRouter({
   mode: "history",
-  base: laravelDeploy && "content/River/view",
+  base: "content/River/view",
   routes,
   /**
    *
@@ -64,7 +63,8 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const token = appLocalStorage.getItem("wh2o-auth");
   if (to.path.includes("account") && !token) {
-    next("/user/access/login");
+    window.location.href = "/login";
+    return;
   }
   next();
 });

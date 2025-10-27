@@ -43,30 +43,59 @@
 
               <a href="/">
                 <cv-button
-                  id="return-to-wp-btn"
+                  id="explore-btn"
                   kind="ghost"
                   size="small"
                   class="header--btn"
                 >
-                  Return to Main AW Website
+                  Explore
                 </cv-button>
               </a>
 
-              <cv-button
-                v-if="!user"
-                id="login-btn"
-                kind="primary"
-                size="small"
-                class="header--btn"
-                @click.exact="
-                  $router.push('/user/access/login').catch(() => {})
-                "
-                @keydown.enter="
-                  $router.push('/user/access/login').catch(() => {})
-                "
-              >
-                Login
-              </cv-button>
+              <a href="/">
+                <cv-button
+                  id="engage-btn"
+                  kind="ghost"
+                  size="small"
+                  class="header--btn"
+                >
+                  Engage
+                </cv-button>
+              </a>
+
+              <a href="https://membership.americanwhitewater.org/s/lightningmembership">
+                <cv-button
+                  id="support-btn"
+                  kind="ghost"
+                  size="small"
+                  class="header--btn"
+                >
+                  Support
+                </cv-button>
+              </a>
+
+              <a href="https://connect.clickandpledge.com/w/Form/c178a504-b0d6-486e-8d74-db507a71fad1">
+                <cv-button
+                  id="donate-btn"
+                  kind="ghost"
+                  size="small"
+                  class="header--btn"
+                >
+                  Donate
+                </cv-button>
+              </a>
+
+              <a href="/login">
+                <cv-button
+                  v-if="!user"
+                  id="login-btn"
+                  kind="primary"
+                  size="small"
+                  class="header--btn"
+                >
+                  Login
+                </cv-button>
+              </a>
               <a href="/user/profile">
                 <cv-button
                   v-if="user"
