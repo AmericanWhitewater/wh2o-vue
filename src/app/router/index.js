@@ -63,7 +63,8 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const token = appLocalStorage.getItem("wh2o-auth");
   if (to.path.includes("account") && !token) {
-    next("/user/access/login");
+    window.location.href = "/login";
+    return;
   }
   next();
 });

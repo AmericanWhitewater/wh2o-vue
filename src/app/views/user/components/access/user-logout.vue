@@ -25,9 +25,8 @@ export default {
     this.$store.dispatch('User/logout')
   },
   mounted () {
-    const self = this
     setTimeout(() => {
-      self.$router.replace('/user/access/login')
+      window.location.href = '/login'
     }, 1000)
   }
 }
