@@ -30,58 +30,58 @@
               </transition>
             </div>
             <header>
+              <a href="/content/Wiki/aw:about">
+                <cv-button
+                  id="our-organization-btn"
+                  kind="ghost"
+                  size="small"
+                  class="header--btn"
+                >
+                  Our Organization
+                </cv-button>
+              </a>
+
+              <a href="https://membership.americanwhitewater.org/s/lightningmembership">
+                <cv-button
+                  id="support-aw-btn"
+                  kind="ghost"
+                  size="small"
+                  class="header--btn"
+                >
+                  Support AW
+                </cv-button>
+              </a>
+
               <cv-button
-                id="map-btn"
+                id="river-info-btn"
                 kind="ghost"
                 size="small"
                 class="header--btn"
                 @click.exact="$router.push('/river-index').catch(() => {})"
                 @keydown.enter="$router.push('/river-index').catch(() => {})"
               >
-                Rivers
+                River Info
               </cv-button>
 
-              <a href="/">
+              <a href="/content/Journal/archive">
                 <cv-button
-                  id="explore-btn"
+                  id="library-btn"
                   kind="ghost"
                   size="small"
                   class="header--btn"
                 >
-                  Explore
+                  Library
                 </cv-button>
               </a>
 
-              <a href="/">
+              <a href="/content/Events/view">
                 <cv-button
-                  id="engage-btn"
+                  id="community-btn"
                   kind="ghost"
                   size="small"
                   class="header--btn"
                 >
-                  Engage
-                </cv-button>
-              </a>
-
-              <a href="https://membership.americanwhitewater.org/s/lightningmembership">
-                <cv-button
-                  id="support-btn"
-                  kind="ghost"
-                  size="small"
-                  class="header--btn"
-                >
-                  Support
-                </cv-button>
-              </a>
-
-              <a href="https://connect.clickandpledge.com/w/Form/c178a504-b0d6-486e-8d74-db507a71fad1">
-                <cv-button
-                  id="donate-btn"
-                  kind="ghost"
-                  size="small"
-                  class="header--btn"
-                >
-                  Donate
+                  Community
                 </cv-button>
               </a>
 

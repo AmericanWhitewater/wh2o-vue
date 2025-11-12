@@ -52,34 +52,32 @@
     <transition name="slide">
       <div v-if="drawerOpen" class="drawer pt-md">
         <div class="main-nav-items">
-          <cv-button
-            kind="ghost"
-            class="mb-spacing-xs map-button"
-            @click.exact="viewRoute('/river-index')"
-            v-text="'Rivers'"
-          />
-          <a href="/">
+          <a href="/content/Wiki/aw:about">
             <cv-button kind="ghost" size="small" class="mb-spacing-xs">
-              Explore
-            </cv-button>
-          </a>
-          <a href="/">
-            <cv-button kind="ghost" size="small" class="mb-spacing-xs">
-              Engage
+              Our Organization
             </cv-button>
           </a>
           <a
             href="https://membership.americanwhitewater.org/s/lightningmembership"
           >
             <cv-button kind="ghost" size="small" class="mb-spacing-xs">
-              Support
+              Support AW
             </cv-button>
           </a>
-          <a
-            href="https://connect.clickandpledge.com/w/Form/c178a504-b0d6-486e-8d74-db507a71fad1"
-          >
+          <cv-button
+            kind="ghost"
+            class="map-button mb-spacing-xs"
+            @click.exact="viewRoute('/river-index')"
+            v-text="'River Info'"
+          />
+          <a href="/content/Journal/archive">
             <cv-button kind="ghost" size="small" class="mb-spacing-xs">
-              Donate
+              Library
+            </cv-button>
+          </a>
+          <a href="/content/Events/view">
+            <cv-button kind="ghost" size="small" class="mb-spacing-xs">
+              Community
             </cv-button>
           </a>
         </div>
