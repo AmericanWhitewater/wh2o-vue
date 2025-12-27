@@ -2,7 +2,7 @@ import { wpClient } from "@/app/http"
 
 export async function getReachAccidents(wpID) {
 
-  return wpClient.get('accidents', {
+  return wpClient.get('accident', {
     params: {
       reachid: wpID
     }
