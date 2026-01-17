@@ -12,6 +12,9 @@
       <thead>
         <tr>
           <th>
+            Title
+          </th>
+          <th>
             Date
           </th>
           <th>
@@ -20,16 +23,14 @@
           <th>
             End Time
           </th>
-          <th>
-            Min
-          </th>
-          <th>
-            Max
-          </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(release, index) in upcomingReleases.slice(0,resultOffset)" :key="index">
+          <td>
+            <a v-if="release.url" :href="release.url" target="_blank" rel="noopener">{{ release.title }}</a>
+            <span v-else>{{ release.title }}</span>
+          </td>
           <td>
             {{formatDate(release.event_date, 'LL')}}
           </td>
@@ -39,8 +40,6 @@
           <td>
             {{ release.end_time }}
           </td>
-          <td v-text="`${release.min} ${getMetricLabel(release.metric_id)}`"/>
-          <td v-text="`${release.max} ${getMetricLabel(release.metric_id)}`"/>
         </tr>
       </tbody>
     </table>
@@ -62,25 +61,19 @@ export default {
   }),
   computed: {
     ...mapState({
-      data: state => state.RiverEvents.data,
-      metrics: state => state.RiverGages.data.metrics,
+      data: state => state.RiverDamReleases.data,
     }),
     releases() {
-      return this.$store.getters['RiverEvents/releases'];
+      return this.$store.getters['RiverDamReleases/releases'];
     },
     upcomingReleases() {
-      return this.$store.getters['RiverEvents/upcomingReleases'];
+      return this.$store.getters['RiverDamReleases/upcomingReleases'];
     },
     reachId() {
       return this.$route.params.id
     }
   },
   methods: {
-    getMetricLabel(id) {
-      if(!this.metrics || !id) return ''
-
-      return this.metrics.find(item => item.id === id.toString()).unit
-    },
     calendarView(){
       this.$emit("calendarView")
     }

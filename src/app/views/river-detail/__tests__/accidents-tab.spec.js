@@ -11,6 +11,9 @@ const mockStore = {
       error: null,
       data: null,
       loading: null
+    },
+    RiverDetail: {
+      data: null
     }
   },
   dispatch: jest.fn()

@@ -43,7 +43,7 @@ const gaugeApiUrl = VUE_APP_GAUGE_API_URL
 const profileApiUrl = VUE_APP_PROFILE_API_URL
 const mapboxAccessToken = VUE_APP_MAPBOX_ACCESS_TOKEN
 const nwiTileServer = VUE_APP_NWI_TILE_SERVER
-const cmsBaseUrl = VUE_APP_WP_API_URL
+const wpApiUrl = VUE_APP_WP_API_URL
 const laravelDeploy = Boolean(VUE_APP_LARAVEL_DEPLOY)
 const baseUrl = VUE_APP_LINK_BASE_URL
 const trpcApiUrl = VUE_APP_TRPC_API_URL
@@ -56,7 +56,7 @@ export {
   assetBaseUrl,
   mapboxAccessToken,
   nwiTileServer,
-  cmsBaseUrl,
+  wpApiUrl,
   clientId,
   clientSecret,
   laravelDeploy,

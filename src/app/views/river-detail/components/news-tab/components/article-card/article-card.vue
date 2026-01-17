@@ -1,44 +1,38 @@
 <template>
-  <div>
+  <a :href="article.link" target="_blank">
     <div
       class="bx--article-card bx--tile bx--tile--clickable"
-      @click.exact="readArticle"
-      @keydown.enter="readArticle"
     >
       <div class="bx--article-card__tile">
         <h4
-          v-if="article.title"
+          v-if="article.title.rendered"
           class="bx--article-card__title"
-          v-text="article.title"
+          v-html="article.title.rendered"
         />
         <div class="article-card-body">
-          <div class="article-card-thumb">
+          <div v-if="article.featured_image_url" class="article-card-thumb">
             <img
               class="article-thumb"
-              :src="articleThumb(article)"
-              :alt="article.title"
+              :src="article.featured_image_url"
+              :alt="article.title.rendered"
             >
           </div>
-          <div class="article-card-abstract">
-            <span v-html="article.abstract" />
-          </div>
+          <div class="article-card-abstract" v-html="article.excerpt.rendered" />
         </div>
         <div class="article-card-footer">
           <div class="bx--article-card__info">
             <div>
               <p
-                v-if="article.author"
                 class="bx--article-card__author"
-                v-text="article.author"
+                v-text="article.acf.Byline"
               />
               <p
-                v-if="article.posted_date"
                 class="bx--article-card__date"
-                v-text="formatDate(article.posted_date)"
+                v-text="formatDate(article.date_gmt)"
               />
               <p
                 class="bx--article-card__read-time"
-                v-text="estReadingTime(article.contents)"
+                v-text="estReadingTime(article.content.rendered)"
               />
             </div>
           </div>
@@ -48,14 +42,14 @@
         </div>
       </div>
     </div>
-  </div>
+  </a>
 </template>
 
 <script>
-import { articleHelper, checkWindow } from "@/app/global/mixins";
+import { checkWindow } from "@/app/global/mixins";
 export default {
   name: "article-card",
-  mixins: [articleHelper, checkWindow],
+  mixins: [checkWindow],
   props: {
     article: {
       type: Object,
@@ -73,11 +67,6 @@ export default {
           "Email20",
           "Error20",
         ].indexOf(val) > -1,
-    },
-  },
-  methods: {
-    readArticle() {
-      this.goToLink(this.articleUrl(this.article));
     },
   },
 };

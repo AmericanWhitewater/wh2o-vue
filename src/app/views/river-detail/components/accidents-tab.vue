@@ -10,20 +10,7 @@
           />
         </template>
         <template v-else-if="accidents">
-          <page-description
-            description="If someone gets hurt on a river, or you read about a whitewater-related injury, please report it to American Whitewater. Don't worry about multiple submissions from other witnesses, as our safety editors will turn multiple witness reports into a single unified accident report."
-          >
-            <cv-button
-              kind="secondary"
-              size="small"
-              @click="goToLink(formatLinkUrl('/content/Accident/report/?'))"
-            >
-              Submit Report
-            </cv-button>
-          </page-description>
-          <div
-            class="bx--data-table-container mb-lg"
-          >
+          <div class="bx--data-table-container mb-lg">
             <table class="bx--data-table">
               <thead>
                 <tr>
@@ -36,41 +23,24 @@
               </thead>
               <tbody>
                 <template v-if="accidents.length > 0">
-                  <tr
-                    v-for="(a, index) in accidents"
-                    :key="index"
-                  >
-                    <td v-text="formatDate(a.accident_date, 'll')" />
-                    <td v-text="a.water_level" />
+                  <tr v-for="(a, index) in accidents" :key="index">
+                    <td v-text="formatDate(a.acf.accident_date, 'll')" />
+                    <td v-text="a.acf.relative_water_level" />
+                    <!-- TODO: clarify injury_type vs. type_of_injury -->
+                    <td v-text="a.acf.injury_type" />
+                    <td v-text="a.acf.causes" />
                     <td>
-                      {{ accidentResult(a.type) }}
-                    </td>
-                    <td>
-                      <cv-list>
-                        <cv-list-item
-                          v-for="(c, i) in a.causes"
-                          :key="i"
-                        >
-                          {{ c.cause }}
-                        </cv-list-item>
-                      </cv-list>
-                    </td>
-                    <td>
-                      <cv-button
-                        small
-                        kind="tertiary"
-                        @click.exact="viewAccident(a.id)"
-                      >
-                        Full Report
-                      </cv-button>
+                      <a :href="a.link" target="_blank">
+                        <cv-button small kind="tertiary">
+                          Full Report
+                        </cv-button>
+                      </a>
                     </td>
                   </tr>
                 </template>
                 <template v-else>
                   <tr>
-                    <td colspan="5">
-                      No Accident Reports
-                    </td>
+                    <td colspan="5">No Accident Reports</td>
                   </tr>
                 </template>
               </tbody>
@@ -81,75 +51,39 @@
           <utility-block state="error" />
         </template>
       </template>
-      <template #sidebar>
-        <div class="sticky">
-          <hr>
-          <h2 class="mb-spacing-md">
-            Submit Accident Report
-          </h2>
-          <p class="mb-spacing-lg">
-            If someone gets hurt on a river, or you read about a whitewater-related injury, please report it to American Whitewater. Don't worry about multiple submissions from other witnesses, as our safety editors will turn multiple witness reports into a single unified accident report.
-          </p>
-          <cv-button
-            size="small"
-            kind="secondary"
-            @click="goToLink(formatLinkUrl('/content/Accident/report/?'))"
-          >
-            Continue to Form
-          </cv-button>
-        </div>
-      </template>
     </layout>
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import UtilityBlock from '@/app/global/components/utility-block/utility-block'
-import { Layout } from '@/app/global/layout'
-import { PageDescription } from '@/app/global/components'
+import { mapState } from "vuex";
+import UtilityBlock from "@/app/global/components/utility-block/utility-block";
+import { Layout } from "@/app/global/layout";
 export default {
-  name: 'accidents-tab',
+  name: "accidents-tab",
   components: {
     UtilityBlock,
     Layout,
-    PageDescription
   },
   computed: {
     ...mapState({
-      loading: state => state.RiverAccidents.loading,
-      error: state => state.RiverAccidents.error,
-      accidents: state => state.RiverAccidents.data
+      loading: (state) => state.RiverAccidents.loading,
+      error: (state) => state.RiverAccidents.error,
+      accidents: (state) => state.RiverAccidents.data,
+      reach: (state) => state.RiverDetail.data,
     }),
-    riverId () {
-      return parseInt(this.$route.params.id, 10)
-    }
-  },
-  methods: {
-    loadData () {
-      this.$store.dispatch(
-        'RiverAccidents/getProperty',
-        this.riverId
-      )
+    riverId() {
+      return parseInt(this.$route.params.id, 10);
     },
-    viewAccident (accidentId) {
-      this.goToLink(this.formatLinkUrl(`/content/Accident/detail/accidentid/${accidentId}`))
-    },
-
-    accidentResult (result) {
-      switch (result) {
-        case 'F':
-          return 'Fatality'
-        case 'M':
-          return 'Near Miss/Rescue'
-        case 'I':
-          return 'Injury'
-        default:
-          return 'n/a'
-      }
-    }
   },
-  created () {
-    this.loadData()
-  }
-}
+  watch: {
+    reach: {
+      handler(newReach) {
+        if (newReach && newReach.wpID) {
+          this.$store.dispatch("RiverAccidents/getProperty", newReach.wpID);
+        }
+      },
+      immediate: true,
+    },
+  },
+};
 </script>

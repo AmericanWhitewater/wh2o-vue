@@ -96,7 +96,7 @@
           <td>{{ getReleaseFieldLabel(releaseDate.event_date) }}</td>
           <td>
             <router-link :to="`/river-detail/${reachId}/flow`">
-              {{ releaseDate.event_date.toDateString() }}
+              {{ formatDate(releaseDate.event_date, 'LL') }}
             </router-link>
           </td>
         </tr>
@@ -169,7 +169,7 @@ export default {
      * Event date or null
      */
     releaseDate () {
-      return this.$store.getters['RiverEvents/nextOrClosestReleaseDate']
+      return this.$store.getters['RiverDamReleases/nextOrClosestReleaseDate']
     },
 
     editBetaBoxKey () {

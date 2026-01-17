@@ -1,11 +1,11 @@
-import http from "@/app/http";
+import { laravelClient } from "@/app/http";
 
 export async function updatePhoto(data) {
   const id = data.id;
   const photo = Object.assign({}, data);
   delete photo.id;
 
-  return http
+  return laravelClient
     .post("/graphql", {
       query: `
       mutation ($id:ID!, $photo: PhotoInput!) {  

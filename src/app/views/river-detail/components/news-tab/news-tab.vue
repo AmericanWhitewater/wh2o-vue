@@ -184,14 +184,15 @@ export default {
   }),
   computed: {
     ...mapState({
-      articlesLoading: (state) => state.RiverNews.loading,
-      articlesError: (state) => state.RiverNews.error,
-      articles: (state) => state.RiverNews.data,
+      articlesLoading: (state) => state.RiverArticles.loading,
+      articlesError: (state) => state.RiverArticles.error,
+      articles: (state) => state.RiverArticles.data,
       alertsLoading: (state) => state.RiverAlerts.loading,
       alertsError: (state) => state.RiverAlerts.error,
       alerts: (state) => state.RiverAlerts.data,
       user: (state) => state.User.data,
-      editMode: state => state.Global.editMode
+      editMode: state => state.Global.editMode,
+      reach: (state) => state.RiverDetail.data
     }),
     activeAlert() {
       if (this.activeAlertId) {
@@ -199,6 +200,25 @@ export default {
       }
       return null;
     },
+  },
+  watch: {
+    reach: {
+      handler (newReach) {
+        if (newReach && newReach.wpID) {
+          if (!this.articles) {
+            this.$store.dispatch("RiverArticles/getProperty", this.reach.wpID);
+          }
+          if (!this.documents) {
+            this.$store.dispatch('RiverDocuments/getProperty', newReach.wpID);
+          }
+        }
+
+        if (!this.alerts) {
+          this.$store.dispatch("RiverAlerts/getProperty", this.$route.params.id);
+        }
+      },
+      immediate: true
+    }
   },
   methods: {
     initiatePostUpdate(alertId) {
@@ -211,7 +231,6 @@ export default {
     },
     async handleUpdateSuccess() {
       this.postUpdateModalVisible = false;
-      await this.$store.dispatch("RiverNews/getProperty", this.$route.params.id);
       await this.$store.dispatch("RiverAlerts/getProperty", this.$route.params.id);
       this.$store.dispatch("Global/sendToast", {
         title: this.successToastTitle,
@@ -263,15 +282,6 @@ export default {
         });
       }
     }
-  },
-  created() {
-    if (!this.articles) {
-        this.$store.dispatch("RiverNews/getProperty", this.$route.params.id);
-      }
-
-      if (!this.alerts) {
-        this.$store.dispatch("RiverAlerts/getProperty", this.$route.params.id);
-      }
   },
 };
 </script>
