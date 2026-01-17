@@ -146,7 +146,7 @@ export const reachApiHelper = {
     // these take a full correlation object with correlationDetails
     adjustedReachDifficulty(correlation) {
       // accounting for both null and undefined status
-      if (correlation && correlation.status && correlation.correlationDetails) {
+      if (correlation && correlation.status && correlation.status.status && correlation.correlationDetails) {
         const adjustedDifficultyKey = correlation.status.status.replace(/-([a-z])/g, g => g[1].toUpperCase());
         return apiGradeEnum[correlation.correlationDetails[`${adjustedDifficultyKey}AdjustedDifficulty`]];
       }
