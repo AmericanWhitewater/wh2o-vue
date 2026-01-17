@@ -23,7 +23,7 @@ const mockStore = {
       data: null,
       loading: null
     },
-    RiverEvents: {
+    RiverDamReleases: {
       error: null,
       data: null,
       loading: null

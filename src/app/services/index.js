@@ -6,7 +6,7 @@ export * from "./deleteRapid";
 export * from "./deleteReach";
 export * from "./getAffiliates";
 export * from "./getAllReachReports";
-export * from "./getEvents";
+export * from "./getDamReleases";
 export * from "./getGage";
 export * from "./getGageReadings";
 export * from "./getRapids";
