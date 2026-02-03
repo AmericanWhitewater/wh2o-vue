@@ -30,58 +30,47 @@
               </transition>
             </div>
             <header>
-              <a href="/content/Wiki/aw:about">
+              <a href="/content/River/view/river-index">
                 <cv-button
-                  id="our-organization-btn"
+                  id="rivers-btn"
                   kind="ghost"
                   size="small"
                   class="header--btn"
                 >
-                  Our Organization
+                  Rivers
                 </cv-button>
               </a>
 
-              <a href="https://membership.americanwhitewater.org/s/lightningmembership">
+              <a href="/explore/">
                 <cv-button
-                  id="support-aw-btn"
+                  id="explore-btn"
                   kind="ghost"
                   size="small"
                   class="header--btn"
                 >
-                  Support AW
+                  Explore
                 </cv-button>
               </a>
 
-              <cv-button
-                id="river-info-btn"
-                kind="ghost"
-                size="small"
-                class="header--btn"
-                @click.exact="$router.push('/river-index').catch(() => {})"
-                @keydown.enter="$router.push('/river-index').catch(() => {})"
-              >
-                River Info
-              </cv-button>
-
-              <a href="/content/Journal/archive">
+              <a href="/engage/">
                 <cv-button
-                  id="library-btn"
+                  id="engage-btn"
                   kind="ghost"
                   size="small"
                   class="header--btn"
                 >
-                  Library
+                  Engage
                 </cv-button>
               </a>
 
-              <a href="/content/Events/view">
+              <a href="/support/">
                 <cv-button
-                  id="community-btn"
+                  id="support-btn"
                   kind="ghost"
                   size="small"
                   class="header--btn"
                 >
-                  Community
+                  Support
                 </cv-button>
               </a>
 
