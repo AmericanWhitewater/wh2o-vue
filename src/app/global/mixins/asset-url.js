@@ -5,7 +5,7 @@ export const assetUrl = {
     assetUrl: (assetPath) => {
       if (assetPath) {
         const basePath = assetBaseUrl || ''
-        return `${basePath}${assetPath}`
+        return `${basePath}${assetPath.replace(/^\/+/, '')}`
       }
       return null;
     },
