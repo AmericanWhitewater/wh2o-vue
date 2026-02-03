@@ -6,12 +6,12 @@
           <div class="bx--col-lg-16 nav-main-content-area">
             <div class="logo-wrapper">
               <div>
-                <router-link
-                  id="aw-logo"
-                  to="/"
+                <a id="aw-logo"
+                  href="/"
+
                 >
                   <aw-logo />
-                </router-link>
+                </a>
               </div>
               <transition
                 name="fade"
