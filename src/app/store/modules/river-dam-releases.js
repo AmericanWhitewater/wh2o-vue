@@ -1,6 +1,6 @@
 import actions from "@/app/store/actions";
 import mutations from "@/app/store/mutations";
-import { getReachEvents } from "@/app/services";
+import { getDamReleases } from "@/app/services";
 
 export default {
   namespaced: true,
@@ -18,15 +18,14 @@ export default {
   },
   actions: {
     ...actions,
-    async getProperty(context, id) {
+    async getProperty(context, wpID) {
       try {
         context.commit("DATA_REQUEST");
 
-        const result = await getReachEvents(id);
+        const result = await getDamReleases(wpID);
 
-        if (!result.errors) {
-          context.commit("DATA_SUCCESS", result);
-        }
+        // Store Tribe Events data directly
+        context.commit("DATA_SUCCESS", result);
       } catch (error) {
         context.commit("DATA_ERROR", error);
       }
@@ -65,16 +64,21 @@ export default {
         }
     },
 
-    // returns releases with the parent event tucked into "event", sorted ascending by date
+    // returns releases sorted by date with parsed event_date
     releases: (state) => {
-      return state.data.filter(
-        x => x.category === "CAT_RELEASE"
-      ).flatMap(x => x.dates).map(x => ({
-        ...x,
-        event_date: new Date(x.event_date)
-      })).sort((a, b) =>
-        a.event_date > b.event_date
-      );
+      return state.data.map(event => {
+        const startDate = new Date(event.start_date);
+        const endDate = new Date(event.end_date);
+
+        return {
+          id: event.id,
+          title: event.title || '',
+          url: event.url || '',
+          event_date: startDate,
+          start_time: `${String(startDate.getHours()).padStart(2, '0')}:${String(startDate.getMinutes()).padStart(2, '0')}`,
+          end_time: `${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`
+        };
+      }).sort((a, b) => a.event_date - b.event_date);
     },
 
     calendarData: (state, getters) => {
@@ -83,12 +87,9 @@ export default {
         endDate: x.event_date,
         startTime: x.start_time,
         endTime: x.end_time,
-        minFlow: x.min,
-        maxFlow: x.min
+        title: x.title,
+        url: x.url
       }));
     },
-
-
   },
 };
-

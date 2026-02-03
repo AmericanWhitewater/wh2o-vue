@@ -1,11 +1,11 @@
-import http from "@/app/http";
+import { laravelClient } from "@/app/http";
 
 export async function updatePost(data) {
   const id = data.id;
   const post = Object.assign({}, data);
   delete post.id;
 
-  return http
+  return laravelClient
     .post("/graphql", {
       query: `
       mutation ($id:ID!, $post: PostInput!) {

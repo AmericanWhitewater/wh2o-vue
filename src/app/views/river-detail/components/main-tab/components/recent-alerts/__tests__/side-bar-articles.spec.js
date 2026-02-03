@@ -3,7 +3,7 @@ import { createWrapper } from '@/utils'
 
 const mockStore = {
   state: {
-    RiverNews: {
+    RiverArticles: {
       data: null,
       error: null,
       loading: null
@@ -36,7 +36,7 @@ describe('SidebarArticles', () => {
   })
 
   it('shows loader when articles loading', () => {
-    mockStore.state.RiverNews.loading = true
+    mockStore.state.RiverArticles.loading = true
     const wrapper = createWrapper(SidebarArticles, options)
 
     expect(wrapper.find('#cv-inline-loading--articles').exists()).toBe(true)

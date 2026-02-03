@@ -3,7 +3,7 @@
     <template #main>
       <hr>
       <h2 class="mb-spacing-md">Documents</h2>
-      <template v-if="documentsLoading && !documents">
+      <template v-if="loading">
         <utility-block
           class="documents-loading"
           state="loading"
@@ -21,35 +21,24 @@
               <div class="document-wrapper">
                 <header class="bx--row">
                   <div class="bx--col-sm-12 bx--col-md-8 mb-spacing-xs">
-                    <h4>{{ document.title }}</h4>
+                    <h4>{{ document.title.rendered }}</h4>
                     <div class="bx--type-caption">
-                      <span
-                        v-if="document.edit_date"
-                        v-text="formatDate(document.edit_date)"
-                      />
-                      <template v-if="document.edit_date && document.author">
-                        -
-                      </template>
-                      <span
-                        v-if="document.author"
-                        v-text="document.author.name"
-                      />
+                      <span>
+                        {{ formatDate(document.date) }}
+                        {{ (document.date && document.author) ? ' - ' : '' }}
+                        {{ document.author }}
+                      </span>
                     </div>
                     <hr>
                   </div>
                 </header>
                 <main class="document-detail">
-                  <p v-if="document.abstract" v-text="document.abstract" />
+                  <p v-if="document.excerpt.rendered" v-html="document.excerpt.rendered" />
                   <p v-else>This document has no description.</p>
                 </main>
                 <footer class="document-card-footer">
-                  <cv-link :href="documentUrl(document)">
+                  <cv-link :href="document.link">
                     <cv-button kind="primary" size="small">View</cv-button>
-                  </cv-link>
-                  <cv-link :href="document.uri">
-                    <cv-button kind="secondary" size="small"
-                      >Download</cv-button
-                    >
                   </cv-link>
                 </footer>
               </div>
@@ -81,17 +70,10 @@ export default {
   },
   computed: {
     ...mapState({
-      data: (state) => state.RiverEvents.data,
-      documentsLoading: (state) => state.RiverEvents.loading,
-      documentsError: (state) => state.RiverEvents.error,
+      documents: (state) => state.RiverDocuments.data,
+      loading: (state) => state.RiverDocuments.loading,
+      reach: (state) => state.RiverDetail.data
     }),
-    documents() {
-      if (this && this.data) {
-        return this.$store.getters["RiverLinker/documents"];
-      } else {
-        return null;
-      }
-    },
   },
   methods: {
     documentUrl(document) {
@@ -99,8 +81,8 @@ export default {
     },
   },
   created() {
-    if (!this.documents) {
-      this.$store.dispatch("RiverLinker/getProperty", this.$route.params.id);
+    if (!this.documents && this.reach && this.reach.wpID) {
+      this.$store.dispatch("RiverDocuments/getProperty", this.reach.wpID);
     }
   },
 };
