@@ -49,6 +49,5 @@ describe('desktop-nav.vue', () => {
 })
 
 test.todo('is routes to map when map button clicked')
-test.todo('is routes to news when news button clicked')
 test.todo('is routes to login when login button clicked')
 test.todo('is routes to account when account button clicked')

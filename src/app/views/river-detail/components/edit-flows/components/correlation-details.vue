@@ -170,7 +170,7 @@
 </template>
 
 <script>
-import { gaugeClient } from '@/app/services';
+import { gaugeClient } from '@/app/http';
 import { ConfirmDeleteModal } from '@/app/global/components';
 import { reachApiHelper } from '@/app/global/mixins'
 

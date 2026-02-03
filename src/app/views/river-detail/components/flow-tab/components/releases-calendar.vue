@@ -28,14 +28,14 @@ export default {
   },
   computed: {
     ...mapState({
-      data: state => state.RiverEvents.data,
-      year: state => state.RiverEvents.year,
+      data: state => state.RiverDamReleases.data,
+      year: state => state.RiverDamReleases.year,
     }),
     calendarData() {
-      return this.$store.getters['RiverEvents/calendarData']
+      return this.$store.getters['RiverDamReleases/calendarData']
     },
     closest() {
-        return this.$store.getters['RiverEvents/nextOrClosestReleaseDate']
+        return this.$store.getters['RiverDamReleases/nextOrClosestReleaseDate']
     },
   },
   watch: {
@@ -43,7 +43,7 @@ export default {
       immediate: true,
       handler (){
         const date = new Date(this.closest.event_date)
-        this.$store.commit('RiverEvents/SET_CALENDAR_YEAR', {
+        this.$store.commit('RiverDamReleases/SET_CALENDAR_YEAR', {
           year: date.getFullYear()
         })
       }
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     handleYearChange({currentYear}){
-      this.$store.commit('RiverEvents/SET_CALENDAR_YEAR', {
+      this.$store.commit('RiverDamReleases/SET_CALENDAR_YEAR', {
         year: currentYear
       })
     },
@@ -69,23 +69,28 @@ export default {
         }
       
         for (let i in e.events) {
-          const title = document.createElement("h5")
+          const titleContainer = document.createElement("h5")
           const hr = document.createElement("hr")
           const startTime = document.createElement("p")
           const endTime = document.createElement("p")
-          const maxFlow = document.createElement("p")
-          const minFlow = document.createElement("p")
-          title.textContent = "Release Info"
+          
+          if (e.events[i].url) {
+            const link = document.createElement("a")
+            link.href = e.events[i].url
+            link.target = "_blank"
+            link.rel = "noopener"
+            link.textContent = e.events[i].title || "Release Info"
+            titleContainer.appendChild(link)
+          } else {
+            titleContainer.textContent = e.events[i].title || "Release Info"
+          }
+          
           startTime.textContent = "Start Time: " + e.events[i].startTime
           endTime.textContent = "End Time: " + e.events[i].endTime
-          minFlow.textContent = "Min Flow: " + e.events[i].minFlow
-          maxFlow.textContent = "Max Flow: " + e.events[i].maxFlow
-          tooltip.appendChild(title)
+          tooltip.appendChild(titleContainer)
           tooltip.appendChild(hr)
           tooltip.appendChild(startTime)
           tooltip.appendChild(endTime)
-          tooltip.appendChild(maxFlow)
-          tooltip.appendChild(minFlow)
         }
         e.element.appendChild(tooltip)
       }

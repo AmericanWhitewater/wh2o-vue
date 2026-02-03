@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar-projects bx--col-sm-12 bx--col-md-4">
+  <div class="sidebar-projects bx--col-sm-12">
     <span class="header-row">
       <h4 class="mb-spacing-sm">Projects</h4>
     </span>
@@ -13,41 +13,26 @@
     </template>
     <template v-else-if="projects && projects.length > 0">
       <div
-        v-for="(project, i) in projects.slice(0, 1)"
+        v-for="(project, i) in projects.slice(0, 3)"
         :key="i + 3 * 4"
-        class="bx--row mb-spacing-xs sidebar-project"
+        class="mb-spacing-xs sidebar-project"
       >
-        <div>
           <div class="pt-spacing-sm pb-spacing-md">
-            <cv-link :href="projectUrl(project)">
+            <cv-link :href="project.link">
               <h5
                 class="mb-spacing-2xs"
-              >
-                {{ $titleCase(project.name) }}
-              </h5>
+                v-text="project.title.rendered"
+              />
             </cv-link>
 
             <div
-              v-if="project.description.length > 200"
               ref="abstract"
               class="abstract-content"
-            
-            >
-              <span v-html="project.description.slice(0, 200)"/>
-              <cv-link 
-                :href="projectUrl(project)"
-                class="read-more">
-                ... Read More
-              </cv-link>
-            </div>
-            <div
-              v-else
-              ref="abstract"
-              class="abstract-content"
-              v-html="project.description"
             />
+              <div class="read-more-container">
+                <span v-html="excerptText(project.content.rendered)" />
+              </div>
           </div>
-        </div>
       </div>
     </template>
     <template v-else>
@@ -66,7 +51,7 @@ export default {
       loading: state => state.RiverProjects.loading,
       error: state => state.RiverProjects.error,
       projects: state => state.RiverProjects.data
-    })
+    }),
   },
   watch: {
     projects () {
@@ -74,9 +59,38 @@ export default {
     }
   },
   methods: {
-    projectUrl (project) {
-      return `/content/Project/view/id/${project.id}/`
-    }
+    excerptText(htmlString) {
+      let output = htmlString.split(" ").splice(0, 49).join(" ");
+      if (htmlString.length > output.length) {
+        output += " [...]";
+      }
+      return output;
+    },
   }
 }
 </script>
+
+<style lang="scss">
+.sidebar-projects {
+  display: inline-block;
+  align-content: start;
+  vertical-align: top;
+  .header-row {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .sidebar-project {
+
+    &:hover h5 {
+      text-decoration: underline;
+    }
+  }
+
+  .no-projects-msg {
+
+    @include carbon--type-style("code-02");
+  }
+}
+</style>

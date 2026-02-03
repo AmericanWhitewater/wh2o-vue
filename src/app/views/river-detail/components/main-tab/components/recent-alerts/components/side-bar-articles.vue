@@ -14,50 +14,42 @@
     </span>
     <template v-if="loading">
       <div class="pb-spacing-md">
-        <cv-inline-loading
-          id="cv-inline-loading--articles"
-          state="loading"
-        />
+        <cv-inline-loading id="cv-inline-loading--articles" state="loading" />
       </div>
     </template>
     <template v-else-if="articles && articles.length > 0">
       <div
         v-for="(article, i) in articles.slice(0, 1)"
         :key="i + 3 * 4"
-        class="bx--row mb-spacing-xs"
-       
+        class="bx--row mb-spacing-xs bx--tile--clickable"
       >
-        <div class="bx--col-sm-12 bx--col-md-2">
-          <img
-            class="article-thumb"
-            :src="articleThumb(article)"
-            :alt="article.title"
-          >
-        </div>
-        <div class="bx--col-sm-12 bx--col-md-6">
-          <div class="pt-spacing-sm pb-spacing-md">
-            <h5
-              class="mb-spacing-2xs sidebar-title"
-              @click.exact="readArticle(article)"
-              @keydown.enter="readArticle(article)"
-              v-text="$titleCase(article.title)"
-            />
-            <div
-              ref="abstract"
-              class="abstract-content"
+        <div
+          v-if="article.featured_image_url"
+          class="bx--col-sm-12 bx--col-md-1"
+        >
+          <a :href="article.link" target="_blank">
+            <img
+              class="article-thumb"
+              :src="article.featured_image_url"
+              :alt="article.title.rendered"
             >
-              <div class="read-more-container">
-                <span v-html="article.abstract"/>
-                <cv-link 
-                  :href="articleUrl(article)"
-                  class="read-more">
-                  ... Read More
-                </cv-link>
+          </a>
+        </div>
+        <div class="bx--col-sm-12 bx--col-md-7">
+          <a :href="article.link" target="_blank">
+            <div class="pt-spacing-sm pb-spacing-md">
+              <h5
+                class="mb-spacing-2xs sidebar-title"
+                v-text="$titleCase(article.title.rendered)"
+              />
+              <div ref="abstract" class="abstract-content">
+                <div class="read-more-container">
+                  <span v-html="article.excerpt.rendered" />
+                </div>
               </div>
             </div>
-          </div>
+          </a>
         </div>
-        
       </div>
     </template>
     <template v-else>
@@ -68,22 +60,20 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
-import { articleHelper } from "@/app/global/mixins";
+import { mapState } from "vuex";
 export default {
-  name: 'sidebar-articles',
-  mixins: [articleHelper],
+  name: "sidebar-articles",
   computed: {
     ...mapState({
-      loading: state => state.RiverNews.loading,
-      error: state => state.RiverNews.error,
-      articles: state => state.RiverNews.data
-    })
+      loading: (state) => state.RiverArticles.loading,
+      error: (state) => state.RiverArticles.error,
+      articles: (state) => state.RiverArticles.data,
+    }),
   },
   watch: {
-    articles () {
-      this.$emit('articles:change')
-    }
+    articles() {
+      this.$emit("articles:change");
+    },
   },
-}
+};
 </script>

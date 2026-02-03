@@ -71,7 +71,7 @@
   </div>
 </template>
 <script>
-import http from '@/app/http'
+import { laravelClient } from '@/app/http'
 import TermsOfService from '@/app/views/static-routes/terms-of-service'
 export default {
   name: 'user-register',
@@ -120,7 +120,7 @@ export default {
       }
 
       if (!this.confirmationError && !this.passwordMatchError) {
-        await http.post('/graphql', {
+        await laravelClient.post('/graphql', {
           query: `
               mutation {
                 register(

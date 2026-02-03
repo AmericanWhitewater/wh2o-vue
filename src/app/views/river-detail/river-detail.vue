@@ -223,7 +223,7 @@ import {
   objectPermissionsHelpersMixin,
 } from "@/app/global/mixins";
 import { appLocalStorage, eventBus } from "@/app/global/services";
-import { reachClient } from '@/app/services';
+import { reachClient } from '@/app/http';
 
 export default {
   name: "river-detail",
@@ -302,6 +302,15 @@ export default {
         this.loadReachData();
       }
     },
+    // Watch for reach data to be loaded with wpID, then fetch dam releases
+    reach: {
+      handler(newReach) {
+        if (newReach && newReach.wpID) {
+          this.$store.dispatch("RiverDamReleases/getProperty", newReach.wpID);
+        }
+      },
+      immediate: true
+    },
     // this function monitors reach revisions
     // when a new revision is made, it prompts the user to populate
     // a revision comment
@@ -347,7 +356,6 @@ export default {
     },
     async loadReachData() {
       this.$store.dispatch("RiverDetail/setRefId", this.reachId);
-      this.$store.dispatch("RiverEvents/getProperty", this.reachId);
       this.$store.dispatch("RiverDetail/getProperty", this.reachId);
       this.$store.dispatch("RiverCredits/getProperty", this.reachId);
       this.$store.dispatch("RiverAlerts/getProperty", this.reachId);
