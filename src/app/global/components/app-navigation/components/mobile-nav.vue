@@ -3,9 +3,9 @@
     <div class="bx--grid mobile-nav">
       <div class="bx--row">
         <div :class="[{ 'drawer-open': drawerOpen }, 'bx--col content-area']">
-          <span id="logo-wrapper" @click.exact="resetRouter">
+          <a id="logo-wrapper" href="/">
             <aw-logo />
-          </span>
+          </a>
           <div>
             <cv-tooltip
               v-if="offline"
