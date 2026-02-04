@@ -120,13 +120,4 @@ export const GageChartConfig = {
       }
     }
   })
-  // computed: {
-  //   setYMax () {
-  //     let yMax = this.$store.state.riverDetailState.gageReadingsData.data[0];
-  //     console.log(yMax)
-  //     yMax = Math.ceil(yMax * 1.3);
-  //     this.chartConfig.scales.yAxes.ticks.suggestedMax = yMax
-  //     return yMax
-  //   }
-  // }
 }
