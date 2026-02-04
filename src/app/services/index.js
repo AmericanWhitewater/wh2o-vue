@@ -8,7 +8,6 @@ export * from "./getAffiliates";
 export * from "./getAllReachReports";
 export * from "./getDamReleases";
 export * from "./getGage";
-export * from "./getGageReadings";
 export * from "./getRapids";
 export * from "./getReach";
 export * from "./getReachAccidents";
