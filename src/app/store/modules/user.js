@@ -1,6 +1,5 @@
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
-import { laravelClient } from "@/app/http"
 import { getUser, profileClient } from "@/app/services"
 
 export default {
@@ -35,29 +34,6 @@ export default {
       } catch (error) {
         context.commit('DATA_ERROR', error)
       }
-    },
-    userForgot: async (data) => {
-
-      return laravelClient.post('graphql', data).then(res => res.data)
-    },
-    userLogin: data => {
-      
-
-      return laravelClient.post('graphql', {
-        query: `
-        mutation {
-            login(input: ${data}) {
-              access_token
-              expires_in
-              refresh_token
-              token_type
-            }
-          }`
-      }).then(res => res.data)
-    },
-    userRegister: data => {
-
-      return laravelClient.post('graphql', data).then(res => res.data)
     },
     logout: (context) => {
       context.commit('DATA_RESET');

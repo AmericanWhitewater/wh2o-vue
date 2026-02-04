@@ -4,43 +4,12 @@ export default [
     component: () => import('@/app/views/user/app-user.vue'),
     children: [
       {
-        path: 'access',
-        name: 'access',
-        component: () => import('@/app/views/user/components/access/user-access.vue'),
-        children: [
-          {
-            path: 'login',
-            name: 'login',
-            meta: {
-              crumbLabel: 'Login'
-            },
-            component: () => import('@/app/views/user/components/access/user-login.vue')
-          },
-          {
-            path: 'logout',
-            name: 'logout',
-            meta: {
-              crumbLabel: 'Logout'
-            },
-            component: () => import('@/app/views/user/components/access/user-logout.vue')
-          },
-          {
-            path: 'register',
-            name: 'register',
-            meta: {
-              crumbLabel: 'Register'
-            },
-            component: () => import('@/app/views/user/components/access/user-register.vue')
-          },
-          {
-            path: 'forgot',
-            name: 'forgot',
-            meta: {
-              crumbLabel: 'Password Reset'
-            },
-            component: () => import('@/app/views/user/components/access/user-forgot.vue')
-          }
-        ]
+        path: 'logout',
+        name: 'logout',
+        meta: {
+          crumbLabel: 'Logout'
+        },
+        component: () => import('@/app/views/user/components/user-logout.vue')
       },
       {
         path: 'account/:userId',
