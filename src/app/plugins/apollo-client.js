@@ -11,6 +11,9 @@ const httpLink = createUploadLink({
     process.env.VUE_APP_API_BASE_URL + "graphql" ||
     "http://localhost:3000/graphql",
   credentials: 'include',
+  fetchOptions: {
+    timeout: 120000, // 2 minutes timeout for file uploads
+  },
 });
 
 const authLink = setContext((_, { headers }) => {
