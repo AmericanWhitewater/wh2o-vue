@@ -6,6 +6,9 @@ export async function photoFileUpdate(data) {
   delete photo.id;
   const fileinput = Object.assign({}, data.fileinput);
   const file = fileinput.file;
+  
+  // Remove file from fileinput object before including in operations
+  delete fileinput.file;
 
   // Prepare the operations object with file replaced by null
   const operations = {
