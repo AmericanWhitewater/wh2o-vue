@@ -24,7 +24,7 @@ const {
   VUE_APP_CLIENT_SECRET,
   VUE_APP_API_BASE_URL,
   VUE_APP_TRPC_API_URL,
-  STATIC_ASSET_URL,
+  VUE_APP_IMAGES_BASE_URL,
   NODE_ENV = '',
   VUE_APP_LINK_BASE_URL
 } = process.env
@@ -35,7 +35,7 @@ const satelliteMapLayerId = VUE_APP_SATELLITE_MAP_LAYER_ID
 const topoMapLayerId = VUE_APP_TOPO_MAP_LAYER_ID
 const apiBaseUrl = VUE_APP_API_BASE_URL
 const appBaseUrl = VUE_APP_BASE_URL
-const assetBaseUrl = STATIC_ASSET_URL || VUE_APP_API_BASE_URL
+const assetBaseUrl = VUE_APP_IMAGES_BASE_URL || VUE_APP_API_BASE_URL
 const clientId = VUE_APP_CLIENT_ID
 const clientSecret = VUE_APP_CLIENT_SECRET
 const reachApiUrl = VUE_APP_REACH_API_URL
