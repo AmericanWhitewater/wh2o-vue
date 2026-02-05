@@ -51,10 +51,6 @@ export async function photoFileUpdate(data) {
   formData.append('0', file);
 
   return laravelClient
-    .post("/graphql", formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-    .then((response) => response.data.photo);
+    .post("/graphql", formData)
+    .then((response) => response.data.data.photo);
 }
