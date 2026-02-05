@@ -141,7 +141,7 @@ export default {
             section_id: this.post.id,
           },
         };
-        const result = await photoFileUpdate(this.$apollo, photoPost);
+        const result = await photoFileUpdate(photoPost);
         this.images.unshift(result);
       } catch (error) {
         /* eslint-disable-next-line no-console */
