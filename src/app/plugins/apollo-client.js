@@ -10,6 +10,7 @@ const httpLink = createUploadLink({
   uri:
     process.env.VUE_APP_API_BASE_URL + "graphql" ||
     "http://localhost:3000/graphql",
+  credentials: 'include',
 });
 
 const authLink = setContext((_, { headers }) => {
