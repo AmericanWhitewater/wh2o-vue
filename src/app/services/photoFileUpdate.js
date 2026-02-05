@@ -36,5 +36,5 @@ export async function photoFileUpdate(data) {
         fileinput: fileinput
       }
     })
-    .then((response) => response.data.data.photo);
+    .then((response) => response.data.photo);
 }
