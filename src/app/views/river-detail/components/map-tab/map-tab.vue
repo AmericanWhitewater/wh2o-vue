@@ -11,7 +11,7 @@
               @click="downloadGeoJSON"
             >
               <Download20 />
-              Download GeoJSON
+              Download GeoJSON (experimental)
             </cv-button>
             <!-- TODO: Re-enable KML download once tokml library issues are resolved
             <cv-button
