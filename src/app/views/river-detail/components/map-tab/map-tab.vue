@@ -13,6 +13,7 @@
               <Download20 />
               Download GeoJSON
             </cv-button>
+            <!-- TODO: Re-enable KML download once tokml library issues are resolved
             <cv-button
               v-if="reach"
               kind="tertiary"
@@ -22,6 +23,7 @@
               <Download20 />
               Download KML
             </cv-button>
+            -->
           </div>
           <NwiMap
             v-if="startingBounds"
@@ -114,7 +116,6 @@ export default {
             difficulty: this.reach.class,
             length: this.reach.length,
             description: this.reach.abstract,
-            'marker-color': '#0066cc'
           })
         })
       }
@@ -144,8 +145,6 @@ export default {
                 difficulty: poi.difficulty,
                 distance: poi.distance,
                 description: poi.description,
-                'marker-color': '#ff0000',
-                'marker-symbol': 'danger'
               })
             })
           }
