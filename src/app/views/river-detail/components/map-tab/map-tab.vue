@@ -56,7 +56,6 @@ import { InfoPanel } from './components'
 import { mapHelpersMixin } from '@/app/global/mixins'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
 import Download20 from '@carbon/icons-vue/es/download/20.js'
-import { point } from '@turf/helpers'
 import tokml from 'tokml'
 
 export default {
@@ -92,37 +91,63 @@ export default {
       
       const features = []
       
+      // Helper to remove undefined/null properties
+      const cleanProperties = (props) => {
+        return Object.fromEntries(
+          Object.entries(props).filter(([, v]) => v != null)
+        )
+      }
+      
       // Add reach geometry as LineString feature using turf
       if (this.reachGeom) {
+        const reachName = `${this.reach.river} - ${this.reach.section}`
         features.push({
-          ...this.reachGeom,
-          properties: {
+          type: 'Feature',
+          geometry: this.reachGeom.geometry,
+          properties: cleanProperties({
+            name: reachName,
+            title: reachName,
             type: 'reach',
             id: this.reach.id,
-            name: `${this.reach.river} - ${this.reach.section}`,
             river: this.reach.river,
             section: this.reach.section,
             difficulty: this.reach.class,
             length: this.reach.length,
-            abstract: this.reach.abstract
-          }
+            description: this.reach.abstract,
+            'marker-color': '#0066cc'
+          })
         })
       }
       
-      // Add rapids as Point features using turf
+      // Add POIs as Point features using turf
       if (this.rapids && this.rapids.length > 0) {
-        this.rapids.forEach(rapid => {
-          if (rapid.rloc) {
-            const [lng, lat] = rapid.rloc.split(' ').map(parseFloat)
-            const rapidPoint = point([lng, lat], {
-              type: 'rapid',
-              id: rapid.id,
-              name: rapid.name,
-              difficulty: rapid.difficulty,
-              distance: rapid.distance,
-              description: rapid.description
+        this.rapids.forEach(poi => {
+          if (poi.rloc) {
+            const [lng, lat] = poi.rloc.split(' ').map(parseFloat)
+            // Use character array from data, default to 'poi' if not set
+            const poiType = poi.character && poi.character.length > 0 
+              ? poi.character.join(', ') 
+              : 'POI'
+            const poiName = poi.name || `Unnamed ${poiType}`
+            features.push({
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [lng, lat]
+              },
+              properties: cleanProperties({
+                name: poiName,
+                title: poiName,
+                type: poiType,
+                character: poi.character,
+                id: poi.id,
+                difficulty: poi.difficulty,
+                distance: poi.distance,
+                description: poi.description,
+                'marker-color': '#ff0000',
+                'marker-symbol': 'danger'
+              })
             })
-            features.push(rapidPoint)
           }
         })
       }
