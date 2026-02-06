@@ -52,9 +52,6 @@ export default {
   }),
   computed: {
     ...mapState({
-      loading: state => state.RiverMap.loading,
-      error: state => state.RiverMap.error,
-      data: state => state.RiverMap.data,
       riverLoading: state => state.RiverDetail.loading,
       riverError: state => state.RiverDetail.error,
       reach: state => state.RiverDetail.data,
@@ -68,17 +65,9 @@ export default {
     }
   },
   methods: {
-    loadData () {
-      if (!this.data) {
-        this.$store.dispatch('RiverMap/getProperty', this.reachId)
-      }
-    },
     clickFeature (feature) {
       this.detailFeature = feature
     }
-  },
-  created () {
-    this.loadData()
   }
 }
 </script>
