@@ -3,6 +3,7 @@
     <div class="bx--grid">
       <div class="bx--row">
         <div class="bx--col-sm-12 bx--col-md-12 bx--col-lg-12 bx--col-max-12">
+          <!-- TODO: Re-enable download buttons after getting team approval
           <div class="map-header">
             <cv-button
               v-if="reach"
@@ -13,7 +14,6 @@
               <Download20 />
               Download GeoJSON (experimental)
             </cv-button>
-            <!-- TODO: Re-enable KML download once tokml library issues are resolved
             <cv-button
               v-if="reach"
               kind="tertiary"
@@ -23,8 +23,8 @@
               <Download20 />
               Download KML
             </cv-button>
-            -->
           </div>
+          -->
           <NwiMap
             v-if="startingBounds"
             :include-legend="false"
@@ -57,16 +57,16 @@ import { mapState } from 'vuex'
 import { InfoPanel } from './components'
 import { mapHelpersMixin } from '@/app/global/mixins'
 import UtilityBlock from '@/app/global/components/utility-block/utility-block'
-import Download20 from '@carbon/icons-vue/es/download/20.js'
-import tokml from 'tokml'
+// import Download20 from '@carbon/icons-vue/es/download/20.js'
+// import tokml from 'tokml'
 
 export default {
   name: 'map-tab',
   components: {
     InfoPanel,
     NwiMap,
-    UtilityBlock,
-    Download20
+    UtilityBlock
+    // Download20
   },
   mixins: [mapHelpersMixin],
   data: () => ({
@@ -87,7 +87,8 @@ export default {
     },
     startingBounds () {
       return this.reachStartingBounds
-    },
+    }
+    /* TODO: Re-enable after team approval
     geojsonData () {
       if (!this.reach) return null
       
@@ -156,11 +157,13 @@ export default {
         features
       }
     }
+    */
   },
   methods: {
     clickFeature (feature) {
       this.detailFeature = feature
-    },
+    }
+    /* TODO: Re-enable after team approval
     downloadGeoJSON () {
       if (!this.geojsonData) return
       
@@ -202,6 +205,7 @@ export default {
       link.click()
       URL.revokeObjectURL(url)
     }
+    */
   }
 }
 </script>
