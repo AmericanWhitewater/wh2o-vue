@@ -1,13 +1,10 @@
 import moment from 'moment'
 export const formatDate = {
   methods: {
-    parseDate: (date) => {
-      return moment(date, 'YYYY-MM-DD HH:mm:ss')
-    },
     formatDate: (date, format) => {
       let momDate;
       if (!moment.isMoment(date)) {
-        momDate = moment(date, 'YYYY-MM-DD HH:mm:ss')
+        momDate = moment(date)
       } else {
         momDate = date;
       }
