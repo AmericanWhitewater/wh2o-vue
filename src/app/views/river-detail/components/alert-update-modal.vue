@@ -55,16 +55,18 @@ export default {
       required: false,
     },
   },
-  data: () => ({
-    formData: {
-      id: this.$randomId(),
-      user_id: null,
-      detail: null,
-      post_date: null,
-      post_type: "WARNING",
-      reach_id: null,
-    },
-  }),
+  data() {
+    return {
+      formData: {
+        id: null,
+        user_id: null,
+        detail: null,
+        post_date: null,
+        post_type: "WARNING",
+        reach_id: null,
+      },
+    };
+  },
   computed: {
     ...mapState({
       user: (state) => state.User.data,
@@ -77,15 +79,24 @@ export default {
       return null;
     },
   },
+  watch: {
+    visible(val) {
+      if (val) {
+        this.setFormData();
+      }
+    },
+  },
   methods: {
     setFormData() {
       const today = new Date();
-      this.formData.post.post_date = today.toISOString();
+      this.formData.post_date = today.toISOString();
 
       if (this.alertId) {
         this.formData.id = this.alertId;
         this.formData.title = this.activeAlert.title;
         this.formData.detail = this.activeAlert.detail;
+      } else {
+        this.formData.id = this.$randomId();
       }
     },
     handleCancel() {
